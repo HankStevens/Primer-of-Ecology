@@ -1,0 +1,40 @@
+---
+title: "igraph"
+output: html_document
+---
+
+```{r}
+library(igraph)
+```
+
+### Background
+In the early and mid-1970's, Robert May and others
+ demonstrated that important predictions could be made with relatively simple Lotka--Volterra models [@May1973ab], and this work still comprises an important compendium of lessons for ecologists today [@May:2006lr]. May used simple Lotka--Volterra models to show that increasing the number of species in a food web tended to make the food web less stable [@May1973ab; @May1972]. In species-rich webs, species were more likely to become extinct. Further, he showed that the more connections there were among species in the web (higher connectance), and the stronger those connections (higher interaction strength), the *less* stable the web. At the time, this ran counter to a prevailing sentiment that more diverse ecosystems were more stable, and led to heated discussion.
+```{r PLABEviz, echo=FALSE, fig.cap="Three of the six webs investigated by Pimm and Lawton (1977). Left to right, these correspond to Pimm and Lawton (1977) Figs. 1A, E, and B. All basal species exhibit negative density dependence.", out.width=c("15%","55%","25%"), fig.show='hold', fig.ncol=3, fig.height=10, fig.width=5}
+resc <- FALSE
+gA <- graph(c(1,1, 1,2,2,1, 2,3,3,2, 3,4,4,3))
+signs <- c("-", '+',"-", '+',"-", '+',"-")
+plot(gA, layout=matrix(c(.5,.5,.5,.5, 0,.33,.67,1), nc=2), edge.curved=.5,      edge.label=signs, edge.label.font=1,  edge.label.cex=1, 
+     vertex.size=10, edge.loop.angle=pi/4,
+     margin=c(0,0,0,0), rescale=resc)
+
+gE <- graph(c(1,1, 2,2, 3,3, 1,4,4,1, 2,4,4,2, 3,4,4,3))
+signs <- c("-","-","-", '+',"-", '+',"-", '+',"-")
+plot(gE, layout=matrix(c(0,.5, 1,.5, 0,0,0,.5), nc=2), edge.curved=.5,      edge.label=signs, edge.label.font=1,  edge.label.cex=1, 
+     vertex.size=10, edge.loop.angle=pi/4,
+     margin=c(0,0,0,0), rescale=resc)
+
+gB <- graph(c(1,1, 1,2,2,1, 
+              2,3,3,2, 
+              3,4,4,3, 
+              2,4,4,2))
+
+signs <- c("-", '+',"-", 
+           '+',"-", 
+           '+',"-", 
+           '+',"-")
+plot(gB, layout=matrix(c(.5,.5,.5,.4,  0,.33,.67,1), nc=2), 
+     edge.curved=.5,edge.label=signs, edge.label.font=1,  edge.label.cex=1, 
+     vertex.size=10, edge.loop.angle=pi/4,
+     margin=c(0,0,0,0), rescale=resc)
+```

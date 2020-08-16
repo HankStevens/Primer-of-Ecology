@@ -1,0 +1,101 @@
+---
+title: "Primer of Ecology with R"
+author: "Hank Stevens"
+date: "`r Sys.Date()`"
+site: bookdown::bookdown_site
+delete_merged_file: true
+output:
+    bookdown::tufte_book2:
+      includes:
+        in_header: preamble.tex
+#     bookdown::gitbook
+documentclass: book
+bibliography: [/Volumes/GoogleDrive/My Drive/zlibrary.bib, /Volumes/GoogleDrive/My Drive/library.bib, book.bib, packages.bib]
+biblio-style: plain
+link-citations: yes
+github-repo: rstudio/bookdown-demo
+description: "A Primer of Ecology"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, results='markup', warning=FALSE,
+                      fig.path = "figs/", knitr.graphics.auto_pdf = TRUE,
+                      message=FALSE)
+
+library(primer)
+library(lattice)
+library(latticeExtra)
+library(ggplot2)
+theme_set(theme_minimal())
+cbPalette <- c("#000000", "#E69F00", "#56B4E9", "#009E73", 
+               "#F0E442", "#0072B2", "#D55E00", "#CC79A7")
+library(diagram)
+library(knitr)
+library(tufte)
+library(reshape2)
+library(data.table)
+library(magrittr)
+library(rsvg)
+library(DiagrammeR)
+library(DiagrammeRsvg)
+library(phaseR)
+```
+
+```{r include=FALSE}
+# automatically create a bib database for R packages
+knitr::write_bib(c(
+  .packages(), 'bookdown', 'knitr', 'rmarkdown'
+), 'packages.bib')
+```
+
+
+# Preface {-}
+
+\paragraph{Goals and audience}
+In spite of the presumptuous title, my goals for this book are modest. I wrote it as 
+\begin{itemize}
+  \item the manual I wish I had in graduate school, and
+\item a primer for our graduate course in Population and Community Ecology at Miami University\footnote{Miami University is located in the Miami River valley in Oxford, Ohio, USA; the region is home to the Myaamia tribe that dwelled here prior to European occupation.}
+\end{itemize}
+
+It is my hope that readers can enjoy the \emph{ecological content} and ignore the R code, if they care to.  Toward this end, I tried to make the code easy to ignore, by either putting boxes around it, or simply concentrating code in some sections and keeping it out of other sections.
+
+It is also my hope that ecologists interested in learning R will have a rich yet gentle introduction to this amazing programming language. Toward that end, I have included some useful functions in an R package called \texttt{primer}. Like nearly all R packages, it is available through the R projects repositories, the CRAN mirrors. See the Appendix for an introduction to the R language.
+
+I have a hard time learning something on my own, unless I can \emph{do} something with the material. Learning  ecology is no different, and I find that my students and I learn theory best when we write down formulae, manipulate them, and explore consequences of rearrangement. This typically starts with copying down, verbatim, an expression in a book or paper. Therefore, I encourage readers to take pencil to paper, and fingers to keyboard, and copy expressions they see in this book. After that, make sure that what I have done is correct by trying some of the same rearrangements and manipulations I have done. In addition, try things that aren't in the book --- have fun.
+
+\paragraph{A pedagogical suggestion}
+For centuries, musicians and composers have learned their craft in part by \emph{copying by hand} to works of others. Physical embodiment of the musical notes and their sequences helped them learn composition. I have it on great authority that most theoreticians (and other mathematicians) do the same thing --- they start by copying down mathematical expressions. This physical process helps get the content under their skin and through their skull. I encourage you to do the same. Whether otherwise indicated or not, let the first assigned problem at the end of each chapter be to copy down, with a pencil and paper, the mathematical expression presented in that chapter. In my own self-guided learning, I have often taken this simple activity for granted and have discounted its value --- to my own detriment. I am not surprised how often students also take this activity for granted, and similarly suffer the consequences. \emph{Seeing} the logic of something is not always enough --- sometimes we have to actually \emph{recreate} the logic for ourselves.
+
+Using a text editor (such as the simple one in the R GUI) is one of the huge benefits of using R. Using a text editor to write code and to make extensive comments to yourself (and others!) makes R \emph{truly} interactive. You interact with yourself by putting your thoughts on (virtual) paper, highlighting concepts and details you learn along the way, and documenting clearly what it is you have done. The code and the comments are two halves of the whole. Your comments also allow you to interact with others in a very complete way. You cannot realistically and reliably interact with others unless you put something in writing. If you use an application that is a pure GUI, you would have to describe the buttons you click and be absolutely certain that you leave nothing out and that you can actually communicate what you did. By writing and commenting code, you can send your scripts to anyone (your students, employees, boss, regulatory agency, collaborators\ldots). 
+
+\paragraph{Comparison to other texts}
+It may be useful to compare this book to others of a similar ilk. This book bears its closest similarities to two other wonderful primers: Gotelli's \emph{A Primer of Ecology}, and Roughgarden's \emph{Primer of Theoretical Ecology}. I am more familiar with these books than any other introductory texts, and I  am greatly indebted to these authors for their contributions to my education and the discipline as a whole. 
+
+My book, geared toward graduate students, includes more advanced material than Gotelli's primer, but most of the ecological topics are similar. I attempt to start in the same place (e.g., ``What is geometric growth?''), but I develop many of the ideas much further. Unlike Gotelli, I do not cover life tables at all, but rather, I devote an entire chapter to \emph{demographic matrix models}. I include a chapter on community structure and diversity, including \emph{multivariate distances}, \emph{species-abundance distributions}, \emph{species-area relations}, and \emph{island biogeography}, as well as \emph{diversity partitioning}. My book also includes code to implement most of the ideas, whereas Gotelli's primer does not.
+
+This book also differs from Roughgarden's primer, in that I use the Open Source R programming language, rather than Matlab\textregistered, and I do not cover physiology or evolution. My philosphical approach is similar, however, as I tend to ``talk'' to the reader, and we fall down the rabbit hole together\footnote{From \emph{Alice's Adventures in Wonderland} (1865), L. Carroll (C. L. Dodgson).}.
+
+Aside from Gotelli and Roughgarden's books, this book bears similarity in content to several other wonderful introductions to mathematical ecology or biology. I could have cited repeatedly (and in some places did so) the following: Ellner and Guckenheimer (2006), Gurney and Nisbet (1998), Kingsland (1985), MacArthur (1972), Magurran (2004), May (2001), Morin (1999), Otto and Day (2006),  and Vandermeer and Goldberg (2007). Still others exist, but I have not yet had the good fortune to dig too deeply into them.
+
+\paragraph{Acknowledgements}
+I am indebted to Scott Meiners and his colleagues for their generous sharing of data, metadata, and statistical summaries from the Buell-Small Succession Study (http://www.ecostudies.org/bss/), a 50$+$ year study of secondary succession (supported in part by NSF grant DEB-0424605) in the North American temperate deciduous forest biome. I would like to thank Stephen Ellner for Ross's Bombay death data and for R code and insight over the past few years.  I am also indebted to Tom Crist and his colleagues for sharing some of their moth data (work supported by The Nature Conservancy Ecosystem Research Program
+NSF DEB-0235369).
+
+I am grateful for the generosity of early reviewers and readers, each of whom has contributed much to the quality of this work: Jeremy Ash, Tom Crist, David Gorchov, Raphael Herrera-Herrera, Thomas Petzoldt, James Vonesh, as well as several anonymous reviewers, and the students of our Population and Community Ecology class. I am also grateful for the many conversations and emails shared with four wonderful mathematicians and theoreticians: Jayanth Banavar, Ben bolker, Stephen Ellner, Amit Shukla, and Steve Wright --- I never have a conversation with these people without learning something. I have been particularly fortunate to have team-taught Population and Community Ecology at Miami University with two wonderful scientists and educators, Davd Gorchov and Thomas Crist. Only with this experience, of working closely with these colleagues, have I been able to attempt this book. It should go without saying, but I will emphasis, that the mistakes in this book are mine, and there would be many more but for the sharp eyes and insightful minds of many other people.
+
+I am also deeply indebted to the R Core Development Team for creating, maintaining and pushing forward the R programming language and environment \cite{R2009}. Like the air I breathe, I cannot imagine my (professional) life without it. I would especially like to thank Friedrich Leisch for the development of \texttt{Sweave}, which makes literate programming easy \cite{Leisch:2002sw}. Because I rely on Aquamacs, ESS, \LaTeX, and a host of other Open Source programs, I am deeply grateful to those who create and distribute these amazing tools.
+
+A few other R packages bear special mention. First, Ben Bolker's text \cite{Bolker:2008rr} and packages for modeling ecological data (\texttt{bbmle} and \texttt{emdbook}) are broadly applicable. Second, Thomas Petzoldt's and Karsten Rinke's \texttt{simecol} package provides a general computational architecture for ecological models, and implements many wonderful examples \cite{Petzoldt:2007jo}. Much of what is done in this primer (especially in chapters 1, 3--6, 8) can be done with \texttt{simecol}, and sometimes done better. Third, Robin Hankin's \texttt{untb} package is an excellent resource for exploring ecological neutral theory (chapter 10) \cite{Hankin:2007zm}. Last, I relied heavily on the \texttt{deSolve} \cite{Soetaert:mw} and \texttt{vegan} packages \cite{Oksanen:2008}.
+
+Last, and most importantly, I would like to thank those to whom this book is dedicated, whose love and senses of humor make it all worthwhile.
+
+\vspace{1cm}
+\begin{flushright}\noindent
+{\it Martin Henry Hoffman Stevens}\\
+Oxford, OH, USA, Earth\\
+February, 2009\\
+\end{flushright}
+
+
+

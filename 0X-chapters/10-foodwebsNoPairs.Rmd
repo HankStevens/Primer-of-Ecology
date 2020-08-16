@@ -1,0 +1,448 @@
+# Food webs
+
+A food web is a real or a model of a \emph{set of feeding relations among species or functional groups}. This chapter has two foci, (i) a very brief introduction to multi-species webs as networks, and (ii) a re-examination of old lessons regarding the effect of food chain length on a web's dynamical properties.
+
+
+```{r web, echo=FALSE, fig.cap="A food web is a map of feeding relations. Here, snails (S) and invertebrates (I) feed on algae, and fish, F, feed on invertebrates and algae. We can represent this as a graph or a matrix.", out.width="40%", fig.show='hold', fig.ncol=2, fig.height=5, fig.width=5}
+gid <- graph(c('S', 'A', 'A', 'S', 
+               'I', 'A', 'A', 'I', 
+               'F','I', 'I', 'F',
+               'F','A', 'A', 'F'))
+signs <- c("-",'+', "-",'+', "-",'+', "-",'+')
+plot(gid, layout=matrix(c(0, .5, 1, .6, 0.5, 0.1, 0.5, .85), nc=2), edge.curved=.5,      edge.label=signs, edge.label.font=2,  edge.label.cex=1.5, 
+     vertex.size=60, 
+     margin=c(0,0,0,0), rescale=TRUE)
+```
+\begin{tabular}{c| c c c c }
+& \multicolumn{4}{c}{\emph{~Consumers}}\\
+\emph{~Resources~} & ~A~ & ~I~ & ~S~ & ~F~\\
+\hline
+A&0&$-$&$-$&$-$\\
+I&$+$&0&0&$-$\\
+S&$+$&0&0&0\\
+F&$+$&$+$&0&0\\
+\end{tabular}
+
+## Food Web Characteristics
+\index{food web characteristics}
+We need language to describe the components of a food web, such as *links* and \emph{\index{nodes}nodes}, and we also need language to describe the properties of a web as a whole. Generally speaking, networks such as food webs have \emph{emergent properties} [@May:2006lr;@Strogatz:2001gf], such as the number of nodes in the network. Emergent properties are typically considered to be nothing more than characteristics which do not exist at simpler levels of organization. For instance, one emergent property of a population is its density, because population density cannot be measured in an individual; that is why density is an \index{emergent property}emergent property.^[If we assume no supernatural or spectral interference, then we can also assume that density arises mechanistically from complicated interactions among individuals and their environments, rather than via magic. Other scientists will disagree and say that properties like density that are merely additive aggregates do not qualify for the lofty title of "emergent property."] While all food web models are based on simple pairwise interactions, the resulting emergent properties of multispecies webs quickly become complex due to indirect interactions and coupled oscillations [@Berlow:2004yq;@Vandermeer:2006fj].  In addition, any extrinsic factor (e.g., seasonality) that might influence species interactions may also influence the emergent properties of food webs. 
+
+
+A few important \index{network}network descriptors and emergent properties include,
+
+* **Node** A point of connection among links, a.k.a. \index{trophospecies}trophospecies; each node in the web may be any set of organisms that share sufficiently similar feeding relations; in Fig. \@ref(fig:web), $P$ may be a single population of one species, or it may be a suite of species that all feed on both $B$ and $R$. 
+* **Link** A feeding relation; a connection between nodes or trophospecies; may be directed (one way) or undirected. A directed link is indicated by an arrow, and is the effect ($+,\,-$) of one species on another. An undirected link is indicated by a line (no arrow head), and is merely a connection, usually with positive and negative effects assumed, but not quantified. 
+* **Connectance** The proportion of possible links realized. Connectance may be based on either directed, $C_{D}$, or undirected, $C_{U}$, links. For Fig. \@ref(fig:web) these would be
+\begin{gather*}
+C_{D}=\frac{L}{S^{2}}=\frac{8}{16}=0.5 \\
+C_{U}=\frac{L}{\left(S^2-S\right)/2}=\frac{4}{6}=0.67
+\end{gather*}
+where $S$ is the number of species or nodes.
+* **Trophic level, trophic position** may simply be categorized as basal, intermediate or top trophic positions. Basal positions are those in which the trophospecies feed on no other species. The top positions are those in which the trophospecies are fed upon by nothing. One can also calculate a quantitative measure of trophic \emph{level}. This is important in part because omnivory, something rampant in real food webs, complicates identification of a trophic level. We can calculate \index{trophic level}trophic level for the top predator, in Fig. \@ref(fig:web). Let us assume that the top predator, $F$, gets two-thirds of its energy from $I$, and gets one-third from $A$. $I$ itself is on the second trophic level, so given that, the trophic level of $F$ is calculated as
+\begin{equation*}
+T_{F}=1+\sum_{j=1}^{S}T_{j}p_{Fj}=1+\left(2\left(0.67\right)+1\left(0.33\right)\right)=2.67
+\end{equation*}
+where $T_{F}$ is the trophic level of $F$, $T_{j}$ is the trophic level of prey species $j$, and $p_{ij}$ is the proportion of the diet of predator $i$ consisting of prey $j$.
+* **Omnivory** Feeding on more than one \emph{trophic} level ($\nu>0$, Fig. \@ref(fig:web)); it is \emph{not} merely feeding on different species or resources.
+* **Intraguild predation** A type of omnivory in which predation occurs between consumers that share a resource; in Fig. \@ref(fig:web) $F$ and $I$ share prey $A$. When $F$ gets most of its energy from $I$, we typically refer to that as omnivory ($\ nu<0.5$); when $F$ gets most of its energy from $A$, we typically refer to that as intraguild predation ($\nu >0.5$).
+
+* **Degree distribution**, $\mathrm{Pr}(i)$ The probability that a randomly chosen node will have degree $i$, that is, be connected to $i$ other nodes [@May:2006lr]. In Fig. \@ref(fig:web), $A$ is of degree 1 (i.e., is connected to one other species).  $P$ and $B$ are of degree 2, and $R$ is of degree 3. If we divide through by the number of nodes (4, in Fig. \@ref(fig:web)), then the \emph{degree distribution} consists of the probabilities $\mathrm{Pr}\left(i\right)=\{0.25,\,0.5,\,0.25\}$. As webs increase in size, we can describe this distribution as we would a statistical distribution. For instance, for a web with randomly placed connections, the degree distribution is the binomial distribution [@Cohen1990d].
+* **Characteristic path length** Sometimes defined as the average shortest path between any two nodes [@Dunne2002]. For instance, for Fig. \@ref(fig:web), the shortest path  between $P$ and $R$ is 1 link, and between $A$ and $P$ is 2 links. The average of all pairwise shortest paths is $(1+1+1+1+2+2)/6=1.\bar{3}$. It is also sometimes defined as the average of \emph{all paths} between each pair of nodes.
+* **Modularity, Compartmentation** The degree to which subsets of species are highly connected or independent of other species. This tends to arise in consumer-resource interactions [@Thebault2010]
+  
+As one way calculate \index{compartmentation}modularity in a food web, first assume each species interacts with itself. Next, calculate the proportion of shared interactions, $p_{ij}$ for each pair of species, by comparing the lists of species with which each species in a pair interacts. The numerator of $p_{ij}$ is the number of species with which both of the pair interact. The denominator is the total number of different species with which either species interacts. \medskip
+
+As an example, let's calculate this for the above food web (Fig. \@ref(fig:web)). $S$ interacts with $S$ and $A$, $I$ interacts with $I$, $S$, and $F$. Therefore, $S$ and $I$ both interact with only $A$, whereas, together, $S$ and $I$ interact with $S$, $I$, $A$, and $F$. The proportion, $p_{ij}$, therefore is $1/4 = 0.25$. We do this for each species pair. \smallskip
+
+Next we sum the proportions, and  divide the sum by the maximum possible number of undirected links, $C_U$.
+\begin{table}[h]
+\begin{minipage}[c]{.48\linewidth}
+  \centering
+\begin{tabular}{l| c c c }
+Species & S & I & F\\
+\hline
+A&2/4&3/4&3/4\\
+S&  &1/4&1/4\\
+I&  &  &3/3 
+\end{tabular}
+\end{minipage}
+\hfill
+\begin{minipage}[c]{.48\linewidth}
+\begin{align*}
+  (\#eq:ci)
+C_{I}&=\frac{\sum_{i=1}^{S-1}\sum_{j=i+1}^{S}p_{ij}}{\left(S^2-S\right)/2}\\
+    &=3.5/6\\
+    &=0.58
+\end{align*}
+  \end{minipage}
+\end{table}
+To reiterate: For any pair of species, $i$ and $j$ ($i\neq j$), $p_{ij}$ is the proportion of shared interactions, calculated from the number of species that interact with \emph{both} species
+$i$ and $j$, divided by the number of species that interact
+with \emph{either} species $i$ or species $j$. As above, $S$ is
+the number of species or nodes in the web.
+
+* **Nestedness** the degree to which specialists make connections that are subsets of the connections that generalists make. A completely nested network is one in which we can rank species by the number of interactions, and find that species that interact with fewer other species are always interacting with species that generalists also interact with. This tends to arise in plant-pollinator networks [@Thebault2010].
+* **Motif** A repeating pattern; most commonly, a unique set of unidirectional patterns of consumption (Fig. \@ref(fig:motifs)). A motif *profile* of a species is the variety of motifs that that species is part of, and the relative frequency with which they play each role. 
+```{r motifs, echo=FALSE, fig.cap="There are 13 different possible motifs for three species. These links record only consumption. For instance, S1 is a simple linear food chain and S4 is a single species that is consumed by two other species. motifs D1-D8 all include mutual consumption. This is likely to occur between species in the same guild, and when adults of one feed on juveniles of another.", message=FALSE}
+include_graphics("figs/motifs")
+```
+* **Random, scale-free, and small world, architecture** These refer to how connections are arranged within the network, and slightly different definitions exist for each. Random networks are often defined by connections between nodes occurring at random, given a constant probability of connection between any two nodes. A small-world network is one in which characteristic path length, $L$, grows with the logarithm of the number of nodes in the web, $L \propto log(N)$ and where nodes are connected via a small number of links through a node with a large number of connections. This occurs in social networks when a few individuals are connected to many people and to the study of 'degress of separation'. A scale-free network is one in which the degree distribution $Pr(i)$ of nodes $i$ follows a power law distribution, where $Pr(i) \backsim d^{-z}$; if you rank the nodes from lweast to most to least connected, the plot of the logarithm of th number of connections will fall on a straight line with slope $-z$.
+
+This list of food web descriptors is a fine start but is by no means exhaustive.
+
+## Food chain length --- an emergent property
+There are many interesting questions about food webs that we could address; let us address one that has a long history, and as yet, no complete answer: What determines the length of a \index{food chain length}food chain? Some have argued that chance plays a large role [@Cohen1990d;@Hubbell2001;
+@Williams2000a],  and others have shown that area
+[@MacArthur1967; @Rosenzweig1995] or ecosystem size [@Post:2002bs] may
+play roles. The explanation that we will focus on here is *dynamical stability*. Communities with more species had been hypothesized to be less stable, and therefore less likely to persist and be observed in nature. Stuart Pimm and John Lawton [@Pimm1977] extended this work by testing whether *food chain
+length* could be limited by the instability of long food chains.
+
+### Multi-species Lotka--Volterra notation
+A many-species \index{Lotka--Volterra!food web}Lotka--Volterra model can be represented in a very compact form,
+\begin{equation}
+(\#eq:compact)
+\frac{d X_{i}}{d t}=X_{i}\left(b_{i}+\sum_{j=1}^{S}a_{ij}X_{j}\right)
+\end{equation}
+where $S$ is the number of species in the web, $b_i$ is the intrinsic rate of increase of species $i$ (i.e., $r_i$), and $a_{ij}$ is a per capita effect of species $j$ on species $i$. 
+
+When $i=j$, $a_{ij}$ refers to an *intra*specific effect, which is typically negative. Recall that in our earlier chapters on competition, we used $\alpha_{ii}$ to represent intraspecific per capita effects. Here for notational convenience, we leave $i$ and $j$ in the equation, realizing that $i=j$ for intraspecific interactions. Further, we let $a_{ij}$ be any sign, either positive or negative, and sum the effects. If we let $X=N$, $b=r$, and $a=r \alpha$, then the following are equivalent:
+\begin{gather*}
+  \dot{N_1} =r_1N_1\left(1-\alpha_{11}N_1 - \alpha_{12}N_2\right)\\
+  \dot{X} =X_1\left(b_1+a_{11}X_1+a_{12}X_2 \right)
+\end{gather*} 
+The notation in \@ref(eq:compact) is at once both simple and flexible. When $a_{ij}$ is negative, it may represent competition or the effect of a predator, $j$, on its prey, $i$. When $a_{ij}$ is positive, it may represent mutualism or the effect of prey~$j$ on a predator~$i$.
+
+### Background
+In the early and mid-1970's, Robert May and others
+ demonstrated that important predictions could be made with relatively simple Lotka--Volterra models [@May1973ab], and this work still comprises an important compendium of lessons for ecologists today [@May:2006lr]. May used simple Lotka--Volterra models to show that increasing the number of species in a food web tended to make the food web less stable [@May1973ab; @May1972]. In species-rich webs, species were more likely to become extinct. Further, he showed that the more connections there were among species in the web (higher connectance), and the stronger those connections (higher interaction strength), the *less* stable the web. At the time, this ran counter to a prevailing sentiment that more diverse ecosystems were more stable, and led to heated discussion.
+```{r PLABE, echo=FALSE, fig.cap="Three of the six webs investigated by Pimm and Lawton (1977). Left to right, these correspond to Pimm and Lawton (1977) Figs. 1A, E, and B. All basal species exhibit negative density dependence.", out.width=c("17%","55%","20%"), fig.show='hold', fig.ncol=3, fig.height=10, fig.width=5}
+resc <- FALSE
+gA <- graph(c(1,1, 1,2,2,1, 2,3,3,2, 3,4,4,3))
+signs <- c("-", '+',"-", '+',"-", '+',"-")
+plot(gA, layout=matrix(c(.5,.5,.5,.5, 0,.33,.67,1), nc=2), edge.curved=.5,      edge.label=signs, edge.label.font=1,  edge.label.cex=1, 
+     vertex.size=10, edge.loop.angle=pi/4,
+     margin=c(0,0,0,0), rescale=resc)
+
+gE <- graph(c(1,1, 2,2, 3,3, 1,4,4,1, 2,4,4,2, 3,4,4,3))
+signs <- c("-","-","-", '+',"-", '+',"-", '+',"-")
+plot(gE, layout=matrix(c(0,.5, 1,.5, 0,0,0,.5), nc=2), edge.curved=.5,      edge.label=signs, edge.label.font=1,  edge.label.cex=1, 
+     vertex.size=10, edge.loop.angle=pi/4,
+     margin=c(0,0,0,0), rescale=resc)
+
+gB <- graph(c(1,1, 1,2,2,1,  2,3,3,2, 3,4,4,3, 2,4,4,2))
+signs <- c("-", '+',"-",  '+',"-",  '+',"-", '+',"-")
+plot(gB, layout=matrix(c(.5,.5,.5,.4,  0,.33,.67,1), nc=2), edge.curved=.5, 
+     edge.label=signs, edge.label.font=1,  edge.label.cex=1, 
+     vertex.size=10, edge.loop.angle=pi/4,
+     margin=c(0,0,0,0), rescale=resc)
+```
+
+May defined connectance as the proportion of interactions in a web, given the total number of all possible directed interactions (i.e., directed connectance). Thus a linear food chain with four species (Fig. \@ref(fig:PLABE)), and intraspecific competition in the basal species would have a connectance of $7/16=0.25$. May's definition of \index{interaction strength, quantified}interaction strength was the geometric mean of all interspecific interactions, i.e. the square root of the average of all $a_{ij}^2$ ($i \neq j$),
+\begin{equation}
+  (\#eq:IS)
+  I =\sqrt{ \frac{\sum_{i=1}^S\sum_{j=1, i \neq j}^S a_{ij}}{S^2-S}}.
+\end{equation}
+Squaring the $a_{ij}$ focuses on magnitudes, putting negative and positive values on equal footing.
+
+An important component of May's work explored the properties of *randomly* connected food webs. At first glance this might seem ludicrous, but upon consideration, we might wonder where else one could start. Often, simpler (in this case, random) might be better. The conclusions from the \index{random connection models}random connection models act as null hypotheses for how food webs might be structured; deviations from May's conclusions might be explained by deviations from his assumptions. Since this work, many ecologists have studied the particular ways in which webs in nature appear non-random.
+
+One conclusion May derived was a threshold between stability and instability for random webs, defined by the relation
+\begin{equation}
+  (\#eq:1)
+  I\left( S C \right)^{1/2} = 1
+\end{equation}
+where $I$ is the average \index{interaction strength, average}interaction strength, $S$ is the number of species, and $C$ is directed connectance.  If $I\left( S C \right)^{1/2} > 1$, the system tended to be unstable  (Fig. \@ref(fig:may1)). Thus, if we increase the number of species, we need to decrease the average interaction strength if we want them to persist. The larger and more tightly connected (larger $I$, $S$, and $C_D$) the web, the more likely it was to come crashing down. Therefore, if longer food chains were longer by virtue of having more species, they would be less stable because of the extra species, if for no other reason.
+```{r may1, fig.cap="Relation between the average interaction strength and the number of species able to coexist (here directed connectance is $C = 0.3$). The line represents the maximum number of species that are predicted to be able to coexist at equilibrium. Fewer species could coexist, but, on average, more species cannot coexist at equilibrium.", fig.width=5, fig.height=5, results='hide', echo=FALSE}
+S <- 40; C=.3
+par(mar=c(3,3,0,0), mgp=c(2,.5, 0))
+curve(C*x^ -2, .1, 1, ylab=expression("Number of Species ("*italic(S)*")"),
+      xlab = expression("Interaction Strength ("*italic(I)*")") )
+text(.6, 20, "Unstable Webs", srt=45)
+text(.2, 3.75, "Stable Webs" , srt=-45, cex=.8)
+```
+
+Pimm and Lawton felt that it seemed reasonable that long chains might be less
+stable also because Lotka-Volterra predator-prey dynamics appear inherently unstable, and a connected series of unstable relations seemed less likely to persist than shorter chains. They tested whether food chain length \emph{per se}, and not the number of species, influenced the stability of food chains. Another question they addressed concerned omnivory. At the time, surveys of naturally occurring food webs had indicated that omnivory was rare [@Pimm1978]. Pimm and Lawton tested whether omnivory stabilized or destabilized food webs. 
+
+Like May, @Pimm1977 used Lotka--Volterra models to
+investigate their ideas. They designed six different food web configurations
+that varied food chain length, but held the number of species constant (Fig.
+\@ref(fig:PLABE)). For each food web configuration, they varied randomly interaction strength and tested whether an
+otherwise randomly structured food web was stable. Their food webs included
+negative density dependence only in the basal species. 
+
+Pimm and Lawton concluded that (i) shorter chains were more stable than longer chains, and (ii) omnivory destabilized food webs. While these conclusions have stood the test of time, Pimm and Lawton failed to highlight another aspect of their data---that, for those webs that were qualitatively stable, omnivory shortened return times  (Fig. \@ref(fig:histsAB)). Thus, omnivory could make more stable those webs that it didn't destroy. Subsequent work has elaborated on this, showing that weak omnivory is very likely to stabilize food webs  [@McCann1998a]. 
+
+## Implementing Pimm and Lawton's Methods
+Here we use R code to illustrate how one might replicate, and begin to extend, the work of @Pimm1977.
+
+In previous chapters, we began with explicit time derivatives, found partial derivatives and solved them at their equilibria. Rather than do all this, Pimm  and Lawton bypassed these steps and went straight to the evaluated Jacobian matrix. They inserted  random estimates for the elements of the Jacobian into each non-zero element in the food web matrix. These estimates were constrained within (presumably) reasonable limits, given large less abundant predators and small more abundant prey. 
+
+Their methods followed this approach.
+
+1. Specify a food web interaction matrix.^[In the original publication, webs E and D seem to be represented incorrectly.]
+2. Include negative density dependence for basal species only. 
+3. Set upper and lower bounds for the effects of predators on prey ($0$ to $-10$) and prey on predators($0$ to $+0.1$); these are the Jacobian elements.
+4.  Generate a large number of random Jacobian matrices and perform linear stability analysis.
+5. Determine qualitative stability (test $\lambda_1<0$), and return time for each random matrix. Use these to examine key features of the distributions of return times (e.g., average return time).
+6.  Compare the stability and return times among different food web configurations that varied systematically in food chain length and the presence of omnivory, but hold the number of species constant.
+
+It is worth discussing briefly the \index{Jacobian elements}Jacobian elements. @May1973ab defined interaction strength as the Jacobian element of a matrix, which represents the *total effect of one individual on the  population growth rate of another species*. Think about how you calculate the Jacobian --- as the partial derivative of one species' growth rate with respect to the size of the other population. It is the instantaneous change in the population growth rate per unit change in the population of another, at the equilibrium. The units chosen for the Jacobian elements thus mean that individual predators have relatively much larger effects on the population growth rates of prey than \emph{vice versa}.
+
+Let's build a function that does what Pimm and Lawton did. There are an infinite number of ways to do this, but this will suffice. First, we'll create a matrix that represents qualitatively the simplest longest food chain where each species feeds only on one other species and where no prey are fed upon by more than one consumer. Initially, we will use the values of greatest magnitude used by Pimm and Lawton. 
+```{r}
+Aq = matrix(c(
+  -1,   -10,   0,     0,
+  0.1, 0,   -10,  0,
+  0,    0.1,   0,    -10,
+  0,      0,    0.1,   0),
+  nrow=4, byrow=TRUE)
+Aq
+```
+Note that this matrix indicates a negative effect of the basal species on itself, large negative effects ($-10$) of each consumer on its prey, and small positive effects of each prey on its consumer.^[For what sorts of species does this make sense...or nonsense?]
+
+For subsequent calculations, it is convenient to to find out from the matrix itself how big the matrix is, that is, how many species, $S$, are in the web.
+```{r}
+S <- nrow(Aq)
+```
+Next, we create a random realization of this matrix by multiplying each element times a unique random number between zero and 1. For this matrix, that requires $4^2$ unique numbers.
+```{r}
+M <- Aq * runif(S^2)
+```
+Next we perform eigenanalysis on it, retaining the eigenvalues.
+```{r}
+eM <- eigen(M)[["values"]]
+```
+Pimm and Lawton tested whether the dominant eigenvalue was greater than 0 (unstable) and if less than zero, they calculated return time. We will simply record the dominant eigenvalue as the maximum of the real parts of the eigenvalues.
+```{r}
+deM <- max( Re(eM) )
+```
+Given the typically stabilizing effect of the intraspecific negative density dependence, we will hang on to that as well, as the geomtric mean of all the intraspecific negative density dependencies.
+```{r}
+intraNDD <- sqrt(sum(diag(M)^2)/S)
+```
+Given lessons from May's work, we might also want to calculate the average interspecific interaction strength. Here we set the diagonal interactions equal to zero, and calculate the geometric mean of the square the remaining elements.
+```{r}
+diag(M) <- 0
+IS <- sqrt( sum(M^2)/(S*(S-1)) )
+```
+Twenty years later, @McCann1997 showed that weak omnivory can stabilize food webs. For webs that include omnivory, we will calculate the interaction strength of omnivory in the same way we do for other interactions, as the square root of the average of the squared $a_{ij}$ \@ref(eq:IS).
+
+```{r PL2, echo=FALSE, results='hide'}
+pimmlawton <- function(mat, N=1, omni.i=NA, omni.j=NA, omega=NULL){
+  S <- nrow(mat)
+  if(is.na(omni.i)) {
+    out <- matrix(NA, nrow=N, ncol=4)
+    colnames(out) <- c("DomEig", "Im", "IntraDD", "I")
+    for(n in 1:N) out[n,] <- {
+      M = runif(S^2) * mat
+      ## Do eigenanalysis
+      eigs <- eigen(M)[["values"]]
+      mx <- which.max(Re(eigs))
+      deM = Re(eigs)[mx]
+      deMi = Im(eigs)[mx]
+      intraNDD <- sqrt(sum(diag(M)^2)/S)
+      diag(M) <- 0
+      IS = sqrt( sum(M^2)/(S*(S-1)) )
+      c(deM, deMi, intraNDD, IS)
+    } } else {
+      out <- matrix(NA, nrow=N, ncol=5)
+      colnames(out) <- c("DomEig", "Im", "IntraDD", "I", "I.omni")
+      for(n in 1:N) out[n,] <- {
+        M = runif(S^2) * mat
+        ## Adjust for McCann type omnivory
+        if(!is.null(omega))  {M[omni.i,omni.j] <- omega*M[omni.i+1,omni.j]
+        M[omni.i+1,omni.j] <- (1-omega)*M[omni.i+1,omni.j]
+        M[omni.j,omni.i] <- omega*M[omni.j,omni.i+1]
+        M[omni.j,omni.i+1] <- (1-omega)*M[omni.j,omni.i+1]}
+        ## Do eigenanalysis
+        eigs <- eigen(M)[["values"]]
+        mx <- which.max(Re(eigs))
+        deM = Re(eigs)[mx]
+        deMi = Im(eigs)[mx]
+        intraNDD <- sqrt(sum(diag(M)^2)/S)
+        diag(M) <- 0
+        IS = sqrt( sum(M^2)/(S*(S-1)) )
+        omnivory <- sqrt(mean(c(M[omni.i,omni.j],M[omni.j,omni.i])^2))
+        c(deM, deMi,intraNDD, IS, omnivory)
+      }
+    }
+  return(as.data.frame(out))
+}
+```
+The `primer` package has a function for all this; see the arguments in the function.
+```{r} 
+args(pimmlawton)
+```
+Now we can check this function for a single simulation for our first web,
+```{r}
+set.seed(1)
+pimmlawton(Aq)
+```
+Now let's do it 2000 times, as Pimm and Lawton did. Each row will be an independent randomization, and the columns will be the dominant eigenvalue, the intraspecific density dependence, and the average interaction strength.
+```{r}
+out.A <- pimmlawton(Aq, N=1000) 
+```
+We might like to look at basic summary statistics of the information we collected --- what are their minima and maxima and mean? 
+```{r}
+summary(out.A[,c(1,3,4)])
+```
+We see that out of 2000 random food chains, the largest dominant eigenvalue is still less than zero ($\lambda_1<0$). What does that mean? It means that all of the chains are qualitatively stable, and that the return times are greater than zero ($-1/\lambda_1>0$).^[A negative return time indicates that any 'perturbation' at the equilibrium would have been closer to zero at some time in the past.]
+
+May's work showed that stability is related to interaction strength. Let's examine how the dominant eigenvalue is related to interaction strength.^[If we think of stability analysis as the analysis of a small perturbation at the equilibrium, then the dominant eigenvalue is the growth rate of that perturbation.]
+```{r pairsA, fig.cap="Perturbations at the equilibrium tend to dissipate more rapidly (more negative dominant eigenvalues) with greater intraspecific negative density dependence (IntraDD) and greater interspecifiic interaction strength (I). This graph also demonstrates the independence of IntraDD and I in these simulations.", fig.height=8, fig.width=8}
+pairs(out.A[,c(1,3:4)])
+```
+
+The results of our simulation (Fig. \@ref(fig:pairsA)) show that the dominant eigenvalue can become more negative, i.e. more resilient, with greater intraspecific negative density dependence (`IntraDD`) and greater intersepcifiic interaction strength (`I`). We see here that stability can increase with increasing interaction strengths, contrary to May's original general conclusions.
+
+Note also (Fig. \@ref(fig:pairsA)) that many eigenvalues seem very close to zero --- what does this mean for return times?
+The inverse of a very small number is a very big number, so it appears that many return times will be very, very large, and rendering the webs effectively unstable. Let's calculate return times and examine a summary.
+```{r}
+RT.A <- -1/out.A[["DomEig"]]
+summary(RT.A)
+```
+We find that the maximum \index{return time}return time is a very large number, and even the median is fairly large (```r round( median(RT.A) )```). In an ever-changing world, is there any meaningful difference between a return time of 1000 generations *vs.* neutral stability? 
+
+Pimm and Lawton addressed this by picking an arbitrarily large number (150) and recording the percentage of return times greater than that. This percentage will tell us the percentage of webs that are not effectively stable.
+```{r}
+sum( RT.A > 150 ) / 2000
+```
+Now let's extract the return times that are less than or equal to
+150 and make a histogram with the right number of divisions or bins to allow it to look like the one in the original [@Pimm1977].
+```{r histA, fig.cap="The number (y-axis) of different return times (x-axis) resulting from simulated food chains with four species.",   fig.width=5, fig.height=4}
+A.fast <-RT.A[RT.A < 150]
+histA <- hist(A.fast, breaks=seq(0,150, by=5), main=NULL)
+```
+This histogram (Fig. \@ref(fig:histA)) provides us with a picture of the stability for a food chain like that in Fig. \@ref(fig:PLABE)(left chain). Next, we will compare this to other webs.
+
+### Shortening the Chain
+Now let's repeat all this (more quickly) for a shorter chain, but with the same number of species (Fig. \@ref(fig:PLABE), center chain) So, we first make the web matrix, and then we run the 2000 simulations, and check a quick summary.
+```{r}
+Eq = matrix(c(
+  -1,   0,   0, -10,
+  0,   -1,   0, -10,
+  0,    0,   -1, -10,
+  0.1, 0.1, 0.1,  0),
+  nrow=4, byrow=TRUE)
+Eq
+out.E <- pimmlawton(Eq, N=1000)
+summary(out.E)
+```
+The summary shows that, again, that all webs are stable ($\lambda_1<0$). A histogram of return times also shows very short return times (Fig. \@ref(fig:histE)). Plots of $\lambda_1$ \emph{vs.} interaction strengths show that with this short chain, and three basal species that the role of intraspecfic density dependence becomes even more important, and the predator-prey interactions less important in governing $\lambda_1$. 
+```{r E1, fig.cap="For a food chain with two levels, and three basal species, perturbation growth rate (lambda_1) declines with increasing intraspecific negative density dependence (IntraDD) and is unrelated to predator-prey interaction strengths.", fig.show='hold', fig.ncol=2, out.width="40%", fig.width=3.5, fig.height=3.5}
+par(mar=c(5,4,0.5,1))
+plot(DomEig ~ IntraDD, data=out.E)
+plot(DomEig ~ I, data=out.E)
+```
+
+Note that with the shorter food chain, a greater proportion of the $\lambda_1$ are more negative (farther away from zero) than in the four level food chain. Clearly then, shortening the web or adding more negative density dependence stabilizes it, in spite of still having the same \emph{number} of species.
+
+Let us again categorize these as having long and short \index{return time}return times, and graph the distribution of the short ones.
+```{r histE, fig.cap="The number (y-axis) of different return times (x-axis) resulting from simulated food webs with three basal species and one consumer.", fig.width=5, fig.height=4}
+RT.E <- -1/out.E[["DomEig"]]
+E.fast <-RT.E[RT.E < 150]
+histE <- hist(E.fast, breaks=seq(0,150, by=5), main=NULL)
+```
+
+### Adding Omnivory
+Real webs also have \index{omnivory}omnivory --- feeding on more than one trophic level. A nagging question, then and now, concerns the effect of omnivory on food web dynamics. Pimm and Lawton compared food web dynamics with and without omnivory. Let's now create the web (Fig. \@ref(fig:PLABE), right chain) that they used to compare directly with their linear food chain. Next we run the 2000 simulations, and check a quick summary.
+```{r}
+Bq = matrix(c(
+  -1, -10,   0,     0,
+  0.1,  0,   -10,   -10,
+  0,    0.1,   0,    -10,
+  0,    0.1,    0.1,   0),
+  nrow=4, byrow=TRUE)
+Bq
+out.B <-  pimmlawton(Bq, N=1000, omni.i=2, omni.j=4)
+summary(out.B[,c(1,3:5)])
+```
+With omnivory, we now see that most webs have $\lambda_1>0$, and thus are \emph{unstable}. This was one of the main points made by Pimm and Lawton. Let's view scatterplots of the data.
+```{r pairsB, fig.width=6, fig.height=6}
+pairs(out.B[,c(1,3:5)])
+```
+
+
+It means that most of the randomly constructed webs were not stable point equilibria. To be complete, let's graph what Pimm and Lawton did.
+```{r histB, fig.cap="The number (y-axis) of different return times (x-axis) resulting from simulated food chains with basal species and omnivory by the top consumer on the second consumer.", fig.width=5, fig.height=4}
+RT.B <- -1/out.B[["DomEig"]]
+B.fast <- RT.B[RT.B < 150 & RT.B>0 ]
+out.B.fast <- out.B[RT.B < 150 & RT.B>0 ,]
+out.B.stab <- out.B[RT.B>0 ,]
+histB <- hist(B.fast, breaks=seq(0,150, by=5),
+              main=NULL)
+```
+
+### Comparing Chain A versus B
+Now let's compare the properties of the two chains, without, and with, omnivory, chains \textbf{A} and \textbf{B} (Fig. \@ref(fig:PLABE)). Because
+these are stochastic simulations, it means we have *distributions* of
+results. For instance, we have a distribution of return times for chain
+\textbf{A} and a distribution for return times for chain \textbf{B}. That is,
+we can plot histograms for each of them. Pimm and Lawton compared their webs in
+common sense ways. They compared simple summaries, including
+\begin{itemize}
+\item the proportion of random webs that were stable (positive return times),
+  \item the proportion of stable random webs with return times less than 150.
+\end{itemize}
+
+Now let's try graphical displays. Rather than simply chopping off the long return times, we use base 10 logarithms of return times because the
+distributions are so right-skewed. We create a histogram of the return times for chain **A**, and nonparametric density functions for both chain \textbf{A} and **B**.
+```{r histsAB, fig.cap="Comparing the distributions of return times for chain \textbf{A} and **B**. The y-axis is probability density. The distribution of return times for chain **A** is the solid line, and the distribution of return times for chain **B** is the dashed line. These density smoothers do a good job describing empirical distributions of continuous data, often better than histograms, which have to create discrete categories, or bins, for continuous data.", fig.width=5, fig.height=4}
+hist(log(RT.A,10), probability=T, ylim=c(0,1),
+     main=NULL, 
+     xlab=expression(log[10]("Return Time"))
+     )
+lines(density(log(RT.A,10)) )
+lines(density(log(RT.B[RT.B>0],10)), lty=2, lwd=2 )
+legend("topright", c("Food chain A", "With omnivory (B)"), lty=1:2, 
+       lwd=1:2,  bty='n')
+```
+
+By overlaying the density function of web B on top of web A return times (Fig. \@ref(fig:histsAB)), we make an interesting observation. The omnivorous webs with positive return times (those plotted) actually tended to have shorter return times than the linear chain. Pimm and Lawton noted this, but did not emphasize it. Rather, they sensibly focused on the more obvious result, that over 90\% of the omnivorous webs had negative return times, indicating an absence of a stable point equilibrium.
+
+*Further analysis* If we wanted to measure the effects of variation in the strength of intraspecific density dependence, average interaction strength, and omnivory, we could regress $\lambda_1$ against those variables. As a quick and dirty evaluation, we can rescale all the variables to a mean of zero and a standard deviation of 1, and do a simple multiple regression.
+```{r}
+# generate a bigger sample
+out.B <-  pimmlawton(Bq, N=1e4, omni.i=2, omni.j=4)
+# rescale variables
+oBs <- as.data.frame(scale(out.B))
+# do the regression
+mB <- lm(DomEig ~ IntraDD + I + I.omni, data=oBs)
+## check diagnostics - which would tell us we should use a different model ;-)
+# plot(mB)
+```
+
+Because we rescaled the variables the way we did, the regression coefficients tell us the direction and magnitudes of the effects of intraspecific density dependence, average interaction strength, and omnivory. If we had met all the assumptions of the model, these are equal to the correlation coefficients of the independent effects of X on Y.
+```{r}
+print( coef( summary(mB) ), digits=3)
+## To display the independent effects of X on Y, we could use partial regression plots,
+## aka added variable plots, available in the 'car' package
+# library(car)
+# avPlots(mB)
+```
+These coefficients show us that the dominant eigenvalue increases with increasing  average intra- and interspecific interaction strengths, and decreases with increasing strength of omnivory.
+
+
+## Re-evaluating Take-Home Messages
+The primary messages made by @Pimm1977 were that 
+\begin{itemize}
+\item shorter webs are more stable than long chains,
+  \item omnivory destabilizes webs.
+\end{itemize}
+
+These conclusions were a major part of the lively debate surrounding these issues. It was consistent with the apparent observation of the time, that empirical food webs revealed little omnivory [@Pimm1977;@Pimm1978], and that food chains in nature seemed to be much shorter than could occur, if \index{primary productivity}primary productivity (green plants and algae) was channeled upwards into a linear chain. 
+
+Let's consider their assumptions.
+
+First, Pimm and Lawton made the argument, as many others have (including us), that systems with stable point equilibria are more likely to persist than systems with oscillations, such as stable limit cycles. That is, we presume a strong correlation between the tendency to oscillate, and the tendency for species to become extinct (i.e., the system to collapse). It is easy to show that a system can be pushed from a stable equilibrium into oscillations which eventually become so big as to drive an element of the system to extinction. This is a very reasonable assumption, but one which is not challenged enough. Other measures of system stability could be used, such as the minimum that occurs in a long series of fluctuations [@Huxel1998;@McCann1997]. 
+
+Second, Pimm and Lawton ignored the effects of self-regulated basal species. By exhibiting negative density dependence, the basal species stabilized the web. When Pimm and Lawton made a shorter web, they also added more self-regulated populations. Thus, they necessarily confounded chain length with the number of species with negative density dependence. Which change caused the observed differences among webs? We can't tell from these simulations.
+
+Third, they assumed that the effect of web topology (i.e., short \emph{vs.} long chain) was best evaluated with the \emph{average} properties of the topology, rather than the minimum or maximum properties of the topology. By these criteria, webs without omnivory were clearly better. On average, webs without omnivory were more often stable than chains with omnivory, even if some of their return times tended to be quite long. Therefore, one might argue that if a web assembles in nature, it is more likely to persist (i.e., be stable) if it lacks omnivory. 
+
+However, the world is a messy place, with constant insults and disturbances, and resources and environmental conditions fluctuating constantly. There is also a constant rain of propagules dropping into communities, and species abundances are changing all the time. Communities are being constantly perturbed. The only webs that can persist in the face of this onslaught are the \emph{most} stable ones, perhaps the ones with the shortest return times. We just showed that Pimm and Lawton's own analyses showed that \emph{the most resilient webs tended to be those with \index{omnivory, stabilizing}omnivory}. It didn't take too long for new work to show that omnivory is rampant in nature [@Polis1991], and this is supported by theory that shows weak interactions, including omnivory, stabilize food webs [@McCann1998;@McCann1997].
+
+Pimm and Lawton made very important contributions to this lengthy debate, and we are finally figuring out how to interpret their results.
+
+

@@ -1,0 +1,274 @@
+# Density-dependent growth {#DDgrowth}
+Let's go back to our Song Sparrow (\index{Melospiza@\emph{Melospiza melodia}}\emph{Melospiza melodia}) data from Chapter 3 on density-independent growth --- now we look at *all* the data.
+
+```{r sparrowDD, echo=FALSE, out.width='50%', fig.cap='Song Sparrow *Melospiza melodia* counts from 1966--2003 and the relation between observed counts and annual growth rate determined from those counts, fit with ordinary least squares regression. See Chapter 3 for data source.', fig.show='hold'}
+data(sparrows)
+sparrows$Rt <- with(sparrows, log(c(Count[-1]/Count[-length(Count)],NA) ))
+#<<MelospizaDDG1, fig=TRUE,echo=false, results=hide>>=
+s1 <- ggplot(sparrows, aes(Year,Count)) + geom_point() + geom_line()
+#<<MelospizaDDG2, fig=TRUE,echo=false, results=hide>>=
+s2 <- ggplot(sparrows, aes(Count, Rt, label=substr(as.character(Year), 3, 4 ))) + geom_text() + 
+geom_smooth(method="lm", se=FALSE) +
+labs(y=bquote(italic(r[t])),
+     x=expression("Sparrow Count ("*italic(N[t])*")"), type="n")
+s1;s2
+```
+
+```{r secondorder, echo=FALSE, eval=FALSE}
+m1 <- lm(Rt~Count, sparrows)
+summary(m1)
+Rt2 <- sparrows$Rt[2:35]
+foN <- sparrows$Count[2:35]
+soN <- sparrows$Count[1:34]
+m12 <- lm(Rt2 ~ foN + soN)
+
+qplot(foN, Rt2,  geom=c("point"))
+
+m2 <- lm(resid(m1) ~ Count, sparrows)
+
+```
+
+
+When we plot the annual per capita growth rate, $r_t = \log (N_{t+1}/N_t)$, as a function of $N$, we see a pattern emerge. At low $N$, $r>0$, whereas at high $N$, $r < 0$. The annual growth rate depends on the size of the population. This is the sort of thing we mean we we use the term *density-dependent growth*.
+
+What might limit the population growth of these sparrows? Space available for territories in their successional-scrub type habitat? Availability of seeds, fruits and invertebrates? We don't necessarily know precisely what limits it, but if it is something related to their own abundance, then we can treat density as a proxy for the amount of limitation.
+
+Density-dependent population growth is the case where the per capita population growth rate depends statistically on the density of the population. Ecologists consider that negative \index{density-dependence}density-dependence is typically a characteristic of a population undergoing \emph{intraspecific competition}. That is, individuals of the same species are competing for shared resources. So, \ldots how would we represent this algebraically?\footnote{root: Arabic. \emph{Al-jabr}}
+
+## Continuous logistic growth
+
+When it was originally introduced to ecology by Verlhurst in the late 1800s, he described the limitation in terms of an upper limit $K$, 
+$$\frac{dN}{dt}= rN\left(1-\frac{N}{K}\right)(\#eq:logK)$$
+where $K$ is referred to as the *carrying capacity*. It is the population size where the negative effects of crowding prevent additional population growth. This happens in this equation because when $N=K$, population growth rate falls to zero, because $rN\left(1-K/K\right)=0$. 
+
+### Effects of N on birth and death rates
+
+Another approach to density-dependent growth is to consider how density affects per capita birth and death rates [@Gotelli2001]. 
+
+Recall from chapter 3 that $r=b-d$. Now we will let $b$ and $d$ be functions of $N$ ($b=F(N)$, $d=G(N)$). We could let $F(N)$ and $G(N)$ take a wide variety of different forms. For now, however, let's say that $N$ has *linear* effects on these rates so that 
+\begin{align}
+b &=b_0 + aN\\
+d &= d_0 + cN
+\end{align}
+which appear in Fig. \@fig:bd. 
+```{r bd, fig.cap="Per capita birth and death rates can be functions of density (solid lines). The carrying capacity (K) occurs at the point where the per capita birth and death rates are equal. The dashed line represents the per capita population growth rate, which is zero when N=K.", out.width="75%", fig.height=4, fig.width=4}
+b0 <- 1; a=.75
+d0 <- 0.1; c=.75
+par(mgp=c(.2,.1,0), las=1, mar=c(1.2,1.2,1,1))
+curve(b0 - a*x, axes=FALSE, ylim=c(0,1), 
+      ylab="Per capita birth and death rates",
+      xlab="Population density (N)")
+curve(d0 + c*x, add=TRUE, lty=1)
+curve(b0-a*x - (d0+c*x), add=TRUE, lty=2)
+x <- (b0-d0)/(a+c)
+y <- b0 - a*(x)
+segments(x, -1, x,y, lty=3)
+
+axis(2, at=c(-1,2), pos=0)
+axis(1, at=x, labels="K", pos=0)
+mtext(bquote(b[0]), 2, line=-.5, at=1)
+mtext(bquote(d[0]), 2, line=-.5, at=0.05)
+text(.25, .5, bquote(dN/(Ndt)))
+
+```
+
+
+```{r echo=FALSE, eval=FALSE}
+eq = function(N, e, f){e + f*N} # create the function you want
+myData <- data.frame( N=c(0, 1) ) # ggplot requires a data frame
+p <- ggplot(data=myData, aes(x=N)) + # set the basic properties of the plot
+  # in the stat_function, we indicate the parameters in our equation.
+  stat_function(fun=eq, geom="line", args=list(e=0, f=.75), lty=2) + 
+  stat_function(fun=eq, geom="line", args=list(e=1, f=-.75)) + 
+  labs(y="Per capita birth and death rates", x="Population size (N)") + 
+  theme_classic() + theme(axis.text.x = element_blank(),
+  axis.text.y = element_blank(), axis.ticks = element_blank() ) +
+  scale_x_continuous(expand = c(0, 0)) 
+p
++ 
+  xlab("Body mass (M)") + ylab("Metabolic rate (B)") + # add labels
+  annotate("text", x=80, y=90, label = "1:1")  + 
+  annotate("text", x=80, y=30, label="M^0.75", parse=TRUE)
+```
+
+Now population growth rate^[$\dot{N} = dN/dt$] is 
+\begin{align}
+\dot{N} &= [(b_0-aN)-(d_0 + cN)] N\\
+& =[(b_0-d_0) - (a+c)N] N\\
+& = (b_0-d_0)(1-\frac{a+c}{b_0-d_0}N)N
+\end{align}
+where the net negative effect of $N$ on per capita population growth rate is $$\alpha = \frac{a+c}{b_0-d_0}$$
+where the numerator is the total direct negative effect of $N$ on birth and death rates, and the denominator is $r$, the net maximum per capita growth rate which occurs as $N$ approaches zero. 
+$$(\#eq:logalpha) \dot{N} = rN(1-\alpha N)$$
+
+We have two equivalent expressions for logistic growth, \@ref(eq:logK) and  \@ref(eq:logalpha). From these two versions, we see that 
+$$K= 1/\alpha$$
+
+What does a population look like when it grows exponentially? 
+
+
+### Projection with numerical integration
+In simple density-independent growth, we were able to project a population using the integral of the exponential growth equation, $N_t=N_0 e^{rt}$. As our models become more complex, we are no longer able to to do that. Instead, we use *numerical integration* to project models of continuous growth through time. We use numerical techniques that turn the infinitely small intervals of calculus ($dx$, $dy$),into very, very small, but finite steps. Mathematicians and computer scientists have devised very clever ways of doing this very accurately and precisely. In R, the best package for this is `deSolve`, which contains several *solvers* for differential equations that perform numerical integration. We will access these solvers (i.e. numerical integraters) using the `ode` function in the `deSolve` package. This function, `ode, is a ``wrapper'' for the underlying suite of functions that do the work. That is, it provides a simple way to use any one of the small suite of functions.
+
+When we have an ordinary differential equation (ODE) such as logistic growth,$dN/dt = rN(1-\alpha N)$ we say that we ``solve'' the equation over a particular time interval given a set of parameters and initial conditions or initial population size. For instance, we say that we solve the logistic growth model for time at $t=0,\, 1 \ldots \, 20$, with parameters $r=1$, $\alpha=0.001$, and $N_0=10$. 
+
+Let's do an example with `ode`, using logistic growth. We first have to define a function in a particular way. The arguments for the function must be, in order: time, a vector of populations, and a vector or list of model parameters.
+```{r}
+logistic <- function(time, y, parameters){
+  # y is a single value of N; if we have more than one population, 
+  # e.g. competition, then y would have two values, one for 
+  # each population.
+  
+  # parameters is a vector of...parameters....
+  
+  # Both y and parameters have names for each element,
+  # e.g., y <- c(N=10) - see the text.
+  
+  with(as.list(c(y, parameters)), {
+    # "with" creates an "environment" within which R looks for values
+    # c() combines the two vectors into one
+    # as.list() turns the resulting vector into a list
+    
+    # our differential equation for growth
+    dN.dt <- r * N * (1 - alpha * N)
+    
+    # making the function create output, which must be a list with
+    # one element
+    return( list( dN.dt ) )
+  } )
+}
+```
+
+While it isn't necessary, we use `with()` to allow us to use the names of variables and parameters [@Petzoldt:2003dp]. This works only is when `y` and `p` are vectors with named variables and paramters. Finally, we use `return` to cause the function to produce the derivative in a `list`. 
+
+The following is equivalent, but slightly less readable or transparent.
+```
+  logistic2 <- function(t, y, p){
+    dN.dt <- p[1] * y[1] * (1 - p[2] * y[1])
+    return( list( dN.dt ) )
+```
+
+To solve the ODE, we will need to specify parameters, and initial conditions, our $N_0$.  We also need to supply the time steps we want as output.
+```{r}
+# We name the state variable and the parameters
+y0 <- c(N=1)
+p <- c(r=1, alpha = 0.001)
+t <- 0:20
+```
+Now you put it all into `ode()`, with the correct arguments. The output is a matrix, with the first column being the time steps, and the remaining being your state variables. First we load the `deSolve` package.
+```{r}
+library(deSolve)
+out <- ode(y=y0, times=t, func=logistic, parms=p)
+out[1:5,]
+```
+
+We can plot the output as well. The `deSolve` package directs R to use special methods to plot output from `ode`. 
+```{r odeplot, fig.cap="Output from a numerical integration of logistic growth, where N0==10, r=1, alpha=0.001."}
+plot(out)
+```
+
+Here we see the classic S-shaped curve of logistic growth, which is symmetric around the inflection point. Regardless where we start, the population will always settle down on $1/\alpha = K$. 
+
+**Predict** the shape of this curve if:
+
+* $r$ is smaller, or larger.
+* $\alpha$ is smaller, or larger.
+* the initial population size is above $K$
+
+```{r logisticVariety, echo=TRUE, fig.cap="How variation in logistic growth parameters influence the dynamics.", out.width="75%"}
+t=seq(0, 20, by=0.01); r <- c(.5, 1.5)
+alpha <- c(0.002, 0.001); N0 <- c(10, 1500)
+input <- expand.grid(r=r, alpha=alpha, N=N0)
+outdf <- NULL
+#outdf <- data.frame(time=NULL, N=NULL, N0=NULL, r=NULL, alpha=NULL)
+for(i in 1:nrow(input)) { 
+  y <- c(N=input[i,"N"])
+  p <- c(r=input[i,"r"], alpha=input[i,"alpha"] )
+  out <- ode(y, times=t, logistic, p)
+  out2 <- cbind(out, N0=y, r=p["r"], alpha=p["alpha"])
+  outdf <- rbind.data.frame(outdf, out2)
+}
+outdf$N0 <- as.factor(outdf$N0 )
+outdf$alpha <- as.factor(outdf$alpha )
+ggplot(outdf, aes(time, N, colour=N0, linetype=alpha) ) + geom_line() + 
+  facet_grid(r~., labeller=label_both)
+```
+
+The value of $\alpha$ determines the carrying capacity. Recall that...
+
+
+
+---------------------------
+
+So why is the continuous version so boring, while the discrete version is so complex? Remind yourself what is going on with the discrete version. The model could only take steps from one generation to the next. The step into generation $t+1$ was a function of $N$ at $t$, and not a function of $N_{t+1}$. Therefore the rate of change in $N$ was not influenced by a contemporaneous value of $N$. There was a delay between $N$ and the effect of $N$ on the population growth rate. For many organisms, this makes sense because they undergo discrete reproductive events, reproducing seasonally, for instance. In contrast, the continuous logistic population growth is always influenced by a value of $N$ that is updated continuously, instantaneously. That is the nature of simple differential equations. They are instantaneous functions of continuous variables. We can, if we so choose, build in a delay in the density dependence of continuous logistic growth. This is referred to as ``delayed density dependence'' or ``time-lagged logistic growth''
+
+\begin{equation}
+\label{clogisticDDD}
+\frac{\D{N}}{\D{t}} = rN \left( 1 - \alpha N_{t-\tau} \right)
+\end{equation}
+where $\tau$ is the degree of the delay, in time units associated with the particular model. Just as with the discrete model, the dynamics of this continuous model can get very complicated, with sufficient lag and sufficient $r$.
+
+\medskip \noindent
+\begin{boxedminipage}{\linewidth}{\footnotesize
+  \paragraph{Plotting Random Populations ( (Fig. \ref{c2}))}
+ We use the above function to create 20 populations with different traits. We start with an empty matrix, and then for each of the populations, we draw random $N_0$ and $r$, run the ODE solver, keeping just the column for $N$. Last we plot the output.
+```{r}
+t.s <- 0:50
+outmat <- matrix(NA, nrow=length(t.s), ncol=20)
+for(j in 1:20) outmat[,j] <- { y <- runif(n=1, min=0, max=120)
+                          prms <- c(r=runif(1, .01,2), alpha=0.01 )
+                           ode(y, times=t.s, clogistic, prms)[,2] }
+```
+<<ContDyn2, fig=true, include=false>>=
+matplot(t.s, outmat, type='l', col=1, ylab="All Populations")
+@ 
+}\end{boxedminipage} \medskip
+
+## To err(or) is human
+Most of this book describes and explains models. Models are explicit manifestations of theory with which we can organize our thoughts and and compare with our data. Here we bring our attnetion to two layers of uncertainty when we compare models and data: *process error* and *observation error*. These types of error are not mistakes, but differences from "actual" values. These terms can be confusing if we think that "error" means "mistake". They aren't; they are just differences between reality and our guesses of reality.
+
+Observation error is the uncertainty associated with drawing inferences about a population based on only samples of the population. We can never know the actual abundance of tuna in the sea because we can only estimate it with uncertainty. We refer to the uncertainty due to our observation methods as *observation error*. It is not error in the colloquial sense of making a mistake, but simply a difference between an actual population, and our sample of it.
+
+Process error is not error at all, in the colloquial sense. It is uncertainty in the very process we are studying. We can use the logistic growth model to predict the dynamics of a population, but the underlying processes of reproduction and density-dependence will vary for mechanistic reasons that we cannot fathom, or which we choose judiciously to ignore. Process error is the some underlying mechanistic difference between our model and the actual ecological process.
+
+Any time we examine a time series of data, we need to envision both observation and porocess error underlying the dynamics. Often, we don't do that, and assume either only observation error or process error. 
+
+Here we explore the consequences of process and observation error. This is inspired by @Bolker2008 (Ch. 11). Following this, we then move on to wax poetic about elephants in the rain and heat [@Chamaille-Jammes2008].
+
+## Geometric growth with observation and process error
+
+If we believe that a population of brown rats grows geometrically with $\lambda =1$, that means we predict that it doesn't change size. If we observe and sample this population we will sample it with error. We could describe the population, $N$, and our observations of it thus,
+$$N_0 = a$$
+$$N_{t+1} = \lambda N_t$$
+$$N_{obs,t} \sim \mathrm{Normal}(N_t, \sigma^2_{obs})$$
+where we say the observed $N$ at time $t$ is a Normally distributed random variable with a mean of the actual $N$ and a variance of $\sigma^2_{obs}$. Thus we estimate $N_t$ with uncertainty or observation error.
+
+Now we model it.
+
+```{r obs1}
+# set lamba, number of time steps (nt), a vector to hold N, and N0
+lambda <- 1
+nt <- 100
+N <- numeric(nt)
+Nobs.o <- numeric(nt)
+N0 = 100
+N[1] <- N0
+
+# decide on an amount of uncertainty in our estimate
+# standard deviation
+
+sd.obs <- 20
+
+# now we project the population and model observation error
+for (t in 1:(nt - 1)) {
+  ## observation error
+     Nobs.o[t] = rnorm(1, mean = N[t], sd = sd.obs)
+     ## mechanistic projection
+     N[t+1]=lambda*N[t]
+}
+# finish up adding error to the last observation
+Nobs.o[nt] = rnorm(1, mean = N[nt])
+
+## plot it
+ qplot(1:nt, Nobs.o, geom=c("line", "point"))
+```

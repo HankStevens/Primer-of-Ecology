@@ -1,0 +1,660 @@
+# Mutualisms
+
+## Background
+
+Mutualisms occur in a wide variety of different species. Mutualisms form the
+foundations of ecosystems including coral reefs (coral and zooxanthellae), grasslands, and forests (plants and mycorrhizal fungi, pollinators, and dispersers). The natural history of mutualisms are wildly diverse and complex, and 
+and @Boucherecologymutualism1982 list types of mutualisms:
+  
+* Energetic
+* Nutritional
+* Defense
+* Transport
+* Obligate \emph{vs.} facultative
+* Direct \emph{vs.} indirect
+* Symbiotic \emph{vs.} independent
+
+One of the most common of these is
+*indirect mutualism* (Fig. \@ref(fig:mut3)). In this case, a series of negative direct interactions can yield net positive indirect interactions, as in the classic
+case where ``the enemy of my enemy is my friend.'' For instance,
+consider a three plant species that all compete for the same limiting
+resource. When species A suppresses species B, it is indirectly
+helping species C [@Miller1994]. 
+
+Here we will focus on *direct mutualisms*, and in this chapter, we'll focus on two approaches to models, Lotka-Volterra models and consumer-resource models.
+
+## Lotka-Volterra mutualism
+Lotka-Volterra mutualism is very straightforward, following the same template as competition. All that we have to do is change the sign associated with the other species. As usual, $\alpha_{ij}$ is the per capita effect of species $j$ on species $i$.
+
+\begin{align*}
+\frac{dN_1}{dt} &= r_1N_1\left( 1 - \alpha_{11}N_1 + \alpha_{12}N_2\right)\\
+\frac{dN_2}{dt} &= r_2N_2 \left(1 + \alpha_{21}N_1 - \alpha_{22}N_2\right)
+\end{align*}
+
+In the above equations we see the sign of the intraspecific terms $\alpha_{ii}N_i$ is negative, while the sign of the interspecific terms $\alpha_{ij}N_j$.
+
+The zero net growth isoclines are found the same way we found those for interspecific competition, by solving $dN_1/dt$ (for zero). We will graph these, so we solve each in terms of species 1.
+\begin{align*}
+0 &= 1 + \alpha_{21}N_1 - \alpha_{22}N_2\\
+N_2 &= 1/\alpha_{22} + \alpha_{21}\alpha_{11}N_1
+\end{align*}
+\begin{align*}
+0 &= 1 - \alpha_{11}N_1 + \alpha_{12}N_2\\
+N_2 &=\alpha_{11}\alpha_{12}N_1 - 1/\alpha_{12}
+\end{align*}
+
+Let's use this to describe a facultative mutualism, that is, one in which neither species needs the other to persist, but in which they each do better. What we mean by that is that let $ r>0$. For now, we will also stipulate that the mutualism provides only a modest benefit, and so $\alpha_{ii} > \alpha_{ij}$. The dynamics are stable (Fig. \@ref(fig:LVmut))
+
+
+```{r fig=TRUE, fig.width=2.5, fig.height=2.5, echo=FALSE, eval=FALSE}
+alpha11 <- alpha22 <- 0.2
+alpha12 <- alpha21 <- 0.1
+
+zngi.m <- ggplot(data.frame(x=c(0,15)), aes(x=x)) +
+  stat_function(fun=function(x) {1/alpha22 + alpha21*x}) +
+  stat_function(fun=function(x) {-1/alpha12 + alpha11/alpha12*x}, linetype=2) +
+  lims(y=c(0,15)) + labs(y="N2", x="N1") 
+
+df2 <- data.frame(x=c(3,13,3,13), y=c(3,3,9,10), 
+                  xend=c(3,13,3,13), yend=c(4,5,6,7))
+df2 <- data.frame(x=c(3,9), y=c(3,9), xend=c(3, 9), yend=c(4.5, 7.5) )
+
+zngi.m + geom_segment(data=df2, aes(x=x, y=y, xend=xend, yend=yend),  
+              arrow = arrow(length = unit(.5, units="cm") ) )
+
+```
+
+To describe this popuation, we will paramterize an ODE model. Our parameters meet our stipulations, above.
+```{r}
+parameters <- c(alpha11 = .2, alpha22 = .2, alpha12 = .1, alpha21=.1,
+                r1=.01, r2=.01)
+```
+
+Here we write an ODE model to help anaylze dynamics.
+```{r echo=TRUE}
+mutualism.LV <- function(t, y, params){
+  n1 <- y[1]; n2 <- y[2]
+  with(as.list(params), {
+    dn1.dt = r1*n1*(1 - alpha11*n1 + alpha12*n2)
+    dn2.dt = r2*n2*(1 + alpha21*n1 - alpha22*n2)
+    return(list( c(dn1.dt, dn2.dt) ) )
+  })
+}
+```
+```{r results='hide', include=FALSE}
+t <- 0:100
+n2star <- with(as.list(parameters), {(alpha22+alpha21)/(alpha22*alpha11-alpha12*alpha21)})
+out <- ode(y=c(11,11), time=t, mutualism.LV, parameters)
+#plot(out)
+```
+
+The Lotka-Volterra approach fails if we try to describe two realistic scenarios. First,
+we cannot describe an obligate mutualism. An obligate mutualism is one in which growth rate is negative in the absence of the mutualism. The way to describe that in Lotka-Volterra models is to set $r < 0$. Second, if the benefit, is greater than the negative intraspecific effect, we get an uncontrolled positive feedback loop.
+
+```{r LVmut, echo=FALSE, fig=TRUE, fig.show = 'hold', fig.cap="Only weak facultative mutualisms are stable.", fig.width=3, fig.height=3.5, out.width='33%'}
+#source("nullclines2.R")
+umut.flowfield <-  flowField(mutualism.LV, xlim = c(0, 15), ylim = c(0,15),
+                                 parameters = parameters, points = 11, add = FALSE, 
+                             ylab="N2", xlab="N1", 
+main=(-alpha[ii] >  alpha[ij]))
+
+umut.nullclines <- nullclines(mutualism.LV, xlim = c(0, 15), ylim = c(0,15), parameters = parameters, add.legend = FALSE)
+
+p.o <- c(alpha11 = .2, alpha22 = .2, alpha12 = .1, alpha21=.1,
+                r1 = -0.01, r2 = -0.01)
+umut.flowfield <-  flowField(mutualism.LV, xlim = c(0, 15), ylim = c(0,15),
+                                 parameters = p.o, points = 11, add = FALSE, 
+                             ylab="N2", xlab="N1", main= (italic(r) < 0))
+
+umut.nullclines <- nullclines(mutualism.LV, xlim = c(0, 15), ylim = c(0,15), 
+                              parameters = p.o, add.legend = FALSE)
+
+p.p <- c(alpha11 = .2, alpha22 = .2, alpha12 = .3, alpha21=.3,
+                r1 = 0.1, r2 = 0.1)
+umut.flowfield <-  flowField(mutualism.LV, xlim = c(0, 15), ylim = c(0,15),
+                                 parameters = p.p, points = 11, add = FALSE, 
+                             ylab="N2", xlab="N1", 
+                             main=(abs(alpha[ii])<alpha[ij]))
+umut.nullclines <- nullclines(mutualism.LV, xlim = c(0, 15), ylim = c(0,15), 
+                              parameters = p.p,  add.legend = FALSE)
+
+```
+
+## Consumer-resource mutualism
+
+In this section, we will model mutualisms using a framework that, unlike our Lotka-Volterra approach, was inteneded specifically describe resource consumption [@macarthur1972Geographical]. 
+
+Sometimes mutualists share resources, as with mycorrhizal
+associations, where species share a resource or a product that they
+can acquire or manufacture in surplus and trade it for a resource or product that is
+limiting. This is a bi-drectional mutualism (Fig. \ref{fig:mut3})
+because the flow of \emph{resources} are bidirectional: both species provide a resource to the other [@Holland2010]. 
+```{r figs, echo=FALSE}
+# a digraph is a directed graph
+# the model is written in the "dot" language
+bimut <-
+"digraph{
+  rankdir = LR;
+node[shape=box];
+// oval is the default node shape
+  M1 -> M2[label='R'];
+M2 -> M1[label='R'];
+}"
+
+#grViz(bimut)
+
+umut <-
+"digraph{
+  rankdir = LR;
+node[shape=box];
+// oval is the default node shape
+  M1 -> M2[label='R'];
+M2 -> M1[label='S', style=dashed]
+}"
+
+imut <-
+"digraph{
+  rankdir = TB;
+node[shape=box];
+{rank=max; R1; R2;}
+{rank=min; M1; M2;}
+// oval is the default node shape
+  M1 -> M2[label='R'];
+M2 -> M1[label='S', style=dashed]
+R1 -> M1; M1 -> R1[arrowhead='odot'];
+R2 -> M2; M2 -> R2[arrowhead='odot'];
+R1 -> R2[arrowhead='odot']; R2 -> R1[arrowhead='odot'];
+}"
+
+# grViz(imut)
+
+grViz(bimut) %>%
+  export_svg %>% charToRaw %>% rsvg_pdf("bimut.pdf")
+
+grViz(umut) %>%
+  export_svg %>% charToRaw %>% rsvg_pdf("umut.pdf")
+
+grViz(imut) %>%
+  export_svg %>% charToRaw %>% rsvg_pdf("imut.pdf")
+```
+
+\begin{figure}
+\begin{center}
+\hfill
+\includegraphics[width=.4\linewidth]{bimut} 
+\hfill
+\includegraphics[width=.4\linewidth]{umut}
+\hfill 
+\\
+\includegraphics[width=.4\linewidth]{imut}
+\caption{Bidirection, unidirectional, and indirect mutualisms. Normal
+  arrowhead is a positive effect, whereas an open dot arrowhead is a
+  negative effect. A dashed line indicates a service, and a solid line
+  indicates a consumeable resource. \label{fig:mut3}}
+\end{center}
+\end{figure}
+
+In other cases, mutualists may share services, as with moray
+eel-grouper foraging. In this particular case, grouper and the giant
+moray eel have different foraging strategies, with the eel going into
+reef crevices and the grouper waiting outside to pick off prey that
+escape the eel [@Bshary2006]. Sometimes these mutualisms are
+called *by-product* mutualisms, in cases where there is no
+evidence of coordinated behavior, but nonetheless a mutualism arises via the independent activities of each species.
+
+In the following, we explore the type of mutualism in which one
+species provides a resource and the other species provides a
+service (Fig. \ref{fig:mut3}). This is a uni-directional mutualism because
+the flow of \emph{resources} is only unidrectional, from one species to the other [@Holland2010].
+
+A good example of a uni-directional of mutualism is seed dispersal via
+a frugivore that disperses seeds. A plant species provides a 
+fruit that is nutritious for an animal. A primary benefit for the
+plant is that seeds are carried away from the parent plant. This may
+help seeds escape enemies that accumulate near parent plants
+(Connell-Janzen hyptothesis). In addition, it provides a bet hedging
+opportunity wherein seeds are dispersed to a variety of habitats any
+one of which may be better for survival than the current location. It
+is even possible that dispersal is *directed* to preferred
+habitat that is consistently better than under the parent plant due to
+better resource levels or environmental conditions
+[@Wenny1998]. The animal benefits by consuming the fleshy part of
+the fruit surrounding the seed. An interesting case arises when seed
+predators collect seeds but do not kill them before having buried,
+cached, or moved seeds. 
+
+Another important example example of this type of mutualism is pollination. Pollinators (bats, insects, birds) receive resources (nectar, pollen) and provide services (pollination, gene flow). 
+
+  
+### A model of uni-directional mutualism
+
+Here we describe a model of a facultative unidirectional mutualism that uses type II foraging model for both consumption of the resource and provision of the service. 
+
+The growth equation for the plant species, $M_1$, includes logistic growth, and has terms for the benefit it receives from its mutualist frugivore and the cost paid to that frugivore.
+
+$$\frac{dM_1}{dt} = r_1 M_1\left(1-d_1M_1\right)  - aM_2\left(\frac{M_1}{h_1 + M_1}\right) + sM_1\left(\frac{M_2}{h_2 + M_2}\right)$$
+
+The plant species ($M_1$) grows logistically in the absence of fruit consumption or seed dispersal $r_1 M_1\left(1-d_1M_1\right)$. Consumption of fruits are governed by a type II functional response by the frugivore $aM_2\left(\frac{M_1}{h_1 + M_1}\right)$, so that the consumption rate of a single frugivore has an upper limit (Fig. \@ref(fig:funcResp)). Successful seed dispersal and establishment is also governed by a type II functional response. The success of a single seed reaches an upper limit as the number of frugivores continues to increase, $c_1M_1\left(\frac{M_2}{h_2 + M_2}\right)$ (Fig. \@ref(fig:funcResp)). 
+
+```{r funcResp, echo=TRUE, fig=TRUE, fig.show = 'hold', fig.width=3, fig.height=3.5, out.width='50%', fig.cap="Fruit consumption by a single frugivore is governed by a type II functional response as fruit abundance increases. Successful seed dispersal and establishment is governed by a type II functional response as frugivores increase."}
+
+ggplot(data.frame(x=c(0, 1)), aes(x=x) ) + 
+  stat_function(fun=function(x) { 10*x/(1+10*x) }) +
+  labs( x="Fruit abundance", y="Consumption Rate of a frugivore")
+
+
+ggplot(data.frame(x=c(0, 1)), aes(x=x) ) + 
+  stat_function(fun=function(x) { 10*x/(1+10*x) }) +
+  labs( x="Frugivore abundance", y="Dispersal rate of a seed")
+
+```
+
+The growth equation for the frugivore species, $M_2$, includes logistic growth, and one term for the benefit gained from the plant.
+
+$$\frac{dM_2}{dt} =  r_2M_2\left(1-d_2M_2\right) + eaM_2\left(\frac{M_1}{h_1+M_1}\right) $$
+The animal seed disperser grows logistically in in the absence of consuming this particular plant species $r_2M_2\left(1-d_2M_2\right)$. The animal benefits from consuming the fruit which it attacks at the same rate as for $M_1$, $aM_2\left(\frac{M_1}{h_1+M_1}\right)$, but converts the fruit into new individuals with efficiency $e$.
+
+* $c > s$, consumption > service = net predation
+* $s > c$, service > consumption = net mutualism
+
+
+The dynamics can result in *multiple basins of attraction* or *alternative stable states* (Fig. \@ref(fig:mba)).
+
+```{r mba, echo=FALSE, fig=TRUE,  fig.width=5, fig.height=5.5, fig.cap="A resource-service mutualism may result in alternative stable states. If both species achieve moderate abundance, then both species increase toward a stable mutualism. However, if the frugivore is too abundant relative to the plant, then its consumption dominates the interaction and drives the equilibrium mutualism"} 
+# The derivative 
+## A two-species consumer-resource mutualism
+## Holland and DeAngelis 2009, Ecology Letters Ecology Letters, 12: 1357–1366.
+## The parameterization follows that in this article. It differs from those 
+## in the above equations.
+
+bimut <- function(t,y,parameters) {
+  M1 <- y[1] # Plant
+  M2 <- y[2] # Frugivore
+  with( as.list( parameters ), {
+    dM1 <- M1 * (r1 - d1*M1 + a12*M2/(h2 + M2) - B1*M2/(e1+M1) )
+    dM2 <- M2 * (r2 - d2*M2 + a21*M1/(h1 + M1) - B2*M1/(e2+M2) )
+    list( c( dM1, dM2 ))
+  }
+  )
+}
+
+##### 
+### These parameters create a unidirectional, resource-service mutualism (B2 = 0)
+## Translating, a12 = a above, and a21 = ea above, and B1 = s above
+## therefore e = a21/a12
+
+p.u <- list(r1 = 1, r2 = 1, d1=0.01, d2=0.01, 
+            a12 = 0.4, a21 = 0.25, B1 = 0.3, B2 = 0, 
+            h1=0.3, h2=0.3, e1=0.3, e2=0.3)
+
+#####
+# times series
+t <- 0:100
+y <- c(M1=50, M2=50)
+
+#####
+## Phase plane diagram
+umut.flowfield <-  flowField(bimut, xlim = c(0, 170), ylim = c(0,220),
+                             parameters = p.u, points = 21, add = FALSE, 
+                             ylab="M2 - Frugivore", xlab="M1 - Garden tree species")
+
+umut.nullclines <- nullclines(bimut, c(0, 170), ylim = c(0,220), parameters = p.u,
+                                  add.legend = FALSE)
+
+#####
+# manifold for the interior saddle
+isad <- findEquilibrium(bimut, y0 = c(40,150), parameters = p.u, system = "two.dim",
+                              tol = 1e-16, max.iter = 50, h = 1e-06, plot.it = TRUE,
+                              summary = TRUE)
+
+# umut.manifolds <- drawManifolds(bimut, parameters = p.u, y0=as.numeric(isad$ystar),
+ #                                  add.legend = FALSE)
+#dev.print(pdf, "saddle.pdf")
+
+## Include all equilibria and manifolds
+y0 <- matrix(c(0, 25,125, 0, 100,
+                  100,100,150, 0,0), nc=2)
+eqs <- list(NULL)
+for(i in 1:nrow(y0) ){
+  eqs[[i]] <- findEquilibrium(bimut, y0 = y0[i,], parameters = p.u, system = "two.dim",
+                              tol = 1e-16, max.iter = 50, h = 1e-06, plot.it = TRUE,
+                              summary = TRUE)
+}
+```
+
+Holland and DeAngelis (2009) vary $a_{21}$ between $(0.25,\ldots,\,0.4)$ to vary the relation from mutualism to predation. Try that now. Save a picture of your results.
+
+
+\newpage
+## Plant-soil feedbacks
+Vascular plants form the basis of terrestrial 
+ecosystems, and they live in intimate contact with the most diverse
+group of organisms on Earth--soil microbes. Ecologists have
+begun to focus on this intimate relationship, and Jim Bever [@BeverSoilcommunityfeedback2003] has been
+one of ecologists helping lead the way (Fig. \@ref(fig:beverfig)). 
+
+
+```{r beverfig, echo=FALSE, fig.cap="Plants and soil microbes can interact in negative or positive ways. Plants may grow more poorly with their own soil flora than with that of a competitor's."}
+library(diagram)
+bm <- matrix(c("a11", "ca","1", 0, "cb", "a22", "0", "nu", 
+               "alphaA", "alphaB", 0,0,
+               "betaA","betaB", 0,0), nc=4)
+
+bm <- matrix(c( 
+  "-1/K[A]", "-c[A]/K[A]",1, 0,
+               "-c[B]/K[B]", "-1/K[B]",0, "nu",
+               "alpha[A]", "alpha[B]", -1, 0,
+               "beta[A]","beta[B]", 0, -1 
+  ), nc=4)
+name <- c(expression(N[A]), expression(N[B]), expression(S[A]), expression(S[B]))
+par(mar=c(0,0,0,0))
+plotmat(bm, pos=c(2,2), name=name)
+```
+
+Fig. \@ref(fig:theory) reflects the following Lotka-Volterra style model of plant species $N_A$ and $N_B$, and soil microbial floras $S_A$ and $S_B$:
+\begin{equation}
+  \frac{dN_A}{dt} = r_A N_A \left( 1 + \alpha_A S_A + \beta_A S_B -
+    \frac{N_A + c_B N_B}{K_A}\right) 
+\end{equation}
+where the effects of microbes ($\alpha$, $\beta$) could be positive or negative (e.g. pathogenic). The plants each have their own carrying capacities ($K$), and negative effects on each other ($c$). 
+
+The corresponding equation for the other plant species is 
+begin{equation}
+  \frac{dN_B}{dt} = r_B N_B \left( 1 + \alpha_B S_A + \beta_B S_B -
+    \frac{c_A N_A + N_B}{K_B}\right).
+\end{equation}
+
+We often refer to the soil flora associated with a single plant species as its *home* flora, and the other as the *away* flora. Each microbial flora comprises many, many species and we aggregate the net effects. Bever (2003) further simplified his model by placing  constraints on soil microbes, so that $S_A + S_B=1$. This allows him to focus on the relations among microbes and plants. With these assumptions, he showed that the net effect of each flora as a single state variable for the home flora of each species:
+$$\frac{S_A}{dt} = S_A(1-S_A) \left( \frac{N_A}{N_A + N_B} - \nu\frac{N_B}{N_A + N_B}\right)$$
+and that $$S_B=1-S_A$$.
+
+**Coexistence criteria**
+Bever states that (2003, p. 467, bottom of the second column) out that the interactions are more stable if 
+$$\alpha_A + \beta_B < \alpha_B + \beta_A $$
+which means that the effects of the home floras own their home plants are less positive (or more negative) then on the other species. 
+
+Bever also showed that for either plant species to increase when rare (i.e. coexist), that the interspecific competition has to be less than the benefits of the interactions of the soil floras, or
+$$c_A c_B < \frac{(1+\alpha_B)(1+\beta_A)}{(1+\alpha_A)(1+\beta_B)}(\#eq:bevercrit)$$
+Plant interspecific competition appears on the left. In the numerator on the right, we have the effect of each soil flora on their away plant species. In the denominator, we have the effects of each flora on the home plant species. Thus, the fraction on the right is the relative benefit of the soil flora. If there is no effect at all of the soil flora, then the coexistence criterion is what we would expect from Lotka-Volterra competition, where interspecific competition has to be less than one. For comparison, $c_A = \alpha_{21}^\prime$ from Chapter \@ref(Competition).
+
+Now we will create an ODE function that will let us see the dynamics play out. We need only model one soil flora because $S_B = 1-S_A$.
+```{r}
+bever3 <- function(t,y,p){
+  with(as.list(c(y,p)), {
+    dNa <- ra * Na * (1+alphaA*SA + betaA*(1-SA) - (Na + cB*Nb)/Ka)
+    dNb <- rb * Nb * (1+alphaB*SA + betaB*(1-SA) - (cA*Na + Nb)/Kb)
+    dSA <- SA*(1-SA) * ( Na/(Na+Nb) - nu*Nb/(Na+Nb) )
+    return(list(c(dNa, dNb, dSA), SB=1-SA))
+  })
+}
+```
+
+We will parameterize the model in a way that reveals the importance of the soil floras to coexistence, according to criteria stated above \@ref(eq:bevercrit). We will create a vector of parameters, and then test whether the inequality in \@ref(eq:bevercrit) is true. 
+```{r}
+p <- list(ra=0.7, rb=0.5, Ka = 5, Kb=6, cA=.99, cB=.99, 
+       alphaA=-0.03, alphaB=0.1, betaA=0.1, betaB=-0.2, nu=0.8)
+
+p <- list(ra=0.7, rb=0.5, Ka = 100, Kb=120, cA=.885, cB=.98, 
+       alphaA=0, alphaB=0, betaA=0, betaB=0, nu=0.8)
+with(p, {
+  cA*cB < (1+alphaB)*(1+betaA) / ( (1+alphaA)*(1+betaB))
+})
+```
+
+On this basis, we should see that the two 
+
+
+
+We can also make a  phase plane plot, that give results analogous to those in Bever (2003, Fig. 4).
+
+```{r pretty, echo=FALSE, fig=TRUE, width=10, height=10, include=TRUE, fig.cap="Dynamics of competing plant species, subject to self-limiting negative feedbacks with soil pathogens.", fig.show='hold'}
+t <- seq(0,200, .1)
+y0 <- c(Na=2, Nb=4, SA=0.5)
+{outdf <- as.data.frame( ode(y=y0, times=t, fun=bever3, parms=p) )
+outL <- pivot_longer(outdf, -time, 
+                     names_to="State_var", values_to="N")
+ggplot(outL, aes(time, N, colour=State_var)) + geom_line()
+}
+head(outdf)
+### Phase plane plot
+plot(outdf$Na, outdf$Nb, type='l', ylab="N_B", xlab="N_A")
+
+### Make the start clear
+points(y0[1], y0[2], cex=2, col=2, pch=19)
+text(y[1], y[2], "Start here (t=0)", adj=c(-.2,.5), srt=-45, col="green")
+
+```
+
+```{r echo=FALSE, eval=FALSE}
+bever <- function(t,y,p){
+  with(as.list(c(y,p)), {
+    dNa <- ra * Na * (1+alphaA*SA + betaA*SB - (Na + cB*Nb)/Ka)
+    dNb <- rb * Nb * (1+alphaB*SA + betaB*SB - (cA*Na + Nb)/Kb)
+    dSA <- SA*(1-SA)*(Na/(Na+Nb) - nu*Nb/(Na+Nb))
+    dSB <- -dSA
+    return(list(c(dNa, dNb, dSA, dSB)))
+  })
+}
+t <- seq(0,500, .1)
+y0 <- c(Na=1, Nb=.5, SA=0.5, SB=0.5)
+p <- c(ra=.7, rb=.5, Ka = 10, Kb=12, cA=0.885, cB=0.98, 
+       alphaA=-0.03, alphaB=0.1, betaA=0.1, betaB=-0.2, nu=0.8)
+# out <- ode(y=y0, times=t, fun=bever, parms=p)
+# outL <- pivot_longer(as.data.frame(out), -time, 
+#                      names_to="State_var", values_to="N" )
+# 
+# ggplot(outL, aes(time, N, colour=State_var)) + geom_line()
+```
+
+## Simulations for learning
+
+Often, we learn a lot by describing interactions in simple enough terms that we can analyze the interaction analytically, such as the way we analyzed Lotka-Volterra competition and mutualism. In more complex cases, we often cannot find an analytical, or *closed form*, solution, or if we do, it is so complex that it is difficult to extract meaning. In those cases, we may be able to learn a lot about the consequences of our model's assumptions through simulation. Using simulation, we examine the observed dynamics for a wide range of parameter values and then infer general rules about how parameters or parameter combinations influence dynamics.
+
+In this study, we will use simulations to attempt to determine rules that govern the long-term dynamics of the mutualism model with linear density dependence in both intra- and interspecific interactions. We will also use simulation to confirm our earlier analytical solution and *vice versa*.
+
+### ```lvcompg()```
+The core of our simulations will use the ``` lvcompg``` function in the ```primer``` package. Take a look at its arguments using the help page.
+```{r, message = FALSE,echo = FALSE, results='hide'}
+help(lvcompg)
+```
+
+You will notice that the list of parameters is quite specific. It is a *list* (a type of R data object) with two components. The first is a vector of *r* and the second is a matrix of interaction coefficients.
+
+The matrix of interaction coefficients was designed for a competition-only model. Users typically provide positive values for what are actually negative  interactions (i.e. competition). We will do something a little different: below we start with the biology by providing negative values for intraspecific competition coefficients, and positive values for mutualistic interactions. We then reverse the signs of the entire matrix in order to make them work with ```lvcompg```.
+```{r echo = TRUE, results='markup' }
+a <- matrix(c( -.1, .02,
+                      .02, -.09), nrow = 2, byrow=TRUE)
+a
+a.reversed <- -1 * a
+a.reversed
+```
+
+Now let's numerically integrate, or simulate, the model and plot the outcome. Comment your code to help remind you what is going on.
+
+```{r fig.width=3.5, fig.height=2.5,echo = TRUE, results='markup' }
+r <- c(1,1)
+parms <- list(r, a.reversed)
+parms
+
+t=seq(0,30, by=.1)
+N0 <- c(N1=2, N2=1)
+lvout <- ode(N0, t, lvcompg, parms)
+lvm <- melt( as.data.frame(lvout), id="time", 
+             variable.name="pop", value.name="N")
+head(lvm)
+
+ggplot(lvm, aes(time, N, linetype=pop)) + geom_line() + 
+  geom_hline(yintercept=c(-1/a[1,1], -1/a[2,2]), linetype=c(1,3)) +
+  annotate(geom="text", 
+           x=c(15, 20),y=c(-1/a[1,1], -1/a[2,2]), label=c("K1", "K2"), vjust=-0.2 )
+```
+
+### Simulations
+When we model a phenomenon, we want to use a range of plausible parameter values. In a case like this one where we are exploring a model more than the natural phenomenon it represents, we should use a wide range of parameter values that include cases where it is likely to fail. In our case, we will hold intraspecific density dependence constant and vary interspecific interaction coefficients from zero to twice the value of intraspecific interactions. 
+
+We start with building the bits and pieces that the simulation will use, and then use a for-loop to cycle through all the parameter combinations we are interested in.
+```{r, message=FALSE, warning=FALSE, echo = TRUE, results='markup' }
+# Use expand.grid to create systematically combinations of parameters
+df <- expand.grid(a11 = 0.1, a12=seq(0, .2, by =.02),
+                  a21 = seq(0, .2, by=.02),  a22=0.1 )
+dim(df) # The number of rows and columns
+head(df) # the top of the data frame
+
+# set intrinsic rates of increase...
+r <- c(1,1)
+
+# and starting values...
+N0 <- c(N1 = 10, N2= 10.001)
+
+# and times for which to return output.
+t <- 0:200
+
+# Set values that will be useful later on in our for-loop.
+n <- length( t + 1 )
+npar <- nrow( df ) 
+
+# create an empty data frame to hold our simulation output.
+output <- data.frame( t = numeric(npar), N1 = numeric( npar ), 
+                      N2 = numeric( npar ) )
+
+### USE A  FOR-LOOP TO INTEGRATE THE MODEL FOR EACH COMBINATION OF PARAMETERS
+for( i in 1:npar ) {
+  coefs.true <- matrix( as.numeric( df[i,] ), 
+                        nrow = 2, byrow = TRUE)
+  coefs.rev <- matrix(c(1,-1,-1,1), nrow=2) * coefs.true
+  capture.output( 
+    # capture.output is a function that allows us to avoid seeing warnings...
+    # not usually a good idea to ignore warnings!!!
+    # but it is OK here....
+    lvout <- ode(N0, t, lvcompg, parms = list(r, coefs.rev) )
+  )
+  
+  # hang on to only the last row of output, and  
+  # put it in the i-th row of our output data frame.
+  last <- nrow(lvout)
+   output[i,] <- lvout[last,]
+}
+
+
+# Combine columns of parameters and output.
+simdat <- cbind(df, output)
+```
+
+### Checking simulation results
+Let's look for anomalous results, such as negative population sizes, or infinite or "too" large sizes. 
+```{r echo = TRUE, results='markup' }
+# Do simplistic numerical summaries.
+summary(simdat[,5:7])
+```
+If we run this, we see some strange population sizes and time was not always `r max(t)`, showing that the numerical integration failed before completing. Also, $N$ included unreasonably large values.
+
+Let's look for all rows in which *either* $N_1$ *or* $N_2$ are huge ($> 10\,000$).
+```{r echo = TRUE, results='markup' }
+# the vertical bar | means "or"
+sim.N <- subset(simdat, N1 > 10000 | N2 > 10000)
+head(sim.N)
+```
+Notice also that values for $t$ indicate that the integration couldn't find values beyond a certain time point. Hmm. For now, let's assume our simulation is doing what we think it is and that these results indicate a true lack of equilibrium.
+
+
+What could we do to learn the emerging rules? What if we just plot the values of $\alpha_{ij},\,\alpha_{ji}$ where $N$ is really, really big?
+
+```{r echo = TRUE, results='markup' , fig.width=3, fig.height=2.5}
+ggplot(sim.N, aes(a12, a21)) + geom_point()
+```
+
+What do we learn from just this figure? Write down a possible set of conditions necessary to get these anomalous results.
+
+
+
+### Comparing simulation results to analytical solutions
+
+Any time we do something novel in our modeling, we need to find a way to evaluate the novel approach to make sure it is doing what we think it is. When we have an analytical solution for our model, it is great to compare the analytical solution to the simulations.
+
+One thing we can do is to compare the long-term steady state values we get in simulation to the analytical equilibria of this mutualism model.
+$$N_i^* = \frac{\alpha_{jj} + \alpha_{ij}}{\alpha_{ii}\alpha_{jj} - \alpha_{ij}\alpha_{ji}}$$
+
+
+First, we find analytical solutions for all of the equilibria predicted by the coefficients. We then compare these to numerical solutions.
+
+Here we calculate the predicted equilibria for each row of our coefficients, using the above solution.
+```{r echo = TRUE, results='markup' }
+denom <- simdat[,1] * simdat[,4] - simdat[,2] * simdat[,3]
+N1.eq <- (simdat[,4] + simdat[,2]) / denom
+N2.eq <- (simdat[,1] + simdat[,3]) / denom
+
+# combine with simulation data set
+sim.check1 <- cbind(simdat, N1.eq, N2.eq)
+```
+Let's find the subset with potential problems, such as for $N_1$ or $N_2$ less than than zero or really, really big ($>10000$).
+
+```{r echo = TRUE, results='markup' ,fig.width=3, fig.height=2.5}
+check1 <- subset(sim.check1, (N1 < 0 | N2 < 0 | N1 > 1e4 | N2 > 1e4 ) )
+# look at the subset
+ggplot(check1, aes(N1, N1.eq)) + geom_point()
+```
+
+Fascinating! Both the analytical and the simulated results give us wacky, but very different results. Let's examine the coefficients that generated these results.
+```{r echo = TRUE, results='markup' }
+check1[1:5,]
+```
+What do you notice about these coefficients? 
+
+* What would you get for each term in the  for the analytical equilibrium using the first row of data?
+* How do you reconcile these results?
+
+Once we understand the anomalous results above, let's compare the simulated and the analytical solutions for $N_1$ and $N_2$ both greater than zero and both less than infinity.
+```{r echo = TRUE, results='markup' }
+check2 <- subset(sim.check1, (N1.eq > 0 & N2.eq > 0) & 
+                   (N1.eq != Inf & N2.eq != Inf ) )
+```
+
+Next we calculate the differences between the analytical solutions and the simulated values.
+```{r echo = TRUE, results='markup' }
+N1.diff <- check2$N1 - check2$N1.eq
+N2.diff <- check2$N2 - check2$N2.eq
+summary(N1.diff); summary(N2.diff)
+```
+
+These summaries show us that the differences between the  analytical solutions and the numerical approximations are very small. That is a good thing. It gives us confidence that our simulations are doing what we think they are doing.
+
+So, we can now tentatively assume that our simulations are doing what we think they are, and we could have confidence with results that we generate.
+
+In practice, sometimes we simulate a very complex model and compare the results with a simpler, tractable analytical solution. Here, we get the hang of the approach by comparing simulations against known solutions.
+
+
+
+### One last thing: using the Jacobian matrix
+
+Use eigenanalysis of the Jacobian matrix to assess the stability of these equilibria. Consult eq. 5.21 and Table 5.2 of Stevens (2009). 
+
+\medskip
+
+A sensible equilibrium.
+```{r echo = TRUE, results='markup' }
+subset(sim.check1, a12 == .02 & a21 == .02)
+# form remember that we set r = 1
+J1 <- matrix(c(-.1*12.5, -.02*12.5,
+               -.02*12.5, -.1*12.5), nrow=2, byrow=TRUE)
+eigen(J1)
+```
+What do these results mean?
+
+\bigskip
+
+A nonsensical equilibrium
+```{r echo = TRUE, results='markup'}
+subset(sim.check1, a12 == .2 & a21 == .2)
+J2 <- matrix( c( -.1*(-10), -.2*(-10), 
+                 -.2*(-10), -.1*(-10)), nrow=2, byrow=TRUE) 
+eigen(J2)
+```
+What do these results mean?
+
+## *In Fine*
+So, how can you digest and communicate what you have found? You shjould be able to answer these questions:
+
+1. Did the simulation perform as you thought and how do you know?
+2. Did the simulation *confirm* something we first assessed analytically? If so, how?
+3. How do you explain the differences between the simulations and analytical equilibrium (extremely large vs. negative population sizes)?
+

@@ -1,0 +1,277 @@
+---
+title: "Untitled"
+output: html_document
+---
+
+## Modeling with Data: Simulated Dynamics
+Science strives to make predictions about about the behavior of systems.
+ Ecologists and conservation biologists frequently strive to predict the fate of populations.  Here we  put into practice ideas about population biology to make informed predictions about the fate of the Song Sparrow population in Darrtown, OH. We also illustrate simple commputational methods for doing so.
+
+The preceding sections (the bulk of the chapter) emphasized understanding the deterministic underpinnings of simple forms of density independent growth: geometric and exponential growth. This section explores the stochastic simulation of density independent growth. Our simulation makes most of the same assumptions we made at the beginning of the chapter. In addition, we assume that the observed annual growth rates ($N_{t+1}/N_t$) are representative of future growth rates, and that the growth rate in one year is entirely independent of any other year. 
+
+To make meaning full projections of future population size, we should quantify  the uncertainty with our guess. Simulation is one way we can project populations and quantify the uncertainty. The way one often does that is to use the original data and sample it randomly to calculate model parameters. This way, the simulations are random, but based on our best available knowldge, i.e., the real data. The re-use of observed data occurs in many guises, and it is known often as bootstrapping or resampling.
+
+### Data-based approaches
+We could use the observed *changes* in population counts $R_t=N_{t+1}/N_t$ as our data. We would then draw an $R_t$ at random from among the many observed values, and project the population one year forward. We then repeat this into the future, say, for ten years. Each simulation of a ten year period will result in a different ten year trajectory because we draw $R_t$ at random from among the observed $R_t$. However, if we do many such simulations, we will have a *distribution* of outcomes that we can describe with simple statistics (e.g., median, mean, quantiles).
+
+A different approach would be to estimate the individual probabilities of births and deaths in the entire Darrtown population, and use those probabilities and birth rates to simulate the entire population into the future. In such an *individual-based simulation*, we would simulate the fates of individuals, keeping track of all individual births and deaths. 
+
+There are myriad other approaches, but these give you a taste of what might be possible. In this section we focus on the first of these alternatives, in which we use observed $R_t$ to simulate the dynamics of Song Sparrow counts. Do do so, in part, because we have those data, while we do not have any estimates of birth rates or death rates.
+
+Here we investigate Song Sparrow (*Melospize melodia*) dynamics using data from the annual U.S. Breeding Bird Survey (http://www.mbr-pwrc.usgs.gov/ bbs/).  Below we will
+
+1. create and examine visually the data (annual $R$'s),
+2. simulate one projection,
+3. scale up to multiple simulations,
+4. simplify simulations and perform them 1000s of times, and
+5. analyze the output.
+
+
+### Creating and visualizing the data
+Let's start by graphing the data^[I've come to abhor my use of the expression "look at"; I use it when I don't say what I mean. "Look at" can mean alomst anything these days, and it rarely means only "looking at"...]. *Graphing the data is always a good idea --- it is a principle of working with data*. We first load the data from the \texttt{primer} \R~package, and look at the names of the data frame. We then choose to `attach` the data frame, because it makes the code easier to read.^[Don't use `attach` for anything important]}
+```{r}
+library(primer)
+data(sparrows)
+names(sparrows)
+attach(sparrows)
+```
+
+Now we plot these counts through time (Fig. \ref{fig:AllSS}).  
+```{r cts, fig.cap="Observations of Song Sparrows in Darrtown, OH (http://www.mbr-pwrc.usgs.gov/bbs/).", out.width="75%"}
+ggplot(data=sparrows, aes(x=Year, y=Count)) + geom_line() + geom_point(pch=1)
+```
+
+We see that Song Sparrow counts at this site (the DARRTOWN transect, OH, USA) fluctuated a fair bit between 1966 and 2003. They never were completely absent and never exceeded $\sim 120$ individuals.
+
+Next we calculate annual $R_t=N_{t+1}/N_t$, that is, the observed growth rate for each year $t$.
+```{r}
+# the use of [-1[ in the index tells R to exclude the first element.
+# length() is the length of a vector, so [-length(X)] means exclude the last
+obs.R <- Count[-1]/Count[-length(Count)]
+```
+Thus our *data* are the observed $R_t$, not the counts *per se*. These $R$ form the basis of everything else we do. Because they are so important, let's plot these as well. Let's also indicate $R=1$ with a horizontal dotted line as a visual cue for zero population growth. Note that we exclude the last year because each $R_t$ is associated with $N_t$ rather than $N_{t+1}$. 
+```{r Rrates, fig.cap="Annual growth rates (R=N[t+1]/N[t]) for Song Sparrows", out.width="75%"}
+qplot(x=Year[-length(Count)], y=obs.R, geom="point") + geom_hline(yintercept=1, lty=3) + 
+  labs(y=bquote(N[t+1]/N[t]), x="Year (t)")
+```
+One thing that emerges in our graphic data display (Fig. \@ref(fig:Rrates)) is we have an unusually high growth rate in the early 1990's, with the rest of the data clustered around 0.5--1.5. We may want to remember that.
+
+### One simulation
+Our simulation will,
+
+1. determine the number of years we wish to simulate,
+2. create an empty vector, `N`, to hold our simulated $N$, which is `years + 1` long,
+3. draw a random sample of $R_t$, one for each year (`R`),
+4. select a starting abundance $N_0$ and put it in `N[1]`.
+5. multiply our first random $R$, `R[1]`, times `N[1]` to generate the next, `N[2]`.
+6. repeat step 5 for each year to simulate each `N[t+1]` from `R[t]` and `N[t]`.
+
+
+First, we decide how many years we want to simulate growth, and create an empty vector that will hold our data.
+```{r}
+years <- 10
+N <-numeric(years+1) # rep(0,years+1) would do the same thing.
+```
+Our vector of $N$ has to be one longer than the number of $R$ we use. This is because each $R$ is sthe change *from one year to the next* and there will always be one more *next* than there is $R$.
+
+Next we draw 10 $R$ at random with replacement. This is just like having all 35 observed $R$ written down on slips of paper and dropped into a paper bag. We then draw one slip of paper out of the bag, write the number down, and put the slip of paper back in the bag, and then repeat this 9 more times. This is *resampling with replacement*. In that case, we would be assuming that all of these $R_t$ are important and will occur at some point, but we just don't know when---they constitute the entire universe of possiblities. The R function *sample* will do this. 
+[A random process occurs only in our imagination, or perhaps at the quantum level.^[Random, pseudorandom, and stochastic processes.] A stochastic process is one which we treat operationally as random while acknowledging that there are complex underlying deterministic drivers. A pseudorandom process is a completely deterministic and hidden process used by computers and their programmers to generate numbers that cannot be distinguished from random; we can repeat a pseudorandom process by stipulating a key hidden starting point.]
+
+We can use `set.seed()` to make your pseudorandom process the same as mine, i.e., repeatable.
+```{r}
+set.seed(3)
+# Draw a sample of our observed R with replacement, "years" times.
+(rRs <- sample(x=obs.R, size=years, replace = TRUE))
+```
+Now that we have these 10 $R$, all we have to do is use them to generate the population sizes through time. For this, we need to use what programmers call a *for-loop*. In brief, a for-loop repeats a series of steps for a predetermined number of times. 
+
+
+Let's start our simulated N with the sparrow count we had in the last year.
+```{r}
+N[1] <- Count[length(Count)]
+```
+
+Now we are ready to use the for-loop to project the population. For each year $t$, we multiply $N_t$ by the randomly selected $R_t$ to get $N_{t+1}$ and put it into the $t +1$ element of `N`. 
+```{r forloop}
+for( t in 1:years) { 
+# starting with year = 1, and for each subsequent year, do... 
+N[t+1] <- N[t] * rRs[t]
+}
+``` 
+Let's graph the result.
+```{r simten, fig.cap="A single simulated population projection."}
+qplot(0:years, N, geom=c("point","line"))
+```
+
+It appears to work (Fig. \@ref(fig:simten)). Let's review what we have done. We
+
+*had a bird count each year for 36 years. From this we calculated 35 $R$ (for all years except the very last).
+* decided how many years we wanted to project the population (10\,y).
+* drew at random and with replacement the observed $R$---one $R$ for each year we want to project forward.
+* we created an empty vector and put in an initial value (the last year's real data).
+* performed each year's calculation, and put it into the vector we made.
+
+
+So what does Fig. \@ref(fig:OneSim) represent? It represents one possible outcome of a trajectory, if we assume that $R$ has an equal probability of being any of the observed $R_t$. This *particular* trajectory is very unlikely, because it would require one particular sequence of randomly selected $R$s. However,  it is *no less likely* than any other particular trajectory.
+
+As only one realization of a set of randomly selected $R$, Fig. \@ref(fig:OneSim) tells us very little. What we need to do now is to replicate this process a very large number of times, and examine the *distribution* of outcomes, including moments of the distribution such as the mean, median, and confidence interval of eventual outcomes. 
+
+### Multiple simulations
+Now we create a way to perform the above simulation several times. There are a couple tricks we use to do this. We still want to start small so we can figure out the steps as we go. Here is what we would do next. 
+
+1. We start by creating a function that will do the steps we did above.
+2. We then do replicate independent simulations, using `replicate()`.
+
+
+Here we write a function to combine several steps.
+```{r}
+myForLoop <- function(obs.R, years, initial.N) {
+  # select all R at random
+  rR <- sample(obs.R, size=years, replace=TRUE)
+  # create a vector to hold N
+  N <- numeric(years+1)
+  # give it an initial population size
+  N[1] <- initial.N
+  # Do the for-loop
+  for( t in 1:years ) {
+    # project the population one time step
+      N[t+1] <-  N[t] * rR[t]
+  }
+  # return the vector of N
+  N
+} 
+# try it out with different hypothetical R
+myForLoop(obs.R=0:3, years=5, initial.N=43)
+```
+Our function seems to work. Next we do ten such projection simulations, each for 50 time steps, using the sparrow data.
+```{r tensim}
+# specify the number of simulations and for how long
+sims=10; years=50
+set.seed(3)
+outmat <- replicate(sims,   
+                    expr=myForLoop(obs.R=obs.R, years=years, initial.N=43)
+                    )
+```
+Now let's peek at the results (Fig. \@ref(fig:tensim)). It is fun to graph our output, but also helps us make sure we are not making a heinous mistake in our code. Note we use log scale to help us see the small populations.
+```{r tensimfig, fig.cap="Using matplot() to plot a matrix vs. a single variable. Our simulated populations sometimes increase and sometimes decrease.", out.width="75%"}
+matplot(0:years, outmat, type="l", log="y")
+```
+
+```{r tensimfig, fig.cap="Using ggplot() to plot one variable against vs. a single variable, organized by a grouping variable. Our simulated populations sometimes increase and sometimes decrease.", out.width="75%"}
+# combine columns years, and our output
+junk <- data.frame(years = 1:(years+1), outmat)
+names(junk)
+# make sure to load 'tidyr' if you did not already load it or tidyverse
+# library(tidyr)
+# "gather" many columns into one (except years)
+out.long <- gather(junk, key="Run", value="N", -years)
+ggplot(data=out.long, aes(x=years, y=N, group=Run)) + geom_line() +  
+  scale_y_log10() 
+
+# Or for colorful lines
+# ggplot(data=out.long, aes(x=years, y=N,  linetype=Run, colour=Run)) + 
+#    geom_line(show.legend=FALSE) + scale_y_log10() 
+```
+
+
+What does it mean that the simulation has an approximately even distribution of final population sizes \emph{on the log scale} (Fig. \ref{fig:TenSim})? If we plotted it on a linear scale, what would it look like?^[Plotting it on the log scale reveals that the relative change is independent of population size; this is true because the rate of change is geometric. If we plotted it on a linear scale, we would see that many trajectories result in small counts, and only a few get really big. That is, the median size is pretty small, but a few populations get huge.}
+
+Rerunning this simulation, with new $R$ each time, will show different dynamics every time, and that is the point of simulations. Simulations are a way to make a few key assumptions, and then leave the rest to chance. In that sense it is a null model of population dynamics.
+
+###  A distribution of possible futures
+Now we are in a position to make an informed prediction, given our assumptions. We will predict the range of possible outcomes and the most likely outcomes, given our set of assumptions. 
+
+We will simulate the population for 50 years 1000 times and describe the distribution of final populatin sizes. simulate 1000 populations,^[If we were doing this in a serious manner, we might do 10--100\,000 times.} and use \texttt{system.time} to tell me how long it takes on my computer.
+```{r}
+sims=1e4; years=50
+set.seed(3)
+## system.time keeps track of how long processes take.
+system.time(
+outmat <- replicate(sims,   
+                    expr=myForLoop(obs.R=obs.R, years=years, initial.N=43)
+                    )
+            )
+```
+This tells me how long it took to complete 10\,000 simulations.  We also check the dimensions of the output, and they make sense.
+```{r}
+dim(outmat)
+```
+We see that we have an object that is the size we think it should be. We shall assume that everything worked way we think it should. 
+
+### Analyzing results
+We extract the last year of the simulations (last row), and summarize it with quartiles (0%, 25%, 50%, 75%, 100%, and also the mean).
+```{r}
+N.2053 <- outmat[51,]
+summary(N.2053, digits=6)
+```
+
+```{r fig.cap="Distribution of the 10000 final base-10 log population sizes. Note the approximately Normal distribution.", out.width="75%"}
+hist(log10(N.2053))
+```
+
+The `quantile()` function allows us to find a form of empirical confidence interval, including, approximately, the central 90% of the observations.^[Note that there are many ways to estimate quantiles (R has nine ways), but they are approximately similar to percentiles.]
+```{r}
+quantile(N.2053, prob=c(0.05, .95) )
+```
+These quantiles provide an estimate of the most likely range of possible populatin sizes, given our assumptions. 
+
+### Inferring processes underlying growth rate
+The above approach relies only on the observed data. That means that the growth rates, while representative, can never be different than what was observed. A different approaach would be to assume that the growth rates can be different than observed, *but drawn from the same underlying process* that caused the observed rates. 
+
+The observed rates are simply a visible manifestation of unseen processes. We might summarize these by asserting that the observed growth rates were samples from a continuous distribution distribution, whose prperties we can infer from the sample. For instance, it may be that these processes cause annual rates to follow a Normal, or perhaps log-normal distribution. 
+
+We can fit a Normal distribution to the logarithms of our observed $R$, and we see that it doesn't do too bad a job (Fig. 
+
+```{r fitln, fig.cap="The logarithms of the observed R seem reasonably approximated by a Normal distribution whose mean and standard deviation are derived from the log-transformed data.", out.width="75%"}
+mu <- mean( log(obs.R) )
+sigma <- sd( log(obs.R) )
+
+# a regular sequence for log-R
+lR <- seq(-1, 1.1, by=0.01)
+# the probability densities for the log-R
+dR <- dnorm(lR, m=mu, sd=sigma)
+
+hist(log(obs.R), breaks=10, prob=TRUE)
+lines(lR, dR)
+```
+
+Now we will simulate populations just like before, but instead of random draws from the observed data, we do random draws from the inferred distribution.
+
+Our new function.
+```{r}
+myForLoop2 <- function(mu, sigma, years, initial.N) {
+  # select all R at random from 
+  lrR <- rnorm(years, m=mu, sd=sigma)
+  rR <- exp(lrR)
+  # create a vector to hold N
+  N <- numeric(years+1)
+  # give it an initial population size
+  N[1] <- initial.N
+  # Do the for-loop
+  for( t in 1:years ) {
+    # project the population one time step
+      N[t+1] <-  N[t] * rR[t]
+  }
+  # return the vector of N
+  N
+} 
+```
+
+Our new simulations.
+```{r}
+sims=1e4; years=50
+set.seed(3)
+outmat2 <- replicate(sims,   
+                    expr=myForLoop2(mu=mu, sigma=sigma, years=years, initial.N=43)
+                    )
+N2.2053 <- outmat2[51,]
+quantile(N2.2053, prob=c(0.05, .95) )
+quantile(N.2053, prob=c(0.05, .95) )
+```
+The results are very similar to those based on only the observed $R$.
+
+Our conclusions are based on a model of discrete density-independent population growth --- what assumptions are we making? are they valid? Are our unrealistic assumptions perhaps nonetheless a good approximation of reality? Most importantly, what would you like to add next to make the model a better approximation?
+
+
+\section{Summary}
+In this chapter, we have explored the meaning of density-independent population growth. It is a statistically demonstrable phenomenon, wherein the per captia growth rate exhibits no relation with population density. It is a useful starting point for conceptualizing population growth. We have derived discrete geometric and continuous exponential growth and seen how they are related. We have caculated doubling times. We have discussed the assumptions that different people might make regarding these growth models. Last, we have used simulation to explore prediction and inference in a density-independent context.

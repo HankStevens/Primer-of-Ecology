@@ -1,0 +1,288 @@
+# Consumer Resource Interactions
+
+In this chapter, we discuss interactions between consumers and resources. In general, we can conceptualize these as coupled equations,
+\begin{align*}
+\dot{R} &= f(R) - g(R,C)\\
+\dot{C} &= h(R,C) - i(C)
+\end{align*}
+in which the resource growth depends on $R$, but consumption depends on both $R$ and $C$. The consumer is the mirror image, where its growth depends on $R$ and $C$, but its death depends only on $C$.
+
+We start with a famous consumer-resource pairing, that of predator and prey. 
+
+## A beginning
+Let's go all the way back to the beginning of this book where we introduced exponential growth. Let's imagine that our population is a predator grew at rate 
+
+$$\dot{N} = bN-dN = rN$$
+We knew that this, like all models, was wrong, but have argued that it is very useful. Indeed, it is in some ways null model for biological systems. 
+
+
+Let us stick with this idea of simplicity, and link a 
+predator $P$ to the prey. A very simple way to do this is to include predators as a source of death of prey ($aN$), and prey as the source of life for predators ($eaN$),
+\begin{align*}
+\dot{N} &= b_1N-d_1N -aN\\
+\dot{P} &= eaN - d_2P
+\end{align*}
+where $e$ is the efficiency with which predators turn captured prey into new predators.
+
+With these two equations, we can make a simple prediction regarding the equilibrium, $P^*$, by setting $\dot{P} = 0$,
+$$P^* = \frac{ea}{d_2}N\quad ; \quad \frac{P}{N} = \frac{ea}{d_2}$$
+
+Thus, this simple theory predicts that the relative abundances of predator and prey will be constant. Because the prey only grow (or die) exponentially, this theory can make no prediction about $N^*$. However, it does predict that predator and prey will persist at a constant ratio, assuming the parameters are fixed.
+
+## Ratio dependence
+
+If prey grows exponentially, so will the predators. If this is true, then it makes sense that the prey get captured at a constant per capita rate: the predators will always be lurking about at the same relative abundance. And this leads us to another way to think about these equations.
+
+Now we will make our predators explicit, so that the per capita capture rate of prey is $a$ while the total rate also depends on $P$. On average, the number of prey available to each predator is just $N/P$. Therefore, predators will capture their share of prey at rate 
+$$aP\frac{N}{P}$$
+In this expression, we see that the capture rate of prey and growth rate of predators depends on the *ratio* of prey to predators. 
+Putting this explicit treatment back into our model, we have
+\begin{align*}
+\dot{N} &= b_1N-d_1N -aP\frac{N}{P}\\
+\dot{P} &= eaP\frac{N}{P} - d_2P
+\end{align*}
+
+We refer to this simple predator prey model as *ratio-dependent* predation (Arditi and Ginzburg 1989). We have added biological and mathematical complexity, and what is the end result? If we simplify these expressions, and let the $P$'s cancel out, we wind up just where we were before. That is reassuring. Both of these pairs of equations are the same: they describe ratio-dependent predation.
+
+## Prey dependence
+Another widely used model of predator-prey is the Lotka-Volterra model. In this formulation, the per predator capture rate depends only on the prey abundance, not on the ratio of prey to predators. When capture rate is independent of the number of other predators in the population, we describe it thus.
+\begin{align*}
+\dot{N} &= b_1N-d_1N -aNP\\
+\dot{P} &= eaNP- d_2P
+\end{align*}
+Here the per predator capture rate is simply $aN$. 
+
+## Functional response: what an individual predator does 
+We refer to the per predator capture rate as the *functional response*. It is the response of a predator to different levels of $N$ and $P$. The functional response of the ratio-dependent model is $aN/P$, where as for the prey-dependent model it is $aN$. These are referred to as *type I* functional responses.
+
+Are these type I functional responses realistic? They both imply that a predator captures a constant fraction of all prey, *no matter how many prey there are.* It predicts that regardless whether there are two prey individuals or one gazillion prey, a single predator can nonetheless capture the same fraction. So, no, in extreme cases, type I functional responses are not realistic.
+
+What would be more realistic is if the predator satiates, where the capture rate approaches a plateau as the density of prey increases. After all, a predator has to catch, subdue, and kill a prey item, swallow it, and then move on. Ecologists refer to this activity as "handling" and the time required to do that as *handling time*. Buzz Holling (1959) developed a mathematical form for a functional response that includes handling time:
+$$\frac{aN}{1+ahN}$$
+where $a$ is attack rate, and $h$ ia handling time. As $N$ gets really big, this fraction approaches $1/h$,
+$$\lim_{N \rightarrow \infty} \frac{aN}{1+ahN} = \frac{1}{h}$$
+
+If it is not yet clear why this should be, pause and reflect on it.
+
+
+
+
+
+
+
+
+```{r fig.caption="Functional response" }
+N <- seq(0.1, 4, by = 0.1)
+P <- seq(0.1, 4, by = 0.1)
+a <- 1
+h <- 1
+#P <- 2
+func.resp <- function(N, P=2, m=0, a=1, h=0, z=1) {
+  a*(N/P^m)^z / (1 + a*h*(N/P^m)^z)
+}
+
+
+typeIprey <- func.resp(N)
+typeIratio <-func.resp(N, m=1)
+typeIIprey <- func.resp(N, h=1)
+typeIIratio <- func.resp(N, m=1, h=1)
+typeIIIprey <- func.resp(N, h=1, z=3)
+
+ms2 <- expand.grid(N=N, P=P)
+ms2$prey.dep <- apply(ms2, 1, function(x) func.resp(N=x[1], P=x[2], a=1, h=1, m=0))
+ms2$ratio.dep <- apply(ms2, 1, function(x) func.resp(N=x[1], P=x[2], a=1, h=1, m=1))
+summary(ms2)
+ms3 <- pivot_longer(ms2, cols=prey.dep:ratio.dep, names_to="func.resp", values_to="rate")
+str(ms3)
+wireframe(rate ~ N * P|func.resp, data=ms3)
+```
+
+Recall that in our ratio-dependent model that at equilibrium $P$ is constant fraction of $N$, $P^* = eaN/d_2$. When we substitute $P^*$ into $aN/P$, we predict that the the average predator will kill prey at a constant rate of $d_2/e$. This the per capita death rate over the conversion efficiency. We can think of it as the rate of predator replacement given the nutritional quality of the prey.
+
+The term $ea\frac{N}{P}P$ is the *numerical response* of the predator, describing the prey-dependent growth of the predator. If we divide this by the number of predators $P$, and the assimilation efficiency $e$, we get the *functional response*, $a\frac{N}{P}$. This is the functional response of the predator, describing the prey-dependent behavior of an individual predator as it captures and kills prey. 
+
+At this point, let's examine further our logic and its consequences.
+
+First note that the capture rate and numerical response include $P/P$, so these cancel out. Second, remember that the exponential growth derives from $(b-d)N$, where $b$ and $d$ are per capita birth and death or loss rates. We can rewrite the growth rates thus:
+
+$$\dot{N} = (b-d)N - aN = (b-d-a)N$$
+
+There is no need to solve for $N^*$ because it will grow or die exponentially. It will grow without limit if $b>(d+a)$ and decline toward extinction if $b<(d+a)$.
+
+$$\dot{P} = eaN - mP$$
+If we solve for $\dot{P} = 0$, we find that 
+
+$$P^* = \frac{ea}{m}N$$
+
+This shows us that $P$ should simply be a constant fraction of $N$, 
+$$\frac{P}{N} = ea/m$$
+
+As a first model of predator-prey or consumer-resource interactions, this is similar to exponential growth of a single population, and thus has some very satistfying properties:
+
+* Prey and predator both grow and die exponentially,
+* the populations are coupled by the simplest possible connection. 
+
+
+
+
+Peter Turchin modeled lynx hare dynamics that explained Krebs results.
+
+## Disease
+Here we discuss epidemiological disease models. Pathogens cause diseases, and are typically defined as microorganisms (fungi, bacteria, and viruses) with some host specificity, and which undergo population growth within the host. 
+
+Our simplest models of disease are funny, in that they don't model pathogens (the enemy) at all. These famous models, by @Kermack:1927fk, keep track of different types of hosts, primarily those with and without diseas that model all $N$ hosts by keeping track of 
+\begin{description}
+\item[\textbf{Susceptible hosts}] Individuals which are not infected, but could become infected,
+\item[\textbf{Infected hosts}] Individuals which are already infected, and
+  \item[\textbf{Resistant hosts}] Individuals which are resistant to the disease, typically assumed to have built up an immunity through past exposure,
+\end{description}
+where $N=S+I+R$. It is important to note that $N$, $S$, $I$, and $R$ are \emph{densities}. That is, we track numbers of individuals in a fixed area. This is important because it has direct consequences for the spread, or transmission, of disease [@McCallum2001].
+
+Disease spreads from infected individuals to susceptible individuals. The rate depends to some extent on the number or alternatively, on the fraction of the population that is infected. Resistant individuals are not typically considered vectors of the pathogens, and so increased abundance of resistant individuals slow the transmission rate by diluting the other two groups. 
+
+A good starting place is a simple SIR model for a population of constant size, with no immigration or emigration [@Ellner:2006qe, @Kermack:1927fk]. 
+\begin{align*}
+  (\#eq:SIR)
+  \frac{d S}{d t} &= -\beta IS\\
+  \frac{d I}{d t} &=\beta IS  - \gamma I\\
+  \frac{d R}{d t} &= \gamma I
+\end{align*}
+
+
+```{r sir}
+# Here we create the function for the simple SIR model.
+SIR <- function(t, y, p) {
+  with( as.list(c(y, p)), {
+    dS.dt <- -B*I*S
+    dI.dt <- B*I*S - g*I
+    dR.dt <- g*I
+   return( list(c(dS.dt, dI.dt, dR.dt)) )
+  } )
+}
+```
+
+In this model, the *transmission coefficient*, $\beta$, describes the instantaneous rate at which the number of infected hosts increases per infected individual. It is directly analogous to the attack rate of type I prey-dependent models. Recall that it is based on the law of mass action, borrowed from physics and chemistry. It assumes that the rate at which events occur (new infections) is due to complete and random mixing of the reactants ($S,\,I$), and the rate at which the reactants collide and react can be described by a single constant, $\beta$. As density of either type of molecule increases, so too does the rate of interaction. In prey-dependent predation, we referred to $aN$ as a linear functional response; here we refer to $\beta S$ as the *density-dependent transmission function*. The *transmission rate* is the instantaneous rate for the number of *new infections* or cases per unit time [@McCallum2001].
+
+Resistant individuals might be resistant for one of two reasons. They may die, or they may develop immunities. In either case, we assume they cannot catch the disease again, nor spread the disease. As this model assumses  a constant population  size, we continue to count all $R$ individuals, regardless of whether they become immune or die.
+
+The individuals become resistant to this disease at the constant per capita rate, \index{$\gamma$}$\gamma$. The rate $\gamma$ is also the inverse of the mean \index{residence time}residence time, or \emph{\index{duration|see{residence time}}duration}, of the disease\footnote{This is an interesting phenomenon of exponential processes --- the mean time associated with the process is equal to the inverse of the rate. This is analogous to turnover time or residence time for a molecule of water in a well-mixed lake.}.  
+
+Disease \emph{\index{incidence}incidence} is the number of new infections or cases occurring over a defined time interval. This definition makes incidence a discrete-time version of transmission rate. \emph{\index{prevalence}Prevalence} is the fraction of the population that is infected $I/N$.
+
+
+A common question in disease ecology is to ask under what conditions will an \index{outbreak}outbreak occur. Another way of asking that is to ask what conditions cause $\dot{I}>0$. We can set $dI/dt > 0$ and solve for something interesting about what is required for an outbreak to occur.
+\begin{align}
+  0 & < \beta IS - \gamma I\notag\\
+  \frac{\gamma}{\beta} &< S
+\end{align}
+What does this tell us? First, because we could divide through by $I$, it means that if no one is infected, then an outbreak can't happen --- it is the usual, but typically unstable equilibrium at 0. Second, it tells us that an outbreak will occur if the absolute density of susceptibles^[$S$ is the absolute density, whereas $S/N$ is the relative density.] is greater than $\gamma / \beta$. If we consider the pre-outbreak situation where $S \approx N$, then simply making the population size (and density) low enough can halt the spread of disease. This is why outbreaks tend to occur in high density populations, such as agricultural hosts (e.g., cattle), or historically in urban human populations, or in schools. 
+
+\index{vaccinations}Vaccinations are a way to reduce $S$ without reducing $N$. If a sufficient number of individuals in the population are vaccinated to reduce $S$ below $\gamma / \beta$, this tends to protect the unvaccinated individuals as well.
+
+Another common representation of this is called the \index{force of infection}*force of infection* or \index{basic reproductive rate of disease}*basic reproductive rate of the disease.* If we assume that in a large population $S \approx N$, then rearranging eq. \@ref(eq:R0) gives us 
+\begin{equation}
+(\#eq:R0)
+  R_0=\frac{\beta N}{\gamma}
+\end{equation}
+where \index{R@$R_0$|see{basic reproductive rate}}$R_0$ is the basic reproductive rate of the disease. If $R_0 > 1$, then an outbreak (i.e., disease growth) is plausible. This is analogous to the finite rate of increase of a population where $\lambda>1$.
+
+Here we model the outbreak of a nonlethal disease (e.g.,  a new cold virus in winter on a university campus). We assume that the disease is neither life-threatening, and nor is anyone resistant, thus $R_{t=0}=0$. We can investigate the SIR model by pretending that, as is often the case, we begin with a largely uninfected population and $t=0$, so $I_0=1$ and $S_0\approx N$.  We first set parameters. Let's imagine that a 
+```{r cold}
+N <- 10^4; I <- R <- 1; S <- N - I - R
+y <- c(S=S, I=I, R=R)
+parms <- c(B=.01, g=4)
+# Next we integrate for three months.
+months <- seq(0,3, by=0.01)
+out1 <- data.frame( ode(y, months, SIR, parms) )
+out2 <- pivot_longer(out1, cols=S:R, names_to="Host", values_to="N")
+ggplot(out2, aes(time, N, linetype=Host)) + geom_line() + labs(x="Months")
+```
+```{r ash}
+# Emerald ash borer?
+N <- 10^4; I <- R <- 1; S <- N - I - R
+y <- c(S=S, I=I, R=R)
+# ash death takes about 4 years to die, 
+# meaning it is infected for about 4 years
+duration <- 4
+gamma = 1/duration
+# question = how to estimate beta?
+beta = .0005
+parms <- c(B=beta, g=gamma)
+years <- seq(0,10, by=0.01)
+out1 <- data.table( ode(y, years, SIR, parms)  )
+out2 <- pivot_longer(out1, cols=S:R, names_to="Host", values_to="N")
+ggplot(out2, aes(time, N, linetype=Host)) + geom_line() + labs(x="Years")
+```
+It is important at this point to reiterate a point we made above --- *these conclusions apply when S, I, and R are densities* [@McCallum2001]. If you increase population size but also the area associated with the population, then you have not changed density. If population size only increases, but density is constant, then interaction frequency does not increase. Some populations may increase in density as they increase is size, but some may not. Mass action dynamics are the same as type I functional response as predators --- there is a constant linear increase in per capita infection rate as the number of susceptible hosts increases.
+
+
+### SIR with \index{frequency--dependent transmission}frequency--dependent transmission
+In addition to density dependent transmission, investigators have used other forms of density dependence. One the most common is typically known as *frequency--dependent* transmission, where transmission depends on the *prevalence*, or the frequency of infecteds in the population, $I/N$.
+\begin{align}
+  \frac{d S}{d t} &= - \beta \frac{SI}{N} \#eq:SIRfd1\\
+  \frac{d I}{d t} &=   \beta \frac{SI}{N} - \gamma I \#eq:SIRfd2\\
+  \frac{d I}{d t} &=   \gamma I. \#eq:SIRfd2
+\end{align}
+
+Here we create the function for the system of ODEs in eq. \ref{eq:SIR}.
+```{r}
+SIRf <- function(t, y, p) {
+  N <- sum(y)
+  with( as.list(c(y,p)), {
+    dS.dt <- -B*I*S/N
+    dI.dt <- B*I*S/N - g*I
+    dR.dt <- g*I
+   return( list(c(dS.dt, dI.dt, dR.dt)) )
+  } )
+}
+```
+The proper form of the transmission function depends on the mode of transmission  [@McCallum2001]. Imagine two people are on an elevator, one sick (infected), and one healthy but susceptible, and then the sick individual sneezes [@Ellner:2006qe]. This results in a particular probability, $\beta$, that the susceptible individual gets infected. Now imagine resistant individuals get on the elevator --- should adding resistant individuals change the probability that the susceptible individual gets infected? Note what has and has not changed. First, with the addition of a resistant individual, $N$ has increased, and prevalence, $I/N$, has decreased. However, the densities of $I$ and $S$ remain the same (1 per elevator). What might happen? There are at least two possible outcomes:
+
+1. If sufficient amounts of the virus spread evenly throughout the elevator, adding a resistant individual does *not* change the probability of the susceptible becoming sick, and the rate of spread will remain dependent on the densities of $I$ and $S$ --- the rate will not vary with declining prevalence.
+2.  If only the immediate neighbor gets exposed to the pathogen, then the probability that the neighbor is susceptible declines with increasing $R$, and thus the rate of spread *will* decline with declining prevalence.
+
+It is fairly easy to imagine different scenarios, and it is very important to justify the form of the function.
+
+```{r}
+R <- 0; S <- I <- 1000; Ss <- Is <- seq(1, S, length=11); N <- S+I+R
+betaD <- 0.1; betaF <- betaD*N
+
+# sapply will calculate the transmission functions for each combination of
+# the values of $I$ and $S$.
+mat1 <- sapply(Is, function(i) betaD * i * Ss)
+mat2 <- sapply(Is, function(i) betaF * i * Ss / (i + Ss + R) )
+# Now we plot these matrices. 
+
+{
+  layout(matrix(1:2, nr=1))
+persp(mat1, theta=20, phi=15, r=10, zlim=c(0,betaD*S*I), 
+      main="Density Dependent",
+      xlab="I", ylab="S", zlab="Transmission Rate")
+persp(mat2, theta=20, phi=15, r=10, zlim=c(0,betaF*S*I/N), 
+      main="Frequency Dependent",
+      xlab="I", ylab="S", zlab="Transmission Rate")
+}
+
+``` 
+
+### Antonovic et al. Metapopulation disease dynamics
+
+
+*Silene alba* and *Microbotryum violacea*
+Proportion of subpopulations that have an infected plant increases with the size of the subpopulation 
+
+Disease prevalence declines with subpopulation size. This is characteristic of frequency-dependent transmission. 
+
+### Lyme Disease
+Van Buskirk and Ostfeld 1995 Eco. Appl.
+*Borrelia burgdorferi* spirochete
+Blacklegged tick *Ixodes scapularis*
+*Peromyscus leucopus* Whitefooted mouse
+Whitetailed deer *Oedicoilius virginiana*
+spring 1: eggs
+summer 1: larva on intermediate host - small mammal or bird
+spring 2: nymph a new intermediate host small mammal or bird 
+summer 2: drops off host 2, seeks definitive host (tyupically deer); most dangerous to humans
+fall 2: adult on deer (low risk to humans)
+
+host competence: whitefooted mice vs. chipmunks and birds

@@ -1,0 +1,164 @@
+# Mutualisms
+
+## Background
+
+Mutualisms occur in a wide variety of different species. Mutualisms form the
+foundations of ecosystems including coral reefs (coral and
+zooxanthellae), grasslands, and forests (plants and mycorrhizal
+fungi, pollinators, and dispersers). 
+
+The natural history of mutualisms are wildly diverse and complex, and 
+and @Boucherecologymutualism1982 lists types of mutualisms:
+
+* Energetic
+* Nutritional
+* Defense
+* Transport
+* Obligate \emph{vs.} facultative
+* Direct \emph{vs.} indirect
+* Symbiotic \emph{vs.} independent
+
+ Perhaps the most common of these is
+*indirect mutualism* (Fig. \ref{f:mut3}). In this case, negative direct interactions
+sum to yield net positive indirect interactions, as in the classic
+case where ``the enemy of my enemy is my friend.'' For instance,
+consider a three plant species that all compete for the same limiting
+resource. When species A suppresses species B, it is indirectly
+helping species C [@Miller1994]. 
+
+## Lotka-Volterra mutualism
+Lotka-Volterra mutualism is very straightforward, following the samed template as competition. All that we have to do is change the sign associated with the other species. As usual, $\alpha_{ij}$ is the per capita effect of species $j$ on species $i$.
+
+\begin{align}
+\frac{dN_1}{dt} &= r_1N_1\left( 1 - \alpha_{11}N_1 + \alpha_{12}N_2\right)\\
+\frac{dN_2}{dt} &= r_2N_2 \left(1 + \alpha_{21}N_1 - \alpha_{22}N_2\right)
+\end{align}
+
+Here we will focus on *direct mutualisms*, and in this chapter, we'll focus on two approaches to models, Lotka-Volterra models and consumer-resource models.
+
+In the above equations we see the sign of the intraspecific terms $\alpha_{ii}N_i$ is negative, while the sign of the interspecific terms $\alpha_{ij}N_j$.
+
+The zero net growth isoclines are found the same way we found those for interspecific competition, by solving $\frac{dN_1}{dt}$ (for zero). We will graph these, so we solve each in terms of species 1.
+
+The ZNGI for species 2 is
+\begin{align*}
+0 &= 1 + \alpha_{21}N_1 - \alpha_{22}N_2\\
+N_2 &= 1/\alpha_{22} + \alpha_{21}N_1
+\begin{align*}
+Thus when $N_1=0$, $N_2 = 1/\alpha_22} = K_2$.
+
+The ZNGI for species 1, in terms of species 1, is
+\begin{align*}
+0 &= 1 - \alpha_{11}N_1 + \alpha_{12}N_2\\
+N_2 &= \alpha_{11}/\alpha_{12}N_1 - 1/\alpha_{12}
+\begin{align*}
+
+```{r}
+alpha11 <- alpha22 <- 0.2
+alpha12 <- alpha21 <- 0.1
+
+plot(0:5, 0:5, type="n")
+abline(1/alpha22, alpha21)
+abline(1/alpha12, alpha11/alpha12, lty=2)
+
+```
+
+## Consumer-resource mutualism
+Sometimes mutualists share resources, as with mycorrhizal
+associations, where species share a resource or a product that they
+can acquire or manufacture in surplus and trade it for a resource or product that is
+limiting. This is a bi-drectional mutualism (Fig. \ref{f:mut3})
+because the flow of \emph{resources} are bidirectional: both species provide a resource to the other [@Holland2010]. 
+```{r figs, echo=FALSE}
+# a digraph is a directed graph
+# the model is written in the "dot" language
+bimut <-
+"digraph{
+  rankdir = LR;
+node[shape=box];
+// oval is the default node shape
+  M1 -> M2[label='R'];
+M2 -> M1[label='R'];
+}"
+
+#grViz(bimut)
+
+umut <-
+"digraph{
+  rankdir = LR;
+node[shape=box];
+// oval is the default node shape
+  M1 -> M2[label='R'];
+M2 -> M1[label='S', style=dashed]
+}"
+
+imut <-
+"digraph{
+  rankdir = TB;
+node[shape=box];
+{rank=max; R1; R2;}
+{rank=min; M1; M2;}
+// oval is the default node shape
+  M1 -> M2[label='R'];
+M2 -> M1[label='S', style=dashed]
+R1 -> M1; M1 -> R1[arrowhead='odot'];
+R2 -> M2; M2 -> R2[arrowhead='odot'];
+R1 -> R2[arrowhead='odot']; R2 -> R1[arrowhead='odot'];
+}"
+
+grViz(imut)
+
+grViz(bimut) %>%
+  export_svg %>% charToRaw %>% rsvg_pdf("bimut.pdf")
+
+grViz(umut) %>%
+  export_svg %>% charToRaw %>% rsvg_pdf("umut.pdf")
+
+grViz(imut) %>%
+  export_svg %>% charToRaw %>% rsvg_pdf("imut.pdf")
+```
+
+\begin{figure}
+\begin{center}
+\hfill
+\includegraphics[width=.4\linewidth]{bimut} 
+\hfill
+\includegraphics[width=.4\linewidth]{umut}
+\hfill 
+\\
+\includegraphics[width=.4\linewidth]{imut}
+\caption{Bidirection, unidirectional, and indirect mutualisms. Normal
+  arrowhead is a positive effect, whereas an open dot arrowhead is a
+  negative effect. A dashed line indicates a service, and a solid line
+  indicates a consumeable resource. \label{fig:mut3}}
+\end{center}
+\end{figure}
+
+In other cases, mutualists may share services, as with moray
+eel-grouper foraging. In this particular case, grouper and the giant
+moray eel have different foraging strategies, with the eel going into
+reef crevices and the grouper waiting outside to pick off prey that
+escape the eel [@Bshary2006]. Sometimes these mutualisms are
+called *by-product* mutualisms, in cases where there is no
+evidence of coordinated behavior, but nonetheless a mutualism arises via the independent activities of each species.
+
+In the following, we explore the type of mutualism in which one
+species provides a resource and the other species provides a
+service (Fig. \ref{fig:mut3}). This is a uni-directional mutualism because
+the flow of \emph{resources} is only unidrectional, from one species to the other [@Holland2010].
+
+A good example of a uni-directional of mutualism is seed dispersal via
+a frugivore that disperses seeds. A plant species provides a 
+fruit that is nutritious for an animal. A primary benefit for the
+plant is that seeds are carried away from the parent plant. This may
+help seeds escape enemies that accumulate near parent plants
+(Connell-Janzen hyptothesis). In addition, it provides a bet hedging
+opportunity wherein seeds are dispersed to a variety of habitats any
+one of which may be better for survival than the current location. It
+is even possible that dispersal is *directed* to preferred
+habitat that is consistently better than under the parent plant due to
+better resource levels or environmental conditions
+[@Wenny1998]. The animal benefits by consuming the fleshy part of
+the fruit surrounding the seed. An interesting case arises when seed
+predators collect seeds but do not kill them before having buried,
+cached, or moved seeds. 

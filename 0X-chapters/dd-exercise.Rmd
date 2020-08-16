@@ -1,0 +1,348 @@
+---
+title: "models and observations"
+author: "Hank Stevens"
+date: "9/19/2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+library(deSolve)
+```
+
+Most of this book describes and explains models. Models are explicit manifestations of theory with which we can organize our thoughts and and compare with our data. Here we bring our attnetion to two layers of uncertainty when we compare models and data: *process error* and *observation error*. These types of error are not mistakes, but differences from "actual" values. These terms can be confusing if we think that "error" means "mistake". They aren't; they are just differences between reality and our guesses of reality.
+
+Observation error is the uncertainty associated with drawing inferences about a population based on only samples of the population. We can never know the actual abundance of tuna in the sea because we can only estimate it with uncertainty. We refer to the uncertainty due to our observation methods as *observation error*. It is not error in the colloquial sense of making a mistake, but simply a difference between an actual population, and our sample of it.
+
+Process error is not error at all, in the colloquial sense. It is uncertainty in the very process we are studying. We can use the logistic growth model to predict the dynamics of a population, but the underlying processes of reproduction and density-dependence will vary for mechanistic reasons that we cannot fathom, or which we choose judiciously to ignore. Process error is the some underlying mechanistic difference between our model and the actual ecological process.
+
+Any time we examine a time series of data, we need to envision both observation and porocess error underlying the dynamics. Often, we don't do that, and assume either only observation error or process error. 
+
+Here we explore the consequences of process and observation error. This is inspired by @Bolker2008 (Ch. 11). Following this, we then move on to wax poetic about elephants in the rain and heat [@Chamaille-Jammes2008].
+
+## Geometric growth with observation and process error
+
+If we believe that a population of brown rats grows geometrically with $\lambda =1$, that means we predict that it doesn't change size. If we observe and sample this population we will sample it with error. We could describe the population, $N$, and our observations of it thus,
+$$N_0 = a$$
+$$N_{t+1} = \lambda N_t$$
+$$N_{obs,t} \sim \mathrm{Normal}(N_t, \sigma^2_{obs})$$
+where we say the observed $N$ at time $t$ is a Normally distributed random variable with a mean of the actual $N$ and a variance of $\sigma^2_{obs}$. Thus we estimate $N_t$ with uncertainty or observation error.
+
+Now we model it.
+
+```{r obs1}
+# set lamba, number of time steps (nt), a vector to hold N, and N0
+lambda <- 1
+nt <- 100
+N <- numeric(nt)
+Nobs.o <- numeric(nt)
+N0 = 100
+N[1] <- N0
+
+# decide on an amount of uncertainty in our estimate
+# standard deviation
+
+sd.obs <- 20
+
+# now we project the population and model observation error
+for (t in 1:(nt - 1)) {
+  ## observation error
+     Nobs.o[t] = rnorm(1, mean = N[t], sd = sd.obs)
+     ## mechanistic projection
+     N[t+1]=lambda*N[t]
+}
+# finish up adding error to the last observation
+Nobs.o[nt] = rnorm(1, mean = N[nt])
+
+## plot it
+ qplot(1:nt, Nobs.o, geom=c("line", "point"))
+```
+
+Tons of density dependence, right? Nope, just observation error and an unchanging population size. Sometimes our estimate is high, and sometimes low.
+
+### Process error
+If we believe that a population of brown rats grows geometrically with $\lambda =1$, that means we predict that it doesn't change size. However, in a real population of brown rats (*Rattus norvegicus*), we know that $\lambda$ will vary, even if we predict a mean of $\lambda=1$. We also know that there are other mechanisms influencing $N$ in any given year such as migration, density-independent predation, and many others. We do not know what these are, but they are real.If we model this process and somehow sample this population perfectly with no uncertainty, we could describe the population, $N$, and our observations of it thus,
+$$N_0 = a$$
+$$N_{obs,t} = N_t$$
+$$N_{t+1} \sim \mathrm{Normal}(\lambda N_t, \sigma^2_{proc})$$
+
+where we say the actual $N$ at time $t+1$ is a Normally distributed random variable with a mean of $\lambda N_t$ and a variance of $\sigma^2_{proc}$. Thus we estimate the *process* with uncertainty or observation error, even while observing it perfectly.
+
+Now we model it.
+```{r}
+# Pure process error (process variation)
+# use the same standard deviation, and start anew
+sd.proc=sd.obs
+N = numeric(nt)
+Nobs.p = numeric(nt)
+N[1] = N0
+for (t in 1:(nt - 1)) {
+     N[t + 1] = rnorm(1, mean = lambda*N[t], sd = sd.proc)
+ Nobs.p[t] = N[t] 
+ }
+Nobs.p[nt] = N[nt]
+
+qplot(1:nt, Nobs.p, geom=c("line", "point"))
+```
+
+Now let's plot them all together.
+```{r}
+df <- data.frame(time = c(1:nt, 1:nt), Error=rep(c("observation", "process"), each=nt), 
+                 N=c(Nobs.o, Nobs.p) )
+ggplot(df, aes(time, N, colour=Error) ) + geom_line() + geom_point()
+```
+Decide why these plots exhibit such different dynamics. Ideally, you should take time to explain it in writing. You could also discuss it with someone to practice saying it out loud.
+
+All real data sets have both observation and process error imply. If we can assume one of those processes is minor, we can catiously ignore it. 
+
+## Thirsty, thirsty elephants
+
+@Chamaille-Jammes2008 evaluated the role of temporal and spatial heterogeneity of resources on elephant populations in HwangeNational Park, Zimbabwe.
+```{r hwange, out.width="80%", fig.cap="Hwange National Park is home to a very large African elephant population. Image courtesy of Google Maps."}
+knitr::include_graphics("figs/hwange.png")
+```
+
+@Chamaille-Jammes2008 fitted a variety of deterministic and stochastic models to elephant abundance (Fig. \@ref(fig:Nobs)). 
+```{r Nobs, fig.cap="Approximate elephant population dynamics from 1996 to 2001. (Data were estimated visually from the original publication).", out.wdith="75%"}
+N.est <- c(14000, 19000, 23000, 24000, 29000, 31000, 35500, 22000, 31000, 
+        22000, 27000, 32000, 29000, 34000, NA, 45000)
+
+qplot(x=1986:2001, y=N.est, geom=c("line", "point"))
+```
+When we gaze upon Fig. \@ref(fig:Nobs), we now realize that these numbers are the result of (i) mechanistic processes that we hypothesis and make explicit, (ii) mechanistic processes that we presumably don't understand and certainly don't make explicit, and (iii) inaccuracies of estimating the treu number that was present at the time of the survey. Item (ii) is process error, and item (iii) is observation error.
+
+In this section, we will model the elephant population using the model that @Chamaille-Jammes2008 found provided the best explanation of their population dynamics.
+
+The model that that appear to be the best was the $\theta$-logistic model,
+$$\frac{dN}{dt} = rN\left(1-\left(\frac{N}{K}\right)^\theta \right)$$
+where $K = \alpha R$. Upon fitting the data, they also found that $\theta$ really didn't differ substantially from 1, and used a model where $\theta =1$. When $\theta=1$, what do we call this model? 
+
+The authors found that carrying capacity, $K$, was a function of annual rainfall, $R$. They incorportated this insight into carry capacity by allowing $K = \alpha R$. This model is reflected in Fig. 2b. If we interpolate per capita growth rate back to $x=0$,  we can approximate $r$ as,
+```{r}
+rmax=.45
+```
+
+In their, like, totally weird, un-American notation, they tell us (p. 139) that $\alpha = 61\cdot280 \pm 5\cdot776$, or, about 61.
+```{r}
+alpha <- 61.280
+```
+
+Rainfall...what do we make of that? They don't provide, and I'm shocked ("shocked, I tell, you shocked!") that they don't provide these data in a data repository linked from an appendix. So, we are left simulating it. An examination of Fig. 4a suggests that annual rainfall, which we are symbolizing with $R$, might be approximated as a uniformly distributed random variable with a minimum of 300 and a maximum of 850\,mm\,y$^{-1}$. For their 16 years of data, we can simulate 16 years of rainfall,
+```{r}
+nt <- 16
+rand.seed <- 1
+{set.seed(rand.seed)
+AR <- runif(nt, min=300, max=850)
+}
+```
+
+In the proceeding sections, we simulate the dynamics of this elephant population under conditions of 
+
+* no observation or process error
+* obervation error only
+* process error only, and
+* both observation and process error.
+
+You will need to run this in order, as we reuse parameters and variables.
+
+
+**No process or observation error**
+```{r}
+# create a vector to hold "actual" population size
+N = numeric(nt)
+# create a vector to hold our observation of actual population size
+Nobs = numeric(nt)
+# start with lots of elephants (circa 1986)
+N[1] = 14000
+# simulate a population
+for (t in 1:(nt - 1)) {
+  N[t + 1] = N[t] + rmax*N[t]*(1 - N[t]/(alpha*AR[t])) 
+  Nobs[t] = N[t] 
+}
+# make sure our last observation is there
+Nobs[nt] = N[nt]
+```
+Plot what we created.
+```{r}
+# the dynamics (cf. Figs. 1, 3)
+qplot(1:nt, Nobs, geom=c("line", "point"))
+
+# Something akin to Fig. 2b
+pcPGR <- log(Nobs[-1]/Nobs[-nt])
+N.R <- Nobs[-nt]/AR[-nt]
+qplot(x=N.R, y=pcPGR, geom="point", xlim=c(0, 120)) +
+  geom_smooth(method="lm")
+
+```
+Let's fit a statistical model to that, and get the intercept and slope.
+```{r}
+(cfs0 <- coefficients( summary( fit <- lm(pcPGR ~ N.R) )))
+```
+We learn that the estimate of $r$ is a little different than than the true value. The carrying capacity is the $x$-intercept, which is $x=-b/m$, is easily estimated.
+```{r}
+# r (0.45)
+(r1 <- as.numeric(coef(fit)[1]))
+# x-int (61.28)
+(K1 <- as.numeric( - coef(fit)[1] / coef(fit)[2]) )
+```
+
+
+**Observation error, but no process error**
+```{r}
+# standard.deviation will be a constant
+SD <- 5000
+{set.seed(rand.seed)
+for (t in 1:(nt - 1)) {
+  Nobs[t] = rnorm(1, mean=N[t] , sd=SD)
+  N[t + 1] = N[t] + rmax*N[t]*(1 - N[t]/(alpha*AR[t])) 
+}
+Nobs[nt] = rnorm(1, mean=N[nt] , sd=SD)
+}
+```
+Plot stuff
+```{r}
+# the dynamics (cf. Figs. 1, 3)
+qplot(1:nt, Nobs, geom=c("line", "point"))
+
+# Something akin to Fig. 2b
+pcPGR <- log(Nobs[-1]/Nobs[-nt])
+N.R <- Nobs[-nt]/AR[-nt]
+qplot(x=N.R, y=pcPGR, geom="point", xlim=c(0, 120))  +
+  geom_smooth(method="lm")
+```
+Let's fit a statistical model to that, and get the intercept ($r$) and the slope.
+```{r}
+(cfs.obs <- coefficients( summary( fit <- lm(pcPGR ~ N.R) )))
+```
+
+```{r}
+(r2 <- as.numeric(coef(fit)[1]) )
+# x-int, or K or alpha(R) (61.28)
+(K2 <- as.numeric( - coef(fit)[1] / coef(fit)[2] ))
+```
+
+
+**Process error, but no observation error**
+```{r}
+# standard.deviation will be a proportion of N
+{set.seed(rand.seed)
+prop <- 0.1
+for (t in 1:(nt - 1)) {
+  nextN <- N[t] + rmax*N[t]*(1 - N[t]/(alpha*AR[t])) 
+  N[t + 1] = rnorm(1, mean=nextN, sd=prop*N[t])
+  Nobs[t] = N[t] 
+}
+Nobs[nt] = N[nt]
+}
+```
+Plot stuff.
+```{r}
+qplot(x=1:nt, y=Nobs, geom=c("line", "point"))
+
+# Something akin to Fig. 2b
+pcPGR <- log(Nobs[-1]/Nobs[-nt])
+N.R <- Nobs[-nt]/AR[-nt]
+qplot(x=N.R, y=pcPGR, geom="point", xlim=c(0, 120)) +
+  geom_smooth(method="lm")
+```
+Let's fit a statistical model to that, and get the intercept, $r$, and the slope.
+```{r}
+(cfs.proc <- coefficients( summary( fit <- lm(pcPGR ~ N.R) ) ))
+```
+
+```{r}
+(r3 <- as.numeric(coef(fit)[1]))
+# x-int, alpha R (61.28)
+(K3 <- as.numeric( - coef(fit)[1] / coef(fit)[2]))
+```
+
+**Both observation and process error**
+```{r}
+{set.seed(rand.seed)
+for (t in 1:(nt - 1)) {
+  Nobs[t] = rnorm(1, mean=N[t] , sd=SD)
+  nextN <- N[t] + rmax*N[t]*(1 - N[t]/(alpha*AR[t])) 
+  N[t + 1] = rnorm(1, mean=nextN, sd=prop*N[t])
+}
+Nobs[nt] = rnorm(1, mean=N[nt] , sd=SD)
+}
+```
+Plot stuff.
+```{r}
+qplot(x=1:nt, y=Nobs, geom=c("line", "point"))
+
+# Something akin to Fig. 2b
+pcPGR <- log(Nobs[-1]/Nobs[-nt])
+N.R <- Nobs[-nt]/AR[-nt]
+qplot(x=N.R, y=pcPGR, geom="point", xlim=c(0, 120)) + 
+  geom_smooth(method="lm")
+```
+Let's fit a statistical model to that, and get the intercept and slope.
+```{r}
+(cfs.both <- coefficients( summary( fit <- lm(pcPGR ~ N.R) ) ))
+```
+
+```{r}
+(r4 <- as.numeric(coef(fit)[1]))
+# x-int (61.28)
+(K4 <- as.numeric(- coef(fit)[1] / coef(fit)[2]))
+```
+
+## Take home
+```{r}
+list(No.error=cfs0, Obs.error=cfs.obs, Proc.error=cfs.proc, Both.error=cfs.both)
+
+c(r1,r2,r3,r4)
+c(K1,K2,K3,K4)
+```
+What do we learn from this rigmarole? How do we now think about
+
+* time series data?
+* observation and process error?
+
+It is very difficult to understand the underlying processes driving population dynamics. We need quantitative hypotheses about what is happening, and methods that can estimate the pieces of our models. These methods have to take into account obervation error and process error for the processes we are not testing.
+
+```{r}
+
+errorEval <- function(obs.e = 5000, proc.e = 0.1, nt=16, rmax=0.45, alpha=61.28, N1=14000, seed=1) {
+{set.seed(seed)
+AR <- runif(nt, min=300, max=850)
+}
+# create a vector to hold "actual" population size
+N = numeric(nt)
+# create a vector to hold our observation of actual population size
+Nobs = numeric(nt)
+# start with lots of elephants (circa 1986)
+N[1] = N1
+t=1
+for (t in 1:(nt - 1)) {
+  Nobs[t] = rnorm(1, mean=N[t] , sd=obs.e)
+  nextN <- N[t] + rmax*N[t]*(1 - N[t]/(alpha*AR[t])) 
+  N[t + 1] = rnorm(1, mean=nextN, sd=proc.e*N[t])
+}
+Nobs[nt] = rnorm(1, mean=N[nt] , sd=obs.e)
+
+pcPGR <- log(Nobs[-1]/Nobs[-nt])
+N.R <- Nobs[-nt]/AR[-nt]
+cfs <- coefficients( summary( fit <- lm(pcPGR ~ N.R) ) )
+obs.r <-  as.numeric( cfs[1] )
+obs.alpha <- as.numeric( - cfs[1] / cfs[2] )
+return( c(obs.r=obs.r, obs.alpha=obs.alpha) )
+}
+errorEval()
+```
+
+```{r}
+Obs.e <- 10^seq(0, 4, by=.1) 
+Proc.e <- seq(0,.3, by=0.05)
+df <- expand.grid(Obs.e=Obs.e, Proc.e=Proc.e)
+df$r.est <- numeric(nrow(df))
+df$K.est <- numeric(nrow(df))
+for(i in 1:nrow(df) ){
+  df[i,3:4] <- errorEval(obs.e=df$Obs.e[i], proc.e=df$Proc.e[i])
+}
+ggplot(df, aes(Obs.e, K.est, colour=as.factor(Proc.e))) + geom_line()
+```
+
+
