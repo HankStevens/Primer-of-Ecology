@@ -1,0 +1,332 @@
+# Optimal Foraging {#oft}
+```{r cowie, fig.cap="Optimal foraging theory (OFT) generates testable quantitative predictions that allow a less ambiguous description and explanation for observed patterns and processes. Here, a simplistic model of Great Tit (Parus major) foraging that includes only gross energy intake underestimates the time spent in patches (dashed). In contrast, a model that includes energetic costs of traveling and searching matches predictions far better (solid).  From Cowie (1977).", out.width="75%"}
+knitr::include_graphics("figs/CowieF3.png")
+```
+It can be useful to think of natural selection as an optimizing process: phenotypes diversify, winners replicate and losers don't, and the phenotypes of winners tend to get passed on to the replicants. Therefore, we often assume, as did Dr. Pangloss, that the species that exist now are the best of all possible species, that is, they are of optimal design. And like Dr. Pangloss, we would be woefully mistaken if we stopped there. Nonetheless, optimization, that is, the tendency toward an optimum, helps us generate testable hypotheses and we consider some of these below.
+
+Optimal Foraging Theory (OFT) helps us consider what organisms would do *if they foraged optimally.* All organisms--plants, fungi, archaea, and even animals--forage, and they are all subject to natural selection. Therefore, their phenotypes work pretty well, but probably not optimally and definitely not optimally for all times and places. Nonetheless, OFT is an efficient theory about the behavior of an organism, in the absence of other complications. Therefore, it allows us to study the relative importance of those "other complications."
+
+Foraging is a key link between the individual, and communities and ecosystems [@Beckerman2010]. All organisms interact with their environment via consumption, and the choices they make influence population dynamics, species interactions, nutrient cycling, and even the physical structures of terrestrial and aquatic habitats. The text and logic of this chapter rely heavily on @Stephens1986 and @Ellner2009.
+
+In Scheiner and Willig's edited volume on *The Theory of Ecology*, Andy Sih [@Sih2011] proposes that the following propositions form the basis of foraging theory:
+
+1. Foraging patterns maximize fitness or a correlate of fitness. 
+2. Foraging patterns depend on the range of options available to the forager and on how each available option affects fitness or a correlate of fitness.
+3. Foraging behaviour balances conflicting demands--tradeoffs are important in shaping foraging behaviour.
+
+These properties are the outcome of natural selection operating on foraging behavior. Our understanding of foraging itself considers these three features [@Stephens1986]:
+
+* currency (what is being optimized),
+* constraints (features of behaviour that limit optimality), and
+* the resulting decision rules.
+
+*Currency* is that quantity that is optimized by the forager. This currency is assumed to be a quantity that limits fitness, such as energy or a particular consumable resource. It measure it as a rate, for instance, energy gained per unit time (E/T) or the uptake of a critically limiting resource per unit time (R/T). 
+
+*Constraints* are limitations that we assume about organisms. These might include distances between resource patches, the time and costs associated with extracting a resource from a substrate or subduing prey. They also include constraints imposed by other species including competitors and predators. Constraints can get coplicated quickly; however, simple quanitative theory makes predictions against which we can evaluate more complicated assumptions.
+
+*Decision rules* are what we ascribed to a forager's choices. A decision rule concern the probability of attacking prey if encountered, or when to leave one resource patch in order to search for another. 
+
+
+An additional way to think about all this is *where, when, and what.* A great deal of effort has focused on understanding patch use: *where* foragers should explore for resources, and *when* they should give up and go in search of another patch [@Charnov1976b]. These are **patch use** models, and are based on economic models and the marginal value theorem. 
+
+Another avenue of inquiry concerns *what* animals should eat. For instance, should they go after big prey that may be hard to catch and difficult to subdue, or just snack on what is easy? These are **prey models** or diet models, and attempt to explain why organisms consume what they do. Much like the patch models, theory attempts to predict which prey or resources organisms encounter, perceive, attack or "handle", and which they ignore.
+
+*A note on "prey".* All organisms forage for resources. Plants extend branches toward the light, and proliferate leaves and roots into resource rich patches, and rhizomes grow longer faster through resource-poor soils. Bumblebees search for and learn where to find nectar-rich flowers, and wolves hunt in packs to take down large ungulates. Some bacterivorous nanoflagellates intercept particles selectively depending on the perceived nutritional value of particles [@Boenigk2002]. So, depending on the forager, its "prey" may be $\mathrm{NO}_{3}^-$ ions, nectar, moose, or bacteria. Therefore, we will refer to these resources variously as prey, prey items, resources, and resource items. Some of these ideas are best handled with patch-based models [@Charnov1976b] where a "resource patch" is a more intuitive and useful unit.
+
+*A note on "handle".* All organisms pays costs to consume resources. In OFT, "handle" typically means expending energy an time to attack and subdue prey (predators), proliferate into resource rich areas (plants), exude extra cellular enzymes (fungi); ingest the item(s), and then resume searching.
+
+## A prey model
+Here the forager asks, "should I eat this?"^[whether "I" is a sugar maple tree or a human, most of us do not make this decision conciously...] Let's start where this field started, with a prey-centered model [@MacArthur1966; @Emlen1966]. 
+
+\begin{itemize}
+\item Currency - long-term energy gain per unit time, $G/T$.
+\item Constraints
+\begin{itemize}
+    \item forager can consume only what it encounters.
+    \item forager uses time and energy searching for items and handling items.
+    \item if the forager chooses to pursue an item, searching stops and handling starts.
+    \end{itemize}
+\item Decision rules - the probability that a forager pauses from searching to handle an item.
+\end{itemize}
+
+
+### Our intuition
+```{r ant, echo=FALSE, fig.cap="The amount of energy lost and gained by a foraging ant--it may decline slowly over time while searching, and decline quickly while handling a food item. Our ant gains energy when it consumes an item. Below: Our ant. She expends energy while searching for food. Upon encountering a food item, she may choose to 'handle' it (encounters 1 and 3) and gain energy, or not handle it (encounter 2) and save the added cost of handling it.", out.width="100%" }
+knitr::include_graphics("figs/foraging_ant2.jpg")
+```
+
+What does our intuition tell us is the optimal strategy for foraging? It seems reasonable that if a forager encounters food, it should eat it. However, if handling it costs more than the forager gets back in energy, then it isn't worth it. We might think of this as the ratio as *profitability*,
+$$\frac{e_i}{h_i}$$
+where $e_i$ is the energy in an item of type $i$, and $h_i$ is the cost of handling said item. If $e_i/h_i<1$, then it doesn't make sense to select the item. Further, handling an item means that the forager is *not* looking for a better food item. This suggests that even if $e_i/h_i>1$, a forager may not want to handle it if it is likely to soon encounter food items of higher energy content. On top of this, the act of searching may expose a forager to a risk of running into competing foragers, or even being eaten by a bigger forager. Clearly, a forager faces tradeoffs as it searches and when it encounters resources.
+
+### Mathematical support
+Let us assume that natural selection tends to maximize the currency, or $G/T$. Our model will use these parameters and variables:
+
+* $i =$ index for prey type
+* $p_i =$ probability that a forager attacks prey if encountered (units are number handled per number encountered, or #/#; this is a dimensionless parameter)
+* $S =$ total time spent searching (units = seconds, $s$).
+* $T =$ total elapsed time (units = s)
+* $\lambda_i =$ rate of encounter with prey of type $i$ (units = # encountered/s = $\#/s$; note this can also be #/area × area/s, if we like).
+* $e_i =$ net energetic gain from catching and consuming a single type-$i$ prey item (units = Joules, J). This includes the gross energy of the item minus handling costs plus energy *not* lost by searching during that time.
+* $h_i =$ handling time for an item of type $i$,  (units = s/#). 
+* $c =$ energy cost per unit of time while searching (units = J)
+
+From these definitions we can calculate other important quantities.
+
+* Total number of items encountered of type $i$ is $S\lambda_i$ (units $= s\, \#\,s^{-1} = \#$).
+* Total number of type $i$ items handled is the proportion, $p_i$, of those encountered that the foragers chooses to go after, or $S\lambda_i p_i$ (units = #).
+* Total time spent *handling* all items of type $i$ is $S\lambda_i p_i h_i$ (units = s).
+* Total elapsed time, $T$, is time spent searching plus time spent handling, which is  $S + \sum_i^n S\lambda_i h_i p_i$. We use the summation to add together the total handling times for each prey or resource type $i = \{1,\,2, \ldots ,\,n\}$.
+
+*A note on $\lambda$* A forager encounters prey at random, and this is known as a "Poisson process", where the number of encounters in a specified time interval is a random variable drawn from the Poisson probability distribution. It turns out that the *time between events* of a Poisson process follows the Exponential distribution. The Poisson distribution is determined by a single parameter, its mean. The Exponential distribution is also described by a single parameter, its *rate*. It turns out that we use the same $\lambda$ for both. 
+
+We have combined many variables and parameters. How can we check the logical consistency? We do that by checking whether the units are the same in all terms of a model. Here we check units for total handling time, $H = S\lambda_i p_i h_i$ by replacing the variables and parameters with their units. The units for $H$ are seconds, so we have
+$$\mathrm{s = s \frac{\#}{s} \frac{\#}{\#} \frac{s}{\#}}$$
+When we multiply these fractions, we find that the $\#$'s and two of the s's cancel out and we are left with $s=s$. This shows that our use of parameters and variables is at least logically consistent.
+
+
+The total energy gain from eating all the items is the number of items of each type $i$ handled times the net amount of energy per item of type $i$, $e_i$, $\sum_{i=1}^n S\lambda_i p_i e_i$. Therefore, rate of energy intake while handling and eating is 
+$$\mathrm{intake} = \frac{\sum_{i=1}^n S\lambda_i p_i e_i}{S + \sum_{i=1}^n S\lambda_i h_i p_i}$$
+If we also subtract the cost of searching, we arrive at the quantity we want to maximize, $$\frac{\sum_{i=1}^n \lambda_i p_i e_i}{1 + \sum_{i=1}^n \lambda_i p_i h_i}-c$$
+
+
+A major question in OFT is whether a forager should include a particular prey type. Say we rank the prey types, $i=\{1,2,...,m,...,n\}$, in terms of energy content, where type $i=1$ has the most energy per item, $i=m$ is intermediate, and type $i=n$ has the least. *Which items should a forager include in her diet?* Should it be only the most energy-dense, or should it include the second as well, or should it be all of them? Part of the answer rests on the ratio of energy gain versus handling costs, or profitability, $e_i/h_i$.
+
+It turns out there is an useful rule, which we won't derive mathematically: *A less energy-dense item should be added if its net energy content is greater than the realized energy gain from all the other items,* or 
+
+$$\frac{e_{m+1}}{h_{m+1}} > \frac{\sum_{i=1}^m \lambda_i e_i}{1 + \sum_{i=1}^{m} \lambda_i h_i} (\#eq:preypred1)$$
+where the diet already includes items 1-$m$, and the *realized* energy content of the diet takes into account average encounter rates of each item type^[Prediction: foragers will rank prey types by their *profitability*, $e/h$.] Implicit in this is the prediction that items of type $i$ should either always be selected or never be selected if encountered^[Prediction: the zero-one rule: $p_i \subset {0,\,1}$]. (This can be shown algebraically). Thus, a particular type should always be included if the instantaneous net gain^[Prediction: Inclusion of type $m+1$ in the diet does not depend on its encounter rate.] of that type is greater than the *realized long term average* net gain of all the more profitable types. The quantity on the right side of \@ref(eq:preypred1) takes into account the long term encounter rates $\lambda_i$ as well as search costs.
+
+Another prediction is that when encounter rates increase (as with increasing abundances), selectivity increases^[Prediction: selectivity increases with average encounter rates.]. Note that encounter rates are in the right hand side (RHS), so as they increase, so will that fraction on the right. That will make it harder for the above inequality to be true. If you don't believe it, try this simplified version (Fig. \@ref(fig:selectivity)).
+```{r selectivity, echo=TRUE, fig.cap="Selectivity increases with average encounter rates.", out.width="60%", keep.source=TRUE}
+eq = function(lambda){lambda/(1+lambda)} # create the function you want
+myData <- data.frame( lambda=c(0, 10) ) # data you need
+ggplot(data=myData, aes(x=lambda)) + # set the basic properties of the plot
+  # in the stat_function, we indicate the parameters in our equation.
+  stat_function(fun=eq, geom="line") +
+  ylab(bquote(over(lambda, 1 + lambda))) + xlab(bquote(lambda))  # add labels
+```
+
+So how does this model fair in the real world? Well, the zero-one rule doesn't work at all; it turns out that for a variety of reasons, foragers do not completely ignore low-profit prey. However, there is great support for the other two predictions (above) [@Stephens1986]. Most importantly, in all cases, the theory has provided a clear framework to generate testable predictions from unambiguous assumptions, and that is what we want from efficient theory. The model itself helped guide research, and inclusion of greater complexity has led to deeper understanding of behavior and its consequences for species interactions.
+
+## The patch model
+*...in which ominscient rationale agents roam free.*
+
+Here the forager asks, "how long should I stay here?" In the simple *prey* model, a forager searches for and then encounters prey one at a time, makes a decision to consume or not, and then resumes searching. In a simple *patch* model, a forager searches for and encounters patches one at a time, first consumes resources and then makes a decision to leave or not. Perhaps the single most important prediction of the simple patch model is that a forager should leave a patch when its current rate of energy gain drops down to the average or expected rate of energy gain for the habitat at large. 
+
+In what follows, we rely on @Charnov1976b, who applies *the marginal-value theorem* to explain optimal behavior. Here, as in economics, "marginal value" refers to a rate - the slope of a function. In calculus, this is a derivative. Here, it is the derivative (i.e. slope) of the relation between energy gain and time.
+
+Let's assume the simplest of all patch models: one patch type, all patches are the same, and they are distributed randomly in the habitat. Assume also that a forager uses time to travel between patches (travel time, $t_t$) and time searching within a patch (residence time, $t_r$). A forager encounters patches at random, with a rate of $\lambda$, and as such, would have a mean time to next encounter of $1/\lambda$. 
+
+The patch is characterisized by its *gain function* $g(t_r)$ (Fig. \@ref{fig:gain)) which is the expected^["expected" value of a variable is the mean of that variable, because that is what we expect given the absence of other knowledge]
+*cumulative net energy gained*, given time $t_r$ spent in the patch. The gain function is a cumulative total net amount. We can imagine different types of gain functions.
+```{r gain, echo=FALSE, fig.cap="Net energy gain as a function of patch residence time may take different forms. Net energy gain increases through time but slows (decelerates) as a greater fraction of the resources in the patch are consumed. The top line (solid) assumes that there are diminishing returns as a patch is depleted, but the forager continues to find resources in excess of metabolic losses. The lower line (dashed) represents the net energy gain that could arise as a patch is depleted more fully and the costs continue unabated.", out.width='75%'}
+eq1 <- function(tr) {.7 * tr/(.1+tr)}
+eq2 <- function(tr) {-tr^2 + 1.5*tr}
+df <- data.frame(tr=c(0,1) )
+ggplot(df, aes(x = tr ) ) + 
+  stat_function(fun=eq1, geom="line") + 
+  stat_function(fun=eq2, geom="line", linetype="dashed") +
+       ylab(expression("Energy intake, "*italic(g(t)))) + 
+       xlab(expression("Residence time, "*italic(t[r])))
+```
+
+**Try this:**
+
+1. Draw  a gain function where the prey remain well hidden at first, but the forager becomes increasingly able to find more and more prey. 
+2. Draw a gain function where there is no cost to foraging, and where the forager eventually depletes all the prey. 
+3. In one graph, draw two gain functions for a resource rich patch and for a resource poor patch.
+
+
+So, our *currency* is long-term average energy intake, $R$, and we want to maximize this. The *decision* our forager needs to make is how long to stay in a patch. The forager's *constraints* share some similarity with the prey model [@Stephens1986]. 
+
+* between-patch travel time and within-patch hunting time are distinct, and ...
+* ... independent of each other,
+* a forager encounters patches sequentially and randomly,
+* in a given patch, net expected energy gain is a function of time spent in the patch...
+* ...that is zero when $t=0$, and
+* ...increases with time, but then decelerates
+* the forager is omniscient - it knows everything about available patches and does not learn anything new as it forages (because it already know everything).
+
+The forager must decide how long to stay in the patch to maximize $R$. Let 
+$$R=\frac{g(t)}{t_t + t_r}$$
+where $t_t + t_r$ is the total time from leaving one patch, traveling to the next patch, foraging in the second patch, and then leaving the second patch. 
+
+Intuitively, we can imagine that the long term average rate of energy gain $R$ is unimodal (hump-shaped) in the following scenario. Upon encountering a patch the forager has no resources and thus $R$ is actually negative due to the costs of traveling to the new patch. As $t_r$ increases and the forager gains energy, $R$ will increase and become positive. An assumption of the theory (and reality) is that the gain function, $g(t_r)$, decelerates--the rate of energy intake declines as the patch is depleted. With increasing time in the patch and lower rate of energy intake, $R$ starts to decline. 
+
+Because $R$ is unimodal, we can use calculus to find its maximum. This will occur when its slope is zero, and the slope of a function, $F$, is its derivative, $F^\prime$. If we asssume that travel time is constant, then we can take the partial derivative of $R$ with respect to just the residence time, $t_r$, $\delta R / \delta t_r$. First, recall the product rule of differentiation: 
+$$F(x) = g(x)f(x)\quad ; \quad F^\prime(x) =f^\prime(x)g(x) +  f(x)g^\prime(x)$$
+With that we can find the necessary derivative.
+$$\frac{\delta R}{\delta t_r} = - \frac{1}{(t_t+t_r)^2} g(t_r) + \frac{1}{t_t+t_r}g^\prime(t_r)= \frac{(t_t+t_r)g^\prime(t_r) - g(t)}{(t_t+t_r)^2}$$
+When we solve $\delta R / \delta t_r = 0$, we discover that 
+$$g^\prime(t_r)=\frac{g(t_r)}{t_t + t_r}$$
+Now we see that 
+$$R  =\frac{g(t_r)}{t_t + t_r}= g^\prime(t_r)$$
+which tells us...that in order to maximize the long-term average rate, we should stay in a patch until the instanteous rate, $g^\prime(t_r)$ drops to the long term average rate, $R$.
+
+```{r marginal, echo=FALSE, fig.cap="Energy gain vs. time: The origin is when the forager enters the patch; to the left is time spent traveling from one patch to the next, and to the right is time spent in the patch. The graph represents two different habitats, one in which the patches are easy to get to (habitat 1), and another where it takes more time to get from patch to patch (habitat 2). In all cases, the patches are identical, having the same gain function. The curved line is the gain function, the net energy gain as a function of time spent in the patch. The slope of that curve is the derivative of the gain function. Its slope at any single time point is the instantaneous rate of gain. The two straight lines are the expected gains averaged over time for each habitat as a whole. Lambda is the rate at which a forager randomly encounters patches - because it is a Poisson process, the mean or expected time is 1/lambda. The forager should leave the patch when the instantaneous rate of gain in the patch equals the long term average rate of gain for the habitat as a whole.", out.width="100%" }
+knitr::include_graphics("figs/marginal-value.jpg")
+```
+
+The simple patch model predicts that when average travel time is greater, foragers will stay longer in a patch. Similarly, the model predicts that when patch quality is lower, foragers stay longer in each patch. Use Fig. \@ref(fig:marginal) to construct explanations for these predictions.
+
+**Just a starting point**  
+
+The simple prey and patch models have been extended a great deal to help understand a broad range of foraging situations [@Sih2011]. Simultaneous, rather than sequential, encounters can lead to different predictions. In these cases, energy alone, $e_i$, rather than profitability, $e_i/h_i$, may determine prey selection that maximizes the long term mean average rate. Travel time and encounter rates interact with this to explain contrasting situations. 
+
+Central place foragers play by slightly different rules [@Stephens1986]. Central place foragers are located in a single location, and remain there. For instance, a parent bird (or dinosaur) finds patches and returns repeatedly to the nest, bringing one or multiple prey items. With parent birds, their fitness depends on offspring viability, and so selection tends to optimize in a manner similar to an organism foraging for themselves. These cases have been built upon patch models, where the question is how to exploit patches that exist at different distances from the nest. 
+
+Another example of a central place forager is a spider that acts as a ambush or sit-and-wait predator who remains stationary until a prey item gets close enough to attack. One approach to the spider problem is to consider the distance to the prey as a handling cost and search costs are negligible.
+
+These simple foraging models provide the starting points for a field of inquiry spanning many decades. The interplay between these models, the natural history of species, and experiments have led to greater appreciation of why organisms behave as they do, and the consequences for their evolution and the food webs and ecosystems in which they reside.
+
+\newpage
+## A simulation of a prey model
+Next, we embark on a simulation of the simple prey model. We will start with these assumptions:
+
+* two prey types, $i = {1,2}$
+* ranked effective energy contents, $e_1 > e_2$
+* equal handling times, $h_1=h_2=1$
+* equal relative abundances, $r_1=r_2=0.5$
+* encounter rates determined by an overall prey encounter rate, $\lambda$, and the relative abundances where $\lambda_i = \lambda r_i$.
+* equal probability of attack if prey is encountered, $p_1=p_2=1$.
+* search cost is constant, $c_s=0.01$
+
+In addition to these properties, our simulation needs several bookkeeping parameters and variables in order to track the forager energy content. It will need to run for a finite amount of time; we'll control that with the total search time, `Total`. Remember that encounter rates are means but that actual encounters are random or stochastic. As a result, our forager may go through lean periods in which their net energy intake is negative.
+
+We need to keep track of total elapsed time, and for each cycle, the search time, search cost, handling time, and energy gain.
+
+```{r oft.sim, echo=TRUE}
+optimal.forager <- function(
+  e = c(2, 1), # energy content of the prey types
+  h = c(.5, .5), # handling times
+  r = c(.5, .5), # relative abundance of prey types: sum(r) = 1
+  lambda = 0.4, # overal encounter rate, for all prey combined
+  p = c(1,1), # prob. of attack if encountered
+  cs = 0.4, # cost of searching per unit time
+  Total = 10 # limit to foraging time
+  ) {
+###############
+### begin foraging
+ec <- NULL # an object to tally gains and costs.
+cycle <- 0 # the cycle count (= search, choose and maybe attack and eat)
+ct <- 0 # start time of the cyclesan object to tally cycle times.
+elapsed.time <- 0 # total time spent foraging
+while( elapsed.time < Total ) {
+  # count which search cycle we're on
+  (cycle <- cycle + 1)
+  
+  # a random amount of search time, t.s, until it finds something.
+  (lambda.r <- lambda * r)
+  (ts <- rexp(2, rate=lambda.r))
+  if(ts[1] < ts[2]) i <- 1 else i <- 2
+  i
+  # cost of searching for that time
+  (cost.s <- ts[i] * cs)
+
+  # choose to attack the encountered item with probability p
+  (gain <- if(p[i] > runif(1)){e[i]} else {0})
+  
+  # observed handling time 
+  if(gain > 0 ){
+    h.obs <- h[i]
+    h.obs
+  } else {
+    h.obs <- 0
+  }
+   h.obs
+ (cycle.time <- ts[i] + h.obs )
+ ct <- c(ct, cycle.time)
+ (elapsed.time <- elapsed.time + cycle.time)
+ (ec <- c(ec, gain - cost.s))
+}
+df <- data.frame(net.e = ec, cycle.start = cumsum(ct[1:cycle]))
+params <- list(e=e, h=h, r=r, lambda=lambda, p=p, cs=cs, Total=Total)
+  out <- list(N = cycle, G = sum(ec), Tt = sum(ct), 
+              series = df,
+              params = params)
+  return(out)
+}
+
+```
+
+Here we let the forager forage for 60 minutes and then examine the structure of the output object. 
+```{r echo=TRUE, keep.source=TRUE}
+myOut <- optimal.forager(Total=60)
+str(myOut)
+```
+
+* N is the number of foraging cycles
+* G is net energy gain
+* Tt is total elapsed time
+* series is a dataframe with two variables: net.e is energy gain minus search costs for each cycle, and cycle.start is the elapsed time at which each cycle starts
+* params is a list that includes all the parameters we used in this run
+
+Now let's graph something, because graphs are fun.
+```{r oft1, echo=TRUE, fig.cap="The cumulative energy capital of a forager goes down while searching and handling resource items, but increases each time the prey is assimilated."}
+
+ggplot(myOut$series, aes(x=cycle.start, y=cumsum(net.e))) + geom_line() 
+
+```
+
+*Use this simulation* to help solidify in your own mind predictions of the simple prey model. How should we do that?
+
+
+What is the prediction we are interested in?
+
+Prediction: Include type 2 if
+$$\frac{e_2}{h_2} > \frac{\lambda_1 e_1 }{1 + \lambda_1 h_1} (\#eq:prediction)$$
+
+
+```{r preypred, echo=FALSE, fig.cap="The right hand side of our prediction", fig.asp=.67, out.width="100%", fig.hold=TRUE}
+
+par(mar=c(5,4,1,0), mgp=c(1.5,.4,0) ) # set figure margins in "lines"
+layout(matrix(1:2, nr=1))
+with(as.list(myOut$params),{
+l1 <- lambda * r[1]
+  curve(l1*x/(1 + l1*h[1]), 0, 20, xlab=bquote(e[1]),
+      ylab=bquote( lambda[1]*e[1] / (1+lambda[1]*h[1])))
+abline(h=e[2]/h[2], lty=2); text(0, e[2]/h[2], bquote(e[2]/h[2]), adj=c(0,-.1))
+} )
+
+
+with(as.list(myOut$params),{
+l1 <- lambda * r[1]
+  curve(x*e[1]/(1 + x*h[1]), 0, 20, xlab=bquote(lambda[1]),
+      ylab=bquote( lambda*e[1] / (1+l1*h[1])))
+abline(h=e[2]/h[2], lty=2); text(0, e[2]/h[2], bquote(e[2]/h[2]), adj=c(0,-.1))
+} )
+
+```
+To get a sense of what our prediction \@ref(eq:prediction) means, we should graph the righthand quantity as a function of one relevant variable, such as energy content of type 1, or the encounter rate (Fig. \@ref(fig:preypred)).  The parameters that determined these curves are:
+```{r echo=TRUE, results='verbatim'}
+unlist( myOut$params )
+```
+
+### Lab exercise
+1. Do these parameter values suggest that our forager should or should not include prey type 1 in her diet?
+2. Create parameter combinations for which the forager (i) should and (ii) should not include prey type 2.
+3. Use the simulation `optimal.forager()` to confirm your predictions.
+
+
+
+```{r echo=FALSE, eval=FALSE}
+# One possibility is that we can run the simulation with two prey types 
+# setting e, h, and lambda to appropriate values. We then
+# run it with both types ( p = (1,1) ) and then only type 1 (p=(1,0)) and
+# then test whether G/T [both] is higher or lower than G/T [best only]
+
+prey.test <- function(Total=100,...) {
+  # run with both types
+  both <- optimal.forager(p=c(1,1),...)
+  # run with the better type only
+  best <- optimal.forager(p=c(1,0),...)
+  # Compare long term average energy gain as
+  # both / best, where > 1 argues for including both
+  (both$G/both$Tt) / (best$G/best$Tt)
+}
+
+reps <- replicate(5, prey.test(Total=10000, e=c(5,2), cs=.01) )
+reps
+# use summary to summarize your replicate simulations
+```

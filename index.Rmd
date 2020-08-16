@@ -1,0 +1,66 @@
+---
+title: "Primer of Ecology with R"
+author: "Hank Stevens"
+date: "`r Sys.Date()`"
+site: bookdown::bookdown_site
+delete_merged_file: true
+output:
+    # bookdown::tufte_book2:
+    #   includes:
+    #     in_header: preamble.tex
+    bookdown::gitbook
+documentclass: book
+bibliography: [/Volumes/GoogleDrive/My Drive/library.bib, book.bib, packages.bib]
+biblio-style: plain
+link-citations: yes
+github-repo: rstudio/bookdown-demo
+description: "A Primer of Ecology"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, results='markup', warning=FALSE,
+                      fig.path = "figs/", knitr.graphics.auto_pdf = TRUE,
+                      message=FALSE, out.width="90%")
+library(primer)
+library(deSolve)
+library(latticeExtra)
+library(tidyverse)
+theme_set(theme_minimal() + 
+theme(panel.grid.major = element_line(colour = "darkgrey"),
+      panel.grid.minor = element_line(colour = "darkgrey")) ) 
+theme(panel.grid.major = element_line(colour = "darkgrey"))
+cbPalette <- c("#000000", "#E69F00", "#56B4E9", "#009E73", 
+               "#F0E442", "#0072B2", "#D55E00", "#CC79A7")
+library(diagram)
+library(DiagrammeR)
+library(DiagrammeRsvg)
+library(knitr)
+library(tufte)
+library(reshape2)
+library(data.table)
+library(magrittr)
+library(kableExtra)
+library(rsvg)
+library(igraph)
+library(phaseR)
+
+```
+
+```{r include=FALSE}
+# automatically create a bib database for R packages
+knitr::write_bib(c(
+  .packages(), 'bookdown', 'knitr', 'rmarkdown'
+), 'packages.bib')
+```
+
+
+# Preface {-}
+
+\paragraph{Goals and audience}
+In spite of the presumptuous title, my goals for this book are modest. I wrote it as 
+\begin{itemize}
+  \item the manual I wish I had in graduate school, and
+\item a primer for our graduate course in Population and Community Ecology at Miami University\footnote{Miami University is located in the Miami River valley in Oxford, Ohio, USA; the region is home to the Myaamia tribe that dwelled here prior to European occupation.}
+\end{itemize}
+
+

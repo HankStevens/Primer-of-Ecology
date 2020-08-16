@@ -1,0 +1,642 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>2 Optimal Foraging | Primer of Ecology with R</title>
+  <meta name="description" content="A Primer of Ecology" />
+  <meta name="generator" content="bookdown 0.20 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="2 Optimal Foraging | Primer of Ecology with R" />
+  <meta property="og:type" content="book" />
+  
+  
+  <meta property="og:description" content="A Primer of Ecology" />
+  <meta name="github-repo" content="rstudio/bookdown-demo" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="2 Optimal Foraging | Primer of Ecology with R" />
+  
+  <meta name="twitter:description" content="A Primer of Ecology" />
+  
+
+<meta name="author" content="Hank Stevens" />
+
+
+<meta name="date" content="2020-08-16" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="theory.html"/>
+
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+<script src="libs/accessible-code-block-0.0.1/empty-anchor.js"></script>
+
+
+<style type="text/css">
+code.sourceCode > span { display: inline-block; line-height: 1.25; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Preface</a></li>
+<li class="chapter" data-level="1" data-path="theory.html"><a href="theory.html"><i class="fa fa-check"></i><b>1</b> Theory in Ecology</a><ul>
+<li class="chapter" data-level="1.1" data-path="theory.html"><a href="theory.html#examples-of-theories"><i class="fa fa-check"></i><b>1.1</b> Examples of theories</a><ul>
+<li class="chapter" data-level="1.1.1" data-path="theory.html"><a href="theory.html#hierarchy-theory"><i class="fa fa-check"></i><b>1.1.1</b> Hierarchy theory</a></li>
+<li class="chapter" data-level="1.1.2" data-path="theory.html"><a href="theory.html#a-general-theory-of-ecology"><i class="fa fa-check"></i><b>1.1.2</b> A general theory of ecology</a></li>
+<li class="chapter" data-level="1.1.3" data-path="theory.html"><a href="theory.html#efficient-theory"><i class="fa fa-check"></i><b>1.1.3</b> Efficient theory</a></li>
+</ul></li>
+<li class="chapter" data-level="1.2" data-path="theory.html"><a href="theory.html#metabolic_scaling"><i class="fa fa-check"></i><b>1.2</b> An example: Metabolic Theory of Ecology</a><ul>
+<li class="chapter" data-level="1.2.1" data-path="theory.html"><a href="theory.html#body-size-dependence"><i class="fa fa-check"></i><b>1.2.1</b> Body-size dependence</a></li>
+<li class="chapter" data-level="1.2.2" data-path="theory.html"><a href="theory.html#temperature-dependence"><i class="fa fa-check"></i><b>1.2.2</b> Temperature dependence</a></li>
+</ul></li>
+<li class="chapter" data-level="1.3" data-path="theory.html"><a href="theory.html#power-law-scaling-implies-constant-relative-differences"><i class="fa fa-check"></i><b>1.3</b> Power law scaling implies constant relative differences</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="oft.html"><a href="oft.html"><i class="fa fa-check"></i><b>2</b> Optimal Foraging</a><ul>
+<li class="chapter" data-level="2.1" data-path="oft.html"><a href="oft.html#a-prey-model"><i class="fa fa-check"></i><b>2.1</b> A prey model</a><ul>
+<li class="chapter" data-level="2.1.1" data-path="oft.html"><a href="oft.html#our-intuition"><i class="fa fa-check"></i><b>2.1.1</b> Our intuition</a></li>
+<li class="chapter" data-level="2.1.2" data-path="oft.html"><a href="oft.html#mathematical-support"><i class="fa fa-check"></i><b>2.1.2</b> Mathematical support</a></li>
+</ul></li>
+<li class="chapter" data-level="2.2" data-path="oft.html"><a href="oft.html#the-patch-model"><i class="fa fa-check"></i><b>2.2</b> The patch model</a></li>
+<li class="chapter" data-level="2.3" data-path="oft.html"><a href="oft.html#a-simulation-of-a-prey-model"><i class="fa fa-check"></i><b>2.3</b> A simulation of a prey model</a><ul>
+<li class="chapter" data-level="2.3.1" data-path="oft.html"><a href="oft.html#lab-exercise"><i class="fa fa-check"></i><b>2.3.1</b> Lab exercise</a></li>
+</ul></li>
+</ul></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Primer of Ecology with R</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="oft" class="section level1">
+<h1><span class="header-section-number">2</span> Optimal Foraging</h1>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="oft.html#cb7-1"></a>knitr<span class="op">::</span><span class="kw">include_graphics</span>(<span class="st">&quot;figs/CowieF3.png&quot;</span>)</span></code></pre></div>
+<div class="figure"><span id="fig:cowie"></span>
+<img src="figs/CowieF3.png" alt="Optimal foraging theory (OFT) generates testable quantitative predictions that allow a less ambiguous description and explanation for observed patterns and processes. Here, a simplistic model of Great Tit (Parus major) foraging that includes only gross energy intake underestimates the time spent in patches (dashed). In contrast, a model that includes energetic costs of traveling and searching matches predictions far better (solid).  From Cowie (1977)." width="75%" />
+<p class="caption">
+Figure 2.1: Optimal foraging theory (OFT) generates testable quantitative predictions that allow a less ambiguous description and explanation for observed patterns and processes. Here, a simplistic model of Great Tit (Parus major) foraging that includes only gross energy intake underestimates the time spent in patches (dashed). In contrast, a model that includes energetic costs of traveling and searching matches predictions far better (solid). From Cowie (1977).
+</p>
+</div>
+<p>It can be useful to think of natural selection as an optimizing process: phenotypes diversify, winners replicate and losers don’t, and the phenotypes of winners tend to get passed on to the replicants. Therefore, we often assume, as did Dr. Pangloss, that the species that exist now are the best of all possible species, that is, they are of optimal design. And like Dr. Pangloss, we would be woefully mistaken if we stopped there. Nonetheless, optimization, that is, the tendency toward an optimum, helps us generate testable hypotheses and we consider some of these below.</p>
+<p>Optimal Foraging Theory (OFT) helps us consider what organisms would do <em>if they foraged optimally.</em> All organisms–plants, fungi, archaea, and even animals–forage, and they are all subject to natural selection. Therefore, their phenotypes work pretty well, but probably not optimally and definitely not optimally for all times and places. Nonetheless, OFT is an efficient theory about the behavior of an organism, in the absence of other complications. Therefore, it allows us to study the relative importance of those “other complications.”</p>
+<p>Foraging is a key link between the individual, and communities and ecosystems <span class="citation">(Beckerman, Petchey, and Morin <a href="#ref-Beckerman2010" role="doc-biblioref">2010</a>)</span>. All organisms interact with their environment via consumption, and the choices they make influence population dynamics, species interactions, nutrient cycling, and even the physical structures of terrestrial and aquatic habitats. The text and logic of this chapter rely heavily on <span class="citation">Stephens and Krebs (<a href="#ref-Stephens1986" role="doc-biblioref">1986</a>)</span> and <span class="citation">Ellner (<a href="#ref-Ellner2009" role="doc-biblioref">2009</a>)</span>.</p>
+<p>In Scheiner and Willig’s edited volume on <em>The Theory of Ecology</em>, Andy Sih <span class="citation">(Sih <a href="#ref-Sih2011" role="doc-biblioref">2011</a>)</span> proposes that the following propositions form the basis of foraging theory:</p>
+<ol style="list-style-type: decimal">
+<li>Foraging patterns maximize fitness or a correlate of fitness.</li>
+<li>Foraging patterns depend on the range of options available to the forager and on how each available option affects fitness or a correlate of fitness.</li>
+<li>Foraging behaviour balances conflicting demands–tradeoffs are important in shaping foraging behaviour.</li>
+</ol>
+<p>These properties are the outcome of natural selection operating on foraging behavior. Our understanding of foraging itself considers these three features <span class="citation">(Stephens and Krebs <a href="#ref-Stephens1986" role="doc-biblioref">1986</a>)</span>:</p>
+<ul>
+<li>currency (what is being optimized),</li>
+<li>constraints (features of behaviour that limit optimality), and</li>
+<li>the resulting decision rules.</li>
+</ul>
+<p><em>Currency</em> is that quantity that is optimized by the forager. This currency is assumed to be a quantity that limits fitness, such as energy or a particular consumable resource. It measure it as a rate, for instance, energy gained per unit time (E/T) or the uptake of a critically limiting resource per unit time (R/T).</p>
+<p><em>Constraints</em> are limitations that we assume about organisms. These might include distances between resource patches, the time and costs associated with extracting a resource from a substrate or subduing prey. They also include constraints imposed by other species including competitors and predators. Constraints can get coplicated quickly; however, simple quanitative theory makes predictions against which we can evaluate more complicated assumptions.</p>
+<p><em>Decision rules</em> are what we ascribed to a forager’s choices. A decision rule concern the probability of attacking prey if encountered, or when to leave one resource patch in order to search for another.</p>
+<p>An additional way to think about all this is <em>where, when, and what.</em> A great deal of effort has focused on understanding patch use: <em>where</em> foragers should explore for resources, and <em>when</em> they should give up and go in search of another patch <span class="citation">(Charnov <a href="#ref-Charnov1976b" role="doc-biblioref">1976</a>)</span>. These are <strong>patch use</strong> models, and are based on economic models and the marginal value theorem.</p>
+<p>Another avenue of inquiry concerns <em>what</em> animals should eat. For instance, should they go after big prey that may be hard to catch and difficult to subdue, or just snack on what is easy? These are <strong>prey models</strong> or diet models, and attempt to explain why organisms consume what they do. Much like the patch models, theory attempts to predict which prey or resources organisms encounter, perceive, attack or “handle”, and which they ignore.</p>
+<p><em>A note on “prey”.</em> All organisms forage for resources. Plants extend branches toward the light, and proliferate leaves and roots into resource rich patches, and rhizomes grow longer faster through resource-poor soils. Bumblebees search for and learn where to find nectar-rich flowers, and wolves hunt in packs to take down large ungulates. Some bacterivorous nanoflagellates intercept particles selectively depending on the perceived nutritional value of particles <span class="citation">(Boenigk et al. <a href="#ref-Boenigk2002" role="doc-biblioref">2002</a>)</span>. So, depending on the forager, its “prey” may be <span class="math inline">\(\mathrm{NO}_{3}^-\)</span> ions, nectar, moose, or bacteria. Therefore, we will refer to these resources variously as prey, prey items, resources, and resource items. Some of these ideas are best handled with patch-based models <span class="citation">(Charnov <a href="#ref-Charnov1976b" role="doc-biblioref">1976</a>)</span> where a “resource patch” is a more intuitive and useful unit.</p>
+<p><em>A note on “handle”.</em> All organisms pays costs to consume resources. In OFT, “handle” typically means expending energy an time to attack and subdue prey (predators), proliferate into resource rich areas (plants), exude extra cellular enzymes (fungi); ingest the item(s), and then resume searching.</p>
+<div id="a-prey-model" class="section level2">
+<h2><span class="header-section-number">2.1</span> A prey model</h2>
+<p>Here the forager asks, “should I eat this?”<a href="#fn8" class="footnote-ref" id="fnref8"><sup>8</sup></a> Let’s start where this field started, with a prey-centered model <span class="citation">(MacArthur and Pianka <a href="#ref-MacArthur1966" role="doc-biblioref">1966</a>; Emlen <a href="#ref-Emlen1966" role="doc-biblioref">1966</a>)</span>.</p>
+
+<div id="our-intuition" class="section level3">
+<h3><span class="header-section-number">2.1.1</span> Our intuition</h3>
+<div class="figure"><span id="fig:ant"></span>
+<img src="figs/foraging_ant2.jpg" alt="The amount of energy lost and gained by a foraging ant--it may decline slowly over time while searching, and decline quickly while handling a food item. Our ant gains energy when it consumes an item. Below: Our ant. She expends energy while searching for food. Upon encountering a food item, she may choose to 'handle' it (encounters 1 and 3) and gain energy, or not handle it (encounter 2) and save the added cost of handling it." width="100%" />
+<p class="caption">
+Figure 2.2: The amount of energy lost and gained by a foraging ant–it may decline slowly over time while searching, and decline quickly while handling a food item. Our ant gains energy when it consumes an item. Below: Our ant. She expends energy while searching for food. Upon encountering a food item, she may choose to ‘handle’ it (encounters 1 and 3) and gain energy, or not handle it (encounter 2) and save the added cost of handling it.
+</p>
+</div>
+<p>What does our intuition tell us is the optimal strategy for foraging? It seems reasonable that if a forager encounters food, it should eat it. However, if handling it costs more than the forager gets back in energy, then it isn’t worth it. We might think of this as the ratio as <em>profitability</em>,
+<span class="math display">\[\frac{e_i}{h_i}\]</span>
+where <span class="math inline">\(e_i\)</span> is the energy in an item of type <span class="math inline">\(i\)</span>, and <span class="math inline">\(h_i\)</span> is the cost of handling said item. If <span class="math inline">\(e_i/h_i&lt;1\)</span>, then it doesn’t make sense to select the item. Further, handling an item means that the forager is <em>not</em> looking for a better food item. This suggests that even if <span class="math inline">\(e_i/h_i&gt;1\)</span>, a forager may not want to handle it if it is likely to soon encounter food items of higher energy content. On top of this, the act of searching may expose a forager to a risk of running into competing foragers, or even being eaten by a bigger forager. Clearly, a forager faces tradeoffs as it searches and when it encounters resources.</p>
+</div>
+<div id="mathematical-support" class="section level3">
+<h3><span class="header-section-number">2.1.2</span> Mathematical support</h3>
+<p>Let us assume that natural selection tends to maximize the currency, or <span class="math inline">\(G/T\)</span>. Our model will use these parameters and variables:</p>
+<ul>
+<li><span class="math inline">\(i =\)</span> index for prey type</li>
+<li><span class="math inline">\(p_i =\)</span> probability that a forager attacks prey if encountered (units are number handled per number encountered, or #/#; this is a dimensionless parameter)</li>
+<li><span class="math inline">\(S =\)</span> total time spent searching (units = seconds, <span class="math inline">\(s\)</span>).</li>
+<li><span class="math inline">\(T =\)</span> total elapsed time (units = s)</li>
+<li><span class="math inline">\(\lambda_i =\)</span> rate of encounter with prey of type <span class="math inline">\(i\)</span> (units = # encountered/s = <span class="math inline">\(\#/s\)</span>; note this can also be #/area × area/s, if we like).</li>
+<li><span class="math inline">\(e_i =\)</span> net energetic gain from catching and consuming a single type-<span class="math inline">\(i\)</span> prey item (units = Joules, J). This includes the gross energy of the item minus handling costs plus energy <em>not</em> lost by searching during that time.</li>
+<li><span class="math inline">\(h_i =\)</span> handling time for an item of type <span class="math inline">\(i\)</span>, (units = s/#).</li>
+<li><span class="math inline">\(c =\)</span> energy cost per unit of time while searching (units = J)</li>
+</ul>
+<p>From these definitions we can calculate other important quantities.</p>
+<ul>
+<li>Total number of items encountered of type <span class="math inline">\(i\)</span> is <span class="math inline">\(S\lambda_i\)</span> (units <span class="math inline">\(= s\, \#\,s^{-1} = \#\)</span>).</li>
+<li>Total number of type <span class="math inline">\(i\)</span> items handled is the proportion, <span class="math inline">\(p_i\)</span>, of those encountered that the foragers chooses to go after, or <span class="math inline">\(S\lambda_i p_i\)</span> (units = #).</li>
+<li>Total time spent <em>handling</em> all items of type <span class="math inline">\(i\)</span> is <span class="math inline">\(S\lambda_i p_i h_i\)</span> (units = s).</li>
+<li>Total elapsed time, <span class="math inline">\(T\)</span>, is time spent searching plus time spent handling, which is <span class="math inline">\(S + \sum_i^n S\lambda_i h_i p_i\)</span>. We use the summation to add together the total handling times for each prey or resource type <span class="math inline">\(i = \{1,\,2, \ldots ,\,n\}\)</span>.</li>
+</ul>
+<p><em>A note on <span class="math inline">\(\lambda\)</span></em> A forager encounters prey at random, and this is known as a “Poisson process”, where the number of encounters in a specified time interval is a random variable drawn from the Poisson probability distribution. It turns out that the <em>time between events</em> of a Poisson process follows the Exponential distribution. The Poisson distribution is determined by a single parameter, its mean. The Exponential distribution is also described by a single parameter, its <em>rate</em>. It turns out that we use the same <span class="math inline">\(\lambda\)</span> for both.</p>
+<p>We have combined many variables and parameters. How can we check the logical consistency? We do that by checking whether the units are the same in all terms of a model. Here we check units for total handling time, <span class="math inline">\(H = S\lambda_i p_i h_i\)</span> by replacing the variables and parameters with their units. The units for <span class="math inline">\(H\)</span> are seconds, so we have
+<span class="math display">\[\mathrm{s = s \frac{\#}{s} \frac{\#}{\#} \frac{s}{\#}}\]</span>
+When we multiply these fractions, we find that the <span class="math inline">\(\#\)</span>’s and two of the s’s cancel out and we are left with <span class="math inline">\(s=s\)</span>. This shows that our use of parameters and variables is at least logically consistent.</p>
+<p>The total energy gain from eating all the items is the number of items of each type <span class="math inline">\(i\)</span> handled times the net amount of energy per item of type <span class="math inline">\(i\)</span>, <span class="math inline">\(e_i\)</span>, <span class="math inline">\(\sum_{i=1}^n S\lambda_i p_i e_i\)</span>. Therefore, rate of energy intake while handling and eating is
+<span class="math display">\[\mathrm{intake} = \frac{\sum_{i=1}^n S\lambda_i p_i e_i}{S + \sum_{i=1}^n S\lambda_i h_i p_i}\]</span>
+If we also subtract the cost of searching, we arrive at the quantity we want to maximize, <span class="math display">\[\frac{\sum_{i=1}^n \lambda_i p_i e_i}{1 + \sum_{i=1}^n \lambda_i p_i h_i}-c\]</span></p>
+<p>A major question in OFT is whether a forager should include a particular prey type. Say we rank the prey types, <span class="math inline">\(i=\{1,2,...,m,...,n\}\)</span>, in terms of energy content, where type <span class="math inline">\(i=1\)</span> has the most energy per item, <span class="math inline">\(i=m\)</span> is intermediate, and type <span class="math inline">\(i=n\)</span> has the least. <em>Which items should a forager include in her diet?</em> Should it be only the most energy-dense, or should it include the second as well, or should it be all of them? Part of the answer rests on the ratio of energy gain versus handling costs, or profitability, <span class="math inline">\(e_i/h_i\)</span>.</p>
+<p>It turns out there is an useful rule, which we won’t derive mathematically: <em>A less energy-dense item should be added if its net energy content is greater than the realized energy gain from all the other items,</em> or</p>
+<p><span class="math display" id="eq:preypred1">\[\frac{e_{m+1}}{h_{m+1}} &gt; \frac{\sum_{i=1}^m \lambda_i e_i}{1 + \sum_{i=1}^{\tag{2.1}i} (#eq:preypred1)\]</span>
+where the diet already includes items 1-<span class="math inline">\(m\)</span>, and the <em>realized</em> energy content of the diet takes into account average encounter rates of each item type<a href="#fn9" class="footnote-ref" id="fnref9"><sup>9</sup></a> Implicit in this is the prediction that items of type <span class="math inline">\(i\)</span> should either always be selected or never be selected if encountered<a href="#fn10" class="footnote-ref" id="fnref10"><sup>10</sup></a>. (This can be shown algebraically). Thus, a particular type should always be included if the instantaneous net gain<a href="#fn11" class="footnote-ref" id="fnref11"><sup>11</sup></a> of that type is greater than the <em>realized long term average</em> net gain of all the more profitable types. The quantity on the right side of <a href="oft.html#eq:preypred1">(2.1)</a> takes into account the long term encounter rates <span class="math inline">\(\lambda_i\)</span> as well as search costs.</p>
+<p>Another prediction is that when encounter rates increase (as with increasing abundances), selectivity increases<a href="#fn12" class="footnote-ref" id="fnref12"><sup>12</sup></a>. Note that encounter rates are in the right hand side (RHS), so as they increase, so will that fraction on the right. That will make it harder for the above inequality to be true. If you don’t believe it, try this simplified version (Fig. <a href="oft.html#fig:selectivity">2.3</a>).</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="oft.html#cb8-1"></a>eq =<span class="st"> </span><span class="cf">function</span>(lambda){lambda<span class="op">/</span>(<span class="dv">1</span><span class="op">+</span>lambda)} <span class="co"># create the function you want</span></span>
+<span id="cb8-2"><a href="oft.html#cb8-2"></a>myData &lt;-<span class="st"> </span><span class="kw">data.frame</span>( <span class="dt">lambda=</span><span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">10</span>) ) <span class="co"># data you need</span></span>
+<span id="cb8-3"><a href="oft.html#cb8-3"></a><span class="kw">ggplot</span>(<span class="dt">data=</span>myData, <span class="kw">aes</span>(<span class="dt">x=</span>lambda)) <span class="op">+</span><span class="st"> </span><span class="co"># set the basic properties of the plot</span></span>
+<span id="cb8-4"><a href="oft.html#cb8-4"></a><span class="st">  </span><span class="co"># in the stat_function, we indicate the parameters in our equation.</span></span>
+<span id="cb8-5"><a href="oft.html#cb8-5"></a><span class="st">  </span><span class="kw">stat_function</span>(<span class="dt">fun=</span>eq, <span class="dt">geom=</span><span class="st">&quot;line&quot;</span>) <span class="op">+</span></span>
+<span id="cb8-6"><a href="oft.html#cb8-6"></a><span class="st">  </span><span class="kw">ylab</span>(<span class="kw">bquote</span>(<span class="kw">over</span>(lambda, <span class="dv">1</span> <span class="op">+</span><span class="st"> </span>lambda))) <span class="op">+</span><span class="st"> </span><span class="kw">xlab</span>(<span class="kw">bquote</span>(lambda))  <span class="co"># add labels</span></span></code></pre></div>
+<div class="figure"><span id="fig:selectivity"></span>
+<img src="figs/selectivity-1.png" alt="Selectivity increases with average encounter rates." width="60%" />
+<p class="caption">
+Figure 2.3: Selectivity increases with average encounter rates.
+</p>
+</div>
+<p>So how does this model fair in the real world? Well, the zero-one rule doesn’t work at all; it turns out that for a variety of reasons, foragers do not completely ignore low-profit prey. However, there is great support for the other two predictions (above) <span class="citation">(Stephens and Krebs <a href="#ref-Stephens1986" role="doc-biblioref">1986</a>)</span>. Most importantly, in all cases, the theory has provided a clear framework to generate testable predictions from unambiguous assumptions, and that is what we want from efficient theory. The model itself helped guide research, and inclusion of greater complexity has led to deeper understanding of behavior and its consequences for species interactions.</p>
+</div>
+</div>
+<div id="the-patch-model" class="section level2">
+<h2><span class="header-section-number">2.2</span> The patch model</h2>
+<p><em>…in which ominscient rationale agents roam free.</em></p>
+<p>Here the forager asks, “how long should I stay here?” In the simple <em>prey</em> model, a forager searches for and then encounters prey one at a time, makes a decision to consume or not, and then resumes searching. In a simple <em>patch</em> model, a forager searches for and encounters patches one at a time, first consumes resources and then makes a decision to leave or not. Perhaps the single most important prediction of the simple patch model is that a forager should leave a patch when its current rate of energy gain drops down to the average or expected rate of energy gain for the habitat at large.</p>
+<p>In what follows, we rely on <span class="citation">Charnov (<a href="#ref-Charnov1976b" role="doc-biblioref">1976</a>)</span>, who applies <em>the marginal-value theorem</em> to explain optimal behavior. Here, as in economics, “marginal value” refers to a rate - the slope of a function. In calculus, this is a derivative. Here, it is the derivative (i.e. slope) of the relation between energy gain and time.</p>
+<p>Let’s assume the simplest of all patch models: one patch type, all patches are the same, and they are distributed randomly in the habitat. Assume also that a forager uses time to travel between patches (travel time, <span class="math inline">\(t_t\)</span>) and time searching within a patch (residence time, <span class="math inline">\(t_r\)</span>). A forager encounters patches at random, with a rate of <span class="math inline">\(\lambda\)</span>, and as such, would have a mean time to next encounter of <span class="math inline">\(1/\lambda\)</span>.</p>
+The patch is characterisized by its <em>gain function</em> <span class="math inline">\(g(t_r)\)</span> (Fig. @ref{fig:gain)) which is the expected<a href="#fn13" class="footnote-ref" id="fnref13"><sup>13</sup></a>
+<em>cumulative net energy gained</em>, given time <span class="math inline">\(t_r\)</span> spent in the patch. The gain function is a cumulative total net amount. We can imagine different types of gain functions.
+<div class="figure"><span id="fig:gain"></span>
+<img src="figs/gain-1.png" alt="Net energy gain as a function of patch residence time may take different forms. Net energy gain increases through time but slows (decelerates) as a greater fraction of the resources in the patch are consumed. The top line (solid) assumes that there are diminishing returns as a patch is depleted, but the forager continues to find resources in excess of metabolic losses. The lower line (dashed) represents the net energy gain that could arise as a patch is depleted more fully and the costs continue unabated." width="75%" />
+<p class="caption">
+Figure 2.4: Net energy gain as a function of patch residence time may take different forms. Net energy gain increases through time but slows (decelerates) as a greater fraction of the resources in the patch are consumed. The top line (solid) assumes that there are diminishing returns as a patch is depleted, but the forager continues to find resources in excess of metabolic losses. The lower line (dashed) represents the net energy gain that could arise as a patch is depleted more fully and the costs continue unabated.
+</p>
+</div>
+<p><strong>Try this:</strong></p>
+<ol style="list-style-type: decimal">
+<li>Draw a gain function where the prey remain well hidden at first, but the forager becomes increasingly able to find more and more prey.</li>
+<li>Draw a gain function where there is no cost to foraging, and where the forager eventually depletes all the prey.</li>
+<li>In one graph, draw two gain functions for a resource rich patch and for a resource poor patch.</li>
+</ol>
+<p>So, our <em>currency</em> is long-term average energy intake, <span class="math inline">\(R\)</span>, and we want to maximize this. The <em>decision</em> our forager needs to make is how long to stay in a patch. The forager’s <em>constraints</em> share some similarity with the prey model <span class="citation">(Stephens and Krebs <a href="#ref-Stephens1986" role="doc-biblioref">1986</a>)</span>.</p>
+<ul>
+<li>between-patch travel time and within-patch hunting time are distinct, and …</li>
+<li>… independent of each other,</li>
+<li>a forager encounters patches sequentially and randomly,</li>
+<li>in a given patch, net expected energy gain is a function of time spent in the patch…</li>
+<li>…that is zero when <span class="math inline">\(t=0\)</span>, and</li>
+<li>…increases with time, but then decelerates</li>
+<li>the forager is omniscient - it knows everything about available patches and does not learn anything new as it forages (because it already know everything).</li>
+</ul>
+<p>The forager must decide how long to stay in the patch to maximize <span class="math inline">\(R\)</span>. Let
+<span class="math display">\[R=\frac{g(t)}{t_t + t_r}\]</span>
+where <span class="math inline">\(t_t + t_r\)</span> is the total time from leaving one patch, traveling to the next patch, foraging in the second patch, and then leaving the second patch.</p>
+<p>Intuitively, we can imagine that the long term average rate of energy gain <span class="math inline">\(R\)</span> is unimodal (hump-shaped) in the following scenario. Upon encountering a patch the forager has no resources and thus <span class="math inline">\(R\)</span> is actually negative due to the costs of traveling to the new patch. As <span class="math inline">\(t_r\)</span> increases and the forager gains energy, <span class="math inline">\(R\)</span> will increase and become positive. An assumption of the theory (and reality) is that the gain function, <span class="math inline">\(g(t_r)\)</span>, decelerates–the rate of energy intake declines as the patch is depleted. With increasing time in the patch and lower rate of energy intake, <span class="math inline">\(R\)</span> starts to decline.</p>
+<p>Because <span class="math inline">\(R\)</span> is unimodal, we can use calculus to find its maximum. This will occur when its slope is zero, and the slope of a function, <span class="math inline">\(F\)</span>, is its derivative, <span class="math inline">\(F^\prime\)</span>. If we asssume that travel time is constant, then we can take the partial derivative of <span class="math inline">\(R\)</span> with respect to just the residence time, <span class="math inline">\(t_r\)</span>, <span class="math inline">\(\delta R / \delta t_r\)</span>. First, recall the product rule of differentiation:
+<span class="math display">\[F(x) = g(x)f(x)\quad ; \quad F^\prime(x) =f^\prime(x)g(x) +  f(x)g^\prime(x)\]</span>
+With that we can find the necessary derivative.
+<span class="math display">\[\frac{\delta R}{\delta t_r} = - \frac{1}{(t_t+t_r)^2} g(t_r) + \frac{1}{t_t+t_r}g^\prime(t_r)= \frac{(t_t+t_r)g^\prime(t_r) - g(t)}{(t_t+t_r)^2}\]</span>
+When we solve <span class="math inline">\(\delta R / \delta t_r = 0\)</span>, we discover that
+<span class="math display">\[g^\prime(t_r)=\frac{g(t_r)}{t_t + t_r}\]</span>
+Now we see that
+<span class="math display">\[R  =\frac{g(t_r)}{t_t + t_r}= g^\prime(t_r)\]</span>
+which tells us…that in order to maximize the long-term average rate, we should stay in a patch until the instanteous rate, <span class="math inline">\(g^\prime(t_r)\)</span> drops to the long term average rate, <span class="math inline">\(R\)</span>.</p>
+<div class="figure"><span id="fig:marginal"></span>
+<img src="figs/marginal-value.jpg" alt="Energy gain vs. time: The origin is when the forager enters the patch; to the left is time spent traveling from one patch to the next, and to the right is time spent in the patch. The graph represents two different habitats, one in which the patches are easy to get to (habitat 1), and another where it takes more time to get from patch to patch (habitat 2). In all cases, the patches are identical, having the same gain function. The curved line is the gain function, the net energy gain as a function of time spent in the patch. The slope of that curve is the derivative of the gain function. Its slope at any single time point is the instantaneous rate of gain. The two straight lines are the expected gains averaged over time for each habitat as a whole. Lambda is the rate at which a forager randomly encounters patches - because it is a Poisson process, the mean or expected time is 1/lambda. The forager should leave the patch when the instantaneous rate of gain in the patch equals the long term average rate of gain for the habitat as a whole." width="100%" />
+<p class="caption">
+Figure 2.5: Energy gain vs. time: The origin is when the forager enters the patch; to the left is time spent traveling from one patch to the next, and to the right is time spent in the patch. The graph represents two different habitats, one in which the patches are easy to get to (habitat 1), and another where it takes more time to get from patch to patch (habitat 2). In all cases, the patches are identical, having the same gain function. The curved line is the gain function, the net energy gain as a function of time spent in the patch. The slope of that curve is the derivative of the gain function. Its slope at any single time point is the instantaneous rate of gain. The two straight lines are the expected gains averaged over time for each habitat as a whole. Lambda is the rate at which a forager randomly encounters patches - because it is a Poisson process, the mean or expected time is 1/lambda. The forager should leave the patch when the instantaneous rate of gain in the patch equals the long term average rate of gain for the habitat as a whole.
+</p>
+</div>
+<p>The simple patch model predicts that when average travel time is greater, foragers will stay longer in a patch. Similarly, the model predicts that when patch quality is lower, foragers stay longer in each patch. Use Fig. <a href="oft.html#fig:marginal">2.5</a> to construct explanations for these predictions.</p>
+<p><strong>Just a starting point</strong></p>
+<p>The simple prey and patch models have been extended a great deal to help understand a broad range of foraging situations <span class="citation">(Sih <a href="#ref-Sih2011" role="doc-biblioref">2011</a>)</span>. Simultaneous, rather than sequential, encounters can lead to different predictions. In these cases, energy alone, <span class="math inline">\(e_i\)</span>, rather than profitability, <span class="math inline">\(e_i/h_i\)</span>, may determine prey selection that maximizes the long term mean average rate. Travel time and encounter rates interact with this to explain contrasting situations.</p>
+<p>Central place foragers play by slightly different rules <span class="citation">(Stephens and Krebs <a href="#ref-Stephens1986" role="doc-biblioref">1986</a>)</span>. Central place foragers are located in a single location, and remain there. For instance, a parent bird (or dinosaur) finds patches and returns repeatedly to the nest, bringing one or multiple prey items. With parent birds, their fitness depends on offspring viability, and so selection tends to optimize in a manner similar to an organism foraging for themselves. These cases have been built upon patch models, where the question is how to exploit patches that exist at different distances from the nest.</p>
+<p>Another example of a central place forager is a spider that acts as a ambush or sit-and-wait predator who remains stationary until a prey item gets close enough to attack. One approach to the spider problem is to consider the distance to the prey as a handling cost and search costs are negligible.</p>
+<p>These simple foraging models provide the starting points for a field of inquiry spanning many decades. The interplay between these models, the natural history of species, and experiments have led to greater appreciation of why organisms behave as they do, and the consequences for their evolution and the food webs and ecosystems in which they reside.</p>
+<div style="page-break-after: always;"></div>
+</div>
+<div id="a-simulation-of-a-prey-model" class="section level2">
+<h2><span class="header-section-number">2.3</span> A simulation of a prey model</h2>
+<p>Next, we embark on a simulation of the simple prey model. We will start with these assumptions:</p>
+<ul>
+<li>two prey types, <span class="math inline">\(i = {1,2}\)</span></li>
+<li>ranked effective energy contents, <span class="math inline">\(e_1 &gt; e_2\)</span></li>
+<li>equal handling times, <span class="math inline">\(h_1=h_2=1\)</span></li>
+<li>equal relative abundances, <span class="math inline">\(r_1=r_2=0.5\)</span></li>
+<li>encounter rates determined by an overall prey encounter rate, <span class="math inline">\(\lambda\)</span>, and the relative abundances where <span class="math inline">\(\lambda_i = \lambda r_i\)</span>.</li>
+<li>equal probability of attack if prey is encountered, <span class="math inline">\(p_1=p_2=1\)</span>.</li>
+<li>search cost is constant, <span class="math inline">\(c_s=0.01\)</span></li>
+</ul>
+<p>In addition to these properties, our simulation needs several bookkeeping parameters and variables in order to track the forager energy content. It will need to run for a finite amount of time; we’ll control that with the total search time, <code>Total</code>. Remember that encounter rates are means but that actual encounters are random or stochastic. As a result, our forager may go through lean periods in which their net energy intake is negative.</p>
+<p>We need to keep track of total elapsed time, and for each cycle, the search time, search cost, handling time, and energy gain.</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="oft.html#cb9-1"></a>optimal.forager &lt;-<span class="st"> </span><span class="cf">function</span>(</span>
+<span id="cb9-2"><a href="oft.html#cb9-2"></a>  <span class="dt">e =</span> <span class="kw">c</span>(<span class="dv">2</span>, <span class="dv">1</span>), <span class="co"># energy content of the prey types</span></span>
+<span id="cb9-3"><a href="oft.html#cb9-3"></a>  <span class="dt">h =</span> <span class="kw">c</span>(.<span class="dv">5</span>, <span class="fl">.5</span>), <span class="co"># handling times</span></span>
+<span id="cb9-4"><a href="oft.html#cb9-4"></a>  <span class="dt">r =</span> <span class="kw">c</span>(.<span class="dv">5</span>, <span class="fl">.5</span>), <span class="co"># relative abundance of prey types: sum(r) = 1</span></span>
+<span id="cb9-5"><a href="oft.html#cb9-5"></a>  <span class="dt">lambda =</span> <span class="fl">0.4</span>, <span class="co"># overal encounter rate, for all prey combined</span></span>
+<span id="cb9-6"><a href="oft.html#cb9-6"></a>  <span class="dt">p =</span> <span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">1</span>), <span class="co"># prob. of attack if encountered</span></span>
+<span id="cb9-7"><a href="oft.html#cb9-7"></a>  <span class="dt">cs =</span> <span class="fl">0.4</span>, <span class="co"># cost of searching per unit time</span></span>
+<span id="cb9-8"><a href="oft.html#cb9-8"></a>  <span class="dt">Total =</span> <span class="dv">10</span> <span class="co"># limit to foraging time</span></span>
+<span id="cb9-9"><a href="oft.html#cb9-9"></a>  ) {</span>
+<span id="cb9-10"><a href="oft.html#cb9-10"></a><span class="co">###############</span></span>
+<span id="cb9-11"><a href="oft.html#cb9-11"></a><span class="co">### begin foraging</span></span>
+<span id="cb9-12"><a href="oft.html#cb9-12"></a>ec &lt;-<span class="st"> </span><span class="ot">NULL</span> <span class="co"># an object to tally gains and costs.</span></span>
+<span id="cb9-13"><a href="oft.html#cb9-13"></a>cycle &lt;-<span class="st"> </span><span class="dv">0</span> <span class="co"># the cycle count (= search, choose and maybe attack and eat)</span></span>
+<span id="cb9-14"><a href="oft.html#cb9-14"></a>ct &lt;-<span class="st"> </span><span class="dv">0</span> <span class="co"># start time of the cyclesan object to tally cycle times.</span></span>
+<span id="cb9-15"><a href="oft.html#cb9-15"></a>elapsed.time &lt;-<span class="st"> </span><span class="dv">0</span> <span class="co"># total time spent foraging</span></span>
+<span id="cb9-16"><a href="oft.html#cb9-16"></a><span class="cf">while</span>( elapsed.time <span class="op">&lt;</span><span class="st"> </span>Total ) {</span>
+<span id="cb9-17"><a href="oft.html#cb9-17"></a>  <span class="co"># count which search cycle we&#39;re on</span></span>
+<span id="cb9-18"><a href="oft.html#cb9-18"></a>  (cycle &lt;-<span class="st"> </span>cycle <span class="op">+</span><span class="st"> </span><span class="dv">1</span>)</span>
+<span id="cb9-19"><a href="oft.html#cb9-19"></a>  </span>
+<span id="cb9-20"><a href="oft.html#cb9-20"></a>  <span class="co"># a random amount of search time, t.s, until it finds something.</span></span>
+<span id="cb9-21"><a href="oft.html#cb9-21"></a>  (lambda.r &lt;-<span class="st"> </span>lambda <span class="op">*</span><span class="st"> </span>r)</span>
+<span id="cb9-22"><a href="oft.html#cb9-22"></a>  (ts &lt;-<span class="st"> </span><span class="kw">rexp</span>(<span class="dv">2</span>, <span class="dt">rate=</span>lambda.r))</span>
+<span id="cb9-23"><a href="oft.html#cb9-23"></a>  <span class="cf">if</span>(ts[<span class="dv">1</span>] <span class="op">&lt;</span><span class="st"> </span>ts[<span class="dv">2</span>]) i &lt;-<span class="st"> </span><span class="dv">1</span> <span class="cf">else</span> i &lt;-<span class="st"> </span><span class="dv">2</span></span>
+<span id="cb9-24"><a href="oft.html#cb9-24"></a>  i</span>
+<span id="cb9-25"><a href="oft.html#cb9-25"></a>  <span class="co"># cost of searching for that time</span></span>
+<span id="cb9-26"><a href="oft.html#cb9-26"></a>  (cost.s &lt;-<span class="st"> </span>ts[i] <span class="op">*</span><span class="st"> </span>cs)</span>
+<span id="cb9-27"><a href="oft.html#cb9-27"></a></span>
+<span id="cb9-28"><a href="oft.html#cb9-28"></a>  <span class="co"># choose to attack the encountered item with probability p</span></span>
+<span id="cb9-29"><a href="oft.html#cb9-29"></a>  (gain &lt;-<span class="st"> </span><span class="cf">if</span>(p[i] <span class="op">&gt;</span><span class="st"> </span><span class="kw">runif</span>(<span class="dv">1</span>)){e[i]} <span class="cf">else</span> {<span class="dv">0</span>})</span>
+<span id="cb9-30"><a href="oft.html#cb9-30"></a>  </span>
+<span id="cb9-31"><a href="oft.html#cb9-31"></a>  <span class="co"># observed handling time </span></span>
+<span id="cb9-32"><a href="oft.html#cb9-32"></a>  <span class="cf">if</span>(gain <span class="op">&gt;</span><span class="st"> </span><span class="dv">0</span> ){</span>
+<span id="cb9-33"><a href="oft.html#cb9-33"></a>    h.obs &lt;-<span class="st"> </span>h[i]</span>
+<span id="cb9-34"><a href="oft.html#cb9-34"></a>    h.obs</span>
+<span id="cb9-35"><a href="oft.html#cb9-35"></a>  } <span class="cf">else</span> {</span>
+<span id="cb9-36"><a href="oft.html#cb9-36"></a>    h.obs &lt;-<span class="st"> </span><span class="dv">0</span></span>
+<span id="cb9-37"><a href="oft.html#cb9-37"></a>  }</span>
+<span id="cb9-38"><a href="oft.html#cb9-38"></a>   h.obs</span>
+<span id="cb9-39"><a href="oft.html#cb9-39"></a> (cycle.time &lt;-<span class="st"> </span>ts[i] <span class="op">+</span><span class="st"> </span>h.obs )</span>
+<span id="cb9-40"><a href="oft.html#cb9-40"></a> ct &lt;-<span class="st"> </span><span class="kw">c</span>(ct, cycle.time)</span>
+<span id="cb9-41"><a href="oft.html#cb9-41"></a> (elapsed.time &lt;-<span class="st"> </span>elapsed.time <span class="op">+</span><span class="st"> </span>cycle.time)</span>
+<span id="cb9-42"><a href="oft.html#cb9-42"></a> (ec &lt;-<span class="st"> </span><span class="kw">c</span>(ec, gain <span class="op">-</span><span class="st"> </span>cost.s))</span>
+<span id="cb9-43"><a href="oft.html#cb9-43"></a>}</span>
+<span id="cb9-44"><a href="oft.html#cb9-44"></a>df &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">net.e =</span> ec, <span class="dt">cycle.start =</span> <span class="kw">cumsum</span>(ct[<span class="dv">1</span><span class="op">:</span>cycle]))</span>
+<span id="cb9-45"><a href="oft.html#cb9-45"></a>params &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="dt">e=</span>e, <span class="dt">h=</span>h, <span class="dt">r=</span>r, <span class="dt">lambda=</span>lambda, <span class="dt">p=</span>p, <span class="dt">cs=</span>cs, <span class="dt">Total=</span>Total)</span>
+<span id="cb9-46"><a href="oft.html#cb9-46"></a>  out &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="dt">N =</span> cycle, <span class="dt">G =</span> <span class="kw">sum</span>(ec), <span class="dt">Tt =</span> <span class="kw">sum</span>(ct), </span>
+<span id="cb9-47"><a href="oft.html#cb9-47"></a>              <span class="dt">series =</span> df,</span>
+<span id="cb9-48"><a href="oft.html#cb9-48"></a>              <span class="dt">params =</span> params)</span>
+<span id="cb9-49"><a href="oft.html#cb9-49"></a>  <span class="kw">return</span>(out)</span>
+<span id="cb9-50"><a href="oft.html#cb9-50"></a>}</span></code></pre></div>
+<p>Here we let the forager forage for 60 minutes and then examine the structure of the output object.</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="oft.html#cb10-1"></a>myOut &lt;-<span class="st"> </span><span class="kw">optimal.forager</span>(<span class="dt">Total=</span><span class="dv">60</span>)</span>
+<span id="cb10-2"><a href="oft.html#cb10-2"></a><span class="kw">str</span>(myOut)</span></code></pre></div>
+<pre><code>## List of 5
+##  $ N     : num 20
+##  $ G     : num 8.8
+##  $ Tt    : num 60.5
+##  $ series:&#39;data.frame&#39;:	20 obs. of  2 variables:
+##   ..$ net.e      : num [1:20] 0.225 0.204 0.552 -1.507 1.599 ...
+##   ..$ cycle.start: num [1:20] 0 2.44 7.43 9.05 18.31 ...
+##  $ params:List of 7
+##   ..$ e     : num [1:2] 2 1
+##   ..$ h     : num [1:2] 0.5 0.5
+##   ..$ r     : num [1:2] 0.5 0.5
+##   ..$ lambda: num 0.4
+##   ..$ p     : num [1:2] 1 1
+##   ..$ cs    : num 0.4
+##   ..$ Total : num 60</code></pre>
+<ul>
+<li>N is the number of foraging cycles</li>
+<li>G is net energy gain</li>
+<li>Tt is total elapsed time</li>
+<li>series is a dataframe with two variables: net.e is energy gain minus search costs for each cycle, and cycle.start is the elapsed time at which each cycle starts</li>
+<li>params is a list that includes all the parameters we used in this run</li>
+</ul>
+<p>Now let’s graph something, because graphs are fun.</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="oft.html#cb12-1"></a><span class="kw">ggplot</span>(myOut<span class="op">$</span>series, <span class="kw">aes</span>(<span class="dt">x=</span>cycle.start, <span class="dt">y=</span><span class="kw">cumsum</span>(net.e))) <span class="op">+</span><span class="st"> </span><span class="kw">geom_line</span>() </span></code></pre></div>
+<div class="figure"><span id="fig:oft1"></span>
+<img src="figs/oft1-1.png" alt="The cumulative energy capital of a forager goes down while searching and handling resource items, but increases each time the prey is assimilated." width="90%" />
+<p class="caption">
+Figure 2.6: The cumulative energy capital of a forager goes down while searching and handling resource items, but increases each time the prey is assimilated.
+</p>
+</div>
+<p><em>Use this simulation</em> to help solidify in your own mind predictions of the simple prey model. How should we do that?</p>
+<p>What is the prediction we are interested in?</p>
+<p>Prediction: Include type 2 if
+<span class="math display" id="eq:prediction">\[\frac{e_2}{h_2} &gt; \frac{\lambda_1 e_1 }{\tag{2.2}1} (#eq:prediction)\]</span></p>
+<div class="figure"><span id="fig:preypred"></span>
+<img src="figs/preypred-1.png" alt="The right hand side of our prediction" width="100%" />
+<p class="caption">
+Figure 2.7: The right hand side of our prediction
+</p>
+</div>
+<p>To get a sense of what our prediction <a href="oft.html#eq:prediction">(2.2)</a> means, we should graph the righthand quantity as a function of one relevant variable, such as energy content of type 1, or the encounter rate (Fig. <a href="oft.html#fig:preypred">2.7</a>). The parameters that determined these curves are:</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="oft.html#cb13-1"></a><span class="kw">unlist</span>( myOut<span class="op">$</span>params )</span></code></pre></div>
+<pre><code>##     e1     e2     h1     h2     r1     r2 lambda     p1     p2     cs  Total 
+##    2.0    1.0    0.5    0.5    0.5    0.5    0.4    1.0    1.0    0.4   60.0</code></pre>
+<div id="lab-exercise" class="section level3">
+<h3><span class="header-section-number">2.3.1</span> Lab exercise</h3>
+<ol style="list-style-type: decimal">
+<li>Do these parameter values suggest that our forager should or should not include prey type 1 in her diet?</li>
+<li>Create parameter combinations for which the forager (i) should and (ii) should not include prey type 2.</li>
+<li>Use the simulation <code>optimal.forager()</code> to confirm your predictions.</li>
+</ol>
+
+<div id="refs" class="references">
+<div>
+<p>Banavar, Jayanth R, John Damuth, Amos Maritan, Andrea Rinaldo, Geoffrey B West, and Brian J. Enquist. 2002. “Modelling universality and scaling - communications arising.” <em>Nature</em> 420 (December): 626–27.</p>
+</div>
+<div>
+<p>Banavar, J R, a Maritan, and a Rinaldo. 1999. “Size and form in efficient transportation networks.” <em>Nature</em> 399 (6732): 130–2.</p>
+</div>
+<div>
+<p>Banavar, J. R., M. E. Moses, J. H. Brown, J. Damuth, A. Rinaldo, R. M. Sibly, and A. Maritan. 2010. “A general basis for quarter-power scaling in animals.” <em>Proceedings of the National Academy of Sciences</em> 107 (36): 15816–20.</p>
+</div>
+<div>
+<p>Beckerman, Andrew, Owen L. Petchey, and Peter J. Morin. 2010. “Adaptive Foragers and Community Ecology: Linking Individuals to Communities and Ecosystems.” <em>Functional Ecology</em> 24 (1): 1–6. <a href="https://doi.org/10.1111/j.1365-2435.2009.01673.x">https://doi.org/10.1111/j.1365-2435.2009.01673.x</a>.</p>
+</div>
+<div>
+<p>Boenigk, J., C. Metz, K. Jürgens, and H. Arndt. 2002. “Food Concentration-Dependent Regulation of Food Selectivity of Interception Feeding Bacterivorous Nanoflagellates.” <em>Aquatic Microbial Ecology</em> 27: 195–202.</p>
+</div>
+<div>
+<p>Brown, J H, J F Gillooly, A P Allen, V M Savage, and G B West. 2004. “Toward a metabolic theory of ecology.” <em>Ecology</em> 85 (7): 1771–89.</p>
+</div>
+<div>
+<p>Charnov, E. L. 1976. “Optimal foraging theory: the marginal value theorem.” <em>Theoretical Population Biology</em> 9: 129–36.</p>
+</div>
+<div>
+<p>Ellner, S. P. 2009. “Lecture Notes, Bioee 4600 Theoretical Ecology , Cornell University.”</p>
+</div>
+<div>
+<p>Emlen, J. M. 1966. “The Role of Time and Energy in Food Preference.” <em>The American Naturalist</em> 100: 611–17.</p>
+</div>
+<div>
+<p>Gillooly, James F. 2000. “Effect of body size and temperature on generation time in zooplankton” 22 (2): 241–51.</p>
+</div>
+<div>
+<p>Glazier, Douglas S. 2018. “Rediscovering and Reviving Old Observations and Explanations of Metabolic Scaling in Living Systems.” <em>Systems</em> 6 (4).</p>
+</div>
+<div>
+<p>Kleiber, M. 1932. “Body Size and Metabolism.” <em>Hilgardia</em>, 315–32.</p>
+</div>
+<div>
+<p>MacArthur, R H, and E R Pianka. 1966. “On optimal use of a patchy environment.” <em>The American Naturalist</em> 100: 603–9.</p>
+</div>
+<div>
+<p>Marquet, Pablo A., Andrew P. Allen, James H. Brown, Jennifer A. Dunne, Brian J. Enquist, James F. Gillooly, Patricia A. Gowaty, et al. 2014. “On theory in ecology.” <em>BioScience</em> 64 (8): 701–10.</p>
+</div>
+<div>
+<p>Niklas, Karl J., and Brian J. Enquist. 2001. “Invariant scaling relationships for interspecific plant biomass production rates and body size.” <em>Proceedings of the National Academy of Sciences of the United States of America</em> 98 (5): 2922–7.</p>
+</div>
+<div>
+<p>O’Neill, RV, DL De Angelis, JB Waide, and TFH Allen. 1986. <em>A Hierarchical Concept of Ecosystems.</em> Vol. 23. Monographs in Population Biology. Princeton University Press, Princeton, New Jersey, USA.</p>
+</div>
+<div>
+<p>Rose, Kevin C., Rose A. Graves, Winslow D. Hansen, Brian J. Harvey, Jiangxiao Qiu, Stephen A. Wood, Carly Ziter, and Monica G. Turner. 2017. “Historical foundations and future directions in macrosystems ecology.” <em>Ecology Letters</em> 20 (2): 147–57.</p>
+</div>
+<div>
+<p>Scheiner, Samuel M. 2010. “Toward a conceptual framework for biology.” <em>Quarterly Review of Biology</em> 85 (3): 293–318.</p>
+</div>
+<div>
+<p>Scheiner, S M, and M. R. Willig. 2011. <em>The Theory of Ecology</em>.</p>
+</div>
+<div>
+<p>Sih, A. 2011. “Foraging Theory.” In, edited by S. M. Scheiner and M. R. Willig. Chicago, IL, USA: University of Chicago Press.</p>
+</div>
+<div>
+<p>Stephens, D W, and J R Krebs. 1986. <em>Foraging {T}heory</em>. Edited by J. R. Krebs and T. H. Clutton-Brock. Monographs in Behavior and Ecology. Princeton, University Press, Princeton, NJ, USA: Princeton University Press.</p>
+</div>
+<div>
+<p>West, G B, J H Brown, and B J Enquist. 1997. “A general model for the origin of allometric scaling laws in biology.” <em>Science</em> 276: 122–26.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h3>References</h3>
+<div id="refs" class="references">
+<div id="ref-Beckerman2010">
+<p>Beckerman, Andrew, Owen L. Petchey, and Peter J. Morin. 2010. “Adaptive Foragers and Community Ecology: Linking Individuals to Communities and Ecosystems.” <em>Functional Ecology</em> 24 (1): 1–6. <a href="https://doi.org/10.1111/j.1365-2435.2009.01673.x">https://doi.org/10.1111/j.1365-2435.2009.01673.x</a>.</p>
+</div>
+<div id="ref-Boenigk2002">
+<p>Boenigk, J., C. Metz, K. Jürgens, and H. Arndt. 2002. “Food Concentration-Dependent Regulation of Food Selectivity of Interception Feeding Bacterivorous Nanoflagellates.” <em>Aquatic Microbial Ecology</em> 27: 195–202.</p>
+</div>
+<div id="ref-Charnov1976b">
+<p>Charnov, E. L. 1976. “Optimal foraging theory: the marginal value theorem.” <em>Theoretical Population Biology</em> 9: 129–36.</p>
+</div>
+<div id="ref-Ellner2009">
+<p>Ellner, S. P. 2009. “Lecture Notes, Bioee 4600 Theoretical Ecology , Cornell University.”</p>
+</div>
+<div id="ref-Emlen1966">
+<p>Emlen, J. M. 1966. “The Role of Time and Energy in Food Preference.” <em>The American Naturalist</em> 100: 611–17.</p>
+</div>
+<div id="ref-MacArthur1966">
+<p>MacArthur, R H, and E R Pianka. 1966. “On optimal use of a patchy environment.” <em>The American Naturalist</em> 100: 603–9.</p>
+</div>
+<div id="ref-Sih2011">
+<p>Sih, A. 2011. “Foraging Theory.” In, edited by S. M. Scheiner and M. R. Willig. Chicago, IL, USA: University of Chicago Press.</p>
+</div>
+<div id="ref-Stephens1986">
+<p>Stephens, D W, and J R Krebs. 1986. <em>Foraging {T}heory</em>. Edited by J. R. Krebs and T. H. Clutton-Brock. Monographs in Behavior and Ecology. Princeton, University Press, Princeton, NJ, USA: Princeton University Press.</p>
+</div>
+</div>
+<div class="footnotes">
+<hr />
+<ol start="8">
+<li id="fn8"><p>whether “I” is a sugar maple tree or a human, most of us do not make this decision conciously…<a href="oft.html#fnref8" class="footnote-back">↩︎</a></p></li>
+<li id="fn9"><p>Prediction: foragers will rank prey types by their <em>profitability</em>, <span class="math inline">\(e/h\)</span>.<a href="oft.html#fnref9" class="footnote-back">↩︎</a></p></li>
+<li id="fn10"><p>Prediction: the zero-one rule: <span class="math inline">\(p_i \subset {0,\,1}\)</span><a href="oft.html#fnref10" class="footnote-back">↩︎</a></p></li>
+<li id="fn11"><p>Prediction: Inclusion of type <span class="math inline">\(m+1\)</span> in the diet does not depend on its encounter rate.<a href="oft.html#fnref11" class="footnote-back">↩︎</a></p></li>
+<li id="fn12"><p>Prediction: selectivity increases with average encounter rates.<a href="oft.html#fnref12" class="footnote-back">↩︎</a></p></li>
+<li id="fn13"><p>“expected” value of a variable is the mean of that variable, because that is what we expect given the absence of other knowledge<a href="oft.html#fnref13" class="footnote-back">↩︎</a></p></li>
+</ol>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="theory.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": null,
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>
