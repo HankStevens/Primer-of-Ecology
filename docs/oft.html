@@ -202,7 +202,7 @@ Figure 2.1: Optimal foraging theory (OFT) generates testable quantitative predic
 <p><em>A note on “handle”.</em> All organisms pays costs to consume resources. In OFT, “handle” typically means expending energy an time to attack and subdue prey (predators), proliferate into resource rich areas (plants), exude extra cellular enzymes (fungi); ingest the item(s), and then resume searching.</p>
 <div id="a-prey-model" class="section level2">
 <h2><span class="header-section-number">2.1</span> A prey model</h2>
-<p>Here the forager asks, “should I eat this?”<a href="#fn8" class="footnote-ref" id="fnref8"><sup>8</sup></a> Let’s start where this field started, with a prey-centered model <span class="citation">(MacArthur and Pianka <a href="#ref-MacArthur1966" role="doc-biblioref">1966</a>; Emlen <a href="#ref-Emlen1966" role="doc-biblioref">1966</a>)</span>.</p>
+<p>Here the forager asks, “should I eat this?”<a href="#fn9" class="footnote-ref" id="fnref9"><sup>9</sup></a> Let’s start where this field started, with a prey-centered model <span class="citation">(MacArthur and Pianka <a href="#ref-MacArthur1966" role="doc-biblioref">1966</a>; Emlen <a href="#ref-Emlen1966" role="doc-biblioref">1966</a>)</span>.</p>
 
 <div id="our-intuition" class="section level3">
 <h3><span class="header-section-number">2.1.1</span> Our intuition</h3>
@@ -246,8 +246,8 @@ If we also subtract the cost of searching, we arrive at the quantity we want to 
 <p>A major question in OFT is whether a forager should include a particular prey type. Say we rank the prey types, <span class="math inline">\(i=\{1,2,...,m,...,n\}\)</span>, in terms of energy content, where type <span class="math inline">\(i=1\)</span> has the most energy per item, <span class="math inline">\(i=m\)</span> is intermediate, and type <span class="math inline">\(i=n\)</span> has the least. <em>Which items should a forager include in her diet?</em> Should it be only the most energy-dense, or should it include the second as well, or should it be all of them? Part of the answer rests on the ratio of energy gain versus handling costs, or profitability, <span class="math inline">\(e_i/h_i\)</span>.</p>
 <p>It turns out there is an useful rule, which we won’t derive mathematically: <em>A less energy-dense item should be added if its net energy content is greater than the realized energy gain from all the other items,</em> or</p>
 <p><span class="math display" id="eq:preypred1">\[\frac{e_{m+1}}{h_{m+1}} &gt; \frac{\sum_{i=1}^m \lambda_i e_i}{1 + \sum_{i=1}^{\tag{2.1}i} (#eq:preypred1)\]</span>
-where the diet already includes items 1-<span class="math inline">\(m\)</span>, and the <em>realized</em> energy content of the diet takes into account average encounter rates of each item type<a href="#fn9" class="footnote-ref" id="fnref9"><sup>9</sup></a> Implicit in this is the prediction that items of type <span class="math inline">\(i\)</span> should either always be selected or never be selected if encountered<a href="#fn10" class="footnote-ref" id="fnref10"><sup>10</sup></a>. (This can be shown algebraically). Thus, a particular type should always be included if the instantaneous net gain<a href="#fn11" class="footnote-ref" id="fnref11"><sup>11</sup></a> of that type is greater than the <em>realized long term average</em> net gain of all the more profitable types. The quantity on the right side of <a href="oft.html#eq:preypred1">(2.1)</a> takes into account the long term encounter rates <span class="math inline">\(\lambda_i\)</span> as well as search costs.</p>
-<p>Another prediction is that when encounter rates increase (as with increasing abundances), selectivity increases<a href="#fn12" class="footnote-ref" id="fnref12"><sup>12</sup></a>. Note that encounter rates are in the right hand side (RHS), so as they increase, so will that fraction on the right. That will make it harder for the above inequality to be true. If you don’t believe it, try this simplified version (Fig. <a href="oft.html#fig:selectivity">2.3</a>).</p>
+where the diet already includes items 1-<span class="math inline">\(m\)</span>, and the <em>realized</em> energy content of the diet takes into account average encounter rates of each item type<a href="#fn10" class="footnote-ref" id="fnref10"><sup>10</sup></a> Implicit in this is the prediction that items of type <span class="math inline">\(i\)</span> should either always be selected or never be selected if encountered<a href="#fn11" class="footnote-ref" id="fnref11"><sup>11</sup></a>. (This can be shown algebraically). Thus, a particular type should always be included if the instantaneous net gain<a href="#fn12" class="footnote-ref" id="fnref12"><sup>12</sup></a> of that type is greater than the <em>realized long term average</em> net gain of all the more profitable types. The quantity on the right side of <a href="oft.html#eq:preypred1">(2.1)</a> takes into account the long term encounter rates <span class="math inline">\(\lambda_i\)</span> as well as search costs.</p>
+<p>Another prediction is that when encounter rates increase (as with increasing abundances), selectivity increases<a href="#fn13" class="footnote-ref" id="fnref13"><sup>13</sup></a>. Note that encounter rates are in the right hand side (RHS), so as they increase, so will that fraction on the right. That will make it harder for the above inequality to be true. If you don’t believe it, try this simplified version (Fig. <a href="oft.html#fig:selectivity">2.3</a>).</p>
 <div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="oft.html#cb7-1"></a>eq =<span class="st"> </span><span class="cf">function</span>(lambda){lambda<span class="op">/</span>(<span class="dv">1</span><span class="op">+</span>lambda)} <span class="co"># create the function you want</span></span>
 <span id="cb7-2"><a href="oft.html#cb7-2"></a>myData &lt;-<span class="st"> </span><span class="kw">data.frame</span>( <span class="dt">lambda=</span><span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">10</span>) ) <span class="co"># data you need</span></span>
 <span id="cb7-3"><a href="oft.html#cb7-3"></a><span class="kw">ggplot</span>(<span class="dt">data=</span>myData, <span class="kw">aes</span>(<span class="dt">x=</span>lambda)) <span class="op">+</span><span class="st"> </span><span class="co"># set the basic properties of the plot</span></span>
@@ -269,7 +269,7 @@ Figure 2.3: Selectivity increases with average encounter rates.
 <p>Here the forager asks, “how long should I stay here?” In the simple <em>prey</em> model, a forager searches for and then encounters prey one at a time, makes a decision to consume or not, and then resumes searching. In a simple <em>patch</em> model, a forager searches for and encounters patches one at a time, first consumes resources and then makes a decision to leave or not. Perhaps the single most important prediction of the simple patch model is that a forager should leave a patch when its current rate of energy gain drops down to the average or expected rate of energy gain for the habitat at large.</p>
 <p>In what follows, we rely on <span class="citation">Charnov (<a href="#ref-Charnov1976b" role="doc-biblioref">1976</a>)</span>, who applies <em>the marginal-value theorem</em> to explain optimal behavior. Here, as in economics, “marginal value” refers to a rate - the slope of a function. In calculus, this is a derivative. Here, it is the derivative (i.e. slope) of the relation between energy gain and time.</p>
 <p>Let’s assume the simplest of all patch models: one patch type, all patches are the same, and they are distributed randomly in the habitat. Assume also that a forager uses time to travel between patches (travel time, <span class="math inline">\(t_t\)</span>) and time searching within a patch (residence time, <span class="math inline">\(t_r\)</span>). A forager encounters patches at random, with a rate of <span class="math inline">\(\lambda\)</span>, and as such, would have a mean time to next encounter of <span class="math inline">\(1/\lambda\)</span>.</p>
-The patch is characterisized by its <em>gain function</em> <span class="math inline">\(g(t_r)\)</span> (Fig. @ref{fig:gain)) which is the expected<a href="#fn13" class="footnote-ref" id="fnref13"><sup>13</sup></a>
+The patch is characterisized by its <em>gain function</em> <span class="math inline">\(g(t_r)\)</span> (Fig. @ref{fig:gain)) which is the expected<a href="#fn14" class="footnote-ref" id="fnref14"><sup>14</sup></a>
 <em>cumulative net energy gained</em>, given time <span class="math inline">\(t_r\)</span> spent in the patch. The gain function is a cumulative total net amount. We can imagine different types of gain functions.
 <div class="figure"><span id="fig:gain"></span>
 <img src="figs/gain-1.png" alt="Net energy gain as a function of patch residence time may take different forms. Net energy gain increases through time but slows (decelerates) as a greater fraction of the resources in the patch are consumed. The top line (solid) assumes that there are diminishing returns as a patch is depleted, but the forager continues to find resources in excess of metabolic losses. The lower line (dashed) represents the net energy gain that could arise as a patch is depleted more fully and the costs continue unabated." width="75%" />
@@ -388,12 +388,12 @@ Figure 2.5: Energy gain vs. time: The origin is when the forager enters the pat
 <div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="oft.html#cb9-1"></a>myOut &lt;-<span class="st"> </span><span class="kw">optimal.forager</span>(<span class="dt">Total=</span><span class="dv">60</span>)</span>
 <span id="cb9-2"><a href="oft.html#cb9-2"></a><span class="kw">str</span>(myOut)</span></code></pre></div>
 <pre><code>## List of 5
-##  $ N     : num 18
-##  $ G     : num 6.53
-##  $ Tt    : num 60.2
-##  $ series:&#39;data.frame&#39;:	18 obs. of  2 variables:
-##   ..$ net.e      : num [1:18] -2.557 1.175 1.334 0.846 0.281 ...
-##   ..$ cycle.start: num [1:18] 0 11.9 14.5 16.6 17.5 ...
+##  $ N     : num 15
+##  $ G     : num 2.89
+##  $ Tt    : num 60.3
+##  $ series:&#39;data.frame&#39;:	15 obs. of  2 variables:
+##   ..$ net.e      : num [1:15] -2.14 1.43 0.35 1.89 -2.97 ...
+##   ..$ cycle.start: num [1:15] 0 10.9 12.8 14.9 15.7 ...
 ##  $ params:List of 7
 ##   ..$ e     : num [1:2] 2 1
 ##   ..$ h     : num [1:2] 0.5 0.5
@@ -528,6 +528,7 @@ Figure 2.7: The right hand side of our prediction
 
 
 
+
 <h3>References</h3>
 <div id="refs" class="references">
 <div id="ref-Beckerman2010">
@@ -557,13 +558,13 @@ Figure 2.7: The right hand side of our prediction
 </div>
 <div class="footnotes">
 <hr />
-<ol start="8">
-<li id="fn8"><p>whether “I” is a sugar maple tree or a human, most of us do not make this decision conciously…<a href="oft.html#fnref8" class="footnote-back">↩︎</a></p></li>
-<li id="fn9"><p>Prediction: foragers will rank prey types by their <em>profitability</em>, <span class="math inline">\(e/h\)</span>.<a href="oft.html#fnref9" class="footnote-back">↩︎</a></p></li>
-<li id="fn10"><p>Prediction: the zero-one rule: <span class="math inline">\(p_i \subset {0,\,1}\)</span><a href="oft.html#fnref10" class="footnote-back">↩︎</a></p></li>
-<li id="fn11"><p>Prediction: Inclusion of type <span class="math inline">\(m+1\)</span> in the diet does not depend on its encounter rate.<a href="oft.html#fnref11" class="footnote-back">↩︎</a></p></li>
-<li id="fn12"><p>Prediction: selectivity increases with average encounter rates.<a href="oft.html#fnref12" class="footnote-back">↩︎</a></p></li>
-<li id="fn13"><p>“expected” value of a variable is the mean of that variable, because that is what we expect given the absence of other knowledge<a href="oft.html#fnref13" class="footnote-back">↩︎</a></p></li>
+<ol start="9">
+<li id="fn9"><p>whether “I” is a sugar maple tree or a human, most of us do not make this decision conciously…<a href="oft.html#fnref9" class="footnote-back">↩︎</a></p></li>
+<li id="fn10"><p>Prediction: foragers will rank prey types by their <em>profitability</em>, <span class="math inline">\(e/h\)</span>.<a href="oft.html#fnref10" class="footnote-back">↩︎</a></p></li>
+<li id="fn11"><p>Prediction: the zero-one rule: <span class="math inline">\(p_i \subset {0,\,1}\)</span><a href="oft.html#fnref11" class="footnote-back">↩︎</a></p></li>
+<li id="fn12"><p>Prediction: Inclusion of type <span class="math inline">\(m+1\)</span> in the diet does not depend on its encounter rate.<a href="oft.html#fnref12" class="footnote-back">↩︎</a></p></li>
+<li id="fn13"><p>Prediction: selectivity increases with average encounter rates.<a href="oft.html#fnref13" class="footnote-back">↩︎</a></p></li>
+<li id="fn14"><p>“expected” value of a variable is the mean of that variable, because that is what we expect given the absence of other knowledge<a href="oft.html#fnref14" class="footnote-back">↩︎</a></p></li>
 </ol>
 </div>
             </section>
