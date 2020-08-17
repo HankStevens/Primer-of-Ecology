@@ -29,14 +29,17 @@ These properties are the outcome of natural selection operating on foraging beha
 
 An additional way to think about all this is *where, when, and what.* A great deal of effort has focused on understanding patch use: *where* foragers should explore for resources, and *when* they should give up and go in search of another patch [@Charnov1976b]. These are **patch use** models, and are based on economic models and the marginal value theorem. 
 
-Another avenue of inquiry concerns *what* animals should eat. For instance, should they go after big prey that may be hard to catch and difficult to subdue, or just snack on what is easy? These are **prey models** or diet models, and attempt to explain why organisms consume what they do. Much like the patch models, theory attempts to predict which prey or resources organisms encounter, perceive, attack or "handle", and which they ignore.
+Another avenue of inquiry concerns *what* animals should eat. For instance, should they go after big prey that may be hard to catch and difficult to subdue, or just snack on what is easy? These are **prey models** or diet models, and attempt to explain why organisms consume *what* they do. 
 
 *A note on "prey".* All organisms forage for resources. Plants extend branches toward the light, and proliferate leaves and roots into resource rich patches, and rhizomes grow longer faster through resource-poor soils. Bumblebees search for and learn where to find nectar-rich flowers, and wolves hunt in packs to take down large ungulates. Some bacterivorous nanoflagellates intercept particles selectively depending on the perceived nutritional value of particles [@Boenigk2002]. So, depending on the forager, its "prey" may be $\mathrm{NO}_{3}^-$ ions, nectar, moose, or bacteria. Therefore, we will refer to these resources variously as prey, prey items, resources, and resource items. Some of these ideas are best handled with patch-based models [@Charnov1976b] where a "resource patch" is a more intuitive and useful unit.
 
 *A note on "handle".* All organisms pays costs to consume resources. In OFT, "handle" typically means expending energy an time to attack and subdue prey (predators), proliferate into resource rich areas (plants), exude extra cellular enzymes (fungi); ingest the item(s), and then resume searching.
 
 ## A prey model
-Here the forager asks, "should I eat this?"^[whether "I" is a sugar maple tree or a human, most of us do not make this decision conciously...] Let's start where this field started, with a prey-centered model [@MacArthur1966; @Emlen1966]. 
+
+*...in which a forager asks, "should I eat this?"*^[whether "I" is a sugar maple tree or a human, most of us do not make this decision conciously...] 
+
+Let's start where this field started, with a prey-centered model [@MacArthur1966; @Emlen1966]. 
 
 \begin{itemize}
 \item Currency - long-term energy gain per unit time, $G/T$.
@@ -49,52 +52,66 @@ Here the forager asks, "should I eat this?"^[whether "I" is a sugar maple tree o
 \item Decision rules - the probability that a forager pauses from searching to handle an item.
 \end{itemize}
 
+The goal is to optimize the currency.
 
 ### Our intuition
-```{r ant, echo=FALSE, fig.cap="The amount of energy lost and gained by a foraging ant--it may decline slowly over time while searching, and decline quickly while handling a food item. Our ant gains energy when it consumes an item. Below: Our ant. She expends energy while searching for food. Upon encountering a food item, she may choose to 'handle' it (encounters 1 and 3) and gain energy, or not handle it (encounter 2) and save the added cost of handling it.", out.width="100%" }
+```{r ant, echo=FALSE, fig.cap="The amount of energy, E (y-axis), that is lost and gained by a foraging ant--it may decline slowly over time (x-axis) while searching, and decline quickly while handling a food item. Our ant gains energy when it consumes an item. Below: Our ant. She expends energy while searching for food. Upon encountering a food item, she may choose to 'handle' it (encounters 1 and 3) and gain energy, or not handle it (encounter 2) and save the added cost of handling it.", out.width="100%" }
 knitr::include_graphics("figs/foraging_ant2.jpg")
 ```
 
-What does our intuition tell us is the optimal strategy for foraging? It seems reasonable that if a forager encounters food, it should eat it. However, if handling it costs more than the forager gets back in energy, then it isn't worth it. We might think of this as the ratio as *profitability*,
+It seems reasonable that if a forager encounters food, it should eat it. However, if handling it costs more than the forager gets back in energy, then it isn't worth it. We might think of this as the ratio as *profitability*,
 $$\frac{e_i}{h_i}$$
 where $e_i$ is the energy in an item of type $i$, and $h_i$ is the cost of handling said item. If $e_i/h_i<1$, then it doesn't make sense to select the item. Further, handling an item means that the forager is *not* looking for a better food item. This suggests that even if $e_i/h_i>1$, a forager may not want to handle it if it is likely to soon encounter food items of higher energy content. On top of this, the act of searching may expose a forager to a risk of running into competing foragers, or even being eaten by a bigger forager. Clearly, a forager faces tradeoffs as it searches and when it encounters resources.
 
 ### Mathematical support
-Let us assume that natural selection tends to maximize the currency, or $G/T$. Our model will use these parameters and variables:
+Let's assume that natural selection tends to maximize the currency as Gain per unit Time, $G/T$. Our model will use these parameters and variables:
 
 * $i =$ index for prey type
+* $S =$ total time spent **searching** (units = seconds, $s$).
+* $\lambda_i =$ rate of encounter with prey of type $i$ (units = # encountered/s = $\#/s$; note this can also be #/area × area/s, if we like)^[A forager encounters prey at random, and this is known as a "Poisson process", where the number of encounters in a specified time interval is a random variable drawn from the Poisson probability distribution. It turns out that the *time between events* of a Poisson process follows the Exponential distribution. The Poisson distribution is determined by a single parameter, its mean. The Exponential distribution is also described by a single parameter, its *rate*. It turns out that we use the same $\lambda$ for both. }]
 * $p_i =$ probability that a forager attacks prey if encountered (units are number handled per number encountered, or #/#; this is a dimensionless parameter)
-* $S =$ total time spent searching (units = seconds, $s$).
-* $T =$ total elapsed time (units = s)
-* $\lambda_i =$ rate of encounter with prey of type $i$ (units = # encountered/s = $\#/s$; note this can also be #/area × area/s, if we like).
-* $e_i =$ net energetic gain from catching and consuming a single type-$i$ prey item (units = Joules, J). This includes the gross energy of the item minus handling costs plus energy *not* lost by searching during that time.
 * $h_i =$ handling time for an item of type $i$,  (units = s/#). 
-* $c =$ energy cost per unit of time while searching (units = J)
+* $T =$ **total** elapsed time (units = s)
 
 From these definitions we can calculate other important quantities.
 
-* Total number of items encountered of type $i$ is $S\lambda_i$ (units $= s\, \#\,s^{-1} = \#$).
-* Total number of type $i$ items handled is the proportion, $p_i$, of those encountered that the foragers chooses to go after, or $S\lambda_i p_i$ (units = #).
-* Total time spent *handling* all items of type $i$ is $S\lambda_i p_i h_i$ (units = s).
-* Total elapsed time, $T$, is time spent searching plus time spent handling, which is  $S + \sum_i^n S\lambda_i h_i p_i$. We use the summation to add together the total handling times for each prey or resource type $i = \{1,\,2, \ldots ,\,n\}$.
+**Total number of items** encountered of type $i$ is 
+$$S \lambda_i$$
 
-*A note on $\lambda$* A forager encounters prey at random, and this is known as a "Poisson process", where the number of encounters in a specified time interval is a random variable drawn from the Poisson probability distribution. It turns out that the *time between events* of a Poisson process follows the Exponential distribution. The Poisson distribution is determined by a single parameter, its mean. The Exponential distribution is also described by a single parameter, its *rate*. It turns out that we use the same $\lambda$ for both. 
+The units are $s\, \#\,s^{-1} = \#$.
 
-We have combined many variables and parameters. How can we check the logical consistency? We do that by checking whether the units are the same in all terms of a model. Here we check units for total handling time, $H = S\lambda_i p_i h_i$ by replacing the variables and parameters with their units. The units for $H$ are seconds, so we have
-$$\mathrm{s = s \frac{\#}{s} \frac{\#}{\#} \frac{s}{\#}}$$
-When we multiply these fractions, we find that the $\#$'s and two of the s's cancel out and we are left with $s=s$. This shows that our use of parameters and variables is at least logically consistent.
+**Total number of type $i$ items handled** is the proportion, $p_i$, of those encountered that the foragers chooses to go after, or 
+$$S\lambda_i p_i$$
+The units are $\#$.
 
+**Total time spent handling** all items of type $i$ is 
+$$H=S\lambda_i p_i h_i$$ 
+The units are $s$.^[We can check units for total handling time, $H = S\lambda_i p_i h_i$ by replacing the variables and parameters with their units. The units for $H$ are seconds, so we have $\mathrm{s = s \frac{\#}{s} \frac{\#}{\#} \frac{s}{\#}}$. When we multiply these fractions, we find that the $\#$s and two of the s's cancel out and we are left with $s=s$.]
 
-The total energy gain from eating all the items is the number of items of each type $i$ handled times the net amount of energy per item of type $i$, $e_i$, $\sum_{i=1}^n S\lambda_i p_i e_i$. Therefore, rate of energy intake while handling and eating is 
+**Total elapsed time** is time spent searching plus time spent handling, which is  
+$$T=S + \sum_i^n S\lambda_i h_i p_i$$
+where we use the summation to add together the total handling times for each prey or resource type $i = \{1,\,2, \ldots ,\,n\}$.
+
+Let 
+
+* $e_i =$ net energetic gain from catching and consuming a single type-i prey item (units = Joules, J). This includes the gross energy of the item minus handling costs plus energy not lost by searching during that time.
+* $c =$ energy cost per unit of time while searching (units = J).
+
+The total energy gain from eating all the items is the number of items of each type $i$ handled times the net amount of energy per item of type $i$, $e_i$, $$\sum_{i=1}^n S\lambda_i p_i e_i$$. 
+Units are $\# (\mathrm{J}/ \#) = \mathrm{J}$.
+
+Therefore, rate of energy intake (J/$s$) while handling and eating is 
 $$\mathrm{intake} = \frac{\sum_{i=1}^n S\lambda_i p_i e_i}{S + \sum_{i=1}^n S\lambda_i h_i p_i}$$
-If we also subtract the cost of searching, we arrive at the quantity we want to maximize, $$\frac{\sum_{i=1}^n \lambda_i p_i e_i}{1 + \sum_{i=1}^n \lambda_i p_i h_i}-c$$
-
-
+If we then subtract the cost of searching, we arrive at the quantity we want to maximize, 
+$$G/T=\frac{\sum_{i=1}^n \lambda_i p_i e_i}{1 + \sum_{i=1}^n \lambda_i p_i h_i}-c$$
 A major question in OFT is whether a forager should include a particular prey type. Say we rank the prey types, $i=\{1,2,...,m,...,n\}$, in terms of energy content, where type $i=1$ has the most energy per item, $i=m$ is intermediate, and type $i=n$ has the least. *Which items should a forager include in her diet?* Should it be only the most energy-dense, or should it include the second as well, or should it be all of them? Part of the answer rests on the ratio of energy gain versus handling costs, or profitability, $e_i/h_i$.
 
 It turns out there is an useful rule, which we won't derive mathematically: *A less energy-dense item should be added if its net energy content is greater than the realized energy gain from all the other items,* or 
 
-$$\frac{e_{m+1}}{h_{m+1}} > \frac{\sum_{i=1}^m \lambda_i e_i}{1 + \sum_{i=1}^{m} \lambda_i h_i} (\#eq:preypred1)$$
+\begin{equation}
+\frac{e_{m+1}}{h_{m+1}} > \frac{\sum_{i=1}^m \lambda_i e_i}{1 + \sum_{i=1}^{m} \lambda_i h_i} (\#eq:preypred1)
+\end{equation}
+
 where the diet already includes items 1-$m$, and the *realized* energy content of the diet takes into account average encounter rates of each item type^[Prediction: foragers will rank prey types by their *profitability*, $e/h$.] Implicit in this is the prediction that items of type $i$ should either always be selected or never be selected if encountered^[Prediction: the zero-one rule: $p_i \subset {0,\,1}$]. (This can be shown algebraically). Thus, a particular type should always be included if the instantaneous net gain^[Prediction: Inclusion of type $m+1$ in the diet does not depend on its encounter rate.] of that type is greater than the *realized long term average* net gain of all the more profitable types. The quantity on the right side of \@ref(eq:preypred1) takes into account the long term encounter rates $\lambda_i$ as well as search costs.
 
 Another prediction is that when encounter rates increase (as with increasing abundances), selectivity increases^[Prediction: selectivity increases with average encounter rates.]. Note that encounter rates are in the right hand side (RHS), so as they increase, so will that fraction on the right. That will make it harder for the above inequality to be true. If you don't believe it, try this simplified version (Fig. \@ref(fig:selectivity)).
