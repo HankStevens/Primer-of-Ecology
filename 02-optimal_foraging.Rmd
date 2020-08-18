@@ -97,37 +97,45 @@ Let
 * $e_i =$ net energetic gain from catching and consuming a single type-i prey item (units = Joules, J). This includes the gross energy of the item minus handling costs plus energy not lost by searching during that time.
 * $c =$ energy cost per unit of time while searching (units = J).
 
-The total energy gain from eating all the items is the number of items of each type $i$ handled times the net amount of energy per item of type $i$, $e_i$, $$\sum_{i=1}^n S\lambda_i p_i e_i$$. 
-Units are $\# (\mathrm{J}/ \#) = \mathrm{J}$.
+**Total energy gain** from eating all the items is the number of items of each type $i$ handled times the net amount of energy per item of type $i$, $e_i$, $$\sum_{i=1}^n S\lambda_i p_i e_i$$
+where units are $\# (\mathrm{J}/ \#) = \mathrm{J}$.
 
-Therefore, rate of energy intake (J/$s$) while handling and eating is 
+Therefore, **rate** of energy intake (J/$s$) while handling and eating is 
 $$\mathrm{intake} = \frac{\sum_{i=1}^n S\lambda_i p_i e_i}{S + \sum_{i=1}^n S\lambda_i h_i p_i}$$
 If we then subtract the cost of searching, we arrive at the quantity we want to maximize, 
 $$G/T=\frac{\sum_{i=1}^n \lambda_i p_i e_i}{1 + \sum_{i=1}^n \lambda_i p_i h_i}-c$$
 A major question in OFT is whether a forager should include a particular prey type. Say we rank the prey types, $i=\{1,2,...,m,...,n\}$, in terms of energy content, where type $i=1$ has the most energy per item, $i=m$ is intermediate, and type $i=n$ has the least. *Which items should a forager include in her diet?* Should it be only the most energy-dense, or should it include the second as well, or should it be all of them? Part of the answer rests on the ratio of energy gain versus handling costs, or profitability, $e_i/h_i$.
 
-It turns out there is an useful rule, which we won't derive mathematically: *A less energy-dense item should be added if its net energy content is greater than the realized energy gain from all the other items,* or 
+If we maximized $G/T$ with respect to $p_j$, we would be able to determine whether to include item $j$. Doing so leads to several predictions.
+
+**Prediction 1** *A less energy-dense item should be added if its net energy content is greater than the realized energy gain from all the other items,*
 
 \begin{equation}
 \frac{e_{m+1}}{h_{m+1}} > \frac{\sum_{i=1}^m \lambda_i e_i}{1 + \sum_{i=1}^{m} \lambda_i h_i} (\#eq:preypred1)
 \end{equation}
 
-where the diet already includes items 1-$m$, and the *realized* energy content of the diet takes into account average encounter rates of each item type^[Prediction: foragers will rank prey types by their *profitability*, $e/h$.] Implicit in this is the prediction that items of type $i$ should either always be selected or never be selected if encountered^[Prediction: the zero-one rule: $p_i \subset {0,\,1}$]. (This can be shown algebraically). Thus, a particular type should always be included if the instantaneous net gain^[Prediction: Inclusion of type $m+1$ in the diet does not depend on its encounter rate.] of that type is greater than the *realized long term average* net gain of all the more profitable types. The quantity on the right side of \@ref(eq:preypred1) takes into account the long term encounter rates $\lambda_i$ as well as search costs.
+where the diet already includes items 1-$m$, and the *realized* energy content of the diet takes into account average encounter rates of each item type. It means that a foraging will always select a particular type ($p_j =1$), or never select it ($p_j=0$); this is known as the "zero-one rule". 
 
-Another prediction is that when encounter rates increase (as with increasing abundances), selectivity increases^[Prediction: selectivity increases with average encounter rates.]. Note that encounter rates are in the right hand side (RHS), so as they increase, so will that fraction on the right. That will make it harder for the above inequality to be true. If you don't believe it, try this simplified version (Fig. \@ref(fig:selectivity)).
+**Prediction 2** Foragers will rank prey types by their profitability, $e/h$. 
+
+**Prediction 3** When encounter rates increase (as with increasing abundances), selectivity increases. Note that encounter rates are in the right hand side, so as they increase, so will that fraction on the right. That will make it harder for the above inequality to be true, and a forager will be pickier. If you don't believe it, try this simplified version (Fig. \@ref(fig:selectivity)).
+
 ```{r selectivity, echo=TRUE, fig.cap="Selectivity increases with average encounter rates.", out.width="60%", keep.source=TRUE}
-eq = function(lambda){lambda/(1+lambda)} # create the function you want
+
+G.T = function(lambda, h=1, e=1){lambda*e/(1+lambda*h)} # create the function you want
 myData <- data.frame( lambda=c(0, 10) ) # data you need
 ggplot(data=myData, aes(x=lambda)) + # set the basic properties of the plot
   # in the stat_function, we indicate the parameters in our equation.
   stat_function(fun=eq, geom="line") +
-  ylab(bquote(over(lambda, 1 + lambda))) + xlab(bquote(lambda))  # add labels
+  ylab(bquote(over(lambda*e, 1 + lambda*h))) + xlab(bquote(lambda))  # add labels
 ```
 
-So how does this model fair in the real world? Well, the zero-one rule doesn't work at all; it turns out that for a variety of reasons, foragers do not completely ignore low-profit prey. However, there is great support for the other two predictions (above) [@Stephens1986]. Most importantly, in all cases, the theory has provided a clear framework to generate testable predictions from unambiguous assumptions, and that is what we want from efficient theory. The model itself helped guide research, and inclusion of greater complexity has led to deeper understanding of behavior and its consequences for species interactions.
+**Prediction 4** Inclusion of type $m+1$ in the diet does not depend on its encounter rate. Thus, a particular type should be included if the instantaneous net gain of that type is greater than the *realized long term average* net gain of all the more profitable types. Note that encounter rate appears on the right hand side, but not the left. 
+
+So how does this model fair in the real world? Well, the zero-one rule doesn't work at all; it turns out that for a variety of reasons, foragers do not completely ignore low-profit prey. However, there is great support for the other predictions (above) [@Stephens1986]. Most importantly, in all cases, the theory has provided a clear framework to generate testable predictions from unambiguous assumptions, and that is what we want from efficient theory. The model itself helped guide research, and inclusion of greater complexity has led to deeper understanding of behavior and its consequences for species interactions.
 
 ## The patch model
-*...in which ominscient rationale agents roam free.*
+*...in which omniscient rationale agents roam free.*
 
 Here the forager asks, "how long should I stay here?" In the simple *prey* model, a forager searches for and then encounters prey one at a time, makes a decision to consume or not, and then resumes searching. In a simple *patch* model, a forager searches for and encounters patches one at a time, first consumes resources and then makes a decision to leave or not. Perhaps the single most important prediction of the simple patch model is that a forager should leave a patch when its current rate of energy gain drops down to the average or expected rate of energy gain for the habitat at large. 
 
@@ -135,7 +143,7 @@ In what follows, we rely on @Charnov1976b, who applies *the marginal-value theor
 
 Let's assume the simplest of all patch models: one patch type, all patches are the same, and they are distributed randomly in the habitat. Assume also that a forager uses time to travel between patches (travel time, $t_t$) and time searching within a patch (residence time, $t_r$). A forager encounters patches at random, with a rate of $\lambda$, and as such, would have a mean time to next encounter of $1/\lambda$. 
 
-The patch is characterisized by its *gain function* $g(t_r)$ (Fig. \@ref{fig:gain)) which is the expected^["expected" value of a variable is the mean of that variable, because that is what we expect given the absence of other knowledge]
+The patch is characterisized by its *gain function* $g(t_r)$ (Fig. \@ref(fig:gain)) which is the expected^["expected" value of a variable is the mean of that variable, because that is what we expect given the absence of other knowledge]
 *cumulative net energy gained*, given time $t_r$ spent in the patch. The gain function is a cumulative total net amount. We can imagine different types of gain functions.
 ```{r gain, echo=FALSE, fig.cap="Net energy gain as a function of patch residence time may take different forms. Net energy gain increases through time but slows (decelerates) as a greater fraction of the resources in the patch are consumed. The top line (solid) assumes that there are diminishing returns as a patch is depleted, but the forager continues to find resources in excess of metabolic losses. The lower line (dashed) represents the net energy gain that could arise as a patch is depleted more fully and the costs continue unabated.", out.width='75%'}
 eq1 <- function(tr) {.7 * tr/(.1+tr)}
@@ -163,23 +171,22 @@ So, our *currency* is long-term average energy intake, $R$, and we want to maxim
 * in a given patch, net expected energy gain is a function of time spent in the patch...
 * ...that is zero when $t=0$, and
 * ...increases with time, but then decelerates
-* the forager is omniscient - it knows everything about available patches and does not learn anything new as it forages (because it already know everything).
+* the forager is omniscient - it knows everything about available patches and does not learn anything new as it forages (because it already knows everything).
 
 The forager must decide how long to stay in the patch to maximize $R$. Let 
-$$R=\frac{g(t)}{t_t + t_r}$$
-where $t_t + t_r$ is the total time from leaving one patch, traveling to the next patch, foraging in the second patch, and then leaving the second patch. 
+$$R=\frac{g(t_r)}{t_t + t_r}$$
+where $t_t + t_r$ is the total time from leaving one patch, traveling to the next patch, foraging in the second patch, and then leaving the second patch. Think of this as benefit ($g(t)$) per unit time. This fraction is the slope of the straight line in Fig. \@ref(fig:marginal).
 
-Intuitively, we can imagine that the long term average rate of energy gain $R$ is unimodal (hump-shaped) in the following scenario. Upon encountering a patch the forager has no resources and thus $R$ is actually negative due to the costs of traveling to the new patch. As $t_r$ increases and the forager gains energy, $R$ will increase and become positive. An assumption of the theory (and reality) is that the gain function, $g(t_r)$, decelerates--the rate of energy intake declines as the patch is depleted. With increasing time in the patch and lower rate of energy intake, $R$ starts to decline. 
+Intuitively, we can imagine that the long term average rate of energy gain $R$ is unimodal (hump-shaped) in the following scenario (Fig. \@ref(fig:gain)). Upon encountering a patch the forager has no resources and thus $R$ is actually negative due to the costs of traveling to the new patch. As $t_r$ passes and and the forager gains energy ($g(t_r)$ increases), $R$ will increase and become positive. An assumption of the theory (and reality) is that the gain function, $g(t_r)$, decelerates--the rate of energy intake declines as the patch is depleted. With increasing time in the patch and lower rate of energy intake, $R$ starts to decline. 
 
-Because $R$ is unimodal, we can use calculus to find its maximum. This will occur when its slope is zero, and the slope of a function, $F$, is its derivative, $F^\prime$. If we asssume that travel time is constant, then we can take the partial derivative of $R$ with respect to just the residence time, $t_r$, $\delta R / \delta t_r$. First, recall the product rule of differentiation: 
+When $t_r$ is too short, $R$ is not yet maximizes. When $t_r$ is too long, $R$ begins to decline. Because $R$ is hump-shaped, we can use calculus to find its maximum. This will occur when its slope is zero, and the slope of a function, $F$, is its derivative, $F^\prime$. If we asssume that travel time is constant, then we can take the partial derivative of $R$ with respect to just the residence time, $t_r$, $\delta R / \delta t_r$. First, recall the product rule of differentiation: 
 $$F(x) = g(x)f(x)\quad ; \quad F^\prime(x) =f^\prime(x)g(x) +  f(x)g^\prime(x)$$
 With that we can find the necessary derivative.
 $$\frac{\delta R}{\delta t_r} = - \frac{1}{(t_t+t_r)^2} g(t_r) + \frac{1}{t_t+t_r}g^\prime(t_r)= \frac{(t_t+t_r)g^\prime(t_r) - g(t)}{(t_t+t_r)^2}$$
-When we solve $\delta R / \delta t_r = 0$, we discover that 
-$$g^\prime(t_r)=\frac{g(t_r)}{t_t + t_r}$$
-Now we see that 
-$$R  =\frac{g(t_r)}{t_t + t_r}= g^\prime(t_r)$$
-which tells us...that in order to maximize the long-term average rate, we should stay in a patch until the instanteous rate, $g^\prime(t_r)$ drops to the long term average rate, $R$.
+If we solved $\delta R / \delta t_r = 0$, we would discover that $R$ will be maximized when it equals the *slope* of gain function. That is,
+$$\frac{g(t_r)}{t_t + t_r} = g^\prime(t_r)$$
+
+This predicts that in order to maximize the long-term average rate, we should stay in a patch until the instantaneous rate, $g^\prime(t_r)$ drops to the long term average rate, $R$.
 
 ```{r marginal, echo=FALSE, fig.cap="Energy gain vs. time: The origin is when the forager enters the patch; to the left is time spent traveling from one patch to the next, and to the right is time spent in the patch. The graph represents two different habitats, one in which the patches are easy to get to (habitat 1), and another where it takes more time to get from patch to patch (habitat 2). In all cases, the patches are identical, having the same gain function. The curved line is the gain function, the net energy gain as a function of time spent in the patch. The slope of that curve is the derivative of the gain function. Its slope at any single time point is the instantaneous rate of gain. The two straight lines are the expected gains averaged over time for each habitat as a whole. Lambda is the rate at which a forager randomly encounters patches - because it is a Poisson process, the mean or expected time is 1/lambda. The forager should leave the patch when the instantaneous rate of gain in the patch equals the long term average rate of gain for the habitat as a whole.", out.width="100%" }
 knitr::include_graphics("figs/marginal-value.jpg")

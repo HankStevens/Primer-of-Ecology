@@ -247,41 +247,44 @@ where we use the summation to add together the total handling times for each pre
 <li><span class="math inline">\(e_i =\)</span> net energetic gain from catching and consuming a single type-i prey item (units = Joules, J). This includes the gross energy of the item minus handling costs plus energy not lost by searching during that time.</li>
 <li><span class="math inline">\(c =\)</span> energy cost per unit of time while searching (units = J).</li>
 </ul>
-<p>The total energy gain from eating all the items is the number of items of each type <span class="math inline">\(i\)</span> handled times the net amount of energy per item of type <span class="math inline">\(i\)</span>, <span class="math inline">\(e_i\)</span>, <span class="math display">\[\sum_{i=1}^n S\lambda_i p_i e_i\]</span>.
-Units are <span class="math inline">\(\# (\mathrm{J}/ \#) = \mathrm{J}\)</span>.</p>
-<p>Therefore, rate of energy intake (J/<span class="math inline">\(s\)</span>) while handling and eating is
+<p><strong>Total energy gain</strong> from eating all the items is the number of items of each type <span class="math inline">\(i\)</span> handled times the net amount of energy per item of type <span class="math inline">\(i\)</span>, <span class="math inline">\(e_i\)</span>, <span class="math display">\[\sum_{i=1}^n S\lambda_i p_i e_i\]</span>
+where units are <span class="math inline">\(\# (\mathrm{J}/ \#) = \mathrm{J}\)</span>.</p>
+<p>Therefore, <strong>rate</strong> of energy intake (J/<span class="math inline">\(s\)</span>) while handling and eating is
 <span class="math display">\[\mathrm{intake} = \frac{\sum_{i=1}^n S\lambda_i p_i e_i}{S + \sum_{i=1}^n S\lambda_i h_i p_i}\]</span>
 If we then subtract the cost of searching, we arrive at the quantity we want to maximize,
 <span class="math display">\[G/T=\frac{\sum_{i=1}^n \lambda_i p_i e_i}{1 + \sum_{i=1}^n \lambda_i p_i h_i}-c\]</span>
 A major question in OFT is whether a forager should include a particular prey type. Say we rank the prey types, <span class="math inline">\(i=\{1,2,...,m,...,n\}\)</span>, in terms of energy content, where type <span class="math inline">\(i=1\)</span> has the most energy per item, <span class="math inline">\(i=m\)</span> is intermediate, and type <span class="math inline">\(i=n\)</span> has the least. <em>Which items should a forager include in her diet?</em> Should it be only the most energy-dense, or should it include the second as well, or should it be all of them? Part of the answer rests on the ratio of energy gain versus handling costs, or profitability, <span class="math inline">\(e_i/h_i\)</span>.</p>
-<p>It turns out there is an useful rule, which we won’t derive mathematically: <em>A less energy-dense item should be added if its net energy content is greater than the realized energy gain from all the other items,</em> or</p>
+<p>If we maximized <span class="math inline">\(G/T\)</span> with respect to <span class="math inline">\(p_j\)</span>, we would be able to determine whether to include item <span class="math inline">\(j\)</span>. Doing so leads to several predictions.</p>
+<p><strong>Prediction 1</strong> <em>A less energy-dense item should be added if its net energy content is greater than the realized energy gain from all the other items,</em></p>
 <p><span class="math display" id="eq:preypred1">\[\begin{equation}
 \frac{e_{m+1}}{h_{m+1}} &gt; \frac{\sum_{i=1}^m \lambda_i e_i}{1 + \sum_{i=1}^{m} \lambda_i h_i} \tag{2.1}
 \end{equation}\]</span></p>
-<p>where the diet already includes items 1-<span class="math inline">\(m\)</span>, and the <em>realized</em> energy content of the diet takes into account average encounter rates of each item type<a href="#fn12" class="footnote-ref" id="fnref12"><sup>12</sup></a> Implicit in this is the prediction that items of type <span class="math inline">\(i\)</span> should either always be selected or never be selected if encountered<a href="#fn13" class="footnote-ref" id="fnref13"><sup>13</sup></a>. (This can be shown algebraically). Thus, a particular type should always be included if the instantaneous net gain<a href="#fn14" class="footnote-ref" id="fnref14"><sup>14</sup></a> of that type is greater than the <em>realized long term average</em> net gain of all the more profitable types. The quantity on the right side of <a href="oft.html#eq:preypred1">(2.1)</a> takes into account the long term encounter rates <span class="math inline">\(\lambda_i\)</span> as well as search costs.</p>
-<p>Another prediction is that when encounter rates increase (as with increasing abundances), selectivity increases<a href="#fn15" class="footnote-ref" id="fnref15"><sup>15</sup></a>. Note that encounter rates are in the right hand side (RHS), so as they increase, so will that fraction on the right. That will make it harder for the above inequality to be true. If you don’t believe it, try this simplified version (Fig. <a href="oft.html#fig:selectivity">2.3</a>).</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="oft.html#cb7-1"></a>eq =<span class="st"> </span><span class="cf">function</span>(lambda){lambda<span class="op">/</span>(<span class="dv">1</span><span class="op">+</span>lambda)} <span class="co"># create the function you want</span></span>
+<p>where the diet already includes items 1-<span class="math inline">\(m\)</span>, and the <em>realized</em> energy content of the diet takes into account average encounter rates of each item type. It means that a foraging will always select a particular type (<span class="math inline">\(p_j =1\)</span>), or never select it (<span class="math inline">\(p_j=0\)</span>); this is known as the “zero-one rule”.</p>
+<p><strong>Prediction 2</strong> Foragers will rank prey types by their profitability, <span class="math inline">\(e/h\)</span>.</p>
+<p><strong>Prediction 3</strong> When encounter rates increase (as with increasing abundances), selectivity increases. Note that encounter rates are in the right hand side, so as they increase, so will that fraction on the right. That will make it harder for the above inequality to be true, and a forager will be pickier. If you don’t believe it, try this simplified version (Fig. <a href="oft.html#fig:selectivity">2.3</a>).</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="oft.html#cb7-1"></a>G.T =<span class="st"> </span><span class="cf">function</span>(lambda, <span class="dt">h=</span><span class="dv">1</span>, <span class="dt">e=</span><span class="dv">1</span>){lambda<span class="op">*</span>e<span class="op">/</span>(<span class="dv">1</span><span class="op">+</span>lambda<span class="op">*</span>h)} <span class="co"># create the function you want</span></span>
 <span id="cb7-2"><a href="oft.html#cb7-2"></a>myData &lt;-<span class="st"> </span><span class="kw">data.frame</span>( <span class="dt">lambda=</span><span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">10</span>) ) <span class="co"># data you need</span></span>
 <span id="cb7-3"><a href="oft.html#cb7-3"></a><span class="kw">ggplot</span>(<span class="dt">data=</span>myData, <span class="kw">aes</span>(<span class="dt">x=</span>lambda)) <span class="op">+</span><span class="st"> </span><span class="co"># set the basic properties of the plot</span></span>
 <span id="cb7-4"><a href="oft.html#cb7-4"></a><span class="st">  </span><span class="co"># in the stat_function, we indicate the parameters in our equation.</span></span>
 <span id="cb7-5"><a href="oft.html#cb7-5"></a><span class="st">  </span><span class="kw">stat_function</span>(<span class="dt">fun=</span>eq, <span class="dt">geom=</span><span class="st">&quot;line&quot;</span>) <span class="op">+</span></span>
-<span id="cb7-6"><a href="oft.html#cb7-6"></a><span class="st">  </span><span class="kw">ylab</span>(<span class="kw">bquote</span>(<span class="kw">over</span>(lambda, <span class="dv">1</span> <span class="op">+</span><span class="st"> </span>lambda))) <span class="op">+</span><span class="st"> </span><span class="kw">xlab</span>(<span class="kw">bquote</span>(lambda))  <span class="co"># add labels</span></span></code></pre></div>
+<span id="cb7-6"><a href="oft.html#cb7-6"></a><span class="st">  </span><span class="kw">ylab</span>(<span class="kw">bquote</span>(<span class="kw">over</span>(lambda<span class="op">*</span>e, <span class="dv">1</span> <span class="op">+</span><span class="st"> </span>lambda<span class="op">*</span>h))) <span class="op">+</span><span class="st"> </span><span class="kw">xlab</span>(<span class="kw">bquote</span>(lambda))  <span class="co"># add labels</span></span></code></pre></div>
 <div class="figure"><span id="fig:selectivity"></span>
 <img src="figs/selectivity-1.png" alt="Selectivity increases with average encounter rates." width="60%" />
 <p class="caption">
 Figure 2.3: Selectivity increases with average encounter rates.
 </p>
 </div>
-<p>So how does this model fair in the real world? Well, the zero-one rule doesn’t work at all; it turns out that for a variety of reasons, foragers do not completely ignore low-profit prey. However, there is great support for the other two predictions (above) <span class="citation">(Stephens and Krebs <a href="#ref-Stephens1986" role="doc-biblioref">1986</a>)</span>. Most importantly, in all cases, the theory has provided a clear framework to generate testable predictions from unambiguous assumptions, and that is what we want from efficient theory. The model itself helped guide research, and inclusion of greater complexity has led to deeper understanding of behavior and its consequences for species interactions.</p>
+<p><strong>Prediction 4</strong> Inclusion of type <span class="math inline">\(m+1\)</span> in the diet does not depend on its encounter rate. Thus, a particular type should be included if the instantaneous net gain of that type is greater than the <em>realized long term average</em> net gain of all the more profitable types. Note that encounter rate appears on the right hand side, but not the left.</p>
+<p>So how does this model fair in the real world? Well, the zero-one rule doesn’t work at all; it turns out that for a variety of reasons, foragers do not completely ignore low-profit prey. However, there is great support for the other predictions (above) <span class="citation">(Stephens and Krebs <a href="#ref-Stephens1986" role="doc-biblioref">1986</a>)</span>. Most importantly, in all cases, the theory has provided a clear framework to generate testable predictions from unambiguous assumptions, and that is what we want from efficient theory. The model itself helped guide research, and inclusion of greater complexity has led to deeper understanding of behavior and its consequences for species interactions.</p>
 </div>
 </div>
 <div id="the-patch-model" class="section level2">
 <h2><span class="header-section-number">2.2</span> The patch model</h2>
-<p><em>…in which ominscient rationale agents roam free.</em></p>
+<p><em>…in which omniscient rationale agents roam free.</em></p>
 <p>Here the forager asks, “how long should I stay here?” In the simple <em>prey</em> model, a forager searches for and then encounters prey one at a time, makes a decision to consume or not, and then resumes searching. In a simple <em>patch</em> model, a forager searches for and encounters patches one at a time, first consumes resources and then makes a decision to leave or not. Perhaps the single most important prediction of the simple patch model is that a forager should leave a patch when its current rate of energy gain drops down to the average or expected rate of energy gain for the habitat at large.</p>
 <p>In what follows, we rely on <span class="citation">Charnov (<a href="#ref-Charnov1976b" role="doc-biblioref">1976</a>)</span>, who applies <em>the marginal-value theorem</em> to explain optimal behavior. Here, as in economics, “marginal value” refers to a rate - the slope of a function. In calculus, this is a derivative. Here, it is the derivative (i.e. slope) of the relation between energy gain and time.</p>
 <p>Let’s assume the simplest of all patch models: one patch type, all patches are the same, and they are distributed randomly in the habitat. Assume also that a forager uses time to travel between patches (travel time, <span class="math inline">\(t_t\)</span>) and time searching within a patch (residence time, <span class="math inline">\(t_r\)</span>). A forager encounters patches at random, with a rate of <span class="math inline">\(\lambda\)</span>, and as such, would have a mean time to next encounter of <span class="math inline">\(1/\lambda\)</span>.</p>
-The patch is characterisized by its <em>gain function</em> <span class="math inline">\(g(t_r)\)</span> (Fig. @ref{fig:gain)) which is the expected<a href="#fn16" class="footnote-ref" id="fnref16"><sup>16</sup></a>
+The patch is characterisized by its <em>gain function</em> <span class="math inline">\(g(t_r)\)</span> (Fig. <a href="oft.html#fig:gain">2.4</a>) which is the expected<a href="#fn12" class="footnote-ref" id="fnref12"><sup>12</sup></a>
 <em>cumulative net energy gained</em>, given time <span class="math inline">\(t_r\)</span> spent in the patch. The gain function is a cumulative total net amount. We can imagine different types of gain functions.
 <div class="figure"><span id="fig:gain"></span>
 <img src="figs/gain-1.png" alt="Net energy gain as a function of patch residence time may take different forms. Net energy gain increases through time but slows (decelerates) as a greater fraction of the resources in the patch are consumed. The top line (solid) assumes that there are diminishing returns as a patch is depleted, but the forager continues to find resources in excess of metabolic losses. The lower line (dashed) represents the net energy gain that could arise as a patch is depleted more fully and the costs continue unabated." width="75%" />
@@ -303,21 +306,19 @@ Figure 2.4: Net energy gain as a function of patch residence time may take diffe
 <li>in a given patch, net expected energy gain is a function of time spent in the patch…</li>
 <li>…that is zero when <span class="math inline">\(t=0\)</span>, and</li>
 <li>…increases with time, but then decelerates</li>
-<li>the forager is omniscient - it knows everything about available patches and does not learn anything new as it forages (because it already know everything).</li>
+<li>the forager is omniscient - it knows everything about available patches and does not learn anything new as it forages (because it already knows everything).</li>
 </ul>
 <p>The forager must decide how long to stay in the patch to maximize <span class="math inline">\(R\)</span>. Let
-<span class="math display">\[R=\frac{g(t)}{t_t + t_r}\]</span>
-where <span class="math inline">\(t_t + t_r\)</span> is the total time from leaving one patch, traveling to the next patch, foraging in the second patch, and then leaving the second patch.</p>
-<p>Intuitively, we can imagine that the long term average rate of energy gain <span class="math inline">\(R\)</span> is unimodal (hump-shaped) in the following scenario. Upon encountering a patch the forager has no resources and thus <span class="math inline">\(R\)</span> is actually negative due to the costs of traveling to the new patch. As <span class="math inline">\(t_r\)</span> increases and the forager gains energy, <span class="math inline">\(R\)</span> will increase and become positive. An assumption of the theory (and reality) is that the gain function, <span class="math inline">\(g(t_r)\)</span>, decelerates–the rate of energy intake declines as the patch is depleted. With increasing time in the patch and lower rate of energy intake, <span class="math inline">\(R\)</span> starts to decline.</p>
-<p>Because <span class="math inline">\(R\)</span> is unimodal, we can use calculus to find its maximum. This will occur when its slope is zero, and the slope of a function, <span class="math inline">\(F\)</span>, is its derivative, <span class="math inline">\(F^\prime\)</span>. If we asssume that travel time is constant, then we can take the partial derivative of <span class="math inline">\(R\)</span> with respect to just the residence time, <span class="math inline">\(t_r\)</span>, <span class="math inline">\(\delta R / \delta t_r\)</span>. First, recall the product rule of differentiation:
+<span class="math display">\[R=\frac{g(t_r)}{t_t + t_r}\]</span>
+where <span class="math inline">\(t_t + t_r\)</span> is the total time from leaving one patch, traveling to the next patch, foraging in the second patch, and then leaving the second patch. Think of this as benefit (<span class="math inline">\(g(t)\)</span>) per unit time. This fraction is the slope of the straight line in Fig. <a href="oft.html#fig:marginal">2.5</a>.</p>
+<p>Intuitively, we can imagine that the long term average rate of energy gain <span class="math inline">\(R\)</span> is unimodal (hump-shaped) in the following scenario (Fig. <a href="oft.html#fig:gain">2.4</a>). Upon encountering a patch the forager has no resources and thus <span class="math inline">\(R\)</span> is actually negative due to the costs of traveling to the new patch. As <span class="math inline">\(t_r\)</span> passes and and the forager gains energy (<span class="math inline">\(g(t_r)\)</span> increases), <span class="math inline">\(R\)</span> will increase and become positive. An assumption of the theory (and reality) is that the gain function, <span class="math inline">\(g(t_r)\)</span>, decelerates–the rate of energy intake declines as the patch is depleted. With increasing time in the patch and lower rate of energy intake, <span class="math inline">\(R\)</span> starts to decline.</p>
+<p>When <span class="math inline">\(t_r\)</span> is too short, <span class="math inline">\(R\)</span> is not yet maximizes. When <span class="math inline">\(t_r\)</span> is too long, <span class="math inline">\(R\)</span> begins to decline. Because <span class="math inline">\(R\)</span> is hump-shaped, we can use calculus to find its maximum. This will occur when its slope is zero, and the slope of a function, <span class="math inline">\(F\)</span>, is its derivative, <span class="math inline">\(F^\prime\)</span>. If we asssume that travel time is constant, then we can take the partial derivative of <span class="math inline">\(R\)</span> with respect to just the residence time, <span class="math inline">\(t_r\)</span>, <span class="math inline">\(\delta R / \delta t_r\)</span>. First, recall the product rule of differentiation:
 <span class="math display">\[F(x) = g(x)f(x)\quad ; \quad F^\prime(x) =f^\prime(x)g(x) +  f(x)g^\prime(x)\]</span>
 With that we can find the necessary derivative.
 <span class="math display">\[\frac{\delta R}{\delta t_r} = - \frac{1}{(t_t+t_r)^2} g(t_r) + \frac{1}{t_t+t_r}g^\prime(t_r)= \frac{(t_t+t_r)g^\prime(t_r) - g(t)}{(t_t+t_r)^2}\]</span>
-When we solve <span class="math inline">\(\delta R / \delta t_r = 0\)</span>, we discover that
-<span class="math display">\[g^\prime(t_r)=\frac{g(t_r)}{t_t + t_r}\]</span>
-Now we see that
-<span class="math display">\[R  =\frac{g(t_r)}{t_t + t_r}= g^\prime(t_r)\]</span>
-which tells us…that in order to maximize the long-term average rate, we should stay in a patch until the instanteous rate, <span class="math inline">\(g^\prime(t_r)\)</span> drops to the long term average rate, <span class="math inline">\(R\)</span>.</p>
+If we solved <span class="math inline">\(\delta R / \delta t_r = 0\)</span>, we would discover that <span class="math inline">\(R\)</span> will be maximized when it equals the <em>slope</em> of gain function. That is,
+<span class="math display">\[\frac{g(t_r)}{t_t + t_r} = g^\prime(t_r)\]</span></p>
+<p>This predicts that in order to maximize the long-term average rate, we should stay in a patch until the instantaneous rate, <span class="math inline">\(g^\prime(t_r)\)</span> drops to the long term average rate, <span class="math inline">\(R\)</span>.</p>
 <div class="figure"><span id="fig:marginal"></span>
 <img src="figs/marginal-value.jpg" alt="Energy gain vs. time: The origin is when the forager enters the patch; to the left is time spent traveling from one patch to the next, and to the right is time spent in the patch. The graph represents two different habitats, one in which the patches are easy to get to (habitat 1), and another where it takes more time to get from patch to patch (habitat 2). In all cases, the patches are identical, having the same gain function. The curved line is the gain function, the net energy gain as a function of time spent in the patch. The slope of that curve is the derivative of the gain function. Its slope at any single time point is the instantaneous rate of gain. The two straight lines are the expected gains averaged over time for each habitat as a whole. Lambda is the rate at which a forager randomly encounters patches - because it is a Poisson process, the mean or expected time is 1/lambda. The forager should leave the patch when the instantaneous rate of gain in the patch equals the long term average rate of gain for the habitat as a whole." width="100%" />
 <p class="caption">
@@ -400,12 +401,12 @@ Figure 2.5: Energy gain vs. time: The origin is when the forager enters the pat
 <div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="oft.html#cb9-1"></a>myOut &lt;-<span class="st"> </span><span class="kw">optimal.forager</span>(<span class="dt">Total=</span><span class="dv">60</span>)</span>
 <span id="cb9-2"><a href="oft.html#cb9-2"></a><span class="kw">str</span>(myOut)</span></code></pre></div>
 <pre><code>## List of 5
-##  $ N     : num 15
-##  $ G     : num -1.16
-##  $ Tt    : num 62.9
-##  $ series:&#39;data.frame&#39;:	15 obs. of  2 variables:
-##   ..$ net.e      : num [1:15] 0.88 -2.2 0.63 -1.07 -1.02 ...
-##   ..$ cycle.start: num [1:15] 0 0.799 9.301 13.225 18.895 ...
+##  $ N     : num 14
+##  $ G     : num 0.452
+##  $ Tt    : num 60.9
+##  $ series:&#39;data.frame&#39;:	14 obs. of  2 variables:
+##   ..$ net.e      : num [1:14] -0.487 0.878 -2.495 0.745 0.854 ...
+##   ..$ cycle.start: num [1:14] 0 6.72 7.52 19.26 22.9 ...
 ##  $ params:List of 7
 ##   ..$ e     : num [1:2] 2 1
 ##   ..$ h     : num [1:2] 0.5 0.5
@@ -539,10 +540,6 @@ Figure 2.7: The right hand side of our prediction
 
 
 
-
-
-
-
 <h3>References</h3>
 <div id="refs" class="references">
 <div id="ref-Beckerman2010">
@@ -576,11 +573,7 @@ Figure 2.7: The right hand side of our prediction
 <li id="fn9"><p>whether “I” is a sugar maple tree or a human, most of us do not make this decision conciously…<a href="oft.html#fnref9" class="footnote-back">↩︎</a></p></li>
 <li id="fn10"><p>A forager encounters prey at random, and this is known as a “Poisson process”, where the number of encounters in a specified time interval is a random variable drawn from the Poisson probability distribution. It turns out that the <em>time between events</em> of a Poisson process follows the Exponential distribution. The Poisson distribution is determined by a single parameter, its mean. The Exponential distribution is also described by a single parameter, its <em>rate</em>. It turns out that we use the same <span class="math inline">\(\lambda\)</span> for both. }<a href="oft.html#fnref10" class="footnote-back">↩︎</a></p></li>
 <li id="fn11"><p>We can check units for total handling time, <span class="math inline">\(H = S\lambda_i p_i h_i\)</span> by replacing the variables and parameters with their units. The units for <span class="math inline">\(H\)</span> are seconds, so we have <span class="math inline">\(\mathrm{s = s \frac{\#}{s} \frac{\#}{\#} \frac{s}{\#}}\)</span>. When we multiply these fractions, we find that the <span class="math inline">\(\#\)</span>s and two of the s’s cancel out and we are left with <span class="math inline">\(s=s\)</span>.<a href="oft.html#fnref11" class="footnote-back">↩︎</a></p></li>
-<li id="fn12"><p>Prediction: foragers will rank prey types by their <em>profitability</em>, <span class="math inline">\(e/h\)</span>.<a href="oft.html#fnref12" class="footnote-back">↩︎</a></p></li>
-<li id="fn13"><p>Prediction: the zero-one rule: <span class="math inline">\(p_i \subset {0,\,1}\)</span><a href="oft.html#fnref13" class="footnote-back">↩︎</a></p></li>
-<li id="fn14"><p>Prediction: Inclusion of type <span class="math inline">\(m+1\)</span> in the diet does not depend on its encounter rate.<a href="oft.html#fnref14" class="footnote-back">↩︎</a></p></li>
-<li id="fn15"><p>Prediction: selectivity increases with average encounter rates.<a href="oft.html#fnref15" class="footnote-back">↩︎</a></p></li>
-<li id="fn16"><p>“expected” value of a variable is the mean of that variable, because that is what we expect given the absence of other knowledge<a href="oft.html#fnref16" class="footnote-back">↩︎</a></p></li>
+<li id="fn12"><p>“expected” value of a variable is the mean of that variable, because that is what we expect given the absence of other knowledge<a href="oft.html#fnref12" class="footnote-back">↩︎</a></p></li>
 </ol>
 </div>
             </section>
