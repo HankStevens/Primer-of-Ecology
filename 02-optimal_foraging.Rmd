@@ -126,7 +126,7 @@ G.T = function(lambda, h=1, e=1){lambda*e/(1+lambda*h)} # create the function yo
 myData <- data.frame( lambda=c(0, 10) ) # data you need
 ggplot(data=myData, aes(x=lambda)) + # set the basic properties of the plot
   # in the stat_function, we indicate the parameters in our equation.
-  stat_function(fun=eq, geom="line") +
+  stat_function(fun=G.T, geom="line") +
   ylab(bquote(over(lambda*e, 1 + lambda*h))) + xlab(bquote(lambda))  # add labels
 ```
 
@@ -299,7 +299,9 @@ ggplot(myOut$series, aes(x=cycle.start, y=cumsum(net.e))) + geom_line()
 What is the prediction we are interested in?
 
 Prediction: Include type 2 if
-$$\frac{e_2}{h_2} > \frac{\lambda_1 e_1 }{1 + \lambda_1 h_1} (\#eq:prediction)$$
+\begin{equation}
+\frac{e_2}{h_2} > \frac{\lambda_1 e_1 }{1 + \lambda_1 h_1} (\#eq:prediction)
+\end{equation}
 
 
 ```{r preypred, echo=FALSE, fig.cap="The right hand side of our prediction", fig.asp=.67, out.width="100%", fig.hold=TRUE}

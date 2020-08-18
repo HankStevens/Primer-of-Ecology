@@ -24,7 +24,7 @@
 <meta name="author" content="Hank Stevens" />
 
 
-<meta name="date" content="2020-08-17" />
+<meta name="date" content="2020-08-18" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -32,7 +32,7 @@
   
   
 <link rel="prev" href="theory.html"/>
-
+<link rel="next" href="references.html"/>
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
@@ -153,6 +153,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="2.3.1" data-path="oft.html"><a href="oft.html#lab-exercise"><i class="fa fa-check"></i><b>2.3.1</b> Lab exercise</a></li>
 </ul></li>
 </ul></li>
+<li class="chapter" data-level="3" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i><b>3</b> References</a></li>
 </ul>
 
       </nav>
@@ -266,7 +267,7 @@ A major question in OFT is whether a forager should include a particular prey ty
 <span id="cb7-2"><a href="oft.html#cb7-2"></a>myData &lt;-<span class="st"> </span><span class="kw">data.frame</span>( <span class="dt">lambda=</span><span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">10</span>) ) <span class="co"># data you need</span></span>
 <span id="cb7-3"><a href="oft.html#cb7-3"></a><span class="kw">ggplot</span>(<span class="dt">data=</span>myData, <span class="kw">aes</span>(<span class="dt">x=</span>lambda)) <span class="op">+</span><span class="st"> </span><span class="co"># set the basic properties of the plot</span></span>
 <span id="cb7-4"><a href="oft.html#cb7-4"></a><span class="st">  </span><span class="co"># in the stat_function, we indicate the parameters in our equation.</span></span>
-<span id="cb7-5"><a href="oft.html#cb7-5"></a><span class="st">  </span><span class="kw">stat_function</span>(<span class="dt">fun=</span>eq, <span class="dt">geom=</span><span class="st">&quot;line&quot;</span>) <span class="op">+</span></span>
+<span id="cb7-5"><a href="oft.html#cb7-5"></a><span class="st">  </span><span class="kw">stat_function</span>(<span class="dt">fun=</span>G.T, <span class="dt">geom=</span><span class="st">&quot;line&quot;</span>) <span class="op">+</span></span>
 <span id="cb7-6"><a href="oft.html#cb7-6"></a><span class="st">  </span><span class="kw">ylab</span>(<span class="kw">bquote</span>(<span class="kw">over</span>(lambda<span class="op">*</span>e, <span class="dv">1</span> <span class="op">+</span><span class="st"> </span>lambda<span class="op">*</span>h))) <span class="op">+</span><span class="st"> </span><span class="kw">xlab</span>(<span class="kw">bquote</span>(lambda))  <span class="co"># add labels</span></span></code></pre></div>
 <div class="figure"><span id="fig:selectivity"></span>
 <img src="figs/selectivity-1.png" alt="Selectivity increases with average encounter rates." width="60%" />
@@ -401,12 +402,12 @@ Figure 2.5: Energy gain vs. time: The origin is when the forager enters the pat
 <div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="oft.html#cb9-1"></a>myOut &lt;-<span class="st"> </span><span class="kw">optimal.forager</span>(<span class="dt">Total=</span><span class="dv">60</span>)</span>
 <span id="cb9-2"><a href="oft.html#cb9-2"></a><span class="kw">str</span>(myOut)</span></code></pre></div>
 <pre><code>## List of 5
-##  $ N     : num 14
-##  $ G     : num 0.452
-##  $ Tt    : num 60.9
-##  $ series:&#39;data.frame&#39;:	14 obs. of  2 variables:
-##   ..$ net.e      : num [1:14] -0.487 0.878 -2.495 0.745 0.854 ...
-##   ..$ cycle.start: num [1:14] 0 6.72 7.52 19.26 22.9 ...
+##  $ N     : num 20
+##  $ G     : num 9.72
+##  $ Tt    : num 60.7
+##  $ series:&#39;data.frame&#39;:	20 obs. of  2 variables:
+##   ..$ net.e      : num [1:20] 1.88 -1.44 1.31 -1.68 1.94 ...
+##   ..$ cycle.start: num [1:20] 0 0.796 7.385 9.599 16.8 ...
 ##  $ params:List of 7
 ##   ..$ e     : num [1:2] 2 1
 ##   ..$ h     : num [1:2] 0.5 0.5
@@ -433,7 +434,9 @@ Figure 2.6: The cumulative energy capital of a forager goes down while searching
 <p><em>Use this simulation</em> to help solidify in your own mind predictions of the simple prey model. How should we do that?</p>
 <p>What is the prediction we are interested in?</p>
 <p>Prediction: Include type 2 if
-<span class="math display" id="eq:prediction">\[\frac{e_2}{h_2} &gt; \frac{\lambda_1 e_1 }{\tag{2.2}1} (#eq:prediction)\]</span></p>
+<span class="math display" id="eq:prediction">\[\begin{equation}
+\frac{e_2}{h_2} &gt; \frac{\lambda_1 e_1 }{1 + \lambda_1 h_1} \tag{2.2}
+\end{equation}\]</span></p>
 <div class="figure"><span id="fig:preypred"></span>
 <img src="figs/preypred-1.png" alt="The right hand side of our prediction" width="100%" />
 <p class="caption">
@@ -452,95 +455,10 @@ Figure 2.7: The right hand side of our prediction
 <li>Use the simulation <code>optimal.forager()</code> to confirm your predictions.</li>
 </ol>
 
-<div id="refs" class="references">
-<div>
-<p>Banavar, Jayanth R, John Damuth, Amos Maritan, Andrea Rinaldo, Geoffrey B West, and Brian J. Enquist. 2002. “Modelling universality and scaling - communications arising.” <em>Nature</em> 420 (December): 626–27.</p>
-</div>
-<div>
-<p>Banavar, J R, a Maritan, and a Rinaldo. 1999. “Size and form in efficient transportation networks.” <em>Nature</em> 399 (6732): 130–2.</p>
-</div>
-<div>
-<p>Banavar, J. R., M. E. Moses, J. H. Brown, J. Damuth, A. Rinaldo, R. M. Sibly, and A. Maritan. 2010. “A general basis for quarter-power scaling in animals.” <em>Proceedings of the National Academy of Sciences</em> 107 (36): 15816–20.</p>
-</div>
-<div>
-<p>Beckerman, Andrew, Owen L. Petchey, and Peter J. Morin. 2010. “Adaptive Foragers and Community Ecology: Linking Individuals to Communities and Ecosystems.” <em>Functional Ecology</em> 24 (1): 1–6. <a href="https://doi.org/10.1111/j.1365-2435.2009.01673.x">https://doi.org/10.1111/j.1365-2435.2009.01673.x</a>.</p>
-</div>
-<div>
-<p>Boenigk, J., C. Metz, K. Jürgens, and H. Arndt. 2002. “Food Concentration-Dependent Regulation of Food Selectivity of Interception Feeding Bacterivorous Nanoflagellates.” <em>Aquatic Microbial Ecology</em> 27: 195–202.</p>
-</div>
-<div>
-<p>Brown, J H, J F Gillooly, A P Allen, V M Savage, and G B West. 2004. “Toward a metabolic theory of ecology.” <em>Ecology</em> 85 (7): 1771–89.</p>
-</div>
-<div>
-<p>Charnov, E. L. 1976. “Optimal foraging theory: the marginal value theorem.” <em>Theoretical Population Biology</em> 9: 129–36.</p>
-</div>
-<div>
-<p>Ellner, S. P. 2009. “Lecture Notes, Bioee 4600 Theoretical Ecology , Cornell University.”</p>
-</div>
-<div>
-<p>Emlen, J. M. 1966. “The Role of Time and Energy in Food Preference.” <em>The American Naturalist</em> 100: 611–17.</p>
-</div>
-<div>
-<p>Gillooly, James F. 2000. “Effect of body size and temperature on generation time in zooplankton” 22 (2): 241–51.</p>
-</div>
-<div>
-<p>Glazier, Douglas S. 2018. “Rediscovering and Reviving Old Observations and Explanations of Metabolic Scaling in Living Systems.” <em>Systems</em> 6 (4).</p>
-</div>
-<div>
-<p>Kleiber, M. 1932. “Body Size and Metabolism.” <em>Hilgardia</em>, 315–32.</p>
-</div>
-<div>
-<p>MacArthur, R H, and E R Pianka. 1966. “On optimal use of a patchy environment.” <em>The American Naturalist</em> 100: 603–9.</p>
-</div>
-<div>
-<p>Marquet, Pablo A., Andrew P. Allen, James H. Brown, Jennifer A. Dunne, Brian J. Enquist, James F. Gillooly, Patricia A. Gowaty, et al. 2014. “On theory in ecology.” <em>BioScience</em> 64 (8): 701–10.</p>
-</div>
-<div>
-<p>Niklas, Karl J., and Brian J. Enquist. 2001. “Invariant scaling relationships for interspecific plant biomass production rates and body size.” <em>Proceedings of the National Academy of Sciences of the United States of America</em> 98 (5): 2922–7.</p>
-</div>
-<div>
-<p>O’Neill, RV, DL De Angelis, JB Waide, and TFH Allen. 1986. <em>A Hierarchical Concept of Ecosystems.</em> Vol. 23. Monographs in Population Biology. Princeton University Press, Princeton, New Jersey, USA.</p>
-</div>
-<div>
-<p>Rose, Kevin C., Rose A. Graves, Winslow D. Hansen, Brian J. Harvey, Jiangxiao Qiu, Stephen A. Wood, Carly Ziter, and Monica G. Turner. 2017. “Historical foundations and future directions in macrosystems ecology.” <em>Ecology Letters</em> 20 (2): 147–57.</p>
-</div>
-<div>
-<p>Scheiner, Samuel M. 2010. “Toward a conceptual framework for biology.” <em>Quarterly Review of Biology</em> 85 (3): 293–318.</p>
-</div>
-<div>
-<p>Scheiner, S M, and M. R. Willig. 2011. <em>The Theory of Ecology</em>.</p>
-</div>
-<div>
-<p>Sih, A. 2011. “Foraging Theory.” In, edited by S. M. Scheiner and M. R. Willig. Chicago, IL, USA: University of Chicago Press.</p>
-</div>
-<div>
-<p>Stephens, D W, and J R Krebs. 1986. <em>Foraging {T}heory</em>. Edited by J. R. Krebs and T. H. Clutton-Brock. Monographs in Behavior and Ecology. Princeton, University Press, Princeton, NJ, USA: Princeton University Press.</p>
-</div>
-<div>
-<p>West, G B, J H Brown, and B J Enquist. 1997. “A general model for the origin of allometric scaling laws in biology.” <em>Science</em> 276: 122–26.</p>
 </div>
 </div>
 </div>
-</div>
-</div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<h3>References</h3>
+<h3> References</h3>
 <div id="refs" class="references">
 <div id="ref-Beckerman2010">
 <p>Beckerman, Andrew, Owen L. Petchey, and Peter J. Morin. 2010. “Adaptive Foragers and Community Ecology: Linking Individuals to Communities and Ecosystems.” <em>Functional Ecology</em> 24 (1): 1–6. <a href="https://doi.org/10.1111/j.1365-2435.2009.01673.x">https://doi.org/10.1111/j.1365-2435.2009.01673.x</a>.</p>
@@ -581,8 +499,8 @@ Figure 2.7: The right hand side of our prediction
           </div>
         </div>
       </div>
-<a href="theory.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-
+<a href="theory.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="references.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
