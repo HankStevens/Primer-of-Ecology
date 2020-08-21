@@ -103,7 +103,7 @@ text(80, 90, "1:1"); text(80, 80^.8, expression(M^0.75))}
 ## using curve, let your variable be 'x'.
 curve(1*x, from = .01, to=100, ylab = "Metabolic rate (B)",
       xlab="Body mass (M)", lty=3)
-curve(x^(3/4), from = .01, to = 100, add=TRUE)}
+curve(x^(3/4), from = .01, to = 100, add=TRUE)
 ```
 
 To help us grasp the implications of this, let's consider  *mass-specific* metabolic rates. "Mass-specific" means on a per-gram basis.^[With plants, we often measure something called "specific leaf area", SLA, which is the two dimensional area of a leaf divided by its mass.] Mass-specific metabolic rate is basal metabolic rate of an individual divided by its mass, or $B/M$. 
@@ -173,9 +173,12 @@ The Arrhenius equation is a little more complicated that a simple power law, but
 eq.t <- function(t,a=10^4,E=0.23,k=8.6 * 10^-5){a*exp(-E/(k*t))}
 # the data used in our function
 temps <- data.frame(t=276:316)
-ggplot(data=temps, aes(x=t)) + # set the basic properties of the plot
-  stat_function(fun=eq.t, geom="line") + # set the function to plot
-  xlab("Temperature (K)") + ylab("Metabolic rate (B)")  # add labels
+ggplot(data=temps, aes(x=t)) + 
+# set the basic properties of the plot
+  stat_function(fun=eq.t, geom="line") + 
+# set the function to plot
+  xlab("Temperature (K)") + ylab("Metabolic rate (B)")  
+# add labels
 ```
 
 When we linearize the relation between metabolic rate and temperature, we get 
