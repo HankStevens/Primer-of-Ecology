@@ -24,7 +24,7 @@
 <meta name="author" content="Hank Stevens" />
 
 
-<meta name="date" content="2020-08-20" />
+<meta name="date" content="2020-08-21" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -259,19 +259,20 @@ entire year. Notice the transition from adult toad to juvenile toad
 (Fig. <a href="DID.html#fig:vdlc1">4.3</a>) includes egg production, egg survival, tadpole or
 larva survival and growth, and metamorphosis out of the aquatic
 stage. This are obviously important events. We make explicit only those stages that we count during our census; all other other events are iplicit within the transitions.</p>
-<p>Once we have a life cycle diagram (Fig. <a href="DID.html#fig:vdlc1">4.3</a>), we create a <em>transition</em> or <em>projection</em> matrix that represents mathematically all of the stages and transitions between stages <a href="DID.html#eq:m1">(4.1)</a>. This matrix will have one row and one column for each stage, and the columns represent the stages in year <span class="math inline">\(t\)</span> and the rows represent the stages in year <span class="math inline">\(t+1\)</span>. We refer to a single column by <em>j</em> and a single row by <em>i</em>. Each column represents stage <em>j</em> in year <span class="math inline">\(t\)</span>, and each row represents stage <em>i</em> in year <span class="math inline">\(t+1\)</span>. For our amphibian example, the transition matrix will have two rows and two columns. It will be a “two by two”, or <span class="math inline">\(2 \times 2\)</span> matrix.</p>
-<p><span class="math display" id="eq:m1">\[\begin{equation}
+<p>Once we have a life cycle diagram (Fig. <a href="DID.html#fig:vdlc1">4.3</a>), we create a <em>transition</em> or <em>projection</em> matrix that represents mathematically all of the stages and transitions between stages <a href="DID.html#eq:m1">(4.1)</a>. This matrix will have one row and one column for each stage, and the columns represent the stages in year <span class="math inline">\(t\)</span> and the rows represent the stages in year <span class="math inline">\(t+1\)</span>. We refer to a single column by <em>j</em> and a single row by <em>i</em>. Each column represents stage <em>j</em> in year <span class="math inline">\(t\)</span>, and each row represents stage <em>i</em> in year <span class="math inline">\(t+1\)</span>. For our amphibian example, the transition matrix will have two rows and two columns. It will be a “two by two”, or <span class="math inline">\(2 \times 2\)</span> matrix.
+<span class="math display" id="eq:m1">\[
+\begin{equation}
 \tag{4.1}
  \mathbf{A} =
-\begin{blockarray}{ccc}
- &amp; J_t &amp; A_t  \\
-\begin{block}{c(cc)}
-J_{t+1} &amp; p_{11}&amp;F_{12} \\
-A_{t+1} &amp; p_{21}&amp;p_{22} \\
-\end{block}
-\end{blockarray}%%\vspace*{-1.25\baselineskip}
-\end{equation}\]</span></p>
-<p>If <a href="DID.html#eq:m1">(4.1)</a> represents the Western toad (Fig. <a href="DID.html#fig:vdlc1">4.3</a>), then transition</p>
+\left(
+\begin{array}{cc}
+ p_{11}&amp;F_{12} \\
+p_{21}&amp;p_{22} 
+\end{array}
+\right)
+\end{equation}
+\]</span>
+If <a href="DID.html#eq:m1">(4.1)</a> represents the Western toad (Fig. <a href="DID.html#fig:vdlc1">4.3</a>), then transition</p>
 <ul>
 <li><span class="math inline">\(p_{11}\)</span> is the probability that juveniles survive but fail to mature,</li>
 <li><span class="math inline">\(p_{21}\)</span> is the probability that juveniles survive and also mature,</li>
@@ -333,42 +334,42 @@ A dot product begins with two equal length vectors and returns a single number (
 \end{align}\]</span></p>
 <p>To do this, the number of columns in the first matrix must equal the number of rows in the second matrix. It also means that the resulting matrix will have the same number of rows as the first matrix, and the same number of columns as the second matrix. Multiplying a <span class="math inline">\(2 \times 2\)</span> matrix by a <span class="math inline">\(2 \times 1\)</span> results in a <span class="math inline">\(2 \times 1\)</span>. Multiplying a <span class="math inline">\(3 \times 3\)</span> matrix by a <span class="math inline">\(3 \times 1\)</span> results in a <span class="math inline">\(3 \times 1\)</span>. We cannot multiply a <span class="math inline">\(2 \times 1\)</span> matrix by a <span class="math inline">\(2 \times 2\)</span> because the number of columns in the first matrix (1) does not match the number of rows in the second matrix (2).</p>
 <p>Let’s define two <span class="math inline">\(2 \times 2\)</span> matrices, <strong>M</strong> and <strong>N</strong>, filling in one by rows, and the other by columns.</p>
-<div class="sourceCode" id="cb81"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb81-1"><a href="DID.html#cb81-1"></a>(M &lt;-<span class="st"> </span><span class="kw">matrix</span>( <span class="dv">1</span><span class="op">:</span><span class="dv">4</span> , <span class="dt">nrow=</span><span class="dv">2</span>, <span class="dt">byrow=</span><span class="ot">TRUE</span>))</span></code></pre></div>
+<div class="sourceCode" id="cb82"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb82-1"><a href="DID.html#cb82-1"></a>(M &lt;-<span class="st"> </span><span class="kw">matrix</span>( <span class="dv">1</span><span class="op">:</span><span class="dv">4</span> , <span class="dt">nrow=</span><span class="dv">2</span>, <span class="dt">byrow=</span><span class="ot">TRUE</span>))</span></code></pre></div>
 <pre><code>##      [,1] [,2]
 ## [1,]    1    2
 ## [2,]    3    4</code></pre>
-<div class="sourceCode" id="cb83"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb83-1"><a href="DID.html#cb83-1"></a>(N &lt;-<span class="st"> </span><span class="kw">matrix</span>( <span class="kw">c</span>(<span class="dv">10</span>, <span class="dv">20</span>, <span class="dv">30</span>, <span class="dv">40</span>), <span class="dt">nrow=</span><span class="dv">2</span>)) <span class="co"># byrow=FALSE is the default.</span></span></code></pre></div>
+<div class="sourceCode" id="cb84"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb84-1"><a href="DID.html#cb84-1"></a>(N &lt;-<span class="st"> </span><span class="kw">matrix</span>( <span class="kw">c</span>(<span class="dv">10</span>, <span class="dv">20</span>, <span class="dv">30</span>, <span class="dv">40</span>), <span class="dt">nrow=</span><span class="dv">2</span>)) <span class="co"># byrow=FALSE is the default.</span></span></code></pre></div>
 <pre><code>##      [,1] [,2]
 ## [1,]   10   30
 ## [2,]   20   40</code></pre>
 <p>Adding these matrices is simple. Here we do the first element by hand, and then sum the matrices all at once.</p>
-<div class="sourceCode" id="cb85"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb85-1"><a href="DID.html#cb85-1"></a><span class="co"># 1 + 10</span></span>
-<span id="cb85-2"><a href="DID.html#cb85-2"></a>M[<span class="dv">1</span>,<span class="dv">1</span>] <span class="op">+</span><span class="st"> </span>N[<span class="dv">1</span>,<span class="dv">1</span>]</span></code></pre></div>
+<div class="sourceCode" id="cb86"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb86-1"><a href="DID.html#cb86-1"></a><span class="co"># 1 + 10</span></span>
+<span id="cb86-2"><a href="DID.html#cb86-2"></a>M[<span class="dv">1</span>,<span class="dv">1</span>] <span class="op">+</span><span class="st"> </span>N[<span class="dv">1</span>,<span class="dv">1</span>]</span></code></pre></div>
 <pre><code>## [1] 11</code></pre>
-<div class="sourceCode" id="cb87"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb87-1"><a href="DID.html#cb87-1"></a>M <span class="op">+</span><span class="st"> </span>N</span></code></pre></div>
+<div class="sourceCode" id="cb88"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb88-1"><a href="DID.html#cb88-1"></a>M <span class="op">+</span><span class="st"> </span>N</span></code></pre></div>
 <pre><code>##      [,1] [,2]
 ## [1,]   11   32
 ## [2,]   23   44</code></pre>
 <p>To mulitply <strong>M</strong> and <strong>N</strong>, we multiply and then sum the first row of <span class="math inline">\(M\)</span> by the first column of <span class="math inline">\(N\)</span>, and make this element <span class="math inline">\(a_{11}\)</span> of the resulting matrix product.</p>
-<div class="sourceCode" id="cb89"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb89-1"><a href="DID.html#cb89-1"></a><span class="co"># 1*10 + 2*20</span></span>
-<span id="cb89-2"><a href="DID.html#cb89-2"></a>M[<span class="dv">1</span>,<span class="dv">1</span>] <span class="op">*</span><span class="st"> </span>N[<span class="dv">1</span>,<span class="dv">1</span>] <span class="op">+</span><span class="st"> </span>M[<span class="dv">1</span>,<span class="dv">2</span>] <span class="op">*</span><span class="st"> </span>N[<span class="dv">2</span>,<span class="dv">1</span>] </span></code></pre></div>
+<div class="sourceCode" id="cb90"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb90-1"><a href="DID.html#cb90-1"></a><span class="co"># 1*10 + 2*20</span></span>
+<span id="cb90-2"><a href="DID.html#cb90-2"></a>M[<span class="dv">1</span>,<span class="dv">1</span>] <span class="op">*</span><span class="st"> </span>N[<span class="dv">1</span>,<span class="dv">1</span>] <span class="op">+</span><span class="st"> </span>M[<span class="dv">1</span>,<span class="dv">2</span>] <span class="op">*</span><span class="st"> </span>N[<span class="dv">2</span>,<span class="dv">1</span>] </span></code></pre></div>
 <pre><code>## [1] 50</code></pre>
 <p>This is the dot product.</p>
 <p>In R, we must use <code>%*%</code> to signify that we mean matrix multiplication.</p>
-<div class="sourceCode" id="cb91"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb91-1"><a href="DID.html#cb91-1"></a>M <span class="op">%*%</span><span class="st"> </span>N</span></code></pre></div>
+<div class="sourceCode" id="cb92"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb92-1"><a href="DID.html#cb92-1"></a>M <span class="op">%*%</span><span class="st"> </span>N</span></code></pre></div>
 <pre><code>##      [,1] [,2]
 ## [1,]   50  110
 ## [2,]  110  250</code></pre>
 <p>If we multiply <strong>M</strong> times a <span class="math inline">\(2 \times 1\)</span> matrix <strong>D</strong>, what should we get?</p>
-<div class="sourceCode" id="cb93"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb93-1"><a href="DID.html#cb93-1"></a>D &lt;-<span class="st"> </span><span class="kw">matrix</span>(<span class="kw">c</span>(<span class="dv">100</span>, <span class="dv">200</span>), <span class="dt">nrow=</span><span class="dv">2</span>)</span>
-<span id="cb93-2"><a href="DID.html#cb93-2"></a>M <span class="op">%*%</span><span class="st"> </span>D</span></code></pre></div>
+<div class="sourceCode" id="cb94"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb94-1"><a href="DID.html#cb94-1"></a>D &lt;-<span class="st"> </span><span class="kw">matrix</span>(<span class="kw">c</span>(<span class="dv">100</span>, <span class="dv">200</span>), <span class="dt">nrow=</span><span class="dv">2</span>)</span>
+<span id="cb94-2"><a href="DID.html#cb94-2"></a>M <span class="op">%*%</span><span class="st"> </span>D</span></code></pre></div>
 <pre><code>##      [,1]
 ## [1,]  500
 ## [2,] 1100</code></pre>
-<div class="sourceCode" id="cb95"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb95-1"><a href="DID.html#cb95-1"></a><span class="co"># note that we cannot perform D %*% M</span></span></code></pre></div>
+<div class="sourceCode" id="cb96"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb96-1"><a href="DID.html#cb96-1"></a><span class="co"># note that we cannot perform D %*% M</span></span></code></pre></div>
 <p>Make sure you could write out the multiplication and summation for each element in the resulting matrix.</p>
 <p>The transpose of <strong>M</strong> is <span class="math inline">\(\mathbf{M^T}\)</span></p>
-<div class="sourceCode" id="cb96"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb96-1"><a href="DID.html#cb96-1"></a>M; <span class="kw">t</span>(M)</span></code></pre></div>
+<div class="sourceCode" id="cb97"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb97-1"><a href="DID.html#cb97-1"></a>M; <span class="kw">t</span>(M)</span></code></pre></div>
 <pre><code>##      [,1] [,2]
 ## [1,]    1    2
 ## [2,]    3    4</code></pre>
@@ -466,21 +467,21 @@ g_2 s_1 &amp; 0       &amp; v g_1 s_1 f \\
 <p><em>Projection</em> is the modeling of a population through time, for prediction under one or another set of assumptions. In practice, we use <em>matrix multiplication</em> to project stage- or structured populations. Matrix multiplication does all these calculations for us. We let <strong>A</strong> be our square demographic transition matrix, with one row and one column for each stage. Let <span class="math inline">\(\mathbf{N}_t\)</span> be a one-column matrix of stage sizes, with one row for each stage. Matrix multiplication allows us to project the population,
 <span class="math inline">\(\mathbf{A}\mathbf{N}_t = \mathbf{N}_{t+1}\)</span>.</p>
 <p>To project a population for multiple years, we use a <em>for-loop</em>. We used this in the previous chapter for an unstructured population. Here we multiply our transition matrix by the current year’s abundances projecting next year’s abundances. All we need to specify are the transition matrix, starting stage abundances for <span class="math inline">\(t=0\)</span>, and the number of years through which we want to project. Here we define a transition matrix, <span class="math inline">\(\mathbf{N}_0\)</span>, and a numbers of time steps to project.</p>
-<div class="sourceCode" id="cb99"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb99-1"><a href="DID.html#cb99-1"></a>A &lt;-<span class="st"> </span><span class="kw">matrix</span>( <span class="kw">c</span>(.<span class="dv">1</span>, <span class="fl">2.0</span>, </span>
-<span id="cb99-2"><a href="DID.html#cb99-2"></a>        <span class="fl">.3</span>,.<span class="dv">4</span>), <span class="dt">nrow=</span><span class="dv">2</span>, <span class="dt">byrow=</span>T)</span>
-<span id="cb99-3"><a href="DID.html#cb99-3"></a>N0 &lt;-<span class="st"> </span><span class="kw">matrix</span>(<span class="kw">c</span>(<span class="dv">100</span>, <span class="dv">1</span>), <span class="dt">nrow=</span><span class="dv">1</span>) </span>
-<span id="cb99-4"><a href="DID.html#cb99-4"></a>years &lt;-<span class="st"> </span><span class="dv">6</span></span></code></pre></div>
+<div class="sourceCode" id="cb100"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb100-1"><a href="DID.html#cb100-1"></a>A &lt;-<span class="st"> </span><span class="kw">matrix</span>( <span class="kw">c</span>(.<span class="dv">1</span>, <span class="fl">2.0</span>, </span>
+<span id="cb100-2"><a href="DID.html#cb100-2"></a>        <span class="fl">.3</span>,.<span class="dv">4</span>), <span class="dt">nrow=</span><span class="dv">2</span>, <span class="dt">byrow=</span>T)</span>
+<span id="cb100-3"><a href="DID.html#cb100-3"></a>N0 &lt;-<span class="st"> </span><span class="kw">matrix</span>(<span class="kw">c</span>(<span class="dv">100</span>, <span class="dv">1</span>), <span class="dt">nrow=</span><span class="dv">1</span>) </span>
+<span id="cb100-4"><a href="DID.html#cb100-4"></a>years &lt;-<span class="st"> </span><span class="dv">6</span></span></code></pre></div>
 <p>To do the for-loop, we need an zeroes matrix to hold <span class="math inline">\(n\)</span> for each of the years of each of the stages, including for our first year. We start by filling our matrix with zeroes and “binding” the rows in <span class="math inline">\(\mathbf{N}_0\)</span> onto the top of our zeroes matrix as the first row.</p>
-<div class="sourceCode" id="cb100"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb100-1"><a href="DID.html#cb100-1"></a>N.proj1 &lt;-<span class="st"> </span><span class="kw">matrix</span>( <span class="dv">0</span>, <span class="dt">nrow=</span>years, <span class="dt">ncol=</span><span class="kw">nrow</span>(A)) </span>
-<span id="cb100-2"><a href="DID.html#cb100-2"></a><span class="kw">colnames</span>(N.proj1) &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;Juv&quot;</span>, <span class="st">&quot;Adult&quot;</span>)</span>
-<span id="cb100-3"><a href="DID.html#cb100-3"></a>N.proj2 &lt;-<span class="st"> </span><span class="kw">rbind</span>(N0, N.proj1)</span></code></pre></div>
+<div class="sourceCode" id="cb101"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb101-1"><a href="DID.html#cb101-1"></a>N.proj1 &lt;-<span class="st"> </span><span class="kw">matrix</span>( <span class="dv">0</span>, <span class="dt">nrow=</span>years, <span class="dt">ncol=</span><span class="kw">nrow</span>(A)) </span>
+<span id="cb101-2"><a href="DID.html#cb101-2"></a><span class="kw">colnames</span>(N.proj1) &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;Juv&quot;</span>, <span class="st">&quot;Adult&quot;</span>)</span>
+<span id="cb101-3"><a href="DID.html#cb101-3"></a>N.proj2 &lt;-<span class="st"> </span><span class="kw">rbind</span>(N0, N.proj1)</span></code></pre></div>
 <p>Now we perform the iteration with the for-loop and plot the result. Note how we do the multiplication for the current year <span class="math inline">\(t\)</span> and put the result in the next year <span class="math inline">\(t+1\)</span>.</p>
-<div class="sourceCode" id="cb101"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb101-1"><a href="DID.html#cb101-1"></a><span class="co"># Project, then...</span></span>
-<span id="cb101-2"><a href="DID.html#cb101-2"></a><span class="cf">for</span>(t <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span>years) {N.proj2[t<span class="op">+</span><span class="dv">1</span>,] &lt;-<span class="st"> </span>A<span class="op">%*%</span>N.proj2[t,]}</span>
-<span id="cb101-3"><a href="DID.html#cb101-3"></a><span class="co"># ...rearrange and plot</span></span>
-<span id="cb101-4"><a href="DID.html#cb101-4"></a>N.proj.data &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">Year=</span><span class="dv">0</span><span class="op">:</span>years, N.proj2)</span>
-<span id="cb101-5"><a href="DID.html#cb101-5"></a>npd &lt;-<span class="st"> </span><span class="kw">gather</span>(N.proj.data, Stage, Abundance, <span class="op">-</span>Year)</span>
-<span id="cb101-6"><a href="DID.html#cb101-6"></a><span class="kw">ggplot</span>(npd, <span class="kw">aes</span>(Year, Abundance, <span class="dt">linetype=</span>Stage)) <span class="op">+</span><span class="st"> </span><span class="kw">geom_line</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb102"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb102-1"><a href="DID.html#cb102-1"></a><span class="co"># Project, then...</span></span>
+<span id="cb102-2"><a href="DID.html#cb102-2"></a><span class="cf">for</span>(t <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span>years) {N.proj2[t<span class="op">+</span><span class="dv">1</span>,] &lt;-<span class="st"> </span>A<span class="op">%*%</span>N.proj2[t,]}</span>
+<span id="cb102-3"><a href="DID.html#cb102-3"></a><span class="co"># ...rearrange and plot</span></span>
+<span id="cb102-4"><a href="DID.html#cb102-4"></a>N.proj.data &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">Year=</span><span class="dv">0</span><span class="op">:</span>years, N.proj2)</span>
+<span id="cb102-5"><a href="DID.html#cb102-5"></a>npd &lt;-<span class="st"> </span><span class="kw">gather</span>(N.proj.data, Stage, Abundance, <span class="op">-</span>Year)</span>
+<span id="cb102-6"><a href="DID.html#cb102-6"></a><span class="kw">ggplot</span>(npd, <span class="kw">aes</span>(Year, Abundance, <span class="dt">linetype=</span>Stage)) <span class="op">+</span><span class="st"> </span><span class="kw">geom_line</span>()</span></code></pre></div>
 <div class="figure"><span id="fig:projmat"></span>
 <img src="figs/projmat-1.png" alt="Projection of a population showing transient dynamics." width="90%" />
 <p class="caption">
@@ -532,11 +533,11 @@ where <span class="math inline">\(\mathbf{w}\)</span> is a particular summary of
   \right)
 \]</span></p>
 <p>For instance, we can preform eigenanalysis on this transition matrix.</p>
-<div class="sourceCode" id="cb102"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb102-1"><a href="DID.html#cb102-1"></a>(A &lt;-<span class="st"> </span><span class="kw">matrix</span>(<span class="kw">c</span>(<span class="dv">0</span>, <span class="fl">.3</span>, <span class="dv">2</span>, <span class="fl">.7</span>), <span class="dt">nrow=</span><span class="dv">2</span>))</span></code></pre></div>
+<div class="sourceCode" id="cb103"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb103-1"><a href="DID.html#cb103-1"></a>(A &lt;-<span class="st"> </span><span class="kw">matrix</span>(<span class="kw">c</span>(<span class="dv">0</span>, <span class="fl">.3</span>, <span class="dv">2</span>, <span class="fl">.7</span>), <span class="dt">nrow=</span><span class="dv">2</span>))</span></code></pre></div>
 <pre><code>##      [,1] [,2]
 ## [1,]  0.0  2.0
 ## [2,]  0.3  0.7</code></pre>
-<div class="sourceCode" id="cb104"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb104-1"><a href="DID.html#cb104-1"></a>(eA &lt;-<span class="st"> </span><span class="kw">eigen</span>(A))</span></code></pre></div>
+<div class="sourceCode" id="cb105"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb105-1"><a href="DID.html#cb105-1"></a>(eA &lt;-<span class="st"> </span><span class="kw">eigen</span>(A))</span></code></pre></div>
 <pre><code>## eigen() decomposition
 ## $values
 ## [1]  1.2 -0.5
@@ -548,11 +549,11 @@ where <span class="math inline">\(\mathbf{w}\)</span> is a particular summary of
 <p>This gives us one eigenvalue per column of our transition matrix (<code>values</code>). Each eigenvalue has a <em>corresponding eigenvector</em> that is the corresponding column of the <code>vectors</code> matrix.</p>
 <p>Let’s use R to prove to ourselves that eq. <a href="DID.html#eq:eigsol">(4.6)</a> is what we say it is. Here we see for ourselves whether <span class="math inline">\(\mathbf{A}\mathbf{w} = \lambda \mathbf{w}\)</span> for
 <span class="math inline">\(i = 1\)</span>. Below, we use the results of the previous eigenanalysis.</p>
-<div class="sourceCode" id="cb106"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb106-1"><a href="DID.html#cb106-1"></a>(lambda1 &lt;-<span class="st"> </span>eA<span class="op">$</span>values[<span class="dv">1</span>])</span></code></pre></div>
+<div class="sourceCode" id="cb107"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb107-1"><a href="DID.html#cb107-1"></a>(lambda1 &lt;-<span class="st"> </span>eA<span class="op">$</span>values[<span class="dv">1</span>])</span></code></pre></div>
 <pre><code>## [1] 1.2</code></pre>
-<div class="sourceCode" id="cb108"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb108-1"><a href="DID.html#cb108-1"></a>(w1 &lt;-<span class="st"> </span>eA<span class="op">$</span>vectors[,<span class="dv">1</span>])</span></code></pre></div>
+<div class="sourceCode" id="cb109"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb109-1"><a href="DID.html#cb109-1"></a>(w1 &lt;-<span class="st"> </span>eA<span class="op">$</span>vectors[,<span class="dv">1</span>])</span></code></pre></div>
 <pre><code>## [1] -0.8574929 -0.5144958</code></pre>
-<div class="sourceCode" id="cb110"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb110-1"><a href="DID.html#cb110-1"></a><span class="kw">cbind</span>(A <span class="op">%*%</span><span class="st"> </span>w1, lambda1 <span class="op">*</span><span class="st"> </span>w1)</span></code></pre></div>
+<div class="sourceCode" id="cb111"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb111-1"><a href="DID.html#cb111-1"></a><span class="kw">cbind</span>(A <span class="op">%*%</span><span class="st"> </span>w1, lambda1 <span class="op">*</span><span class="st"> </span>w1)</span></code></pre></div>
 <pre><code>##            [,1]       [,2]
 ## [1,] -1.0289915 -1.0289915
 ## [2,] -0.6173949 -0.6173949</code></pre>
@@ -566,11 +567,11 @@ where <span class="math inline">\(\mathbf{w}\)</span> is a particular summary of
 <p>
 The asymptotic annual growth rate or finite rate of increase is the dominant eigenvalue of the transition matrix. Eigenvalues are always referred to with the Greek symbol <span class="math inline">\(\lambda\)</span>, and provide a solution to <a href="DID.html#eq:eigsol">(4.6)</a>. The dominant eigenvalue of any matrix, <span class="math inline">\(\lambda_{1}\)</span>, is the eigenvalue with the largest magnitude, and it is frequently a complex number. (When we perform eigenanalysis, it is common to get complex numbers, with real and imaginary parts. The magnitude is the sum of the squared parts.) With population transition matrices, <span class="math inline">\(\lambda_{1}\)</span> will always be positive and real. This will not be the case with other types of matrices we examine in later chapters.</p>
 <p>The dominant eigenvalue is the biggest one. We can find which one it by asking R to tell us the index position <span class="math inline">\(i\)</span> of the largest absolute value (the modulus) of the eigenvalues. In most cases, it is the first eigenvalue, as it is here.</p>
-<div class="sourceCode" id="cb112"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb112-1"><a href="DID.html#cb112-1"></a>( dom.pos &lt;-<span class="st"> </span><span class="kw">which.max</span>( <span class="kw">Mod</span>(eA[[<span class="st">&quot;values&quot;</span>]]) )  )</span></code></pre></div>
+<div class="sourceCode" id="cb113"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb113-1"><a href="DID.html#cb113-1"></a>( dom.pos &lt;-<span class="st"> </span><span class="kw">which.max</span>( <span class="kw">Mod</span>(eA[[<span class="st">&quot;values&quot;</span>]]) )  )</span></code></pre></div>
 <pre><code>## [1] 1</code></pre>
 <p>We use that index to extract the largest eigenvalue. We keep the real part, using <code>Re()</code>, dropping the imaginary part. (Note that although the dominant eigenvalue of a real transition matrix will always be real, R will include an imaginary part equal to zero (<span class="math inline">\(0i\)</span>) as a place holder if any of the eigenvalues has a non-zero imaginary part).</p>
-<div class="sourceCode" id="cb114"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb114-1"><a href="DID.html#cb114-1"></a><span class="co"># extract the dominant eigenvalue and retain only its Real part</span></span>
-<span id="cb114-2"><a href="DID.html#cb114-2"></a>( L1 &lt;-<span class="st"> </span><span class="kw">Re</span>(eA[[<span class="st">&quot;values&quot;</span>]][dom.pos]) )</span></code></pre></div>
+<div class="sourceCode" id="cb115"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb115-1"><a href="DID.html#cb115-1"></a><span class="co"># extract the dominant eigenvalue and retain only its Real part</span></span>
+<span id="cb115-2"><a href="DID.html#cb115-2"></a>( L1 &lt;-<span class="st"> </span><span class="kw">Re</span>(eA[[<span class="st">&quot;values&quot;</span>]][dom.pos]) )</span></code></pre></div>
 <pre><code>## [1] 1.2</code></pre>
 <p><code>L1</code> is <span class="math inline">\(\lambda_1\)</span>, the aysmptotic finite rate of increase. This finite rate of increase has the same biological meaning as <span class="math inline">\(\lambda\)</span> in the previous chapter.</p>
 </div>
@@ -589,38 +590,38 @@ where <span class="math inline">\(s\)</span> is the number of stages.</p>
 <div id="calculating-the-stable-stage-distribution" class="section level3">
 <h3><span class="header-section-number">4.6.4</span> Calculating the stable stage distribution</h3>
 <p>The dominant eigenvector, <span class="math inline">\(w_1\)</span>, is in the same position as the dominant eigenvalue. We extract <span class="math inline">\(w_1\)</span>, keeping just the real part, and divide it by its sum to get the stable stage distribution.</p>
-<div class="sourceCode" id="cb116"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb116-1"><a href="DID.html#cb116-1"></a><span class="co"># continuing from previous code...</span></span>
-<span id="cb116-2"><a href="DID.html#cb116-2"></a>w1 &lt;-<span class="st"> </span><span class="kw">Re</span>(eA[[<span class="st">&quot;vectors&quot;</span>]][,dom.pos])</span>
-<span id="cb116-3"><a href="DID.html#cb116-3"></a>ssd &lt;-<span class="st"> </span>w1<span class="op">/</span><span class="kw">sum</span>(w1)</span>
-<span id="cb116-4"><a href="DID.html#cb116-4"></a><span class="kw">round</span>(ssd, <span class="dv">3</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb117"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb117-1"><a href="DID.html#cb117-1"></a><span class="co"># continuing from previous code...</span></span>
+<span id="cb117-2"><a href="DID.html#cb117-2"></a>w1 &lt;-<span class="st"> </span><span class="kw">Re</span>(eA[[<span class="st">&quot;vectors&quot;</span>]][,dom.pos])</span>
+<span id="cb117-3"><a href="DID.html#cb117-3"></a>ssd &lt;-<span class="st"> </span>w1<span class="op">/</span><span class="kw">sum</span>(w1)</span>
+<span id="cb117-4"><a href="DID.html#cb117-4"></a><span class="kw">round</span>(ssd, <span class="dv">3</span>)</span></code></pre></div>
 <pre><code>## [1] 0.625 0.375</code></pre>
 <p>This shows us that if the transition matrix does not change over time, the population will eventually be composed of these relative abundances.</p>
 <p>We have claimed, without evidence, that with a constant transition matrix, the projected population will eventually reach a stable stage distribution and grow exponentially with a finite rate of increase of <span class="math inline">\(\lambda_1\)</span>. Here we show an example.</p>
-<div class="sourceCode" id="cb118"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb118-1"><a href="DID.html#cb118-1"></a>A &lt;-<span class="st"> </span><span class="kw">matrix</span>(<span class="kw">c</span>(<span class="dv">0</span>, <span class="fl">.3</span>, <span class="dv">2</span>, <span class="fl">.7</span>), <span class="dt">nrow=</span><span class="dv">2</span>) <span class="co"># our tran. matrix</span></span>
-<span id="cb118-2"><a href="DID.html#cb118-2"></a>N0 &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dt">Juveniles=</span><span class="dv">1</span>,<span class="dt">Adults=</span><span class="dv">10</span>) <span class="co"># initial population</span></span>
-<span id="cb118-3"><a href="DID.html#cb118-3"></a>steps &lt;-<span class="st"> </span><span class="dv">8</span> <span class="co"># number of time steps</span></span>
-<span id="cb118-4"><a href="DID.html#cb118-4"></a><span class="co"># combine the stages of our initial population, and a zero matrix </span></span>
-<span id="cb118-5"><a href="DID.html#cb118-5"></a><span class="co"># with a column for each stage and a row for each time step</span></span>
-<span id="cb118-6"><a href="DID.html#cb118-6"></a>N &lt;-<span class="st"> </span><span class="kw">rbind</span>(N0, <span class="kw">matrix</span>(<span class="dv">0</span>, <span class="dt">ncol=</span><span class="dv">2</span>, <span class="dt">nrow=</span>steps) )</span>
-<span id="cb118-7"><a href="DID.html#cb118-7"></a><span class="co"># use a for-loop to project the population each year and store it.</span></span>
-<span id="cb118-8"><a href="DID.html#cb118-8"></a><span class="cf">for</span>(t <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span>steps) {N[t<span class="op">+</span><span class="dv">1</span>,] &lt;-<span class="st"> </span>A<span class="op">%*%</span>N[t,]}</span>
-<span id="cb118-9"><a href="DID.html#cb118-9"></a><span class="co"># Sum the stages to get the total N</span></span>
-<span id="cb118-10"><a href="DID.html#cb118-10"></a>N.total &lt;-<span class="st"> </span><span class="kw">rowSums</span>(N)</span>
-<span id="cb118-11"><a href="DID.html#cb118-11"></a><span class="co"># For each year, divide each stage by the total to get </span></span>
-<span id="cb118-12"><a href="DID.html#cb118-12"></a><span class="co"># relative abundances and thus the distribution.</span></span>
-<span id="cb118-13"><a href="DID.html#cb118-13"></a>proportions &lt;-<span class="st"> </span>N<span class="op">/</span>N.total</span>
-<span id="cb118-14"><a href="DID.html#cb118-14"></a>SD &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">Year=</span><span class="dv">0</span><span class="op">:</span>steps, proportions)</span>
-<span id="cb118-15"><a href="DID.html#cb118-15"></a>sdg &lt;-<span class="st"> </span><span class="kw">gather</span>(SD, Stage, Proportion, <span class="op">-</span>Year)</span>
-<span id="cb118-16"><a href="DID.html#cb118-16"></a></span>
-<span id="cb118-17"><a href="DID.html#cb118-17"></a><span class="co"># plot the distributions for succeeding years.</span></span>
-<span id="cb118-18"><a href="DID.html#cb118-18"></a><span class="kw">ggplot</span>(sdg, <span class="kw">aes</span>(Stage, Proportion)) <span class="op">+</span><span class="st"> </span><span class="kw">geom_col</span>()  <span class="op">+</span><span class="st"> </span></span>
-<span id="cb118-19"><a href="DID.html#cb118-19"></a><span class="st">  </span><span class="kw">facet_wrap</span>(<span class="op">~</span>Year, <span class="dt">nrow=</span><span class="dv">3</span>, <span class="dt">ncol=</span><span class="dv">3</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb119"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb119-1"><a href="DID.html#cb119-1"></a>A &lt;-<span class="st"> </span><span class="kw">matrix</span>(<span class="kw">c</span>(<span class="dv">0</span>, <span class="fl">.3</span>, <span class="dv">2</span>, <span class="fl">.7</span>), <span class="dt">nrow=</span><span class="dv">2</span>) <span class="co"># our tran. matrix</span></span>
+<span id="cb119-2"><a href="DID.html#cb119-2"></a>N0 &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dt">Juveniles=</span><span class="dv">1</span>,<span class="dt">Adults=</span><span class="dv">10</span>) <span class="co"># initial population</span></span>
+<span id="cb119-3"><a href="DID.html#cb119-3"></a>steps &lt;-<span class="st"> </span><span class="dv">8</span> <span class="co"># number of time steps</span></span>
+<span id="cb119-4"><a href="DID.html#cb119-4"></a><span class="co"># combine the stages of our initial population, and a zero matrix </span></span>
+<span id="cb119-5"><a href="DID.html#cb119-5"></a><span class="co"># with a column for each stage and a row for each time step</span></span>
+<span id="cb119-6"><a href="DID.html#cb119-6"></a>N &lt;-<span class="st"> </span><span class="kw">rbind</span>(N0, <span class="kw">matrix</span>(<span class="dv">0</span>, <span class="dt">ncol=</span><span class="dv">2</span>, <span class="dt">nrow=</span>steps) )</span>
+<span id="cb119-7"><a href="DID.html#cb119-7"></a><span class="co"># use a for-loop to project the population each year and store it.</span></span>
+<span id="cb119-8"><a href="DID.html#cb119-8"></a><span class="cf">for</span>(t <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span>steps) {N[t<span class="op">+</span><span class="dv">1</span>,] &lt;-<span class="st"> </span>A<span class="op">%*%</span>N[t,]}</span>
+<span id="cb119-9"><a href="DID.html#cb119-9"></a><span class="co"># Sum the stages to get the total N</span></span>
+<span id="cb119-10"><a href="DID.html#cb119-10"></a>N.total &lt;-<span class="st"> </span><span class="kw">rowSums</span>(N)</span>
+<span id="cb119-11"><a href="DID.html#cb119-11"></a><span class="co"># For each year, divide each stage by the total to get </span></span>
+<span id="cb119-12"><a href="DID.html#cb119-12"></a><span class="co"># relative abundances and thus the distribution.</span></span>
+<span id="cb119-13"><a href="DID.html#cb119-13"></a>proportions &lt;-<span class="st"> </span>N<span class="op">/</span>N.total</span>
+<span id="cb119-14"><a href="DID.html#cb119-14"></a>SD &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">Year=</span><span class="dv">0</span><span class="op">:</span>steps, proportions)</span>
+<span id="cb119-15"><a href="DID.html#cb119-15"></a>sdg &lt;-<span class="st"> </span><span class="kw">gather</span>(SD, Stage, Proportion, <span class="op">-</span>Year)</span>
+<span id="cb119-16"><a href="DID.html#cb119-16"></a></span>
+<span id="cb119-17"><a href="DID.html#cb119-17"></a><span class="co"># plot the distributions for succeeding years.</span></span>
+<span id="cb119-18"><a href="DID.html#cb119-18"></a><span class="kw">ggplot</span>(sdg, <span class="kw">aes</span>(Stage, Proportion)) <span class="op">+</span><span class="st"> </span><span class="kw">geom_col</span>()  <span class="op">+</span><span class="st"> </span></span>
+<span id="cb119-19"><a href="DID.html#cb119-19"></a><span class="st">  </span><span class="kw">facet_wrap</span>(<span class="op">~</span>Year, <span class="dt">nrow=</span><span class="dv">3</span>, <span class="dt">ncol=</span><span class="dv">3</span>)</span></code></pre></div>
 <p><img src="figs/poweriter-1.png" width="90%" /></p>
 <p>Using total population sizes, we can calculate an annual rate of increase <span class="math inline">\(N_{t+1}/N_t\)</span>.</p>
-<div class="sourceCode" id="cb119"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb119-1"><a href="DID.html#cb119-1"></a><span class="co"># using &quot;-&quot; in an index removes that element</span></span>
-<span id="cb119-2"><a href="DID.html#cb119-2"></a>lambda.t &lt;-<span class="st"> </span>N.total[<span class="op">-</span><span class="dv">1</span>]<span class="op">/</span>N.total[<span class="op">-</span>(steps<span class="op">+</span><span class="dv">1</span>)] </span>
-<span id="cb119-3"><a href="DID.html#cb119-3"></a><span class="kw">qplot</span>(<span class="dt">x=</span><span class="dv">1</span><span class="op">:</span>steps, <span class="dt">y=</span>lambda.t, <span class="dt">geom=</span><span class="kw">c</span>(<span class="st">&quot;line&quot;</span>, <span class="st">&quot;point&quot;</span>)) <span class="op">+</span><span class="st"> </span></span>
-<span id="cb119-4"><a href="DID.html#cb119-4"></a><span class="st">  </span><span class="kw">annotate</span>(<span class="st">&quot;point&quot;</span>, <span class="dt">x =</span> steps  , <span class="dt">y=</span>L1, <span class="dt">pch=</span><span class="dv">1</span>, <span class="dt">size=</span><span class="dv">3</span>) </span></code></pre></div>
+<div class="sourceCode" id="cb120"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb120-1"><a href="DID.html#cb120-1"></a><span class="co"># using &quot;-&quot; in an index removes that element</span></span>
+<span id="cb120-2"><a href="DID.html#cb120-2"></a>lambda.t &lt;-<span class="st"> </span>N.total[<span class="op">-</span><span class="dv">1</span>]<span class="op">/</span>N.total[<span class="op">-</span>(steps<span class="op">+</span><span class="dv">1</span>)] </span>
+<span id="cb120-3"><a href="DID.html#cb120-3"></a><span class="kw">qplot</span>(<span class="dt">x=</span><span class="dv">1</span><span class="op">:</span>steps, <span class="dt">y=</span>lambda.t, <span class="dt">geom=</span><span class="kw">c</span>(<span class="st">&quot;line&quot;</span>, <span class="st">&quot;point&quot;</span>)) <span class="op">+</span><span class="st"> </span></span>
+<span id="cb120-4"><a href="DID.html#cb120-4"></a><span class="st">  </span><span class="kw">annotate</span>(<span class="st">&quot;point&quot;</span>, <span class="dt">x =</span> steps  , <span class="dt">y=</span>L1, <span class="dt">pch=</span><span class="dv">1</span>, <span class="dt">size=</span><span class="dv">3</span>) </span></code></pre></div>
 <div class="figure"><span id="fig:unnamed-chunk-36"></span>
 <img src="figs/unnamed-chunk-36-1.png" alt="Calculating an annual finite rate of increase from a projected population shows that the population will approach asymptotically a constant geometric rate of increase. Solid points are annual growth rate; the circular point is lambda(1) from eigen analyysis." width="90%" />
 <p class="caption">
@@ -644,10 +645,10 @@ Like the relation between the dominant right eigenvector and the stable stage di
   \frac{v}{v_{1}}
 \]</span></p>
 <p>We find the left eigenvalues and -vectors by performing eigenanalysis on the <em>transpose</em> of the transition matrix. Transposition flips rows and columns. We perform eigenanalysis, extracting just the dominant left eigenvector; we then scale it, so the stage 1 has a reproductive value of 1.0.</p>
-<div class="sourceCode" id="cb120"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb120-1"><a href="DID.html#cb120-1"></a>etA &lt;-<span class="st"> </span><span class="kw">eigen</span>(<span class="kw">t</span>(A))</span>
-<span id="cb120-2"><a href="DID.html#cb120-2"></a>dom.pos &lt;-<span class="st"> </span><span class="kw">which.max</span>(<span class="kw">Mod</span>(etA<span class="op">$</span>values))</span>
-<span id="cb120-3"><a href="DID.html#cb120-3"></a>v1 &lt;-<span class="st"> </span><span class="kw">Re</span>(etA<span class="op">$</span>vectors[,dom.pos])</span>
-<span id="cb120-4"><a href="DID.html#cb120-4"></a>( rv &lt;-<span class="st"> </span>v1<span class="op">/</span>v1[<span class="dv">1</span>] )</span></code></pre></div>
+<div class="sourceCode" id="cb121"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb121-1"><a href="DID.html#cb121-1"></a>etA &lt;-<span class="st"> </span><span class="kw">eigen</span>(<span class="kw">t</span>(A))</span>
+<span id="cb121-2"><a href="DID.html#cb121-2"></a>dom.pos &lt;-<span class="st"> </span><span class="kw">which.max</span>(<span class="kw">Mod</span>(etA<span class="op">$</span>values))</span>
+<span id="cb121-3"><a href="DID.html#cb121-3"></a>v1 &lt;-<span class="st"> </span><span class="kw">Re</span>(etA<span class="op">$</span>vectors[,dom.pos])</span>
+<span id="cb121-4"><a href="DID.html#cb121-4"></a>( rv &lt;-<span class="st"> </span>v1<span class="op">/</span>v1[<span class="dv">1</span>] )</span></code></pre></div>
 <pre><code>## [1] 1 4</code></pre>
 <p>Here we see that reproductive value, <span class="math inline">\(rv\)</span>, increases with age or stage. This means that the expected reproductive value of an individual in the second stage is <code>4</code> times as great as that of an individual in the first stage. In general, reproductive value of individuals in a stage increases with increasing probability of reaching fecund stages.</p>
 </div>
@@ -657,8 +658,8 @@ Like the relation between the dominant right eigenvector and the stable stage di
 <p>The stage structure and reproductive values each in their own way contribute to the importance of each stage in determining <span class="math inline">\(\lambda\)</span>. The stable stage distribution provides the relative abundance of individuals in each stage. Reproductive value provides the expected contribution to future population growth of individuals in each stage. Sensitivity and elasticity combine these to tell us the relative importance of each transition in determining <span class="math inline">\(\lambda_1\)</span>.</p>
 <p>Almost always, sensitivities of a transition matrix are the sensistivities of <span class="math inline">\(\lambda_1\)</span> to the elements of the transition matrix. They are the direct contributions of each transition to determining <span class="math inline">\(\lambda_1\)</span>. The sensitivity for the element <span class="math inline">\(a_{ij}\)</span> of a transition matrix is the change in <span class="math inline">\(\lambda_1\)</span> that occurs when we change <span class="math inline">\(a_{ij}\)</span> a small amount, or <span class="math inline">\(\delta \lambda / \delta a_{ij}\)</span>. It isn’t surprising, then, these are derived from the stable stage distribution and the reproductive values. Specifically, the sensitivities are calculated as</p>
 <p><span class="math display" id="eq:sens">\[
- \tag{4.11}
 \frac{\delta \lambda}{\delta a_{ij}}=\frac{v_{i}w_{j}}{v\cdot w} 
+\tag{4.11}
 \]</span>
 where <span class="math inline">\(v_{i}w_{j}\)</span> is the product of each pairwise combination of elements of the dominant left and right eigenvectors, <span class="math inline">\(v\)</span> and <span class="math inline">\(w\)</span>. Specifically, the numerator is generated by the reproductive value of the target stage and the stable stage distribution of the source stage,
 <span class="math display">\[
@@ -670,9 +671,9 @@ v_2 w_1 &amp; v_2 w_2
 \]</span></p>
 <p>In the denominator, the <em>dot product</em>, <span class="math inline">\(\mathbf{v} \cdot \mathbf{w}\)</span>, is the sum of the pairwise products of each vector element. Dividing <span class="math inline">\(v_{i}w_{j}\)</span> by this sum causes the sensitivities to be relative to the magnitudes of <span class="math inline">\(v\)</span> and <span class="math inline">\(w\)</span>.</p>
 <p>Let’s calculate sensitivities now. Because the stable stage distribution and the reproductive values are merely scaled versions of the dominant right and left eigenvectors, it doesn’t matter whether we use the unscaled eigenvectors, or the scaled stable stage distribution and reproductive values.</p>
-<div class="sourceCode" id="cb122"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb122-1"><a href="DID.html#cb122-1"></a>vw &lt;-<span class="st"> </span><span class="kw">matrix</span>(rv, <span class="dt">nr=</span><span class="dv">2</span>, <span class="dt">nc=</span><span class="dv">1</span>) <span class="op">%*%</span><span class="st"> </span><span class="kw">matrix</span>(ssd, <span class="dt">nr=</span><span class="dv">1</span>, <span class="dt">nc=</span><span class="dv">2</span>) <span class="co"># or vw &lt;- v1 %*% t(w1); the numerator</span></span>
-<span id="cb122-2"><a href="DID.html#cb122-2"></a>dot.prod &lt;-<span class="st"> </span><span class="kw">sum</span>(rv<span class="op">*</span>ssd) <span class="co"># or dot.prod &lt;- sum(v1 * w1) denominator</span></span>
-<span id="cb122-3"><a href="DID.html#cb122-3"></a>(s &lt;-<span class="st"> </span>vw<span class="op">/</span>dot.prod)</span></code></pre></div>
+<div class="sourceCode" id="cb123"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb123-1"><a href="DID.html#cb123-1"></a>vw &lt;-<span class="st"> </span><span class="kw">matrix</span>(rv, <span class="dt">nr=</span><span class="dv">2</span>, <span class="dt">nc=</span><span class="dv">1</span>) <span class="op">%*%</span><span class="st"> </span><span class="kw">matrix</span>(ssd, <span class="dt">nr=</span><span class="dv">1</span>, <span class="dt">nc=</span><span class="dv">2</span>) <span class="co"># or vw &lt;- v1 %*% t(w1); the numerator</span></span>
+<span id="cb123-2"><a href="DID.html#cb123-2"></a>dot.prod &lt;-<span class="st"> </span><span class="kw">sum</span>(rv<span class="op">*</span>ssd) <span class="co"># or dot.prod &lt;- sum(v1 * w1) denominator</span></span>
+<span id="cb123-3"><a href="DID.html#cb123-3"></a>(s &lt;-<span class="st"> </span>vw<span class="op">/</span>dot.prod)</span></code></pre></div>
 <pre><code>##           [,1]      [,2]
 ## [1,] 0.2941176 0.1764706
 ## [2,] 1.1764706 0.7058824</code></pre>
@@ -694,8 +695,8 @@ These are also equal to
 <span class="math display">\[e_{ij}= \frac{\delta \log \lambda}{\delta \log a_{ij}}.\]</span>
 Like sensitivities, we can think of elasticities as slopes.</p>
 <p>Calculating these in R is easy.</p>
-<div class="sourceCode" id="cb124"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb124-1"><a href="DID.html#cb124-1"></a>e &lt;-<span class="st"> </span>(A<span class="op">/</span>L1) <span class="op">*</span><span class="st"> </span>s</span>
-<span id="cb124-2"><a href="DID.html#cb124-2"></a>(<span class="kw">round</span>(e, <span class="dv">3</span>))</span></code></pre></div>
+<div class="sourceCode" id="cb125"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb125-1"><a href="DID.html#cb125-1"></a>e &lt;-<span class="st"> </span>(A<span class="op">/</span>L1) <span class="op">*</span><span class="st"> </span>s</span>
+<span id="cb125-2"><a href="DID.html#cb125-2"></a>(<span class="kw">round</span>(e, <span class="dv">3</span>))</span></code></pre></div>
 <pre><code>##       [,1]  [,2]
 ## [1,] 0.000 0.294
 ## [2,] 0.294 0.412</code></pre>
@@ -721,24 +722,21 @@ demographic rates. We use this continuously varying state variable in place of s
 </div>
 <div id="exploring-a-real-population" class="section level2">
 <h2><span class="header-section-number">4.8</span> Exploring a real population</h2>
-<p><span class="citation">Crouse, Crowder, and Caswell (<a href="#ref-Crouse1987" role="doc-biblioref">1987</a>)</span> performed a demographic analysis of an endangered sea turtle species, the loggerhead (<em>Caretta caretta</em>). Management of loggerhead populations seemed essential for their long term survival, and a popular management strategy had been and still is to protect nesting females, eggs, and hatchlings. The ground breaking work by Crouse<a href="#fn27" class="footnote-ref" id="fnref27"><sup>27</sup></a> and her colleagues compiled data to create a stage-based projection matrix to analyze quantitatively which stages are most important and least important in influencing long-term growth rate. This work led to US Federal laws requiring that US shrimp fishermen use nets that include Turtle Excluder Devices (TEDs, <a href="https://www.fisheries.noaa.gov/southeast/bycatch/turtle-excluder-device-regulations" class="uri">https://www.fisheries.noaa.gov/southeast/bycatch/turtle-excluder-device-regulations</a> ). Crouse et al. determined a transition matrix, <strong>A</strong>, for their loggerhead population:
-<span class="math display" id="eq:A">\[
-\begin{equation}
-\tag{4.12}
-\begin{blockarray}{cccccccc}
-&amp; H &amp; J_s &amp; J_l &amp; sub &amp; B_1 &amp; B_2 &amp; M\\
-\begin{block}{c(ccccccc)}
-H  &amp;       0&amp;      0&amp;      0&amp;      0&amp;    127&amp;      4&amp; 80\\
-J_s &amp; 0.6747&amp; 0.7370&amp;      0&amp;      0&amp;      0&amp;      0&amp; 0\\
-J_l &amp;      0&amp; 0.0486&amp; 0.6610&amp;      0&amp;      0&amp;      0&amp; 0\\
-sub &amp;      0&amp;      0&amp; 0.0147&amp; 0.6907&amp;      0&amp;      0&amp; 0\\
-B_1 &amp;      0&amp;      0&amp;      0&amp; 0.0518&amp;      0&amp;      0&amp; 0\\
-B_2 &amp;      0&amp;      0&amp;      0&amp;      0&amp; 0.8091&amp;      0&amp; 0\\
-M   &amp;      0&amp;      0&amp;      0&amp;      0&amp;      0&amp; 0.8091&amp; 0.8089
-\end{block} 
-\end{blockarray}
-\end{equation}
-\]</span></p>
+<p><span class="citation">Crouse, Crowder, and Caswell (<a href="#ref-Crouse1987" role="doc-biblioref">1987</a>)</span> performed a demographic analysis of an endangered sea turtle species, the loggerhead (<em>Caretta caretta</em>). Management of loggerhead populations seemed essential for their long term survival, and a popular management strategy had been and still is to protect nesting females, eggs, and hatchlings. The ground breaking work by Crouse<a href="#fn27" class="footnote-ref" id="fnref27"><sup>27</sup></a> and her colleagues compiled data to create a stage-based projection matrix to analyze quantitatively which stages are most important and least important in influencing long-term growth rate. This work led to US Federal laws requiring that US shrimp fishermen use nets that include Turtle Excluder Devices (TEDs, <a href="https://www.fisheries.noaa.gov/southeast/bycatch/turtle-excluder-device-regulations" class="uri">https://www.fisheries.noaa.gov/southeast/bycatch/turtle-excluder-device-regulations</a> ). Crouse et al. determined a transition matrix, <strong>A</strong>, for their loggerhead population:</p>
+<p><span class="math display">\[\begin{array}{c}
+H\\J_s\\J_l \\sub \\ B_1 \\B_2 \\ M
+\end{array}
+ \left(
+\begin{array}{cccccccc}
+     0&amp;      0&amp;      0&amp;      0&amp;    127&amp;      4&amp; 80\\
+0.6747&amp; 0.7370&amp;      0&amp;      0&amp;      0&amp;      0&amp; 0\\
+     0&amp; 0.0486&amp; 0.6610&amp;      0&amp;      0&amp;      0&amp; 0\\
+     0&amp;      0&amp; 0.0147&amp; 0.6907&amp;      0&amp;      0&amp; 0\\
+     0&amp;      0&amp;      0&amp; 0.0518&amp;      0&amp;      0&amp; 0\\
+      0&amp;      0&amp;      0&amp;      0&amp; 0.8091&amp;      0&amp; 0\\
+      0&amp;      0&amp;      0&amp;      0&amp;      0&amp; 0.8091&amp; 0.8089
+\end{array} 
+\right)\]</span></p>
 <ol style="list-style-type: decimal">
 <li>Draw by hand two different types of life cycle graphs for this loggerhead population. Include the matrix elements associated with each transition.</li>
 <li>Use eigenanalysis to determine <span class="math inline">\(\lambda_1\)</span>. Explain what this tells us about the population, including any assumptions regarding the stable stage distribution.</li>

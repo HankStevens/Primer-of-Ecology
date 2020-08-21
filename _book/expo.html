@@ -1,0 +1,820 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>3 Simple density-independent growth | Primer of Ecology with R</title>
+  <meta name="description" content="3 Simple density-independent growth | Primer of Ecology with R" />
+  <meta name="generator" content="bookdown 0.20 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="3 Simple density-independent growth | Primer of Ecology with R" />
+  <meta property="og:type" content="book" />
+  
+  
+  
+  <meta name="github-repo" content="HankStevens/Primer-of-Ecology" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="3 Simple density-independent growth | Primer of Ecology with R" />
+  
+  
+  
+
+<meta name="author" content="Hank Stevens" />
+
+
+<meta name="date" content="2020-08-21" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="oft.html"/>
+<link rel="next" href="DID.html"/>
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+<script src="libs/accessible-code-block-0.0.1/empty-anchor.js"></script>
+
+
+<style type="text/css">
+code.sourceCode > span { display: inline-block; line-height: 1.25; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Preface</a></li>
+<li class="chapter" data-level="1" data-path="theory.html"><a href="theory.html"><i class="fa fa-check"></i><b>1</b> Theory in Ecology</a><ul>
+<li class="chapter" data-level="1.1" data-path="theory.html"><a href="theory.html#examples-of-theories"><i class="fa fa-check"></i><b>1.1</b> Examples of theories</a><ul>
+<li class="chapter" data-level="1.1.1" data-path="theory.html"><a href="theory.html#hierarchy-theory"><i class="fa fa-check"></i><b>1.1.1</b> Hierarchy theory</a></li>
+<li class="chapter" data-level="1.1.2" data-path="theory.html"><a href="theory.html#a-general-theory-of-ecology"><i class="fa fa-check"></i><b>1.1.2</b> A general theory of ecology</a></li>
+<li class="chapter" data-level="1.1.3" data-path="theory.html"><a href="theory.html#efficient-theory"><i class="fa fa-check"></i><b>1.1.3</b> Efficient theory</a></li>
+</ul></li>
+<li class="chapter" data-level="1.2" data-path="theory.html"><a href="theory.html#metabolic_scaling"><i class="fa fa-check"></i><b>1.2</b> An example: Metabolic Theory of Ecology</a><ul>
+<li class="chapter" data-level="1.2.1" data-path="theory.html"><a href="theory.html#body-size-dependence"><i class="fa fa-check"></i><b>1.2.1</b> Body-size dependence</a></li>
+<li class="chapter" data-level="1.2.2" data-path="theory.html"><a href="theory.html#temperature-dependence"><i class="fa fa-check"></i><b>1.2.2</b> Temperature dependence</a></li>
+</ul></li>
+<li class="chapter" data-level="1.3" data-path="theory.html"><a href="theory.html#power-law-scaling-implies-constant-relative-differences"><i class="fa fa-check"></i><b>1.3</b> Power law scaling implies constant relative differences</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="oft.html"><a href="oft.html"><i class="fa fa-check"></i><b>2</b> Optimal Foraging</a><ul>
+<li class="chapter" data-level="2.1" data-path="oft.html"><a href="oft.html#a-prey-model"><i class="fa fa-check"></i><b>2.1</b> A prey model</a><ul>
+<li class="chapter" data-level="2.1.1" data-path="oft.html"><a href="oft.html#our-intuition"><i class="fa fa-check"></i><b>2.1.1</b> Our intuition</a></li>
+<li class="chapter" data-level="2.1.2" data-path="oft.html"><a href="oft.html#mathematical-support"><i class="fa fa-check"></i><b>2.1.2</b> Mathematical support</a></li>
+</ul></li>
+<li class="chapter" data-level="2.2" data-path="oft.html"><a href="oft.html#the-patch-model"><i class="fa fa-check"></i><b>2.2</b> The patch model</a></li>
+<li class="chapter" data-level="2.3" data-path="oft.html"><a href="oft.html#a-simulation-of-a-prey-model"><i class="fa fa-check"></i><b>2.3</b> A simulation of a prey model</a><ul>
+<li class="chapter" data-level="2.3.1" data-path="oft.html"><a href="oft.html#lab-exercise"><i class="fa fa-check"></i><b>2.3.1</b> Lab exercise</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="expo.html"><a href="expo.html"><i class="fa fa-check"></i><b>3</b> Simple density-independent growth</a><ul>
+<li class="chapter" data-level="3.1" data-path="expo.html"><a href="expo.html#discrete-growth-rates-of-fruit-flies-in-my-kitchen"><i class="fa fa-check"></i><b>3.1</b> Discrete growth rates of fruit flies in my kitchen</a></li>
+<li class="chapter" data-level="3.2" data-path="expo.html"><a href="expo.html#fruit-flies-with-continuous-overlapping-generations"><i class="fa fa-check"></i><b>3.2</b> Fruit flies with continuous overlapping generations</a></li>
+<li class="chapter" data-level="3.3" data-path="expo.html"><a href="expo.html#properties-of-geometric-and-exponential-growth"><i class="fa fa-check"></i><b>3.3</b> Properties of geometric and exponential growth</a><ul>
+<li class="chapter" data-level="3.3.1" data-path="expo.html"><a href="expo.html#average-growth-rate"><i class="fa fa-check"></i><b>3.3.1</b> Average growth rate</a></li>
+</ul></li>
+<li class="chapter" data-level="3.4" data-path="expo.html"><a href="expo.html#modeling-with-data-simulated-dynamics"><i class="fa fa-check"></i><b>3.4</b> Modeling with Data: Simulated Dynamics</a><ul>
+<li class="chapter" data-level="3.4.1" data-path="expo.html"><a href="expo.html#data-based-approaches"><i class="fa fa-check"></i><b>3.4.1</b> Data-based approaches</a></li>
+<li class="chapter" data-level="3.4.2" data-path="expo.html"><a href="expo.html#creating-and-visualizing-the-data"><i class="fa fa-check"></i><b>3.4.2</b> Creating and visualizing the data</a></li>
+<li class="chapter" data-level="3.4.3" data-path="expo.html"><a href="expo.html#one-simulation"><i class="fa fa-check"></i><b>3.4.3</b> One simulation</a></li>
+<li class="chapter" data-level="3.4.4" data-path="expo.html"><a href="expo.html#multiple-simulations"><i class="fa fa-check"></i><b>3.4.4</b> Multiple simulations</a></li>
+<li class="chapter" data-level="3.4.5" data-path="expo.html"><a href="expo.html#a-distribution-of-possible-futures"><i class="fa fa-check"></i><b>3.4.5</b> A distribution of possible futures</a></li>
+<li class="chapter" data-level="3.4.6" data-path="expo.html"><a href="expo.html#analyzing-results"><i class="fa fa-check"></i><b>3.4.6</b> Analyzing results</a></li>
+<li class="chapter" data-level="3.4.7" data-path="expo.html"><a href="expo.html#inferring-processes-underlying-growth-rate"><i class="fa fa-check"></i><b>3.4.7</b> Inferring processes underlying growth rate</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="DID.html"><a href="DID.html"><i class="fa fa-check"></i><b>4</b> Density-independent Demography</a><ul>
+<li class="chapter" data-level="4.1" data-path="DID.html"><a href="DID.html#a-two-stage-matrix-model"><i class="fa fa-check"></i><b>4.1</b> A two stage matrix model</a></li>
+<li class="chapter" data-level="4.2" data-path="DID.html"><a href="DID.html#a-brief-primer-on-matrices"><i class="fa fa-check"></i><b>4.2</b> A brief primer on matrices</a></li>
+<li class="chapter" data-level="4.3" data-path="DID.html"><a href="DID.html#decomposing-a"><i class="fa fa-check"></i><b>4.3</b> Decomposing <strong>A</strong></a></li>
+<li class="chapter" data-level="4.4" data-path="DID.html"><a href="DID.html#a-three-stage-model"><i class="fa fa-check"></i><b>4.4</b> A three stage model</a></li>
+<li class="chapter" data-level="4.5" data-path="DID.html"><a href="DID.html#projection"><i class="fa fa-check"></i><b>4.5</b> Projection</a></li>
+<li class="chapter" data-level="4.6" data-path="DID.html"><a href="DID.html#analyzing-the-transition-matrix"><i class="fa fa-check"></i><b>4.6</b> Analyzing the transition matrix</a><ul>
+<li class="chapter" data-level="4.6.1" data-path="DID.html"><a href="DID.html#eigenanalysis"><i class="fa fa-check"></i><b>4.6.1</b> Eigenanalysis</a></li>
+<li class="chapter" data-level="4.6.2" data-path="DID.html"><a href="DID.html#finite-rate-of-increase"><i class="fa fa-check"></i><b>4.6.2</b> Finite rate of increase</a></li>
+<li class="chapter" data-level="4.6.3" data-path="DID.html"><a href="DID.html#stable-stage-distribution"><i class="fa fa-check"></i><b>4.6.3</b> Stable stage distribution</a></li>
+<li class="chapter" data-level="4.6.4" data-path="DID.html"><a href="DID.html#calculating-the-stable-stage-distribution"><i class="fa fa-check"></i><b>4.6.4</b> Calculating the stable stage distribution</a></li>
+<li class="chapter" data-level="4.6.5" data-path="DID.html"><a href="DID.html#reproductive-value"><i class="fa fa-check"></i><b>4.6.5</b> Reproductive value</a></li>
+<li class="chapter" data-level="4.6.6" data-path="DID.html"><a href="DID.html#sensitivity-and-elasticity"><i class="fa fa-check"></i><b>4.6.6</b> Sensitivity and elasticity</a></li>
+</ul></li>
+<li class="chapter" data-level="4.7" data-path="DID.html"><a href="DID.html#r-packges-for-demography"><i class="fa fa-check"></i><b>4.7</b> R packges for demography</a></li>
+<li class="chapter" data-level="4.8" data-path="DID.html"><a href="DID.html#exploring-a-real-population"><i class="fa fa-check"></i><b>4.8</b> Exploring a real population</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i><b>5</b> References</a></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Primer of Ecology with R</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="expo" class="section level1">
+<h1><span class="header-section-number">3</span> Simple density-independent growth</h1>
+<div class="figure"><span id="fig:Melospiza1"></span>
+<img src="figs/Melospiza1-1.png" alt="Song Sparrow (Melospiza melodia) counts in Darrtown, OH, USA. From  Sauer, J. R., J.E. Hines, and  J. Fallon. 2005. The North American Breeding Bird Survey, Results and Analysis 1966--2004. Version 2005.2. USGS Patuxent Wildlife Research Center, Laurel, MD." width="70%" />
+<p class="caption">
+Figure 3.1: Song Sparrow (Melospiza melodia) counts in Darrtown, OH, USA. From Sauer, J. R., J.E. Hines, and J. Fallon. 2005. The North American Breeding Bird Survey, Results and Analysis 1966–2004. Version 2005.2. USGS Patuxent Wildlife Research Center, Laurel, MD.
+</p>
+</div>
+<div class="figure"><span id="fig:Melospiza2"></span>
+<img src="figs/Melospiza2-1.png" alt="Song Sparrow (Melospiza melodia) annual changes in population size as a function of population size." width="70%" />
+<p class="caption">
+Figure 3.2: Song Sparrow (Melospiza melodia) annual changes in population size as a function of population size.
+</p>
+</div>
+<p>Between 1966 and 1971, Song Sparrow (<em>Melospiza melodia</em>) abundance in Darrtown, OH, USA, seemed to increase very quickly, perhaps unimpeded by any particular factor (Fig. @ref{fig:Melospiza1}, @ref{fig:Melospiza2}). In an effort to manage this population, we may want to predict its future population size. We may also want to describe its growth rate and population size in terms of mechanisms that could influence its growth rate. We may want to compare its growth and relevant mechanisms to those of other Song Sparrow populations or to other passerine populations. To do this, we start with the simplest of all population phenomena, geometric and exponential growth.</p>
+<p>Geometric and exponential growth are examples of <em>density-independent growth</em>. This captures the fundamental process of reproduction (e.g., making seeds or babies) results in a <em>geometric series</em>.<a href="#fn13" class="footnote-ref" id="fnref13"><sup>13</sup></a> For instance, one cell divides to make two, those two cells each divide to make four, and so on, where reproduction for each cell results in two cells, <em>regardless of how many other cells are in the population</em>—that is what we mean by <em>density-independent</em>. This myopically observed event of reproduction, whether one cell into two, or one plant producing many seeds, is the genesis of a geometric series. Therefore, most models of populations include this
+fundamental process of geometric increase. Second, populations can grow in a density-independent fashion when resources are plentiful. It behooves us to start with this simple model because most, more complex population models include this process.</p>
+<p><span class="citation">Hastings (<a href="#ref-Hastings2011" role="doc-biblioref">2011</a>)</span> proposes that we can approach single species poulation growth from either a microscopic or macroscopic point of view. The microscopic approach begins with two propositions. The first is that if we know the location, timing, and traits of all individuals, we can predict perfectly population dynamics; the second is that we can never predict dynamics perfectly because births and deaths are fundamentally random and can be described only with probabilities.<a href="#fn14" class="footnote-ref" id="fnref14"><sup>14</sup></a> With this microscopic approach, we would seek a very detailed description of individuals and build a complex model to understand the consequences of the characteristics of all these interacting individuals, including the growth of the poppulation.</p>
+<p>In this chapter, I choose to start with Hastings’ macroscopic approach. These propositions appear simpler.</p>
+<ol style="list-style-type: decimal">
+<li>A population grows exponentially in the absence of other forces.</li>
+<li>There are forces that can prevent a population from growing exponentially.</li>
+</ol>
+<p>These are the consequences of the following assumptions.</p>
+<ol style="list-style-type: lower-alpha">
+<li>all individuals in a population are identical.</li>
+<li>there is no migration in or out of the population.
+c1. the number of offspring per individual (or the per capita birth and death rates) are constant through time, and …
+c2. … independent of the number of individuals in the population.</li>
+</ol>
+<p>Deviations from these assumptions lead to all of the most interesting parts of single species population dynamics <span class="citation">(Hastings <a href="#ref-Hastings2011" role="doc-biblioref">2011</a>)</span>. The only deviation we play with in this chapter concerns assumption c; we model stochastic variation in population growth rate to investigate extinction risk. It is also worth mentioning that, although propositions 1 and 2 follow from assumptions a-d, they are not strictly necessary <span class="citation">(Hastings <a href="#ref-Hastings2011" role="doc-biblioref">2011</a>)</span>. For instance, individuals need not be identical, and we deal with a big exception in the next chapter where we introduce structured population growth. Also, migration is admissable, provided immigration = emigration and it does not alter growth rates. Nonetheless, other deviations from a. and b. can have very important consequences for single species population dynamics.</p>
+<p>Here we define Density-independence<a href="#fn15" class="footnote-ref" id="fnref15"><sup>15</sup></a> in a real population as a lack of a statistical relation between the density of a population, and its <em>per capita</em> growth rate. The power to detect a significant relation between any two continuous variables depends on those factors which govern statistical power, such as the number of observations, the range of the predictor variable, and the strength of the underlying relation. Therefore, our conclusion, that a particular population exhibits density-independent growth, may be trivial if our sample size is small, with few generations sampled, or if we sampled the population over a very narrow range of densities. Nonetheless, it behooves us to come back to this definition if, or when, we get caught up in the biology of a particular organism.</p>
+<p>In this chapter, we’ll introduce density-independent population <em>projection</em>, <em>growth</em>, and <em>per capita growth</em>, for populations with synchronous reproduction (discrete models), and continuous reproduction (continuous models).</p>
+<div id="discrete-growth-rates-of-fruit-flies-in-my-kitchen" class="section level2">
+<h2><span class="header-section-number">3.1</span> Discrete growth rates of fruit flies in my kitchen</h2>
+<p>Summertime, and the living is easy. Fruit flies in my kitchen, and their number’s quite high. Flies love my ripe fruit, and my red wine. They drown in the wine–I am not sure if that is good or bad.</p>
+<p>For now, we’ll treat fruit flies as if they grow in discrete generations. This is very common for populatilons that live in seasonal habitats - their reproduction is timed to the season, and they breed altogether in one bout.<a href="#fn16" class="footnote-ref" id="fnref16"><sup>16</sup></a></p>
+<p>I count the number of flies every week, and I find these numbers:</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="expo.html#cb15-1"></a>t &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>)</span>
+<span id="cb15-2"><a href="expo.html#cb15-2"></a>N &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">2</span>, <span class="dv">4</span>, <span class="dv">8</span>, <span class="dv">16</span>)</span>
+<span id="cb15-3"><a href="expo.html#cb15-3"></a><span class="kw">qplot</span>(<span class="dt">x=</span>t, <span class="dt">y=</span>N, <span class="dt">geom=</span><span class="kw">c</span>(<span class="st">&quot;line&quot;</span>, <span class="st">&quot;point&quot;</span>) )</span></code></pre></div>
+<p><img src="figs/flies-1.png" width="60%" /></p>
+<p>There are several ways we can describe fruit fly population growth. We begin by thinking about the proximate causes of change to population size per unit time: births, immigration, death and emigration (Fig. <a href="expo.html#fig:fliesi">3.3</a>). Those are the only options, and we state it thus:
+<span class="math display">\[\frac{\Delta N}{\Delta t} = \frac{B + I - D - E}{\Delta t}\]</span>
+that is, the pop growthe rate<a href="#fn17" class="footnote-ref" id="fnref17"><sup>17</sup></a> is determined by the numbers of births, deaths, and migrants per unit time.</p>
+<p>Over the past month, I suspect the fruit flies are increasing primarily through reproduction in my kitchen. Clearly, at some point in the past, a fly or two (or three) must have immigrated into my kitchen, either as adults or as eggs or larvae in fruit I brought home (<span class="math inline">\(I&gt;0\)</span>). For now, I will assume fruit fly population dynamics in my kitchen are governed by only births and deaths (<span class="math inline">\(I=E=0\)</span>), so, we have
+<span class="math display">\[ \frac{N_{t+1} - N_t}{(t+1) - t}=\frac{\Delta N}{\Delta t}=\frac{B+D}{\Delta t}\]</span>
+In this equation, <span class="math inline">\(t\)</span> has a particular time unit, one week, so <span class="math inline">\(t+1\)</span> is one additional week. We refer to a population like this as <em>closed</em>, because it is closed to migration in or out.</p>
+<div class="figure"><span id="fig:fliesi"></span>
+<img src="figs/fliesi-1.png" alt="The number of fruit flies in my kitchen depends on immigration and emigration, and births and deaths. In the text, we assume that immigration and emigration are zero. All rates are individuals per unit time." width="100%" />
+<p class="caption">
+Figure 3.3: The number of fruit flies in my kitchen depends on immigration and emigration, and births and deaths. In the text, we assume that immigration and emigration are zero. All rates are individuals per unit time.
+</p>
+</div>
+<p>I would like to represent births and deaths as proportions of existing adults. that is, as
+<span class="math display">\[B = bN;\quad D=dN\]</span>
+This reflects the biological realities that adults produce offspring, and everyone has some chance of dying. The parameter <span class="math inline">\(b\)</span> could be any positive real number, <span class="math inline">\(b \ge 0\)</span>. This model of births reflects the geometric property of reproduction: over a specified time interval <span class="math inline">\(\Delta t\)</span>, an average parent makes <span class="math inline">\(b\)</span> babies. Parameter <span class="math inline">\(d\)</span> is any real number between zero and one, <span class="math inline">\(0 \le d \le 1\)</span>. Both <span class="math inline">\(b\)</span> and <span class="math inline">\(d\)</span> have units of individuals per individual per unit time. They depend on that unit of time.</p>
+<p><em>What if offspring die before the next census?</em></p>
+<p>Fig. <a href="expo.html#fig:fliesi">3.3</a> helps us think about these things. Simplifying, we’ll assume births occur first, and then death comes to offspring and adults.</p>
+<p>Let’s define a few terms.</p>
+<ul>
+<li><span class="math inline">\(N_0\)</span>, <span class="math inline">\(N_1\)</span> - the number of flies at the start and after the first time interval.</li>
+<li><span class="math inline">\(N^\prime\)</span>, <span class="math inline">\(N^{\prime\prime}\)</span> - distinct values of <span class="math inline">\(N\)</span>, just after births.</li>
+<li><span class="math inline">\(\Delta N\)</span> - the <em>change</em> in <span class="math inline">\(N\)</span> from one point in time to another.</li>
+<li><span class="math inline">\(t\)</span> is time, so <span class="math inline">\(\Delta t\)</span> is the time interval over which <span class="math inline">\(N\)</span> may change.</li>
+</ul>
+<p>Let’s match these numbers to what is going on in my kitchen. For my first census count, <span class="math inline">\(t=0\)</span>, I counted the adults and label that number <span class="math inline">\(N_0\)</span>. These adults lay eggs which hatch, larvae and pupae develop, and become adults, giving us a population of <span class="math inline">\(N^\prime = N_0 + bN\)</span></p>
+<p>Some of the eggs fail to hatch, and some of the larvae die
+before maturing. Many of the adults die as well. If we assume the eggs,
+larvae, and adults all die at the same rate, then by the end of one
+generation we have <span class="math inline">\(N_1 = dN^\prime = d(N_0 + bN)\)</span>.</p>
+<p>Substituting and multiplying we get
+<span class="math display">\[ N_1 = N_0 + bN_0 - d\left(N_0 + bN_0\right)\]</span></p>
+<p>We see that by the next time point, <span class="math inline">\(t=1\)</span>, the number of fruit flies
+should be equal to the number we started with, <span class="math inline">\(N_0\)</span>, plus the number
+of new individuals, <span class="math inline">\(bN_0\)</span>, minus the number of original adults that
+die, <span class="math inline">\(dN_0\)</span>, and minus the number of new individuals that die, <span class="math inline">\(dbN_0\)</span>.</p>
+<p>We can pull all of these parameters together,
+<span class="math display">\[ N_1 = N_0 + bN_0 - dN_0 - dbN_0 \]</span>
+<span class="math display" id="eq:bddb">\[ N_1 - N_0 =  N_0 \left(b - d - db\right)
+= N_0 + r_dN_0 \tag{3.1}\]</span></p>
+<p>where <span class="math inline">\(r_d = b - d - db\)</span>.</p>
+<p>The <em>growth rate</em> of the population is <span class="math inline">\(\Delta N / \Delta t\)</span>, or, at <span class="math inline">\(t=0\)</span>, is
+<span class="math display">\[\frac{\Delta N}{\Delta t} = \frac{N_1 - N_0}{t_1-t_0} = \frac{(N_0 + r_dN_0) - N_0}{t_1-t_0} = r_d N_0 \]</span>
+If we generalize, we drop the zero, to get <span class="math inline">\(r_dN\)</span>. The <em>per capita</em> population growth rate is <span class="math inline">\(r_dN/N =r_d\)</span>). If our time step were something other than 1, we would also divide by <span class="math inline">\(\Delta t\)</span>.</p>
+<p>With the simple census data above, we can
+estimate <span class="math inline">\(r_d\)</span> for the first time step.
+<span class="math display">\[N_1 = N_0 + r_dN_0=  2 + r_d (2) \implies r_d=1\]</span>
+If we know that <span class="math inline">\(r_d\)</span> is constant over time, we can infer a general rule to project the population forward in time an arbitrary number of time steps. We will let <span class="math inline">\(\lambda = 1+r_d\)</span>.
+<span class="math display">\[N_1 = N_0 + r_dN_0 = N_0(1 + r_d) = N_0\lambda\]</span>
+<span class="math display">\[N_2 = N_1\lambda=  (N_0 \lambda)\lambda\]</span>
+<span class="math display">\[N_3 = N_2\lambda=  (N_0 \lambda)\lambda\lambda\]</span>
+or simply,
+<span class="math display">\[N_t = N_0\lambda^t\]</span></p>
+<p>To summarize our model of discrete population growth, we have the following statements:</p>
+<p><strong>Projection:</strong>
+<span class="math display">\[N_t = N_0\lambda^t\]</span></p>
+<p><strong>Population growth rate:</strong>
+<span class="math display">\[\frac{\Delta N}{\Delta t} = r_dN; \quad \mathrm{where~} \lambda=1+r_d\]</span></p>
+<p><strong>Per capita opulation growth rate:</strong>
+<span class="math display">\[\frac{\Delta N}{N\Delta t} = r_d\]</span></p>
+<p>At last, we see how this is a model of density-independent growth: per capita growth rate does not include <span class="math inline">\(N\)</span>.</p>
+</div>
+<div id="fruit-flies-with-continuous-overlapping-generations" class="section level2">
+<h2><span class="header-section-number">3.2</span> Fruit flies with continuous overlapping generations</h2>
+<p>In the reality that is my kitchen, individual fruit flies are having sex and reproducing on their own schedules. As a population, they breed continuously, so the cohorts re not synchronous. For populations like that, we need to describe instantaneous growth rates, where <span class="math inline">\(\Delta t\)</span> is no longer a fixed period of time, but is an instant, or infinity small.</p>
+<p>We return to our example above (Fig. <a href="expo.html#fig:fliesi">3.3</a>), which we summarize in <a href="expo.html#eq:bddb">(3.1)</a>. Please take a look at that equation; here we make time explicit so that it appears in the equation. We begin by remembering that <span class="math inline">\(b\)</span> and <span class="math inline">\(d\)</span> have time units.</p>
+<ul>
+<li>Let <span class="math inline">\(\Delta t\)</span> be a small fraction of <span class="math inline">\(t\)</span>, so that the time step goes from <span class="math inline">\(t\)</span> to <span class="math inline">\(t + \Delta t\)</span>.</li>
+<li>As <span class="math inline">\(\Delta t \rightarrow 0\)</span>, <span class="math inline">\(b\)</span> and <span class="math inline">\(d\)</span> need to shrink as well, to <span class="math inline">\(\Delta t b\)</span> and <span class="math inline">\(\Delta t d\)</span>.</li>
+<li><span class="math inline">\(dN/dt\)</span> is how we identify the differential equation that is the instantaneous rate of population growth, with lower case <span class="math inline">\(d\)</span> symbolizing infinitesimally small change.</li>
+</ul>
+<p>We now have to solve for the limit of <span class="math inline">\(\Delta N /\Delta t\)</span> as <span class="math inline">\(\Delta t\)</span> goes to zero.
+<span class="math display">\[\frac{dN}{dt}=\lim_{\Delta t \rightarrow 0} \frac{N_{t+\Delta t} - N_t}{\Delta t} = \lim_{\Delta t \rightarrow 0} \frac{\Delta t\,bN_t - \Delta t \,dN_t - \Delta t\, d (\Delta t\, b)N_t}{\Delta t} \]</span>
+If we divide through by <span class="math inline">\(\Delta t\)</span> and then let <span class="math inline">\(\Delta t \rightarrow 0\)</span>, we get
+<span class="math display">\[\frac{dN}{dt}=\lim_{\Delta t \rightarrow 0} bN_t - dN_t - \Delta t\, d bN_t = bN_t - dN_t=rN\]</span></p>
+<p>To arrive at the projection equation for a continuously growing population, we integrate <span class="math inline">\(rN\)</span> with respect to time. Integration is the cumulative summing of <span class="math inline">\(y\)</span> across a range of <span class="math inline">\(x\)</span>. It even uses an exagerated “S” to indicate summation, <span class="math inline">\(\int\)</span>. Here we integrate population growth across time. We start by rearranging
+<span class="math display">\[\frac{dN}{dt} = rN \Rightarrow \frac{dN}{N} = r dt\]</span></p>
+<p>Now we integrate from <span class="math inline">\(N\)</span> and <span class="math inline">\(r\)</span> from <span class="math inline">\(t=0\)</span> to <span class="math inline">\(t=t\)</span>,
+<span class="math display">\[\int_{N_0}^{N_t} \frac{1}{N}dN = \int_{0}^{t}rdt\]</span>
+<span class="math display">\[\ln(N_t) - \ln(N_0) = rt - r\,0\]</span>
+<span class="math display">\[\ln(N_t) = \ln(N_0) + rt\]</span>
+We now exponentiate (<span class="math inline">\(e^x\)</span>) both sides to arrive at our projection equation.
+<span class="math display">\[N_t = e^{\ln(N_0) + rt} = N_0 e^{rt}\]</span></p>
+<p>To summarize our model of continuous population growth, we have the following statements.</p>
+<p><strong>Projection:</strong>
+<span class="math display">\[N_t = N_0 e^{rt}\]</span></p>
+<p><strong>Population growth rate:</strong>
+<span class="math display">\[\frac{dN}{dt} = rN\]</span></p>
+<p><strong>Per capita population growth rate:</strong>
+<span class="math display">\[\frac{dN}{Ndt} = r\]</span>
+Once again, we see why we refer to exponential growth as density-independent: the per capita growth rate does not depend on <span class="math inline">\(N\)</span>.</p>
+</div>
+<div id="properties-of-geometric-and-exponential-growth" class="section level2">
+<h2><span class="header-section-number">3.3</span> Properties of geometric and exponential growth</h2>
+<p>Compare the projection equations for geometric and exponential growth. We find that
+<span class="math display">\[\lambda = e^{r} \quad ; \quad \ln \lambda = r\]</span>
+This gives us a few useful rules of thumb.</p>
+<ul>
+<li>No change: <span class="math inline">\(r = 0\quad;\quad\lambda =1\)</span></li>
+<li>Growing population: <span class="math inline">\(r &gt; 0 \quad;\quad \lambda &gt; 1\)</span></li>
+<li>Shrinking population: <span class="math inline">\(r &lt; 0 \quad;\quad \lambda &lt; 1\)</span></li>
+</ul>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="expo.html#cb16-1"></a><span class="co"># Let r take on three values</span></span>
+<span id="cb16-2"><a href="expo.html#cb16-2"></a>r &lt;-<span class="st"> </span><span class="kw">c</span>( <span class="dv">-1</span>, <span class="dv">0</span>, <span class="dv">1</span>)</span>
+<span id="cb16-3"><a href="expo.html#cb16-3"></a><span class="co"># Convert to lambda</span></span>
+<span id="cb16-4"><a href="expo.html#cb16-4"></a><span class="kw">exp</span>(r)</span></code></pre></div>
+<pre><code>## [1] 0.3678794 1.0000000 2.7182818</code></pre>
+<p><em>Time scaling</em> This is a useful property if we ever want to change time units in a discrete model. We must first <span class="math inline">\(\lambda\)</span> to <span class="math inline">\(r\)</span>, change units in <span class="math inline">\(r\)</span> and convert back to <span class="math inline">\(\lambda\)</span>. For instance, if we find that the annual finite rate of increase for a population of crickets is <span class="math inline">\(\lambda = 1.2\)</span>, we cannot convert that to a monthly rate of <span class="math inline">\(1.2/12 = 0.1\)</span>. Instead we convert to <span class="math inline">\(r\)</span> and back to <span class="math inline">\(\lambda\)</span>.</p>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="expo.html#cb18-1"></a>lambda &lt;-<span class="st"> </span><span class="fl">1.2</span></span>
+<span id="cb18-2"><a href="expo.html#cb18-2"></a></span>
+<span id="cb18-3"><a href="expo.html#cb18-3"></a><span class="co"># Convert lambda to r </span></span>
+<span id="cb18-4"><a href="expo.html#cb18-4"></a>r &lt;-<span class="st"> </span><span class="kw">log</span>(lambda); r</span></code></pre></div>
+<pre><code>## [1] 0.1823216</code></pre>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="expo.html#cb20-1"></a><span class="co"># Scale r from year to month</span></span>
+<span id="cb20-2"><a href="expo.html#cb20-2"></a>r2 &lt;-<span class="st"> </span>r<span class="op">/</span><span class="dv">12</span>; r2</span></code></pre></div>
+<pre><code>## [1] 0.01519346</code></pre>
+<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb22-1"><a href="expo.html#cb22-1"></a><span class="co"># Convert back to lambda (per month)</span></span>
+<span id="cb22-2"><a href="expo.html#cb22-2"></a>lambda2 &lt;-<span class="st"> </span><span class="kw">exp</span>(r2); lambda2</span></code></pre></div>
+<pre><code>## [1] 1.015309</code></pre>
+<p>This is very, very different than <span class="math inline">\(\lambda/12\)</span>.</p>
+<p><em>Doubling time</em> Sometimes we gain a more intuitive grasp of an idea when we convert to a different form of the same relationship. Exponential growth is one of those ideas that can be hard to grasp. A more intuitive way to compare or express exponential grwoth rate is through <em>doubling time</em>, the time required for the population to double in size. For instance, a per capita growth rate of <span class="math inline">\(r = 0.14\,\mathrm{inds}\cdot \mathrm{ind}^{-1} \mathrm{y}^{-1}\)</span> means that the population will double in less than 5 years.</p>
+<p>We determine this by letting <span class="math inline">\(N_t = 2N_0\)</span>.
+<span class="math display">\[2N_0 = N_0 e^{rt}\]</span>
+<span class="math display">\[\ln 2 = rt\]</span>
+<span class="math display">\[t =\frac{\ln 2}{r}\]</span></p>
+<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="expo.html#cb24-1"></a><span class="co"># let r be a sequence from </span></span>
+<span id="cb24-2"><a href="expo.html#cb24-2"></a>r &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="fl">0.01</span>, <span class="fl">0.05</span>, <span class="fl">0.1</span>, <span class="fl">0.5</span>)</span>
+<span id="cb24-3"><a href="expo.html#cb24-3"></a><span class="co">#doubling time will be</span></span>
+<span id="cb24-4"><a href="expo.html#cb24-4"></a><span class="kw">log</span>(<span class="dv">2</span>)<span class="op">/</span>r</span></code></pre></div>
+<pre><code>## [1] 69.314718 13.862944  6.931472  1.386294</code></pre>
+<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb26-1"><a href="expo.html#cb26-1"></a><span class="co"># and a picture</span></span>
+<span id="cb26-2"><a href="expo.html#cb26-2"></a><span class="kw">par</span>(<span class="dt">mgp=</span><span class="kw">c</span>(<span class="fl">1.2</span>, <span class="fl">.2</span>, <span class="dv">0</span>), <span class="dt">mar=</span><span class="kw">c</span>(<span class="dv">2</span>, <span class="dv">2</span>, <span class="dv">1</span>, <span class="dv">1</span>), <span class="dt">tcl=</span><span class="op">-</span>.<span class="dv">2</span>)</span>
+<span id="cb26-3"><a href="expo.html#cb26-3"></a><span class="kw">curve</span>( <span class="kw">log</span>(<span class="dv">2</span>)<span class="op">/</span>x, <span class="dt">xlab=</span><span class="st">&quot;r&quot;</span>, <span class="dt">ylab=</span><span class="st">&quot;Doubling time&quot;</span>)</span></code></pre></div>
+<div class="figure"><span id="fig:doubling"></span>
+<img src="figs/doubling-1.png" alt="Doubling time is inversely related to the intrinsic rate of increase, r." width="60%" />
+<p class="caption">
+Figure 3.4: Doubling time is inversely related to the intrinsic rate of increase, r.
+</p>
+</div>
+<div id="average-growth-rate" class="section level3">
+<h3><span class="header-section-number">3.3.1</span> Average growth rate</h3>
+<p>In any real data set, such as from a real population of fruit flies or Song Sparrows, <span class="math inline">\(N_{t+1}/N_t\)</span> will vary from year to year. How do we calculate an average growth rate for a fluctuating population?</p>
+<p>Let’s consider the case where a population increases and then decreases. For each year, we will calculate the annual rate of increase <span class="math inline">\(R = N_{t+1}/N_t\)</span>, and take the arithmetic average of those rates to see if it makes sense.</p>
+<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb27-1"><a href="expo.html#cb27-1"></a>N &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">20</span>, <span class="dv">30</span>, <span class="dv">15</span>, <span class="dv">15</span>)</span>
+<span id="cb27-2"><a href="expo.html#cb27-2"></a>R &lt;-<span class="st"> </span>N[<span class="dv">2</span><span class="op">:</span><span class="dv">4</span>]<span class="op">/</span>N[<span class="dv">1</span><span class="op">:</span><span class="dv">3</span>]; R</span></code></pre></div>
+<pre><code>## [1] 1.5 0.5 1.0</code></pre>
+<p>The arithmetic average of those rates is <span class="math inline">\((1.5 + 0.5 + 1.0)/3=1.0\)</span>. If <span class="math inline">\(R=1.0\)</span>, then, on average, the population should stay the same, but it decreased. Why is that?</p>
+<p>Let us do the annual time steps explicitly to see what is going on.
+<span class="math display">\[N_3 = (N_0 R_0) R_1 R_2\]</span></p>
+<div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb29-1"><a href="expo.html#cb29-1"></a><span class="co"># Remember that we call the first time t=0 and N0, but</span></span>
+<span id="cb29-2"><a href="expo.html#cb29-2"></a><span class="co"># when coding, these values are the first in a series, so </span></span>
+<span id="cb29-3"><a href="expo.html#cb29-3"></a><span class="co"># N0 is N[1]</span></span>
+<span id="cb29-4"><a href="expo.html#cb29-4"></a></span>
+<span id="cb29-5"><a href="expo.html#cb29-5"></a><span class="co"># Now we do the annual changes which should equal N3</span></span>
+<span id="cb29-6"><a href="expo.html#cb29-6"></a>N[<span class="dv">1</span>]<span class="op">*</span>R[<span class="dv">1</span>]<span class="op">*</span>R[<span class="dv">2</span>]<span class="op">*</span>R[<span class="dv">3</span>]</span></code></pre></div>
+<pre><code>## [1] 15</code></pre>
+<p>From this calculation, we see that when we start with <span class="math inline">\(N_0=20\)</span> and do the annaul steps, we wind up with a smaller population, even though the arithmetic average is <span class="math inline">\(R_{\mathrm{ave}} = 1\)</span>. How do we calculate an average of numbers that we multiply together?</p>
+<p>We want a number <span class="math inline">\(\bar{R}\)</span> such that
+<span class="math display">\[\bar{R}^t = R_1R_2\ldots R_t\]</span></p>
+<p>To find that, we simply solve for <span class="math inline">\(\bar{R}\)</span>
+<span class="math display">\[(\bar{R}^t)^{1/t} =\bar{R} = \left(R_1R_2\ldots R_t\right)^{1/t}\]</span>
+We take the <span class="math inline">\(t\)</span>-th root of the product of all the <span class="math inline">\(R\)</span>. This is called the <em>geometric average.</em> Another way of writing this would be to use the product symbol, as in
+<span class="math display">\[\bar{R} = \left(\prod_{i=1}^t R_i\right)^{1/t}\]</span></p>
+<div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb31-1"><a href="expo.html#cb31-1"></a>R</span></code></pre></div>
+<pre><code>## [1] 1.5 0.5 1.0</code></pre>
+<div class="sourceCode" id="cb33"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb33-1"><a href="expo.html#cb33-1"></a><span class="co">#arithmetic average</span></span>
+<span id="cb33-2"><a href="expo.html#cb33-2"></a><span class="kw">mean</span>(R)</span></code></pre></div>
+<pre><code>## [1] 1</code></pre>
+<div class="sourceCode" id="cb35"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb35-1"><a href="expo.html#cb35-1"></a><span class="co"># geometric average</span></span>
+<span id="cb35-2"><a href="expo.html#cb35-2"></a>t &lt;-<span class="st"> </span><span class="kw">length</span>(R); t</span></code></pre></div>
+<pre><code>## [1] 3</code></pre>
+<div class="sourceCode" id="cb37"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb37-1"><a href="expo.html#cb37-1"></a><span class="kw">prod</span>(R)<span class="op">^</span>(<span class="dv">1</span><span class="op">/</span>t)</span></code></pre></div>
+<pre><code>## [1] 0.9085603</code></pre>
+<div class="sourceCode" id="cb39"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb39-1"><a href="expo.html#cb39-1"></a><span class="co"># shows the population should decline</span></span></code></pre></div>
+<p>Another way to do the same thing is to take the arithmethic mean of the log-growth rates, and back-transform,</p>
+<div class="sourceCode" id="cb40"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb40-1"><a href="expo.html#cb40-1"></a><span class="kw">exp</span>( <span class="kw">mean</span>( <span class="kw">log</span>(R) ) )</span></code></pre></div>
+<pre><code>## [1] 0.9085603</code></pre>
+<p>Now we see the effect of calculating the average growth rate correctly. This leads to a useful rule of thumb: <em>random variation in growth rate suppresses population growth.</em> Here we illustrate that. We start with a growing population.</p>
+<div class="sourceCode" id="cb42"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb42-1"><a href="expo.html#cb42-1"></a>lambda &lt;-<span class="st"> </span><span class="fl">1.01</span> <span class="co"># positive growth rate</span></span>
+<span id="cb42-2"><a href="expo.html#cb42-2"></a>N0 &lt;-<span class="st"> </span><span class="dv">100</span> <span class="co"># starting N</span></span>
+<span id="cb42-3"><a href="expo.html#cb42-3"></a>t &lt;-<span class="st"> </span><span class="dv">20</span> <span class="co"># 20 years</span></span>
+<span id="cb42-4"><a href="expo.html#cb42-4"></a>Nt1 &lt;-<span class="st"> </span>N0<span class="op">*</span>lambda<span class="op">^</span>t; Nt1</span></code></pre></div>
+<pre><code>## [1] 122.019</code></pre>
+<p>Here <span class="math inline">\(\lambda &gt; 1\)</span>, so the population grows.</p>
+<p>Now we do a simulation in which we let <span class="math inline">\(\lambda\)</span> have a mean of 1.01 but allow it to vary randomly.</p>
+<div class="sourceCode" id="cb44"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb44-1"><a href="expo.html#cb44-1"></a><span class="co"># create a vector to hold all N</span></span>
+<span id="cb44-2"><a href="expo.html#cb44-2"></a>N &lt;-<span class="st"> </span><span class="kw">rep</span>(<span class="dv">0</span>, t); N[<span class="dv">1</span>] &lt;-<span class="st"> </span>N0</span>
+<span id="cb44-3"><a href="expo.html#cb44-3"></a></span>
+<span id="cb44-4"><a href="expo.html#cb44-4"></a><span class="co"># create t-1 random lambdas with a mean of 1.01 </span></span>
+<span id="cb44-5"><a href="expo.html#cb44-5"></a><span class="co"># ranging from 0.41 to 1.61</span></span>
+<span id="cb44-6"><a href="expo.html#cb44-6"></a><span class="kw">set.seed</span>(<span class="dv">3</span>) <span class="co"># makes the radnom sequence repeatable</span></span>
+<span id="cb44-7"><a href="expo.html#cb44-7"></a>random.lambda &lt;-<span class="st"> </span><span class="kw">runif</span>(<span class="dt">n=</span>(t<span class="dv">-1</span>), <span class="dt">min=</span><span class="fl">0.41</span>, <span class="dt">max=</span><span class="fl">1.61</span>)</span>
+<span id="cb44-8"><a href="expo.html#cb44-8"></a></span>
+<span id="cb44-9"><a href="expo.html#cb44-9"></a><span class="co"># the geometric mean</span></span>
+<span id="cb44-10"><a href="expo.html#cb44-10"></a><span class="kw">prod</span>(random.lambda)<span class="op">^</span>(<span class="dv">1</span><span class="op">/</span><span class="kw">length</span>(random.lambda))</span></code></pre></div>
+<pre><code>## [1] 1.00105</code></pre>
+<div class="sourceCode" id="cb46"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb46-1"><a href="expo.html#cb46-1"></a><span class="co"># actual simulated projection</span></span>
+<span id="cb46-2"><a href="expo.html#cb46-2"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span>(t<span class="dv">-1</span>)) { </span>
+<span id="cb46-3"><a href="expo.html#cb46-3"></a>  N[i<span class="op">+</span><span class="dv">1</span>] &lt;-<span class="st"> </span>N[i] <span class="op">*</span><span class="st"> </span>random.lambda[i]</span>
+<span id="cb46-4"><a href="expo.html#cb46-4"></a>}</span>
+<span id="cb46-5"><a href="expo.html#cb46-5"></a></span>
+<span id="cb46-6"><a href="expo.html#cb46-6"></a><span class="kw">qplot</span>(<span class="dt">x=</span><span class="dv">0</span><span class="op">:</span>(t<span class="dv">-1</span>), N, <span class="dt">geom=</span><span class="kw">c</span>(<span class="st">&quot;line&quot;</span>, <span class="st">&quot;point&quot;</span>), <span class="dt">xlab=</span><span class="st">&quot;Time (y)&quot;</span>)</span></code></pre></div>
+<div class="figure"><span id="fig:randomLambda"></span>
+<img src="figs/randomLambda-1.png" alt="Random variation in growth rate alters the long term average growth rate." width="90%" />
+<p class="caption">
+Figure 3.5: Random variation in growth rate alters the long term average growth rate.
+</p>
+</div>
+<p>Sometimes the arithmetic average is close to the correct average, but it is never the correct approach.</p>
+</div>
+</div>
+<div id="modeling-with-data-simulated-dynamics" class="section level2">
+<h2><span class="header-section-number">3.4</span> Modeling with Data: Simulated Dynamics</h2>
+<p>Science strives to make predictions about about the behavior of systems.
+Ecologists and conservation biologists frequently strive to predict the fate of populations. Here we put into practice ideas about population biology to make informed predictions about the fate of the Song Sparrow population in Darrtown, OH. We also illustrate simple commputational methods for doing so.</p>
+<p>The preceding sections (the bulk of the chapter) emphasized understanding the deterministic underpinnings of simple forms of density independent growth: geometric and exponential growth. This section explores the stochastic simulation of density independent growth. Our simulation makes most of the same assumptions we made at the beginning of the chapter. In addition, we assume that the observed annual growth rates (<span class="math inline">\(N_{t+1}/N_t\)</span>) are representative of future growth rates, and that the growth rate in one year is entirely independent of any other year.</p>
+<p>To make meaning full projections of future population size, we should quantify the uncertainty with our guess. Simulation is one way we can project populations and quantify the uncertainty. The way one often does that is to use the original data and sample it randomly to calculate model parameters. This way, the simulations are random, but based on our best available knowldge, i.e., the real data. The re-use of observed data occurs in many guises, and it is known often as bootstrapping or resampling.</p>
+<div id="data-based-approaches" class="section level3">
+<h3><span class="header-section-number">3.4.1</span> Data-based approaches</h3>
+<p>We could use the observed <em>changes</em> in population counts <span class="math inline">\(R_t=N_{t+1}/N_t\)</span> as our data. We would then draw an <span class="math inline">\(R_t\)</span> at random from among the many observed values, and project the population one year forward. We then repeat this into the future, say, for ten years. Each simulation of a ten year period will result in a different ten year trajectory because we draw <span class="math inline">\(R_t\)</span> at random from among the observed <span class="math inline">\(R_t\)</span>. However, if we do many such simulations, we will have a <em>distribution</em> of outcomes that we can describe with simple statistics (e.g., median, mean, quantiles).</p>
+<p>A different approach would be to estimate the individual probabilities of births and deaths in the entire Darrtown population, and use those probabilities and birth rates to simulate the entire population into the future. In such an <em>individual-based simulation</em>, we would simulate the fates of individuals, keeping track of all individual births and deaths.</p>
+<p>There are myriad other approaches, but these give you a taste of what might be possible. In this section we focus on the first of these alternatives, in which we use observed <span class="math inline">\(R_t\)</span> to simulate the dynamics of Song Sparrow counts. Do do so, in part, because we have those data, while we do not have any estimates of birth rates or death rates.</p>
+<p>Here we investigate Song Sparrow (<em>Melospize melodia</em>) dynamics using data from the annual U.S. Breeding Bird Survey (<a href="http://www.mbr-pwrc.usgs.gov/" class="uri">http://www.mbr-pwrc.usgs.gov/</a> bbs/). Below we will</p>
+<ol style="list-style-type: decimal">
+<li>create and examine visually the data (annual <span class="math inline">\(R\)</span>’s),</li>
+<li>simulate one projection,</li>
+<li>scale up to multiple simulations,</li>
+<li>simplify simulations and perform them 1000s of times, and</li>
+<li>analyze the output.</li>
+</ol>
+</div>
+<div id="creating-and-visualizing-the-data" class="section level3">
+<h3><span class="header-section-number">3.4.2</span> Creating and visualizing the data</h3>
+<p>Let’s start by graphing the data<a href="#fn18" class="footnote-ref" id="fnref18"><sup>18</sup></a>. <em>Graphing the data is always a good idea — it is a principle of working with data</em>. We first load the data from the <code>primer</code> R package, and look at the names of the data frame. We then choose to <code>attach</code> the data frame, because it makes the code easier to read.<a href="#fn19" class="footnote-ref" id="fnref19"><sup>19</sup></a></p>
+<div class="sourceCode" id="cb47"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb47-1"><a href="expo.html#cb47-1"></a><span class="kw">library</span>(primer)</span>
+<span id="cb47-2"><a href="expo.html#cb47-2"></a><span class="kw">data</span>(sparrows)</span>
+<span id="cb47-3"><a href="expo.html#cb47-3"></a><span class="kw">names</span>(sparrows)</span></code></pre></div>
+<pre><code>## [1] &quot;Year&quot;           &quot;Count&quot;          &quot;ObserverNumber&quot;</code></pre>
+<div class="sourceCode" id="cb49"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb49-1"><a href="expo.html#cb49-1"></a><span class="kw">attach</span>(sparrows)</span></code></pre></div>
+<p>Now we plot these counts through time (Fig. <a href="expo.html#fig:cts">3.6</a>).</p>
+<div class="sourceCode" id="cb50"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb50-1"><a href="expo.html#cb50-1"></a><span class="kw">ggplot</span>(<span class="dt">data=</span>sparrows, <span class="kw">aes</span>(<span class="dt">x=</span>Year, <span class="dt">y=</span>Count)) <span class="op">+</span><span class="st"> </span><span class="kw">geom_line</span>() <span class="op">+</span><span class="st"> </span><span class="kw">geom_point</span>(<span class="dt">pch=</span><span class="dv">1</span>)</span></code></pre></div>
+<div class="figure"><span id="fig:cts"></span>
+<img src="figs/cts-1.png" alt="Observations of Song Sparrows in Darrtown, OH (http://www.mbr-pwrc.usgs.gov/bbs/)." width="75%" />
+<p class="caption">
+Figure 3.6: Observations of Song Sparrows in Darrtown, OH (<a href="http://www.mbr-pwrc.usgs.gov/bbs/" class="uri">http://www.mbr-pwrc.usgs.gov/bbs/</a>).
+</p>
+</div>
+<p>We see that Song Sparrow counts at this site (the DARRTOWN transect, OH, USA) fluctuated a fair bit between 1966 and 2003. They never were completely absent and never exceeded <span class="math inline">\(\sim 120\)</span> individuals.</p>
+<p>Next we calculate annual <span class="math inline">\(R_t=N_{t+1}/N_t\)</span>, that is, the observed growth rate for each year <span class="math inline">\(t\)</span>.</p>
+<div class="sourceCode" id="cb51"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb51-1"><a href="expo.html#cb51-1"></a><span class="co"># the use of [-1[ in the index tells R to exclude the first element.</span></span>
+<span id="cb51-2"><a href="expo.html#cb51-2"></a><span class="co"># length() is the length of a vector, so [-length(X)] means exclude the last</span></span>
+<span id="cb51-3"><a href="expo.html#cb51-3"></a>obs.R &lt;-<span class="st"> </span>Count[<span class="op">-</span><span class="dv">1</span>]<span class="op">/</span>Count[<span class="op">-</span><span class="kw">length</span>(Count)]</span></code></pre></div>
+<p>Thus our <em>data</em> are the observed <span class="math inline">\(R_t\)</span>, not the counts <em>per se</em>. These <span class="math inline">\(R\)</span> form the basis of everything else we do. Because they are so important, let’s plot these as well. Let’s also indicate <span class="math inline">\(R=1\)</span> with a horizontal dotted line as a visual cue for zero population growth. Note that we exclude the last year because each <span class="math inline">\(R_t\)</span> is associated with <span class="math inline">\(N_t\)</span> rather than <span class="math inline">\(N_{t+1}\)</span>.</p>
+<div class="sourceCode" id="cb52"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb52-1"><a href="expo.html#cb52-1"></a><span class="kw">qplot</span>(<span class="dt">x=</span>Year[<span class="op">-</span><span class="kw">length</span>(Count)], <span class="dt">y=</span>obs.R, <span class="dt">geom=</span><span class="st">&quot;point&quot;</span>) <span class="op">+</span><span class="st"> </span><span class="kw">geom_hline</span>(<span class="dt">yintercept=</span><span class="dv">1</span>, <span class="dt">lty=</span><span class="dv">3</span>) <span class="op">+</span><span class="st"> </span></span>
+<span id="cb52-2"><a href="expo.html#cb52-2"></a><span class="st">  </span><span class="kw">labs</span>(<span class="dt">y=</span><span class="kw">bquote</span>(N[t<span class="op">+</span><span class="dv">1</span>]<span class="op">/</span>N[t]), <span class="dt">x=</span><span class="st">&quot;Year (t)&quot;</span>)</span></code></pre></div>
+<div class="figure"><span id="fig:Rrates"></span>
+<img src="figs/Rrates-1.png" alt="Annual growth rates (R=N[t+1]/N[t]) for Song Sparrows" width="75%" />
+<p class="caption">
+Figure 3.7: Annual growth rates (R=N[t+1]/N[t]) for Song Sparrows
+</p>
+</div>
+<p>One thing that emerges in our graphic data display (Fig. <a href="expo.html#fig:Rrates">3.7</a>) is we have an unusually high growth rate in the early 1990’s, with the rest of the data clustered around 0.5–1.5. We may want to remember that.</p>
+</div>
+<div id="one-simulation" class="section level3">
+<h3><span class="header-section-number">3.4.3</span> One simulation</h3>
+<p>Our simulation will,</p>
+<ol style="list-style-type: decimal">
+<li>determine the number of years we wish to simulate,</li>
+<li>create an empty vector, <code>N</code>, to hold our simulated <span class="math inline">\(N\)</span>, which is <code>years + 1</code> long,</li>
+<li>draw a random sample of <span class="math inline">\(R_t\)</span>, one for each year (<code>R</code>),</li>
+<li>select a starting abundance <span class="math inline">\(N_0\)</span> and put it in <code>N[1]</code>.</li>
+<li>multiply our first random <span class="math inline">\(R\)</span>, <code>R[1]</code>, times <code>N[1]</code> to generate the next, <code>N[2]</code>.</li>
+<li>repeat step 5 for each year to simulate each <code>N[t+1]</code> from <code>R[t]</code> and <code>N[t]</code>.</li>
+</ol>
+<p>First, we decide how many years we want to simulate growth, and create an empty vector that will hold our data.</p>
+<div class="sourceCode" id="cb53"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb53-1"><a href="expo.html#cb53-1"></a>years &lt;-<span class="st"> </span><span class="dv">10</span></span>
+<span id="cb53-2"><a href="expo.html#cb53-2"></a>N &lt;-<span class="kw">numeric</span>(years<span class="op">+</span><span class="dv">1</span>) <span class="co"># rep(0,years+1) would do the same thing.</span></span></code></pre></div>
+<p>Our vector of <span class="math inline">\(N\)</span> has to be one longer than the number of <span class="math inline">\(R\)</span> we use. This is because each <span class="math inline">\(R\)</span> is sthe change <em>from one year to the next</em> and there will always be one more <em>next</em> than there is <span class="math inline">\(R\)</span>.</p>
+<p>Next we draw 10 <span class="math inline">\(R\)</span> at random with replacement. This is just like having all 35 observed <span class="math inline">\(R\)</span> written down on slips of paper and dropped into a paper bag. We then draw one slip of paper out of the bag, write the number down, and put the slip of paper back in the bag, and then repeat this 9 more times. This is <em>resampling with replacement</em>. In that case, we would be assuming that all of these <span class="math inline">\(R_t\)</span> are important and will occur at some point, but we just don’t know when—they constitute the entire universe of possiblities. The R function <em>sample</em> will do this.
+[A random process occurs only in our imagination, or perhaps at the quantum level.<a href="#fn20" class="footnote-ref" id="fnref20"><sup>20</sup></a> A stochastic process is one which we treat operationally as random while acknowledging that there are complex underlying deterministic drivers. A pseudorandom process is a completely deterministic and hidden process used by computers and their programmers to generate numbers that cannot be distinguished from random; we can repeat a pseudorandom process by stipulating a key hidden starting point.]</p>
+<p>We can use <code>set.seed()</code> to make your pseudorandom process the same as mine, i.e., repeatable.</p>
+<div class="sourceCode" id="cb54"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb54-1"><a href="expo.html#cb54-1"></a><span class="kw">set.seed</span>(<span class="dv">3</span>)</span>
+<span id="cb54-2"><a href="expo.html#cb54-2"></a><span class="co"># Draw a sample of our observed R with replacement, &quot;years&quot; times.</span></span>
+<span id="cb54-3"><a href="expo.html#cb54-3"></a>(rRs &lt;-<span class="st"> </span><span class="kw">sample</span>(<span class="dt">x=</span>obs.R, <span class="dt">size=</span>years, <span class="dt">replace =</span> <span class="ot">TRUE</span>))</span></code></pre></div>
+<pre><code>##  [1] 1.4489796 0.8125000 1.0714286 1.2857143 0.7727273 0.4805195 1.2857143
+##  [8] 1.0500000 0.7204301 1.4489796</code></pre>
+<p>Now that we have these 10 <span class="math inline">\(R\)</span>, all we have to do is use them to generate the population sizes through time. For this, we need to use what programmers call a <em>for-loop</em>. In brief, a for-loop repeats a series of steps for a predetermined number of times.</p>
+<p>Let’s start our simulated N with the sparrow count we had in the last year.</p>
+<div class="sourceCode" id="cb56"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb56-1"><a href="expo.html#cb56-1"></a>N[<span class="dv">1</span>] &lt;-<span class="st"> </span>Count[<span class="kw">length</span>(Count)]</span></code></pre></div>
+<p>Now we are ready to use the for-loop to project the population. For each year <span class="math inline">\(t\)</span>, we multiply <span class="math inline">\(N_t\)</span> by the randomly selected <span class="math inline">\(R_t\)</span> to get <span class="math inline">\(N_{t+1}\)</span> and put it into the <span class="math inline">\(t +1\)</span> element of <code>N</code>.</p>
+<div class="sourceCode" id="cb57"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb57-1"><a href="expo.html#cb57-1"></a><span class="cf">for</span>( t <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span>years) { </span>
+<span id="cb57-2"><a href="expo.html#cb57-2"></a><span class="co"># starting with year = 1, and for each subsequent year, do... </span></span>
+<span id="cb57-3"><a href="expo.html#cb57-3"></a>N[t<span class="op">+</span><span class="dv">1</span>] &lt;-<span class="st"> </span>N[t] <span class="op">*</span><span class="st"> </span>rRs[t]</span>
+<span id="cb57-4"><a href="expo.html#cb57-4"></a>}</span></code></pre></div>
+<p>Let’s graph the result.</p>
+<div class="sourceCode" id="cb58"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb58-1"><a href="expo.html#cb58-1"></a><span class="kw">qplot</span>(<span class="dv">0</span><span class="op">:</span>years, N, <span class="dt">geom=</span><span class="kw">c</span>(<span class="st">&quot;point&quot;</span>,<span class="st">&quot;line&quot;</span>))</span></code></pre></div>
+<div class="figure"><span id="fig:simten"></span>
+<img src="figs/simten-1.png" alt="A single simulated population projection." width="90%" />
+<p class="caption">
+Figure 3.8: A single simulated population projection.
+</p>
+</div>
+<p>It appears to work (Fig. <a href="expo.html#fig:simten">3.8</a>). Let’s review what we have done. We</p>
+<p><em>had a bird count each year for 36 years. From this we calculated 35 <span class="math inline">\(R\)</span> (for all years except the very last).
+</em> decided how many years we wanted to project the population (10,y).
+* drew at random and with replacement the observed <span class="math inline">\(R\)</span>—one <span class="math inline">\(R\)</span> for each year we want to project forward.
+* we created an empty vector and put in an initial value (the last year’s real data).
+* performed each year’s calculation, and put it into the vector we made.</p>
+<p>So what does Fig. <a href="expo.html#fig:simten">3.8</a> represent? It represents one possible outcome of a trajectory, if we assume that <span class="math inline">\(R\)</span> has an equal probability of being any of the observed <span class="math inline">\(R_t\)</span>. This <em>particular</em> trajectory is very unlikely, because it would require one particular sequence of randomly selected <span class="math inline">\(R\)</span>s. However, it is <em>no less likely</em> than any other particular trajectory.</p>
+<p>As only one realization of a set of randomly selected <span class="math inline">\(R\)</span>, Fig. <a href="expo.html#fig:simten">3.8</a> tells us very little. What we need to do now is to replicate this process a very large number of times, and examine the <em>distribution</em> of outcomes, including moments of the distribution such as the mean, median, and confidence interval of eventual outcomes.</p>
+</div>
+<div id="multiple-simulations" class="section level3">
+<h3><span class="header-section-number">3.4.4</span> Multiple simulations</h3>
+<p>Now we create a way to perform the above simulation several times. There are a couple tricks we use to do this. We still want to start small so we can figure out the steps as we go. Here is what we would do next.</p>
+<ol style="list-style-type: decimal">
+<li>We start by creating a function that will do the steps we did above.</li>
+<li>We then do replicate independent simulations, using <code>replicate()</code>.</li>
+</ol>
+<p>Here we write a function to combine several steps.</p>
+<div class="sourceCode" id="cb59"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb59-1"><a href="expo.html#cb59-1"></a>myForLoop &lt;-<span class="st"> </span><span class="cf">function</span>(obs.R, years, initial.N) {</span>
+<span id="cb59-2"><a href="expo.html#cb59-2"></a>  <span class="co"># select all R at random</span></span>
+<span id="cb59-3"><a href="expo.html#cb59-3"></a>  rR &lt;-<span class="st"> </span><span class="kw">sample</span>(obs.R, <span class="dt">size=</span>years, <span class="dt">replace=</span><span class="ot">TRUE</span>)</span>
+<span id="cb59-4"><a href="expo.html#cb59-4"></a>  <span class="co"># create a vector to hold N</span></span>
+<span id="cb59-5"><a href="expo.html#cb59-5"></a>  N &lt;-<span class="st"> </span><span class="kw">numeric</span>(years<span class="op">+</span><span class="dv">1</span>)</span>
+<span id="cb59-6"><a href="expo.html#cb59-6"></a>  <span class="co"># give it an initial population size</span></span>
+<span id="cb59-7"><a href="expo.html#cb59-7"></a>  N[<span class="dv">1</span>] &lt;-<span class="st"> </span>initial.N</span>
+<span id="cb59-8"><a href="expo.html#cb59-8"></a>  <span class="co"># Do the for-loop</span></span>
+<span id="cb59-9"><a href="expo.html#cb59-9"></a>  <span class="cf">for</span>( t <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span>years ) {</span>
+<span id="cb59-10"><a href="expo.html#cb59-10"></a>    <span class="co"># project the population one time step</span></span>
+<span id="cb59-11"><a href="expo.html#cb59-11"></a>      N[t<span class="op">+</span><span class="dv">1</span>] &lt;-<span class="st">  </span>N[t] <span class="op">*</span><span class="st"> </span>rR[t]</span>
+<span id="cb59-12"><a href="expo.html#cb59-12"></a>  }</span>
+<span id="cb59-13"><a href="expo.html#cb59-13"></a>  <span class="co"># return the vector of N</span></span>
+<span id="cb59-14"><a href="expo.html#cb59-14"></a>  N</span>
+<span id="cb59-15"><a href="expo.html#cb59-15"></a>} </span>
+<span id="cb59-16"><a href="expo.html#cb59-16"></a><span class="co"># try it out with different hypothetical R</span></span>
+<span id="cb59-17"><a href="expo.html#cb59-17"></a><span class="kw">myForLoop</span>(<span class="dt">obs.R=</span><span class="dv">0</span><span class="op">:</span><span class="dv">3</span>, <span class="dt">years=</span><span class="dv">5</span>, <span class="dt">initial.N=</span><span class="dv">43</span>)</span></code></pre></div>
+<pre><code>## [1]  43 129   0   0   0   0</code></pre>
+<p>Our function seems to work. Next we do ten such projection simulations, each for 50 time steps, using the sparrow data.</p>
+<div class="sourceCode" id="cb61"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb61-1"><a href="expo.html#cb61-1"></a><span class="co"># specify the number of simulations and for how long</span></span>
+<span id="cb61-2"><a href="expo.html#cb61-2"></a>sims=<span class="dv">10</span>; years=<span class="dv">50</span></span>
+<span id="cb61-3"><a href="expo.html#cb61-3"></a><span class="kw">set.seed</span>(<span class="dv">3</span>)</span>
+<span id="cb61-4"><a href="expo.html#cb61-4"></a>outmat &lt;-<span class="st"> </span><span class="kw">replicate</span>(sims,   </span>
+<span id="cb61-5"><a href="expo.html#cb61-5"></a>                    <span class="dt">expr=</span><span class="kw">myForLoop</span>(<span class="dt">obs.R=</span>obs.R, <span class="dt">years=</span>years, <span class="dt">initial.N=</span><span class="dv">43</span>)</span>
+<span id="cb61-6"><a href="expo.html#cb61-6"></a>                    )</span></code></pre></div>
+<p>Now let’s peek at the results (Fig. <a href="expo.html#fig:tensimfig">3.9</a>). It is fun to graph our output, but also helps us make sure we are not making a heinous mistake in our code. Note we use log scale to help us see the small populations.</p>
+<div class="sourceCode" id="cb62"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb62-1"><a href="expo.html#cb62-1"></a><span class="kw">matplot</span>(<span class="dv">0</span><span class="op">:</span>years, outmat, <span class="dt">type=</span><span class="st">&quot;l&quot;</span>, <span class="dt">log=</span><span class="st">&quot;y&quot;</span>)</span></code></pre></div>
+<div class="figure"><span id="fig:tensimfig"></span>
+<img src="figs/tensimfig-1.png" alt="Using matplot() to plot a matrix vs. a single variable. Our simulated populations sometimes increase and sometimes decrease." width="75%" />
+<p class="caption">
+Figure 3.9: Using matplot() to plot a matrix vs. a single variable. Our simulated populations sometimes increase and sometimes decrease.
+</p>
+</div>
+<div class="sourceCode" id="cb63"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb63-1"><a href="expo.html#cb63-1"></a><span class="co"># combine columns years, and our output</span></span>
+<span id="cb63-2"><a href="expo.html#cb63-2"></a>junk &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">years =</span> <span class="dv">1</span><span class="op">:</span>(years<span class="op">+</span><span class="dv">1</span>), outmat)</span>
+<span id="cb63-3"><a href="expo.html#cb63-3"></a><span class="kw">names</span>(junk)</span></code></pre></div>
+<pre><code>##  [1] &quot;years&quot; &quot;X1&quot;    &quot;X2&quot;    &quot;X3&quot;    &quot;X4&quot;    &quot;X5&quot;    &quot;X6&quot;    &quot;X7&quot;    &quot;X8&quot;   
+## [10] &quot;X9&quot;    &quot;X10&quot;</code></pre>
+<div class="sourceCode" id="cb65"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb65-1"><a href="expo.html#cb65-1"></a><span class="co"># make sure to load &#39;tidyr&#39; if you did not already load it or tidyverse</span></span>
+<span id="cb65-2"><a href="expo.html#cb65-2"></a><span class="co"># library(tidyr)</span></span>
+<span id="cb65-3"><a href="expo.html#cb65-3"></a><span class="co"># &quot;gather&quot; many columns into one (except years)</span></span>
+<span id="cb65-4"><a href="expo.html#cb65-4"></a>out.long &lt;-<span class="st"> </span><span class="kw">gather</span>(junk, <span class="dt">key=</span><span class="st">&quot;Run&quot;</span>, <span class="dt">value=</span><span class="st">&quot;N&quot;</span>, <span class="op">-</span>years)</span>
+<span id="cb65-5"><a href="expo.html#cb65-5"></a><span class="kw">ggplot</span>(<span class="dt">data=</span>out.long, <span class="kw">aes</span>(<span class="dt">x=</span>years, <span class="dt">y=</span>N, <span class="dt">group=</span>Run)) <span class="op">+</span><span class="st"> </span><span class="kw">geom_line</span>() <span class="op">+</span><span class="st">  </span></span>
+<span id="cb65-6"><a href="expo.html#cb65-6"></a><span class="st">  </span><span class="kw">scale_y_log10</span>() </span></code></pre></div>
+<div class="figure"><span id="fig:tensimfig2"></span>
+<img src="figs/tensimfig2-1.png" alt="Using ggplot() to plot one variable against vs. a single variable, organized by a grouping variable. Our simulated populations sometimes increase and sometimes decrease." width="75%" />
+<p class="caption">
+Figure 3.10: Using ggplot() to plot one variable against vs. a single variable, organized by a grouping variable. Our simulated populations sometimes increase and sometimes decrease.
+</p>
+</div>
+<div class="sourceCode" id="cb66"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb66-1"><a href="expo.html#cb66-1"></a><span class="co"># Or for colorful lines</span></span>
+<span id="cb66-2"><a href="expo.html#cb66-2"></a><span class="co"># ggplot(data=out.long, aes(x=years, y=N,  linetype=Run, colour=Run)) + </span></span>
+<span id="cb66-3"><a href="expo.html#cb66-3"></a><span class="co">#    geom_line(show.legend=FALSE) + scale_y_log10() </span></span></code></pre></div>
+<p>What does it mean that the simulation has an approximately even distribution of final population sizes  (Fig. )? If we plotted it on a linear scale, what would it look like?^[Plotting it on the log scale reveals that the relative change is independent of population size; this is true because the rate of change is geometric. If we plotted it on a linear scale, we would see that many trajectories result in small counts, and only a few get really big. That is, the median size is pretty small, but a few populations get huge.}</p>
+<p>Rerunning this simulation, with new <span class="math inline">\(R\)</span> each time, will show different dynamics every time, and that is the point of simulations. Simulations are a way to make a few key assumptions, and then leave the rest to chance. In that sense it is a null model of population dynamics.</p>
+</div>
+<div id="a-distribution-of-possible-futures" class="section level3">
+<h3><span class="header-section-number">3.4.5</span> A distribution of possible futures</h3>
+<p>Now we are in a position to make an informed prediction, given our assumptions. We will predict the range of possible outcomes and the most likely outcomes, given our set of assumptions.</p>
+<p>We will simulate the population for 50 years 10,000 times and describe the distribution of final populatin sizes. We use <code>system.time</code> to tell me how long it takes on my computer.</p>
+<div class="sourceCode" id="cb67"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb67-1"><a href="expo.html#cb67-1"></a>sims=<span class="fl">1e4</span>; years=<span class="dv">50</span></span>
+<span id="cb67-2"><a href="expo.html#cb67-2"></a><span class="kw">set.seed</span>(<span class="dv">3</span>)</span>
+<span id="cb67-3"><a href="expo.html#cb67-3"></a><span class="co">## system.time keeps track of how long processes take.</span></span>
+<span id="cb67-4"><a href="expo.html#cb67-4"></a><span class="kw">system.time</span>(</span>
+<span id="cb67-5"><a href="expo.html#cb67-5"></a>outmat &lt;-<span class="st"> </span><span class="kw">replicate</span>(sims,   </span>
+<span id="cb67-6"><a href="expo.html#cb67-6"></a>                    <span class="dt">expr=</span><span class="kw">myForLoop</span>(<span class="dt">obs.R=</span>obs.R, <span class="dt">years=</span>years, <span class="dt">initial.N=</span><span class="dv">43</span>)</span>
+<span id="cb67-7"><a href="expo.html#cb67-7"></a>                    )</span>
+<span id="cb67-8"><a href="expo.html#cb67-8"></a>            )</span></code></pre></div>
+<pre><code>##    user  system elapsed 
+##   0.156   0.029   0.205</code></pre>
+<p>This tells me how long it took to complete 10,000 simulations. We also check the dimensions of the output, and they make sense.</p>
+<div class="sourceCode" id="cb69"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb69-1"><a href="expo.html#cb69-1"></a><span class="kw">dim</span>(outmat)</span></code></pre></div>
+<pre><code>## [1]    51 10000</code></pre>
+<p>We see that we have an object that is the size we think it should be. We shall assume that everything worked way we think it should.</p>
+</div>
+<div id="analyzing-results" class="section level3">
+<h3><span class="header-section-number">3.4.6</span> Analyzing results</h3>
+<p>We extract the last year of the simulations (last row), and summarize it with quartiles (0%, 25%, 50%, 75%, 100%, and also the mean).</p>
+<div class="sourceCode" id="cb71"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb71-1"><a href="expo.html#cb71-1"></a>N<span class="fl">.2053</span> &lt;-<span class="st"> </span>outmat[<span class="dv">51</span>,]</span>
+<span id="cb71-2"><a href="expo.html#cb71-2"></a><span class="kw">summary</span>(N<span class="fl">.2053</span>, <span class="dt">digits=</span><span class="dv">6</span>)</span></code></pre></div>
+<pre><code>##      Min.   1st Qu.    Median      Mean   3rd Qu.      Max. 
+##       0.0      12.1      60.7    1306.3     297.7 2299420.0</code></pre>
+<div class="sourceCode" id="cb73"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb73-1"><a href="expo.html#cb73-1"></a><span class="kw">hist</span>(<span class="kw">log10</span>(N<span class="fl">.2053</span>))</span></code></pre></div>
+<div class="figure"><span id="fig:unnamed-chunk-20"></span>
+<img src="figs/unnamed-chunk-20-1.png" alt="Distribution of the 10000 final base-10 log population sizes. Note the approximately Normal distribution." width="75%" />
+<p class="caption">
+Figure 3.11: Distribution of the 10000 final base-10 log population sizes. Note the approximately Normal distribution.
+</p>
+</div>
+<p>The <code>quantile()</code> function allows us to find a form of empirical confidence interval, including, approximately, the central 90% of the observations.<a href="#fn21" class="footnote-ref" id="fnref21"><sup>21</sup></a></p>
+<div class="sourceCode" id="cb74"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb74-1"><a href="expo.html#cb74-1"></a><span class="kw">quantile</span>(N<span class="fl">.2053</span>, <span class="dt">prob=</span><span class="kw">c</span>(<span class="fl">0.05</span>, <span class="fl">.95</span>) )</span></code></pre></div>
+<pre><code>##          5%         95% 
+##    1.331579 2862.940808</code></pre>
+<p>These quantiles provide an estimate of the most likely range of possible populatin sizes, given our assumptions.</p>
+</div>
+<div id="inferring-processes-underlying-growth-rate" class="section level3">
+<h3><span class="header-section-number">3.4.7</span> Inferring processes underlying growth rate</h3>
+<p>The above approach relies only on the observed data. That means that the growth rates, while representative, can never be different than what was observed. A different approaach would be to assume that the growth rates can be different than observed, <em>but drawn from the same underlying process</em> that caused the observed rates.</p>
+<p>The observed rates are simply a visible manifestation of unseen processes. We might summarize these by asserting that the observed growth rates were samples from a continuous distribution distribution, whose prperties we can infer from the sample. For instance, it may be that these processes cause annual rates to follow a Normal, or perhaps log-normal distribution.</p>
+<p>We can fit a Normal distribution to the logarithms of our observed <span class="math inline">\(R\)</span>, and we see that it doesn’t do too bad a job (Fig. <a href="expo.html#fig:fitln">3.12</a>).</p>
+<div class="sourceCode" id="cb76"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb76-1"><a href="expo.html#cb76-1"></a>mu &lt;-<span class="st"> </span><span class="kw">mean</span>( <span class="kw">log</span>(obs.R) )</span>
+<span id="cb76-2"><a href="expo.html#cb76-2"></a>sigma &lt;-<span class="st"> </span><span class="kw">sd</span>( <span class="kw">log</span>(obs.R) )</span>
+<span id="cb76-3"><a href="expo.html#cb76-3"></a></span>
+<span id="cb76-4"><a href="expo.html#cb76-4"></a><span class="co"># a regular sequence for log-R</span></span>
+<span id="cb76-5"><a href="expo.html#cb76-5"></a>lR &lt;-<span class="st"> </span><span class="kw">seq</span>(<span class="op">-</span><span class="dv">1</span>, <span class="fl">1.1</span>, <span class="dt">by=</span><span class="fl">0.01</span>)</span>
+<span id="cb76-6"><a href="expo.html#cb76-6"></a><span class="co"># the probability densities for the log-R</span></span>
+<span id="cb76-7"><a href="expo.html#cb76-7"></a>dR &lt;-<span class="st"> </span><span class="kw">dnorm</span>(lR, <span class="dt">m=</span>mu, <span class="dt">sd=</span>sigma)</span>
+<span id="cb76-8"><a href="expo.html#cb76-8"></a></span>
+<span id="cb76-9"><a href="expo.html#cb76-9"></a><span class="kw">hist</span>(<span class="kw">log</span>(obs.R), <span class="dt">breaks=</span><span class="dv">10</span>, <span class="dt">prob=</span><span class="ot">TRUE</span>)</span>
+<span id="cb76-10"><a href="expo.html#cb76-10"></a><span class="kw">lines</span>(lR, dR)</span></code></pre></div>
+<div class="figure"><span id="fig:fitln"></span>
+<img src="figs/fitln-1.png" alt="The logarithms of the observed R seem reasonably approximated by a Normal distribution whose mean and standard deviation are derived from the log-transformed data." width="75%" />
+<p class="caption">
+Figure 3.12: The logarithms of the observed R seem reasonably approximated by a Normal distribution whose mean and standard deviation are derived from the log-transformed data.
+</p>
+</div>
+<p>Now we will simulate populations just like before, but instead of random draws from the observed data, we do random draws from the inferred distribution.</p>
+<p>Our new function.</p>
+<div class="sourceCode" id="cb77"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb77-1"><a href="expo.html#cb77-1"></a>myForLoop2 &lt;-<span class="st"> </span><span class="cf">function</span>(mu, sigma, years, initial.N) {</span>
+<span id="cb77-2"><a href="expo.html#cb77-2"></a>  <span class="co"># select all R at random from </span></span>
+<span id="cb77-3"><a href="expo.html#cb77-3"></a>  lrR &lt;-<span class="st"> </span><span class="kw">rnorm</span>(years, <span class="dt">m=</span>mu, <span class="dt">sd=</span>sigma)</span>
+<span id="cb77-4"><a href="expo.html#cb77-4"></a>  rR &lt;-<span class="st"> </span><span class="kw">exp</span>(lrR)</span>
+<span id="cb77-5"><a href="expo.html#cb77-5"></a>  <span class="co"># create a vector to hold N</span></span>
+<span id="cb77-6"><a href="expo.html#cb77-6"></a>  N &lt;-<span class="st"> </span><span class="kw">numeric</span>(years<span class="op">+</span><span class="dv">1</span>)</span>
+<span id="cb77-7"><a href="expo.html#cb77-7"></a>  <span class="co"># give it an initial population size</span></span>
+<span id="cb77-8"><a href="expo.html#cb77-8"></a>  N[<span class="dv">1</span>] &lt;-<span class="st"> </span>initial.N</span>
+<span id="cb77-9"><a href="expo.html#cb77-9"></a>  <span class="co"># Do the for-loop</span></span>
+<span id="cb77-10"><a href="expo.html#cb77-10"></a>  <span class="cf">for</span>( t <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span>years ) {</span>
+<span id="cb77-11"><a href="expo.html#cb77-11"></a>    <span class="co"># project the population one time step</span></span>
+<span id="cb77-12"><a href="expo.html#cb77-12"></a>      N[t<span class="op">+</span><span class="dv">1</span>] &lt;-<span class="st">  </span>N[t] <span class="op">*</span><span class="st"> </span>rR[t]</span>
+<span id="cb77-13"><a href="expo.html#cb77-13"></a>  }</span>
+<span id="cb77-14"><a href="expo.html#cb77-14"></a>  <span class="co"># return the vector of N</span></span>
+<span id="cb77-15"><a href="expo.html#cb77-15"></a>  N</span>
+<span id="cb77-16"><a href="expo.html#cb77-16"></a>} </span></code></pre></div>
+<p>Our new simulations.</p>
+<div class="sourceCode" id="cb78"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb78-1"><a href="expo.html#cb78-1"></a>sims=<span class="fl">1e4</span>; years=<span class="dv">50</span></span>
+<span id="cb78-2"><a href="expo.html#cb78-2"></a><span class="kw">set.seed</span>(<span class="dv">3</span>)</span>
+<span id="cb78-3"><a href="expo.html#cb78-3"></a>outmat2 &lt;-<span class="st"> </span><span class="kw">replicate</span>(sims,   </span>
+<span id="cb78-4"><a href="expo.html#cb78-4"></a>                    <span class="dt">expr=</span><span class="kw">myForLoop2</span>(<span class="dt">mu=</span>mu, <span class="dt">sigma=</span>sigma, <span class="dt">years=</span>years, <span class="dt">initial.N=</span><span class="dv">43</span>)</span>
+<span id="cb78-5"><a href="expo.html#cb78-5"></a>                    )</span>
+<span id="cb78-6"><a href="expo.html#cb78-6"></a>N2<span class="fl">.2053</span> &lt;-<span class="st"> </span>outmat2[<span class="dv">51</span>,]</span>
+<span id="cb78-7"><a href="expo.html#cb78-7"></a><span class="kw">quantile</span>(N2<span class="fl">.2053</span>, <span class="dt">prob=</span><span class="kw">c</span>(<span class="fl">0.05</span>, <span class="fl">.95</span>) )</span></code></pre></div>
+<pre><code>##          5%         95% 
+##    1.205509 3089.819907</code></pre>
+<div class="sourceCode" id="cb80"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb80-1"><a href="expo.html#cb80-1"></a><span class="kw">quantile</span>(N<span class="fl">.2053</span>, <span class="dt">prob=</span><span class="kw">c</span>(<span class="fl">0.05</span>, <span class="fl">.95</span>) )</span></code></pre></div>
+<pre><code>##          5%         95% 
+##    1.331579 2862.940808</code></pre>
+<p>The results are very similar to those based on only the observed <span class="math inline">\(R\)</span>. If they were markedly different, we might ask whether our choice of distribution was appropriate.</p>
+<p>Our conclusions are based on a model of discrete density-independent population growth</p>
+<ul>
+<li>what assumptions are we making and are they valid?</li>
+<li>Are our unrealistic assumptions perhaps nonetheless a good approximation of reality?</li>
+<li>what would you like to add next to make the model a better approximation?</li>
+</ul>
+<p>Perhaps we might explain some of the variation in annual growth rates to weather patterns in the breeding range (Darrtown, Ohio). If so, we might separate demographic effects vs. environmental effects. That would give us an even better model we could use for explanation and prediction.</p>
+
+<p>In this chapter, we have explored the meaning of density-independent population growth. It is a statistically demonstrable phenomenon, wherein the per captia growth rate exhibits no relation with population density. It is a useful starting point for conceptualizing population growth. We have derived discrete geometric and continuous exponential growth and seen how they are related. We have caculated doubling times. We have discussed the assumptions that different people might make regarding these growth models. Last, we have used simulation to explore prediction and inference in a density-independent context.</p>
+
+</div>
+</div>
+</div>
+<h3> References</h3>
+<div id="refs" class="references">
+<div id="ref-Hastings2011">
+<p>Hastings, A. 2011. “Single Species Population Dynamics and Its Theoretical Underpinnings.” In, edited by S. M. Scheiner and M. R. Willig. Chicago, IL, USA: University of Chicago Press.</p>
+</div>
+</div>
+<div class="footnotes">
+<hr />
+<ol start="13">
+<li id="fn13"><p>A constatnt ratio between successive numbers.<a href="expo.html#fnref13" class="footnote-back">↩︎</a></p></li>
+<li id="fn14"><p>A zen koan if there ever was one.<a href="expo.html#fnref14" class="footnote-back">↩︎</a></p></li>
+<li id="fn15"><p>No observed relation between <span class="math inline">\(\frac{\Delta N}{N}\)</span> vs. <span class="math inline">\(N\)</span><a href="expo.html#fnref15" class="footnote-back">↩︎</a></p></li>
+<li id="fn16"><p>discrete generations are common in nature.<a href="expo.html#fnref16" class="footnote-back">↩︎</a></p></li>
+<li id="fn17"><p>“Delta” N is the change in N.<a href="expo.html#fnref17" class="footnote-back">↩︎</a></p></li>
+<li id="fn18"><p>I’ve come to abhor my use of the expression “look at”; I use it when I don’t say what I mean. “Look at” can mean alomst anything these days, and it rarely means only “looking at”…<a href="expo.html#fnref18" class="footnote-back">↩︎</a></p></li>
+<li id="fn19"><p>Don’t use <code>attach</code> for anything important<a href="expo.html#fnref19" class="footnote-back">↩︎</a></p></li>
+<li id="fn20"><p>Random, pseudorandom, and stochastic processes.<a href="expo.html#fnref20" class="footnote-back">↩︎</a></p></li>
+<li id="fn21"><p>Note that there are many ways to estimate quantiles (R has nine ways), but they are approximately similar to percentiles.<a href="expo.html#fnref21" class="footnote-back">↩︎</a></p></li>
+</ol>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="oft.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="DID.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": null,
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

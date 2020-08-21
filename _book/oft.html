@@ -24,7 +24,7 @@
 <meta name="author" content="Hank Stevens" />
 
 
-<meta name="date" content="2020-08-20" />
+<meta name="date" content="2020-08-21" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -297,12 +297,12 @@ A major question in OFT is whether a forager should include a particular prey ty
 <p>where the diet already includes items 1-<span class="math inline">\(m\)</span>, and the <em>realized</em> energy content of the diet takes into account average encounter rates of each item type. It means that a foraging will always select a particular type (<span class="math inline">\(p_j =1\)</span>), or never select it (<span class="math inline">\(p_j=0\)</span>); this is known as the “zero-one rule”.</p>
 <p><strong>Prediction 2</strong> Foragers will rank prey types by their profitability, <span class="math inline">\(e/h\)</span>.</p>
 <p><strong>Prediction 3</strong> When encounter rates increase (as with increasing abundances), selectivity increases. Note that encounter rates are in the right hand side, so as they increase, so will that fraction on the right. That will make it harder for the above inequality to be true, and a forager will be pickier. If you don’t believe it, try this simplified version (Fig. <a href="oft.html#fig:selectivity">2.3</a>).</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="oft.html#cb7-1"></a>G.T =<span class="st"> </span><span class="cf">function</span>(lambda, <span class="dt">h=</span><span class="dv">1</span>, <span class="dt">e=</span><span class="dv">1</span>){lambda<span class="op">*</span>e<span class="op">/</span>(<span class="dv">1</span><span class="op">+</span>lambda<span class="op">*</span>h)} <span class="co"># create the function you want</span></span>
-<span id="cb7-2"><a href="oft.html#cb7-2"></a>myData &lt;-<span class="st"> </span><span class="kw">data.frame</span>( <span class="dt">lambda=</span><span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">10</span>) ) <span class="co"># data you need</span></span>
-<span id="cb7-3"><a href="oft.html#cb7-3"></a><span class="kw">ggplot</span>(<span class="dt">data=</span>myData, <span class="kw">aes</span>(<span class="dt">x=</span>lambda)) <span class="op">+</span><span class="st"> </span><span class="co"># set the basic properties of the plot</span></span>
-<span id="cb7-4"><a href="oft.html#cb7-4"></a><span class="st">  </span><span class="co"># in the stat_function, we indicate the parameters in our equation.</span></span>
-<span id="cb7-5"><a href="oft.html#cb7-5"></a><span class="st">  </span><span class="kw">stat_function</span>(<span class="dt">fun=</span>G.T, <span class="dt">geom=</span><span class="st">&quot;line&quot;</span>) <span class="op">+</span></span>
-<span id="cb7-6"><a href="oft.html#cb7-6"></a><span class="st">  </span><span class="kw">ylab</span>(<span class="kw">bquote</span>(<span class="kw">over</span>(lambda<span class="op">*</span>e, <span class="dv">1</span> <span class="op">+</span><span class="st"> </span>lambda<span class="op">*</span>h))) <span class="op">+</span><span class="st"> </span><span class="kw">xlab</span>(<span class="kw">bquote</span>(lambda))  <span class="co"># add labels</span></span></code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="oft.html#cb8-1"></a>G.T =<span class="st"> </span><span class="cf">function</span>(lambda, <span class="dt">h=</span><span class="dv">1</span>, <span class="dt">e=</span><span class="dv">1</span>){lambda<span class="op">*</span>e<span class="op">/</span>(<span class="dv">1</span><span class="op">+</span>lambda<span class="op">*</span>h)} <span class="co"># create the function you want</span></span>
+<span id="cb8-2"><a href="oft.html#cb8-2"></a>myData &lt;-<span class="st"> </span><span class="kw">data.frame</span>( <span class="dt">lambda=</span><span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">10</span>) ) <span class="co"># data you need</span></span>
+<span id="cb8-3"><a href="oft.html#cb8-3"></a><span class="kw">ggplot</span>(<span class="dt">data=</span>myData, <span class="kw">aes</span>(<span class="dt">x=</span>lambda)) <span class="op">+</span><span class="st"> </span><span class="co"># set the basic properties of the plot</span></span>
+<span id="cb8-4"><a href="oft.html#cb8-4"></a><span class="st">  </span><span class="co"># in the stat_function, we indicate the parameters in our equation.</span></span>
+<span id="cb8-5"><a href="oft.html#cb8-5"></a><span class="st">  </span><span class="kw">stat_function</span>(<span class="dt">fun=</span>G.T, <span class="dt">geom=</span><span class="st">&quot;line&quot;</span>) <span class="op">+</span></span>
+<span id="cb8-6"><a href="oft.html#cb8-6"></a><span class="st">  </span><span class="kw">ylab</span>(<span class="kw">bquote</span>(<span class="kw">over</span>(lambda<span class="op">*</span>e, <span class="dv">1</span> <span class="op">+</span><span class="st"> </span>lambda<span class="op">*</span>h))) <span class="op">+</span><span class="st"> </span><span class="kw">xlab</span>(<span class="kw">bquote</span>(lambda))  <span class="co"># add labels</span></span></code></pre></div>
 <div class="figure"><span id="fig:selectivity"></span>
 <img src="figs/selectivity-1.png" alt="Selectivity increases with average encounter rates." width="60%" />
 <p class="caption">
@@ -380,66 +380,66 @@ Figure 2.5: Energy gain vs. time: The origin is when the forager enters the pat
 </ul>
 <p>In addition to these properties, our simulation needs several bookkeeping parameters and variables in order to track the forager energy content. It will need to run for a finite amount of time; we’ll control that with the total search time, <code>Total</code>. Remember that encounter rates are means but that actual encounters are random or stochastic. As a result, our forager may go through lean periods in which their net energy intake is negative.</p>
 <p>We need to keep track of total elapsed time, and for each cycle, the search time, search cost, handling time, and energy gain.</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="oft.html#cb8-1"></a>optimal.forager &lt;-<span class="st"> </span><span class="cf">function</span>(</span>
-<span id="cb8-2"><a href="oft.html#cb8-2"></a>  <span class="dt">e =</span> <span class="kw">c</span>(<span class="dv">2</span>, <span class="dv">1</span>), <span class="co"># energy content of the prey types</span></span>
-<span id="cb8-3"><a href="oft.html#cb8-3"></a>  <span class="dt">h =</span> <span class="kw">c</span>(.<span class="dv">5</span>, <span class="fl">.5</span>), <span class="co"># handling times</span></span>
-<span id="cb8-4"><a href="oft.html#cb8-4"></a>  <span class="dt">r =</span> <span class="kw">c</span>(.<span class="dv">5</span>, <span class="fl">.5</span>), <span class="co"># relative abundance of prey types: sum(r) = 1</span></span>
-<span id="cb8-5"><a href="oft.html#cb8-5"></a>  <span class="dt">lambda =</span> <span class="fl">0.4</span>, <span class="co"># overal encounter rate, for all prey combined</span></span>
-<span id="cb8-6"><a href="oft.html#cb8-6"></a>  <span class="dt">p =</span> <span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">1</span>), <span class="co"># prob. of attack if encountered</span></span>
-<span id="cb8-7"><a href="oft.html#cb8-7"></a>  <span class="dt">cs =</span> <span class="fl">0.4</span>, <span class="co"># cost of searching per unit time</span></span>
-<span id="cb8-8"><a href="oft.html#cb8-8"></a>  <span class="dt">Total =</span> <span class="dv">10</span> <span class="co"># limit to foraging time</span></span>
-<span id="cb8-9"><a href="oft.html#cb8-9"></a>  ) {</span>
-<span id="cb8-10"><a href="oft.html#cb8-10"></a><span class="co">###############</span></span>
-<span id="cb8-11"><a href="oft.html#cb8-11"></a><span class="co">### begin foraging</span></span>
-<span id="cb8-12"><a href="oft.html#cb8-12"></a>ec &lt;-<span class="st"> </span><span class="ot">NULL</span> <span class="co"># an object to tally gains and costs.</span></span>
-<span id="cb8-13"><a href="oft.html#cb8-13"></a>cycle &lt;-<span class="st"> </span><span class="dv">0</span> <span class="co"># the cycle count (= search, choose and maybe attack and eat)</span></span>
-<span id="cb8-14"><a href="oft.html#cb8-14"></a>ct &lt;-<span class="st"> </span><span class="dv">0</span> <span class="co"># start time of the cyclesan object to tally cycle times.</span></span>
-<span id="cb8-15"><a href="oft.html#cb8-15"></a>elapsed.time &lt;-<span class="st"> </span><span class="dv">0</span> <span class="co"># total time spent foraging</span></span>
-<span id="cb8-16"><a href="oft.html#cb8-16"></a><span class="cf">while</span>( elapsed.time <span class="op">&lt;</span><span class="st"> </span>Total ) {</span>
-<span id="cb8-17"><a href="oft.html#cb8-17"></a>  <span class="co"># count which search cycle we&#39;re on</span></span>
-<span id="cb8-18"><a href="oft.html#cb8-18"></a>  (cycle &lt;-<span class="st"> </span>cycle <span class="op">+</span><span class="st"> </span><span class="dv">1</span>)</span>
-<span id="cb8-19"><a href="oft.html#cb8-19"></a>  </span>
-<span id="cb8-20"><a href="oft.html#cb8-20"></a>  <span class="co"># a random amount of search time, t.s, until it finds something.</span></span>
-<span id="cb8-21"><a href="oft.html#cb8-21"></a>  (lambda.r &lt;-<span class="st"> </span>lambda <span class="op">*</span><span class="st"> </span>r)</span>
-<span id="cb8-22"><a href="oft.html#cb8-22"></a>  (ts &lt;-<span class="st"> </span><span class="kw">rexp</span>(<span class="dv">2</span>, <span class="dt">rate=</span>lambda.r))</span>
-<span id="cb8-23"><a href="oft.html#cb8-23"></a>  <span class="cf">if</span>(ts[<span class="dv">1</span>] <span class="op">&lt;</span><span class="st"> </span>ts[<span class="dv">2</span>]) i &lt;-<span class="st"> </span><span class="dv">1</span> <span class="cf">else</span> i &lt;-<span class="st"> </span><span class="dv">2</span></span>
-<span id="cb8-24"><a href="oft.html#cb8-24"></a>  i</span>
-<span id="cb8-25"><a href="oft.html#cb8-25"></a>  <span class="co"># cost of searching for that time</span></span>
-<span id="cb8-26"><a href="oft.html#cb8-26"></a>  (cost.s &lt;-<span class="st"> </span>ts[i] <span class="op">*</span><span class="st"> </span>cs)</span>
-<span id="cb8-27"><a href="oft.html#cb8-27"></a></span>
-<span id="cb8-28"><a href="oft.html#cb8-28"></a>  <span class="co"># choose to attack the encountered item with probability p</span></span>
-<span id="cb8-29"><a href="oft.html#cb8-29"></a>  (gain &lt;-<span class="st"> </span><span class="cf">if</span>(p[i] <span class="op">&gt;</span><span class="st"> </span><span class="kw">runif</span>(<span class="dv">1</span>)){e[i]} <span class="cf">else</span> {<span class="dv">0</span>})</span>
-<span id="cb8-30"><a href="oft.html#cb8-30"></a>  </span>
-<span id="cb8-31"><a href="oft.html#cb8-31"></a>  <span class="co"># observed handling time </span></span>
-<span id="cb8-32"><a href="oft.html#cb8-32"></a>  <span class="cf">if</span>(gain <span class="op">&gt;</span><span class="st"> </span><span class="dv">0</span> ){</span>
-<span id="cb8-33"><a href="oft.html#cb8-33"></a>    h.obs &lt;-<span class="st"> </span>h[i]</span>
-<span id="cb8-34"><a href="oft.html#cb8-34"></a>    h.obs</span>
-<span id="cb8-35"><a href="oft.html#cb8-35"></a>  } <span class="cf">else</span> {</span>
-<span id="cb8-36"><a href="oft.html#cb8-36"></a>    h.obs &lt;-<span class="st"> </span><span class="dv">0</span></span>
-<span id="cb8-37"><a href="oft.html#cb8-37"></a>  }</span>
-<span id="cb8-38"><a href="oft.html#cb8-38"></a>   h.obs</span>
-<span id="cb8-39"><a href="oft.html#cb8-39"></a> (cycle.time &lt;-<span class="st"> </span>ts[i] <span class="op">+</span><span class="st"> </span>h.obs )</span>
-<span id="cb8-40"><a href="oft.html#cb8-40"></a> ct &lt;-<span class="st"> </span><span class="kw">c</span>(ct, cycle.time)</span>
-<span id="cb8-41"><a href="oft.html#cb8-41"></a> (elapsed.time &lt;-<span class="st"> </span>elapsed.time <span class="op">+</span><span class="st"> </span>cycle.time)</span>
-<span id="cb8-42"><a href="oft.html#cb8-42"></a> (ec &lt;-<span class="st"> </span><span class="kw">c</span>(ec, gain <span class="op">-</span><span class="st"> </span>cost.s))</span>
-<span id="cb8-43"><a href="oft.html#cb8-43"></a>}</span>
-<span id="cb8-44"><a href="oft.html#cb8-44"></a>df &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">net.e =</span> ec, <span class="dt">cycle.start =</span> <span class="kw">cumsum</span>(ct[<span class="dv">1</span><span class="op">:</span>cycle]))</span>
-<span id="cb8-45"><a href="oft.html#cb8-45"></a>params &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="dt">e=</span>e, <span class="dt">h=</span>h, <span class="dt">r=</span>r, <span class="dt">lambda=</span>lambda, <span class="dt">p=</span>p, <span class="dt">cs=</span>cs, <span class="dt">Total=</span>Total)</span>
-<span id="cb8-46"><a href="oft.html#cb8-46"></a>  out &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="dt">N =</span> cycle, <span class="dt">G =</span> <span class="kw">sum</span>(ec), <span class="dt">Tt =</span> <span class="kw">sum</span>(ct), </span>
-<span id="cb8-47"><a href="oft.html#cb8-47"></a>              <span class="dt">series =</span> df,</span>
-<span id="cb8-48"><a href="oft.html#cb8-48"></a>              <span class="dt">params =</span> params)</span>
-<span id="cb8-49"><a href="oft.html#cb8-49"></a>  <span class="kw">return</span>(out)</span>
-<span id="cb8-50"><a href="oft.html#cb8-50"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="oft.html#cb9-1"></a>optimal.forager &lt;-<span class="st"> </span><span class="cf">function</span>(</span>
+<span id="cb9-2"><a href="oft.html#cb9-2"></a>  <span class="dt">e =</span> <span class="kw">c</span>(<span class="dv">2</span>, <span class="dv">1</span>), <span class="co"># energy content of the prey types</span></span>
+<span id="cb9-3"><a href="oft.html#cb9-3"></a>  <span class="dt">h =</span> <span class="kw">c</span>(.<span class="dv">5</span>, <span class="fl">.5</span>), <span class="co"># handling times</span></span>
+<span id="cb9-4"><a href="oft.html#cb9-4"></a>  <span class="dt">r =</span> <span class="kw">c</span>(.<span class="dv">5</span>, <span class="fl">.5</span>), <span class="co"># relative abundance of prey types: sum(r) = 1</span></span>
+<span id="cb9-5"><a href="oft.html#cb9-5"></a>  <span class="dt">lambda =</span> <span class="fl">0.4</span>, <span class="co"># overal encounter rate, for all prey combined</span></span>
+<span id="cb9-6"><a href="oft.html#cb9-6"></a>  <span class="dt">p =</span> <span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">1</span>), <span class="co"># prob. of attack if encountered</span></span>
+<span id="cb9-7"><a href="oft.html#cb9-7"></a>  <span class="dt">cs =</span> <span class="fl">0.4</span>, <span class="co"># cost of searching per unit time</span></span>
+<span id="cb9-8"><a href="oft.html#cb9-8"></a>  <span class="dt">Total =</span> <span class="dv">10</span> <span class="co"># limit to foraging time</span></span>
+<span id="cb9-9"><a href="oft.html#cb9-9"></a>  ) {</span>
+<span id="cb9-10"><a href="oft.html#cb9-10"></a><span class="co">###############</span></span>
+<span id="cb9-11"><a href="oft.html#cb9-11"></a><span class="co">### begin foraging</span></span>
+<span id="cb9-12"><a href="oft.html#cb9-12"></a>ec &lt;-<span class="st"> </span><span class="ot">NULL</span> <span class="co"># an object to tally gains and costs.</span></span>
+<span id="cb9-13"><a href="oft.html#cb9-13"></a>cycle &lt;-<span class="st"> </span><span class="dv">0</span> <span class="co"># the cycle count (= search, choose and maybe attack and eat)</span></span>
+<span id="cb9-14"><a href="oft.html#cb9-14"></a>ct &lt;-<span class="st"> </span><span class="dv">0</span> <span class="co"># start time of the cyclesan object to tally cycle times.</span></span>
+<span id="cb9-15"><a href="oft.html#cb9-15"></a>elapsed.time &lt;-<span class="st"> </span><span class="dv">0</span> <span class="co"># total time spent foraging</span></span>
+<span id="cb9-16"><a href="oft.html#cb9-16"></a><span class="cf">while</span>( elapsed.time <span class="op">&lt;</span><span class="st"> </span>Total ) {</span>
+<span id="cb9-17"><a href="oft.html#cb9-17"></a>  <span class="co"># count which search cycle we&#39;re on</span></span>
+<span id="cb9-18"><a href="oft.html#cb9-18"></a>  (cycle &lt;-<span class="st"> </span>cycle <span class="op">+</span><span class="st"> </span><span class="dv">1</span>)</span>
+<span id="cb9-19"><a href="oft.html#cb9-19"></a>  </span>
+<span id="cb9-20"><a href="oft.html#cb9-20"></a>  <span class="co"># a random amount of search time, t.s, until it finds something.</span></span>
+<span id="cb9-21"><a href="oft.html#cb9-21"></a>  (lambda.r &lt;-<span class="st"> </span>lambda <span class="op">*</span><span class="st"> </span>r)</span>
+<span id="cb9-22"><a href="oft.html#cb9-22"></a>  (ts &lt;-<span class="st"> </span><span class="kw">rexp</span>(<span class="dv">2</span>, <span class="dt">rate=</span>lambda.r))</span>
+<span id="cb9-23"><a href="oft.html#cb9-23"></a>  <span class="cf">if</span>(ts[<span class="dv">1</span>] <span class="op">&lt;</span><span class="st"> </span>ts[<span class="dv">2</span>]) i &lt;-<span class="st"> </span><span class="dv">1</span> <span class="cf">else</span> i &lt;-<span class="st"> </span><span class="dv">2</span></span>
+<span id="cb9-24"><a href="oft.html#cb9-24"></a>  i</span>
+<span id="cb9-25"><a href="oft.html#cb9-25"></a>  <span class="co"># cost of searching for that time</span></span>
+<span id="cb9-26"><a href="oft.html#cb9-26"></a>  (cost.s &lt;-<span class="st"> </span>ts[i] <span class="op">*</span><span class="st"> </span>cs)</span>
+<span id="cb9-27"><a href="oft.html#cb9-27"></a></span>
+<span id="cb9-28"><a href="oft.html#cb9-28"></a>  <span class="co"># choose to attack the encountered item with probability p</span></span>
+<span id="cb9-29"><a href="oft.html#cb9-29"></a>  (gain &lt;-<span class="st"> </span><span class="cf">if</span>(p[i] <span class="op">&gt;</span><span class="st"> </span><span class="kw">runif</span>(<span class="dv">1</span>)){e[i]} <span class="cf">else</span> {<span class="dv">0</span>})</span>
+<span id="cb9-30"><a href="oft.html#cb9-30"></a>  </span>
+<span id="cb9-31"><a href="oft.html#cb9-31"></a>  <span class="co"># observed handling time </span></span>
+<span id="cb9-32"><a href="oft.html#cb9-32"></a>  <span class="cf">if</span>(gain <span class="op">&gt;</span><span class="st"> </span><span class="dv">0</span> ){</span>
+<span id="cb9-33"><a href="oft.html#cb9-33"></a>    h.obs &lt;-<span class="st"> </span>h[i]</span>
+<span id="cb9-34"><a href="oft.html#cb9-34"></a>    h.obs</span>
+<span id="cb9-35"><a href="oft.html#cb9-35"></a>  } <span class="cf">else</span> {</span>
+<span id="cb9-36"><a href="oft.html#cb9-36"></a>    h.obs &lt;-<span class="st"> </span><span class="dv">0</span></span>
+<span id="cb9-37"><a href="oft.html#cb9-37"></a>  }</span>
+<span id="cb9-38"><a href="oft.html#cb9-38"></a>   h.obs</span>
+<span id="cb9-39"><a href="oft.html#cb9-39"></a> (cycle.time &lt;-<span class="st"> </span>ts[i] <span class="op">+</span><span class="st"> </span>h.obs )</span>
+<span id="cb9-40"><a href="oft.html#cb9-40"></a> ct &lt;-<span class="st"> </span><span class="kw">c</span>(ct, cycle.time)</span>
+<span id="cb9-41"><a href="oft.html#cb9-41"></a> (elapsed.time &lt;-<span class="st"> </span>elapsed.time <span class="op">+</span><span class="st"> </span>cycle.time)</span>
+<span id="cb9-42"><a href="oft.html#cb9-42"></a> (ec &lt;-<span class="st"> </span><span class="kw">c</span>(ec, gain <span class="op">-</span><span class="st"> </span>cost.s))</span>
+<span id="cb9-43"><a href="oft.html#cb9-43"></a>}</span>
+<span id="cb9-44"><a href="oft.html#cb9-44"></a>df &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">net.e =</span> ec, <span class="dt">cycle.start =</span> <span class="kw">cumsum</span>(ct[<span class="dv">1</span><span class="op">:</span>cycle]))</span>
+<span id="cb9-45"><a href="oft.html#cb9-45"></a>params &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="dt">e=</span>e, <span class="dt">h=</span>h, <span class="dt">r=</span>r, <span class="dt">lambda=</span>lambda, <span class="dt">p=</span>p, <span class="dt">cs=</span>cs, <span class="dt">Total=</span>Total)</span>
+<span id="cb9-46"><a href="oft.html#cb9-46"></a>  out &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="dt">N =</span> cycle, <span class="dt">G =</span> <span class="kw">sum</span>(ec), <span class="dt">Tt =</span> <span class="kw">sum</span>(ct), </span>
+<span id="cb9-47"><a href="oft.html#cb9-47"></a>              <span class="dt">series =</span> df,</span>
+<span id="cb9-48"><a href="oft.html#cb9-48"></a>              <span class="dt">params =</span> params)</span>
+<span id="cb9-49"><a href="oft.html#cb9-49"></a>  <span class="kw">return</span>(out)</span>
+<span id="cb9-50"><a href="oft.html#cb9-50"></a>}</span></code></pre></div>
 <p>Here we let the forager forage for 60 minutes and then examine the structure of the output object.</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="oft.html#cb9-1"></a>myOut &lt;-<span class="st"> </span><span class="kw">optimal.forager</span>(<span class="dt">Total=</span><span class="dv">60</span>)</span>
-<span id="cb9-2"><a href="oft.html#cb9-2"></a><span class="kw">str</span>(myOut)</span></code></pre></div>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="oft.html#cb10-1"></a>myOut &lt;-<span class="st"> </span><span class="kw">optimal.forager</span>(<span class="dt">Total=</span><span class="dv">60</span>)</span>
+<span id="cb10-2"><a href="oft.html#cb10-2"></a><span class="kw">str</span>(myOut)</span></code></pre></div>
 <pre><code>## List of 5
-##  $ N     : num 16
-##  $ G     : num 2.89
+##  $ N     : num 17
+##  $ G     : num 4.09
 ##  $ Tt    : num 60.8
-##  $ series:&#39;data.frame&#39;:	16 obs. of  2 variables:
-##   ..$ net.e      : num [1:16] 1.644 -0.112 -0.25 0.71 -2.225 ...
-##   ..$ cycle.start: num [1:16] 0 1.39 7.17 10.8 12.02 ...
+##  $ series:&#39;data.frame&#39;:	17 obs. of  2 variables:
+##   ..$ net.e      : num [1:17] 1.911 1.35 0.551 0.533 1.822 ...
+##   ..$ cycle.start: num [1:17] 0 0.723 2.848 4.471 6.137 ...
 ##  $ params:List of 7
 ##   ..$ e     : num [1:2] 2 1
 ##   ..$ h     : num [1:2] 0.5 0.5
@@ -456,7 +456,7 @@ Figure 2.5: Energy gain vs. time: The origin is when the forager enters the pat
 <li>params is a list that includes all the parameters we used in this run</li>
 </ul>
 <p>Now let’s graph something, because graphs are fun.</p>
-<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="oft.html#cb11-1"></a><span class="kw">ggplot</span>(myOut<span class="op">$</span>series, <span class="kw">aes</span>(<span class="dt">x=</span>cycle.start, <span class="dt">y=</span><span class="kw">cumsum</span>(net.e))) <span class="op">+</span><span class="st"> </span><span class="kw">geom_line</span>() </span></code></pre></div>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="oft.html#cb12-1"></a><span class="kw">ggplot</span>(myOut<span class="op">$</span>series, <span class="kw">aes</span>(<span class="dt">x=</span>cycle.start, <span class="dt">y=</span><span class="kw">cumsum</span>(net.e))) <span class="op">+</span><span class="st"> </span><span class="kw">geom_line</span>() </span></code></pre></div>
 <div class="figure"><span id="fig:oft1"></span>
 <img src="figs/oft1-1.png" alt="The cumulative energy capital of a forager goes down while searching and handling resource items, but increases each time the prey is assimilated." width="90%" />
 <p class="caption">
@@ -476,7 +476,7 @@ Figure 2.7: The right hand side of our prediction
 </p>
 </div>
 <p>To get a sense of what our prediction <a href="oft.html#eq:prediction">(2.2)</a> means, we should graph the righthand quantity as a function of one relevant variable, such as energy content of type 1, or the encounter rate (Fig. <a href="oft.html#fig:preypred">2.7</a>). The parameters that determined these curves are:</p>
-<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="oft.html#cb12-1"></a><span class="kw">unlist</span>( myOut<span class="op">$</span>params )</span></code></pre></div>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="oft.html#cb13-1"></a><span class="kw">unlist</span>( myOut<span class="op">$</span>params )</span></code></pre></div>
 <pre><code>##     e1     e2     h1     h2     r1     r2 lambda     p1     p2     cs  Total 
 ##    2.0    1.0    0.5    0.5    0.5    0.5    0.4    1.0    1.0    0.4   60.0</code></pre>
 <div id="lab-exercise" class="section level3">
