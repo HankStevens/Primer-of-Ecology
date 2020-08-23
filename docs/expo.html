@@ -24,7 +24,7 @@
 <meta name="author" content="Hank Stevens" />
 
 
-<meta name="date" content="2020-08-20" />
+<meta name="date" content="2020-08-23" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -167,6 +167,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="3.4.5" data-path="expo.html"><a href="expo.html#a-distribution-of-possible-futures"><i class="fa fa-check"></i><b>3.4.5</b> A distribution of possible futures</a></li>
 <li class="chapter" data-level="3.4.6" data-path="expo.html"><a href="expo.html#analyzing-results"><i class="fa fa-check"></i><b>3.4.6</b> Analyzing results</a></li>
 <li class="chapter" data-level="3.4.7" data-path="expo.html"><a href="expo.html#inferring-processes-underlying-growth-rate"><i class="fa fa-check"></i><b>3.4.7</b> Inferring processes underlying growth rate</a></li>
+<li class="chapter" data-level="3.4.8" data-path="expo.html"><a href="expo.html#f-environmental-noise"><i class="fa fa-check"></i><b>3.4.8</b> 1/<span class="math inline">\(f\)</span> environmental noise</a></li>
 </ul></li>
 </ul></li>
 <li class="chapter" data-level="4" data-path="DID.html"><a href="DID.html"><i class="fa fa-check"></i><b>4</b> Density-independent Demography</a><ul>
@@ -230,12 +231,14 @@ fundamental process of geometric increase. Second, populations can grow in a den
 <p>These are the consequences of the following assumptions.</p>
 <ol style="list-style-type: lower-alpha">
 <li>all individuals in a population are identical.</li>
-<li>there is no migration in or out of the population.
-c1. the number of offspring per individual (or the per capita birth and death rates) are constant through time, and …
-c2. … independent of the number of individuals in the population.</li>
+<li>there is no migration in or out of the population.</li>
+<li><ol style="list-style-type: lower-roman">
+<li>the number of offspring per individual (or the per capita birth and death rates) are constant through time, and …</li>
+</ol></li>
+<li>… (ii) independent of the number of individuals in the population.</li>
 </ol>
 <p>Deviations from these assumptions lead to all of the most interesting parts of single species population dynamics <span class="citation">(Hastings <a href="#ref-Hastings2011" role="doc-biblioref">2011</a>)</span>. The only deviation we play with in this chapter concerns assumption c; we model stochastic variation in population growth rate to investigate extinction risk. It is also worth mentioning that, although propositions 1 and 2 follow from assumptions a-d, they are not strictly necessary <span class="citation">(Hastings <a href="#ref-Hastings2011" role="doc-biblioref">2011</a>)</span>. For instance, individuals need not be identical, and we deal with a big exception in the next chapter where we introduce structured population growth. Also, migration is admissable, provided immigration = emigration and it does not alter growth rates. Nonetheless, other deviations from a. and b. can have very important consequences for single species population dynamics.</p>
-<p>Here we define Density-independence<a href="#fn15" class="footnote-ref" id="fnref15"><sup>15</sup></a> in a real population as a lack of a statistical relation between the density of a population, and its <em>per capita</em> growth rate. The power to detect a significant relation between any two continuous variables depends on those factors which govern statistical power, such as the number of observations, the range of the predictor variable, and the strength of the underlying relation. Therefore, our conclusion, that a particular population exhibits density-independent growth, may be trivial if our sample size is small, with few generations sampled, or if we sampled the population over a very narrow range of densities. Nonetheless, it behooves us to come back to this definition if, or when, we get caught up in the biology of a particular organism.</p>
+<p>Here we define Density-independence in a real population as a lack of a statistical relation between the density of a population, and its <em>per capita</em> growth rate<a href="#fn15" class="footnote-ref" id="fnref15"><sup>15</sup></a>. The power to detect a significant relation between any two continuous variables depends on those factors which govern statistical power, such as the number of observations, the range of the predictor variable, and the strength of the underlying relation. Therefore, our conclusion, that a particular population exhibits density-independent growth, may be trivial if our sample size is small, with few generations sampled, or if we sampled the population over a very narrow range of densities. Nonetheless, it behooves us to come back to this definition if, or when, we get caught up in the biology of a particular organism.</p>
 <p>In this chapter, we’ll introduce density-independent population <em>projection</em>, <em>growth</em>, and <em>per capita growth</em>, for populations with synchronous reproduction (discrete models), and continuous reproduction (continuous models).</p>
 <div id="discrete-growth-rates-of-fruit-flies-in-my-kitchen" class="section level2">
 <h2><span class="header-section-number">3.1</span> Discrete growth rates of fruit flies in my kitchen</h2>
@@ -633,7 +636,7 @@ Figure 3.10: Using ggplot() to plot one variable against vs. a single variable,
 <span id="cb67-7"><a href="expo.html#cb67-7"></a>                    )</span>
 <span id="cb67-8"><a href="expo.html#cb67-8"></a>            )</span></code></pre></div>
 <pre><code>##    user  system elapsed 
-##   0.212   0.072   0.398</code></pre>
+##   0.186   0.067   1.043</code></pre>
 <p>This tells me how long it took to complete 10,000 simulations. We also check the dimensions of the output, and they make sense.</p>
 <div class="sourceCode" id="cb69"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb69-1"><a href="expo.html#cb69-1"></a><span class="kw">dim</span>(outmat)</span></code></pre></div>
 <pre><code>## [1]    51 10000</code></pre>
@@ -718,7 +721,11 @@ Figure 3.12: The logarithms of the observed R seem reasonably approximated by a 
 <li>Are our unrealistic assumptions perhaps nonetheless a good approximation of reality?</li>
 <li>what would you like to add next to make the model a better approximation?</li>
 </ul>
+</div>
+<div id="f-environmental-noise" class="section level3">
+<h3><span class="header-section-number">3.4.8</span> 1/<span class="math inline">\(f\)</span> environmental noise</h3>
 <p>Perhaps we might explain some of the variation in annual growth rates to weather patterns in the breeding range (Darrtown, Ohio). If so, we might separate demographic effects vs. environmental effects. That would give us an even better model we could use for explanation and prediction.</p>
+<p>An important consideration in modeling more realistic time series the temporal autocorrelation that often appears in environmental data. Patterns of autocorrelation are often best characterized by “one over f-noise” (<span class="math inline">\(1/f\)</span>), that is, random variation where the temporal autocorrelation follows a color spectrum. Uncorrelated noise is referred to as white noise because the correlations actually occur at all wavelengths. Red noise emphasized strong correlation at short wavelengths and low correlation at long wavelengths. As a result, red noise is more random at longer wavelengths but less random at short wavelengths . Environmental variables typically have a reddened color that we typically refer to as pink noise <span class="citation">(Halley <a href="#ref-Halley1996" role="doc-biblioref">1996</a>)</span>.</p>
 
 <p>In this chapter, we have explored the meaning of density-independent population growth. It is a statistically demonstrable phenomenon, wherein the per captia growth rate exhibits no relation with population density. It is a useful starting point for conceptualizing population growth. We have derived discrete geometric and continuous exponential growth and seen how they are related. We have caculated doubling times. We have discussed the assumptions that different people might make regarding these growth models. Last, we have used simulation to explore prediction and inference in a density-independent context.</p>
 
@@ -727,6 +734,9 @@ Figure 3.12: The logarithms of the observed R seem reasonably approximated by a 
 </div>
 <h3> References</h3>
 <div id="refs" class="references">
+<div id="ref-Halley1996">
+<p>Halley, J M. 1996. “Ecology, evolution and 1/f-noise.” <em>Trends in Ecology &amp; Evolution</em> 11: 33–37.</p>
+</div>
 <div id="ref-Hastings2011">
 <p>Hastings, A. 2011. “Single Species Population Dynamics and Its Theoretical Underpinnings.” In, edited by S. M. Scheiner and M. R. Willig. Chicago, IL, USA: University of Chicago Press.</p>
 </div>
@@ -735,7 +745,7 @@ Figure 3.12: The logarithms of the observed R seem reasonably approximated by a 
 <hr />
 <ol start="13">
 <li id="fn13"><p>A constatnt ratio between successive numbers.<a href="expo.html#fnref13" class="footnote-back">↩︎</a></p></li>
-<li id="fn14"><p>A zen koan if there ever was one.<a href="expo.html#fnref14" class="footnote-back">↩︎</a></p></li>
+<li id="fn14"><p>A zen koan, if there ever was one.<a href="expo.html#fnref14" class="footnote-back">↩︎</a></p></li>
 <li id="fn15"><p>No observed relation between <span class="math inline">\(\frac{\Delta N}{N}\)</span> vs. <span class="math inline">\(N\)</span><a href="expo.html#fnref15" class="footnote-back">↩︎</a></p></li>
 <li id="fn16"><p>discrete generations are common in nature.<a href="expo.html#fnref16" class="footnote-back">↩︎</a></p></li>
 <li id="fn17"><p>“Delta” N is the change in N.<a href="expo.html#fnref17" class="footnote-back">↩︎</a></p></li>
