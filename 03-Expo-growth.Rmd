@@ -303,9 +303,8 @@ Sometimes the arithmetic average is close to the correct average, but it is neve
 
 ## Modeling with Data: Simulated Dynamics
 Science strives to make predictions about about the behavior of systems.
- Ecologists and conservation biologists frequently strive to predict the fate of populations.  Here we  put into practice ideas about population biology to make informed predictions about the fate of the Song Sparrow population in Darrtown, OH. We also illustrate simple computational methods for doing so.
+ Ecologists and conservation biologists frequently strive to predict the fate of populations. This is referred to as *population viability analysis* (PVA) and is a large field of endeavor that is vital to managing threatened populations. Here we  put into practice ideas about population biology to make informed predictions about the fate of the Song Sparrow population in Darrtown, OH. We also illustrate simple computational methods for doing so. 
  
-
 The preceding sections (the bulk of the chapter) emphasized understanding the deterministic underpinnings of simple forms of density independent growth: geometric and exponential growth. This section explores the stochastic simulation of density independent growth. Our simulation makes most of the same assumptions we made at the beginning of the chapter. In addition, we assume that the observed annual growth rates ($N_{t+1}/N_t$) are representative of future growth rates, and that the growth rate in one year is entirely independent of any other year. 
 
 To make meaning full projections of future population size, we should quantify  the uncertainty with our guess. Simulation is one way we can project populations and quantify the uncertainty. The way one often does that is to use the original data and sample it randomly to calculate model parameters. This way, the simulations are random, but based on our best available knowldge, i.e., the real data. The re-use of observed data occurs in many guises, and it is known often as bootstrapping or resampling.
@@ -320,7 +319,7 @@ Given these sources of uncertainty, @Shaffer1981 defines *minimum population siz
 
 "*A minimum viable population for any given species in any given habitat is the smallest isolated population having a 99% chance of remaining extant for 1000 y despite foreseeable effects of demographic, environmental and genetic stochasticity, and natural catastrophes.*"
 
-In our simulations, we take one approach to simulating a population of Song Sparrows. The computational approaches includes a variety of tricks that you could use in a more serious approach to population projection and determining  probabilities of extinction.
+In our simulations, we take one approach to simulating a population of Song Sparrows. The computational approaches includes a variety of tricks that you could use in a more serious approach to population projection and determining  probabilities of extinction. In their supplemental documentation, @Chaudhary_2020 provide an excellent list of criteria to evaluate your own or someone else's approach to PVA.
 
 ### Data-based approaches
 We could use the observed *changes* in population counts $R_t=N_{t+1}/N_t$ as our data. We would then draw an $R_t$ at random from among the many observed values, and project the population one year forward. We then repeat this into the future, say, for ten years. Each simulation of a ten year period will result in a different ten year trajectory because we draw $R_t$ at random from among the observed $R_t$. However, if we do many such simulations, we will have a *distribution* of outcomes that we can describe with simple statistics (e.g., median, mean, quantiles).
