@@ -233,9 +233,8 @@ fundamental process of geometric increase. Second, populations can grow in a den
 <li>all individuals in a population are identical.</li>
 <li>there is no migration in or out of the population.</li>
 <li><ol style="list-style-type: lower-roman">
-<li>the number of offspring per individual (or the per capita birth and death rates) are constant through time, and …</li>
+<li>the number of offspring per individual (or the per capita birth and death rates) are constant through time, and (ii) independent of the number of individuals in the population.</li>
 </ol></li>
-<li>… (ii) independent of the number of individuals in the population.</li>
 </ol>
 <p>Deviations from these assumptions lead to all of the most interesting parts of single species population dynamics <span class="citation">(Hastings <a href="#ref-Hastings2011" role="doc-biblioref">2011</a>)</span>. The only deviation we play with in this chapter concerns assumption c; we model stochastic variation in population growth rate to investigate extinction risk. It is also worth mentioning that, although propositions 1 and 2 follow from assumptions a-d, they are not strictly necessary <span class="citation">(Hastings <a href="#ref-Hastings2011" role="doc-biblioref">2011</a>)</span>. For instance, individuals need not be identical, and we deal with a big exception in the next chapter where we introduce structured population growth. Also, migration is admissable, provided immigration = emigration and it does not alter growth rates. Nonetheless, other deviations from a. and b. can have very important consequences for single species population dynamics.</p>
 <p>Here we define Density-independence in a real population as a lack of a statistical relation between the density of a population, and its <em>per capita</em> growth rate<a href="#fn15" class="footnote-ref" id="fnref15"><sup>15</sup></a>. The power to detect a significant relation between any two continuous variables depends on those factors which govern statistical power, such as the number of observations, the range of the predictor variable, and the strength of the underlying relation. Therefore, our conclusion, that a particular population exhibits density-independent growth, may be trivial if our sample size is small, with few generations sampled, or if we sampled the population over a very narrow range of densities. Nonetheless, it behooves us to come back to this definition if, or when, we get caught up in the biology of a particular organism.</p>
@@ -325,7 +324,7 @@ If we divide through by <span class="math inline">\(\Delta t\)</span> and then l
 <span class="math display">\[\frac{dN}{dt}=\lim_{\Delta t \rightarrow 0} bN_t - dN_t - \Delta t\, d bN_t = bN_t - dN_t=rN\]</span></p>
 <p>To arrive at the projection equation for a continuously growing population, we integrate <span class="math inline">\(rN\)</span> with respect to time. Integration is the cumulative summing of <span class="math inline">\(y\)</span> across a range of <span class="math inline">\(x\)</span>. It even uses an exagerated “S” to indicate summation, <span class="math inline">\(\int\)</span>. Here we integrate population growth across time. We start by rearranging
 <span class="math display">\[\frac{dN}{dt} = rN \Rightarrow \frac{dN}{N} = r dt\]</span></p>
-<p>Now we integrate from <span class="math inline">\(N\)</span> and <span class="math inline">\(r\)</span> from <span class="math inline">\(t=0\)</span> to <span class="math inline">\(t=t\)</span>,
+<p>Now we integrate <span class="math inline">\(N\)</span> and <span class="math inline">\(r\)</span> with respect to their start and end points: <span class="math inline">\(N\)</span> from <span class="math inline">\(N_0\)</span> to <span class="math inline">\(N_t\)</span>, and, correspondingly, <span class="math inline">\(r\)</span> from <span class="math inline">\(t=0\)</span> to <span class="math inline">\(t=t\)</span>,
 <span class="math display">\[\int_{N_0}^{N_t} \frac{1}{N}dN = \int_{0}^{t}rdt\]</span>
 <span class="math display">\[\ln(N_t) - \ln(N_0) = rt - r\,0\]</span>
 <span class="math display">\[\ln(N_t) = \ln(N_0) + rt\]</span>
@@ -462,9 +461,15 @@ Figure 3.5: Random variation in growth rate alters the long term average growth 
 <div id="modeling-with-data-simulated-dynamics" class="section level2">
 <h2><span class="header-section-number">3.4</span> Modeling with Data: Simulated Dynamics</h2>
 <p>Science strives to make predictions about about the behavior of systems.
-Ecologists and conservation biologists frequently strive to predict the fate of populations. Here we put into practice ideas about population biology to make informed predictions about the fate of the Song Sparrow population in Darrtown, OH. We also illustrate simple commputational methods for doing so.</p>
+Ecologists and conservation biologists frequently strive to predict the fate of populations. Here we put into practice ideas about population biology to make informed predictions about the fate of the Song Sparrow population in Darrtown, OH. We also illustrate simple computational methods for doing so.</p>
 <p>The preceding sections (the bulk of the chapter) emphasized understanding the deterministic underpinnings of simple forms of density independent growth: geometric and exponential growth. This section explores the stochastic simulation of density independent growth. Our simulation makes most of the same assumptions we made at the beginning of the chapter. In addition, we assume that the observed annual growth rates (<span class="math inline">\(N_{t+1}/N_t\)</span>) are representative of future growth rates, and that the growth rate in one year is entirely independent of any other year.</p>
 <p>To make meaning full projections of future population size, we should quantify the uncertainty with our guess. Simulation is one way we can project populations and quantify the uncertainty. The way one often does that is to use the original data and sample it randomly to calculate model parameters. This way, the simulations are random, but based on our best available knowldge, i.e., the real data. The re-use of observed data occurs in many guises, and it is known often as bootstrapping or resampling.</p>
+<p>In a highly influential paper on miminmum population sizes in conservation, <span class="citation">Shaffer (<a href="#ref-Shaffer1981" role="doc-biblioref">1981</a>)</span> identifies four different types of noise or stochasticity that are important in driving variability in populations. The first of these is <em>demographic stochasticity</em>. This is the random or more correctly stochastic nature of individual births and deaths. Due to this element of random chance, individuals may live or die, produce offspring or not. As a result, population size will fluctuation randomly. This is very important in small populations, and becomes increasingly unimportant in larger and larger populations. This is the same process that underlies genetic drift in small populations.</p>
+<p>Another source of variation <span class="citation">Shaffer (<a href="#ref-Shaffer1981" role="doc-biblioref">1981</a>)</span> identifies is <em>environmental stochasticity</em>. This is temporal variation in birth or death rates that affects all individuals to a similar degree, due to variation in the population’s biotic or abiotic environment.</p>
+<p>The last sources of variation are <em>genetic stochasticity</em> and <em>natural catastrophes</em>. Perhaps the latter of these is the most difficult to deal with, because catastrophes are, by definition, enormously consequential and unpredictable.</p>
+<p>Given these sources of uncertainty, <span class="citation">Shaffer (<a href="#ref-Shaffer1981" role="doc-biblioref">1981</a>)</span> defines <em>minimum population size</em> (MVP) thus,</p>
+<p>“<em>A minimum viable population for any given species in any given habitat is the smallest isolated population having a 99% chance of remaining extant for 1000 y despite foreseeable effects of demographic, environmental and genetic stochasticity, and natural catastrophes.</em>”</p>
+<p>In our simulations, we take one approach to simulating a population of Song Sparrows. The computational approaches includes a variety of tricks that you could use in a more serious approach to population projection and determining probabilities of extinction.</p>
 <div id="data-based-approaches" class="section level3">
 <h3><span class="header-section-number">3.4.1</span> Data-based approaches</h3>
 <p>We could use the observed <em>changes</em> in population counts <span class="math inline">\(R_t=N_{t+1}/N_t\)</span> as our data. We would then draw an <span class="math inline">\(R_t\)</span> at random from among the many observed values, and project the population one year forward. We then repeat this into the future, say, for ten years. Each simulation of a ten year period will result in a different ten year trajectory because we draw <span class="math inline">\(R_t\)</span> at random from among the observed <span class="math inline">\(R_t\)</span>. However, if we do many such simulations, we will have a <em>distribution</em> of outcomes that we can describe with simple statistics (e.g., median, mean, quantiles).</p>
@@ -636,7 +641,7 @@ Figure 3.10: Using ggplot() to plot one variable against vs. a single variable,
 <span id="cb67-7"><a href="expo.html#cb67-7"></a>                    )</span>
 <span id="cb67-8"><a href="expo.html#cb67-8"></a>            )</span></code></pre></div>
 <pre><code>##    user  system elapsed 
-##   0.186   0.067   1.043</code></pre>
+##   0.176   0.065   2.064</code></pre>
 <p>This tells me how long it took to complete 10,000 simulations. We also check the dimensions of the output, and they make sense.</p>
 <div class="sourceCode" id="cb69"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb69-1"><a href="expo.html#cb69-1"></a><span class="kw">dim</span>(outmat)</span></code></pre></div>
 <pre><code>## [1]    51 10000</code></pre>
@@ -650,8 +655,8 @@ Figure 3.10: Using ggplot() to plot one variable against vs. a single variable,
 <pre><code>##      Min.   1st Qu.    Median      Mean   3rd Qu.      Max. 
 ##       0.0      12.1      60.7    1306.3     297.7 2299420.0</code></pre>
 <div class="sourceCode" id="cb73"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb73-1"><a href="expo.html#cb73-1"></a><span class="kw">hist</span>(<span class="kw">log10</span>(N<span class="fl">.2053</span>))</span></code></pre></div>
-<div class="figure"><span id="fig:unnamed-chunk-20"></span>
-<img src="figs/unnamed-chunk-20-1.png" alt="Distribution of the 10000 final base-10 log population sizes. Note the approximately Normal distribution." width="75%" />
+<div class="figure"><span id="fig:unnamed-chunk-24"></span>
+<img src="figs/unnamed-chunk-24-1.png" alt="Distribution of the 10000 final base-10 log population sizes. Note the approximately Normal distribution." width="75%" />
 <p class="caption">
 Figure 3.11: Distribution of the 10000 final base-10 log population sizes. Note the approximately Normal distribution.
 </p>
@@ -739,6 +744,9 @@ Figure 3.12: The logarithms of the observed R seem reasonably approximated by a 
 </div>
 <div id="ref-Hastings2011">
 <p>Hastings, A. 2011. “Single Species Population Dynamics and Its Theoretical Underpinnings.” In, edited by S. M. Scheiner and M. R. Willig. Chicago, IL, USA: University of Chicago Press.</p>
+</div>
+<div id="ref-Shaffer1981">
+<p>Shaffer, Mark L. 1981. “Minimum for species population sizes conservation.” <em>Bioscience</em> 31: 131–34.</p>
 </div>
 </div>
 <div class="footnotes">

@@ -303,11 +303,24 @@ Sometimes the arithmetic average is close to the correct average, but it is neve
 
 ## Modeling with Data: Simulated Dynamics
 Science strives to make predictions about about the behavior of systems.
- Ecologists and conservation biologists frequently strive to predict the fate of populations.  Here we  put into practice ideas about population biology to make informed predictions about the fate of the Song Sparrow population in Darrtown, OH. We also illustrate simple commputational methods for doing so.
+ Ecologists and conservation biologists frequently strive to predict the fate of populations.  Here we  put into practice ideas about population biology to make informed predictions about the fate of the Song Sparrow population in Darrtown, OH. We also illustrate simple computational methods for doing so.
+ 
 
 The preceding sections (the bulk of the chapter) emphasized understanding the deterministic underpinnings of simple forms of density independent growth: geometric and exponential growth. This section explores the stochastic simulation of density independent growth. Our simulation makes most of the same assumptions we made at the beginning of the chapter. In addition, we assume that the observed annual growth rates ($N_{t+1}/N_t$) are representative of future growth rates, and that the growth rate in one year is entirely independent of any other year. 
 
 To make meaning full projections of future population size, we should quantify  the uncertainty with our guess. Simulation is one way we can project populations and quantify the uncertainty. The way one often does that is to use the original data and sample it randomly to calculate model parameters. This way, the simulations are random, but based on our best available knowldge, i.e., the real data. The re-use of observed data occurs in many guises, and it is known often as bootstrapping or resampling.
+
+In a highly influential paper on miminmum population sizes in conservation, @Shaffer1981 identifies four different types of noise or stochasticity that are important in driving variability in populations. The first of these is *demographic stochasticity*. This is the random or more correctly stochastic nature of individual births and deaths. Due to this element of random chance, individuals may live or die, produce offspring or not. As a result, population size will fluctuation randomly. This is very important in small populations, and becomes increasingly unimportant in larger and larger populations. This is the same process that underlies genetic drift in small populations. 
+ 
+Another source of variation @Shaffer1981 identifies is *environmental stochasticity*. This is temporal variation in birth or death rates that affects all individuals to a similar degree, due to variation in the population's biotic or abiotic environment. 
+
+The last sources of variation are *genetic stochasticity* and *natural catastrophes*. Perhaps the latter of these is the most difficult to deal with, because catastrophes are, by definition, enormously consequential and unpredictable.
+
+Given these sources of uncertainty, @Shaffer1981 defines *minimum population size* (MVP) thus,
+
+"*A minimum viable population for any given species in any given habitat is the smallest isolated population having a 99% chance of remaining extant for 1000 y despite foreseeable effects of demographic, environmental and genetic stochasticity, and natural catastrophes.*"
+
+In our simulations, we take one approach to simulating a population of Song Sparrows. The computational approaches includes a variety of tricks that you could use in a more serious approach to population projection and determining  probabilities of extinction.
 
 ### Data-based approaches
 We could use the observed *changes* in population counts $R_t=N_{t+1}/N_t$ as our data. We would then draw an $R_t$ at random from among the many observed values, and project the population one year forward. We then repeat this into the future, say, for ten years. Each simulation of a ten year period will result in a different ten year trajectory because we draw $R_t$ at random from among the observed $R_t$. However, if we do many such simulations, we will have a *distribution* of outcomes that we can describe with simple statistics (e.g., median, mean, quantiles).
