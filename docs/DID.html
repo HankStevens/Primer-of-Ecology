@@ -24,7 +24,7 @@
 <meta name="author" content="Hank Stevens" />
 
 
-<meta name="date" content="2020-08-23" />
+<meta name="date" content="2020-08-25" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -381,9 +381,9 @@ A dot product begins with two equal length vectors and returns a single number (
 </div>
 <div id="decomposing-a" class="section level2">
 <h2><span class="header-section-number">4.3</span> Decomposing <strong>A</strong></h2>
-<p>A slightly different way to conceptualize our transition matrix is to consider it the three separate matrices, one each for survival, growth, and fecundity,
-<span class="math display">\[\mathbf{ A = SG + F }\]</span>.</p>
-<p>Survival, <strong>S</strong>, and growth, <strong>G</strong>, havethese elements:</p>
+<p>A slightly different way to conceptualize our transition matrix is to consider it the three separate matrices, one each for growth, survival, and fecundity,
+<span class="math display">\[\mathbf{ A = GS + F }\]</span>.</p>
+<p>Survival, <strong>S</strong>, and growth, <strong>G</strong>, have these elements:</p>
 <ul>
 <li>each stage <span class="math inline">\(j\)</span> has its own probability of survival <span class="math inline">\(s_j\)</span>, which describes survival of each stage from <span class="math inline">\(t\)</span> to <span class="math inline">\(t+1\)</span>.</li>
 <li>each survivor in stage <span class="math inline">\(j\)</span> will grow or regress into a different stage, or remain in the same stage, with probability <span class="math inline">\(g_{ij}\)</span>.</li>
@@ -392,46 +392,36 @@ A dot product begins with two equal length vectors and returns a single number (
 <p>For our Western Toad (Fig. <a href="DID.html#fig:toadlh">4.2</a>), this results in
 <span class="math display" id="eq:SGF">\[\begin{equation*}
 \tag{4.3}
- \mathbf{A = SG + F} = 
- \left(
- \begin{array}{c}
- \sigma_j\\
-\sigma_a
- \end{array} \right)
+ \mathbf{A = GS + F} = 
+ 
 \left(
 \begin{array}{cc}
 1-\mathrm{P} &amp; 0 \\
 \mathrm{P} &amp; 1
 \end{array} \right)
+\left(
+ \begin{array}{cc}
+ \sigma_j&amp;0\\
+0 &amp; \sigma_a
+ \end{array} \right)
 +
 \left(
 \begin{array}{cc}
 0 &amp; \rho \phi \sigma_e \sigma_t \sigma_m \\
 0 &amp; 0
-\end{array} \right)
-\end{equation*}\]</span></p>
-<p>where <span class="math inline">\(\sigma_j,\,\sigma_a\)</span> are survival of juveniles and adults, and P is the probability of juvenile growth, given survival. If an adult survives it always remains an adult (<span class="math inline">\(g_{22}=1\)</span>) and never regresses (<span class="math inline">\(g_{12}=0\)</span>). Fecundity occurs only in adults, and it is the product of the sex ratio (<span class="math inline">\(\rho\)</span>), average clutch size per female (<span class="math inline">\(\phi\)</span>), egg survival (<span class="math inline">\(\sigma_e\)</span>), survival of tadpoles (<span class="math inline">\(\sigma_t\)</span>), and the overwintering survival of the metamorphs (<span class="math inline">\(\sigma_m\)</span>).</p>
-<p>Following the rules of matrix multiplication and addition, we now have</p>
-<p>Vonesh and de la Cruz went further and added <em>density-dependence</em> using a term for the negative effects of high tadpole density on tadpole survival and growth. We do not show that here, but regardless how complex the natural history gets, we can build natural history into our models.</p>
-<p><span class="math display" id="eq:SGA">\[\begin{equation*}
-\tag{4.4}
- \mathbf{SG} = 
-\left(
-\begin{array}{cc}
-\sigma_j (1-\mathrm{P}) &amp; 0 \\
-\sigma_j \mathrm{P} &amp; \sigma_a
-\end{array} \right) \; ; \;
-\mathbf{A} = 
+\end{array} \right) = 
 \left(
 \begin{array}{cc}
 \sigma_j (1-\mathrm{P}) &amp; \rho \phi \sigma_e \sigma_t \sigma_m \\
 \sigma_j \mathrm{P} &amp; \sigma_a
 \end{array} \right)
 \end{equation*}\]</span></p>
+<p>where <span class="math inline">\(\sigma_j,\,\sigma_a\)</span> are survival of juveniles and adults, and P is the probability of juvenile growth, given survival. If an adult survives it always remains an adult (<span class="math inline">\(g_{22}=1\)</span>) and never regresses (<span class="math inline">\(g_{12}=0\)</span>). Fecundity occurs only in adults, and it is the product of the sex ratio (<span class="math inline">\(\rho\)</span>), average clutch size per female (<span class="math inline">\(\phi\)</span>), egg survival (<span class="math inline">\(\sigma_e\)</span>), survival of tadpoles (<span class="math inline">\(\sigma_t\)</span>), and the overwintering survival of the metamorphs (<span class="math inline">\(\sigma_m\)</span>).<a href="#fn27" class="footnote-ref" id="fnref27"><sup>27</sup></a></p>
+<p>Vonesh and de la Cruz went further and added <em>density-dependence</em> using a term for the negative effects of high tadpole density on tadpole survival and growth. We do not show that here, but regardless how complex the natural history gets, we can build natural history into our models.</p>
 </div>
 <div id="a-three-stage-model" class="section level2">
 <h2><span class="header-section-number">4.4</span> A three stage model</h2>
-Now we describe a three-stage model of a plant population. Like our amphibian example, it is a <em>pre-breeding</em> model, relying on a pre-breeding census. Nonetheless, it includes a seed stage for the seed bank, where seeds may be more than one year old. Eleanor <span class="citation">Pardini et al. (<a href="#ref-Pardini:2009aa" role="doc-biblioref">n.d.</a>)</span> and colleagues modeled garlic mustard (<em>Alliaria petiolata</em>), a biennial plant species that is an exotic invasive species in the eastern deciduous forest of the U.S. The stages they choose to represent were those present in May: seeds in the soil seed bank, 1–2 month old immature rosettes, and adults (Fig. @fig:garlic1).
+Now we describe a three-stage model of a plant population. Like our amphibian example, it is a <em>pre-breeding</em> model, relying on a pre-breeding census. Nonetheless, it includes a seed stage for the seed bank, where seeds may be more than one year old. Eleanor <span class="citation">Pardini et al. (<a href="#ref-Pardini:2009aa" role="doc-biblioref">n.d.</a>)</span> and colleagues modeled garlic mustard (<em>Alliaria petiolata</em>), a biennial plant species that is an exotic invasive species in the eastern deciduous forest of the U.S. The stages they choose to represent were those present in May: seeds in the soil seed bank, 1–2 month old immature rosettes, and adults (Fig. <a href="DID.html#fig:garlic1">4.5</a>.
 <div class="figure"><span id="fig:garlic1"></span>
 <img src="figs/pardiniLC.png" alt="The life cycle of garlic mustard using a post-breeding census (Pardini et al. 2009). The census takes place in May of each year. Each arrow represents the transition from May to May. Seeds germinate in early spring and become rosettes (basal leaves near the soil surface). The rosettes experience mortality all summer, fall, and winter. Surviving rosettes become reproductive adults the following spring a summer. Adults flower and are pollinated in June, after which the fruits ripen and seeds mature. Seeds overwinter for at least six months before germinating in the spring. Not all seeds germinate, but they may remain viable in the seed bank for several years. Thus, the complete life cycle at least two years. Once the seeds germinate, the plant requires over a year to reach maturity, and produce flowers, fruits and seeds." width="90%" />
 <p class="caption">
@@ -444,13 +434,13 @@ Figure 4.5: The life cycle of garlic mustard using a post-breeding census (Pardi
 <li><span class="math inline">\(s_2\)</span>, surviving from May to August as a rosette.</li>
 <li><span class="math inline">\(s_3\)</span>, surviving from August to early May and becoming a reproductive plant.</li>
 <li><span class="math inline">\(v\)</span>, a seed is viable (survives and can germinate).</li>
-<li><span class="math inline">\(g_1\)</span>, a viable seed germinates in the first season, or <span class="math inline">\(1-g_1\)</span> remains un germinated</li>
+<li><span class="math inline">\(g_1\)</span>, a viable seed germinates in the first season, or <span class="math inline">\(1-g_1\)</span> remains ungerminated.</li>
 <li><span class="math inline">\(g_2\)</span>, a viable seed germinates in the second season or <span class="math inline">\(1-g_2\)</span> does not.</li>
 </ul>
 <p>Fecundity, <span class="math inline">\(f\)</span>, is the average number of seeds per reproductive plant.</p>
 <p>The transition matrix <strong>A</strong> would thus be</p>
 <p><span class="math display" id="eq:pardini">\[\begin{equation*}
-\tag{4.5}
+\tag{4.4}
  \mathbf{A} = 
 \left(
 \begin{array}{ccc}
@@ -508,12 +498,12 @@ Figure 4.6: Projection of a population showing transient dynamics.
 <p>Eigenanalysis is a mathematical technique that summarizes multivariate data. Ecologists use eigenanalysis frequently, for (i) multivariate statistics such as ordination, (ii) local stability analyses with two or more species, and (iii) analyzing population transition matrices. Eigenanalysis is simply a method to transform a square matrix into independent, or orthogonal, pieces. These pieces are <em>eigenvectors</em> and their corresponding <em>eigenvalues.</em> There are the same number of eigenvalues (and eigenvectors) as there are columns in a matrix. In demography, the two most useful pieces are the <em>dominant right eigenvalue</em> and its <em>corresponding right eigenvector</em>.</p>
 <p>Eigenanalysis is a technique that finds all the solutions for <span class="math inline">\(\lambda\)</span> and <span class="math inline">\(\mathbf{w}\)</span> of</p>
 <p><span class="math display" id="eq:eigsol">\[\begin{equation}
-\tag{4.6}
+\tag{4.5}
 \mathbf{Aw}=\lambda \mathbf{w}
 \end{equation}\]</span>
-where <span class="math inline">\(\mathbf{w}\)</span> is a particular summary of our data. With analysis of a transition matrix, <span class="math inline">\(\mathbf{A}\)</span> is the projection matrix, <span class="math inline">\(\lambda\)</span> is an <em>eigenvalue</em> and <span class="math inline">\(\mathbf{w}\)</span> is an <em>eigenvector</em>. If we write out eq. <a href="DID.html#eq:eigsol">(4.6)</a> for a <span class="math inline">\(2 \times 2\)</span> matrix, we would have</p>
+where <span class="math inline">\(\mathbf{w}\)</span> is a particular summary of our data. With analysis of a transition matrix, <span class="math inline">\(\mathbf{A}\)</span> is the projection matrix, <span class="math inline">\(\lambda\)</span> is an <em>eigenvalue</em> and <span class="math inline">\(\mathbf{w}\)</span> is an <em>eigenvector</em>. If we write out eq. <a href="DID.html#eq:eigsol">(4.5)</a> for a <span class="math inline">\(2 \times 2\)</span> matrix, we would have</p>
 <p><span class="math display" id="eq:eigsollong">\[
- \tag{4.7}
+ \tag{4.6}
  \left(
  \begin{array}{ccc}
   a_{11} &amp; a_{12} \\
@@ -548,7 +538,7 @@ where <span class="math inline">\(\mathbf{w}\)</span> is a particular summary of
 ## [1,] -0.8574929 -0.9701425
 ## [2,] -0.5144958  0.2425356</code></pre>
 <p>This gives us one eigenvalue per column of our transition matrix (<code>values</code>). Each eigenvalue has a <em>corresponding eigenvector</em> that is the corresponding column of the <code>vectors</code> matrix.</p>
-<p>Let’s use R to prove to ourselves that eq. <a href="DID.html#eq:eigsol">(4.6)</a> is what we say it is. Here we see for ourselves whether <span class="math inline">\(\mathbf{A}\mathbf{w} = \lambda \mathbf{w}\)</span> for
+<p>Let’s use R to prove to ourselves that eq. <a href="DID.html#eq:eigsol">(4.5)</a> is what we say it is. Here we see for ourselves whether <span class="math inline">\(\mathbf{A}\mathbf{w} = \lambda \mathbf{w}\)</span> for
 <span class="math inline">\(i = 1\)</span>. Below, we use the results of the previous eigenanalysis.</p>
 <div class="sourceCode" id="cb107"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb107-1"><a href="DID.html#cb107-1"></a>(lambda1 &lt;-<span class="st"> </span>eA<span class="op">$</span>values[<span class="dv">1</span>])</span></code></pre></div>
 <pre><code>## [1] 1.2</code></pre>
@@ -566,7 +556,7 @@ where <span class="math inline">\(\mathbf{w}\)</span> is a particular summary of
 <div id="finite-rate-of-increase" class="section level3">
 <h3><span class="header-section-number">4.6.2</span> Finite rate of increase</h3>
 <p>
-The asymptotic annual growth rate or finite rate of increase is the dominant eigenvalue of the transition matrix. Eigenvalues are always referred to with the Greek symbol <span class="math inline">\(\lambda\)</span>, and provide a solution to <a href="DID.html#eq:eigsol">(4.6)</a>. The dominant eigenvalue of any matrix, <span class="math inline">\(\lambda_{1}\)</span>, is the eigenvalue with the largest magnitude, and it is frequently a complex number. (When we perform eigenanalysis, it is common to get complex numbers, with real and imaginary parts. The magnitude is the sum of the squared parts.) With population transition matrices, <span class="math inline">\(\lambda_{1}\)</span> will always be positive and real. This will not be the case with other types of matrices we examine in later chapters.</p>
+The asymptotic annual growth rate or finite rate of increase is the dominant eigenvalue of the transition matrix. Eigenvalues are always referred to with the Greek symbol <span class="math inline">\(\lambda\)</span>, and provide a solution to <a href="DID.html#eq:eigsol">(4.5)</a>. The dominant eigenvalue of any matrix, <span class="math inline">\(\lambda_{1}\)</span>, is the eigenvalue with the largest magnitude, and it is frequently a complex number. (When we perform eigenanalysis, it is common to get complex numbers, with real and imaginary parts. The magnitude is the sum of the squared parts.) With population transition matrices, <span class="math inline">\(\lambda_{1}\)</span> will always be positive and real. This will not be the case with other types of matrices we examine in later chapters.</p>
 <p>The dominant eigenvalue is the biggest one. We can find which one it by asking R to tell us the index position <span class="math inline">\(i\)</span> of the largest absolute value (the modulus) of the eigenvalues. In most cases, it is the first eigenvalue, as it is here.</p>
 <div class="sourceCode" id="cb113"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb113-1"><a href="DID.html#cb113-1"></a>( dom.pos &lt;-<span class="st"> </span><span class="kw">which.max</span>( <span class="kw">Mod</span>(eA[[<span class="st">&quot;values&quot;</span>]]) )  )</span></code></pre></div>
 <pre><code>## [1] 1</code></pre>
@@ -581,7 +571,7 @@ The asymptotic annual growth rate or finite rate of increase is the dominant eig
 <p>The relative abundance of the different life history stages is called the <em>stage distribution</em>, that is, the distribution of individuals among the stages. A property of a stage structured population is that, if all the demographic rates (elements of the transition matrix) remain constant, its stage structure will approach a <em>stable</em> stage distribution, a stage distribution in which the <strong>relative</strong> number of individuals in each stage is constant. Note that a population can grow, so that the absolute number of individuals increases, but the relative abundances of the stages is constant; this is the stable stage distribution. If the population is not actually growing (i.e. <span class="math inline">\(\lambda=1\)</span>) and demographic parameters remain constant, then the population is <em>stationary</em> and will achieve a <em>stationary stage distribution</em>, where neither absolute nor relative abundances change.</p>
 <p>How do we find the stable stage distribution? It also turns out that <span class="math inline">\(w_1\)</span> provides the necessary information. We scale the eigenvector <span class="math inline">\(w_1\)</span> by the sum of its elements because we are interested in the <em>distribution</em>, which is defined by all stages summing to one. Therefore the stable stage distribution is
 <span class="math display" id="eq:ssd">\[\begin{equation}
- \tag{4.8}
+ \tag{4.7}
  \frac{w_1}{\sum_{i=1}^s{w_1}}
 \end{equation}\]</span>
 where <span class="math inline">\(s\)</span> is the number of stages.</p>
@@ -637,12 +627,12 @@ Figure 4.7: Calculating an annual finite rate of increase from a projected popul
 If the stage structure gives us one measure of the importance of a stage (its relative abundance), then the <em>reproductive value</em> gives us one measure of the importance of an <em>individual</em> in each stage. Reproductive value is the expected contribution of each individual to future reproduction. We characterize all individuals in a stage using the same expected reproductive value.</p>
 <p>We find each stage’s reproductive value by solving for the dominant <em>left</em> eigenvector <span class="math inline">\(\mathbf{v}\)</span>, where
 <span class="math display" id="eq:rv">\[\begin{equation}
- \tag{4.9}
+ \tag{4.8}
  \mathbf{vA}=\lambda\mathbf{v}
 \end{equation}\]</span>
 Like the relation between the dominant right eigenvector and the stable stage distribution, this vector is actually <em>proportional</em> to the reproductive values. Unlike the stable stage distribution, we scale it so that all reproductive values are relative to that of the first stage (e.g. juveniles or seeds).
 <span class="math display" id="eq:rv2">\[
- \tag{4.10}
+ \tag{4.9}
   \frac{v}{v_{1}}
 \]</span></p>
 <p>We find the left eigenvalues and -vectors by performing eigenanalysis on the <em>transpose</em> of the transition matrix. Transposition flips rows and columns. We perform eigenanalysis, extracting just the dominant left eigenvector; we then scale it, so the stage 1 has a reproductive value of 1.0.</p>
@@ -660,7 +650,7 @@ Like the relation between the dominant right eigenvector and the stable stage di
 <p>Almost always, sensitivities of a transition matrix are the sensistivities of <span class="math inline">\(\lambda_1\)</span> to the elements of the transition matrix. They are the direct contributions of each transition to determining <span class="math inline">\(\lambda_1\)</span>. The sensitivity for the element <span class="math inline">\(a_{ij}\)</span> of a transition matrix is the change in <span class="math inline">\(\lambda_1\)</span> that occurs when we change <span class="math inline">\(a_{ij}\)</span> a small amount, or <span class="math inline">\(\delta \lambda / \delta a_{ij}\)</span>. It isn’t surprising, then, these are derived from the stable stage distribution and the reproductive values. Specifically, the sensitivities are calculated as</p>
 <p><span class="math display" id="eq:sens">\[
 \frac{\delta \lambda}{\delta a_{ij}}=\frac{v_{i}w_{j}}{v\cdot w} 
-\tag{4.11}
+\tag{4.10}
 \]</span>
 where <span class="math inline">\(v_{i}w_{j}\)</span> is the product of each pairwise combination of elements of the dominant left and right eigenvectors, <span class="math inline">\(v\)</span> and <span class="math inline">\(w\)</span>. Specifically, the numerator is generated by the reproductive value of the target stage and the stable stage distribution of the source stage,
 <span class="math display">\[
@@ -723,7 +713,7 @@ demographic rates. We use this continuously varying state variable in place of s
 </div>
 <div id="exploring-a-real-population" class="section level2">
 <h2><span class="header-section-number">4.8</span> Exploring a real population</h2>
-<p><span class="citation">Crouse, Crowder, and Caswell (<a href="#ref-Crouse1987" role="doc-biblioref">1987</a>)</span> performed a demographic analysis of an endangered sea turtle species, the loggerhead (<em>Caretta caretta</em>). Management of loggerhead populations seemed essential for their long term survival, and a popular management strategy had been and still is to protect nesting females, eggs, and hatchlings. The ground breaking work by Crouse<a href="#fn27" class="footnote-ref" id="fnref27"><sup>27</sup></a> and her colleagues compiled data to create a stage-based projection matrix to analyze quantitatively which stages are most important and least important in influencing long-term growth rate. This work led to US Federal laws requiring that US shrimp fishermen use nets that include Turtle Excluder Devices (TEDs, <a href="https://www.fisheries.noaa.gov/southeast/bycatch/turtle-excluder-device-regulations" class="uri">https://www.fisheries.noaa.gov/southeast/bycatch/turtle-excluder-device-regulations</a> ). Crouse et al. determined a transition matrix, <strong>A</strong>, for their loggerhead population:</p>
+<p><span class="citation">Crouse, Crowder, and Caswell (<a href="#ref-Crouse1987" role="doc-biblioref">1987</a>)</span> performed a demographic analysis of an endangered sea turtle species, the loggerhead (<em>Caretta caretta</em>). Management of loggerhead populations seemed essential for their long term survival, and a popular management strategy had been and still is to protect nesting females, eggs, and hatchlings. The ground breaking work by Crouse<a href="#fn28" class="footnote-ref" id="fnref28"><sup>28</sup></a> and her colleagues compiled data to create a stage-based projection matrix to analyze quantitatively which stages are most important and least important in influencing long-term growth rate. This work led to US Federal laws requiring that US shrimp fishermen use nets that include Turtle Excluder Devices (TEDs, <a href="https://www.fisheries.noaa.gov/southeast/bycatch/turtle-excluder-device-regulations" class="uri">https://www.fisheries.noaa.gov/southeast/bycatch/turtle-excluder-device-regulations</a> ). Crouse et al. determined a transition matrix, <strong>A</strong>, for their loggerhead population:</p>
 <p><span class="math display">\[\begin{array}{c}
 H\\J_s\\J_l \\sub \\ B_1 \\B_2 \\ M
 \end{array}
@@ -800,7 +790,8 @@ H\\J_s\\J_l \\sub \\ B_1 \\B_2 \\ M
 <li id="fn24"><p>Practice these pronunciations: <span class="math inline">\(\sigma\)</span> is sigma <span class="math inline">\(\phi\)</span> is phi or phee; <span class="math inline">\(\rho\)</span> is rho.<a href="DID.html#fnref24" class="footnote-back">↩︎</a></p></li>
 <li id="fn25"><p>In structured population models, fecundity includes survival.<a href="DID.html#fnref25" class="footnote-back">↩︎</a></p></li>
 <li id="fn26"><p>A is the analog of lambda.<a href="DID.html#fnref26" class="footnote-back">↩︎</a></p></li>
-<li id="fn27"><p>Crouse was a graduate student at the time—graduate students are the life-blood of modern science, doing cutting edge work and pushing their fields forward.<a href="DID.html#fnref27" class="footnote-back">↩︎</a></p></li>
+<li id="fn27"><p>Survival, <strong>S</strong>, is really a vector, here (<span class="math inline">\(\sigma_j,\,\sigma_a\)</span>). In order to multiply survivals and the growth matrix in the way we want, we need to multiply <strong>S</strong> by the identity matrix to get what we see above.<a href="DID.html#fnref27" class="footnote-back">↩︎</a></p></li>
+<li id="fn28"><p>Crouse was a graduate student at the time—graduate students are the life-blood of modern science, doing cutting edge work and pushing their fields forward.<a href="DID.html#fnref28" class="footnote-back">↩︎</a></p></li>
 </ol>
 </div>
             </section>

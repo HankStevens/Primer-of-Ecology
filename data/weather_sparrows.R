@@ -30,7 +30,8 @@ l <- sb$Count[-1]/sb$Count[-nrow(sb)]
 i <- sb$Year[-1] - sb$Year[-nrow(sb)]
 
 r <- log(l)
-
+fft.l <- stats::spectrum(r)
+plot(fft.l)
 N <- 30
 PSD <- rgamma(N, 2)^2
 ACS <- fft(PSD,inverse = TRUE)
@@ -40,7 +41,7 @@ ACS <- Re(ACS)
 plot(ACS, type ='b')
 
 ############
-one_over_f <- function(N, alpha = 1, my.mean=0, my.SD=1){ 
+one_over_f <- function(N, alpha = 1, my.mean=0, my.sd=1){ 
   ## This function generates a time series of 1/f noise 
   ## with a user defined mean and SD.
   ## alpha is the color of the noise, and 
@@ -72,6 +73,6 @@ one_over_f <- function(N, alpha = 1, my.mean=0, my.SD=1){
 
 a <- one_over_f(100,2)
 plot(a, type='l')
-R1 <- exp(a4)
+R1 <- exp(a)
 plot(R1, type='l')
 

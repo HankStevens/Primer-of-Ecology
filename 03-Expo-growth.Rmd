@@ -473,8 +473,9 @@ junk <- data.frame(years = 1:(years+1), outmat)
 names(junk)
 # make sure to load 'tidyr' if you did not already load it or tidyverse
 # library(tidyr)
-# "gather" many columns into one (except years)
-out.long <- gather(junk, key="Run", value="N", -years)
+# Take the wide data frame with many columns and turn it into 
+# a long data frame with one column to ID each simulation, and one to hold values.
+out.long <- pivot_longer(junk, cols=X1:X10, names_to="Run", values_to="N")
 ggplot(data=out.long, aes(x=years, y=N, group=Run)) + geom_line() +  
   scale_y_log10() 
 
@@ -532,7 +533,7 @@ The observed rates are simply a visible manifestation of unseen processes. We mi
 
 We can fit a Normal distribution to the logarithms of our observed $R$, and we see that it doesn't do too bad a job (Fig. \@ref(fig:fitln)).
 
-```{r fitln, fig.cap="The logarithms of the observed R seem reasonably approximated by a Normal distribution whose mean and standard deviation are derived from the log-transformed data.", out.width="75%"}
+```{r fitln, fig.cap="The logarithms of the observed R seem reasonably approximated by a Normal distribution whose mean and standard deviation are derived from the log-transformed data. The probability distribution has been rescaled to be visible on this graph.", out.width="75%"}
 mu <- mean( log(obs.R) )
 sigma <- sd( log(obs.R) )
 
@@ -540,9 +541,11 @@ sigma <- sd( log(obs.R) )
 lR <- seq(-1, 1.1, by=0.01)
 # the probability densities for the log-R
 dR <- dnorm(lR, m=mu, sd=sigma)
+# rescale the probability density to visible height to graph
+rdR <- dR*10
 
-hist(log(obs.R), breaks=10, prob=TRUE)
-lines(lR, dR)
+hist(log(obs.R), breaks=10, ylab="Frequency")
+lines(lR, rdR)
 ```
 
 Now we will simulate populations just like before, but instead of random draws from the observed data, we do random draws from the inferred distribution.

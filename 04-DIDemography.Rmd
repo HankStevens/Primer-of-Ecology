@@ -233,10 +233,10 @@ We use the transpose of **A** to calculate reproductive value, later in the chap
 
 
 ## Decomposing **A**
-A slightly different way to conceptualize our transition matrix is to consider it the three separate matrices, one each for survival, growth, and fecundity,
-$$\mathbf{ A = SG + F }$$. 
+A slightly different way to conceptualize our transition matrix is to consider it the three separate matrices, one each for  growth, survival, and fecundity,
+$$\mathbf{ A = GS + F }$$. 
 
-Survival, **S**, and growth, **G**, havethese elements: 
+Survival, **S**, and growth, **G**, have these elements: 
 
 * each stage $j$ has its own probability of survival $s_j$, which describes survival of each stage from $t$ to $t+1$.
 * each survivor in stage $j$ will grow or regress into a different stage, or remain in the same stage, with probability $g_{ij}$.
@@ -246,41 +246,24 @@ In a demographic context, fecundity, **F**, is the surviving number of offspring
 For our Western Toad (Fig. \@ref(fig:toadlh)), this results in
 \begin{equation*}
 (\#eq:SGF)
- \mathbf{A = SG + F} = 
- \left(
- \begin{array}{c}
- \sigma_j\\
-\sigma_a
- \end{array} \right)
+ \mathbf{A = GS + F} = 
+ 
 \left(
 \begin{array}{cc}
 1-\mathrm{P} & 0 \\
 \mathrm{P} & 1
 \end{array} \right)
+\left(
+ \begin{array}{cc}
+ \sigma_j&0\\
+0 & \sigma_a
+ \end{array} \right)
 +
 \left(
 \begin{array}{cc}
 0 & \rho \phi \sigma_e \sigma_t \sigma_m \\
 0 & 0
-\end{array} \right)
-\end{equation*}
-
-where $\sigma_j,\,\sigma_a$ are survival of juveniles and adults, and P is the probability of juvenile growth, given survival. If an adult survives it always remains an adult ($g_{22}=1$) and never regresses ($g_{12}=0$). Fecundity occurs only in adults, and it is the product of the sex ratio ($\rho$), average clutch size per female ($\phi$), egg survival ($\sigma_e$), survival of tadpoles ($\sigma_t$), and the overwintering survival of the metamorphs ($\sigma_m$).
-
-Following the rules of matrix multiplication and addition, we now have
-
-
-Vonesh and de la Cruz went further and added *density-dependence* using a term for the negative effects of high tadpole density on tadpole survival and growth. We do not show that here, but regardless how complex the natural history gets, we can build natural history into our models.
-
-\begin{equation*}
-(\#eq:SGA)
- \mathbf{SG} = 
-\left(
-\begin{array}{cc}
-\sigma_j (1-\mathrm{P}) & 0 \\
-\sigma_j \mathrm{P} & \sigma_a
-\end{array} \right) \; ; \;
-\mathbf{A} = 
+\end{array} \right) = 
 \left(
 \begin{array}{cc}
 \sigma_j (1-\mathrm{P}) & \rho \phi \sigma_e \sigma_t \sigma_m \\
@@ -288,21 +271,26 @@ Vonesh and de la Cruz went further and added *density-dependence* using a term f
 \end{array} \right)
 \end{equation*}
 
+where $\sigma_j,\,\sigma_a$ are survival of juveniles and adults, and P is the probability of juvenile growth, given survival. If an adult survives it always remains an adult ($g_{22}=1$) and never regresses ($g_{12}=0$). Fecundity occurs only in adults, and it is the product of the sex ratio ($\rho$), average clutch size per female ($\phi$), egg survival ($\sigma_e$), survival of tadpoles ($\sigma_t$), and the overwintering survival of the metamorphs ($\sigma_m$).^[Survival, **S**, is really a vector, here ($\sigma_j,\,\sigma_a$). In order to multiply survivals and the growth matrix in the way we want, we need to multiply **S** by the identity matrix to get what we see above.]
+
+
+Vonesh and de la Cruz went further and added *density-dependence* using a term for the negative effects of high tadpole density on tadpole survival and growth. We do not show that here, but regardless how complex the natural history gets, we can build natural history into our models.
+
+
 ## A three stage model
 
-Now we describe a three-stage model of a plant population. Like our amphibian example, it is a *pre-breeding* model, relying on a pre-breeding census. Nonetheless, it includes a seed stage for the seed bank, where seeds may be more than one year old. Eleanor @Pardini:2009aa and colleagues modeled garlic mustard (*Alliaria petiolata*), a biennial plant species that is an exotic invasive species in the eastern deciduous forest of the U.S. The stages they choose to represent were those present in May: seeds in the soil seed bank, 1--2 month old immature rosettes, and adults (Fig. \@fig:garlic1).
+Now we describe a three-stage model of a plant population. Like our amphibian example, it is a *pre-breeding* model, relying on a pre-breeding census. Nonetheless, it includes a seed stage for the seed bank, where seeds may be more than one year old. Eleanor @Pardini:2009aa and colleagues modeled garlic mustard (*Alliaria petiolata*), a biennial plant species that is an exotic invasive species in the eastern deciduous forest of the U.S. The stages they choose to represent were those present in May: seeds in the soil seed bank, 1--2 month old immature rosettes, and adults (Fig. \@ref(fig:garlic1).
 ```{r garlic1, echo=FALSE, fig.cap='The life cycle of garlic mustard using a post-breeding census (Pardini et al. 2009). The census takes place in May of each year. Each arrow represents the transition from May to May. Seeds germinate in early spring and become rosettes (basal leaves near the soil surface). The rosettes experience mortality all summer, fall, and winter. Surviving rosettes become reproductive adults the following spring a summer. Adults flower and are pollinated in June, after which the fruits ripen and seeds mature. Seeds overwinter for at least six months before germinating in the spring. Not all seeds germinate, but they may remain viable in the seed bank for several years. Thus, the complete life cycle at least two years. Once the seeds germinate, the plant requires over a year to reach maturity, and produce flowers, fruits and seeds.'}
 knitr::include_graphics("figs/pardiniLC.png")
 ```
 
 Let's work through these probability transitions. 
 
-
 * $s_1$, a germinated seed survives as a rosette.
 * $s_2$, surviving from May to August as a rosette.
 * $s_3$, surviving from August to early May and becoming a reproductive plant.
 * $v$, a seed is viable (survives and can germinate).
-* $g_1$, a viable seed germinates in the first season, or $1-g_1$ remains un germinated 
+* $g_1$, a viable seed germinates in the first season, or $1-g_1$ remains ungerminated.
 * $g_2$, a viable seed germinates in the second season or $1-g_2$ does not.
 
 Fecundity, $f$, is the average number of seeds per reproductive plant. 
