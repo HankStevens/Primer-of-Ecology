@@ -241,11 +241,10 @@ dlogistic <- function(alpha=0.01, rd=1, N0=2, t=15) {
   return(N) }
 ```
 
-The function first makes a new vector containing $N_0$, uses a for-loop to implement eq. \ref{eq:3dd} for each time step, and then returns the vector $N$.
-}
-\end{boxedminipage} \medskip
+The function first makes a new vector containing $N_0$, uses a for-loop to implement eq. \@ref(eq:3dd) for each time step, and then returns the vector $N$.
 
-With discrete logistic growth, if we start with a small population ($N<<K$), we will see the population rise and gradually approach $K$ or $1/\alpha$ (Fig. \ref{fig:dlg}). We refer to $K$ as an \emph{\index{attractor}attractor} because $N$ moves in a deterministic fashion toward $K$. We explore the meanings of \emph{attractor} and related terms throughout the book.
+
+With discrete logistic growth, if we start with a small population ($N<<K$), we will see the population rise and gradually approach $K$ or $1/\alpha$ (Fig. \@ref(fig:dlg)). We refer to $K$ as an *\index{attractor}attractor* because $N$ moves in a deterministic fashion toward $K$. We explore the meanings of *attractor* and related terms throughout the book.
 
   \begin{figure}[ht]
     \centering
@@ -257,27 +256,22 @@ With discrete logistic growth, if we start with a small population ($N<<K$), we 
 \medskip \noindent
 \begin{boxedminipage}{\linewidth}{\footnotesize
 \paragraph{Graphing Population Size}
-We can use the function created above, \texttt{dlogistic}, with default settings, to generate a population projection.
-<<>>=
-Nts <- dlogistic()
-@ 
+We can use the function created above, `dlogistic`, with default settings, to generate a population projection.
 Now we plot the projection, and put in a dotted line for $1/\alpha$ or $K$.
-<<DLG1, fig=TRUE>>=
-t <- 15
-a <- 0.01
-plot(0:t, Nts)
-abline(h=1/a, lty = 3)
-@
-}\end{boxedminipage} \medskip
+```{r DLG1}
+t <- 15; a <- 0.01
+Nts <- dlogistic(alpha=a, t=t)
+qplot(0:t, Nts) + geom_hline(yintercept =1/a, lty = 3)
+```
 
-\subsection{Relations between growth rates and density}
-We already know a lot about one description of density dependent growth, the discrete logistic model. In particular, we know that with a constant per capita negative effect, $\alpha$,  the population size at which growth falls to zero is $K$. Let us explore further how the \emph{per capita} growth increment, and the \emph{population} growth increment, vary with population size.
+### Relations between growth rates and density
+We already know a lot about one description of density dependent growth, the discrete logistic model. In particular, we know that with a constant per capita negative effect, $\alpha$,  the population size at which growth falls to zero is $K$. Let us explore further how the *per capita* growth increment, and the *population* growth increment, vary with population size.
 
-Casual examination of Fig. \ref{fig:dlg} suggests that the total population growth increment ($\Delta N_t = N_{t+1}-N_t$) starts out small when both $t$ and $N$ are small, accelerates as $N$ grows, and then over time, slows down and reaches an asymptote of $K$. Is this changing rate of population growth a function of time, or a function of density? Let us first consider the growth increment as a function of $N$.
+Casual examination of Fig. \@ref(fig:dlg) suggests that the total population growth increment ($\Delta N_t = N_{t+1}-N_t$) starts out small when both $t$ and $N$ are small, accelerates as $N$ grows, and then over time, slows down and reaches an asymptote of $K$. Is this changing rate of population growth a function of time, or a function of density? Let us first consider the growth increment as a function of $N$.
 
-First consider the relation between the population growth increment and population size (Fig. \ref{pgi}). We see it increase as $N$ grows, and then decrease as $N$ approaches $K$. The pattern is fairly symmetric. That is, it increases and decreases at about the same rates. 
+First consider the relation between the population growth increment and population size (Fig. \@ref(pgi)). We see it increase as $N$ grows, and then decrease as $N$ approaches $K$. The pattern is fairly symmetric. That is, it increases and decreases at about the same rates. 
 
-Next consider the per capita growth increment ($\Delta N_t / N_t$; Fig. \ref{ppgi}). There is a direct linear relation between the per capita growth increment and the size of the population --- this is \emph{linear density dependence}. This linear dependence on $N$ comes from our assumption that the per capita negative effect is a constant, $\alpha$.
+Next consider the per capita growth increment ($\Delta N_t / N_t$; Fig. \@ref(ppgi)). There is a direct linear relation between the per capita growth increment and the size of the population --- this is *linear density dependence*. This linear dependence on $N$ comes from our assumption that the per capita negative effect is a constant, $\alpha$.
 
 \medskip \noindent
 \begin{boxedminipage}{\linewidth}{\footnotesize

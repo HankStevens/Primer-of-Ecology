@@ -363,15 +363,15 @@ Below, we explain each of these quantities.
 
 ### Eigenanalysis
 
-Eigenanalysis is a mathematical technique that summarizes multivariate data. Ecologists use \index{eigenanalysis!demographic matrix}eigenanalysis frequently, for (i) multivariate statistics such as ordination, (ii) local stability analyses with two or more species, and (iii) analyzing population transition matrices. Eigenanalysis is simply a method to transform a square matrix into independent, or orthogonal, pieces. These pieces are *eigenvectors* and their corresponding *eigenvalues.* There are the same number of eigenvalues (and eigenvectors) as there are columns in a matrix. In demography, the two most useful pieces are the *dominant right eigenvalue* and its *corresponding right eigenvector*. 
+Eigenanalysis is a mathematical technique that summarizes multivariate data. Ecologists use \index{eigenanalysis!demographic matrix}eigenanalysis frequently, for (i) multivariate statistics such as ordination, (ii) local stability analyses with two or more species, and (iii) analyzing population transition matrices. Eigenanalysis is simply a method to transform a square matrix into independent, or orthogonal, pieces. These pieces are *eigenvectors* and their corresponding *eigenvalues.* There are the same number of eigenvalues (and eigenvectors) as there are columns in a matrix. In demography, the two of the most useful pieces are the *dominant right eigenvalue* and its *corresponding right eigenvector*. 
 
 Eigenanalysis is a technique that finds all the solutions for $\lambda$ and $\mathbf{w}$ of 
-
-\begin{equation}
+\[
 (\#eq:eigsol)
 \mathbf{Aw}=\lambda \mathbf{w}
-\end{equation}
-where $\mathbf{w}$ is a particular summary of our data. With analysis of a transition matrix, $\mathbf{A}$ is the projection matrix, $\lambda$ is an *eigenvalue* and $\mathbf{w}$ is an *eigenvector*. If we write out eq. \@ref(eq:eigsol) for a $2 \times 2$ matrix, we would have
+\]
+
+where $\mathbf{w}$ is a column vector with the same number of rows as $\mathbf{A}$. If we write out eq. \@ref(eq:eigsol) for a $2 \times 2$ matrix, we would have
 
 $$
  (\#eq:eigsollong)
@@ -394,8 +394,7 @@ $$
   \end{array}
   \right)
 $$
-
-For instance, we can preform eigenanalysis on this transition matrix.
+For instance, we can perform eigenanalysis on this transition matrix.
 ```{r echo=TRUE}
 (A <- matrix(c(0, .3, 2, .7), nrow=2))
 (eA <- eigen(A))
@@ -407,7 +406,7 @@ $i = 1$. Below, we use the results of the previous eigenanalysis.
 ```{r echo=TRUE}
 (lambda1 <- eA$values[1])
 (w1 <- eA$vectors[,1])
-cbind(A %*% w1, lambda1 * w1)
+cbind(A %*% w1, lambda.w=lambda1 * w1)
 ```
 The first column is $\mathbf{Aw}$ and the second column is $\lambda \mathbf{w}$. Sure enough, they look the same. Try doing the same exercise for the second eigenvalue and the second eigenvector, $i=2$.
 
@@ -419,9 +418,11 @@ In this book, we will not delve into details of eigenanalysis beyond this. What 
 
 ### Finite rate of increase 
 \index{$\lambda$|see{lambda}}
-The asymptotic annual growth rate or finite rate of increase\index{lambda!dominant eigenvalue} is the dominant eigenvalue of the transition matrix. Eigenvalues are always referred to with the Greek symbol $\lambda$, and provide a solution to \@ref(eq:eigsol). The dominant eigenvalue of any matrix, $\lambda_{1}$, is the eigenvalue with the largest magnitude, and it is frequently a complex number. (When we perform eigenanalysis, it is common to get complex numbers, with real and imaginary parts. The magnitude is the sum of the squared parts.) With population transition matrices, $\lambda_{1}$ will always be positive and real. This will not be the case with other types of matrices we examine in later chapters.
+The asymptotic annual growth rate or finite rate of increase\index{lambda!dominant eigenvalue} is the dominant eigenvalue of the transition matrix. It has the same meaning as in geometric growth of an unstructured population. 
 
-The dominant eigenvalue is the biggest one. We can find which one it by asking R to tell us the index position $i$ of the largest absolute value (the modulus) of the eigenvalues. In most cases, it is the first eigenvalue, as it is here.
+Eigenvalues are always referred to with the Greek symbol $\lambda$, and provide a solution to \@ref(eq:eigsol). The dominant eigenvalue of any matrix, $\lambda_{1}$, is the eigenvalue with the largest magnitude, and it is frequently a complex number. When we perform eigenanalysis, it is common to get complex numbers, with real and imaginary parts. The magnitude is the sum of the squared parts. With population transition matrices, $\lambda_{1}$ will always be positive and real. This will not be the case with other types of matrices we examine in later chapters.
+
+The dominant eigenvalue is the biggest one. We can find which one it is by asking R to tell us the index position $i$ of the largest absolute value (the modulus) of the eigenvalues. In most cases, it is the first eigenvalue, as it is here.
 ```{r echo=TRUE}
 ( dom.pos <- which.max( Mod(eA[["values"]]) )  )
 ``` 
@@ -429,25 +430,21 @@ We use that index to extract the largest eigenvalue. We keep the real part, usin
 ```{r echo=TRUE}
 # extract the dominant eigenvalue and retain only its Real part
 ( L1 <- Re(eA[["values"]][dom.pos]) )
-
 ```
-`L1` is $\lambda_1$, the aysmptotic finite rate of increase. This finite rate of increase has the same biological meaning as $\lambda$ in the previous chapter.
-
+`L1` is $\lambda_1$, the asymptotic finite rate of increase. This finite rate of increase has the same biological meaning as $\lambda$ in the previous chapter.
 
 ### Stable stage distribution
-The relative abundance of the different life history stages is called the *stage distribution*, that is, the distribution of individuals among the stages. A property of a stage structured population is that, if all the demographic rates (elements of the transition matrix) remain constant, its stage structure will approach a \index{stage distribution!stable}*stable* stage distribution, a stage distribution in which the **relative** number of individuals in each stage is constant. Note that a population can grow, so that the absolute number of individuals increases, but the relative abundances of the stages is constant; this is the stable stage distribution. If the population is not actually growing (i.e. $\lambda=1$) and demographic parameters remain constant, then the population is *stationary* and will achieve a \index{stage distribution!stationary}*stationary stage distribution*, where neither absolute nor relative abundances change.
+The predicted long term average relative abundance of the different life history stages or ages is called the *stage distribution*, that is, the distribution of individuals among the stages. A property of a stage structured population is that, if all the demographic rates (elements of the transition matrix) remain constant, its stage structure will approach a \index{stage distribution!stable}*stable* stage distribution, a stage distribution in which the relative number of individuals in each stage is constant. Note that a population can grow, so that the absolute number of individuals increases, but the relative abundances of the stages is constant; this is the stable stage distribution. If the population is not actually growing (i.e. $\lambda=1$) and demographic parameters remain constant, then the population is *stationary* and will achieve a \index{stage distribution!stationary}*stationary stage distribution*, where neither absolute nor relative abundances change.
 
 How do we find the stable stage distribution? It also turns out that $w_1$ provides the necessary information. We scale the eigenvector $w_1$ by the sum of its elements because we are interested in the *distribution*, which is defined by all stages summing to one. Therefore the stable stage distribution is 
-\begin{equation}
+\[
  (\#eq:ssd)
  \frac{w_1}{\sum_{i=1}^s{w_1}}
-\end{equation}
+\]
 where $s$ is the number of stages. 
 
 Once a population reaches its stable stage distribution each of the stages grow exponentially, because
 $$\mathbf{Aw}=\lambda \mathbf{w}$$
-
-
 ### Calculating the stable stage distribution
 The dominant eigenvector, $w_1$, is in the same position as the dominant eigenvalue. We extract $w_1$, keeping just the real part, and divide it by its sum to get the stable stage distribution.
 ```{r echo=TRUE}
@@ -479,10 +476,9 @@ sdg <- gather(SD, Stage, Proportion, -Year)
 # plot the distributions for succeeding years.
 ggplot(sdg, aes(Stage, Proportion)) + geom_col()  + 
   facet_wrap(~Year, nrow=3, ncol=3)
-
 ```
 
-Using total population sizes, we can calculate an annual rate of increase $N_{t+1}/N_t$. 
+If we sum the abundances of the different stages, we calculate total population sizes. With that, we can calculate an annual rate of increase $N_{t+1}/N_t$. 
 ```{r echo=TRUE, fig.cap="Calculating an annual finite rate of increase from a projected population shows that the population will approach asymptotically a constant geometric rate of increase. Solid points are annual growth rate; the circular point is lambda(1) from eigen analyysis."}
 # using "-" in an index removes that element
 lambda.t <- N.total[-1]/N.total[-(steps+1)] 
@@ -496,20 +492,20 @@ Iterating the transition matrix to approximate $\lambda_1$ and $w_1$ is actually
 \label{sec:repval}
 If the stage structure gives us one measure of the importance of a stage (its relative abundance), then the *reproductive value* gives us one measure of the importance of an *individual* in each stage. Reproductive value is the expected contribution of each individual to future reproduction. We characterize all individuals in a stage using the same expected \index{reproductive value}reproductive value.
 
-We find each stage's reproductive value by solving for the dominant *left* eigenvector $\mathbf{v}$, where 
-\begin{equation}
+We find the reproductive value associated with each stage by solving for the dominant *left* eigenvector $\mathbf{v}$, where 
+\[
  (\#eq:rv)
- \mathbf{vA}=\lambda\mathbf{v}
-\end{equation}
- Like the relation between the dominant right eigenvector and the stable stage distribution, this vector is actually *proportional* to the reproductive values. Unlike the stable stage distribution, we scale it so that all reproductive values are relative to that of the first stage (e.g. juveniles or seeds). 
+ \mathbf{vA}=\lambda\mathbf{v}.
+\]
+Like the relation between the dominant right eigenvector and the stable stage distribution, this vector is actually *proportional* to the reproductive values. Unlike the stable stage distribution, we scale it so that all reproductive values are relative to that of the first stage (e.g. juveniles or seeds). 
 $$
  (\#eq:rv2)
-  \frac{v}{v_{1}}
+  \frac{v_1}{v_{1[1]}}
 $$
-
-We find the left eigenvalues and -vectors by performing eigenanalysis on the *transpose* of the transition matrix. Transposition flips rows and columns. We perform eigenanalysis, extracting just the dominant left eigenvector; we then scale it, so the stage 1 has a reproductive value of 1.0. 
+We find the left eigenvalues and -vectors by performing eigenanalysis on the *transpose* of the transition matrix. Transposition flips rows and columns, so that row 1 becomes column 1 and vice versa. We perform eigenanalysis, extracting just the dominant left eigenvector; we then scale it, so the stage 1 has a reproductive value of 1.0. 
 ```{r}
-etA <- eigen(t(A))
+tA <- t(A) # transpose
+etA <- eigen(tA)
 dom.pos <- which.max(Mod(etA$values))
 v1 <- Re(etA$vectors[,dom.pos])
 ( rv <- v1/v1[1] )
@@ -519,12 +515,14 @@ Here we see that reproductive value, $rv$, increases with age or stage. This mea
 ### Sensitivity and elasticity
 \index{sensitivity}Sensitivity and elasticity tell us the relative importance of each transition (i.e. each arrow of the life cycle graph or element of the matrix) in determining $\lambda$. They do so by combining information on the stable stage structure and reproductive values. 
 
-The stage structure and reproductive values each in their own way contribute to the importance of each stage in determining $\lambda$. The stable stage distribution provides the relative abundance of individuals in each stage. Reproductive value provides the expected contribution to future population growth of individuals in each stage. Sensitivity and elasticity combine these to tell us the relative importance of each transition in determining $\lambda_1$. 
+The stage structure and reproductive values each in their own way contribute to the importance of each stage in determining $\lambda$. The stable stage distribution provides the relative abundance of individuals in each stage. Reproductive value provides the expected contribution to future population growth of individuals in each stage. Sensitivity and elasticity combine these to tell us the relative importance of each transition in determining $\lambda_1$.
 
-Almost always, sensitivities of a transition matrix are the sensistivities of $\lambda_1$ to the elements of the transition matrix. They are the direct contributions of each transition to determining $\lambda_1$. The sensitivity for the element $a_{ij}$ of a transition matrix is the change in $\lambda_1$ that occurs when we change $a_{ij}$ a small amount, or $\delta \lambda / \delta a_{ij}$. It isn't surprising, then, these are derived from the stable stage distribution and the reproductive values. Specifically, the sensitivities are calculated as
+Sensitivities are the direct contributions of each transition to determining $\lambda_1$. The sensitivity for the element $a_{ij}$ of a transition matrix is the change in $\lambda_1$ that occurs when we change $a_{ij}$ a small amount, or 
+$$\delta \lambda / \delta a_{ij}$$. 
+It isn't surprising, then, these are derived from the stable stage distribution and the reproductive values. Specifically, the sensitivities are calculated as
 
 $$
-\frac{\delta \lambda}{\delta a_{ij}}=\frac{v_{i}w_{j}}{v\cdot w} 
+\frac{\delta \lambda}{\delta a_{ij}}=\frac{v_{1[i]}w_{1[j]}}{v_1\cdot w_1} 
 (\#eq:sens)
 $$
 where $v_{i}w_{j}$ is the product of each pairwise combination of elements of the dominant left and right eigenvectors, $v$ and $w$. Specifically, the numerator is generated by the reproductive value of the target stage and the stable stage distribution of the source stage,
@@ -535,11 +533,9 @@ v_1 w_1 & v_1 w_2 \\
 v_2 w_1 & v_2 w_2
 \end{pmatrix}
 $$
-
-
-In the denominator, the *dot product*, $\mathbf{v} \cdot \mathbf{w}$, is the sum of the pairwise products of each vector element. Dividing $v_{i}w_{j}$ by this sum causes the sensitivities to be relative to the magnitudes of $v$ and $w$.
-
-
+In the denominator, the *dot product*, $\mathbf{v} \cdot \mathbf{w}$, is the sum of the pairwise products of each vector element,
+$$v_{11}w_{11} + v_{12}w_{12} + \ldots + v_{1n}w_{1n}$$.
+Dividing the numerator by this sum causes the sensitivities to be relative to the magnitudes of $v$ and $w$.
 
 Let's calculate sensitivities now. Because the stable stage distribution and the reproductive values are merely scaled versions of the dominant right and left eigenvectors, it doesn't matter whether we use the unscaled eigenvectors, or the scaled stable stage distribution and reproductive values. 
 ```{r echo=TRUE}
@@ -547,11 +543,10 @@ vw <- matrix(rv, nr=2, nc=1) %*% matrix(ssd, nr=1, nc=2) # or vw <- v1 %*% t(w1)
 dot.prod <- sum(rv*ssd) # or dot.prod <- sum(v1 * w1) denominator
 (s <- vw/dot.prod)
 ```
-These are the sensitivities, $\delta \lambda / \delta a_{ij}$, of each corresponding transition element. You will always get a sensitivity for every position in this matrix, even when the transition is zero, $a_{ij}=0$. We just ignore those, but by convention, include them. 
+These are the sensitivities, $\delta \lambda / \delta a_{ij}$, of each corresponding transition element. You will always get a sensitivity for every position in this matrix, even when the transition is zero, $a_{ij}=0$. We just ignore those, but by convention, usually include them. 
+These sensitivities are the relative change in $\lambda_1$ for an absolute change in the element. For instance, it is the relative effect on lambda of increasing $a_{21}$ from 0.3 to 0.31, or $a_{22}$ from 0.7 to 0.71. 
 
-These sensitivities are the relative change in $\lambda_1$ for an absolute change in the element. For instance, it is the relative effect of increasing $a_{21}$ from 0.3 to 0.33, or $a_{22}$ from 0.7 to 0.73. 
-
-The largest of these sensitivities is that for is $p_{21}$, surviving from the first stage to the second stage. This means that small changes to $p_{21}$ have large effects on $\lambda_1$ than do small changes to $F_2$ or $p_{22}$.
+The largest of the sensitivities we just calculated is that for $p_{21}$, surviving from the first stage to the second stage. This means that small changes to $p_{21}$ have larger effects on $\lambda_1$ than do small changes to $F_2$ or $p_{22}$.
 
 As $\delta \lambda / \delta a_{ij}$, the sensitivities are the slope of the line relating the magnitude of $\lambda_1$ to the matrix element. 
 ```{r, echo=FALSE, fig.cap="Sensitivities of lambda to transition elements are slopes. The dotted line is the calculated sensitivity of lambda to A[2,1], because it is the slope evaluated at A[2,1].", out.width="75%"}
@@ -568,7 +563,7 @@ qplot(x=s21, y=l.s21, geom="line") +
   annotate("point", x=A[2,1], y=L1)
 ```
 
-\index{elasticity}*Elasticities* are sensitivities that have been weighted by the transition probabilities. We may, however, be interested in how a *proportional* change in a transition element influences $\lambda_1$---how does a 10\% increase in seed production, or a 10\% decline in juvenile survival influence $\lambda_1$? For these answers, we need to adjust sensitivities to account for the relative magnitudes of the transition elements, and this provides the elasticities, $e_{ij}$. Elasticities are *relative sensitivities*, and are defined as
+\index{elasticity}**Elasticities** are sensitivities that have been weighted by the transition probabilities. Recall that sensitivities are the effects on lambda of a small absolute change in transition matrix elements. In contrast, elasticities are the effects on lambda of a *proportional* change in a transition element influences $\lambda_1$---how does a 1\% increase in seed production, or a 1\% decline in juvenile survival influence $\lambda_1$? For these answers, we need to adjust sensitivities to account for the relative magnitudes of the transition elements, and this provides the elasticities, $e_{ij}$. Elasticities are *relative sensitivities*, and are defined as
 
 $$
 e_{ij}=\frac{\delta \lambda/\lambda}{\delta a_{ij}/a_{ij}} = \frac{a_{ij}}{\lambda}\frac{\delta \lambda}{\delta a_{ij}}.
@@ -581,29 +576,302 @@ Calculating these in R is easy.
 ```{r echo=TRUE}
 e <- (A/L1) * s
 (round(e, 3))
-
 ```
-
 Now we see that survival by adults ($p_{22}$) has the biggest effect on $\lambda_1$. Why the difference between sensitivities and elasticities? Because the elasticities reflect the effect of a *proportional change* (e.g., 1%) of the elements, whereas sensitivities reflect the effect of a change by a constant amount (e.g., 0.01) of each element. 
 
-Note that elasticities are relative to each other, in that they sum to 1.0. This is an especially nice features of elasticities because it makes it easier to compare elasticities among differ matrices and even different organisms.
+Note that elasticities are relative to each other, in that they sum to 1.0. This is an especially nice feature of elasticities because it makes it easier to compare elasticities among different matrices and different organisms.
 
-Once we have the sensitivities and elasticities, we can really begin to see what is controlling the growth rate of a stage (or age) structured population. Although these values do not tell us which stages and transitions will be influenced by natural phenomona or management practices, they provide us with the predicted effects on $\lambda_1$ of a proportional change in a demographic rate. This is particularly important in the management of invasive (or endangered) species where we seek to have the maximum impact for the minimum amount of effort and resources [@Caswell:2001gu; @Ellner:2006qe]. 
+Once we have the sensitivities and elasticities, we can really begin to see what is controlling the growth rate of a stage (or age) structured population. They provide us with the predicted effects on $\lambda_1$ of a proportional change in a demographic rate. This is particularly important in the management of invasive (or endangered) species where we seek to have the maximum impact for the minimum amount of effort and resources [@Caswell:2001gu; @Ellner:2006qe]. We can use these to help predict how a population might respond to natural phenomena or management practices that affect one stage or another. 
 
 *All of these details can get very confusing*, and smart people don't always get it right. Therefore, get expert advice [@Caswell:2001gu; @Ellner:2006qe], and remember that the stages of life cycle graph and matrix are the stages that you collect at one point in time, and an arrow or transition element has to include everything that happens from one census period to the next.
 
---------------------------
+## Integral projection
 What do we do if our stages seem like arbitrary categories along a continuous scale? What if size is easy to measure accurately and is a really good predictor of demographic rates, and these rates vary continuously with size? How do we decide on size classes? How do we draw seemingly arbitrary divisions between different sizes? 
 
-  
 With *integral projection*, as opposed to matrix projection, we no
 longer have to worry about a particular number of stages or age
 classes. We select an individual-level state variable, such as body mass, length, stem diameter, or even location, that is a useful predictor of
 demographic rates. We use this continuously varying state variable in place of stages or age classes. We rely on statistical methods, such as linear regression, to describe the relations between the individual-level state variable and survival, growth, and fecundity. We then combine those relations to model how individuals in a population are likely to change from one generation to the next. 
 
-In many organisms, size is often a relatively good predictor of survival and fecundity. Within a poulation, size is often associated with age, learning, and resource acquisition. Size is also related to the onset of reproductive maturity and initiation of specific reproductive structures. Among reproductive individuals, size is often strongly correlated with per capita reproductive output. Integral projection can use size to model size-dependent demography. 
+In many organisms, size is often a relatively good predictor of survival and fecundity. Within a population, size is often associated with age, learning, and resource acquisition. Size is also related to the onset of reproductive maturity and initiation of development of reproductive structures. Among reproductive individuals, size is often strongly correlated with per capita reproductive output. Integral projection can use size to model size-dependent demography. 
 
-Whereas matrix projection models use matrix algebra to project populations. Matrix algebra is mutliplication of discrete classes and summation of discrete products. Integral projection models (IPMs) use multiplication and the calculus of integration across continuous variables toward the same end.
+Integral projection models (IPMs) are based on the calculus of integration across continuous variables to combine information about size-dependent demographic rates and size distributions to project population abundances and sizes in the future. In practice, however, we rarely use the tools of integral calculus on which IPMs are founded. Instead, we approximate integration using very large matrices. As a simple example of this approximation, consider plant height that we measure using a meter stick. We assume that plant height is, in principle, a continuous variable that could take any real value between 0 and infinity. However, imagine that we only measure height to the nearest centimeter, and thereby create 100 height categories. This measurement process chops up continuous variation into discrete categories. When implementing integral projection models, we typically combine different techniques that are associated with continuous variation (e.g., linear regression) and with discrete variation (e.g., matrix algebra).
+
+### A size-based IPM of smooth coneflower
+Rachel Collins and colleagues have been studying populations of an endangered coneflower, *Echinecea laevigata*, in southwest Virginia, USA. Smooth coneflower is a perennial rhizomatous herbaceous plant that is sparsely distributed across mid-Atlantic and southeastern states (plantsusda.gov). It requires open spaces with little canopy cover, such as meadows or early successional habitat.
+
+Collins marked each individual in selected populations, measured size of individual coneflower plants using total leaf area, which ranged from 3-950 cm$^2$. Because she tagged individuals and tracked changes over time, she was able estimate survival and fecundity of different sized individuals (Fig. \@ref(fig:coneflower)). She also measured seed set (number of seeds per inflorescence) and recruitment. Recruitment is emergence from the seed, that is, germination, growth, and survival in the first year. 
+
+In what follows, we see the empirical data on growth, survival, and fecundity. These continuous data will allow us to produce matrices with very, very narrow size classes. The details require some understanding of probability densities, rather than probabilities, per se, but they are conceptually analogous. The continuous probability density analog of a matrix is referred to as a "kernel". Regardless, the goal is the same -- we want to use our understanding of growth, survival, and fecundity to estimate a matrix or kernel **K** where,
+$$\mathbf{K = GS + F}$$.
+
+Next we show the the size-dependence of these processes, and the resulting kernels. In IPMs, it is common to use the logarithm of size rather than the original linear scale. This is because many processes scale with log-size. That is what we do here - all sizes are the natural log of leaf area.
+
+```{r echo=FALSE, message=FALSE}
+#data()
+dh <- read.csv("data/coneflower.csv")
+# seed set
+sf <- read_csv("data/seeds.csv")
+# recruit sizes
+rs <- read_csv("data/recruitsize.csv")
+# summary(rs)
+```
+
+Survival, **S**, from one year to the next depends on size. 
+
+```{r fig.cap="Survival is represented as surviving (1) or not surviving (0). The probability of surviving to the next year, given a size in the first year is esitmated using logistic regression." }
+eda_s <- ggplot(dh, aes(logA, surv)) + lims(x=c(0.5, 2.75)) +
+  geom_jitter(height=.02, alpha=0.5) + 
+  geom_smooth(method="glm", method.args = list(family = "binomial")) + labs(title="Survival")
+eda_s
+```
+
+Growth, **G** is really how the size of a plant in one year depends on its size in the previous year. 
+```{r growth, echo=FALSE, fig.cap="Growth is the relation between size at one time vs. size in another. The fitted estimate includes the 95% confidence interval. The dashed line is the 1:1 line; above this line is growth, while below it is regression to a smaller size."}
+# use only the plants alive in both years
+dhs <- filter(dh, surv==1 & !is.na(logAp))
+eda_g <- ggplot(dhs, aes(logA, logAp)) + geom_point() +
+  geom_abline(intercept=0, slope=1, lty=2, col="blue") +
+  labs(title="Growth, Stasis, Regr.") + 
+  geom_smooth(method="lm",col="red", se=)
+eda_g
+```
+
+Next we tackle fecundity, **F**, which for us is estimated using
+
+* the size-dependent probability of flowering,
+* the size-dependent number of seeds produced by a flowering individual,
+* the probability of a seed germinating and surviving to be a new recruit, and
+* the size-distribution of new recruits.
+
+Typically, bigger individuals have a greater chance of flowering, and smooth coneflower is no exception. We estimate that chance using logistic regression.
+```{r flowering, echo=FALSE, fig.cap="Plants that are larger in the first year have a greater chance of flowering in the next year." }
+eda_f <- ggplot(dh, aes(logA, flower_p)) + 
+  geom_jitter(height=.02, alpha=0.5) + 
+  geom_smooth(method="glm", method.args = list(family = "binomial")) + labs(title="Flowering")
+eda_f
+```
+
+It is also true that bigger plants might produce more seeds, although there is not a lot of evidence for that is these data.
+```{r seed, fig.cap="No compelling evidence that size influences seed set. Nonetheless, we will use this approach in estiamting fecundity, F."}
+sf <- mutate(sf,
+             logAs = log10(area))
+eda_sd <- ggplot(sf, aes(logAs, seeds)) + geom_point() +
+  geom_smooth(method="lm") + labs(title="Seed set")
+eda_sd
+```
+
+We also need to estimate *establishment probability*, or the chance that a seed germinates and survives until the following summer. Collins estimated that using seed baskets. These are mesh baskets with soil into which she placed a known number of seeds. They are placed in the ground and seedlings or recruits are counted the following year.
+```{r pr, fig.cap="Probability that seeds in one year establish as new recruits the following summer. "}
+# 50 seeds into each of baskets
+N <- rep(50, 9)
+# no. of seeds planted in the fall that popped up and
+# survived into June
+success <- c(5,8,11,10,1,0,4,5,5)
+Y <- cbind(success, failure=N-success)
+germ.est <- glm(Y ~ 1, family="binomial")
+# the point estimate of establishment success
+# backtransform from logistic regression.
+pr <- 1/(1 + exp(-coef(germ.est)[1]))
+
+# plot the probability distribution of establishment 
+x <- sum(Y[,"success"])
+nx <- sum(Y[,"failure"])
+# Use the Jeffreys interval, which is based on the Beta distribution 
+# with priors of (1/2, 1/2) being the conjugate prior for the binomial.
+eda_pr <- ggplot(data = data.frame(x = c(0, 0.5)), aes(x)) +
+  stat_function(fun = dbeta, n = 501, 
+                args = list(shape1 = x+1/2, shape2=nx+1/2)) + labs(y="Prob(recruiting)", title="Seed basket recruitment") + 
+  scale_y_continuous(breaks = NULL)
+eda_pr
+```
+
+We can use other data (not shown) to characterize the size distribution of new recruits, which are approximately log-normally distributed.
+```{r recruits}
+m.log <- 0.908 # mean of log-area of new recruits
+std.log <- 0.1406 # st. dev. of log-area of new recruits
+eda_C <- ggplot(data = data.frame(x = c(0.4, 1.4)), aes(x)) +
+  stat_function(fun = dnorm, n = 101, 
+                args = list(mean = m.log, sd = std.log)) + labs(y="Prob(recruit log-size x)", title="Distr. of recruit sizes") + 
+  scale_y_continuous(breaks = NULL)
+eda_C
+```
+
+First we estimate something from data, then we use it to build functions.
+
+I use code handed down on stone tablets from Ellner, Merow, and others.
+
+```{r params, echo=FALSE}
+## this sets up a list of the model parameters. These parameters will be estimated and recorded below.
+params=data.frame(
+    surv.int=NA,
+    surv.slope=NA,
+    growth.int=NA,
+    growth.slope=NA,
+    growth.sd=NA,
+    flowering.int=NA,
+    flowering.slope=NA,
+    seed.int=NA,
+    seed.slope=NA,
+    seed.sd=NA,
+    recruit.size.mean=NA,
+    recruit.size.sd=NA,
+    establishment.prob=NA
+)
+#survival regression
+surv.reg=glm(surv~logA,data=dh,family=binomial())
+params$surv.int <- coef(surv.reg)[1]
+params$surv.slope <- coef(surv.reg)[2]
+
+# Growth
+gr.reg <- lm(logAp ~ logA, data=dh)
+params$growth.int <- coef(gr.reg)[1]
+params$growth.slope <- coef(gr.reg)[2]
+params$growth.sd <- sd(resid(gr.reg))
+
+# flowering
+fl.reg=glm(flower_p~logA, data=dh,family=binomial())
+params$flowering.int <- coef(fl.reg)[1]
+params$flowering.slope <- coef(fl.reg)[2]
+
+# seed set
+seed.reg <- lm(seeds ~ logAs, data=sf)
+params$seed.int <- coef(seed.reg)[1]
+params$seed.slope <- coef(seed.reg)[2]
+params$seed.sd <- sd(resid(seed.reg))
+
+# recruitment
+params$establishment.prob <- pr
+
+# recruit size distr.
+params$recruit.size.mean <- 0.908
+params$recruit.size.sd <- 0.1406
+
+```
+
+```{r echo=FALSE}
+## The functions
+# z is size in the first year
+# zp is z prime, size in the second year
+
+# 1. probability of surviving
+# this is a logistic funcion
+
+s.z=function(z,params) {
+  # calculate survival probability by
+  # backtransforming glm regression params 
+    u=exp(params$surv.int+params$surv.slope*z)
+    s <- u/(1+u)
+    return(s)
+}
+
+# 2. growth function
+# this is a normal distribution
+g.zpz=function(zp,z,params) { 
+  # describe the normal linear relation between size at t=0 vs. t=1.
+  # size(t+1) = y.intercept + slope*size(t) + e; e~N(0,sigma^2)
+    dnorm(zp,
+          mean=params$growth.int+params$growth.slope*z,
+          sd=params$growth.sd)
+}
+
+# 3. reproduction function      
+# this is a constant times a normal distribution times an exponential function
+# size-dependent flowering probability 
+# seeds per flowering head (maybe size dependent)
+# germination probability (seed baskets)
+# survival of new recruits from germination to first census (I think this is wrapped into the germination data).
+#  size distribution of new recruits.
+
+f.zpz=function(zp,z,params) {
+  # size-dep prob of flowering
+    1/(1+exp(- params$flowering.int - params$flowering.slope*z)) *
+    # size-dep number of seeds
+    (params$seed.int+params$seed.slope*z) *
+    # p(r), prob of recruitment (germination and establishment)
+    params$establishment.prob *
+    # distribution of sizes in the first year
+    dnorm(zp, mean=params$recruit.size.mean, sd=params$recruit.size.sd)
+}
+
+```
+
+
+```{r kernels, echo=FALSE, fig.cap="The component kernels G, S, and F, that make up the full demographic projection kernel, K, for smooth cone flower. Unlike proection matrices, kernels scale both axes to start at size = 0 in the lower left corner. The color scaling of the full kernel differs slightly so that we can see the contributions of G, S, and F."}
+## Make the kernel (cf. projection matrix)
+
+# Relies on the Riemann sum, using midpoints. Increase $n$ to decrease $h$ and improve accuracy (but reduce speed).
+
+# The variable 'y' in the figures below is log10(Area).
+
+# 1. boundary points b, mesh points y and step size h
+# integration limits - these limits span the range of sizes observed in the data set, and then some.
+min.size=.9*min(c(log10(rs$area17), dh$logA,dh$logAp),na.rm=T)
+max.size=1.1*max(c(log10(rs$area17), dh$logA,dh$logAp),na.rm=T)
+# number of cells in the discretized kernel
+n=100 
+# boundary points (the edges of the cells defining the kernel)
+b = min.size + c(0:n)*(max.size-min.size)/n 
+# mesh points (midpoints of the cells)
+y = ( b[1:n] + b[2:(n+1)] ) / 2
+# width of the cells
+h = y[2]-y[1]
+
+#############
+# 2. make component kernels
+par(mfrow=c(2,2)) 
+# outer  yields an outer product where each element is can be an arbitrary function.
+G=h*outer(y, y, FUN=g.zpz, params=params)   # growth kernel
+image(y,y,t(G),main='G')        # plot it
+
+P = G # placeholder;redefine P on the next line
+S=s.z(y,params=params)   
+for(i in 1:n) P[,i]=G[,i]*S[i]          # growth*survival kernel
+{image(y,y,t(P),main='GS')   # plot it
+abline(0,1,lwd=3) }# plot 1:1, which represents stasis
+
+Fec=h*outer(y, y, f.zpz, params=params)   # reproduction kernel
+image(y,y,t(Fec),main='F') # plot it
+
+K=P+Fec # full kernel
+#image(y,y,t(K),main='full kernel')          # plot it
+
+# sometimes it's hard to see both because
+# the fecundity part of the kernel swamps the growth/survival part, 
+# so here's a plotting trick to level out the kernel
+image(y,y,t(K)^.33,main='K', 
+      col=grey.colors(12, start=0, end=1, rev = TRUE))    # plot it
+```
+## Population summaries
+Anything question that we could answer using matrices, we can answer using kernels.
+
+We estimate the finite rate of increase, $\lambda$, the same way we did before. 
+```{r results='asis'}
+(lambda=Re(eigen(K)$values[1]))
+```
+
+The same is true for the stable size distribution, reproductive value, and elasticity.
+```{r Ksolutions, fig.cap="Descriptions of smooth coneflower demographics."}
+w.eigen=Re(eigen(K)$vectors[,1])
+stable.dist=w.eigen/sum(w.eigen) 
+v.eigen=Re(eigen(t(K))$vectors[,1])
+repro.val=v.eigen/v.eigen[1] 
+
+
+# The eigen-things can be combined to obtain the sensitivity and elasticity matrices.
+# 2. compute elasticity and sensitivity matrices
+v.dot.w=sum(stable.dist*repro.val)*h
+sens=outer(repro.val,stable.dist)/v.dot.w
+elas=matrix(as.vector(sens)*as.vector(K)/lambda,nrow=n)
+
+# 3. plot results 
+
+par(mfrow=c(1,3)) 
+plot(y,stable.dist,xlab="Size",type="l",main="Stable size distribution")
+plot(y,repro.val,xlab="Size",type="l",main="Reproductive values") 
+image(y,y,t(elas),xlab="Size (t)",ylab="Size (t+1)",main="Elasticity")
+```
+ 
 
 ## R packges for demography
 

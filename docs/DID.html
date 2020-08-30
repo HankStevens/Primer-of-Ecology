@@ -24,7 +24,7 @@
 <meta name="author" content="Hank Stevens" />
 
 
-<meta name="date" content="2020-08-25" />
+<meta name="date" content="2020-08-30" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -180,12 +180,15 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="4.6.1" data-path="DID.html"><a href="DID.html#eigenanalysis"><i class="fa fa-check"></i><b>4.6.1</b> Eigenanalysis</a></li>
 <li class="chapter" data-level="4.6.2" data-path="DID.html"><a href="DID.html#finite-rate-of-increase"><i class="fa fa-check"></i><b>4.6.2</b> Finite rate of increase</a></li>
 <li class="chapter" data-level="4.6.3" data-path="DID.html"><a href="DID.html#stable-stage-distribution"><i class="fa fa-check"></i><b>4.6.3</b> Stable stage distribution</a></li>
-<li class="chapter" data-level="4.6.4" data-path="DID.html"><a href="DID.html#calculating-the-stable-stage-distribution"><i class="fa fa-check"></i><b>4.6.4</b> Calculating the stable stage distribution</a></li>
-<li class="chapter" data-level="4.6.5" data-path="DID.html"><a href="DID.html#reproductive-value"><i class="fa fa-check"></i><b>4.6.5</b> Reproductive value</a></li>
-<li class="chapter" data-level="4.6.6" data-path="DID.html"><a href="DID.html#sensitivity-and-elasticity"><i class="fa fa-check"></i><b>4.6.6</b> Sensitivity and elasticity</a></li>
+<li class="chapter" data-level="4.6.4" data-path="DID.html"><a href="DID.html#reproductive-value"><i class="fa fa-check"></i><b>4.6.4</b> Reproductive value</a></li>
+<li class="chapter" data-level="4.6.5" data-path="DID.html"><a href="DID.html#sensitivity-and-elasticity"><i class="fa fa-check"></i><b>4.6.5</b> Sensitivity and elasticity</a></li>
 </ul></li>
-<li class="chapter" data-level="4.7" data-path="DID.html"><a href="DID.html#r-packges-for-demography"><i class="fa fa-check"></i><b>4.7</b> R packges for demography</a></li>
-<li class="chapter" data-level="4.8" data-path="DID.html"><a href="DID.html#exploring-a-real-population"><i class="fa fa-check"></i><b>4.8</b> Exploring a real population</a></li>
+<li class="chapter" data-level="4.7" data-path="DID.html"><a href="DID.html#integral-projection"><i class="fa fa-check"></i><b>4.7</b> Integral projection</a><ul>
+<li class="chapter" data-level="4.7.1" data-path="DID.html"><a href="DID.html#a-size-based-ipm-of-smooth-coneflower"><i class="fa fa-check"></i><b>4.7.1</b> A size-based IPM of smooth coneflower</a></li>
+</ul></li>
+<li class="chapter" data-level="4.8" data-path="DID.html"><a href="DID.html#population-summaries"><i class="fa fa-check"></i><b>4.8</b> Population summaries</a></li>
+<li class="chapter" data-level="4.9" data-path="DID.html"><a href="DID.html#r-packges-for-demography"><i class="fa fa-check"></i><b>4.9</b> R packges for demography</a></li>
+<li class="chapter" data-level="4.10" data-path="DID.html"><a href="DID.html#exploring-a-real-population"><i class="fa fa-check"></i><b>4.10</b> Exploring a real population</a></li>
 </ul></li>
 <li class="chapter" data-level="5" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i><b>5</b> References</a></li>
 </ul>
@@ -495,13 +498,13 @@ Figure 4.6: Projection of a population showing transient dynamics.
 <p>Below, we explain each of these quantities.</p>
 <div id="eigenanalysis" class="section level3">
 <h3><span class="header-section-number">4.6.1</span> Eigenanalysis</h3>
-<p>Eigenanalysis is a mathematical technique that summarizes multivariate data. Ecologists use eigenanalysis frequently, for (i) multivariate statistics such as ordination, (ii) local stability analyses with two or more species, and (iii) analyzing population transition matrices. Eigenanalysis is simply a method to transform a square matrix into independent, or orthogonal, pieces. These pieces are <em>eigenvectors</em> and their corresponding <em>eigenvalues.</em> There are the same number of eigenvalues (and eigenvectors) as there are columns in a matrix. In demography, the two most useful pieces are the <em>dominant right eigenvalue</em> and its <em>corresponding right eigenvector</em>.</p>
-<p>Eigenanalysis is a technique that finds all the solutions for <span class="math inline">\(\lambda\)</span> and <span class="math inline">\(\mathbf{w}\)</span> of</p>
-<p><span class="math display" id="eq:eigsol">\[\begin{equation}
+<p>Eigenanalysis is a mathematical technique that summarizes multivariate data. Ecologists use eigenanalysis frequently, for (i) multivariate statistics such as ordination, (ii) local stability analyses with two or more species, and (iii) analyzing population transition matrices. Eigenanalysis is simply a method to transform a square matrix into independent, or orthogonal, pieces. These pieces are <em>eigenvectors</em> and their corresponding <em>eigenvalues.</em> There are the same number of eigenvalues (and eigenvectors) as there are columns in a matrix. In demography, the two of the most useful pieces are the <em>dominant right eigenvalue</em> and its <em>corresponding right eigenvector</em>.</p>
+<p>Eigenanalysis is a technique that finds all the solutions for <span class="math inline">\(\lambda\)</span> and <span class="math inline">\(\mathbf{w}\)</span> of
+<span class="math display" id="eq:eigsol">\[
 \tag{4.5}
 \mathbf{Aw}=\lambda \mathbf{w}
-\end{equation}\]</span>
-where <span class="math inline">\(\mathbf{w}\)</span> is a particular summary of our data. With analysis of a transition matrix, <span class="math inline">\(\mathbf{A}\)</span> is the projection matrix, <span class="math inline">\(\lambda\)</span> is an <em>eigenvalue</em> and <span class="math inline">\(\mathbf{w}\)</span> is an <em>eigenvector</em>. If we write out eq. <a href="DID.html#eq:eigsol">(4.5)</a> for a <span class="math inline">\(2 \times 2\)</span> matrix, we would have</p>
+\]</span></p>
+<p>where <span class="math inline">\(\mathbf{w}\)</span> is a column vector with the same number of rows as <span class="math inline">\(\mathbf{A}\)</span>. If we write out eq. <a href="DID.html#eq:eigsol">(4.5)</a> for a <span class="math inline">\(2 \times 2\)</span> matrix, we would have</p>
 <p><span class="math display" id="eq:eigsollong">\[
  \tag{4.6}
  \left(
@@ -522,8 +525,8 @@ where <span class="math inline">\(\mathbf{w}\)</span> is a particular summary of
    w_{21}
   \end{array}
   \right)
-\]</span></p>
-<p>For instance, we can preform eigenanalysis on this transition matrix.</p>
+\]</span>
+For instance, we can perform eigenanalysis on this transition matrix.</p>
 <div class="sourceCode" id="cb103"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb103-1"><a href="DID.html#cb103-1"></a>(A &lt;-<span class="st"> </span><span class="kw">matrix</span>(<span class="kw">c</span>(<span class="dv">0</span>, <span class="fl">.3</span>, <span class="dv">2</span>, <span class="fl">.7</span>), <span class="dt">nrow=</span><span class="dv">2</span>))</span></code></pre></div>
 <pre><code>##      [,1] [,2]
 ## [1,]  0.0  2.0
@@ -544,8 +547,8 @@ where <span class="math inline">\(\mathbf{w}\)</span> is a particular summary of
 <pre><code>## [1] 1.2</code></pre>
 <div class="sourceCode" id="cb109"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb109-1"><a href="DID.html#cb109-1"></a>(w1 &lt;-<span class="st"> </span>eA<span class="op">$</span>vectors[,<span class="dv">1</span>])</span></code></pre></div>
 <pre><code>## [1] -0.8574929 -0.5144958</code></pre>
-<div class="sourceCode" id="cb111"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb111-1"><a href="DID.html#cb111-1"></a><span class="kw">cbind</span>(A <span class="op">%*%</span><span class="st"> </span>w1, lambda1 <span class="op">*</span><span class="st"> </span>w1)</span></code></pre></div>
-<pre><code>##            [,1]       [,2]
+<div class="sourceCode" id="cb111"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb111-1"><a href="DID.html#cb111-1"></a><span class="kw">cbind</span>(A <span class="op">%*%</span><span class="st"> </span>w1, <span class="dt">lambda.w=</span>lambda1 <span class="op">*</span><span class="st"> </span>w1)</span></code></pre></div>
+<pre><code>##                   lambda.w
 ## [1,] -1.0289915 -1.0289915
 ## [2,] -0.6173949 -0.6173949</code></pre>
 <p>The first column is <span class="math inline">\(\mathbf{Aw}\)</span> and the second column is <span class="math inline">\(\lambda \mathbf{w}\)</span>. Sure enough, they look the same. Try doing the same exercise for the second eigenvalue and the second eigenvector, <span class="math inline">\(i=2\)</span>.</p>
@@ -556,31 +559,30 @@ where <span class="math inline">\(\mathbf{w}\)</span> is a particular summary of
 <div id="finite-rate-of-increase" class="section level3">
 <h3><span class="header-section-number">4.6.2</span> Finite rate of increase</h3>
 <p>
-The asymptotic annual growth rate or finite rate of increase is the dominant eigenvalue of the transition matrix. Eigenvalues are always referred to with the Greek symbol <span class="math inline">\(\lambda\)</span>, and provide a solution to <a href="DID.html#eq:eigsol">(4.5)</a>. The dominant eigenvalue of any matrix, <span class="math inline">\(\lambda_{1}\)</span>, is the eigenvalue with the largest magnitude, and it is frequently a complex number. (When we perform eigenanalysis, it is common to get complex numbers, with real and imaginary parts. The magnitude is the sum of the squared parts.) With population transition matrices, <span class="math inline">\(\lambda_{1}\)</span> will always be positive and real. This will not be the case with other types of matrices we examine in later chapters.</p>
-<p>The dominant eigenvalue is the biggest one. We can find which one it by asking R to tell us the index position <span class="math inline">\(i\)</span> of the largest absolute value (the modulus) of the eigenvalues. In most cases, it is the first eigenvalue, as it is here.</p>
+The asymptotic annual growth rate or finite rate of increase is the dominant eigenvalue of the transition matrix. It has the same meaning as in geometric growth of an unstructured population.</p>
+<p>Eigenvalues are always referred to with the Greek symbol <span class="math inline">\(\lambda\)</span>, and provide a solution to <a href="DID.html#eq:eigsol">(4.5)</a>. The dominant eigenvalue of any matrix, <span class="math inline">\(\lambda_{1}\)</span>, is the eigenvalue with the largest magnitude, and it is frequently a complex number. When we perform eigenanalysis, it is common to get complex numbers, with real and imaginary parts. The magnitude is the sum of the squared parts. With population transition matrices, <span class="math inline">\(\lambda_{1}\)</span> will always be positive and real. This will not be the case with other types of matrices we examine in later chapters.</p>
+<p>The dominant eigenvalue is the biggest one. We can find which one it is by asking R to tell us the index position <span class="math inline">\(i\)</span> of the largest absolute value (the modulus) of the eigenvalues. In most cases, it is the first eigenvalue, as it is here.</p>
 <div class="sourceCode" id="cb113"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb113-1"><a href="DID.html#cb113-1"></a>( dom.pos &lt;-<span class="st"> </span><span class="kw">which.max</span>( <span class="kw">Mod</span>(eA[[<span class="st">&quot;values&quot;</span>]]) )  )</span></code></pre></div>
 <pre><code>## [1] 1</code></pre>
 <p>We use that index to extract the largest eigenvalue. We keep the real part, using <code>Re()</code>, dropping the imaginary part. (Note that although the dominant eigenvalue of a real transition matrix will always be real, R will include an imaginary part equal to zero (<span class="math inline">\(0i\)</span>) as a place holder if any of the eigenvalues has a non-zero imaginary part).</p>
 <div class="sourceCode" id="cb115"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb115-1"><a href="DID.html#cb115-1"></a><span class="co"># extract the dominant eigenvalue and retain only its Real part</span></span>
 <span id="cb115-2"><a href="DID.html#cb115-2"></a>( L1 &lt;-<span class="st"> </span><span class="kw">Re</span>(eA[[<span class="st">&quot;values&quot;</span>]][dom.pos]) )</span></code></pre></div>
 <pre><code>## [1] 1.2</code></pre>
-<p><code>L1</code> is <span class="math inline">\(\lambda_1\)</span>, the aysmptotic finite rate of increase. This finite rate of increase has the same biological meaning as <span class="math inline">\(\lambda\)</span> in the previous chapter.</p>
+<p><code>L1</code> is <span class="math inline">\(\lambda_1\)</span>, the asymptotic finite rate of increase. This finite rate of increase has the same biological meaning as <span class="math inline">\(\lambda\)</span> in the previous chapter.</p>
 </div>
 <div id="stable-stage-distribution" class="section level3">
 <h3><span class="header-section-number">4.6.3</span> Stable stage distribution</h3>
-<p>The relative abundance of the different life history stages is called the <em>stage distribution</em>, that is, the distribution of individuals among the stages. A property of a stage structured population is that, if all the demographic rates (elements of the transition matrix) remain constant, its stage structure will approach a <em>stable</em> stage distribution, a stage distribution in which the <strong>relative</strong> number of individuals in each stage is constant. Note that a population can grow, so that the absolute number of individuals increases, but the relative abundances of the stages is constant; this is the stable stage distribution. If the population is not actually growing (i.e. <span class="math inline">\(\lambda=1\)</span>) and demographic parameters remain constant, then the population is <em>stationary</em> and will achieve a <em>stationary stage distribution</em>, where neither absolute nor relative abundances change.</p>
+<p>The predicted long term average relative abundance of the different life history stages or ages is called the <em>stage distribution</em>, that is, the distribution of individuals among the stages. A property of a stage structured population is that, if all the demographic rates (elements of the transition matrix) remain constant, its stage structure will approach a <em>stable</em> stage distribution, a stage distribution in which the relative number of individuals in each stage is constant. Note that a population can grow, so that the absolute number of individuals increases, but the relative abundances of the stages is constant; this is the stable stage distribution. If the population is not actually growing (i.e. <span class="math inline">\(\lambda=1\)</span>) and demographic parameters remain constant, then the population is <em>stationary</em> and will achieve a <em>stationary stage distribution</em>, where neither absolute nor relative abundances change.</p>
 <p>How do we find the stable stage distribution? It also turns out that <span class="math inline">\(w_1\)</span> provides the necessary information. We scale the eigenvector <span class="math inline">\(w_1\)</span> by the sum of its elements because we are interested in the <em>distribution</em>, which is defined by all stages summing to one. Therefore the stable stage distribution is
-<span class="math display" id="eq:ssd">\[\begin{equation}
+<span class="math display" id="eq:ssd">\[
  \tag{4.7}
  \frac{w_1}{\sum_{i=1}^s{w_1}}
-\end{equation}\]</span>
+\]</span>
 where <span class="math inline">\(s\)</span> is the number of stages.</p>
 <p>Once a population reaches its stable stage distribution each of the stages grow exponentially, because
-<span class="math display">\[\mathbf{Aw}=\lambda \mathbf{w}\]</span></p>
-</div>
-<div id="calculating-the-stable-stage-distribution" class="section level3">
-<h3><span class="header-section-number">4.6.4</span> Calculating the stable stage distribution</h3>
-<p>The dominant eigenvector, <span class="math inline">\(w_1\)</span>, is in the same position as the dominant eigenvalue. We extract <span class="math inline">\(w_1\)</span>, keeping just the real part, and divide it by its sum to get the stable stage distribution.</p>
+<span class="math display">\[\mathbf{Aw}=\lambda \mathbf{w}\]</span>
+### Calculating the stable stage distribution
+The dominant eigenvector, <span class="math inline">\(w_1\)</span>, is in the same position as the dominant eigenvalue. We extract <span class="math inline">\(w_1\)</span>, keeping just the real part, and divide it by its sum to get the stable stage distribution.</p>
 <div class="sourceCode" id="cb117"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb117-1"><a href="DID.html#cb117-1"></a><span class="co"># continuing from previous code...</span></span>
 <span id="cb117-2"><a href="DID.html#cb117-2"></a>w1 &lt;-<span class="st"> </span><span class="kw">Re</span>(eA[[<span class="st">&quot;vectors&quot;</span>]][,dom.pos])</span>
 <span id="cb117-3"><a href="DID.html#cb117-3"></a>ssd &lt;-<span class="st"> </span>w1<span class="op">/</span><span class="kw">sum</span>(w1)</span>
@@ -608,7 +610,7 @@ where <span class="math inline">\(s\)</span> is the number of stages.</p>
 <span id="cb119-18"><a href="DID.html#cb119-18"></a><span class="kw">ggplot</span>(sdg, <span class="kw">aes</span>(Stage, Proportion)) <span class="op">+</span><span class="st"> </span><span class="kw">geom_col</span>()  <span class="op">+</span><span class="st"> </span></span>
 <span id="cb119-19"><a href="DID.html#cb119-19"></a><span class="st">  </span><span class="kw">facet_wrap</span>(<span class="op">~</span>Year, <span class="dt">nrow=</span><span class="dv">3</span>, <span class="dt">ncol=</span><span class="dv">3</span>)</span></code></pre></div>
 <p><img src="figs/poweriter-1.png" width="90%" /></p>
-<p>Using total population sizes, we can calculate an annual rate of increase <span class="math inline">\(N_{t+1}/N_t\)</span>.</p>
+<p>If we sum the abundances of the different stages, we calculate total population sizes. With that, we can calculate an annual rate of increase <span class="math inline">\(N_{t+1}/N_t\)</span>.</p>
 <div class="sourceCode" id="cb120"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb120-1"><a href="DID.html#cb120-1"></a><span class="co"># using &quot;-&quot; in an index removes that element</span></span>
 <span id="cb120-2"><a href="DID.html#cb120-2"></a>lambda.t &lt;-<span class="st"> </span>N.total[<span class="op">-</span><span class="dv">1</span>]<span class="op">/</span>N.total[<span class="op">-</span>(steps<span class="op">+</span><span class="dv">1</span>)] </span>
 <span id="cb120-3"><a href="DID.html#cb120-3"></a><span class="kw">qplot</span>(<span class="dt">x=</span><span class="dv">1</span><span class="op">:</span>steps, <span class="dt">y=</span>lambda.t, <span class="dt">geom=</span><span class="kw">c</span>(<span class="st">&quot;line&quot;</span>, <span class="st">&quot;point&quot;</span>)) <span class="op">+</span><span class="st"> </span></span>
@@ -622,34 +624,37 @@ Figure 4.7: Calculating an annual finite rate of increase from a projected popul
 <p>Iterating the transition matrix to approximate <span class="math inline">\(\lambda_1\)</span> and <span class="math inline">\(w_1\)</span> is actually called the <em>power iteration method</em> for eigenanalysis.</p>
 </div>
 <div id="reproductive-value" class="section level3">
-<h3><span class="header-section-number">4.6.5</span> Reproductive value</h3>
+<h3><span class="header-section-number">4.6.4</span> Reproductive value</h3>
 <p>
 If the stage structure gives us one measure of the importance of a stage (its relative abundance), then the <em>reproductive value</em> gives us one measure of the importance of an <em>individual</em> in each stage. Reproductive value is the expected contribution of each individual to future reproduction. We characterize all individuals in a stage using the same expected reproductive value.</p>
-<p>We find each stage’s reproductive value by solving for the dominant <em>left</em> eigenvector <span class="math inline">\(\mathbf{v}\)</span>, where
-<span class="math display" id="eq:rv">\[\begin{equation}
+<p>We find the reproductive value associated with each stage by solving for the dominant <em>left</em> eigenvector <span class="math inline">\(\mathbf{v}\)</span>, where
+<span class="math display" id="eq:rv">\[
  \tag{4.8}
- \mathbf{vA}=\lambda\mathbf{v}
-\end{equation}\]</span>
+ \mathbf{vA}=\lambda\mathbf{v}.
+\]</span>
 Like the relation between the dominant right eigenvector and the stable stage distribution, this vector is actually <em>proportional</em> to the reproductive values. Unlike the stable stage distribution, we scale it so that all reproductive values are relative to that of the first stage (e.g. juveniles or seeds).
 <span class="math display" id="eq:rv2">\[
  \tag{4.9}
-  \frac{v}{v_{1}}
-\]</span></p>
-<p>We find the left eigenvalues and -vectors by performing eigenanalysis on the <em>transpose</em> of the transition matrix. Transposition flips rows and columns. We perform eigenanalysis, extracting just the dominant left eigenvector; we then scale it, so the stage 1 has a reproductive value of 1.0.</p>
-<div class="sourceCode" id="cb121"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb121-1"><a href="DID.html#cb121-1"></a>etA &lt;-<span class="st"> </span><span class="kw">eigen</span>(<span class="kw">t</span>(A))</span>
-<span id="cb121-2"><a href="DID.html#cb121-2"></a>dom.pos &lt;-<span class="st"> </span><span class="kw">which.max</span>(<span class="kw">Mod</span>(etA<span class="op">$</span>values))</span>
-<span id="cb121-3"><a href="DID.html#cb121-3"></a>v1 &lt;-<span class="st"> </span><span class="kw">Re</span>(etA<span class="op">$</span>vectors[,dom.pos])</span>
-<span id="cb121-4"><a href="DID.html#cb121-4"></a>( rv &lt;-<span class="st"> </span>v1<span class="op">/</span>v1[<span class="dv">1</span>] )</span></code></pre></div>
+  \frac{v_1}{v_{1[1]}}
+\]</span>
+We find the left eigenvalues and -vectors by performing eigenanalysis on the <em>transpose</em> of the transition matrix. Transposition flips rows and columns, so that row 1 becomes column 1 and vice versa. We perform eigenanalysis, extracting just the dominant left eigenvector; we then scale it, so the stage 1 has a reproductive value of 1.0.</p>
+<div class="sourceCode" id="cb121"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb121-1"><a href="DID.html#cb121-1"></a>tA &lt;-<span class="st"> </span><span class="kw">t</span>(A) <span class="co"># transpose</span></span>
+<span id="cb121-2"><a href="DID.html#cb121-2"></a>etA &lt;-<span class="st"> </span><span class="kw">eigen</span>(tA)</span>
+<span id="cb121-3"><a href="DID.html#cb121-3"></a>dom.pos &lt;-<span class="st"> </span><span class="kw">which.max</span>(<span class="kw">Mod</span>(etA<span class="op">$</span>values))</span>
+<span id="cb121-4"><a href="DID.html#cb121-4"></a>v1 &lt;-<span class="st"> </span><span class="kw">Re</span>(etA<span class="op">$</span>vectors[,dom.pos])</span>
+<span id="cb121-5"><a href="DID.html#cb121-5"></a>( rv &lt;-<span class="st"> </span>v1<span class="op">/</span>v1[<span class="dv">1</span>] )</span></code></pre></div>
 <pre><code>## [1] 1 4</code></pre>
 <p>Here we see that reproductive value, <span class="math inline">\(rv\)</span>, increases with age or stage. This means that the expected reproductive value of an individual in the second stage is <code>4</code> times as great as that of an individual in the first stage. In general, reproductive value of individuals in a stage increases with increasing probability of reaching fecund stages.</p>
 </div>
 <div id="sensitivity-and-elasticity" class="section level3">
-<h3><span class="header-section-number">4.6.6</span> Sensitivity and elasticity</h3>
+<h3><span class="header-section-number">4.6.5</span> Sensitivity and elasticity</h3>
 <p>Sensitivity and elasticity tell us the relative importance of each transition (i.e. each arrow of the life cycle graph or element of the matrix) in determining <span class="math inline">\(\lambda\)</span>. They do so by combining information on the stable stage structure and reproductive values.</p>
 <p>The stage structure and reproductive values each in their own way contribute to the importance of each stage in determining <span class="math inline">\(\lambda\)</span>. The stable stage distribution provides the relative abundance of individuals in each stage. Reproductive value provides the expected contribution to future population growth of individuals in each stage. Sensitivity and elasticity combine these to tell us the relative importance of each transition in determining <span class="math inline">\(\lambda_1\)</span>.</p>
-<p>Almost always, sensitivities of a transition matrix are the sensistivities of <span class="math inline">\(\lambda_1\)</span> to the elements of the transition matrix. They are the direct contributions of each transition to determining <span class="math inline">\(\lambda_1\)</span>. The sensitivity for the element <span class="math inline">\(a_{ij}\)</span> of a transition matrix is the change in <span class="math inline">\(\lambda_1\)</span> that occurs when we change <span class="math inline">\(a_{ij}\)</span> a small amount, or <span class="math inline">\(\delta \lambda / \delta a_{ij}\)</span>. It isn’t surprising, then, these are derived from the stable stage distribution and the reproductive values. Specifically, the sensitivities are calculated as</p>
+<p>Sensitivities are the direct contributions of each transition to determining <span class="math inline">\(\lambda_1\)</span>. The sensitivity for the element <span class="math inline">\(a_{ij}\)</span> of a transition matrix is the change in <span class="math inline">\(\lambda_1\)</span> that occurs when we change <span class="math inline">\(a_{ij}\)</span> a small amount, or
+<span class="math display">\[\delta \lambda / \delta a_{ij}\]</span>.
+It isn’t surprising, then, these are derived from the stable stage distribution and the reproductive values. Specifically, the sensitivities are calculated as</p>
 <p><span class="math display" id="eq:sens">\[
-\frac{\delta \lambda}{\delta a_{ij}}=\frac{v_{i}w_{j}}{v\cdot w} 
+\frac{\delta \lambda}{\delta a_{ij}}=\frac{v_{1[i]}w_{1[j]}}{v_1\cdot w_1} 
 \tag{4.10}
 \]</span>
 where <span class="math inline">\(v_{i}w_{j}\)</span> is the product of each pairwise combination of elements of the dominant left and right eigenvectors, <span class="math inline">\(v\)</span> and <span class="math inline">\(w\)</span>. Specifically, the numerator is generated by the reproductive value of the target stage and the stable stage distribution of the source stage,
@@ -659,8 +664,10 @@ where <span class="math inline">\(v_{i}w_{j}\)</span> is the product of each pai
 v_1 w_1 &amp; v_1 w_2 \\
 v_2 w_1 &amp; v_2 w_2
 \end{pmatrix}
-\]</span></p>
-<p>In the denominator, the <em>dot product</em>, <span class="math inline">\(\mathbf{v} \cdot \mathbf{w}\)</span>, is the sum of the pairwise products of each vector element. Dividing <span class="math inline">\(v_{i}w_{j}\)</span> by this sum causes the sensitivities to be relative to the magnitudes of <span class="math inline">\(v\)</span> and <span class="math inline">\(w\)</span>.</p>
+\]</span>
+In the denominator, the <em>dot product</em>, <span class="math inline">\(\mathbf{v} \cdot \mathbf{w}\)</span>, is the sum of the pairwise products of each vector element,
+<span class="math display">\[v_{11}w_{11} + v_{12}w_{12} + \ldots + v_{1n}w_{1n}\]</span>.
+Dividing the numerator by this sum causes the sensitivities to be relative to the magnitudes of <span class="math inline">\(v\)</span> and <span class="math inline">\(w\)</span>.</p>
 <p>Let’s calculate sensitivities now. Because the stable stage distribution and the reproductive values are merely scaled versions of the dominant right and left eigenvectors, it doesn’t matter whether we use the unscaled eigenvectors, or the scaled stable stage distribution and reproductive values.</p>
 <div class="sourceCode" id="cb123"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb123-1"><a href="DID.html#cb123-1"></a>vw &lt;-<span class="st"> </span><span class="kw">matrix</span>(rv, <span class="dt">nr=</span><span class="dv">2</span>, <span class="dt">nc=</span><span class="dv">1</span>) <span class="op">%*%</span><span class="st"> </span><span class="kw">matrix</span>(ssd, <span class="dt">nr=</span><span class="dv">1</span>, <span class="dt">nc=</span><span class="dv">2</span>) <span class="co"># or vw &lt;- v1 %*% t(w1); the numerator</span></span>
 <span id="cb123-2"><a href="DID.html#cb123-2"></a>dot.prod &lt;-<span class="st"> </span><span class="kw">sum</span>(rv<span class="op">*</span>ssd) <span class="co"># or dot.prod &lt;- sum(v1 * w1) denominator</span></span>
@@ -668,9 +675,9 @@ v_2 w_1 &amp; v_2 w_2
 <pre><code>##           [,1]      [,2]
 ## [1,] 0.2941176 0.1764706
 ## [2,] 1.1764706 0.7058824</code></pre>
-<p>These are the sensitivities, <span class="math inline">\(\delta \lambda / \delta a_{ij}\)</span>, of each corresponding transition element. You will always get a sensitivity for every position in this matrix, even when the transition is zero, <span class="math inline">\(a_{ij}=0\)</span>. We just ignore those, but by convention, include them.</p>
-<p>These sensitivities are the relative change in <span class="math inline">\(\lambda_1\)</span> for an absolute change in the element. For instance, it is the relative effect of increasing <span class="math inline">\(a_{21}\)</span> from 0.3 to 0.33, or <span class="math inline">\(a_{22}\)</span> from 0.7 to 0.73.</p>
-<p>The largest of these sensitivities is that for is <span class="math inline">\(p_{21}\)</span>, surviving from the first stage to the second stage. This means that small changes to <span class="math inline">\(p_{21}\)</span> have large effects on <span class="math inline">\(\lambda_1\)</span> than do small changes to <span class="math inline">\(F_2\)</span> or <span class="math inline">\(p_{22}\)</span>.</p>
+<p>These are the sensitivities, <span class="math inline">\(\delta \lambda / \delta a_{ij}\)</span>, of each corresponding transition element. You will always get a sensitivity for every position in this matrix, even when the transition is zero, <span class="math inline">\(a_{ij}=0\)</span>. We just ignore those, but by convention, usually include them.
+These sensitivities are the relative change in <span class="math inline">\(\lambda_1\)</span> for an absolute change in the element. For instance, it is the relative effect on lambda of increasing <span class="math inline">\(a_{21}\)</span> from 0.3 to 0.31, or <span class="math inline">\(a_{22}\)</span> from 0.7 to 0.71.</p>
+<p>The largest of the sensitivities we just calculated is that for <span class="math inline">\(p_{21}\)</span>, surviving from the first stage to the second stage. This means that small changes to <span class="math inline">\(p_{21}\)</span> have larger effects on <span class="math inline">\(\lambda_1\)</span> than do small changes to <span class="math inline">\(F_2\)</span> or <span class="math inline">\(p_{22}\)</span>.</p>
 As <span class="math inline">\(\delta \lambda / \delta a_{ij}\)</span>, the sensitivities are the slope of the line relating the magnitude of <span class="math inline">\(\lambda_1\)</span> to the matrix element.
 <div class="figure"><span id="fig:unnamed-chunk-39"></span>
 <img src="figs/unnamed-chunk-39-1.png" alt="Sensitivities of lambda to transition elements are slopes. The dotted line is the calculated sensitivity of lambda to A[2,1], because it is the slope evaluated at A[2,1]." width="75%" />
@@ -678,7 +685,7 @@ As <span class="math inline">\(\delta \lambda / \delta a_{ij}\)</span>, the sens
 Figure 4.8: Sensitivities of lambda to transition elements are slopes. The dotted line is the calculated sensitivity of lambda to A[2,1], because it is the slope evaluated at A[2,1].
 </p>
 </div>
-<p><em>Elasticities</em> are sensitivities that have been weighted by the transition probabilities. We may, however, be interested in how a <em>proportional</em> change in a transition element influences <span class="math inline">\(\lambda_1\)</span>—how does a 10% increase in seed production, or a 10% decline in juvenile survival influence <span class="math inline">\(\lambda_1\)</span>? For these answers, we need to adjust sensitivities to account for the relative magnitudes of the transition elements, and this provides the elasticities, <span class="math inline">\(e_{ij}\)</span>. Elasticities are <em>relative sensitivities</em>, and are defined as</p>
+<p><strong>Elasticities</strong> are sensitivities that have been weighted by the transition probabilities. Recall that sensitivities are the effects on lambda of a small absolute change in transition matrix elements. In contrast, elasticities are the effects on lambda of a <em>proportional</em> change in a transition element influences <span class="math inline">\(\lambda_1\)</span>—how does a 1% increase in seed production, or a 1% decline in juvenile survival influence <span class="math inline">\(\lambda_1\)</span>? For these answers, we need to adjust sensitivities to account for the relative magnitudes of the transition elements, and this provides the elasticities, <span class="math inline">\(e_{ij}\)</span>. Elasticities are <em>relative sensitivities</em>, and are defined as</p>
 <p><span class="math display">\[
 e_{ij}=\frac{\delta \lambda/\lambda}{\delta a_{ij}/a_{ij}} = \frac{a_{ij}}{\lambda}\frac{\delta \lambda}{\delta a_{ij}}.
 \]</span>
@@ -692,27 +699,158 @@ Like sensitivities, we can think of elasticities as slopes.</p>
 ## [1,] 0.000 0.294
 ## [2,] 0.294 0.412</code></pre>
 <p>Now we see that survival by adults (<span class="math inline">\(p_{22}\)</span>) has the biggest effect on <span class="math inline">\(\lambda_1\)</span>. Why the difference between sensitivities and elasticities? Because the elasticities reflect the effect of a <em>proportional change</em> (e.g., 1%) of the elements, whereas sensitivities reflect the effect of a change by a constant amount (e.g., 0.01) of each element.</p>
-<p>Note that elasticities are relative to each other, in that they sum to 1.0. This is an especially nice features of elasticities because it makes it easier to compare elasticities among differ matrices and even different organisms.</p>
-<p>Once we have the sensitivities and elasticities, we can really begin to see what is controlling the growth rate of a stage (or age) structured population. Although these values do not tell us which stages and transitions will be influenced by natural phenomona or management practices, they provide us with the predicted effects on <span class="math inline">\(\lambda_1\)</span> of a proportional change in a demographic rate. This is particularly important in the management of invasive (or endangered) species where we seek to have the maximum impact for the minimum amount of effort and resources <span class="citation">(Caswell <a href="#ref-Caswell:2001gu" role="doc-biblioref">2001</a>; Ellner and Guckenheimer <a href="#ref-Ellner:2006qe" role="doc-biblioref">2006</a>)</span>.</p>
+<p>Note that elasticities are relative to each other, in that they sum to 1.0. This is an especially nice feature of elasticities because it makes it easier to compare elasticities among different matrices and different organisms.</p>
+<p>Once we have the sensitivities and elasticities, we can really begin to see what is controlling the growth rate of a stage (or age) structured population. They provide us with the predicted effects on <span class="math inline">\(\lambda_1\)</span> of a proportional change in a demographic rate. This is particularly important in the management of invasive (or endangered) species where we seek to have the maximum impact for the minimum amount of effort and resources <span class="citation">(Caswell <a href="#ref-Caswell:2001gu" role="doc-biblioref">2001</a>; Ellner and Guckenheimer <a href="#ref-Ellner:2006qe" role="doc-biblioref">2006</a>)</span>. We can use these to help predict how a population might respond to natural phenomena or management practices that affect one stage or another.</p>
 <p><em>All of these details can get very confusing</em>, and smart people don’t always get it right. Therefore, get expert advice <span class="citation">(Caswell <a href="#ref-Caswell:2001gu" role="doc-biblioref">2001</a>; Ellner and Guckenheimer <a href="#ref-Ellner:2006qe" role="doc-biblioref">2006</a>)</span>, and remember that the stages of life cycle graph and matrix are the stages that you collect at one point in time, and an arrow or transition element has to include everything that happens from one census period to the next.</p>
-<hr />
+</div>
+</div>
+<div id="integral-projection" class="section level2">
+<h2><span class="header-section-number">4.7</span> Integral projection</h2>
 <p>What do we do if our stages seem like arbitrary categories along a continuous scale? What if size is easy to measure accurately and is a really good predictor of demographic rates, and these rates vary continuously with size? How do we decide on size classes? How do we draw seemingly arbitrary divisions between different sizes?</p>
 <p>With <em>integral projection</em>, as opposed to matrix projection, we no
 longer have to worry about a particular number of stages or age
 classes. We select an individual-level state variable, such as body mass, length, stem diameter, or even location, that is a useful predictor of
 demographic rates. We use this continuously varying state variable in place of stages or age classes. We rely on statistical methods, such as linear regression, to describe the relations between the individual-level state variable and survival, growth, and fecundity. We then combine those relations to model how individuals in a population are likely to change from one generation to the next.</p>
-<p>In many organisms, size is often a relatively good predictor of survival and fecundity. Within a poulation, size is often associated with age, learning, and resource acquisition. Size is also related to the onset of reproductive maturity and initiation of specific reproductive structures. Among reproductive individuals, size is often strongly correlated with per capita reproductive output. Integral projection can use size to model size-dependent demography.</p>
-<p>Whereas matrix projection models use matrix algebra to project populations. Matrix algebra is mutliplication of discrete classes and summation of discrete products. Integral projection models (IPMs) use multiplication and the calculus of integration across continuous variables toward the same end.</p>
+<p>In many organisms, size is often a relatively good predictor of survival and fecundity. Within a population, size is often associated with age, learning, and resource acquisition. Size is also related to the onset of reproductive maturity and initiation of development of reproductive structures. Among reproductive individuals, size is often strongly correlated with per capita reproductive output. Integral projection can use size to model size-dependent demography.</p>
+<p>Integral projection models (IPMs) are based on the calculus of integration across continuous variables to combine information about size-dependent demographic rates and size distributions to project population abundances and sizes in the future. In practice, however, we rarely use the tools of integral calculus on which IPMs are founded. Instead, we approximate integration using very large matrices. As a simple example of this approximation, consider plant height that we measure using a meter stick. We assume that plant height is, in principle, a continuous variable that could take any real value between 0 and infinity. However, imagine that we only measure height to the nearest centimeter, and thereby create 100 height categories. This measurement process chops up continuous variation into discrete categories. When implementing integral projection models, we typically combine different techniques that are associated with continuous variation (e.g., linear regression) and with discrete variation (e.g., matrix algebra).</p>
+<div id="a-size-based-ipm-of-smooth-coneflower" class="section level3">
+<h3><span class="header-section-number">4.7.1</span> A size-based IPM of smooth coneflower</h3>
+<p>Rachel Collins and colleagues have been studying populations of an endangered coneflower, <em>Echinecea laevigata</em>, in southwest Virginia, USA. Smooth coneflower is a perennial rhizomatous herbaceous plant that is sparsely distributed across mid-Atlantic and southeastern states (plantsusda.gov). It requires open spaces with little canopy cover, such as meadows or early successional habitat.</p>
+<p>Collins marked each individual in selected populations, measured size of individual coneflower plants using total leaf area, which ranged from 3-950 cm<span class="math inline">\(^2\)</span>. Because she tagged individuals and tracked changes over time, she was able estimate survival and fecundity of different sized individuals (Fig. <a href="#fig:coneflower"><strong>??</strong></a>). She also measured seed set (number of seeds per inflorescence) and recruitment. Recruitment is emergence from the seed, that is, germination, growth, and survival in the first year.</p>
+<p>In what follows, we see the empirical data on growth, survival, and fecundity. These continuous data will allow us to produce matrices with very, very narrow size classes. The details require some understanding of probability densities, rather than probabilities, per se, but they are conceptually analogous. The continuous probability density analog of a matrix is referred to as a “kernel”. Regardless, the goal is the same – we want to use our understanding of growth, survival, and fecundity to estimate a matrix or kernel <strong>K</strong> where,
+<span class="math display">\[\mathbf{K = GS + F}\]</span>.</p>
+<p>Next we show the the size-dependence of these processes, and the resulting kernels. In IPMs, it is common to use the logarithm of size rather than the original linear scale. This is because many processes scale with log-size. That is what we do here - all sizes are the natural log of leaf area.</p>
+<p>Survival, <strong>S</strong>, from one year to the next depends on size.</p>
+<div class="sourceCode" id="cb127"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb127-1"><a href="DID.html#cb127-1"></a>eda_s &lt;-<span class="st"> </span><span class="kw">ggplot</span>(dh, <span class="kw">aes</span>(logA, surv)) <span class="op">+</span><span class="st"> </span><span class="kw">lims</span>(<span class="dt">x=</span><span class="kw">c</span>(<span class="fl">0.5</span>, <span class="fl">2.75</span>)) <span class="op">+</span></span>
+<span id="cb127-2"><a href="DID.html#cb127-2"></a><span class="st">  </span><span class="kw">geom_jitter</span>(<span class="dt">height=</span>.<span class="dv">02</span>, <span class="dt">alpha=</span><span class="fl">0.5</span>) <span class="op">+</span><span class="st"> </span></span>
+<span id="cb127-3"><a href="DID.html#cb127-3"></a><span class="st">  </span><span class="kw">geom_smooth</span>(<span class="dt">method=</span><span class="st">&quot;glm&quot;</span>, <span class="dt">method.args =</span> <span class="kw">list</span>(<span class="dt">family =</span> <span class="st">&quot;binomial&quot;</span>)) <span class="op">+</span><span class="st"> </span><span class="kw">labs</span>(<span class="dt">title=</span><span class="st">&quot;Survival&quot;</span>)</span>
+<span id="cb127-4"><a href="DID.html#cb127-4"></a>eda_s</span></code></pre></div>
+<div class="figure"><span id="fig:unnamed-chunk-42"></span>
+<img src="figs/unnamed-chunk-42-1.png" alt="Survival is represented as surviving (1) or not surviving (0). The probability of surviving to the next year, given a size in the first year is esitmated using logistic regression." width="90%" />
+<p class="caption">
+Figure 4.9: Survival is represented as surviving (1) or not surviving (0). The probability of surviving to the next year, given a size in the first year is esitmated using logistic regression.
+</p>
+</div>
+Growth, <strong>G</strong> is really how the size of a plant in one year depends on its size in the previous year.
+<div class="figure"><span id="fig:growth"></span>
+<img src="figs/growth-1.png" alt="Growth is the relation between size at one time vs. size in another. The fitted estimate includes the 95% confidence interval. The dashed line is the 1:1 line; above this line is growth, while below it is regression to a smaller size." width="90%" />
+<p class="caption">
+Figure 4.10: Growth is the relation between size at one time vs. size in another. The fitted estimate includes the 95% confidence interval. The dashed line is the 1:1 line; above this line is growth, while below it is regression to a smaller size.
+</p>
+</div>
+<p>Next we tackle fecundity, <strong>F</strong>, which for us is estimated using</p>
+<ul>
+<li>the size-dependent probability of flowering,</li>
+<li>the size-dependent number of seeds produced by a flowering individual,</li>
+<li>the probability of a seed germinating and surviving to be a new recruit, and</li>
+<li>the size-distribution of new recruits.</li>
+</ul>
+Typically, bigger individuals have a greater chance of flowering, and smooth coneflower is no exception. We estimate that chance using logistic regression.
+<div class="figure"><span id="fig:flowering"></span>
+<img src="figs/flowering-1.png" alt="Plants that are larger in the first year have a greater chance of flowering in the next year." width="90%" />
+<p class="caption">
+Figure 4.11: Plants that are larger in the first year have a greater chance of flowering in the next year.
+</p>
+</div>
+<p>It is also true that bigger plants might produce more seeds, although there is not a lot of evidence for that is these data.</p>
+<div class="sourceCode" id="cb128"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb128-1"><a href="DID.html#cb128-1"></a>sf &lt;-<span class="st"> </span><span class="kw">mutate</span>(sf,</span>
+<span id="cb128-2"><a href="DID.html#cb128-2"></a>             <span class="dt">logAs =</span> <span class="kw">log10</span>(area))</span>
+<span id="cb128-3"><a href="DID.html#cb128-3"></a>eda_sd &lt;-<span class="st"> </span><span class="kw">ggplot</span>(sf, <span class="kw">aes</span>(logAs, seeds)) <span class="op">+</span><span class="st"> </span><span class="kw">geom_point</span>() <span class="op">+</span></span>
+<span id="cb128-4"><a href="DID.html#cb128-4"></a><span class="st">  </span><span class="kw">geom_smooth</span>(<span class="dt">method=</span><span class="st">&quot;lm&quot;</span>) <span class="op">+</span><span class="st"> </span><span class="kw">labs</span>(<span class="dt">title=</span><span class="st">&quot;Seed set&quot;</span>)</span>
+<span id="cb128-5"><a href="DID.html#cb128-5"></a>eda_sd</span></code></pre></div>
+<div class="figure"><span id="fig:seed"></span>
+<img src="figs/seed-1.png" alt="No compelling evidence that size influences seed set. Nonetheless, we will use this approach in estiamting fecundity, F." width="90%" />
+<p class="caption">
+Figure 4.12: No compelling evidence that size influences seed set. Nonetheless, we will use this approach in estiamting fecundity, F.
+</p>
+</div>
+<p>We also need to estimate <em>establishment probability</em>, or the chance that a seed germinates and survives until the following summer. Collins estimated that using seed baskets. These are mesh baskets with soil into which she placed a known number of seeds. They are placed in the ground and seedlings or recruits are counted the following year.</p>
+<div class="sourceCode" id="cb129"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb129-1"><a href="DID.html#cb129-1"></a><span class="co"># 50 seeds into each of baskets</span></span>
+<span id="cb129-2"><a href="DID.html#cb129-2"></a>N &lt;-<span class="st"> </span><span class="kw">rep</span>(<span class="dv">50</span>, <span class="dv">9</span>)</span>
+<span id="cb129-3"><a href="DID.html#cb129-3"></a><span class="co"># no. of seeds planted in the fall that popped up and</span></span>
+<span id="cb129-4"><a href="DID.html#cb129-4"></a><span class="co"># survived into June</span></span>
+<span id="cb129-5"><a href="DID.html#cb129-5"></a>success &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">5</span>,<span class="dv">8</span>,<span class="dv">11</span>,<span class="dv">10</span>,<span class="dv">1</span>,<span class="dv">0</span>,<span class="dv">4</span>,<span class="dv">5</span>,<span class="dv">5</span>)</span>
+<span id="cb129-6"><a href="DID.html#cb129-6"></a>Y &lt;-<span class="st"> </span><span class="kw">cbind</span>(success, <span class="dt">failure=</span>N<span class="op">-</span>success)</span>
+<span id="cb129-7"><a href="DID.html#cb129-7"></a>germ.est &lt;-<span class="st"> </span><span class="kw">glm</span>(Y <span class="op">~</span><span class="st"> </span><span class="dv">1</span>, <span class="dt">family=</span><span class="st">&quot;binomial&quot;</span>)</span>
+<span id="cb129-8"><a href="DID.html#cb129-8"></a><span class="co"># the point estimate of establishment success</span></span>
+<span id="cb129-9"><a href="DID.html#cb129-9"></a><span class="co"># backtransform from logistic regression.</span></span>
+<span id="cb129-10"><a href="DID.html#cb129-10"></a>pr &lt;-<span class="st"> </span><span class="dv">1</span><span class="op">/</span>(<span class="dv">1</span> <span class="op">+</span><span class="st"> </span><span class="kw">exp</span>(<span class="op">-</span><span class="kw">coef</span>(germ.est)[<span class="dv">1</span>]))</span>
+<span id="cb129-11"><a href="DID.html#cb129-11"></a></span>
+<span id="cb129-12"><a href="DID.html#cb129-12"></a><span class="co"># plot the probability distribution of establishment </span></span>
+<span id="cb129-13"><a href="DID.html#cb129-13"></a>x &lt;-<span class="st"> </span><span class="kw">sum</span>(Y[,<span class="st">&quot;success&quot;</span>])</span>
+<span id="cb129-14"><a href="DID.html#cb129-14"></a>nx &lt;-<span class="st"> </span><span class="kw">sum</span>(Y[,<span class="st">&quot;failure&quot;</span>])</span>
+<span id="cb129-15"><a href="DID.html#cb129-15"></a><span class="co"># Use the Jeffreys interval, which is based on the Beta distribution </span></span>
+<span id="cb129-16"><a href="DID.html#cb129-16"></a><span class="co"># with priors of (1/2, 1/2) being the conjugate prior for the binomial.</span></span>
+<span id="cb129-17"><a href="DID.html#cb129-17"></a>eda_pr &lt;-<span class="st"> </span><span class="kw">ggplot</span>(<span class="dt">data =</span> <span class="kw">data.frame</span>(<span class="dt">x =</span> <span class="kw">c</span>(<span class="dv">0</span>, <span class="fl">0.5</span>)), <span class="kw">aes</span>(x)) <span class="op">+</span></span>
+<span id="cb129-18"><a href="DID.html#cb129-18"></a><span class="st">  </span><span class="kw">stat_function</span>(<span class="dt">fun =</span> dbeta, <span class="dt">n =</span> <span class="dv">501</span>, </span>
+<span id="cb129-19"><a href="DID.html#cb129-19"></a>                <span class="dt">args =</span> <span class="kw">list</span>(<span class="dt">shape1 =</span> x<span class="op">+</span><span class="dv">1</span><span class="op">/</span><span class="dv">2</span>, <span class="dt">shape2=</span>nx<span class="op">+</span><span class="dv">1</span><span class="op">/</span><span class="dv">2</span>)) <span class="op">+</span><span class="st"> </span><span class="kw">labs</span>(<span class="dt">y=</span><span class="st">&quot;Prob(recruiting)&quot;</span>, <span class="dt">title=</span><span class="st">&quot;Seed basket recruitment&quot;</span>) <span class="op">+</span><span class="st"> </span></span>
+<span id="cb129-20"><a href="DID.html#cb129-20"></a><span class="st">  </span><span class="kw">scale_y_continuous</span>(<span class="dt">breaks =</span> <span class="ot">NULL</span>)</span>
+<span id="cb129-21"><a href="DID.html#cb129-21"></a>eda_pr</span></code></pre></div>
+<div class="figure"><span id="fig:pr"></span>
+<img src="figs/pr-1.png" alt="Probability that seeds in one year establish as new recruits the following summer. " width="90%" />
+<p class="caption">
+Figure 4.13: Probability that seeds in one year establish as new recruits the following summer.
+</p>
+</div>
+<p>We can use other data (not shown) to characterize the size distribution of new recruits, which are approximately log-normally distributed.</p>
+<div class="sourceCode" id="cb130"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb130-1"><a href="DID.html#cb130-1"></a>m.log &lt;-<span class="st"> </span><span class="fl">0.908</span> <span class="co"># mean of log-area of new recruits</span></span>
+<span id="cb130-2"><a href="DID.html#cb130-2"></a>std.log &lt;-<span class="st"> </span><span class="fl">0.1406</span> <span class="co"># st. dev. of log-area of new recruits</span></span>
+<span id="cb130-3"><a href="DID.html#cb130-3"></a>eda_C &lt;-<span class="st"> </span><span class="kw">ggplot</span>(<span class="dt">data =</span> <span class="kw">data.frame</span>(<span class="dt">x =</span> <span class="kw">c</span>(<span class="fl">0.4</span>, <span class="fl">1.4</span>)), <span class="kw">aes</span>(x)) <span class="op">+</span></span>
+<span id="cb130-4"><a href="DID.html#cb130-4"></a><span class="st">  </span><span class="kw">stat_function</span>(<span class="dt">fun =</span> dnorm, <span class="dt">n =</span> <span class="dv">101</span>, </span>
+<span id="cb130-5"><a href="DID.html#cb130-5"></a>                <span class="dt">args =</span> <span class="kw">list</span>(<span class="dt">mean =</span> m.log, <span class="dt">sd =</span> std.log)) <span class="op">+</span><span class="st"> </span><span class="kw">labs</span>(<span class="dt">y=</span><span class="st">&quot;Prob(recruit log-size x)&quot;</span>, <span class="dt">title=</span><span class="st">&quot;Distr. of recruit sizes&quot;</span>) <span class="op">+</span><span class="st"> </span></span>
+<span id="cb130-6"><a href="DID.html#cb130-6"></a><span class="st">  </span><span class="kw">scale_y_continuous</span>(<span class="dt">breaks =</span> <span class="ot">NULL</span>)</span>
+<span id="cb130-7"><a href="DID.html#cb130-7"></a>eda_C</span></code></pre></div>
+<p><img src="figs/recruits-1.png" width="90%" /></p>
+<p>First we estimate something from data, then we use it to build functions.</p>
+<p>I use code handed down on stone tablets from Ellner, Merow, and others.</p>
+<div class="figure"><span id="fig:kernels"></span>
+<img src="figs/kernels-1.png" alt="The component kernels G, S, and F, that make up the full demographic projection kernel, K, for smooth cone flower. Unlike proection matrices, kernels scale both axes to start at size = 0 in the lower left corner. The color scaling of the full kernel differs slightly so that we can see the contributions of G, S, and F." width="90%" />
+<p class="caption">
+Figure 4.14: The component kernels G, S, and F, that make up the full demographic projection kernel, K, for smooth cone flower. Unlike proection matrices, kernels scale both axes to start at size = 0 in the lower left corner. The color scaling of the full kernel differs slightly so that we can see the contributions of G, S, and F.
+</p>
+</div>
+</div>
+</div>
+<div id="population-summaries" class="section level2">
+<h2><span class="header-section-number">4.8</span> Population summaries</h2>
+<p>Anything question that we could answer using matrices, we can answer using kernels.</p>
+<p>We estimate the finite rate of increase, <span class="math inline">\(\lambda\)</span>, the same way we did before.</p>
+<div class="sourceCode" id="cb131"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb131-1"><a href="DID.html#cb131-1"></a>(<span class="dt">lambda=</span><span class="kw">Re</span>(<span class="kw">eigen</span>(K)<span class="op">$</span>values[<span class="dv">1</span>]))</span></code></pre></div>
+<p>[1] 1.124269</p>
+<p>The same is true for the stable size distribution, reproductive value, and elasticity.</p>
+<div class="sourceCode" id="cb132"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb132-1"><a href="DID.html#cb132-1"></a>w.eigen=<span class="kw">Re</span>(<span class="kw">eigen</span>(K)<span class="op">$</span>vectors[,<span class="dv">1</span>])</span>
+<span id="cb132-2"><a href="DID.html#cb132-2"></a>stable.dist=w.eigen<span class="op">/</span><span class="kw">sum</span>(w.eigen) </span>
+<span id="cb132-3"><a href="DID.html#cb132-3"></a>v.eigen=<span class="kw">Re</span>(<span class="kw">eigen</span>(<span class="kw">t</span>(K))<span class="op">$</span>vectors[,<span class="dv">1</span>])</span>
+<span id="cb132-4"><a href="DID.html#cb132-4"></a>repro.val=v.eigen<span class="op">/</span>v.eigen[<span class="dv">1</span>] </span>
+<span id="cb132-5"><a href="DID.html#cb132-5"></a></span>
+<span id="cb132-6"><a href="DID.html#cb132-6"></a></span>
+<span id="cb132-7"><a href="DID.html#cb132-7"></a><span class="co"># The eigen-things can be combined to obtain the sensitivity and elasticity matrices.</span></span>
+<span id="cb132-8"><a href="DID.html#cb132-8"></a><span class="co"># 2. compute elasticity and sensitivity matrices</span></span>
+<span id="cb132-9"><a href="DID.html#cb132-9"></a>v.dot.w=<span class="kw">sum</span>(stable.dist<span class="op">*</span>repro.val)<span class="op">*</span>h</span>
+<span id="cb132-10"><a href="DID.html#cb132-10"></a>sens=<span class="kw">outer</span>(repro.val,stable.dist)<span class="op">/</span>v.dot.w</span>
+<span id="cb132-11"><a href="DID.html#cb132-11"></a>elas=<span class="kw">matrix</span>(<span class="kw">as.vector</span>(sens)<span class="op">*</span><span class="kw">as.vector</span>(K)<span class="op">/</span>lambda,<span class="dt">nrow=</span>n)</span>
+<span id="cb132-12"><a href="DID.html#cb132-12"></a></span>
+<span id="cb132-13"><a href="DID.html#cb132-13"></a><span class="co"># 3. plot results </span></span>
+<span id="cb132-14"><a href="DID.html#cb132-14"></a></span>
+<span id="cb132-15"><a href="DID.html#cb132-15"></a><span class="kw">par</span>(<span class="dt">mfrow=</span><span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">3</span>)) </span>
+<span id="cb132-16"><a href="DID.html#cb132-16"></a><span class="kw">plot</span>(y,stable.dist,<span class="dt">xlab=</span><span class="st">&quot;Size&quot;</span>,<span class="dt">type=</span><span class="st">&quot;l&quot;</span>,<span class="dt">main=</span><span class="st">&quot;Stable size distribution&quot;</span>)</span>
+<span id="cb132-17"><a href="DID.html#cb132-17"></a><span class="kw">plot</span>(y,repro.val,<span class="dt">xlab=</span><span class="st">&quot;Size&quot;</span>,<span class="dt">type=</span><span class="st">&quot;l&quot;</span>,<span class="dt">main=</span><span class="st">&quot;Reproductive values&quot;</span>) </span>
+<span id="cb132-18"><a href="DID.html#cb132-18"></a><span class="kw">image</span>(y,y,<span class="kw">t</span>(elas),<span class="dt">xlab=</span><span class="st">&quot;Size (t)&quot;</span>,<span class="dt">ylab=</span><span class="st">&quot;Size (t+1)&quot;</span>,<span class="dt">main=</span><span class="st">&quot;Elasticity&quot;</span>)</span></code></pre></div>
+<div class="figure"><span id="fig:Ksolutions"></span>
+<img src="figs/Ksolutions-1.png" alt="Descriptions of smooth coneflower demographics." width="90%" />
+<p class="caption">
+Figure 4.15: Descriptions of smooth coneflower demographics.
+</p>
 </div>
 </div>
 <div id="r-packges-for-demography" class="section level2">
-<h2><span class="header-section-number">4.7</span> R packges for demography</h2>
+<h2><span class="header-section-number">4.9</span> R packges for demography</h2>
 <p><span class="citation">Caswell (<a href="#ref-Caswell:2001gu" role="doc-biblioref">2001</a>)</span> is a definitive reference text for matrix models. <span class="citation">Ellner and Guckenheimer (<a href="#ref-Ellner:2006qe" role="doc-biblioref">2006</a>)</span> provides an excellent introduction, and I am sure there are many other excellent texts as well.</p>
 <p><span class="citation">Stubben and Milligan (<a href="#ref-Stubben:2007" role="doc-biblioref">2007</a>)</span> and <span class="citation">Stott, Hodgson, and Townley (<a href="#ref-Stott:2018" role="doc-biblioref">2018</a>)</span>, and <span class="citation">de la Cruz (<a href="#ref-delaCruz:2019" role="doc-biblioref">2019</a>)</span> provide R packages for stage-based matrix models with methods that go well beyond this text. In addition, there are several other packages for analyzing life tables and human demography.</p>
 <p><span class="citation">Ellner, Childs, and Rees (<a href="#ref-Ellner:2016aa" role="doc-biblioref">2016</a>)</span> is probably the best source for understanding IPMs. The R package IPMpack <span class="citation">(Metcalf et al. <a href="#ref-Metcalf:2014ab" role="doc-biblioref">2014</a>)</span> is an excellent package to implement and analyze IPMs.</p>
 </div>
 <div id="exploring-a-real-population" class="section level2">
-<h2><span class="header-section-number">4.8</span> Exploring a real population</h2>
+<h2><span class="header-section-number">4.10</span> Exploring a real population</h2>
 <p><span class="citation">Crouse, Crowder, and Caswell (<a href="#ref-Crouse1987" role="doc-biblioref">1987</a>)</span> performed a demographic analysis of an endangered sea turtle species, the loggerhead (<em>Caretta caretta</em>). Management of loggerhead populations seemed essential for their long term survival, and a popular management strategy had been and still is to protect nesting females, eggs, and hatchlings. The ground breaking work by Crouse<a href="#fn28" class="footnote-ref" id="fnref28"><sup>28</sup></a> and her colleagues compiled data to create a stage-based projection matrix to analyze quantitatively which stages are most important and least important in influencing long-term growth rate. This work led to US Federal laws requiring that US shrimp fishermen use nets that include Turtle Excluder Devices (TEDs, <a href="https://www.fisheries.noaa.gov/southeast/bycatch/turtle-excluder-device-regulations" class="uri">https://www.fisheries.noaa.gov/southeast/bycatch/turtle-excluder-device-regulations</a> ). Crouse et al. determined a transition matrix, <strong>A</strong>, for their loggerhead population:</p>
 <p><span class="math display">\[\begin{array}{c}
 H\\J_s\\J_l \\sub \\ B_1 \\B_2 \\ M
