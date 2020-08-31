@@ -554,7 +554,17 @@ For instance, we can perform eigenanalysis on this transition matrix.</p>
 <p>The first column is <span class="math inline">\(\mathbf{Aw}\)</span> and the second column is <span class="math inline">\(\lambda \mathbf{w}\)</span>. Sure enough, they look the same. Try doing the same exercise for the second eigenvalue and the second eigenvector, <span class="math inline">\(i=2\)</span>.</p>
 <p>Typically, the first eigenvalue and its corresponding eigenvector capture the most important features of the transition matrix. We call these the dominant eigenvalue, <span class="math inline">\(\lambda_1\)</span>, and its corresponding eigenvector, <span class="math inline">\(w_1\)</span>. While first solution does not capture all of the information about our transition matrix, it is the most useful.</p>
 <p>There are an infinite number of solutions to this equation because solutions can just be simple multiples of the set found with eigenanalysis. Eigenanalysis finds a set in which the solutions are all independent of each other, and which capture all of the information in <span class="math inline">\(\mathbf{A}\)</span> in a particularly useful way.</p>
-<p>In this book, we will not delve into details of eigenanalysis beyond this. What is important for us is how we use the results. Below, we describe how we use eigenanalysis to find (i) the long term asymptotic finite rate of increase <span class="math inline">\(\lambda\)</span>, (ii) the <em>stable stage distribution</em>, and the the <em>reproductive values</em> of each stage.</p>
+<p>In this book, we will not delve into details of eigenanalysis beyond this. Here are some eigenanalysis takeaways:</p>
+<ul>
+<li>you can perform eigenanalysis only on square matrices (number of rows = number of columns).</li>
+<li>there are the same number of eigenvalues of <strong>A</strong> as there are columns of <strong>A</strong>.</li>
+<li>eigenvalues are usually complex numbers, having a real part and an imaginary part.</li>
+<li>the largest eigenvalue is the one with the largest geometric mean of the real and the imaginary parts with the sign (+,-) respected.</li>
+<li>the “dominant” eigenvalue is the largest one; R will return this as the first one.</li>
+<li>each eigenvalue has a corresponding eigenvector.</li>
+<li>the number of elements in each eigenvector is the same as the number of rows in <strong>A</strong>.</li>
+</ul>
+<p>What is important for us is how we use the results. Below, we describe how we use eigenanalysis to find (i) the long term asymptotic finite rate of increase <span class="math inline">\(\lambda\)</span>, (ii) the <em>stable stage distribution</em>, and the the <em>reproductive values</em> of each stage.</p>
 </div>
 <div id="finite-rate-of-increase" class="section level3">
 <h3><span class="header-section-number">4.6.2</span> Finite rate of increase</h3>
@@ -866,14 +876,19 @@ H\\J_s\\J_l \\sub \\ B_1 \\B_2 \\ M
       0&amp;      0&amp;      0&amp;      0&amp;      0&amp; 0.8091&amp; 0.8089
 \end{array} 
 \right)\]</span></p>
-<div class="sourceCode" id="cb133"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb133-1"><a href="DID.html#cb133-1"></a>A &lt;-<span class="st"> </span><span class="kw">matrix</span>(<span class="kw">c</span>(<span class="dv">0</span>,      <span class="dv">0</span>,      <span class="dv">0</span>,      <span class="dv">0</span>,    <span class="dv">127</span>,      <span class="dv">4</span>, <span class="dv">80</span>,</span>
-<span id="cb133-2"><a href="DID.html#cb133-2"></a><span class="fl">0.6747</span>, <span class="fl">0.7370</span>,      <span class="dv">0</span>,      <span class="dv">0</span>,      <span class="dv">0</span>,      <span class="dv">0</span>, <span class="dv">0</span>,</span>
-<span id="cb133-3"><a href="DID.html#cb133-3"></a>     <span class="dv">0</span>, <span class="fl">0.0486</span>, <span class="fl">0.6610</span>,      <span class="dv">0</span>,      <span class="dv">0</span>,      <span class="dv">0</span>, <span class="dv">0</span>,</span>
-<span id="cb133-4"><a href="DID.html#cb133-4"></a>     <span class="dv">0</span>,      <span class="dv">0</span>, <span class="fl">0.0147</span>, <span class="fl">0.6907</span>,      <span class="dv">0</span>,      <span class="dv">0</span>, <span class="dv">0</span>,</span>
-<span id="cb133-5"><a href="DID.html#cb133-5"></a>     <span class="dv">0</span>,      <span class="dv">0</span>,      <span class="dv">0</span>, <span class="fl">0.0518</span>,      <span class="dv">0</span>,      <span class="dv">0</span>, <span class="dv">0</span>,</span>
-<span id="cb133-6"><a href="DID.html#cb133-6"></a>      <span class="dv">0</span>,      <span class="dv">0</span>,      <span class="dv">0</span>,      <span class="dv">0</span>, <span class="fl">0.8091</span>,      <span class="dv">0</span>, <span class="dv">0</span>,</span>
-<span id="cb133-7"><a href="DID.html#cb133-7"></a>      <span class="dv">0</span>,      <span class="dv">0</span>,      <span class="dv">0</span>,      <span class="dv">0</span>,      <span class="dv">0</span>, <span class="fl">0.8091</span>, <span class="fl">0.8089</span>), </span>
-<span id="cb133-8"><a href="DID.html#cb133-8"></a><span class="dt">nrow=</span><span class="dv">7</span>, <span class="dt">ncol=</span><span class="dv">7</span>, <span class="dt">byrow=</span><span class="ot">TRUE</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb133"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb133-1"><a href="DID.html#cb133-1"></a>A &lt;-<span class="st"> </span><span class="kw">matrix</span>(</span>
+<span id="cb133-2"><a href="DID.html#cb133-2"></a>  <span class="kw">c</span>(<span class="dv">0</span>,      <span class="dv">0</span>,      <span class="dv">0</span>,      <span class="dv">0</span>,    <span class="dv">127</span>,      <span class="dv">4</span>,    <span class="dv">80</span>,</span>
+<span id="cb133-3"><a href="DID.html#cb133-3"></a>    <span class="fl">0.6747</span>, <span class="fl">0.7370</span>, <span class="dv">0</span>,      <span class="dv">0</span>,      <span class="dv">0</span>,      <span class="dv">0</span>,     <span class="dv">0</span>,</span>
+<span id="cb133-4"><a href="DID.html#cb133-4"></a>    <span class="dv">0</span>,      <span class="fl">0.0486</span>, <span class="fl">0.6610</span>, <span class="dv">0</span>,      <span class="dv">0</span>,      <span class="dv">0</span>,     <span class="dv">0</span>,</span>
+<span id="cb133-5"><a href="DID.html#cb133-5"></a>    <span class="dv">0</span>,      <span class="dv">0</span>,      <span class="fl">0.0147</span>, <span class="fl">0.6907</span>, <span class="dv">0</span>,      <span class="dv">0</span>,     <span class="dv">0</span>,</span>
+<span id="cb133-6"><a href="DID.html#cb133-6"></a>    <span class="dv">0</span>,      <span class="dv">0</span>,      <span class="dv">0</span>,      <span class="fl">0.0518</span>, <span class="dv">0</span>,      <span class="dv">0</span>,      <span class="dv">0</span>,</span>
+<span id="cb133-7"><a href="DID.html#cb133-7"></a>    <span class="dv">0</span>,      <span class="dv">0</span>,      <span class="dv">0</span>,      <span class="dv">0</span>,      <span class="fl">0.8091</span>, <span class="dv">0</span>,      <span class="dv">0</span>,</span>
+<span id="cb133-8"><a href="DID.html#cb133-8"></a>    <span class="dv">0</span>,      <span class="dv">0</span>,      <span class="dv">0</span>,      <span class="dv">0</span>,      <span class="dv">0</span>,      <span class="fl">0.8091</span>, <span class="fl">0.8089</span>), </span>
+<span id="cb133-9"><a href="DID.html#cb133-9"></a><span class="dt">nrow=</span><span class="dv">7</span>, <span class="dt">ncol=</span><span class="dv">7</span>, <span class="dt">byrow=</span><span class="ot">TRUE</span>)</span>
+<span id="cb133-10"><a href="DID.html#cb133-10"></a><span class="kw">eigen</span>(A)<span class="op">$</span>values</span></code></pre></div>
+<pre><code>## [1]  0.9450310+0.0000000i  0.7461702+0.2130565i  0.7461702-0.2130565i
+## [4]  0.3716668+0.0000000i  0.2654528+0.0000000i -0.0884455+0.1195997i
+## [7] -0.0884455-0.1195997i</code></pre>
 <ol style="list-style-type: decimal">
 <li>Draw by hand two different types of life cycle graphs for this loggerhead population. Include the matrix elements associated with each transition.</li>
 <li>Use eigenanalysis to determine <span class="math inline">\(\lambda_1\)</span>. Explain what this tells us about the population, including any assumptions regarding the stable stage distribution.</li>
