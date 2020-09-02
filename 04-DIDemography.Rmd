@@ -611,7 +611,7 @@ In practice, we rarely use the tools of integral calculus on which IPMs so solid
 ### A size-based IPM of smooth coneflower
 Rachel Collins and colleagues have been studying populations of an endangered coneflower, *Echinecea laevigata*, in southwest Virginia, USA. Smooth coneflower is a perennial rhizomatous herbaceous plant that is sparsely distributed across mid-Atlantic and southeastern states (plantsusda.gov). It requires open spaces with little canopy cover, such as meadows or early successional habitat.
 
-Collins marked each individual in selected populations, measured size of individual coneflower plants using total leaf area, which ranged from 3-950 cm$^2$. Because she tagged individuals and tracked changes over time, she was able estimate survival and fecundity of different sized individuals (Fig. \@ref(fig:coneflower)). She also measured seed set (number of seeds per inflorescence) and recruitment. Recruitment is emergence from the seed, that is, germination, growth, and survival in the first year. 
+Collins marked each individual in selected populations, measured size of individual coneflower plants using total leaf area, which ranged from 3-950 cm$^2$. Because she tagged individuals and tracked changes over time, she was able estimate survival and fecundity of different sized individuals. She also measured seed set (number of seeds per inflorescence) and recruitment. Recruitment is emergence from the seed, that is, germination, growth, and survival in the first year. 
 
 In what follows, we see empirical data on growth, survival, and fecundity. These continuous data will allow us to produce matrices with very, very narrow size classes. The details require some understanding of probability densities, rather than probabilities, per se, but they are conceptually analogous. The continuous probability density analog of a matrix is referred to as a "kernel". Regardless, the goal is the same -- we want to use our understanding of growth, survival, and fecundity to estimate a matrix or kernel **K** where,
 $$\mathbf{K = GS + F}$$.
@@ -701,8 +701,8 @@ eda_pr
 
 We can use other data (not shown) to characterize the size distribution of new recruits, which are approximately log-normally distributed.
 ```{r recruits, fig.cap="The size distribution of new recruits; we assume that this is independent of plant size in year t.", out.width="67%"}
-m.log <- mean(log(rs$area17)) # mean of log-area of new recruits
-std.log <- sd(log(rs$area17)) # st. dev. of log-area of new recruits
+m.log <- mean(log10(rs$area17)) # mean of log-area of new recruits
+std.log <- sd(log10(rs$area17)) # st. dev. of log-area of new recruits
 eda_C <- ggplot(data = data.frame(x = c(0.4, 1.4)), aes(x)) +
   stat_function(fun = dnorm, n = 101, 
                 args = list(mean = m.log, sd = std.log)) +
@@ -759,8 +759,8 @@ params$seed.sd <- sd(resid(seed.reg))
 params$establishment.prob <- pr
 
 # recruit size distr.
-params$recruit.size.mean <- 0.908
-params$recruit.size.sd <- 0.1406
+params$recruit.size.mean <- m.log
+params$recruit.size.sd <- std.log
 
 ```
 
