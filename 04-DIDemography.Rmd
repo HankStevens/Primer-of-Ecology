@@ -424,7 +424,6 @@ In this book, we will not delve into details of eigenanalysis beyond this. Here 
 * each eigenvalue has a corresponding eigenvector.
 * the number of elements in each eigenvector is the same as the number of rows in **A**.
 
-
 What is important for us is how we use the results. Below, we describe how we use eigenanalysis to find (i) the long term asymptotic finite rate of increase $\lambda$, (ii) the *stable stage distribution*, and the the *reproductive values* of each stage.
 
 ### Finite rate of increase 
@@ -599,49 +598,53 @@ Once we have the sensitivities and elasticities, we can really begin to see what
 ## Integral projection
 What do we do if our stages seem like arbitrary categories along a continuous scale? What if size is easy to measure accurately and is a really good predictor of demographic rates, and these rates vary continuously with size? How do we decide on size classes? How do we draw seemingly arbitrary divisions between different sizes? 
 
-With *integral projection*, as opposed to matrix projection, we no
-longer have to worry about a particular number of stages or age
-classes. We select an individual-level state variable, such as body mass, length, stem diameter, or even location, that is a useful predictor of
-demographic rates. We use this continuously varying state variable in place of stages or age classes. We rely on statistical methods, such as linear regression, to describe the relations between the individual-level state variable and survival, growth, and fecundity. We then combine those relations to model how individuals in a population are likely to change from one generation to the next. 
+With *integral projection*, as opposed to matrix projection, we no longer have to worry about a particular number of stages or age classes. We select an individual-level state variable, such as body mass, length, stem diameter, or even location, that is a useful predictor of demographic rates. 
+
+We use this continuously varying state variable in place of stages or age classes. We rely on statistical methods, such as linear regression, to describe the relations between the individual-level state variable and survival, growth, and fecundity. We then combine those relations to model how individuals in a population are likely to change from one generation to the next. 
 
 In many organisms, size is often a relatively good predictor of survival and fecundity. Within a population, size is often associated with age, learning, and resource acquisition. Size is also related to the onset of reproductive maturity and initiation of development of reproductive structures. Among reproductive individuals, size is often strongly correlated with per capita reproductive output. Integral projection can use size to model size-dependent demography. 
 
-Integral projection models (IPMs) are based on the calculus of integration across continuous variables to combine information about size-dependent demographic rates and size distributions to project population abundances and sizes in the future. In practice, however, we rarely use the tools of integral calculus on which IPMs are founded. Instead, we approximate integration using very large matrices. As a simple example of this approximation, consider plant height that we measure using a meter stick. We assume that plant height is, in principle, a continuous variable that could take any real value between 0 and infinity. However, imagine that we only measure height to the nearest centimeter, and thereby create 100 height categories. This measurement process chops up continuous variation into discrete categories. When implementing integral projection models, we typically combine different techniques that are associated with continuous variation (e.g., linear regression) and with discrete variation (e.g., matrix algebra).
+Integral projection models (IPMs) are based on the calculus of integration across continuous variables to combine information about size-dependent demographic rates and size distributions to project population abundances and sizes in the future. 
+
+In practice, we rarely use the tools of integral calculus on which IPMs so solidly grounded. Instead, we approximate integration using very large matrices. As a simple example of this approximation, consider plant height that we measure using a meter stick. We assume that plant height is, in principle, a continuous variable that could take any real value between 0 and infinity. However, imagine that we only measure height to the nearest centimeter, and thereby create 100 height categories. This measurement process chops up continuous variation into discrete categories. When implementing integral projection models, we typically combine different techniques that are associated with continuous variation (e.g., linear regression) and with discrete variation (e.g., matrix algebra).
 
 ### A size-based IPM of smooth coneflower
 Rachel Collins and colleagues have been studying populations of an endangered coneflower, *Echinecea laevigata*, in southwest Virginia, USA. Smooth coneflower is a perennial rhizomatous herbaceous plant that is sparsely distributed across mid-Atlantic and southeastern states (plantsusda.gov). It requires open spaces with little canopy cover, such as meadows or early successional habitat.
 
 Collins marked each individual in selected populations, measured size of individual coneflower plants using total leaf area, which ranged from 3-950 cm$^2$. Because she tagged individuals and tracked changes over time, she was able estimate survival and fecundity of different sized individuals (Fig. \@ref(fig:coneflower)). She also measured seed set (number of seeds per inflorescence) and recruitment. Recruitment is emergence from the seed, that is, germination, growth, and survival in the first year. 
 
-In what follows, we see the empirical data on growth, survival, and fecundity. These continuous data will allow us to produce matrices with very, very narrow size classes. The details require some understanding of probability densities, rather than probabilities, per se, but they are conceptually analogous. The continuous probability density analog of a matrix is referred to as a "kernel". Regardless, the goal is the same -- we want to use our understanding of growth, survival, and fecundity to estimate a matrix or kernel **K** where,
+In what follows, we see empirical data on growth, survival, and fecundity. These continuous data will allow us to produce matrices with very, very narrow size classes. The details require some understanding of probability densities, rather than probabilities, per se, but they are conceptually analogous. The continuous probability density analog of a matrix is referred to as a "kernel". Regardless, the goal is the same -- we want to use our understanding of growth, survival, and fecundity to estimate a matrix or kernel **K** where,
 $$\mathbf{K = GS + F}$$.
 
 Next we show the the size-dependence of these processes, and the resulting kernels. In IPMs, it is common to use the logarithm of size rather than the original linear scale. This is because many processes scale with log-size. That is what we do here - all sizes are the natural log of leaf area.
 
-```{r echo=FALSE, message=FALSE}
-#data()
-dh <- read.csv("data/coneflower.csv")
+```{r load_coneflower}
+# vegetative coneflower data.
+data(coneflower)
+cf <- coneflower
 # seed set
-sf <- read_csv("data/seeds.csv")
-# recruit sizes
-rs <- read_csv("data/recruitsize.csv")
-# summary(rs)
+data(coneflowerseeds)
+sf <- coneflowerseeds
+# recruit sizes - not shown
+data(coneflowerrecruits)
+rs <- coneflowerrecruits
+# recruit sizes - not shown
 ```
 
 Survival, **S**, from one year to the next depends on size. 
 
-```{r fig.cap="Survival is represented as surviving (1) or not surviving (0). The probability of surviving to the next year, given a size in the first year is esitmated using logistic regression." }
-eda_s <- ggplot(dh, aes(logA, surv)) + lims(x=c(0.5, 2.75)) +
+```{r fig.cap="Survival is represented as surviving (1) or not surviving (0). The probability of surviving to the next year, given a size in the first year is esitmated using logistic regression.", out.width="67%" }
+eda_s <- ggplot(cf, aes(logA, surv)) + lims(x=c(0.5, 2.75)) +
   geom_jitter(height=.02, alpha=0.5) + 
   geom_smooth(method="glm", method.args = list(family = "binomial")) + labs(title="Survival")
 eda_s
 ```
 
 Growth, **G** is really how the size of a plant in one year depends on its size in the previous year. 
-```{r growth, echo=FALSE, fig.cap="Growth is the relation between size at one time vs. size in another. The fitted estimate includes the 95% confidence interval. The dashed line is the 1:1 line; above this line is growth, while below it is regression to a smaller size."}
+```{r growth, fig.cap="Growth is the relation between size at one time vs. size in another. The fitted estimate includes the 95% confidence interval. The dashed line is the 1:1 line; above this line is growth, while below it is regression to a smaller size.", out.width="67%"}
 # use only the plants alive in both years
-dhs <- filter(dh, surv==1 & !is.na(logAp))
-eda_g <- ggplot(dhs, aes(logA, logAp)) + geom_point() +
+cfs <- filter(cf, surv==1 & !is.na(logAp))
+eda_g <- ggplot(cfs, aes(logA, logAp)) + geom_point() +
   geom_abline(intercept=0, slope=1, lty=2, col="blue") +
   labs(title="Growth, Stasis, Regr.") + 
   geom_smooth(method="lm",col="red", se=)
@@ -656,24 +659,23 @@ Next we tackle fecundity, **F**, which for us is estimated using
 * the size-distribution of new recruits.
 
 Typically, bigger individuals have a greater chance of flowering, and smooth coneflower is no exception. We estimate that chance using logistic regression.
-```{r flowering, echo=FALSE, fig.cap="Plants that are larger in the first year have a greater chance of flowering in the next year." }
-eda_f <- ggplot(dh, aes(logA, flower_p)) + 
+```{r flowering, fig.cap="Plants that are larger in the first year have a greater chance of flowering in the next year.", out.width="67%" }
+cff <- filter(cf, surv==1 )
+eda_f <- ggplot(cfs, aes(logA, flower_p)) + 
   geom_jitter(height=.02, alpha=0.5) + 
   geom_smooth(method="glm", method.args = list(family = "binomial")) + labs(title="Flowering")
 eda_f
 ```
 
 It is also true that bigger plants might produce more seeds, although there is not a lot of evidence for that is these data.
-```{r seed, fig.cap="No compelling evidence that size influences seed set. Nonetheless, we will use this approach in estiamting fecundity, F."}
-sf <- mutate(sf,
-             logAs = log10(area))
+```{r seed, fig.cap="No compelling evidence that size influences seed set. Nonetheless, we will use this approach in estiamting fecundity, F.", out.width="67%"}
 eda_sd <- ggplot(sf, aes(logAs, seeds)) + geom_point() +
   geom_smooth(method="lm") + labs(title="Seed set")
 eda_sd
 ```
 
 We also need to estimate *establishment probability*, or the chance that a seed germinates and survives until the following summer. Collins estimated that using seed baskets. These are mesh baskets with soil into which she placed a known number of seeds. They are placed in the ground and seedlings or recruits are counted the following year.
-```{r pr, fig.cap="Probability that seeds in one year establish as new recruits the following summer. "}
+```{r pr, fig.cap="Probability that seeds in one year establish as new recruits the following summer.", out.width="67%"}
 # 50 seeds into each of baskets
 N <- rep(50, 9)
 # no. of seeds planted in the fall that popped up and
@@ -698,12 +700,14 @@ eda_pr
 ```
 
 We can use other data (not shown) to characterize the size distribution of new recruits, which are approximately log-normally distributed.
-```{r recruits}
-m.log <- 0.908 # mean of log-area of new recruits
-std.log <- 0.1406 # st. dev. of log-area of new recruits
+```{r recruits, fig.cap="The size distribution of new recruits; we assume that this is independent of plant size in year t.", out.width="67%"}
+m.log <- mean(log(rs$area17)) # mean of log-area of new recruits
+std.log <- sd(log(rs$area17)) # st. dev. of log-area of new recruits
 eda_C <- ggplot(data = data.frame(x = c(0.4, 1.4)), aes(x)) +
   stat_function(fun = dnorm, n = 101, 
-                args = list(mean = m.log, sd = std.log)) + labs(y="Prob(recruit log-size x)", title="Distr. of recruit sizes") + 
+                args = list(mean = m.log, sd = std.log)) +
+  labs(y="Prob(recruit log-size x)", 
+       title="Distr. of recruit sizes") + 
   scale_y_continuous(breaks = NULL)
 eda_C
 ```
@@ -730,18 +734,18 @@ params=data.frame(
     establishment.prob=NA
 )
 #survival regression
-surv.reg=glm(surv~logA,data=dh,family=binomial())
+surv.reg=glm(surv~logA,data=cf,family=binomial())
 params$surv.int <- coef(surv.reg)[1]
 params$surv.slope <- coef(surv.reg)[2]
 
 # Growth
-gr.reg <- lm(logAp ~ logA, data=dh)
+gr.reg <- lm(logAp ~ logA, data=cf)
 params$growth.int <- coef(gr.reg)[1]
 params$growth.slope <- coef(gr.reg)[2]
 params$growth.sd <- sd(resid(gr.reg))
 
 # flowering
-fl.reg=glm(flower_p~logA, data=dh,family=binomial())
+fl.reg=glm(flower_p~logA, data=cf,family=binomial())
 params$flowering.int <- coef(fl.reg)[1]
 params$flowering.slope <- coef(fl.reg)[2]
 
@@ -817,8 +821,8 @@ f.zpz=function(zp,z,params) {
 
 # 1. boundary points b, mesh points y and step size h
 # integration limits - these limits span the range of sizes observed in the data set, and then some.
-min.size=.9*min(c(log10(rs$area17), dh$logA,dh$logAp),na.rm=T)
-max.size=1.1*max(c(log10(rs$area17), dh$logA,dh$logAp),na.rm=T)
+min.size=.9*min(c(log10(rs$area17), cf$logA,cf$logAp),na.rm=T)
+max.size=1.1*max(c(log10(rs$area17), cf$logA,cf$logAp),na.rm=T)
 # number of cells in the discretized kernel
 n=100 
 # boundary points (the edges of the cells defining the kernel)
