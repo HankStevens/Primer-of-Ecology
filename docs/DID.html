@@ -837,8 +837,97 @@ Figure 4.13: Probability that seeds in one year establish as new recruits the fo
 Figure 4.14: The size distribution of new recruits; we assume that this is independent of plant size in year t.
 </p>
 </div>
-<p>First we estimate something from data, then we use it to build functions.</p>
-<p>I use code handed down on stone tablets from Ellner, Merow, and others.</p>
+<p>First we estimate something from data, then we use it to build functions. I use code handed down on stone tablets from Ellner, Merow, and others.</p>
+<p>We start with a data frame to hold summaries.</p>
+<div class="sourceCode" id="cb134"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb134-1"><a href="DID.html#cb134-1"></a><span class="co">## this sets up a list of the model parameters. These parameters will be estimated and recorded below.</span></span>
+<span id="cb134-2"><a href="DID.html#cb134-2"></a>params=<span class="kw">data.frame</span>(</span>
+<span id="cb134-3"><a href="DID.html#cb134-3"></a>    <span class="dt">surv.int=</span><span class="ot">NA</span>,</span>
+<span id="cb134-4"><a href="DID.html#cb134-4"></a>    <span class="dt">surv.slope=</span><span class="ot">NA</span>,</span>
+<span id="cb134-5"><a href="DID.html#cb134-5"></a>    <span class="dt">growth.int=</span><span class="ot">NA</span>,</span>
+<span id="cb134-6"><a href="DID.html#cb134-6"></a>    <span class="dt">growth.slope=</span><span class="ot">NA</span>,</span>
+<span id="cb134-7"><a href="DID.html#cb134-7"></a>    <span class="dt">growth.sd=</span><span class="ot">NA</span>,</span>
+<span id="cb134-8"><a href="DID.html#cb134-8"></a>    <span class="dt">flowering.int=</span><span class="ot">NA</span>,</span>
+<span id="cb134-9"><a href="DID.html#cb134-9"></a>    <span class="dt">flowering.slope=</span><span class="ot">NA</span>,</span>
+<span id="cb134-10"><a href="DID.html#cb134-10"></a>    <span class="dt">seed.int=</span><span class="ot">NA</span>,</span>
+<span id="cb134-11"><a href="DID.html#cb134-11"></a>    <span class="dt">seed.slope=</span><span class="ot">NA</span>,</span>
+<span id="cb134-12"><a href="DID.html#cb134-12"></a>    <span class="dt">seed.sd=</span><span class="ot">NA</span>,</span>
+<span id="cb134-13"><a href="DID.html#cb134-13"></a>    <span class="dt">recruit.size.mean=</span><span class="ot">NA</span>,</span>
+<span id="cb134-14"><a href="DID.html#cb134-14"></a>    <span class="dt">recruit.size.sd=</span><span class="ot">NA</span>,</span>
+<span id="cb134-15"><a href="DID.html#cb134-15"></a>    <span class="dt">establishment.prob=</span><span class="ot">NA</span></span>
+<span id="cb134-16"><a href="DID.html#cb134-16"></a>)</span></code></pre></div>
+<p>Next, we perform the analyses from which we extract means, linear relationships, and variation, and put this values into the above data frame.</p>
+<div class="sourceCode" id="cb135"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb135-1"><a href="DID.html#cb135-1"></a><span class="co">#survival regression</span></span>
+<span id="cb135-2"><a href="DID.html#cb135-2"></a>surv.reg=<span class="kw">glm</span>(surv<span class="op">~</span>logA,<span class="dt">data=</span>cf,<span class="dt">family=</span><span class="kw">binomial</span>())</span>
+<span id="cb135-3"><a href="DID.html#cb135-3"></a>params<span class="op">$</span>surv.int &lt;-<span class="st"> </span><span class="kw">coef</span>(surv.reg)[<span class="dv">1</span>]</span>
+<span id="cb135-4"><a href="DID.html#cb135-4"></a>params<span class="op">$</span>surv.slope &lt;-<span class="st"> </span><span class="kw">coef</span>(surv.reg)[<span class="dv">2</span>]</span>
+<span id="cb135-5"><a href="DID.html#cb135-5"></a></span>
+<span id="cb135-6"><a href="DID.html#cb135-6"></a><span class="co"># Growth</span></span>
+<span id="cb135-7"><a href="DID.html#cb135-7"></a>gr.reg &lt;-<span class="st"> </span><span class="kw">lm</span>(logAp <span class="op">~</span><span class="st"> </span>logA, <span class="dt">data=</span>cf)</span>
+<span id="cb135-8"><a href="DID.html#cb135-8"></a>params<span class="op">$</span>growth.int &lt;-<span class="st"> </span><span class="kw">coef</span>(gr.reg)[<span class="dv">1</span>]</span>
+<span id="cb135-9"><a href="DID.html#cb135-9"></a>params<span class="op">$</span>growth.slope &lt;-<span class="st"> </span><span class="kw">coef</span>(gr.reg)[<span class="dv">2</span>]</span>
+<span id="cb135-10"><a href="DID.html#cb135-10"></a>params<span class="op">$</span>growth.sd &lt;-<span class="st"> </span><span class="kw">sd</span>(<span class="kw">resid</span>(gr.reg))</span>
+<span id="cb135-11"><a href="DID.html#cb135-11"></a></span>
+<span id="cb135-12"><a href="DID.html#cb135-12"></a><span class="co"># flowering</span></span>
+<span id="cb135-13"><a href="DID.html#cb135-13"></a>fl.reg=<span class="kw">glm</span>(flower_p<span class="op">~</span>logA, <span class="dt">data=</span>cf,<span class="dt">family=</span><span class="kw">binomial</span>())</span>
+<span id="cb135-14"><a href="DID.html#cb135-14"></a>params<span class="op">$</span>flowering.int &lt;-<span class="st"> </span><span class="kw">coef</span>(fl.reg)[<span class="dv">1</span>]</span>
+<span id="cb135-15"><a href="DID.html#cb135-15"></a>params<span class="op">$</span>flowering.slope &lt;-<span class="st"> </span><span class="kw">coef</span>(fl.reg)[<span class="dv">2</span>]</span>
+<span id="cb135-16"><a href="DID.html#cb135-16"></a></span>
+<span id="cb135-17"><a href="DID.html#cb135-17"></a><span class="co"># seed set</span></span>
+<span id="cb135-18"><a href="DID.html#cb135-18"></a>seed.reg &lt;-<span class="st"> </span><span class="kw">lm</span>(seeds <span class="op">~</span><span class="st"> </span>logAs, <span class="dt">data=</span>sf)</span>
+<span id="cb135-19"><a href="DID.html#cb135-19"></a>params<span class="op">$</span>seed.int &lt;-<span class="st"> </span><span class="kw">coef</span>(seed.reg)[<span class="dv">1</span>]</span>
+<span id="cb135-20"><a href="DID.html#cb135-20"></a>params<span class="op">$</span>seed.slope &lt;-<span class="st"> </span><span class="kw">coef</span>(seed.reg)[<span class="dv">2</span>]</span>
+<span id="cb135-21"><a href="DID.html#cb135-21"></a>params<span class="op">$</span>seed.sd &lt;-<span class="st"> </span><span class="kw">sd</span>(<span class="kw">resid</span>(seed.reg))</span>
+<span id="cb135-22"><a href="DID.html#cb135-22"></a></span>
+<span id="cb135-23"><a href="DID.html#cb135-23"></a><span class="co"># recruitment</span></span>
+<span id="cb135-24"><a href="DID.html#cb135-24"></a>params<span class="op">$</span>establishment.prob &lt;-<span class="st"> </span>pr</span>
+<span id="cb135-25"><a href="DID.html#cb135-25"></a></span>
+<span id="cb135-26"><a href="DID.html#cb135-26"></a><span class="co"># recruit size distr.</span></span>
+<span id="cb135-27"><a href="DID.html#cb135-27"></a>params<span class="op">$</span>recruit.size.mean &lt;-<span class="st"> </span>m.log</span>
+<span id="cb135-28"><a href="DID.html#cb135-28"></a>params<span class="op">$</span>recruit.size.sd &lt;-<span class="st"> </span>std.log</span></code></pre></div>
+<p>Here we make functions that will be able use the above relationships and the data frame to make the kernel.</p>
+<div class="sourceCode" id="cb136"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb136-1"><a href="DID.html#cb136-1"></a><span class="co">## Make the kernel (cf. projection matrix)</span></span>
+<span id="cb136-2"><a href="DID.html#cb136-2"></a></span>
+<span id="cb136-3"><a href="DID.html#cb136-3"></a><span class="co"># Relies on the Riemann sum, using midpoints. Increase $n$ to decrease $h$ and improve accuracy (but reduce speed).</span></span>
+<span id="cb136-4"><a href="DID.html#cb136-4"></a></span>
+<span id="cb136-5"><a href="DID.html#cb136-5"></a><span class="co"># The variable &#39;y&#39; in the figures below is log10(Area).</span></span>
+<span id="cb136-6"><a href="DID.html#cb136-6"></a></span>
+<span id="cb136-7"><a href="DID.html#cb136-7"></a><span class="co"># 1. boundary points b, mesh points y and step size h</span></span>
+<span id="cb136-8"><a href="DID.html#cb136-8"></a><span class="co"># integration limits - these limits span the range of sizes observed in the data set, and then some.</span></span>
+<span id="cb136-9"><a href="DID.html#cb136-9"></a>min.size=.<span class="dv">9</span><span class="op">*</span><span class="kw">min</span>(<span class="kw">c</span>(<span class="kw">log10</span>(rs<span class="op">$</span>area17), cf<span class="op">$</span>logA,cf<span class="op">$</span>logAp),<span class="dt">na.rm=</span>T)</span>
+<span id="cb136-10"><a href="DID.html#cb136-10"></a>max.size=<span class="fl">1.1</span><span class="op">*</span><span class="kw">max</span>(<span class="kw">c</span>(<span class="kw">log10</span>(rs<span class="op">$</span>area17), cf<span class="op">$</span>logA,cf<span class="op">$</span>logAp),<span class="dt">na.rm=</span>T)</span>
+<span id="cb136-11"><a href="DID.html#cb136-11"></a><span class="co"># number of cells in the discretized kernel</span></span>
+<span id="cb136-12"><a href="DID.html#cb136-12"></a>n=<span class="dv">100</span> </span>
+<span id="cb136-13"><a href="DID.html#cb136-13"></a><span class="co"># boundary points (the edges of the cells defining the kernel)</span></span>
+<span id="cb136-14"><a href="DID.html#cb136-14"></a>b =<span class="st"> </span>min.size <span class="op">+</span><span class="st"> </span><span class="kw">c</span>(<span class="dv">0</span><span class="op">:</span>n)<span class="op">*</span>(max.size<span class="op">-</span>min.size)<span class="op">/</span>n </span>
+<span id="cb136-15"><a href="DID.html#cb136-15"></a><span class="co"># mesh points (midpoints of the cells)</span></span>
+<span id="cb136-16"><a href="DID.html#cb136-16"></a>y =<span class="st"> </span>( b[<span class="dv">1</span><span class="op">:</span>n] <span class="op">+</span><span class="st"> </span>b[<span class="dv">2</span><span class="op">:</span>(n<span class="op">+</span><span class="dv">1</span>)] ) <span class="op">/</span><span class="st"> </span><span class="dv">2</span></span>
+<span id="cb136-17"><a href="DID.html#cb136-17"></a><span class="co"># width of the cells</span></span>
+<span id="cb136-18"><a href="DID.html#cb136-18"></a>h =<span class="st"> </span>y[<span class="dv">2</span>]<span class="op">-</span>y[<span class="dv">1</span>]</span>
+<span id="cb136-19"><a href="DID.html#cb136-19"></a></span>
+<span id="cb136-20"><a href="DID.html#cb136-20"></a><span class="co">#############</span></span>
+<span id="cb136-21"><a href="DID.html#cb136-21"></a><span class="co"># 2. make component kernels</span></span>
+<span id="cb136-22"><a href="DID.html#cb136-22"></a><span class="kw">par</span>(<span class="dt">mfrow=</span><span class="kw">c</span>(<span class="dv">2</span>,<span class="dv">2</span>)) </span>
+<span id="cb136-23"><a href="DID.html#cb136-23"></a><span class="co"># outer  yields an outer product where each element is can be an arbitrary function.</span></span>
+<span id="cb136-24"><a href="DID.html#cb136-24"></a>G=h<span class="op">*</span><span class="kw">outer</span>(y, y, <span class="dt">FUN=</span>g.zpz, <span class="dt">params=</span>params)   <span class="co"># growth kernel</span></span>
+<span id="cb136-25"><a href="DID.html#cb136-25"></a><span class="kw">image</span>(y,y,<span class="kw">t</span>(G),<span class="dt">main=</span><span class="st">&#39;G&#39;</span>)        <span class="co"># plot it</span></span>
+<span id="cb136-26"><a href="DID.html#cb136-26"></a></span>
+<span id="cb136-27"><a href="DID.html#cb136-27"></a>P =<span class="st"> </span>G <span class="co"># placeholder;redefine P on the next line</span></span>
+<span id="cb136-28"><a href="DID.html#cb136-28"></a>S=<span class="kw">s.z</span>(y,<span class="dt">params=</span>params)   </span>
+<span id="cb136-29"><a href="DID.html#cb136-29"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span>n) P[,i]=G[,i]<span class="op">*</span>S[i]          <span class="co"># growth*survival kernel</span></span>
+<span id="cb136-30"><a href="DID.html#cb136-30"></a>{<span class="kw">image</span>(y,y,<span class="kw">t</span>(P),<span class="dt">main=</span><span class="st">&#39;GS&#39;</span>)   <span class="co"># plot it</span></span>
+<span id="cb136-31"><a href="DID.html#cb136-31"></a><span class="kw">abline</span>(<span class="dv">0</span>,<span class="dv">1</span>,<span class="dt">lwd=</span><span class="dv">3</span>) }<span class="co"># plot 1:1, which represents stasis</span></span>
+<span id="cb136-32"><a href="DID.html#cb136-32"></a></span>
+<span id="cb136-33"><a href="DID.html#cb136-33"></a>Fec=h<span class="op">*</span><span class="kw">outer</span>(y, y, f.zpz, <span class="dt">params=</span>params)   <span class="co"># reproduction kernel</span></span>
+<span id="cb136-34"><a href="DID.html#cb136-34"></a><span class="kw">image</span>(y,y,<span class="kw">t</span>(Fec),<span class="dt">main=</span><span class="st">&#39;F&#39;</span>) <span class="co"># plot it</span></span>
+<span id="cb136-35"><a href="DID.html#cb136-35"></a></span>
+<span id="cb136-36"><a href="DID.html#cb136-36"></a>K=P<span class="op">+</span>Fec <span class="co"># full kernel</span></span>
+<span id="cb136-37"><a href="DID.html#cb136-37"></a><span class="co">#image(y,y,t(K),main=&#39;full kernel&#39;)          # plot it</span></span>
+<span id="cb136-38"><a href="DID.html#cb136-38"></a></span>
+<span id="cb136-39"><a href="DID.html#cb136-39"></a><span class="co"># sometimes it&#39;s hard to see both because</span></span>
+<span id="cb136-40"><a href="DID.html#cb136-40"></a><span class="co"># the fecundity part of the kernel swamps the growth/survival part, </span></span>
+<span id="cb136-41"><a href="DID.html#cb136-41"></a><span class="co"># so here&#39;s a plotting trick to level out the kernel</span></span>
+<span id="cb136-42"><a href="DID.html#cb136-42"></a><span class="kw">image</span>(y,y,<span class="kw">t</span>(K)<span class="op">^</span>.<span class="dv">33</span>,<span class="dt">main=</span><span class="st">&#39;K&#39;</span>, </span>
+<span id="cb136-43"><a href="DID.html#cb136-43"></a>      <span class="dt">col=</span><span class="kw">grey.colors</span>(<span class="dv">12</span>, <span class="dt">start=</span><span class="dv">0</span>, <span class="dt">end=</span><span class="dv">1</span>, <span class="dt">rev =</span> <span class="ot">TRUE</span>))    <span class="co"># plot it</span></span></code></pre></div>
 <div class="figure"><span id="fig:kernels"></span>
 <img src="figs/kernels-1.png" alt="The component kernels G, S, and F, that make up the full demographic projection kernel, K, for smooth cone flower. Unlike proection matrices, kernels scale both axes to start at size = 0 in the lower left corner. The color scaling of the full kernel differs slightly so that we can see the contributions of G, S, and F." width="90%" />
 <p class="caption">
@@ -848,29 +937,29 @@ Figure 4.15: The component kernels G, S, and F, that make up the full demographi
 </div>
 <div id="population-summaries" class="section level3">
 <h3><span class="header-section-number">4.7.2</span> Population summaries</h3>
-<p>Anything question that we could answer using matrices, we can answer using kernels.</p>
+<p>Any question that we could answer using matrices, we can answer using kernels.</p>
 <p>We estimate the finite rate of increase, <span class="math inline">\(\lambda\)</span>, the same way we did before.</p>
-<div class="sourceCode" id="cb134"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb134-1"><a href="DID.html#cb134-1"></a>(<span class="dt">lambda=</span><span class="kw">Re</span>(<span class="kw">eigen</span>(K)<span class="op">$</span>values[<span class="dv">1</span>]))</span></code></pre></div>
+<div class="sourceCode" id="cb137"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb137-1"><a href="DID.html#cb137-1"></a>(<span class="dt">lambda=</span><span class="kw">Re</span>(<span class="kw">eigen</span>(K)<span class="op">$</span>values[<span class="dv">1</span>]))</span></code></pre></div>
 <p>[1] 1.061195</p>
 <p>The same is true for the stable size distribution, reproductive value, and elasticity.</p>
-<div class="sourceCode" id="cb135"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb135-1"><a href="DID.html#cb135-1"></a>w.eigen=<span class="kw">Re</span>(<span class="kw">eigen</span>(K)<span class="op">$</span>vectors[,<span class="dv">1</span>])</span>
-<span id="cb135-2"><a href="DID.html#cb135-2"></a>stable.dist=w.eigen<span class="op">/</span><span class="kw">sum</span>(w.eigen) </span>
-<span id="cb135-3"><a href="DID.html#cb135-3"></a>v.eigen=<span class="kw">Re</span>(<span class="kw">eigen</span>(<span class="kw">t</span>(K))<span class="op">$</span>vectors[,<span class="dv">1</span>])</span>
-<span id="cb135-4"><a href="DID.html#cb135-4"></a>repro.val=v.eigen<span class="op">/</span>v.eigen[<span class="dv">1</span>] </span>
-<span id="cb135-5"><a href="DID.html#cb135-5"></a></span>
-<span id="cb135-6"><a href="DID.html#cb135-6"></a></span>
-<span id="cb135-7"><a href="DID.html#cb135-7"></a><span class="co"># The eigen-things can be combined to obtain the sensitivity and elasticity matrices.</span></span>
-<span id="cb135-8"><a href="DID.html#cb135-8"></a><span class="co"># 2. compute elasticity and sensitivity matrices</span></span>
-<span id="cb135-9"><a href="DID.html#cb135-9"></a>v.dot.w=<span class="kw">sum</span>(stable.dist<span class="op">*</span>repro.val)<span class="op">*</span>h</span>
-<span id="cb135-10"><a href="DID.html#cb135-10"></a>sens=<span class="kw">outer</span>(repro.val,stable.dist)<span class="op">/</span>v.dot.w</span>
-<span id="cb135-11"><a href="DID.html#cb135-11"></a>elas=<span class="kw">matrix</span>(<span class="kw">as.vector</span>(sens)<span class="op">*</span><span class="kw">as.vector</span>(K)<span class="op">/</span>lambda,<span class="dt">nrow=</span>n)</span>
-<span id="cb135-12"><a href="DID.html#cb135-12"></a></span>
-<span id="cb135-13"><a href="DID.html#cb135-13"></a><span class="co"># 3. plot results </span></span>
-<span id="cb135-14"><a href="DID.html#cb135-14"></a></span>
-<span id="cb135-15"><a href="DID.html#cb135-15"></a><span class="kw">par</span>(<span class="dt">mfrow=</span><span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">3</span>)) </span>
-<span id="cb135-16"><a href="DID.html#cb135-16"></a><span class="kw">plot</span>(y,stable.dist,<span class="dt">xlab=</span><span class="st">&quot;Size&quot;</span>,<span class="dt">type=</span><span class="st">&quot;l&quot;</span>,<span class="dt">main=</span><span class="st">&quot;Stable size distribution&quot;</span>)</span>
-<span id="cb135-17"><a href="DID.html#cb135-17"></a><span class="kw">plot</span>(y,repro.val,<span class="dt">xlab=</span><span class="st">&quot;Size&quot;</span>,<span class="dt">type=</span><span class="st">&quot;l&quot;</span>,<span class="dt">main=</span><span class="st">&quot;Reproductive values&quot;</span>) </span>
-<span id="cb135-18"><a href="DID.html#cb135-18"></a><span class="kw">image</span>(y,y,<span class="kw">t</span>(elas),<span class="dt">xlab=</span><span class="st">&quot;Size (t)&quot;</span>,<span class="dt">ylab=</span><span class="st">&quot;Size (t+1)&quot;</span>,<span class="dt">main=</span><span class="st">&quot;Elasticity&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb138"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb138-1"><a href="DID.html#cb138-1"></a>w.eigen=<span class="kw">Re</span>(<span class="kw">eigen</span>(K)<span class="op">$</span>vectors[,<span class="dv">1</span>])</span>
+<span id="cb138-2"><a href="DID.html#cb138-2"></a>stable.dist=w.eigen<span class="op">/</span><span class="kw">sum</span>(w.eigen) </span>
+<span id="cb138-3"><a href="DID.html#cb138-3"></a>v.eigen=<span class="kw">Re</span>(<span class="kw">eigen</span>(<span class="kw">t</span>(K))<span class="op">$</span>vectors[,<span class="dv">1</span>])</span>
+<span id="cb138-4"><a href="DID.html#cb138-4"></a>repro.val=v.eigen<span class="op">/</span>v.eigen[<span class="dv">1</span>] </span>
+<span id="cb138-5"><a href="DID.html#cb138-5"></a></span>
+<span id="cb138-6"><a href="DID.html#cb138-6"></a></span>
+<span id="cb138-7"><a href="DID.html#cb138-7"></a><span class="co"># The eigen-things can be combined to obtain the sensitivity and elasticity matrices.</span></span>
+<span id="cb138-8"><a href="DID.html#cb138-8"></a><span class="co"># 2. compute elasticity and sensitivity matrices</span></span>
+<span id="cb138-9"><a href="DID.html#cb138-9"></a>v.dot.w=<span class="kw">sum</span>(stable.dist<span class="op">*</span>repro.val)<span class="op">*</span>h</span>
+<span id="cb138-10"><a href="DID.html#cb138-10"></a>sens=<span class="kw">outer</span>(repro.val,stable.dist)<span class="op">/</span>v.dot.w</span>
+<span id="cb138-11"><a href="DID.html#cb138-11"></a>elas=<span class="kw">matrix</span>(<span class="kw">as.vector</span>(sens)<span class="op">*</span><span class="kw">as.vector</span>(K)<span class="op">/</span>lambda,<span class="dt">nrow=</span>n)</span>
+<span id="cb138-12"><a href="DID.html#cb138-12"></a></span>
+<span id="cb138-13"><a href="DID.html#cb138-13"></a><span class="co"># 3. plot results </span></span>
+<span id="cb138-14"><a href="DID.html#cb138-14"></a></span>
+<span id="cb138-15"><a href="DID.html#cb138-15"></a><span class="kw">par</span>(<span class="dt">mfrow=</span><span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">3</span>)) </span>
+<span id="cb138-16"><a href="DID.html#cb138-16"></a><span class="kw">plot</span>(y,stable.dist,<span class="dt">xlab=</span><span class="st">&quot;Size&quot;</span>,<span class="dt">type=</span><span class="st">&quot;l&quot;</span>,<span class="dt">main=</span><span class="st">&quot;Stable size distribution&quot;</span>)</span>
+<span id="cb138-17"><a href="DID.html#cb138-17"></a><span class="kw">plot</span>(y,repro.val,<span class="dt">xlab=</span><span class="st">&quot;Size&quot;</span>,<span class="dt">type=</span><span class="st">&quot;l&quot;</span>,<span class="dt">main=</span><span class="st">&quot;Reproductive values&quot;</span>) </span>
+<span id="cb138-18"><a href="DID.html#cb138-18"></a><span class="kw">image</span>(y,y,<span class="kw">t</span>(elas),<span class="dt">xlab=</span><span class="st">&quot;Size (t)&quot;</span>,<span class="dt">ylab=</span><span class="st">&quot;Size (t+1)&quot;</span>,<span class="dt">main=</span><span class="st">&quot;Elasticity&quot;</span>)</span></code></pre></div>
 <div class="figure"><span id="fig:Ksolutions"></span>
 <img src="figs/Ksolutions-1.png" alt="Descriptions of smooth coneflower demographics." width="90%" />
 <p class="caption">
@@ -902,16 +991,16 @@ H\\J_s\\J_l \\sub \\ B_1 \\B_2 \\ M
       0&amp;      0&amp;      0&amp;      0&amp;      0&amp; 0.8091&amp; 0.8089
 \end{array} 
 \right)\]</span></p>
-<div class="sourceCode" id="cb136"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb136-1"><a href="DID.html#cb136-1"></a>A &lt;-<span class="st"> </span><span class="kw">matrix</span>(</span>
-<span id="cb136-2"><a href="DID.html#cb136-2"></a>  <span class="kw">c</span>(<span class="dv">0</span>,      <span class="dv">0</span>,      <span class="dv">0</span>,      <span class="dv">0</span>,    <span class="dv">127</span>,      <span class="dv">4</span>,    <span class="dv">80</span>,</span>
-<span id="cb136-3"><a href="DID.html#cb136-3"></a>    <span class="fl">0.6747</span>, <span class="fl">0.7370</span>, <span class="dv">0</span>,      <span class="dv">0</span>,      <span class="dv">0</span>,      <span class="dv">0</span>,     <span class="dv">0</span>,</span>
-<span id="cb136-4"><a href="DID.html#cb136-4"></a>    <span class="dv">0</span>,      <span class="fl">0.0486</span>, <span class="fl">0.6610</span>, <span class="dv">0</span>,      <span class="dv">0</span>,      <span class="dv">0</span>,     <span class="dv">0</span>,</span>
-<span id="cb136-5"><a href="DID.html#cb136-5"></a>    <span class="dv">0</span>,      <span class="dv">0</span>,      <span class="fl">0.0147</span>, <span class="fl">0.6907</span>, <span class="dv">0</span>,      <span class="dv">0</span>,     <span class="dv">0</span>,</span>
-<span id="cb136-6"><a href="DID.html#cb136-6"></a>    <span class="dv">0</span>,      <span class="dv">0</span>,      <span class="dv">0</span>,      <span class="fl">0.0518</span>, <span class="dv">0</span>,      <span class="dv">0</span>,      <span class="dv">0</span>,</span>
-<span id="cb136-7"><a href="DID.html#cb136-7"></a>    <span class="dv">0</span>,      <span class="dv">0</span>,      <span class="dv">0</span>,      <span class="dv">0</span>,      <span class="fl">0.8091</span>, <span class="dv">0</span>,      <span class="dv">0</span>,</span>
-<span id="cb136-8"><a href="DID.html#cb136-8"></a>    <span class="dv">0</span>,      <span class="dv">0</span>,      <span class="dv">0</span>,      <span class="dv">0</span>,      <span class="dv">0</span>,      <span class="fl">0.8091</span>, <span class="fl">0.8089</span>), </span>
-<span id="cb136-9"><a href="DID.html#cb136-9"></a><span class="dt">nrow=</span><span class="dv">7</span>, <span class="dt">ncol=</span><span class="dv">7</span>, <span class="dt">byrow=</span><span class="ot">TRUE</span>)</span>
-<span id="cb136-10"><a href="DID.html#cb136-10"></a><span class="kw">eigen</span>(A)<span class="op">$</span>values</span></code></pre></div>
+<div class="sourceCode" id="cb139"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb139-1"><a href="DID.html#cb139-1"></a>A &lt;-<span class="st"> </span><span class="kw">matrix</span>(</span>
+<span id="cb139-2"><a href="DID.html#cb139-2"></a>  <span class="kw">c</span>(<span class="dv">0</span>,      <span class="dv">0</span>,      <span class="dv">0</span>,      <span class="dv">0</span>,    <span class="dv">127</span>,      <span class="dv">4</span>,    <span class="dv">80</span>,</span>
+<span id="cb139-3"><a href="DID.html#cb139-3"></a>    <span class="fl">0.6747</span>, <span class="fl">0.7370</span>, <span class="dv">0</span>,      <span class="dv">0</span>,      <span class="dv">0</span>,      <span class="dv">0</span>,     <span class="dv">0</span>,</span>
+<span id="cb139-4"><a href="DID.html#cb139-4"></a>    <span class="dv">0</span>,      <span class="fl">0.0486</span>, <span class="fl">0.6610</span>, <span class="dv">0</span>,      <span class="dv">0</span>,      <span class="dv">0</span>,     <span class="dv">0</span>,</span>
+<span id="cb139-5"><a href="DID.html#cb139-5"></a>    <span class="dv">0</span>,      <span class="dv">0</span>,      <span class="fl">0.0147</span>, <span class="fl">0.6907</span>, <span class="dv">0</span>,      <span class="dv">0</span>,     <span class="dv">0</span>,</span>
+<span id="cb139-6"><a href="DID.html#cb139-6"></a>    <span class="dv">0</span>,      <span class="dv">0</span>,      <span class="dv">0</span>,      <span class="fl">0.0518</span>, <span class="dv">0</span>,      <span class="dv">0</span>,      <span class="dv">0</span>,</span>
+<span id="cb139-7"><a href="DID.html#cb139-7"></a>    <span class="dv">0</span>,      <span class="dv">0</span>,      <span class="dv">0</span>,      <span class="dv">0</span>,      <span class="fl">0.8091</span>, <span class="dv">0</span>,      <span class="dv">0</span>,</span>
+<span id="cb139-8"><a href="DID.html#cb139-8"></a>    <span class="dv">0</span>,      <span class="dv">0</span>,      <span class="dv">0</span>,      <span class="dv">0</span>,      <span class="dv">0</span>,      <span class="fl">0.8091</span>, <span class="fl">0.8089</span>), </span>
+<span id="cb139-9"><a href="DID.html#cb139-9"></a><span class="dt">nrow=</span><span class="dv">7</span>, <span class="dt">ncol=</span><span class="dv">7</span>, <span class="dt">byrow=</span><span class="ot">TRUE</span>)</span>
+<span id="cb139-10"><a href="DID.html#cb139-10"></a><span class="kw">eigen</span>(A)<span class="op">$</span>values</span></code></pre></div>
 <pre><code>## [1]  0.9450310+0.0000000i  0.7461702+0.2130565i  0.7461702-0.2130565i
 ## [4]  0.3716668+0.0000000i  0.2654528+0.0000000i -0.0884455+0.1195997i
 ## [7] -0.0884455-0.1195997i</code></pre>

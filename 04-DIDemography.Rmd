@@ -712,11 +712,11 @@ eda_C <- ggplot(data = data.frame(x = c(0.4, 1.4)), aes(x)) +
 eda_C
 ```
 
-First we estimate something from data, then we use it to build functions.
+First we estimate something from data, then we use it to build functions. I use code handed down on stone tablets from Ellner, Merow, and others.
 
-I use code handed down on stone tablets from Ellner, Merow, and others.
 
-```{r params, echo=FALSE}
+We start with a data frame to hold summaries.
+```{r params}
 ## this sets up a list of the model parameters. These parameters will be estimated and recorded below.
 params=data.frame(
     surv.int=NA,
@@ -733,6 +733,10 @@ params=data.frame(
     recruit.size.sd=NA,
     establishment.prob=NA
 )
+```
+
+Next, we perform the analyses from which we extract means, linear relationships, and variation, and put this values into the above data frame.
+```{r}
 #survival regression
 surv.reg=glm(surv~logA,data=cf,family=binomial())
 params$surv.int <- coef(surv.reg)[1]
@@ -764,6 +768,7 @@ params$recruit.size.sd <- std.log
 
 ```
 
+Here we make functions that will be able use the above relationships and the data frame to make the kernel.
 ```{r echo=FALSE}
 ## The functions
 # z is size in the first year
@@ -812,7 +817,7 @@ f.zpz=function(zp,z,params) {
 ```
 
 
-```{r kernels, echo=FALSE, fig.cap="The component kernels G, S, and F, that make up the full demographic projection kernel, K, for smooth cone flower. Unlike proection matrices, kernels scale both axes to start at size = 0 in the lower left corner. The color scaling of the full kernel differs slightly so that we can see the contributions of G, S, and F."}
+```{r kernels, fig.cap="The component kernels G, S, and F, that make up the full demographic projection kernel, K, for smooth cone flower. Unlike proection matrices, kernels scale both axes to start at size = 0 in the lower left corner. The color scaling of the full kernel differs slightly so that we can see the contributions of G, S, and F."}
 ## Make the kernel (cf. projection matrix)
 
 # Relies on the Riemann sum, using midpoints. Increase $n$ to decrease $h$ and improve accuracy (but reduce speed).
@@ -857,8 +862,9 @@ K=P+Fec # full kernel
 image(y,y,t(K)^.33,main='K', 
       col=grey.colors(12, start=0, end=1, rev = TRUE))    # plot it
 ```
+
 ### Population summaries
-Anything question that we could answer using matrices, we can answer using kernels.
+Any question that we could answer using matrices, we can answer using kernels.
 
 We estimate the finite rate of increase, $\lambda$, the same way we did before. 
 ```{r results='asis'}
