@@ -453,8 +453,8 @@ How do we find the stable stage distribution? It also turns out that $w_1$ provi
 \]
 where $s$ is the number of stages. 
 
-Once a population reaches its stable stage distribution each of the stages grow exponentially, because
-$$\mathbf{Aw}=\lambda \mathbf{w}$$
+Once a population reaches its stable stage distribution each of the stages grows or shrinks exponentially. You might believe that if you consider that we can represent $\mathbf{A}$ with $\lambda$.
+
 ### Calculating the stable stage distribution
 The dominant eigenvector, $w_1$, is in the same position as the dominant eigenvalue. We extract $w_1$, keeping just the real part, and divide it by its sum to get the stable stage distribution.
 ```{r echo=TRUE}
@@ -489,7 +489,7 @@ ggplot(sdg, aes(Stage, Proportion)) + geom_col()  +
 ```
 
 If we sum the abundances of the different stages, we calculate total population sizes. With that, we can calculate an annual rate of increase $N_{t+1}/N_t$. 
-```{r echo=TRUE, fig.cap="Calculating an annual finite rate of increase from a projected population shows that the population will approach asymptotically a constant geometric rate of increase. Solid points are annual growth rate; the circular point is lambda(1) from eigen analyysis."}
+```{r echo=TRUE, fig.cap="Calculating an annual finite rate of increase from a projected population shows that the population will approach asymptotically a constant geometric rate of increase. Solid points are annual growth rate; the circular point is lambda(1) from eigenanalysis."}
 # using "-" in an index removes that element
 lambda.t <- N.total[-1]/N.total[-(steps+1)] 
 qplot(x=1:steps, y=lambda.t, geom=c("line", "point")) + 
@@ -520,7 +520,7 @@ dom.pos <- which.max(Mod(etA$values))
 v1 <- Re(etA$vectors[,dom.pos])
 ( rv <- v1/v1[1] )
 ```
-Here we see that reproductive value, $rv$, increases with age or stage. This means that the expected reproductive value of an individual in the second stage is ```r round(rv[2]/rv[1],1)``` times as great as that of an individual in the first stage. In general, reproductive value of individuals in a stage increases with increasing probability of reaching fecund stages. 
+Here we see that reproductive value, `rv`, increases with age or stage. This means that the expected reproductive value of an individual in the second stage is ```r round(rv[2]/rv[1],1)``` times as great as that of an individual in the first stage. In general, reproductive value of individuals in a stage increases with increasing probability of reaching fecund stages. 
 
 ### Sensitivity and elasticity
 \index{sensitivity}Sensitivity and elasticity tell us the relative importance of each transition (i.e. each arrow of the life cycle graph or element of the matrix) in determining $\lambda$. They do so by combining information on the stable stage structure and reproductive values. 

@@ -1,0 +1,508 @@
+# Density-dependent growth {#DDgrowth}
+Let's go back to our Song Sparrow (*Melospiza melodia*) data that we used to illustrate density-independent growth --- now we graph *all* the data.
+
+```{r echo=FALSE, message=FALSE}
+library(primer)
+library(ggplot2)
+```
+
+```{r sparrowDD, echo=FALSE, out.width='50%', fig.cap='*Song Sparrow *Melospiza melodia* counts, $N$, from 1966--2003 and the relation between observed counts and annual growth rate determined from those counts, fit with ordinary least squares regression. See Chapter 3 for data source.*', fig.show='hold'}
+data(sparrows)
+sparrows$Rt <- with(sparrows, log(c(Count[-1]/Count[-length(Count)],NA) ))
+#<<MelospizaDDG1, fig=TRUE,echo=false, results=hide>>=
+s1 <- ggplot(sparrows, aes(Year,Count)) + geom_point() + geom_line()
+#<<MelospizaDDG2, fig=TRUE,echo=false, results=hide>>=
+s2 <- ggplot(sparrows, aes(Count, Rt, label=substr(as.character(Year), 3, 4 ))) + geom_text() + 
+geom_smooth(method="lm", se=FALSE) +
+labs(y=bquote(italic(r[t])),
+     x=expression("Sparrow Count ("*italic(N[t])*")"), type="n")
+s1;s2
+```
+
+```{r secondorder, echo=FALSE, eval=FALSE}
+m1 <- lm(Rt~Count, sparrows)
+summary(m1)
+Rt2 <- sparrows$Rt[2:35]
+foN <- sparrows$Count[2:35]
+soN <- sparrows$Count[1:34]
+m12 <- lm(Rt2 ~ foN + soN)
+summary(m12)
+qplot(foN, Rt2,  geom=c("point"))
+```
+
+
+When we plot the annual per capita growth rate, $r_t = \log (N_{t+1}/N_t)$, as a function of $N$, we see a pattern emerge. At low $N$, $r>0$, whereas at high $N$, $r < 0$. The annual growth rate depends on the size or density of the population. This is the sort of thing we mean we we use the term *density-dependent growth*.
+
+What might limit the population growth of these sparrows? Space available for male territories in their successional-scrub type habitat? Availability of seeds, fruits and invertebrates? We don't necessarily know precisely what limits it, but if it is something related to their own abundance, then we can treat density as a proxy for the amount of limitation.
+
+Density-dependent population growth is the case where the per capita population growth rate depends statistically on the density of the population. When the slope of that relation is negative as it is in Fig. \@ref(fig:sparrowDD), we call this *negative \index{density-dependence}density-dependence*. Negative density dependence a characteristic of a population undergoing \emph{intraspecific competition}, where individuals of the same species compete for shared resources and have negative effects on their demographic rates. So, \ldots how would we represent this algebraically?\footnote{root: Arabic. \emph{Al-jabr}}
+
+## Continuous logistic growth
+
+When it was originally introduced to ecology by Verlhurst in the late 1800s, he described the limits to population growth in terms of an upper limit $K$, 
+\begin{equation}
+\frac{dN}{dt}= rN\left(1-\frac{N}{K}\right) (\#eq:logK)
+\end{equation}
+where $K$ is referred to as the *carrying capacity*. It is the population size where the negative effects of crowding prevent additional population growth. This happens in this equation because when $N=K$, population growth rate falls to zero, because $\left(1-K/K\right)=1-1=0$. 
+
+Notice that the first part of this equation is exponential growth $rN$, which is then modified by a negative effect of a growing population. As $N$ grows, so does $(1-N/K)$ and causes $dN/dt$ to shrink. As $N$ approaches $K$, $dN/dt$ approaches zero, and the population stops changing and stays at $N=K$. 
+
+We refer to $K$ as an *\index{attractor}attractor* because $N$ moves in a deterministic fashion toward $K$ -- $K$ attracts $N$. We explore the meanings of *attractor* and related terms throughout the book.
+
+**Theory alert!** Recall that Alan @Hastings2011 identified principles of macroscopic theory of population growth, that (i) populations exponentially, unless (ii) something prevents exponential growth. Here we see one of those somethings -- negative density dependence.
+
+Another common representation of this model, the one we use here is
+\begin{equation}
+\frac{dN}{dt}= rN\left(1-\alpha N\right) (\#eq:logalpha)
+\end{equation}
+where $\alpha=1/K$. In this manner, $\alpha$ represents the per capita effect of an individual on its population growth rate. More on that next.
+
+
+## Dynamics around the equilibria --- stability
+The *stability* of a system^[A system might be nearly any set of interacting parts, such as a population, or an economy, or the internet.] is a measure of how much it tends to stay the same, in spite of external disturbances or changes in the state of the system. 
+
+The term *stability* has been given many more specific meanings, including resilience, resistant,  reactivity, and permanence. We won't go into these here, but one could consider them different facets of stability \cite{Chen2001}.^[Resistance refers to the tendency to resist change in the first place; resilience refers to the long term rate of return to an equilibrium; reactivity refers to the rate of change immediately following such a disturbance [@Neubert1997], and permanence is the degree to which a system does not simplify by entering one of its boundary equilibria.] We will focus on resilience, the tendency for a population to return an equilibrium, or be *attracted toward* an equilibrium, if it is perturbed from it.
+
+Consider the stability of a marble inside a wok. If the wok doesn't move, then the marble just sits in the lowest spot on the bottom. If the wok is bumped, the marble jiggles and rolls around a bit, but settles back down to the bottom. This is a stable system because there is a point at the bottom of the bowl (the attractor) toward which the marble rolls --- all points inside the wok allow the marble to find the lowest point (the attractor). For this reason, we call the collection of points on the inside surface of the wok the *basin of attraction*. The steeper the sides, the more quickly the marble moves toward the bottom. This rate is referred to as its *resilience*.
+
+To translate the notion of a basin into a population, let the position of marble inside the wok be the value of $N$ at any particular point. Bumping the wok is any disturbance that causes a change in $N$. The slope of the sides of the wok reflects the biology and its mathematics that cause $N$ to move quickly or slowly back toward the bottom. For the logistic model, this rate is determined by $r$ and $\alpha$, and also by $N$ itself. The attractor at the very bottom of the bowl is the population's carrying capacity, $K=1/\alpha$.^[The marble's inertia, which contributes to its momentum, is analogous to a time lag in density dependence that we wil see in the discrete model; with a time lag, a population can overshoot the equilibrium.]
+
+When we imagine a marble in a wok, it becomes easy to envision $K$ as an attractor at the bottom of the bowl.  That is why we consider the carrying capacity a stable equilibrium point, or attractor, even if other factors, such as a disturbance, may cause $N$ to deviate from it.
+
+The equilibrium we have focused on has been $K$, but recall that $N=0$ is also an equilibrium. This equilibrium is actually the edge of the wok --- the slightest jiggle, and the marble falls in and moves toward the center of the wok, $K$.  The biological analog of this "jiggle" is the additional of one or a very small numbers of individuals to an otherwise extinct population. For example, consider that a sterile Petri dish with nutrient agar has an *E. coli* population size of zero. If that *E. coli* $N=0$ gets "perturbed" with a single added cell, the population will move quickly toward its carrying capacity $K$. In this sense, $N=0$ is an equilibrium, but it is an *unstable* equilibrium. We also call such an unstable equilibrium a *repeller*.
+
+### Analytical linear stability analysis
+We are interested in the dynamics or stability of $N$ at each of the equilibria, $N^*$. Here we use *analytical linear \index{stability analysis!single species}stability analysis* to show mathematically what we described above with the marble and the wok. While somewhat limited in its scope, linear stability is nonetheless a powerful technique for dynamic model analysis.
+
+In a nutshell, what we do is determine whether the growth rate, which is zero at each equilibrium, becomes positive or negative in response to a small change in $N$. That is, if $N$ takes a tiny step away from the equilbrium, does that tiny step shrink, or grow? If a tiny step results in a shrinking of that step, back toward the equilibrium, that demonstrates stability. If a tiny step results in growth and a bigger step, that demonstrates instability. That is what analytical stability analysis tells us.
+
+Consider a plot of the growth rate, $dN/dt$ *vs.* $N$ (Fig. \@ref(fig:FNN)).  The equilibria, $N^*$, are the $N$ ($x$-axis) at which $dN/dt=0$ (points a, d). Note where population growth rate is positive and where it is negative. What will happen to this population if it finds itself at $N=50$? It will grow, moving along the $x$-axis, until population growth rate slows so much that it comes to rest where $N=1/\alpha=K=100$. Thus, $N$ changes until it converges on the equilibrium, $N^*$, where $dN/dt=0$. Alternatively at $N=110$, $dN/dt$ is negative, and so $N$ shrinks back down to $K$ (point d). This return toward $K$ means that $K$ is an attractor and a stable equilibrium.
+
+
+Next, consider $N=0$, at point a; it cannot change on its own. However, if "perturbed" at all, with the addition of one or more individuals, then this "perturbation" will grow, sending $N$ across the $x$-axis, away from $N=0$, toward $N=K$. This stasis at $N=0$, and movement away from $N=0$ with the slightest perturbation means that $N=0$ is a repeller and an unstable equilibrium.
+
+*Linear stability analysis will calculate the degree of attraction or repulsion at a local point.*
+
+```{r FNN, fig.cap="*Population growth rate, $dN/dt$, as a function of $N$. This kind of graph is called a phase portrait or phase plane. Points a--e are labelled for convenience. At values of $N$ associated with points $a$ and $d$, population growth rate equals zero. At values of $N$ associated with $b$ and $c$ growth rate is positive, and for $e$ growth rate is negative. Note this is growth rate as a function of $N$ (time is not explicitly part of this graph)*"}
+# Plot the phase portrait - use the phaseR package
+logisticPP <- phasePortrait(logistic, ylim = c(-5, 105), parameters = c(1, 100),
+              ylab="Population Growth Rate (dN/dt)", xlab="N")
+N <- c(0, 10, 50, 100, 115)
+pop.growth.rate <- expression( N * (1 -  N/100) )
+points(N, eval(pop.growth.rate), cex=1.5)
+text(N, eval(pop.growth.rate), letters[1:5],adj=c(.5,2))
+```
+
+```{r echo=FALSE, eval=FALSE}
+# Determine the stability of the equilibrium points
+logistic_stability_1   <- stability(logistic,
+                                    ystar      = 0,
+                                    parameters = c(1, 2),
+                                    system     = "one.dim")
+logistic_stability_2   <- stability(logistic,
+                                    ystar      = 2,
+                                    parameters = c(1, 2),
+                                    system     = "one.dim")
+```
+
+How fast will $N$ return to $N^*=K$, if perturbed? Let's start by imagining that we have two populations with different intrinsic rates of increase ($r=1,\,0.5$), and focus in on the growth rate at $N^*=K$ (Fig. \@ref(fig:stab2)). For which one of these populations will $dN/dt$ go to zero more quickly? If each population loses a few individuals and declines by $x$ to $N^*-x$, which population will return to $N^*$ more quickly? Not surprisingly, it is the population with the higher $r$ --- when $r=1$, its population growth rate ($y$-axis) is greater than when $r=0.5$, and therefore will return at a faster rate.
+
+Note also that this same population ($r=1$) has a negative growth rate of greater magnitude at $N^*+x$. Regardless of whether it gains or loses individuals, it will return to $N^*$ more quickly than the population with the lower $r$.
+
+```{r stab2, fig.cap="*Very close to an equilibrium, a population recovers from a perturbation, moving toward the equilibrium attractor, at rate $e^{-r}$. Left, slopes of population growth $vs.$ $N$ near the equilibrium; around the equilibrium attractor, small decreases in $N$ lead to positive growth rate, whereas small increases lead to negative growth rate; the population with the steeper slope changes faster. Right, regardless of the particular $r$ of a population, a population recovers from a perturbation, moving toward the equilibrium attractor, at rate $e^{-r}$*", fig.show="hold", out.width="50%"}
+include_graphics(c("figs/Stability2.png", "figs/Stability3.png") )
+```
+
+
+How do we quantify the rate of return at $N^*$ so that we can compare two or more populations? The slope of the curve at $N^*$ quantifies the rate of return, because the slope is the exponential return rate. To calculate the slope of a curve we use calculus, because the slope of a curve is a derivative. In this case, we need the derivative of the growth rate ($dN/dt$) with respect to the variable on the $x$-axis, $N$. Such a derivative is called a *\index{partial derivative}partial derivative*. Therefore we need the partial derivative of growth rate, with respect to $N$. This will be the slope of the growth rate with respect to $N$.
+
+To find the partial derivative, let us denote the population growth rate as $\dot{N}=dN/dt$ (``N-dot''),
+\begin{equation}
+  \label{eq:dot}
+  \dot{N} = rN\left(1-\alpha N\right).
+\end{equation}
+$\dot{N}$ is a common symbol for a time derivative such as a growth rate, and we use it here merely to simplify the notation.
+
+Given $\dot{N}$, its partial derivative with respect to $N$ is
+\begin{equation}
+  (#eq:pdlog)
+  \frac{\partial \dot{N}}{\partial N} = r - 2r\alpha N.
+\end{equation}
+Further, we are interested in the equilibrium, where $N = 1/\alpha$. If we substitute this into eq. \ref{eq:pdlog} and simplify, this reduces to 
+\begin{equation}
+  \label{eq:pdlog2}
+  \frac{\partial \dot{N}}{\partial N} = -r \, .
+\end{equation}
+At $N^*=1/\alpha$, the slope is $-r$. \emph{This negative slope at the equilibrium demonstrates the stability of this equilibrium.} 
+
+
+Near $N^*$, population growth rate is $-rx$.^[Because $\Delta y/\Delta x = - r$, i.e. the change in $y$ equals the change in $x$ times the slope.] That is, the rate of change of $x$ (Figs. \@ref(fig:stab2)) is 
+\begin{equation}
+  (#eq:9)
+  \frac{dx}{dt} = -rx
+\end{equation}
+This allows us to pretend that the perturbation will diminish exponentially, because the growth rate is constant. We say ``pretend,'' because we realize that this rate applies only in the small region where we can assume the slope is a straight line. We can describe the size of $x$ at any time $t$ by integrating this well-known differential equation with respect to time as
+\begin{equation}
+  (#eq:8)
+  x_t = x_0e^{-r t}
+\end{equation}
+where $x_0$ is the size of the initial displacement relative to the equilibrium, and $x_t$ is the size of the displacement at time $t$ relative to the equilibrium.
+
+If we choose an $x_t$ carefully, and do so for any and all such analyses, we can determine the time required to reach $x_t$ and we call that time the \emph{characteristic return time}. To determine the characteristic return time, we will let $x_t=x_0/e$, thus defining the characteristic return time as the amount of time required to reduce the perturbation by 63\% (i.e. $1/e$). We can solve for $t$ by dividing through by $x_0$ and taking the $\log$ of both sides,
+\begin{align}
+  (#eq:returntime)
+  \frac{x_0}{e} &= x_0e^{-r t}\\
+  \log\left(e^{-1}\right) &= -r t\\
+  t &= -\frac{1}{\left(-r\right)}.
+\end{align}
+Thus we see return time, $t$, here is a positive number, with the same units as $r$, and depends on the slope of the the growth rate with respect to $N$. It also depends on the assumption of linearity very close to the equilibrium.
+
+*To review*, we took the partial derivative of $dN/dt$ with respect to $N$, and then evaluated the partial derivative at $N^*$ to get the rate of change of the perturbation, $x$. A negative value indicates that the perturbation will decline through time, indicating a stable equilibrium or attractor. A positive value would indicate that the perturbation will grow over time, thus indicating an unstable equilibrium, or a repellor.
+
+We can use R's minimal symbolic capabilities to get derivatives. Here we get the partial derivative and then evaluate it for the two equilibria (Fig. \@ref(fig:FNN)).
+```{r symbolic}
+alpha <- 0.01; r <- 1
+pop.growth.rate <- expression( r * N * (1 -  alpha*N) )
+# find the partial derivative of dNdt
+dF.dN <- D(pop.growth.rate,"N")
+dF.dN # here it is
+# set N equal to zero and the carrying capacity
+N <- c(0, 1/alpha) 
+# calculate the slopes of dN/dt vs. N at those two points
+eval(dF.dN)
+```
+
+The first value, 1, corresponds to the first value of $N$, which is $N=0$. Because it is positive, this indicates that the perturbation will increase with time, meaning that $N=0$ is a repellor. The second value, $-1$, is negative, and so indicates that the perturbation will decrease with time, meaning that $N=1/\alpha$ is an attractor. 
+
+### Projection with numerical integration 
+In simple density-independent growth, we were able to project a population using the integral of the exponential growth equation, $N_t=N_0 e^{rt}$. As our models become more complex, we are no longer able to to do that. Instead, we use *numerical integration* to project models of continuous growth through time. We use numerical techniques that turn the infinitely small intervals of calculus ($dx$, $dy$) into very, very small, but finite steps. Mathematicians and computer scientists have devised very clever ways of doing this very accurately and precisely. In R, the best package for this is `deSolve`, which contains several *solvers* for differential equations that perform numerical integration. We will access these solvers (i.e. numerical integraters) using the `ode` function in the `deSolve` package. This function, `ode`, is a wrapper for the underlying suite of functions that do the work. 
+
+When we have an ordinary differential equation (ODE) such as logistic growth,$dN/dt = rN(1-\alpha N)$ we say that we "solve" the equation,
+
+* over a particular time interval
+* given a set of parameters and 
+* particular initial conditions or initial population size. 
+
+For instance, we say that we solve the logistic growth model for time at $t=0,\, 1 \ldots \, 20$, with parameters $r=1$, $\alpha=0.001$, and $N_0=10$. 
+
+Let's do an example with `ode`, using logistic growth. We first have to define a function in a particular way. The arguments for the function must be, in order: time, a vector of populations, and a vector or list of model parameters. Note that this function is already in the primer package as `clogistic()`, so you don't have to run this code to use the function.
+```{r}
+clogistic <- function(time, y, parameters){
+  # y is a single value of N; if we have more than one population, 
+  # e.g. competition, then y would have two values, one for 
+  # each population.
+  
+  # parameters is a vector of...parameters....
+  
+  # Both y and parameters have names for each element,
+  # e.g., y <- c(N=10) - see the text.
+  
+  with(as.list(c(y, parameters)), {
+    # "with" creates an "environment" within which R looks for values
+    # c() combines the two vectors into one
+    # as.list() turns the resulting vector into a list
+    
+    # our differential equation for growth
+    dN.dt <- r * N * (1 - alpha * N)
+    
+    # making the function create output, which must be a list with
+    # one element
+    return( list( dN.dt ) )
+  } )
+}
+```
+
+While it isn't necessary, we use `with()` to allow us to use the names of variables and parameters [@Petzoldt:2003dp]. This works only when `y` and `p` are vectors with named variables and parameters. Finally, we use `return` to cause the function to produce the derivative in a `list`. 
+
+The following is equivalent, but slightly less readable or transparent.
+```
+  logistic2 <- function(t, y, p){
+    dN.dt <- p[1] * y[1] * (1 - p[2] * y[1])
+    return( list( dN.dt ) )
+```
+
+To solve the ODE, we will need to specify parameters--we wil have to tell R the values we want to use for $r$ and $\alpha$.
+```{r}
+p <- c(r=1, alpha = 0.001)
+```
+
+We also need to tell R the size of the population to start with, at $t=0$, or $N_0$. We refer to this as the *initial condition*, and we will start with a population size of $N_0=1$. We also need to supply the time steps we want as output. R will project the population size for all times up until and including the last time step we specify.
+```{r}
+# We name the state variable and the parameters
+y0 <- c(N=1)
+t <- 0:20
+```
+Now you put it all into `ode()`, with the correct arguments. The output is a matrix, with the first column being the time steps, and the remaining being your state variables. Because you loaded `primer`, the `deSolve` package should be loaded already.^[Loading the `primer` package loads `deSolve` automatically.]
+```{r}
+out <- ode(y=y0, times=t, func=clogistic, parms=p)
+out[1:5,]
+```
+
+
+We can plot the output as well. The `deSolve` package directs R to use special methods to plot output from `ode`. 
+```{r odeplot, fig.cap="*Output from a numerical integration of logistic growth, where N0==10, r=1, alpha=0.001.*"}
+plot(out)
+```
+
+Here we see the classic S-shaped curve of logistic growth. Regardless where we start, the population will always settle down on $K=1/\alpha$. 
+**Before reading on, predict** the shape of this curve if:
+
+* $r$ is smaller, or larger.
+* $\alpha$ is smaller, or larger.
+* the initial population size is above $K$
+
+```{r logisticVariety, echo=TRUE, fig.cap="*How variation in logistic growth parameters influence the dynamics.*", out.width="75%"}
+t=seq(0, 20, by=0.01); r <- c(.5, 1.5)
+alpha <- c(0.002, 0.001); N0 <- c(10, 1500)
+input <- expand.grid(r=r, alpha=alpha, N=N0)
+outdf <- NULL
+#outdf <- data.frame(time=NULL, N=NULL, N0=NULL, r=NULL, alpha=NULL)
+for(i in 1:nrow(input)) { 
+  y <- c(N=input[i,"N"])
+  p <- c(r=input[i,"r"], alpha=input[i,"alpha"] )
+  out <- ode(y, times=t, clogistic, p)
+  out2 <- cbind(out, N0=y, r=p["r"], alpha=p["alpha"])
+  outdf <- rbind.data.frame(outdf, out2)
+}
+outdf$N0 <- as.factor(outdf$N0 )
+outdf$alpha <- as.factor(outdf$alpha )
+ggplot(outdf, aes(time, N, colour=N0, linetype=alpha) ) + geom_line() + 
+  facet_grid(r~., labeller=label_both) + theme_bw()
+```
+
+We see that the  refer to $K$ as an *\index{attractor}attractor* because $N$ moves in a deterministic fashion toward $K$. We explore the meanings of *attractor* and related terms throughout the book.
+
+The `phaseR` package has some sweet plotting functions for systems of 1 or two ODEs. We used it above for the phase portrait, and here we use it for the trajectories. 
+```{r phaserLogistic, fig.cap="*A velocity field is kind of like a magnetic field, showing what rate and direction of trajectories throughout this space. A nullcline is an isocline where the rate of change is zero (the straight horizontal lines in this figure). Here r = 1, and K=2.*"}
+# Plot the velocity field, nullclines and several trajectories
+
+## These create arrows (vectors) whose length and direction
+## reveal the velocity at different points
+logistic_flowField     <- flowField(logistic,
+                                    xlim       = c(0, 5),
+                                    ylim       = c(-1, 3),
+                                    parameters = c(1, 2),
+                                    points     = 21,
+                                    system     = "one.dim",
+                                    add        = FALSE)
+## A 
+logistic_nullclines    <- nullclines(logistic,
+                                     xlim       = c(0, 5),
+                                     ylim       = c(-1, 3),
+                                     parameters = c(1, 2),
+                                     system     = "one.dim")
+logistic_trajectory    <- trajectory(logistic,
+                                     y0         = c(-0.5, 0.5, 1.5, 2.5),
+                                     tlim       = c(0, 5),
+                                     parameters = c(1, 2),
+                                     system     = "one.dim")
+```
+
+
+
+## Other forms of density-dependent growth
+
+There are many forms of density-dependent growth, some of which will we describe below. Some, like the theta-logistic and the Richards models, are more flexible and have more parameters. Others, like the Gompertz model, are used more widely in other fields, such as cancer research for tumor growth, von Bertlanaffy for body size growth, and the Ricker model for fisheries.
+
+### Effects of N on birth and death rates
+
+Let's start by decoupling the density-dependence of birth and death rates [@Gotelli2001]. 
+
+Recall from chapter 3 that $r=b-d$. Now we will let $b$ and $d$ be functions of population size $N$ ($b=F(N)$, $d=G(N)$). We could let $F(N)$ and $G(N)$ take a wide variety of different forms. For now, however, let's say that $N$ has *linear* effects on these rates so that 
+\begin{align}
+b &=b_0 + aN\\
+d &= d_0 + cN
+\end{align}
+which appear in Fig. \@ref(fig:bd). 
+
+```{r bd, echo=FALSE, fig.cap="*Per capita birth and death rates can be functions of density (dashed lines). The carrying capacity (K) occurs at the point where the per capita birth and death rates are equal. The solid line represents the per capita population growth rate, which is zero when N=K.*", out.width="75%"}
+dd = function(N, e, f){e + f*N} # create the function you want
+pgr <- function(N, b0, d0, a, c){ b0-a*N - (d0+c*N) }
+b0 <- 1; a=.0075; d0 <- 0.1; c=.0075
+myData <- data.frame( N=c(0, 100) ) # ggplot requires a data frame
+p <- ggplot(data=myData, aes(x=N)) + # set the basic properties of the plot
+  # in the stat_function, we indicate the parameters in our equation.
+  stat_function(fun=dd, geom="line", 
+                args=list(e=b0, f=-a), linetype=2) + 
+  stat_function(fun=dd, geom="line", 
+                args=list(e=d0, f=c), lty=5) + 
+    stat_function(fun=pgr, geom="line", 
+                  args=list(b0=b0, d0=d0, a=a, c=c)) + 
+  labs(y="Per capita birth and death rates", x="Population size (N)") + 
+  theme_classic() + theme(axis.text.x = element_blank()) +
+  geom_hline(yintercept=0, lty=3)+
+  scale_x_continuous(expand = c(0, 0)) 
+p +
+  annotate("text", x=95, y=0.02, label = "y = 0",
+           vjust=0)  +
+    annotate("text", x=1, y=b0, label = "b0",
+           hjust=0, vjust=0)  +
+    annotate("text", x=80, y=.8, label = "birth rate",
+           hjust=0, vjust=-.5)  +
+  
+    annotate("text", x=1, y=d0, label = "d0",
+           hjust=0, vjust=-.5)  +
+  
+    annotate("text", x=80, y=.3, label = "death rate",
+           hjust=0, vjust=-.5)  +
+  annotate("text", x=(b0-d0)/(a+c), y=-.1, label = "K") +
+  annotate("text", x=85, y=-.5, label = "dN/(Ndt)") 
+```
+
+Now population growth rate is 
+\begin{align}
+\frac{dN}{dt} &= [(b_0-aN)-(d_0 + cN)] N\\
+& =[(b_0-d_0) - (a+c)N] N\\
+& = (b_0-d_0)(1-\frac{a+c}{b_0-d_0}N)N
+\end{align}
+where the net negative effect of $N$ on per capita population growth rate is $$\alpha = \frac{a+c}{b_0-d_0}$$
+where the numerator is the total direct negative effect of $N$ on birth and death rates, and the denominator is $r$, the net maximum per capita growth rate which occurs as $N$ approaches zero. 
+
+### Theta-logistic growth
+Here we explore a simple extension of the logistic model, the \index{logistic growth!theta-logistic}*theta-logistic* model, which adds a parameter to increase flexibility and generality.
+\begin{equation}
+  (#eq:11)
+  \frac{dN}{dt} = rN\left(1 - \left(\alpha N\right)^\theta \right) 
+\end{equation}
+Here $\theta$ is strictly positive ($\theta>0$); $\theta=0$ means zero growth, and $\theta < 0$ would mean negative growth below $K$, and unbounded positive growth above $K$. Approximations of eq. \@ref(eq:11) that allow $\theta \leq 0$ are possible [@Sibly:2005ys], but the interpretation becomes strained.
+
+Here we make a function that we can use with `ode()`, the numerical integration function. You'll need to run this code to use it later.
+```{r}
+thetalogistic  <- function(times, y, parms) {
+  ## with() and as.list() create an environment in which R will see 
+  ## the named elements in `parms`. 
+  n <- y[1]
+  with(as.list(parms), {
+    dN.dt <- r * n * (1-(alpha*n)^theta)
+    return( list( c(dN.dt) ) ) }  )
+}
+```
+
+By varying $\theta$, we can change the linear density dependence of the simple logistic model to curvilinear density dependence (Fig. \ref{th1}). This curvilinearity arises because when $\alpha N < 1.0$ (i.e. $0 < N < K$),
+\begin{align*}
+  (#eq:12)
+   \left(\alpha N\right)^\theta &< \alpha N,\quad \theta > 1\\
+   \left(\alpha N\right)^\theta &> \alpha N,\quad \theta < 1.
+\end{align*}
+In contrast, when $\alpha N=1.0$, then $\left(\alpha N\right)^\theta < \alpha N$. This means that $\theta$ does not affect $K$. 
+
+When $\theta > 1$, this weakens density dependence at low $N$, so the population grows faster than logistic, all else being equal. When $\theta < 1$, this strengthens density dependence at low $N$, causing the population to grow more slowly than logistic, all else being equal.
+
+The effects of $\theta$ on density dependence controls the shape of relation between growth rate $vs$. $N$ (a.k.a. the production function, Fig. \ref{th2}). First, note that for a given $r$, growth rate for $N<K$ increases with $\theta$. Second, note that the position of peak of the production function shifts to the right as $\theta$ increases. That is, as $\theta$ increases, the $N$ at which the maximum growth rate occurs also increases. If we wanted to shift the peak growth rate to a higher $N$ without also increasing the height of the peak, we could decrease $r$ simultaneously. 
+ 
+\begin{figure}[ht]
+  \centering
+  \subfloat[Density Dependence]{\includegraphics[width=.32\linewidth]{thetaDD.pdf}\label{th1}}
+  \subfloat[Growth Rate]{\includegraphics[width=.32\linewidth]{thetaGR.pdf}\label{th2}}
+  \subfloat[$N$ Dynamics]{\includegraphics[width=.32\linewidth]{thetaN.pdf}\label{th3}}
+  \caption{Theta-logistic growth. In a review of population dynamics, Sibly et al. \cite{Sibly:2005ys} use theta-logistic density dependence, $1-(N/K)^{\theta}$, to show that populations most frequently have a concave-up $\theta < 1$ pattern. }
+\end{figure}
+
+We could speculate on biological meaning of $\theta$ and the shape of the denisty dependence. For instance, very high $\theta$ suggests a threshold, wherein the population exhibits little density dependence until very close to $K$. Perhaps this is related to territoriality, or a spatial refuge from predators. Alternatively, low $\theta$ might suggest resource preemption, wherein a small number of individuals can sequester large amounts of resources, but increasing $N$ results in reduced preemption. For organisms with very plastic body sizes (plants, fish), this could mean that at low $N$, average body size is large, but as $N\rightarrow K$, average body size decreases. While $\theta$, \emph{per se}, is devoid of mechanism, discovering the magnitude of $\theta$ for different types of species \cite{Sibly:2005ys} could lead to the generation of new testable hypotheses about what controls populations. 
+
+
+```{r ThetaDD, fig.cap="*Theta-logistic per capita rates, population growth rates, and dynamics for $\theta<1$, $\theta=1$, and $\theta>1$. In a review of population dynamics, Sibly et al. (2005) use theta-logistic density dependence to show that populations most frequently have a concave-up, $\theta < 1$, pattern.*", fig.show="hold", out.width="33%"}
+
+r <- .75; alpha <- 0.01; theta <- c(.5, 1, 2); N <- 0:110
+## Per capita PGR
+theta.out <- sapply(theta, function(th) {1-(alpha*N)^th})
+matplot(N, theta.out, type='l', col=1)
+abline(h=0)
+legend('topright', legend=paste("theta =", c(2, 1, 0.5) ), lty=3:1, bty='n')
+
+## PGR
+thetaGR.out <- sapply(theta, function(th) {r*N*(1-(alpha*N)^th)})
+matplot(N, thetaGR.out, type='l', col=1)
+abline(h=0)
+##
+r <- 3.4
+lines(N, r*N*(1-(alpha*N)^theta[1]))
+text(12, 24, "r=3.4")
+
+prms <- c(r = 0.75, alpha = 0.01, theta=1)
+t <- seq(0,20, by=.1)
+thetaN <- sapply(theta, function(th) {prms["theta"] <- th
+                                      ode(y=1, times=t, thetalogistic, prms)[,2] } )
+matplot(t, thetaN, type='l')
+```
+
+### Allee effect
+The *Allee effect* is a positive relation between average individual fitness and population size [@Drake2011al]. For us, this translates as a positive relation between per capita population growth rate and population size. 
+
+An Allee effect is likely to arise in sexually reproducing populations. This occurs because at very low population sizes, male and female individuals are less likely to encounter each other and so mating frequency is very low. As population size increases, females and males are more likely to encounter each other, and mating increases. 
+
+One way to represent this is with an additional term in our model, which incorporates a threshold population size, below which population growth rate is negative. Here $a$ is the threshold population size,
+\begin{equation}
+\frac{dN}{dt}= rN\left(1-\alpha N\right)\left(1 - \frac{a+\tau}{N+\tau}\right) (\#eq:logallee)
+\end{equation}
+
+so that if the population size falls below the threshold, it cannot recover ($N<a$, $dN/dt < 0$). As long as $\tau$ is greater than 0, this is a nicely behaved function. A function to project this dynamic is available in `primer` as `alogistic()`.
+
+```{r echo=FALSE, eval=FALSE}
+ alogistic <- function(t, y, p){
+   # 
+   with(as.list(c(y,p)),{
+         dN.dt <- r * N * (1 - alpha*N) * (1 - (a+tau)/(N+tau) )
+            return( list( dN.dt ) )
+   })
+ }
+```
+
+```{r allee, fig.cap="*The Allee effect the a positive relation bewteen population growth rate and population size, often best envisioned as a negative consequence of small population size. Here, the threshold population size is 20, meaning that $dN/dt < 0$, when $N < 20$.*", out.width="75%"}
+## for simplicity, we let r=1 so we can ignore it here.
+pgrA <- function(N, alpha, a, tau){ N*(1-alpha*N)*(1-(a+tau)/(N+tau)) }
+myData <- data.frame( N=c(0, 110) ) # ggplot requires a data frame
+p <- ggplot(data=myData, aes(x=N)) + # set the basic properties of the plot
+  # in the stat_function, we indicate the parameters in our equation.
+    stat_function(fun=pgrA, geom="line", n=1001,
+                  args=list(alpha = 0.01, a=20, tau=.1)) + 
+  labs(y="Population growth rate (dN/dt)", x="Population size (N)") + 
+  #theme_classic() + 
+  geom_hline(yintercept=0, lty=3)+
+  scale_x_continuous(expand = c(0, 0)) 
+p
+
+```
+
+### The integral of logistic growth
+We might as well add that there is an expression for $N_{t}$, analogous to $N_{t}=N_{0}\exp(rt)$ for exponential growth. If we integrate eq. \@ref(eq:logalpha) with respect to time, we have
+\begin{equation}
+N_{t}=\frac{N_{0}e^{rt}}{1+\alpha N_{0}\left(e^{rt}-1\right)}.
+\label{fig:clogisticNt}
+\end{equation}
+Note the resemblance to the exponential equation. We have the exponential equation in the numerator, divided by a correction factor which starts at 1 when $t=0$. The correction factor then grows with time, at a rate which is virtually the same as exponential growth but adjusted by $\alpha$ and scaled by $N_{0}$. Thus when $t=0$, and if $N_0$ is small, we have near-exponential growth, decreased merely by a factor of $\alpha N_0$. 
+
+## Discrete Density-dependent Growth
+The continuous logistic equation is probably our simplest example of population growth, aside from pure exponential growth. Here we describe the discrete-time version. Recall that the discrete time version of population growth rate is 
+$$\frac{\Delta N}{\Delta t}=\frac{N_{t+1}-N_t}{(t+1) - t}=N_{t+1}-N_t$$
+because our time step is one (1) entire time unit (typically a year). The discrete time logistic function is therefore
+\begin{equation}
+  N_{t+1} - N_t = r_d N_t\left(1-\alpha N_t\right)
+  (\#eq:3dd)
+\end{equation}
+
+Here $r_d$ has the same meaning it did in chapter 3, where $r_d = b-d-bd$. When $r_d$ is quite small in a slow growing population, this is very similar to the continuous form. However, as $r_d$ becomes larger in a faster growing population, the dynamics can get quite exciting.
+
+Let's explore the dynamics of this numerically by writing a function to project discrete logistic growth. A pre-written function is available in `primer` by the same name. 
+
+To project a discrete time model, we have to project entire one year at a time. We did this for structured demographic models, and unstructured geometric growth and our sparrow simulation. We will do it here using a function in the `deSolve` package that imposes a one year time step, specifically for discrete time models, including difference equations.^[`deSolve` allows several different ways to project discrete time models. Consult `vignette('deSolve', package='deSolve')`.]
+
+We set up the model as we did with the continuous time model. 
+```{r}
+dlogistic <- function (t, y, p) {
+  with( as.list(c(y, p)),{
+      N.diff <-  rd * N * (1 - alpha * N) 
+      return(list(N.diff))  }) }
+```
+
+We then specific the parameters, the initial state or population size, and the time steps. Note that for a discrete time model the **time steps must be annual increments**. We then project the population.
+```{r dlogistic, fig.cap="*Discrete growth can look a lot like continuous growth as long as the per capita growth rate is low.*"}
+p <- c(rd=1, alpha=.01)
+y <- c(N=10)
+years <- 0:10
+outd <- ode(func = dlogistic, y = y, times = years,
+ parms = p, method = "euler")
+outd <- as.data.frame(outd)
+ggplot(outd, aes(x=time, N)) + geom_line() + geom_point() +
+  annotate("text", x=1, y =1/p["alpha"]+2, label="K = 1/alpha")
+```

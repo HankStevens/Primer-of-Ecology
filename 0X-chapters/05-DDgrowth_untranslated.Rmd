@@ -1,0 +1,358 @@
+
+
+The function first makes a new vector containing $N_0$, uses a for-loop to implement eq. \@ref(eq:3dd) for each time step, and then returns the vector $N$.
+
+
+With discrete logistic growth, if we start with a small population ($N<<K$), we will see the population rise and gradually approach $K$ or $1/\alpha$ (Fig. \@ref(fig:dlg)). We refer to $K$ as an *\index{attractor}attractor* because $N$ moves in a deterministic fashion toward $K$. We explore the meanings of *attractor* and related terms throughout the book.
+
+  \begin{figure}[ht]
+    \centering
+    \includegraphics[width=.5\linewidth]{DLG1.pdf}
+    \caption{Discrete logistic growth with $r_d=1$, $\alpha = 0.01$. }
+    \label{fig:dlg}
+  \end{figure}
+
+\medskip \noindent
+\begin{boxedminipage}{\linewidth}{\footnotesize
+\paragraph{Graphing Population Size}
+We can use the function created above, `dlogistic`, with default settings, to generate a population projection.
+Now we plot the projection, and put in a dotted line for $1/\alpha$ or $K$.
+```{r DLG1}
+t <- 15; a <- 0.01
+Nts <- dlogistic(alpha=a, t=t)
+qplot(0:t, Nts) + geom_hline(yintercept =1/a, lty = 3)
+```
+
+### Relations between growth rates and density
+We already know a lot about one description of density dependent growth, the discrete logistic model. In particular, we know that with a constant per capita negative effect, $\alpha$,  the population size at which growth falls to zero is $K$. Let us explore further how the *per capita* growth increment, and the *population* growth increment, vary with population size.
+
+Casual examination of Fig. \@ref(fig:dlg) suggests that the total population growth increment ($\Delta N_t = N_{t+1}-N_t$) starts out small when both $t$ and $N$ are small, accelerates as $N$ grows, and then over time, slows down and reaches an asymptote of $K$. Is this changing rate of population growth a function of time, or a function of density? Let us first consider the growth increment as a function of $N$.
+
+First consider the relation between the population growth increment and population size (Fig. \@ref(pgi)). We see it increase as $N$ grows, and then decrease as $N$ approaches $K$. The pattern is fairly symmetric. That is, it increases and decreases at about the same rates. 
+
+Next consider the per capita growth increment ($\Delta N_t / N_t$; Fig. \@ref(ppgi)). There is a direct linear relation between the per capita growth increment and the size of the population --- this is *linear density dependence*. This linear dependence on $N$ comes from our assumption that the per capita negative effect is a constant, $\alpha$.
+
+\medskip \noindent
+\begin{boxedminipage}{\linewidth}{\footnotesize
+\paragraph{(Per Capita) Population Growth Increment $vs$. $N$ (Fig. \ref{fig:DGI1})}
+Using the previous projection, we now capture both the total and the per capita growth increment per unit time, from $t$ to $t+1$. We graph these versus $N_t$, population size at $t$.
+<<>>=
+total.incr <- Nts[1:t+1] - Nts[1:t] 
+per.capita.incr <- total.incr/Nts[1:t]
+<<PGI, fig=true, include=false>>=
+plot(Nts[1:t], total.incr)
+<<PPGI, fig=true, include=false>>=
+plot(Nts[1:t], per.capita.incr)
+@ 
+}\end{boxedminipage} \medskip
+
+\begin{figure}[ht]
+  \centering
+  \subfloat[Population Growth Increment]{\includegraphics[width=.47\linewidth]{PGI.pdf} \label{pgi}}
+  \subfloat[Per capita Growth Increment]{\includegraphics[width=.47\linewidth]{PPGI.pdf} \label{ppgi}}
+  \caption{Relations between the total and per capita discrete growth increments and population size.}
+  \label{fig:DGI1}
+\end{figure}
+
+Let's use a simple analytical approach to understand Figs. \ref{pgi} and \ref{ppgi} a little better. Take a look at eq. \ref{eq:3dd}. First let's rearrange the expression so that we can set the \emph{increment} of change equal to zero. How would you do that? Take a minute and try it, before you look at the answer below. 
+
+Setting the increment of change equal to zero, we rearrange with the population growth increment on the left, and then set it to zero.
+\begin{align}
+N_{t+1}-N_{t} &= r_{d}N_{t}\left(1-\alpha N_{t}\right) \label{eq:pgi}\\
+N_{t+1}-N_{t} &= r_{d}N_{t} - r_d\alpha N_{t}^2 \label{eq:quad}\\
+0 &= r_{d}N_{t} - r_d\alpha N_{t}^2 \label{eq:quad0}
+\end{align}
+What do we notice? One observation we could make is that we have a \index{quadratic equation}quadratic equation,\footnote{$ax^2+bx+c=0$} where the intercept is zero. This tells us that perhaps Fig. \ref{pgi} is symmetric because it is a quadratic expression in terms of $N$. 
+
+What would satisfy this quadratic expression (eq. \ref{eq:quad0}), that is, cause the growth increment to equal zero? Well, if $r_{d}$ or $N_{t}$ equal zero, those would yield potentially interesting solutions. Assuming neither $r_{d}$ nor $N_{t}$ equal zero, we can divide each side by these, and we are left with the solution we found in eq. \ref{eq:2add3}, that the growth increment will be zero when $N_{t}=\frac{1}{\alpha}=K$.\label{sec:per-capita-popul}
+
+Now let us examine the per capita growth increment (Fig. \ref{ppgi}). If we start with the population growth increment  eq. \ref{eq:pgi}, all we need is to divide through by $N_t$ to get
+\begin{equation}
+\frac{N_{t+1}-N_{t}}{N_t} = r_{d} - r_d\alpha N_{t}. \label{eq:ppgi}
+\end{equation}
+With $r_d$ and $\alpha$ being constants, and $N$ varying, what is this expression? It is the expression for a straight line,\footnote{$y=mx+b$.} just like we observe (Fig. \ref{ppgi}). When $N_t=0$, the per capita increment equals $r_d$, and when $N_t=1/\alpha$, the per capita increment is zero. This is precisely where we started when we began the motivation for discrete logistic growth. 
+
+\subsection{Effect of initial population size on growth dynamics}
+What will be the effect of differences in initial population size? 
+We could approach such a question in at least two ways \cite{Case2000}. 
+For some of us, the simplest way is to play games with numbers, trial and error, plugging in a variety of initial population sizes, and see what happens to the dynamics. If we do this systematically, we might refer to this as a simulation approach. For very complicated models, this may be the \emph{only} approach.  Another approach, which is often used in concert with the simulation approach, is the analytical approach. We used this above, when we set the growth equation equal to zero and solved for $N$. In general, this analytical approach can sometimes give us a definitive qualitative explanation for \emph{why} something happens. This has been used as a justification for using simple models that actually have analytical solutions --- they can provide answers \cite{May2001}.
+
+For an analytical approach, first consider the endpoint solutions to the discrete logistc model eq. \ref{eq:quad}. The population will stop changing when $N_t=K$. Note that it does not appear to matter what the initial population size was. The only thing that matters is $\alpha$. Recall also that the population would not grow if for any reason $N_t=0$ --- the population will be stuck at zero. Based on these analyses, it appears that the only thing that matters is whether the initial population size is zero, or something greater than zero. If the latter, then initial population size appears to have no effect on the eventual population size.
+
+It always pays to check our analytical answer with a brute force numerical approach, so we will use a little simple simulation to see if we are right. In this case, we can vary systematically the initial population size, and see what happens (Fig. \ref{fig:init}). What our approach shows us is that regardless of the initial conditions (except zero), $N$ converges on $K$ --- $K$ is an attractor. We also might notice that sometimes when $N_0>K$, it crashes below $K$ before converging on $K$ in the end (more on that later). Last, because there is a qualitative shift in the behavior of the population when $N=0$, we might want to investigate what happens when $N$ gets very very close to zero. However, in this situation, the analytical solution is so straightforward that it seems convincing that as long as $N>0$, it will grow toward $K$.
+
+\begin{figure}[ht]
+  \centering
+  \subfloat[Variation in $N_0$]{\includegraphics[width=.48\linewidth]{DLGinit.pdf} \label{fig:init}}
+  \subfloat[Variation in $\alpha$]{\includegraphics[width=.48\linewidth]{DLGalpha.pdf}\label{fig:a}}
+  \caption[Confirmation of analytical solutions for discrete logistic growth]{\subref{fig:init} Dynamics due to different initial $N$ (zero was also specifically included, and $\alpha=0.01$).  \subref{fig:a} Dynamics due to different $\alpha$.   All $N$, except $N=0$, converge on $K=1/\alpha$, regardless of the particular value of $\alpha$ ($r_{d}=1$).}
+\end{figure}
+
+
+\medskip \noindent
+\begin{boxedminipage}{\linewidth}{\footnotesize
+\paragraph{Numerical Evaluation of Initial Conditions  (Fig. \ref{fig:init})}
+Here we draw randomly 30 $N_0$ from a uniform distribution between zero and $1.2K$. We also include zero specifically. We then use \texttt{sapply} to run \texttt{dlogistic} for each $N_0$, using defaults for the other arguments.
+<<>>=
+N0s <- c(0, runif(30) * 1.1 * 1/a)
+N <- sapply(N0s, function(n) dlogistic(N0=n) )
+<<DLGinit, fig=TRUE>>=
+matplot(0:t,N, type="l", lty=1, lwd=.75, col=1)
+text(t, 1/a, expression(italic("K") == 1/alpha), adj=c(1,0))
+@ 
+A serious simulation might include a much larger number of $N_0$. 
+}\end{boxedminipage}
+\medskip
+
+\subsection{Effects of $\alpha$}
+
+Our conclusions thus far have been based on specific values of $\alpha$ and $r_{d}$. Have we been premature? Just to be on the safe side, we should probably vary these also.
+
+What will happen if $\alpha$ varies? This seems easy. First, when $N_t$ is zero, the population growth increment eq. \ref{eq:pgi} is zero, regardless of the magnitude of $\alpha$. However, when $N_t > 0$, $N$ will increase until it reaches $1/ \alpha$ ($K$; Fig. \ref{fig:a}).  The outcome seems pretty clear --- by decreasing the negative effect of individuals on each other (i.e. decrease $\alpha$) then the final $N$ increases, and $\alpha$ determines the final $N$.
+
+\medskip \noindent
+\begin{boxedminipage}{\linewidth}{\footnotesize
+\paragraph{Numerical Evaluation of $\alpha$  (Fig. \ref{fig:a})}
+Here we draw 30 random $K$ from a uniform distribution from 50 to 1000, and convert these to $\alpha$. We use \texttt{sapply} to run \texttt{dlogistic} for each $\alpha$.
+<<>>=
+a.s <- 1/runif(30, min=50, max=1000)
+N <- sapply(a.s, function(a) dlogistic(alpha=a, t=15) )
+@ 
+We next plot all populations, and use some fancy code to add some informative text in the right locations.
+<<DLGalpha, fig=TRUE>>=
+matplot(0:t, N, type="l", ylim=c(0,1000), lty=1, lwd=.75, col=1)
+text(8, 1/min(a.s), bquote(italic(alpha) == .(round(min(a.s),3))), 
+     adj=c(1,0.5))
+text(10, 1/max(a.s), bquote(italic(alpha) == .(round(max(a.s),3))), 
+     adj=c(0,1.2))
+@ 
+Note that we use the minimum and maximum of \texttt{a.s} to both position the text, and provide the values of the smallest and largest $\alpha$.
+}\end{boxedminipage}
+\medskip
+
+
+\subsection{Effects of $r_{d}$} 
+What will variation in $r_{d}$ do? \index{logistic growth!effect of $r_d$}Probably nothing unexpected, if our exploration of geometric growth is any guide. Our analytical approach indicates that it should have no effect on $K$ (sec. \ref{sec:per-capita-popul}). Nonetheless, let us be thorough and explore the effects of $r_{d}$ by varying it systematically, and examining the result.
+
+Yikes --- what is going on in Fig. \ref{fig:DDGr1}? Perhaps it is a good thing we decided to be thorough. These wild dynamics are real --- let's go back and look more carefully at $r_{d}$. 
+
+\begin{figure}[ht]
+  \centering
+  \includegraphics[width=.67\linewidth]{DLGrd.pdf}
+  \caption{The variety of population dynamics resulting from different values of $r_d$ for the discrete logistic growth model ($r_d = 1,1.2, \ldots, 3$, $\alpha=0.01$). See Fig. \ref{fig:DDGr2} for a more informative view.}
+  \label{fig:DDGr1}
+\end{figure}
+
+\medskip \noindent
+\begin{boxedminipage}{\linewidth}{\footnotesize
+\paragraph{Simple Numerical Evaluation of $r_d$ (Fig. \ref{fig:DDGr1})}
+Here we vary $r_d$ by creating a short systematic sequence $r_d = 1.3,1.6, \ldots, 2.8$. We set $t=50$, and use \texttt{dlogistic} to create a trajectory for each of the six $r_d$.
+<<>>=
+rd.v <- seq(1.3, 2.8, by=.3)
+t <- 15
+Ns <- data.frame(sapply(rd.v, function(r) dlogistic(rd=r, t=t) ))
+<<DLGrd, fig=TRUE>>=
+matplot(0:t, Ns, type="l", col=1)
+@ 
+Note that many populations do not seem to settle down at $K$.
+}\end{boxedminipage}
+\medskip
+
+If we examine each projection separately, we see a cool pattern is emerging (Fig. \ref{fig:DDGr2}). At the lowest $r_{d}$, the population grows gradually toward its carrying capacity, $K$, and stays there. Once $r_{d}=1.6-1.9$ it  overshoots $K$ just a bit, creating oscillations; these oscillations, however, dampen back down to $K$. When $r_{d}=2.2$, however, the populations seem to bounce back and forth between two values. When $r_d=2.5$, $N$ bounces around, but now it bounces around between four different values.  When $r_{d}=2.8$, however, it seems to bounce back and forth around $K$, but at values that vary every time. This model is just about as simple as a model can be, and includes no random numbers. What is going on?
+
+\begin{figure}[ht]
+  \centering
+  \includegraphics[width=.9\linewidth]{DDGr2.pdf}
+  \caption{A more informative view of the effects of variation in $r_{d}$ on population dynamics.}
+  \label{fig:DDGr2}
+\end{figure}
+
+\medskip \noindent
+\begin{boxedminipage}{\linewidth}{\footnotesize
+\paragraph{Presentation of Limit Cycles (Fig. \ref{fig:DDGr2})}
+First we make a data frame with the six $r_d$ values in the first column, and the respective populations in rows, using \texttt{t()} to transpose \texttt{Ns}. This puts the data in \emph{wide} format, with a different time step in each column. (This might, for instance, be how you record data in a field experiment with repeated measurements through time).
+<<>>=
+tmp <- data.frame(rd=as.factor(rd.v), t(Ns))
+@
+Next, we reshape the data to \emph{long} format, were all $N$ are in the second column, and each is associated with a time step and its $r_d$ value (cols. 3 and 4).
+<<results=hide>>=
+Ns2 <- reshape(tmp, varying=list(2:ncol(tmp)), idvar="rd", v.names="N", 
+               direction="long")
+str(Ns2)
+@ 
+\dots (output omitted) We plot each trajectory separately using \texttt{xyplot} in a different graphics package, \texttt{lattice}. Known as a \emph{conditioning} plot, \texttt{xyplot} graphs  $y~vs.~x$ conditional on $g$ (\texttt{y $\sim$ x | g}).
+<<DDGr2, fig=TRUE, width=7, height=4>>=
+library(lattice)
+print( xyplot(N ~ time|rd, data=Ns2, type="l", layout=c(3,2,1), col=1 ) )
+@
+}\end{boxedminipage} \medskip
+
+
+What is going on is the emergence of \emph{\index{stable limit cycles}stable limit cycles}, and \emph{\index{chaos}chaos}.\footnote{Not the evil spy agency featured in the 1960's US television show, \emph{Get Smart}.} At low $r_d$, we have simple asymptotic approach to $K$. As $r_d$ increases, we see the population overshoot the carrying capacity and exhibit \emph{\index{damped oscillations}damped oscillations}. When $2 < r_d < 2.449$, the population is attracted to two-point limit cycles. In this case, \emph{these two points are stable attractors}. Regardless where the population starts out, it is attracted to the same two points, for a given $r_d$. As $r_d$ increases further, the number of points increases to a four-point limit cycle (e.g., at $r_d=2.5$), then an eight-point cycle, a 16-point limit cycle, and so on. These points are stable attractors. As $r_d$ increases further , however, stable limit cycles shift into \emph{chaos} ($r_d>2.57$). Chaos is \emph{a non-repeating, deterministic fluctuating trajectory, that is bounded, and sensitive to initial conditions}.
+
+Robert May \cite{May:1974fk} shocked the ecological community when he first demonstrated stable limit cycles and chaos using this model. His groundbreaking work, done on a hand calculator, showed how very complicated, seemingly random dynamics emerge as a result of very simple deterministic rules. Among other things, it made population biologists wonder whether prediction was possible at all. In general, however, chaos seems to require very special circumstances, including very high population growth.
+
+Is there a biological interpretation of these fluctuations? Consider some simple environment, in which small vegetation-eating animals with high reproductive rates eat almost all the vegetation in one year. The following year, the vegetation will not have recovered, but the animal population will still be very high. Thus the high growth rate causes a disconnect between the actual population size, and the negative effects of those individuals comprising the population. \emph{The negative effects of the actions of individuals (e.g., resource consumption) are felt by the offspring of those individuals, rather than the individuals themselves}. We won't belabor the point here, but it is certainly possible to extend this delayed density dependence to a wide variety of populations. The discrete logistic model has a built in delay, or \emph{\index{time lag}time lag}, of one time step, because the growth increment makes a single leap of one time step. This delay is missing from the analogous continuous time model because the growth increment covers an infinity small time step, thanks to the miracles of calculus.\footnote{A time lag can be explicitly built in to a continuous time model, with only a small effort.}
+
+\subsubsection{Bifurcations}
+Up until now, we have examined $N$ as a function of time. We have
+graphed it for different $\alpha$ and $N_0$, but time was always on
+the X-axis. Now we are going to examine $N$ as a function of $r_d$, so
+$r_d$ is on the X-axis. Specifically, we will plot the stable limits
+or attractors $vs$. $r_d$ (Fig. \ref{fig:bifurcation}). 
+ What does it mean? For $r_{d} < 2$, there is only a single $N$. This is what we mean by a stable point equilibrium, or point attractor --- as long as $r_d$ is small, $N$ always converges to a particular point.\footnote{It need not be the same $N$ for each $r_d$, although in this case it is.} When $2<r_{d}<2.45$, then all of a sudden there are two different $N$; that is, there is a two-point stable limit cycle. Note that when $r_d\approx 2$ these oscilliations between the two point attractors around $K$ are small, but as we increase $r_d$, those two points are farther apart. The point at which the limit cycle emerges, at $r_d=2$, is called a \emph{\index{bifurcation}bifurcation}; it is a splitting of the single attractor into two attractors. At $r_{d}\approx 2.45$, there is another bifurcation, and each the two stable attractors split into two, resulting in a total of  four unique $N$. At $r_{d}\approx 2.53$, there are eight $N$. All of these points are \emph{periodic} attractors\index{attractor!periodic} because $N$ is drawn to these particular points at regular intervals. As $r_d$ increases the number of attractors will continue to double, growing geometrically. Eventually, we reach a point when there becomes an infinite number of unique points, \emph{that are determined by $r_{d}$}.\footnote{They are also determined by the initial $N$, but we will get to that later.} This completely deterministic, non-repeating pattern in $N$ is a property of \emph{chaos}. Chaos is not a random phenomenon; rather it is the result of deterministic mechanisms generating non-repeating patterns.
+
+\begin{figure}[ht]
+  \centering
+  \includegraphics[width=.67\linewidth]{Bifurcation}
+  \caption{Illustration of the long term dynamics of discrete logistic population growth. When a small change in a continuous parameter results in a change in the number of attractors (e.g. a single point equilibrium to a stable 2-point limit cycle), we call this a bifurcation.}
+  \label{fig:bifurcation}
+\end{figure}
+
+\medskip \noindent
+\begin{boxedminipage}{\linewidth}{\footnotesize
+\paragraph{Bifurcation Plot: Attractors as a Function of $r_d$ (Fig. \ref{fig:bifurcation})}
+Here we perform more comprehensive simulations, and plot the point and periodic attractors \emph{vs}. $r_d$. First we pick some constraints for the simulation: the number of different $r_d$, the sequence of $r_d$ values, and the number of time steps.
+<<eval=true>>=
+num.rd <- 201
+rd.s <- seq(1,3, length=num.rd)
+t <- 400
+<<echo=false, results=hide, eval=FALSE>>=
+num.rd <- 1001
+rd.s <- seq(1,3, length=num.rd)
+t <- 1000
+@ 
+Next we use \texttt{sapply} for the simulations (If \texttt{num.rd} and \texttt{t} are large, this could take a while).
+<<>>=
+tmp <- sapply(rd.s, function(r) dlogistic(rd=r, N0=99, t=t) ) 
+@ 
+Next we convert the output to a data frame and stack up the $N$ in one column. We also rename each of the stacked columns, and add new columns for the respective $r_d$ and time steps.
+<<>>=
+tmp.s <- stack( as.data.frame(tmp) )
+names(tmp.s) <- c("N", "Old.Column.ID")
+tmp.s$rd <- rep(rd.s, each=t+1)
+tmp.s$time <- rep(0:t, num.rd)
+@  
+We save just the later dynamics in order to focus on the $N$ after they have converged on the periodic attractors. Here we select the last 50\% of the time steps. (Your figure will look a little different than Fig. \ref{fig:bifurcation} because I used more $r_d$ and time steps.)
+<<Bifurcation,fig=TRUE>>=
+N.bif <- subset(tmp.s, time > 0.5 * t )
+plot(N ~ rd, data = N.bif, pch=".", xlab=quote("r"["d"]))
+@ 
+}\end{boxedminipage} \medskip
+
+There has been a great deal of effort expended trying to determine whether a particular model or real population exhibits true \index{chaos}chaos. In any practical sense, it may be somewhat unimportant whether a population exhibits true chaos, or merely a higher order periodic attractor \cite{Ellner:2005fk}. The key point here is that very simple models, and therefore potentially simple mechanisms, can generate very complex dynamics.
+
+@
+\subsubsection{Sensitivity to initial conditions}
+Another very important characteristic feature of chaotic populations is that they are very sensitive to initial conditions. Thus emerges the idea that whether a \index{butterflies}butterfly in Sierra Leone flaps its wings twice or thrice may determine whether a hurricane hits the southeastern United States in New Orleans, Louisiana, or in Galveston, Texas.\footnote{Clearly, this suggests that the solution to increased storm severity due to global warming is to kill all butterflies.}
+
+If we generate simulations where we vary initial population size by a single individual, we find that this can have an enormous impact on the similarity of two populations' dynamics, and on our ability to predict future population sizes (Fig. \ref{fig:DDGChaosInitN}). Note how the populations start with similar trajectories, but soon diverge so that they experience different sequences of minima and maxima (Fig. \ref{fig:DDGChaosInitN}). This is part of what was so upsetting to ecologists about May's 1974 paper --- perhaps even the simplest deterministic model could create dynamics so complex that we could not distinguish them from random \cite{May:1974fk}. Over time, however, we came to learn that (i) we could distinguish random dynamics from some chaos-like dynamics, and (ii) the hunt for chaos could be very exciting, if most frequently disappointing \cite{Becks2005, Constantino1995,Kendall:1998ys}.
+
+\begin{figure}[ht]
+  \centering
+  \includegraphics[width=.67\linewidth]{DDGChaosInitN.pdf}
+  \caption{Effects of differences in initial population size on the short term and long term dynamics, and their correspondence, of three populations.}
+  \label{fig:DDGChaosInitN}
+\end{figure}
+
+\medskip \noindent
+\begin{boxedminipage}{\linewidth}{\footnotesize
+  \paragraph{Sensitivity to Intitial Conditions}
+We start with three populations, all very close in initial abundance. We then propogate with a $r_d$ to generate chaos for 100 time steps.
+<<>>=
+N.init <- c(97,98,99)
+t <- 30
+Ns <- sapply(N.init, function(n0) dlogistic(rd=2.7, N0=n0, t=t) )
+@ 
+Now we would like to graph them over the first 12 times, and look at the correlations between $N_1$ and the other two populations.
+<<DDGChaosInitN, fig=TRUE>>=
+matplot(0:t,Ns, type="l", col=1)
+@
+}\end{boxedminipage} \medskip
+
+\subsubsection{Boundedness, and other descriptors}
+One last issue that we should note is the extent to which our populations are \emph{\index{chaos!boundedness}bounded}. A population may have complex dynamics, but we may be able to characterize a given population by its upper and lower bounds. In spite of the differences created by the initial conditions, the upper and lower bounds of our chaotic populations were very similar (Fig. \ref{fig:DDGChaosInitN}). Note also as $r_d$ increases (Fig. \ref{fig:bifurcation}) the oscillations increase very systematically. 
+
+In general, we can describe many characteristics of populations, even if we cannot predict exactly what the population size will be five years hence. For instance, we can describe the shape of density dependence (linear, nonlinear), and characteristics of $N$, such as the average, the variance, the periodicity, the upper and lower bounds, and the color (i.e. degree of temporal auto-correlation). Indeed, these characteristics may vary among types of organisms, body sizes, or environments.
+
+
+
+## To err(or) is human
+Most of this book describes and explains models. Models are explicit manifestations of theory with which we can organize our thoughts and and compare with our data. Here we bring our attnetion to two layers of uncertainty when we compare models and data: *process error* and *observation error*. These types of error are not mistakes, but differences from "actual" values. These terms can be confusing if we think that "error" means "mistake". They aren't; they are just differences between reality and our guesses of reality.
+
+Observation error is the uncertainty associated with drawing inferences about a population based on only samples of the population. We can never know the actual abundance of tuna in the sea because we can only estimate it with uncertainty. We refer to the uncertainty due to our observation methods as *observation error*. It is not error in the colloquial sense of making a mistake, but simply a difference between an actual population, and our sample of it.
+
+Process error is not error at all, in the colloquial sense. It is uncertainty in the very process we are studying. We can use the logistic growth model to predict the dynamics of a population, but the underlying processes of reproduction and density-dependence will vary for mechanistic reasons that we cannot fathom, or which we choose judiciously to ignore. Process error is the some underlying mechanistic difference between our model and the actual ecological process.
+
+Any time we examine a time series of data, we need to envision both observation and porocess error underlying the dynamics. Often, we don't do that, and assume either only observation error or process error. 
+
+Here we explore the consequences of process and observation error. This is inspired by @Bolker2008 (Ch. 11). Following this, we then move on to wax poetic about elephants in the rain and heat [@Chamaille-Jammes2008].
+
+## Geometric growth with observation and process error
+
+If we believe that a population of brown rats grows geometrically with $\lambda =1$, that means we predict that it doesn't change size. If we observe and sample this population we will sample it with error. We could describe the population, $N$, and our observations of it thus,
+$$N_0 = a$$
+$$N_{t+1} = \lambda N_t$$
+$$N_{obs,t} \sim \mathrm{Normal}(N_t, \sigma^2_{obs})$$
+where we say the observed $N$ at time $t$ is a Normally distributed random variable with a mean of the actual $N$ and a variance of $\sigma^2_{obs}$. Thus we estimate $N_t$ with uncertainty or observation error.
+
+Now we model it.
+
+```{r obs1}
+# set lamba, number of time steps (nt), a vector to hold N, and N0
+lambda <- 1
+nt <- 100
+N <- numeric(nt)
+Nobs.o <- numeric(nt)
+N0 = 100
+N[1] <- N0
+
+# decide on an amount of uncertainty in our estimate
+# standard deviation
+
+sd.obs <- 20
+
+# now we project the population and model observation error
+for (t in 1:(nt - 1)) {
+  ## observation error
+     Nobs.o[t] = rnorm(1, mean = N[t], sd = sd.obs)
+     ## mechanistic projection
+     N[t+1]=lambda*N[t]
+}
+# finish up adding error to the last observation
+Nobs.o[nt] = rnorm(1, mean = N[nt])
+
+## plot it
+ qplot(1:nt, Nobs.o, geom=c("line", "point"))
+```
+
+
+---------------------------
+
+So why is the continuous version so boring, while the discrete version is so complex? Remind yourself what is going on with the discrete version. The model could only take steps from one generation to the next. The step into generation $t+1$ was a function of $N$ at $t$, and not a function of $N_{t+1}$. Therefore the rate of change in $N$ was not influenced by a contemporaneous value of $N$. There was a delay between $N$ and the effect of $N$ on the population growth rate. For many organisms, this makes sense because they undergo discrete reproductive events, reproducing seasonally, for instance. In contrast, the continuous logistic population growth is always influenced by a value of $N$ that is updated continuously, instantaneously. That is the nature of simple differential equations. They are instantaneous functions of continuous variables. We can, if we so choose, build in a delay in the density dependence of continuous logistic growth. This is referred to as ``delayed density dependence'' or ``time-lagged logistic growth''
+
+
+
+\begin{equation}
+\label{clogisticDDD}
+\frac{\D{N}}{\D{t}} = rN \left( 1 - \alpha N_{t-\tau} \right)
+\end{equation}
+where $\tau$ is the degree of the delay, in time units associated with the particular model. Just as with the discrete model, the dynamics of this continuous model can get very complicated, with sufficient lag and sufficient $r$.
+
+\medskip \noindent
+\begin{boxedminipage}{\linewidth}{\footnotesize
+  \paragraph{Plotting Random Populations ( (Fig. \ref{c2}))}
+ We use the above function to create 20 populations with different traits. We start with an empty matrix, and then for each of the populations, we draw random $N_0$ and $r$, run the ODE solver, keeping just the column for $N$. Last we plot the output.
+```{r}
+t.s <- 0:50
+outmat <- matrix(NA, nrow=length(t.s), ncol=20)
+for(j in 1:20) outmat[,j] <- { y <- runif(n=1, min=0, max=120)
+                          prms <- c(r=runif(1, .01,2), alpha=0.01 )
+                           ode(y, times=t.s, clogistic, prms)[,2] }
+```
+<<ContDyn2, fig=true, include=false>>=
+matplot(t.s, outmat, type='l', col=1, ylab="All Populations")
+@ 
+}\end{boxedminipage} \medskip
+
+

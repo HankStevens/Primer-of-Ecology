@@ -5,7 +5,7 @@ library(primer)
 
 # to commit everything
 # > git add -A && git commit -m 'staging all files'
-
+# > git push -u origin master
 
 # git add -A to add all files new files, changes and removed files.
 # git commit -m  "Your message" to save the changes done in the files.
