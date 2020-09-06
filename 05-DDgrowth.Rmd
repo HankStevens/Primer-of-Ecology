@@ -260,11 +260,11 @@ outdf <- NULL
 for(i in 1:nrow(input)) { 
   y <- c(N=input[i,"N"])
   p <- c(r=input[i,"r"], alpha=input[i,"alpha"] )
-  out <- ode(y, times=t, clogistic, p)
+  out <- ode(y, times=t, fun=clogistic, p)
   out2 <- cbind(out, N0=y, r=p["r"], alpha=p["alpha"])
   outdf <- rbind.data.frame(outdf, out2)
 }
-outdf$N0 <- as.factor(outdf$N0 )
+outdf$N0 <- as.factor( outdf$N0 )
 outdf$alpha <- as.factor(outdf$alpha )
 ggplot(outdf, aes(time, N, colour=N0, linetype=alpha) ) + geom_line() + 
   facet_grid(r~., labeller=label_both) + theme_bw()
@@ -302,11 +302,9 @@ logistic_trajectory    <- trajectory(logistic,
 
 ## Other forms of density-dependent growth
 
-There are many forms of density-dependent growth, some of which will we describe below. Some, like the theta-logistic and the Richards models, are more flexible and have more parameters. Others, like the Gompertz model, are used more widely in other fields, such as cancer research for tumor growth, von Bertlanaffy for body size growth, and the Ricker model for fisheries.
+There are many forms of density-dependent growth, some of which will we describe below. Let's start by decoupling the density-dependence of birth and death rates [@Gotelli2001]. 
 
 ### Effects of N on birth and death rates
-
-Let's start by decoupling the density-dependence of birth and death rates [@Gotelli2001]. 
 
 Recall from chapter 3 that $r=b-d$. Now we will let $b$ and $d$ be functions of population size $N$ ($b=F(N)$, $d=G(N)$). We could let $F(N)$ and $G(N)$ take a wide variety of different forms. For now, however, let's say that $N$ has *linear* effects on these rates so that 
 \begin{align}
@@ -490,7 +488,8 @@ To project a discrete time model, we have to project entire one year at a time. 
 We set up the model as we did with the continuous time model. 
 ```{r}
 dlogistic <- function (t, y, p) {
-  with( as.list(c(y, p)),{
+  N <- y[1]
+  with( as.list(p),{
       N.diff <-  rd * N * (1 - alpha * N) 
       return(list(N.diff))  }) }
 ```
@@ -506,3 +505,197 @@ outd <- as.data.frame(outd)
 ggplot(outd, aes(x=time, N)) + geom_line() + geom_point() +
   annotate("text", x=1, y =1/p["alpha"]+2, label="K = 1/alpha")
 ```
+
+### Effects of $r_d$
+Changing $\alpha$ or $K$ does not change radically the dynamics of this model. However, increasing $r_d$ changes the dynamics a lot. This is in contrast to what happens in continuous logsitic growth. When we increase $r_d$ sufficiently, we get *stable limit cycles* and if we raise $r_d$ high enough, we get *chaos*.^[Not the evil spy agency featured in the 1960's US television show, *Get Smart*.].
+
+```{r dlogcycles, fig.cap="*How variation in $r_d$ influences dynamics of discrete logistic growth.*", out.width="75%"}
+rd.v <- seq(1.3, 2.8, by=.3)
+N0 <- c(N=10); t = 0:20
+Ns <- sapply(rd.v, function(r) {
+  p <- c(rd=r, alpha=0.01)
+  outd <- ode(func = dlogistic, y = N0, times = t,
+ parms = p, method = "euler")[,2]
+  }
+ ) 
+out <- data.frame(t=t, Ns)
+names(out) <- c("t", paste("rd=",rd.v, sep=""))
+out.l <- pivot_longer(out, cols=-1, names_to="r.d", values_to="N")
+
+ggplot(out.l, aes(t, N) ) + geom_line() + 
+  facet_wrap(~r.d)
+```
+
+
+At low $r_d$, we have simple asymptotic approach to $K$. As $r_d$ increases, we see the population overshoot the carrying capacity and exhibit \emph{\index{damped oscillations}damped oscillations}. When $2 < r_d < 2.449$, the population is attracted to two-point limit cycles. In this case, \emph{these two points are stable attractors}. Regardless where the population starts out, it is attracted to the same two points, for a given $r_d$. As $r_d$ increases further, the number of points increases to a four-point limit cycle (e.g., at $r_d=2.5$), then an eight-point cycle, a 16-point limit cycle, and so on. These points are stable attractors. As $r_d$ increases further , however, stable limit cycles shift into *chaos* ($r_d>2.57$). Chaos is a non-repeating, deterministic fluctuating trajectory, that is bounded, and sensitive to initial conditions.
+
+@May:1974fk shocked the ecological community when he first demonstrated stable limit cycles and chaos using this model. His groundbreaking work, done on a hand calculator, showed how very complicated, seemingly random dynamics emerge as a result of very simple deterministic rules. Among other things, it made population biologists wonder whether prediction was possible at all. In general, however, chaos seems to require very special circumstances, including very high population growth.
+
+Is there a biological interpretation of these fluctuations? Consider some simple environment, in which small vegetation-eating animals with high reproductive rates eat almost all the vegetation in one year. The following year, the vegetation will not have recovered, but the animal population will still be very high. Thus the high growth rate causes a disconnect between the actual population size, and the negative effects of those individuals comprising the population. *The negative effects of the actions of individuals (e.g., resource consumption) are felt by the offspring of those individuals, rather than the individuals themselves*. We won't belabor the point here, but it is certainly possible to extend this delayed density dependence to a wide variety of populations. The discrete logistic model has a built in delay, or *time lag*, of one time step, because the growth increment makes a single leap of one time step. This delay is missing from the analogous continuous time model because the growth increment covers an infinity small time step, thanks to the miracles of calculus.^[A time lag can be explicitly built in to a continuous time model, with only a small effort.]
+
+### Bifurcations
+Up until now, we have examined $N$ as a function of time. We have
+graphed it for different $\alpha$ and $N_0$, but time was always on
+the $x$-axis. Now we are going to examine $N$ as a function of $r_d$, so $r_d$ is on the $x$-axis. Specifically, we will plot the stable limits or attractors $vs$. $r_d$ (Fig. \@ref(fig:bifurcation)). What does it mean? For $r_{d} < 2$, there is only a single $N$. This is what we mean by a stable point equilibrium, or point attractor.
+
+As long as $r_d$ is small, $N$ always converges to a particular point.^[It need not be the same $N$ for each $r_d$, although in this case it is.] When $2<r_{d}<2.45$, then all of a sudden there are two different $N$; that is, there is a two-point stable limit cycle. Note that when $r_d\approx 2$ these oscillations between the two point attractors around $K$ are small, but as we increase $r_d$, those two points are farther apart. The point at which the limit cycle emerges, at $r_d=2$, is called a *bifurcation*; it is a splitting of the single attractor into two attractors. At $r_{d}\approx 2.45$, there is another bifurcation, and each the two stable attractors split into two, resulting in a total of  four unique $N$. At $r_{d}\approx 2.53$, there are eight $N$. 
+
+All of these points are *periodic attractors* because $N$ is drawn to these particular points at regular intervals. As $r_d$ increases the number of attractors will continue to double, growing geometrically. Eventually, we reach a point when there becomes an infinite number of unique points, *that are determined by $r_{d}$*.^[They are also determined by the initial $N$, but we will get to that later.] This completely deterministic, non-repeating pattern in $N$ is a property of *chaos*. Chaos is not a random phenomenon; rather it is the result of deterministic mechanisms generating non-repeating patterns.
+
+Here we perform more comprehensive simulations, and plot the point and periodic attractors \emph{vs}. $r_d$. First we pick some constraints for the simulation: the number of different $r_d$, the sequence of $r_d$ values, and the number of time steps.
+
+```{r bifurcation, fig.cap="*Illustration of the long term dynamics of discrete logistic population growth. When a small change in a continuous parameter results in a change in the number of attractors (e.g. a single point equilibrium to a stable 2-point limit cycle), we call this a bifurcation.*", out.width="75%"}
+
+## Iff you are interested....
+num.rd <- 1001 # the number of rd's you want
+rd.s <- seq(1.5,3, length=num.rd) # the actual rd values
+t <- 0:1000 # how long to run each population
+N0 <- c(N=99) # N-zero
+## do all the dynamical simulations putting each run
+## into a column of a matrix.
+Ns <- sapply(rd.s, function(r) {
+  p <- c(rd=r, alpha=0.01)
+  outd <- ode(y = N0, times = t, func = dlogistic, 
+ parms = p, method = "euler")[,2]
+  }
+ ) 
+out <- data.frame(t=t, Ns) # put times to the front of the matrix
+names(out) <- c("t", paste("rd=",rd.s, sep="")) # relabel columns
+out.last <- subset(out, t > 0.8*max(t)) # keep only the last 20%
+## put the data in the "long format"
+out.l <- pivot_longer(out.last, cols=-1, names_to="r.d", values_to="N")
+out.l <- arrange(out.l, r.d, t) # re-order the data
+## extract text out of the 'r.d' label that is the numeric value
+text.values <- substr(out.l$r.d, regexpr("=", out.l$r.d)+1, 100) 
+## convert the characters of "1.5" to the number 1.5
+out.l$rd <- as.numeric( text.values )
+
+## plot the stable limits to show the bifurcations
+ggplot(out.l, aes(rd, N)) + geom_point(pch=".") + theme_bw()
+
+out.l.chaotic <- subset( out.l, rd > 2.6 )
+
+ggplot(out.l.chaotic, aes(rd, N)) + geom_point(pch=".") + theme_bw()
+```
+
+There has been a great deal of effort expended trying to determine whether a particular model or real population exhibits true chaos. In any practical sense, it may be somewhat unimportant whether a population exhibits true chaos, or merely a higher order periodic attractor [@Ellner:2005fk]. The key point here is that very simple models, and therefore potentially simple mechanisms, can generate very complex dynamics.
+
+
+\subsubsection{Sensitivity to initial conditions}
+Another very important characteristic feature of chaotic populations is that they are very sensitive to initial conditions. Thus emerges the idea that whether a butterfly in Sierra Leone flaps its wings twice or thrice may determine whether a hurricane hits the southeastern United States in New Orleans, Louisiana, or in Galveston, Texas.^[Clearly, this suggests that the solution to increased storm severity due to global warming is to kill all butterflies.]
+
+If we generate simulations where we vary initial population size by a single individual, we find that this can have an enormous impact on the similarity of two populations' dynamics, and on our ability to predict future population sizes (Fig. \@(fig:DDGChaosInitN)). Note how the populations start with similar trajectories, but soon diverge so that they experience different sequences of minima and maxima (Fig. \@(fig:DDGChaosInitN)). This is part of what was so upsetting to ecologists about May's 1974 paper --- perhaps even the simplest deterministic model could create dynamics so complex that we could not distinguish them from random [@May:1974fk]. Over time, however, we came to learn that (i) we could distinguish random dynamics from some chaos-like dynamics, and (ii) the hunt for chaos could be very exciting, if most frequently disappointing [@Becks2005; @Constantino1995; @Kendall:1998ys].
+
+We start with three populations, all very close in initial abundance, $N_0 \in \{97,98,99\}$. We then project the population with a $r_d$ to generate chaos for 30 time steps.
+```{r DDGChaosInitN, fig.cap="*Effects of differences in initial population size on the short term and long term dynamics, and their correspondence, of three populations.*", out.width="75%"}
+N.init <- c(97,98,99)
+t <- 0:30
+p <- c(rd=2.7, alpha=0.01)
+out <- NULL
+for(i in  1:3){
+  # project the population
+  N0 <- c(N=N.init[i])
+  a <- ode(y=N0, times=t, dlogistic, 
+           parms=p, method="euler")
+  # fill a column with the initial value
+  b <- data.frame(a, N0=as.factor(N0)) # b now has cols: t, N, rd
+  # store data in rows of out "bind rows" with rbind
+  out <- rbind.data.frame(out, b)
+}
+ggplot(data=out, aes(time, N, colour=N0, linetype=N0)) + geom_line()
+```
+
+\subsubsection{Boundedness, and other descriptors}
+One last issue that we should note is the extent to which our populations are *bounded*. A population may have complex dynamics, but we may be able to characterize a given population by its upper and lower bounds. In spite of the differences created by the initial conditions, the upper and lower bounds of our chaotic populations were very similar (Fig. \@ref(fig:DDGChaosInitN)). Note also as $r_d$ increases (Fig. \@ref(fig:bifurcation)) the oscillations increase very systematically.
+
+One way to see the deterministic nature of chaos is to trace population size from each time point to the next time point. We put $N_t$ on the $x$-axis and $N_{t+1}$ on the $y$-axis, and connect all successive points.  
+```{r logweb, fig.cap="*A chaotic discrete logistic population shows certain highly predictable patterns including population sizes limited to a quadratic form revealed here.*", out.width="75%"}
+N0 <- c(N=2); t <- 0:1000
+p <- c(rd = 2.8, alpha = 0.01)
+out <- ode(N0, t, dlogistic, p, method="euler")
+n <- out[901:1000, 2]
+ntp1 <- n[-1]
+nt <- n[-length(n)]
+qplot(nt, ntp1, geom=c("point", "path") ) + labs(y="N[t+1]", x="N[t]")
+```
+
+In general, we can describe many characteristics of populations, even if we cannot predict exactly what the population size will be five years hence. For instance, we can describe the shape of density dependence (linear, nonlinear), and characteristics of $N$, such as the average, the variance, the periodicity, the upper and lower bounds, and the color (i.e. degree of temporal auto-correlation). Indeed, these characteristics may vary among types of organisms, body sizes, or environments.
+
+#### Ricker and more
+There are many more models of density dependent growth. Some, like the theta-logistic and the Richards models, are more flexible and have more parameters. Others, like the Gompertz model, are used more widely in other fields, such as cancer research for tumor growth, von Bertalanffy for body size growth, and the Ricker model for fisheries. 
+
+The Ricker model looks a lot like our friend, exponential growth, but where $r$ is modified by density. Here we see them side by side.
+
+\begin{equation}
+N_{t+1} = N_t e^{r} \quad ; \quad N_{t+1}=N_t e^{r_d \left(1-N_t/K\right)}
+\end{equation}
+
+Like discrete logistic growth, the Ricker model^[Bill Ricker, the eponym of the famous model, made very important contributions to the study of poplation dynamics and fisheries science.] will also exhibit chaos at high per capita growth rates ($r_d>>1$). 
+
+
+## Maximum Sustained Yield
+The classical model of harvesting fisheries and wildlife populations is based on a particular conceptualization of *maximum sustained yield* (MSY). Maximum sustained yield is historically defined as the population size where both population growth rate and harvest rate are at a maximum. For the logistic growth model, this is half the carrying capacity. We can solve this by finding the maximum of the production function. To do this we use calculus (differentiation) to find where the slope of the production function equals zero. Starting with the partial derivative with respect to $N$ (eq. \@ref(eq:pdlog)), we solve for zero.
+\begin{align}
+  (\#eq:msy1)
+    0 &= r - 2r\alpha N\\
+    N &= \frac{r}{2r\alpha} = \frac{K}{2}
+\end{align}
+Similarly, we could determine this peak for the $\theta$-logistic model as well. 
+\begin{align}
+  (\#eq:msyth)
+  \frac{\partial \dot{N}}{\partial N} &=r - \left(\theta+1\right)r\left(\alpha N\right)^\theta\\
+0 &= \frac{K}{\left(\theta+1\right)^{1/\theta}}
+\end{align}
+When $\theta=1$, this reduces to $K/2$, as for the logistic model. As we saw above, $\theta < 1$ causes this value to be less than $K/2$.
+
+Even if we assume the logistic model is appropriate for a given population, harvests in practice seldom reduce populations to $K/2$, because often $N$ and $K$ vary with time and are difficult to estimate.  Moreover, economic forces often lead to over-harvesting.  More contemporary models of harvesting incorporate these concepts [@Roughgarden:1996fr] but still may not prevent fisheries collapse driven by social and political pressures. We should note that when more detailed information is available on age- or stage-specific survivorship and reproduction, age- or stage-structured models of harvesting are the preferred method (e.g., Chapter 2). For many populations, such as marine fisheries, however, data are often  available only on stock size ($N$) and total catch ($H$).  In some fisheries models, the total catch is fixed and does not vary with $N$.  This leads to highly unstable population dynamics and fortunately is no longer practiced in most fisheries.  Usually the total catch $H$ is modeled as a function of $N$.
+
+Let us assume that total catch or harvest, $H$, is a simple linear function of $N$; the total harvest rate $FN$ is usually described this way.^[We could, but will not, further describe this by $F=qE$, where $q$ is the catchability coefficient for the fishery, and $E$ is fishing effort in hours.] In this case, a maximum sustained yield can be determined from the logistic growth-harvest model. This basic model is then
+\begin{align}
+  (\#eq:FN)
+\frac{dN}{dt}&=rN(1-\frac{N}{K})-FN
+\end{align}
+where $FN=H$ harvest rate, and $F$ is the per capita fishing mortality rate. Here we assume a fixed per capita catch mortality $F$ so that total harvest is $H=F\times N$. Maximum sustained yield should then occur at $K/2$ (Fig. \@ref(fig:msy1)). Therefore would like to know the value of $F$ for which a new $N^* = K/2$ rather than $K$. We can determine the value of $F$ for which this is true by finding when $dN/dt=0$ and $N=K/2$.
+\begin{align}
+  0 &= r\frac{K}{2}\left(1-\frac{\frac{K}{2}}{K}\right)-F\frac{K}{2}\\
+  F &= \frac{r}{2} (\#eq:F)
+\end{align}
+
+```{r msy1, fig.cap="*To find the predicted population growth rate with harvesting, we start with Logistic growth rate (solid line) and then substract harvest rate (dashed line).*", fig.show="hold", out.width="50%"}
+pgrlog <- function(N, r, alpha){ r*N*(1-alpha*N) }
+r <- 0.5; alpha <- 0.01
+myData <- data.frame( N=c(0, 110) ) # ggplot requires a data frame
+p <- ggplot(data=myData, aes(x=N)) + # set the basic properties of the plot
+  # in the stat_function, we indicate the parameters in our equation.
+    stat_function(fun=pgrlog, geom="line", n=1001,
+                  args=list(r=r, alpha = alpha)) + 
+  labs(y="Population growth rate (dN/dt)", x="Population size (N)") + 
+  geom_abline(intercept=0, slope=r/2, lty=2) + ylim(c(-5, 15))
+p
+
+pgrH <- function(N, r, alpha, f){ r*N*(1-alpha*N) - f*N }
+f <- r/2
+myData2 <- data.frame( N=c(0, 60) ) # ggplot requires a data frame
+h <- ggplot(data=myData2, aes(x=N)) + # set the basic properties of the plot
+  # in the stat_function, we indicate the parameters in our equation.
+    stat_function(fun=pgrH, geom="line", n=1001,
+                  args=list(r=r, alpha = alpha, f = f)) + 
+  labs(y="PGR w/ harvesting (dN/dt)", x="Population size (N)") +
+   ylim(c(-5, 15))
+h
+```
+
+
+If harvesting occurs at a rate of $F<r/2$, the slope of the harvest line is shallower than in Fig. \@ref(fig:msy1), and we refer to this as *under-harvesting*. If the rate is $F>r/2$, then the slope is steeper than in Fig. \@ref(fig:msy1), and we refer to this as *over-harvesting*. @Roughgarden:1996fr show that under-harvesting is the most ecologically stable, whereas over-harvesting is frequently thought to be the economically optimal approach if we don't care about the long-term wellbeing of the fishing industry.
+
+Typically the economically optimal approach leads to over-harvesting because the marginal income on a fishery is related to the interest rate on invested income,  $F= (r + \rho)/2$, where $\rho$ is the interest rate (usually $\rho$ is set to 0.05). We can substitute this into eq. \@ref(eq:FN) and solve for $N$ (ignoring $N=0$).
+\begin{align*}
+  (\#eq:ecopt)
+  0&=rN(1-\frac{N}{K})-\frac{r + \rho}{2}N\\
+   N\frac{r}{K}&=r -\frac{r}{2} -\frac{\rho}{2}\\
+  N &=\frac{K}{2}\left(1-\frac{\rho}{r}\right)
+\end{align*}
+Thus, unless $\rho=0$, the typical economic optimum $N_{e}^*$ will be smaller than $N*=K/2$.  This makes intuitive economic sense if we consider income from invested profits. The margin of error, however, is much smaller, putting the fisheries population, and the investment of fishing fleets and associated econmoies at greater risk. @Roughgarden:1996fr showed that ecological stability of a fishery is likely to beget economic and cultural stability. They show that the supposed "economic optimal" harvesting rate was so low that it increased the extinction risk of the harvested population to unacceptably high levels. The collapse of a fishery is, of course, both economically and culturally devastating.
+
+
+
