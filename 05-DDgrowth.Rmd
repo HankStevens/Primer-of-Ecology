@@ -308,7 +308,7 @@ There are many forms of density-dependent growth, some of which will we describe
 
 Recall from chapter 3 that $r=b-d$. Now we will let $b$ and $d$ be functions of population size $N$ ($b=F(N)$, $d=G(N)$). We could let $F(N)$ and $G(N)$ take a wide variety of different forms. For now, however, let's say that $N$ has *linear* effects on these rates so that 
 \begin{align}
-b &=b_0 + aN\\
+b &=b_0 - aN\\
 d &= d_0 + cN
 \end{align}
 which appear in Fig. \@ref(fig:bd). 
@@ -335,14 +335,16 @@ p +
            vjust=0)  +
     annotate("text", x=1, y=b0, label = "b0",
            hjust=0, vjust=0)  +
-    annotate("text", x=80, y=.8, label = "birth rate",
+  
+    annotate("text", x=80, y=.3, label = "birth rate",
            hjust=0, vjust=-.5)  +
   
     annotate("text", x=1, y=d0, label = "d0",
            hjust=0, vjust=-.5)  +
   
-    annotate("text", x=80, y=.3, label = "death rate",
+    annotate("text", x=80, y=.8, label = "death rate",
            hjust=0, vjust=-.5)  +
+  
   annotate("text", x=(b0-d0)/(a+c), y=-.1, label = "K") +
   annotate("text", x=85, y=-.5, label = "dN/(Ndt)") 
 ```
@@ -434,7 +436,7 @@ One way to represent this is with an additional term in our model, which incorpo
 \frac{dN}{dt}= rN\left(1-\alpha N\right)\left(1 - \frac{a+\tau}{N+\tau}\right) (\#eq:logallee)
 \end{equation}
 
-so that if the population size falls below the threshold, it cannot recover ($N<a$, $dN/dt < 0$). As long as $\tau$ is greater than 0, this is a nicely behaved function. A function to project this dynamic is available in `primer` as `alogistic()`.
+so that if the population size falls below the threshold, it cannot recover ($N<a$, $dN/dt < 0$). Parameter $\tau$ is greater than 0, and controls how severe the consequence is for $N<a$. The smaller $\tau$ is, the more negative population growth becomes.  A function to project this dynamic is available in `primer` as `alogistic()`.
 
 ```{r echo=FALSE, eval=FALSE}
  alogistic <- function(t, y, p){

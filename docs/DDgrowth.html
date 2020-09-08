@@ -490,7 +490,7 @@ Figure 5.6: <em>A velocity field is kind of like a magnetic field, showing what 
 <h3><span class="header-section-number">5.3.1</span> Effects of N on birth and death rates</h3>
 <p>Recall from chapter 3 that <span class="math inline">\(r=b-d\)</span>. Now we will let <span class="math inline">\(b\)</span> and <span class="math inline">\(d\)</span> be functions of population size <span class="math inline">\(N\)</span> (<span class="math inline">\(b=F(N)\)</span>, <span class="math inline">\(d=G(N)\)</span>). We could let <span class="math inline">\(F(N)\)</span> and <span class="math inline">\(G(N)\)</span> take a wide variety of different forms. For now, however, let’s say that <span class="math inline">\(N\)</span> has <em>linear</em> effects on these rates so that
 <span class="math display">\[\begin{align}
-b &amp;=b_0 + aN\\
+b &amp;=b_0 - aN\\
 d &amp;= d_0 + cN
 \end{align}\]</span>
 which appear in Fig. <a href="DDgrowth.html#fig:bd">5.7</a>.</p>
@@ -573,7 +573,7 @@ Figure 5.8: <em>Theta-logistic per capita rates, population growth rates, and dy
 <span class="math display" id="eq:logallee">\[\begin{equation}
 \frac{dN}{dt}= rN\left(1-\alpha N\right)\left(1 - \frac{a+\tau}{N+\tau}\right) \tag{5.9}
 \end{equation}\]</span></p>
-<p>so that if the population size falls below the threshold, it cannot recover (<span class="math inline">\(N&lt;a\)</span>, <span class="math inline">\(dN/dt &lt; 0\)</span>). As long as <span class="math inline">\(\tau\)</span> is greater than 0, this is a nicely behaved function. A function to project this dynamic is available in <code>primer</code> as <code>alogistic()</code>.</p>
+<p>so that if the population size falls below the threshold, it cannot recover (<span class="math inline">\(N&lt;a\)</span>, <span class="math inline">\(dN/dt &lt; 0\)</span>). Parameter <span class="math inline">\(\tau\)</span> is greater than 0, and controls how severe the consequence is for <span class="math inline">\(N&lt;a\)</span>. The smaller <span class="math inline">\(\tau\)</span> is, the more negative population growth becomes. A function to project this dynamic is available in <code>primer</code> as <code>alogistic()</code>.</p>
 <div class="sourceCode" id="cb158"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb158-1"><a href="DDgrowth.html#cb158-1"></a><span class="co">## for simplicity, we let r=1 so we can ignore it here.</span></span>
 <span id="cb158-2"><a href="DDgrowth.html#cb158-2"></a>pgrA &lt;-<span class="st"> </span><span class="cf">function</span>(N, alpha, a, tau){ N<span class="op">*</span>(<span class="dv">1</span><span class="op">-</span>alpha<span class="op">*</span>N)<span class="op">*</span>(<span class="dv">1</span><span class="op">-</span>(a<span class="op">+</span>tau)<span class="op">/</span>(N<span class="op">+</span>tau)) }</span>
 <span id="cb158-3"><a href="DDgrowth.html#cb158-3"></a>myData &lt;-<span class="st"> </span><span class="kw">data.frame</span>( <span class="dt">N=</span><span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">110</span>) ) <span class="co"># ggplot requires a data frame</span></span>
