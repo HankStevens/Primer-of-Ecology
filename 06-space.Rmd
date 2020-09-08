@@ -15,7 +15,7 @@ In Chapters 3-5, we considered *closed* populations. In contrast, one could imag
 ss <- matrix(c("lambda>1", "m[21]", "m[12]", "lambda<1"), nr=2)
 colnames(ss) <- c("Source", "Sink")
 par(mar=c(0,0,0,0))
-plotmat(ss, pos=2, curve=.3)
+plotmat(ss, pos=2, curve=.3) # requires the diagram package
 ```
 
 
@@ -119,7 +119,7 @@ In contrast, an ideal despotic distribution arises when individuals always prefe
 The logistic model (Chapter 5) is all well and good, but it has no concept of *space* built into it. In many, and perhaps most circumstances in ecology, space has the potential to influence the dynamics of populations and ecosystem fluxes [@Lehman1997;@Leibold:2004fe;@Loreau:2003hb]. The logistic equation represents a *closed* population, with no clear accounting for emigration or immigration. In particular cases, however, consideration of space may be essential. What will we learn if we start considering space, such that sites are open to receive immigrants and lose emigrants?
 
 ```{r metapop, echo=FALSE, fig.hold=TRUE, fig.cap = "Collections of sites, where each site (A-F) may be a spot of ground potentially occupied by a single plant, or it may be an oceanic island potentially occupied by a butterfly population. Sites may also be colonized via both internal and external sources.", fig.subcap= c("Closed metapopulation", "Open metapopulation"), out.width="49%", fig.ncol = 2, fig.height=5, fig.width=5}
-
+# requires the igraph package
 g1 <- graph( edges=c(1,2, 1,3, 1,4, 1,5, 1,6,
                      2,3, 2,4, 2,5, 2,6,
                      3,4, 3,5, 3,6,
@@ -164,7 +164,7 @@ The rate at which $p$ changes is also related to the proportion of fields that a
 
 The parameters $c_i$ and $e$ are very similar to $r$ of continuous logistic growth, insofar as they are dimensionless instantaneous rates. However, they are sometimes thought of as probabilities. The parameter $c_i$ is approximately the proportion of open sites colonized per unit time. For instance, if we created or found 100 open sites, we could come back in a year and see how many became occupied over that time interval of one year, and that proportion would be a function of $c_i$. The parameter $e$ is often thought of as the probability that a site becomes unoccupied per unit time. If we found 100 occupied sites in one year, we could revisit them a year later and see how many became *un}occupied over that time interval of one year.
 
- With internal colonization, we are modeling a closed spatial population of sites, whether ``site'' refers to an entire field (as above), or a small patch of ground occupied by an individual plant [@Tilman1994b]. 
+ With internal colonization, we are modeling a closed spatial population of sites, whether "site" refers to an entire field (as above), or a small patch of ground occupied by an individual plant [@Tilman1994b]. 
 
 
 \paragraph{The Levins metapopulation model:}
@@ -402,7 +402,7 @@ qplot(x=out.D[,1], y=out.D[,2], geom="line", ylim=c(0,1), ylab="p", xlab="time")
 
 Habitat destruction, $D$, may vary between 0 ($=$ Levins model) to complete habitat loss 1.0; obviously the most interesting results will come for intermediate values of $D$, which we illustrate next.
 
-\paragraph{Illustrating the effects of habitat destruction}
+### Illustrating the effects of habitat destruction
 We can plot the dynamics for three levels of destruction, starting with none ($D=0$). We first set all the parameters, and time.
 ```{r}
 t <- 1:200
@@ -443,7 +443,6 @@ When $c_i > e$, we see that $p^*=1$ is the stable attractor (Fig. \@ref(fig:hans
 
 If we try this experiment with the Levins model, we see something very different. The Levins model predicts very rapid decline once $c_i < e$. Both models predict extinction, but the rescue effect delays the appearance of that extinction. It appears that the rescue effect (which is the difference between the two models) may act a bit like the ``extinction debt'' [@Tilman1994b] wherein deterministic extinction of a dominant species in a multi-species community is merely delayed, but not postponed indefinitely. Perhaps populations influenced by the rescue effect might be prone to unexpected collapse, if the only stable equilibria are 1 and 0. Thus simple theory can provide interesting insight, resulting in very different predictions for superficially similar processes.
 
-
 Here we show the unexpected collapse of core populations, starting at or near equilbrium. The first two use the Hanski model, while the third uses Levins. The second and third use $c_i < e$.
 ```{r hanski2, fig.cap="Metapopulation dynamics, starting from near equilibrium for $c_i=0.20$ and $e=0.01$. If the environment changes, causing extinction rate to increase until it is greater than colonization rate, we may observe greatly delayed, but inevitable, extinction (e.g., $c_i=0.20, e=0.25$)"}
 C1 <- ode(y=c(p=0.999), times=t, func=hanski, parms=c(ci=0.2, e=0.01))
@@ -456,12 +455,12 @@ coll$model <- factor(rep(c("c>e", "c<e", "c<e (Levins)"), each=nrow(L2)),
 ggplot(coll, aes(time, p, linetype=model)) + geom_line()
 ```
 
-## Confronting a model with data: the incidence function
-The above models of metapopulation dynamics provide an outline for understanding metapopulation dynamics. However, they do not necessarily provide a direct means to interrogate data. One of the main reasons for this is that they do not address two important ecological realities: that patches will be differ in area and thus differ in population sizes, and that they are different distances from each other. @Macarthur1963 argued persuasively that extinction risk should be realated to area, and that distance from a source should influence the probability of colonization. @Hanksi1994 provided an approach using *incidence functions* that allows us to incorporate area and distance in our model, and uses easily acquired patch occupancy data (presence/absence data) to evaluate metapopulation characteristics. 
+## Hanski's incidence function
+The above models of metapopulation dynamics provide an outline for understanding metapopulation dynamics. However, they do not necessarily provide a direct means to interrogate data or use data illuminate our understanding. One of the main reasons for this is that they do not address two important ecological realities: that patches will be differ in area and thus differ in population sizes, and that they are different distances from each other. @MacArthur1963 argued persuasively that extinction risk should be related to area, and that distance from a source should influence the probability of colonization. @Hanski1994 provided an approach using *incidence functions*, which predict the probability of occurrence. They allow us to incorporate area and distance in our model, and uses easily acquired patch occupancy data (presence/absence data) to evaluate metapopulation characteristics. 
 
-\paragraph{The incidence of occupancy} is determined by colonization and extinction probabilities. We will assume that if a patch $i$ is empty in year $t$, it will be recolonized in year $t+1$ with a probability $C_i$. This also means it will remain empty with probability of $1-C_i$. If a patch $j$ is occupied in year $t$, it will become extinct in year $t+1$ with probability $E_i$. This also means that it will persist with probability $1-E_i$. 
+The **incidence of occupancy** is determined by colonization and extinction probabilities. We will assume that if a patch $i$ is empty in year $t$, it will be recolonized in year $t+1$ with a probability $C_i$. This also means it will remain empty with probability of $1-C_i$. If a patch $j$ is occupied in year $t$, it will become extinct in year $t+1$ with probability $E_i$. This also means that it will persist with probability $1-E_i$. 
 
-The two states for one patch are illustrated with the code and figure below. Each column of the matrix is the probablities for one state. FThe first column comprises the probabilites of remianing empty or chaning from empty to occupied. The second column comprises the probabilities that an occupied patch becomes empty or remains occupied.
+The two states for one patch are illustrated with the code and figure below. Each column of the matrix is the probabilities for one state. Te first column comprises the probabilities of remaining empty or changing from empty to occupied. The second column comprises the probabilities that an occupied patch becomes empty or remains occupied.
 ```{r}
 C <- .3; E <- .5
 M <- matrix(c(1-C, E,
@@ -469,15 +468,15 @@ M <- matrix(c(1-C, E,
 colnames(M) <- rownames(M) <- c("empty", "occupied")
 M
 {
-  plotmat(M, pos=2) 
+  plotmat(M, pos=2) #requires the diagram package
   title("The two states of one patch")
 }
 ```
 
-The probablitiy that it is occupied at any given time is, $J_i$ where
+The probability, $J_i$, that a patch is occupied at any given time is,
 $$J_i = \frac{C_i}{C_i + E_i}.$$
 
-We can show this by calculating the stable distribution of this states using eigen analysis in the way we did for demographic matrices. 
+We can show this by calculating the stable distribution of these states using eigenanalysis in the way we did for demographic matrices. 
 ```{r}
 # J
 (J <- C/(C+E))
@@ -488,37 +487,39 @@ eM$vectors[,1]/sum(eM$vectors[,1])
 ```
 We see that $J_i$ is the stable state for being colonized. 
 
-\paragraph{Extinction probability}, $E$, is determined by patch area $A_i$ in our simple model. This is because we will assume that all patches have a similar quality and so support equal densities (individuals per unit area). larger areas have more individuals and thus have lower risk of extinction. @Hanksi1994 let
+**Extinction probability**, $E$, is determined by patch area $A_i$ in our simple model. This is because we will assume that all patches have a similar quality and so support equal densities (individuals per unit area). Larger areas have more individuals and thus have lower risk of extinction. @Hanski1994 described this mathematically as
 \begin{align*}
 E_i = \frac{e}{A_i^x} \quad &\mathrm{if} A_i > e^{1/x}\\
 E_i = 1 \quad &\mathrm{if} A_i \le e^{1/x}
 \end{align*}
-
-Here $e$ and $x$ are constants letting $E_i$ vary for different systems. Parameter $x$ controls the effect of area, where larger values $x>1$ mean that large patches have very low extinction risk. Smaller values of $x$ ($x<1$) cause mean that patches have to become exceedingly larger to appreciably reduce extinction risk. The parameter $e$ is the area-independent measure of extinction risk, and so is related to intrinsic populatin dynmaics and environmental stochasticity.
+where $e$ and $x$ are constants letting $E_i$ vary for different systems. Parameter $x$ controls the effect of area, where larger values $x>1$ mean that large patches have very low extinction risk. Smaller values of $x$ ($x<1$) mean that patches have to become exceedingly larger to appreciably reduce extinction risk. The parameter $e$ is the area-independent measure of extinction risk, and so is related to intrinsic population dynamics and environmental stochasticity.
 
 We can illustrate extinction probability with toy code.
-```{r E, fig.cap="Extinction probabliity for a butterfly population (silver spotted skipper, Hanksi 1994).", out.width="75%"}
+```{r E, fig.cap="Extinction probabliity for a butterfly population (silver spotted skipper, Hanski 1994).", out.width="75%"}
 # Extinction probability
-E.p <- function(A, e, X){
-  Ei <- if(A > e^(1/X)) e/(A^X) else 1
+E.p <- function(A, e=0.01, X=1.009){
+  Ei <- ifelse(A > e^(1/X), e/(A^X), 1)
   Ei }
 
-# parameters
-e1 <- 0.01; x1 <- 1.009
-ha <- seq(0, .2, by=0.001)
-E <- sapply(ha, function(A) {E.p(A=A, e=e1, X=x1)})
-qplot(ha, E, geom="line")
+curve(E.p(x), 0, 0.2, ylim=c(0,1))
+
+## The ggplot way
+# myData <- data.frame( A=c(0, .2) ) # ggplot requires a data frame
+# ggplot(data=myData, aes(x=A)) + # set the basic properties of the plot
+#   # in the stat_function, we indicate the parameters in our equation.
+#   stat_function(fun=E.p, geom="line", 
+#                 args=list(e = 0.01, X = 1.009)) 
 ```
 Note that $A_0 = e^{1/x}$ is the critical patch size where a population is not expected to persist a year.
 
-\paragraph{Colonization probability}, $C_i$, is more complicated. It is a function of the number of arriving migrants, which are themselves a function of distances from other patches and the area (and thus population sizes) of those patches. It is
+**Colonization probability**, $C_i$, is more complicated. It is a function of the number of arriving migrants, which are themselves a function of distances from other patches and the area (and thus population sizes) of those patches. It is
 $$C_i = \frac{1}{1+\left(\frac{y^\prime}{S_i}\right)^2}$$
 where $y^\prime$ is colonizing ability of the species, and $S_i$ can be thought of as a measure of isolation of patch $i$ from the rest of the patches. Formally, this is
 $$S_i = \sum_{j=1}^n\left(p_j \mathrm{exp}(-\alpha d_{ij}) A_j\right)$$
 where there are a total $n$ other patches $j$ that are habitats, $p_j$ is an indicator of whether a patch is currently occupied (0,1), $d_{ij}$ is the distance from patch $j$ to patch $i$, $\alpha$ is the effect of distance, and $A_j$ is the area of patch $j$ and thus an index of population size.
 
 We can illustrate extinction probability with toy code.
-```{r C, fig.cap="Colonization probabliity for a butterfly population (silver spotted skipper, Hanksi 1994).", out.width="75%"}
+```{r C, fig.cap="Colonization probabliity for a butterfly population (silver spotted skipper, Hanski 1994).", out.width="75%"}
 # Colonization probability from one patch to another, as a function of distance
 C.p <- function(d, yprime, alpha, area){
   Sij <- exp(-alpha*d ) * area
@@ -533,7 +534,7 @@ C <- sapply(km, function(d) {C.p(d=d, yprime=yprime, alpha=alpha, area=ha)})
 qplot(km, C, geom="line")
 ```
 
-There are additional details about the colonization function that I have buried, but the interested reader could consult sources of these ideas [@HanskiJAE; @Hanksi1994].
+There are additional details about the colonization function that I have buried, but the interested reader could consult sources of these ideas [@Hanski1994jae; @Hanski1994].
 
 
 Combining $C_i$ and $E_i$, we can define the incidence function,

@@ -305,9 +305,11 @@ It is very difficult to understand the underlying processes driving population d
 
 ```{r}
 
-errorEval <- function(obs.e = 5000, proc.e = 0.1, nt=16, rmax=0.45, alpha=61.28, N1=14000, seed=1) {
+errorEval <- function(obs.e = 5000, proc.e = 0.1, nt=16, rmax=0.45, alpha=61.28, N1=14000, seed=2) {
 {set.seed(seed)
 AR <- runif(nt, min=300, max=850)
+ann.rain <- seq(300, 850, length.out=nt)
+AR <- spec_mimic(ann.rain, gamma=0)
 }
 # create a vector to hold "actual" population size
 N = numeric(nt)
@@ -319,7 +321,7 @@ t=1
 for (t in 1:(nt - 1)) {
   Nobs[t] = rnorm(1, mean=N[t] , sd=obs.e)
   nextN <- N[t] + rmax*N[t]*(1 - N[t]/(alpha*AR[t])) 
-  N[t + 1] = rnorm(1, mean=nextN, sd=proc.e*N[t])
+  N[t + 1] = max(0, rnorm(1, mean=nextN, sd=proc.e*N[t]) )
 }
 Nobs[nt] = rnorm(1, mean=N[nt] , sd=obs.e)
 
