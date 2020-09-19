@@ -29,7 +29,7 @@ plot(gid, layout=matrix(c(0, .5, 1, 0.75, 0.25, 0.75), nc=2), edge.curved=.5,
 We start with modeling direct interactions using the Lotka-Volterra framework, and then a metapopulation framework. We then move on to indirect interactions using a consumer-resource model.
 
 
-\section{Lotka-Volterra Interspecific Competition}
+## Lotka-Volterra Interspecific Competition
 Our models of density-dependent growth were built upon the assumption that individuals within a single population had negative effects on each other, which we refered to as intraspecific competition. Here we assume that individuals of different species also have negative effects on each other.
 
 Perhaps the classic model of competitive interactions is the continuous Lotka-Volterra model of interspecific competition [@Kingsland:1985kx]. We build directly on the logistic growth model by adding an additional term for negative density dependence, this time, with the competing species. Now we have to label our populations and all of our parameters using subscripts. These subscripts identify the species to which the parameter relates. For instance, $r_1$ is the intrinsic rate of increase for species 1, and $\alpha_{12}$ is the per capita effect of species 2 on 1. 
@@ -58,7 +58,7 @@ coefficient; $\alpha_{12}$ is in the first row, second column. This merely refle
 \begin{table}[ht]
   \centering
   \caption{Parameters of the continuous 2 species Lotka-Volterra competition model. The rest of the chapter explains the meaning and motivation.}
-\label{tab:cc}
+(\#tab:cc)
   \begin{tabular}{cp{7cm}}
 \hline
 \hline
@@ -69,7 +69,7 @@ $\alpha_{ii}$ & Intraspecific density dependence; intraspecific competition coef
 $\alpha_{ij}$ & Interspecific density dependence; interspecific competition coefficient; the effect of interspecific competition; the negative effect that an individual of species $j$ has on the growth rate of species $i$.\\
 $K_i$ & $1/\alpha_{ii}$; *carrying capacity* of species $i$; the population size obtainable by species $i$ in the absence of species $j$.\\
 $\alpha'_{ij}$ & $\alpha_{ij}/\alpha_{ii}$; the relative importance of interspecific competition.\\
-$\beta_{ij}$ &  $\alpha_{ij}/\alpha_{jj}$; the *invasion criterion* for species $i$;  \index{$\beta_{ij}$|see{competition coefficient, invasion criterion}}\index{$\beta_{ij}$}the relative importance of interspecific competition; the importance of the effect of species $j$ on species $i$ relative to the effect of species $j$ on itself.\\
+$\beta_{ij}$ &  $\alpha_{ij}/\alpha_{jj}$; the *invasion criterion* for species $i$;  the relative importance of interspecific competition; the importance of the effect of species $j$ on species $i$ relative to the effect of species $j$ on itself.\\
 \hline
   \end{tabular}
 
@@ -92,9 +92,9 @@ In this section, we describe how we find equilibria in a simple multispecies mod
 
 ### Isoclines
 
-An \index{isoclines!two species, Lotka--Volterra}isocline is, in general, a line connecting points on a graph or map that have equal value. For instance, a topographic map has elevation isoclines, connecting points of equal elevation. Here, our isoclines will connect points in state space at which the growth rate for species $i$ equals zero --- every point on that line will represent $\dot{N}_i=0$. We call these *zero net growth isoclines* (ZNGI), sometimes called  "zingees" by people who prefer and economy of words.
+An isocline is, in general, a line connecting points on a graph or map that have equal value. For instance, a topographic map has elevation isoclines, connecting points of equal elevation. Here, our isoclines will connect points in state space at which the growth rate for species $i$ equals zero --- every point on that line will represent $\dot{N}_i=0$. We call these *zero net growth isoclines* (ZNGI), sometimes called  "zingees" by people who prefer and economy of words.
 
-A \index{zero net growth isocline|see{isocline}}zero net growth isocline, typically referred to simply as an *isocline*, is the set of all points for which the growth of a population is zero, when all else (such as the population size of a competing species) is held constant. A two-species *equilibrium* is a point at which the growth rates of both populations are zero. We saw previously that the carrying capacity of a single species logistic population is an equilibrium. With two species, it gets a tad trickier.
+A zero net growth isocline, typically referred to simply as an *isocline*, is the set of all points for which the growth of a population is zero, when all else (such as the population size of a competing species) is held constant. A two-species *equilibrium* is a point at which the growth rates of both populations are zero. We saw previously that the carrying capacity of a single species logistic population is an equilibrium. With two species, it gets a tad trickier.
 
 We find the isocline of a species by setting its growth rate equal to zero and solving the equation for that species in terms of the other species. As an example, find the zero net growth isocline for $N_2$. We find below that there is a straight line that describes all points for which $d N_2/dt=0$, if $N_1$ were held constant. We start by setting \@ref(eq:N2b) to zero, and solving for $N_2$.
 \begin{equation}
@@ -112,7 +112,7 @@ $y=N_2$, $m= \alpha_{21}/\alpha_{22}$, and $b=1/\alpha_{22}$ (Fig. \@ref(fig:Nis
 
 The isocline (Fig. \@ref(fig:Niso1)) shows that as the competitor's population size, $N_1$, becomes larger, $N_2$ declines by $\alpha_{21}/\alpha_{22}$ for each additional individual of the competing species 1, until finally $N_2=0$ when $N_1=1/\alpha_{21}$.
 
-\paragraph{Graphing an isocline} isn't too hard, so let's graph something similar  to Fig. \@ref(fig:Niso1). First, we define a new matrix of competition coefficients, where
+**Graphing an isocline** isn't too hard, so let's graph something similar  to Fig. \@ref(fig:Niso1). First, we define a new matrix of competition coefficients, where
 $\alpha_{11}=\alpha_{22} > \alpha_{12}=\alpha_{21}$.
 ```{r}
 a <- matrix(c(  0.01, 0.005,
@@ -194,7 +194,7 @@ Note that these isoclines are merely equations for straight lines, and it is eas
 By themselves, the isoclines tell us that if species 2 becomes extinct ($N_2=0$), then species 1 reaches its carrying capacity ($N_1=1/\alpha_{11}$) (Fig. \@ref(fig:Niso1)). Similarly, if $N_1=0$, then $N_2=1/\alpha_{22}$. These are important equilibria, because they verify the internal consistency of our logical, and they provide end-points on our isoclines. 
 
 *If the species coexist ($N_1,\,N_2 >0$) it means that they must share one or more points on their isoclines* --- such an equilibrium is the point
-where the lines cross.\index{isoclines!interspecific competition} We find these equilibria by solving the isoclines simultaneously. A simple way to do this is to substitute the right hand side of the $N_2$ isocline  \@ref(eq:N2iso) in for $N_2$ in the $N_1$ isocline \@ref(eq:N1iso).  That is, we substitute an isocline of one species in for that species' abundance in another species' isocline. Combining eqs. \@ref(eq:N2iso) and \@ref(eq:N1iso), we get
+where the lines cross. We find these equilibria by solving the isoclines simultaneously. A simple way to do this is to substitute the right hand side of the $N_2$ isocline  \@ref(eq:N2iso) in for $N_2$ in the $N_1$ isocline \@ref(eq:N1iso).  That is, we substitute an isocline of one species in for that species' abundance in another species' isocline. Combining eqs. \@ref(eq:N2iso) and \@ref(eq:N1iso), we get
 \begin{align}
   N_1 &=\frac{1}{\alpha_{11}} - \frac{\alpha_{12}}{\alpha_{11}}\left(\frac{1}{\alpha_{22}} - \frac{\alpha_{21}}{\alpha_{22}}N_1 \right)\notag\\
   N_1 &=\frac{1}{\alpha_{11}} - 
@@ -215,7 +215,7 @@ The expressions for $N_1^*$ and $N_2^*$ look pretty complicated, but can we use 
 
 We can also say something a little less obvious about species 1. What happens when the negative effect of the competitor, $N_2$, starts to increase, that is, as $\alpha_{12}$ gets bigger? Or, put more obtusely but precisely, let's find
 \begin{equation}
-  \label{eq:1}
+  (\#eq:1)
   N_1^* = \lim_{\alpha_{12} \to \infty}\frac{\alpha_{22}-\alpha_{12}}{\alpha_{22}\alpha_{11}-\alpha_{12}\alpha_{21}}
 \end{equation}
 that is, find the limit of the equilibrium \@ref(eq:lvn1eq) as
@@ -231,23 +231,22 @@ the competitor.
 
 Summarizing, we see that in the absence of interspecific competition, species are attracted toward their carrying capacities. Second, if interspecific competition is intense, then a species' carrying capacity becomes less important, and its abundance is increasingly determined by its ability to suppress its competitor. 
 
-### Coexistance --- the \index{invasion criterion}invasion criterion
+### Coexistence --- the invasion criterion
 Based on the numerators in eqs. \@ref(eq:lvn1eq) and \@ref(eq:lvn2eq), it seems that $N_1^*$ and $N_2^*$ may both be greater than zero whenever $\alpha_{ii}-\alpha_{ji} >0$. This is, indeed, the case. Below we step through the analysis of what we refer to as the ``invasion criterion,'' which specifies the conditions for $N_i^* > 0$.
 
-In general, the details of any model and its dynamics may be quite complicated, but as long as we know whether a species will always \index{increase when rare|see{invasion criterion}}*increase when it is rare*, or *invade*,\footnote{Note that ecologists who study invasion of exotic species may use the word "invade" to mean the successful dispersal to, establishment and spread at a site. This incorporates a tremendous amount of species- or system-specific biology. Here we mean "invasion" in only a much more strict or narrow sense --- to increase when rare.} then we know whether it can persist in the face of complex interactions. Thus we don't need to find its equilibrium, but merely its behavior near zero.
+In general, the details of any model and its dynamics may be quite complicated, but as long as we know whether a species will always *increase when it is rare*, or *invade*,^[Ecologists who study invasion of exotic species may use the word "invade" to mean the successful dispersal to, establishment and spread at a site. This incorporates a tremendous amount of species- or system-specific biology. Here we mean "invasion" in only a much more strict or narrow sense --- to increase when rare.] then we know whether it can persist in the face of complex interactions. Thus we don't need to find its equilibrium, but merely its behavior near zero.
 
 How do we determine whether a species can increase when rare? Let's explore that with the Lotka-Volterra competition model. We can start by reexamining species 1's growth equation \@ref(eq:N2a)
 \begin{equation*}
-  \label{eq:coex1}
+  (\#eq:coex1)
   \frac{d N_1}{d t}=r_1N_1\left(1-\alpha_{11}N_1-\alpha_{12}N_2\right).
 \end{equation*}
 From this we can see that in the absence of any density dependence
-($\alpha=0$) and assuming $r_1>0$, and $N_1>0$, the population grows exponentially. Further, we can see that $d N/d t >0$ as long as $\left(1-\alpha_{11}N_1-\alpha_{12}N_2\right)>0$. Therefore, let's examine this expression for density dependence and see what it looks like as $N_1$ gets very close to zero. We start by expressing $d N_1 / d t$ completely
-in terms of $N_1$ and $\alpha$. We do this by substituting $N_2$'s isocline \@ref(eq:N2iso) in place of $N_2$ in eq. \@ref(eq:N2a). We then solve this for any growth greater than zero.
+($\alpha=0$) and assuming $r_1>0$, and $N_1>0$, the population grows exponentially. Further, we can see that $d N/d t >0$ as long as $\left(1-\alpha_{11}N_1-\alpha_{12}N_2\right)>0$. Therefore, let's examine this expression for density dependence and see what it looks like as $N_1$ gets very close to zero. We start by expressing $d N_1 / d t$ completely in terms of $N_1$ and $\alpha$. We do this by substituting $N_2$'s isocline \@ref(eq:N2iso) in place of $N_2$ in \@ref(eq:N2a). We then solve this for any growth greater than zero.
 \begin{align}
  0&< \left(1-\alpha_{11}N_1-\alpha_{12}N_2\right)\notag\\
  0&<\left(1-\alpha_{11}N_1-\alpha_{12}\left(\frac{1}{\alpha_{22}}-\frac{\alpha_{21}}{\alpha_{22}}N_1\right)\right)
-\label{eq:N1crit1}
+(\#eq:N1crit1)
 \end{align}
 
 Now --- what is the value of \@ref(eq:N1crit1) as $N_1 \to 0$? We can substitute 0 for $N_1$, and eq. Expression \@ref(eq:N1crit1) becomes 
@@ -256,7 +255,7 @@ Now --- what is the value of \@ref(eq:N1crit1) as $N_1 \to 0$? We can substitute
  0&<1-\frac{\alpha_{12}}{\alpha_{22}}\notag\\
 \alpha_{12}&<{\alpha_{22}}.
 \end{align}
-What is this saying? It is saying that as long as $\alpha_{12}<\alpha_{22}$, then our focal species can persist, increasing in abundance from near zero --- $N_1$ will increase when rare}, that is, it will successfully invade.
+What is this saying? It is saying that as long as $\alpha_{12}<\alpha_{22}$, then our focal species can persist, increasing in abundance from near zero --- $N_1$ will increase when rare, that is, it will successfully invade.
 
 For two species to both persist, or coexist, it must be that case that
 \begin{equation*}
@@ -269,23 +268,24 @@ Simply put, *for species to coexist stably, their effects on themselves must be 
 ### Other equilibria
 Given our isoclines and equilibria above, what other logical combinations might we see, other than coexistence? Here we list others, and provide graphical interpretations (Fig. \@ref(fig:LVIsoclines)). 
 
-\paragraph{Species 1 can invade when rare, but species 2 cannot (Fig. \ref{fig:LVIsoclines}, lower left)}
+**Species 1 can invade when rare, but species 2 cannot (Fig. \@ref(fig:LVIsoclines), lower left)**
 \begin{equation*}
 \alpha_{12} < \alpha_{22} \quad,\quad \alpha_{21}>\alpha_{11} 
 \end{equation*}
-This leads to competitive exclusion by species 1 --- species 1 wins. This is referred to as a \emph{boundary equilibrium}, because it is on the boundary of the state space for one species. Equilibria where all $N_i>0$ are referred to as \emph{internal equilibria}.
+This leads to competitive exclusion by species 1 --- species 1 wins. This is referred to as a *boundary equilibrium*, because it is on the boundary of the state space for one species. Equilibria where all $N_i>0$ are referred to as *internal equilibria*.
 
-\paragraph{Species 2 can invade when rare, but species 1 cannot (Fig. \ref{fig:LVIsoclines}, upper right) }
+**Species 2 can invade when rare, but species 1 cannot (Fig. \@ref(fig:LVIsoclines), upper right)**
 \begin{equation*}
 \alpha_{12}>\alpha_{22} \quad,\quad \alpha_{21}<\alpha_{11} 
 \end{equation*}
 This leads to competitive exclusion by species 2 --- species 2 wins. This is the other boundary equilibrium. Note that for both this and the previous boundary equilibrium, the equilibrium equations (\@ref(eq:lvn1eq), \@ref(eq:lvn2eq)) can return $N^*$ that are negative or too large ($>K$). Recall that these equations derive from simple equations of straight lines, and do not guarantee that they are used sensibly --- equations aren't dangerous, theoreticians who use equations are dangerous. 
 
- \paragraph{Neither species can invade when rare (Fig. \ref{fig:LVIsoclines}, lower right).}
+**Neither species can invade when rare (Fig. \@ref(fig:LVIsoclines), lower right).**
+
 \begin{equation*}
 \alpha_{12} > \alpha_{22} \quad,\quad \alpha_{21} > \alpha_{11}
 \end{equation*}
-This creates an unstable internal equilibrium --- exclusion will occur, but either species could win. This condition is sometimes referred to as \emph{founder control} [@Bolker2003a] because the identity of the winner depends in part on the starting abundances. It creates a \emph{\index{saddle}saddle} in state space. What the heck is a saddle? More on that below. It suffices to say that from some directions, an saddle attracts the trajectories of the populations, while from other directions, it repels the trajectories.\footnote{The topography of mountain ranges can include saddles, which are precisely the context in which we use ``saddle'' here. Search the web for Saddleback Mountain, New York, USA, Lat/Long: 44$^\circ$ 8' N; 73$^\circ$ 53' W. See also pictures of horse saddles --- same shape.}
+This creates an unstable internal equilibrium --- exclusion will occur, but either species could win. This condition is sometimes referred to as *founder control* [@Bolker2003a] because the identity of the winner depends in part on the starting abundances. It creates a *saddle* in state space. What the heck is a saddle? More on that below. It suffices to say that from some directions, an saddle attracts the trajectories of the populations, while from other directions, it repels the trajectories.^[The topography of mountain ranges can include saddles, which are precisely the context in which we use "saddle" here. Search the web for Saddleback Mountain, New York, USA, Lat/Long: 44$^\circ$ 8' N; 73$^\circ$ 53' W. See also pictures of horse saddles --- same shape.]
 
 ```{r LVIsoclines, results='hide', echo=FALSE, fig.cap="Phase plane diagrams of Lotka-Volterra competitors under different invasion conditions. Horizontal and vertical arrows indicate directions of attraction and repulsion for each population (solid and dased arrows); diagonal arrows indicate combined trajectory. Circles indicate equilibria; additional boundary equilibria can occur whenever one species is zero. Left to right: stable eq., a(ii) < a(ij); N(2) wins, a(12) > a(22); N(1) wins, a(21) > a(11); saddle attractor-repellor, a(ij) > a(ii).", fig.show='hold', fig.ncol=2, out.width="49%" , fig.width=4, fig.height=4}
 
@@ -401,19 +401,17 @@ points(n1star,n2star, cex=2)
 ## Dynamics at the Equilibria
 Here we use eigenanalysis to analyze the properties of the equilibrium, whether they are attractors, repellers, or both, and whether the system oscillates around these equilibria. 
 
-For logistic growth, we assessed stability with the partial derivative of the growth rate, with respect to population size. If it was negative the population was stable, and the more negative the value, the shorter the return time.  Here we build on this, and present a general \index{stability analysis!recipe}recipe for stability analysis [@Morin1999a]:
-\begin{compactenum}
-\item Determine the equilibrium abundances of each species by setting its growth equation to zero, and solving for $N$.
-\item Create the Jacobian matrix. This matrix represents the response of each species to changes in its own population and to changes in each other's populations.   The matrix elements are the partial derivatives of each species' growth rate with respect to each population.
-\item Solve the Jacobian. Substitute the equilibrium abundances into the partial derivatives of the Jacobian matrix to put a real number into each element of the Jacobian matrix. 
-\item Use the Jacobian matrix to find the behavior of the system near the equilibria. The trace, determinant, and eigenvalues of the Jacobian can tell us how stable or unstable the system is, and whether and how it cycles.
-\end{compactenum}
+For logistic growth, we assessed stability with the partial derivative of the growth rate, with respect to population size. If it was negative the population was stable, and the more negative the value, the shorter the return time.  Here we build on this, and present a general recipe for stability analysis [@Morin1999a]:
+
+1. Determine the equilibrium abundances of each species by setting its growth equation to zero, and solving for $N$.
+1. Create the Jacobian matrix. This matrix represents the response of each species to changes in its own population and to changes in each other's populations.   The matrix elements are the partial derivatives of each species' growth rate with respect to each population.
+1. Solve the Jacobian. Substitute the equilibrium abundances into the partial derivatives of the Jacobian matrix to put a real number into each element of the Jacobian matrix. 
+1. Use the Jacobian matrix to find the behavior of the system near the equilibria. The trace, determinant, and eigenvalues of the Jacobian can tell us how stable or unstable the system is, and whether and how it cycles.
 
 ### Determine the equilibria
 We just did this above. Given \@ref(eq:lvn1eq) and \@ref(eq:lvn2eq), we see that the $\bm{\alpha}$ determine completely $N_1^*$ and $N_2^*$. This is not true for Lotka-Volterra systems with more than two species; such systems also depend on $r_i$.
 
-
-\paragraph{Finding equilibria in R} can be done using *expressions* for the equilibria, $N_1^*$ and $N_2^*$. An R expression is a symbolic representation of an equation. These will be symbolic representations that we later evaluate using `eval()`.
+**Finding equilibria in R** can be done using *expressions* for the equilibria, $N_1^*$ and $N_2^*$. An R expression is a symbolic representation of an equation. These will be symbolic representations that we later evaluate using `eval()`.
 ```{r}
 N1Star <- expression( (a22-a12)/(a22*a11 - a12*a21) )
 N2Star <- expression( (a11-a21)/(a22*a11 - a12*a21) )
@@ -425,15 +423,15 @@ N1 <- eval(N1Star); N2 <- eval(N2Star)
 N1
 ```
  
-### Create the \index{Jacobian matrix}Jacobian matrix
+### Create the Jacobian matrix
 The next step is to find each partial derivative. The partial derivatives describe how the growth rate of each species changes with respect to the abundance of each other species and with respect to its own abundance. Thus a positive value indicates that a growth rate increases as another population increases. A negative value indicates a growth rate decreases as another population increases. Here, we work through an example, explicitly deriving the partial derivative of species 1's growth rate with respect to itself.
 
-First let's expand the growth rate of species 1 \@ref(eq:N2a)\footnote{Recall that the time derivative, $d N / d t$, can be symbolized with $\dot{N}$ ("n-dot").}
+First let's expand the growth rate of species 1 \@ref(eq:N2a)^[Recall that the time derivative, $d N / d t$, can be symbolized with $\dot{N}$ ("n-dot").]
 \begin{align}
   \frac{d N_1}{d t}&=\dot{N_1} =r_1N_1 - r_1\alpha_{11}N_1^2 - r_1\alpha_{12}N_2N_1.
 \end{align}
 
-Now we derive the \index{partial differential equation}partial differential equation (PDE)\footnote{PDEs are typically written using a fancy symbol, delta, as in $\partial F/\partial N$. It helps alert us to the fact that we are differentiating one variable with respect to another state variables. When taking a derivative with respect to $X$, we treat all other variables as constants.} with respect to $N_1$, treating $N_2$ as a constant.
+Now we derive the partial differential equation (PDE)^[PDEs are typically written using a fancy symbol, delta, as in $\partial F/\partial N$. It helps alert us to the fact that we are differentiating one variable with respect to another state variables. When taking a derivative with respect to $X$, we treat all other variables as constants.] with respect to $N_1$, treating $N_2$ as a constant.
 \begin{equation}
   \frac{\partial \dot{N_1} }{\partial N_1}=r_1 - 2r_1\alpha_{11}N_1 - r_1\alpha_{12}N_2
 \end{equation}
@@ -451,21 +449,21 @@ We then do the same for $\dot{N_2}$, and so derive the full matrix of PDE's,
 \left(
 \begin {array}{cc}
 \frac{\partial \dot{N_1}}{\partial N_1}&\frac{\partial \dot{N_1}}{\partial N_2}\\
-\noalign{\medskip}
+
 \frac{\partial \dot{N_2} }{\partial N_1}&\frac{\partial \dot{N_2}}{\partial N_2}
 \end {array}
-\right) =
+\right)  =
 \left(
 \begin {array}{cc}
 r_1 - 2r_1\alpha_{11}N_1 - r_1\alpha_{12}N_2& - r_1\alpha_{12}N_1\\
-\noalign{\medskip}
 - r_2\alpha_{21}N_2&r_2 - 2r_2\alpha_{22}N_2 - r_2\alpha_{21}N_1\\
 \end {array}
 \right).
 \end{align}
-This matrix of PDEs is the Jacobian matrix, or simply the ``Jacobian.'' As differential equations, they describe the slopes of curves (i.e. the slopes of tangents of curves) at a particular point. That is, they  describe the straight line interpretations as that point. As *partial* differential equations, they describe how the growth rates change as population sizes change.
 
-\paragraph{Finding partial differential equations and the Jacobian matrix in R} can bew done using expressions. Here we create equations or \emph{expressions} for the for the growth rates, $\dot{N_1}$ and $\dot{N_2}$, and use these to find the partial derivatives. First, expressions for the growth rates:
+This matrix of PDEs is the Jacobian matrix, or simply the "Jacobian." As differential equations, they describe the slopes of curves (i.e. the slopes of tangents of curves) at a particular point. That is, they  describe the straight line interpretations as that point. As *partial* differential equations, they describe how the growth rates change as population sizes change.
+
+**Finding partial differential equations and the Jacobian matrix in R** can be done using expressions. Here we create equations or *expressions* for the for the growth rates, $\dot{N_1}$ and $\dot{N_2}$, and use these to find the partial derivatives. First, expressions for the growth rates:
 ```{r}
 dN1dt <- expression( r1 * N1 - r1 * a11 * N1^2 - r1 * a12 * N1 * N2 )
 dN2dt <- expression(r2*N2 - r2*a22*N2^2 - r2*a21*N1*N2)
@@ -505,7 +503,7 @@ To solve the Jacobian at an equilibrium,  we substitute $N_1^*$ \@ref(eq:lvn1eq)
 Yikes \ldots seems a little intimidating for such a small number of species. However, it is remarkable how each element can be expressed as a product of $-r_i\alpha_{ij}N_i^*$, where $i$ refers to row, and $j$ refers to column. 
 
 
-\paragraph{Evaluating the Jacobian matrix in R} is the easy part, if we defined it as above.
+**Evaluating the Jacobian matrix in R** is the easy part, if we defined it as above.
 Assuming that above we selected particular $\bm{\alpha}$, used these to determine $N_1^*$ and $N_2^*$, found the PDEs and created an expression for the Jacobian matrix, and labeled everything appropriately, we can then evaluate the Jacobian at an equilibrium. For $\alpha_{ii}=0.01$ and $\alpha_{ij}=0.001$ (see above) we find
 ```{r}
 r1 <- r2 <- 1
@@ -516,14 +514,14 @@ Note that all of these PDEs are negative for this equilibrium. This indicates a 
 
 
 ### Use the Jacobian matrix
-Just the way we used eigenanalysis to understand long term asymptotic behavior of demographic matrices, we can use eigenanalysis of the Jacobian to assess the long-term asymptotic behavior of these competing Lotka-Volterra populations. We can again focus on its dominant, or leading, eigenvalue ($\lambda_1$). The dominant \index{eigenvalue!dominant}eigenvalue will be the eigenvalue with the greatest real part, and not necessarily the eigenvalue with the greatest magnitude.\footnote{This criterion is different than for demographic, discrete time projection matrices.} In particular, the dominant eigenvalue, $\lambda_1$, may have a real part for which the magnitude, or absolute value is smaller, but which is less negative or more positive (e.g., $\lambda_1=-.01$, $\lambda_2=-1.0$). For continuous models, the dominant eigenvalue, $\lambda_1$, is approximately the rate of change of a perturbation, $x$, from an equilibrium, 
+Just the way we used eigenanalysis to understand long term asymptotic behavior of demographic matrices, we can use eigenanalysis of the Jacobian to assess the long-term asymptotic behavior of these competing Lotka-Volterra populations. We can again focus on its dominant, or leading, eigenvalue ($\lambda_1$). The dominant eigenvalue will be the eigenvalue with the greatest real part, and not necessarily the eigenvalue with the greatest magnitude.^[This criterion is different than for demographic, discrete time projection matrices.] In particular, the dominant eigenvalue, $\lambda_1$, may have a real part for which the magnitude, or absolute value is smaller, but which is less negative or more positive (e.g., $\lambda_1=-.01$, $\lambda_2=-1.0$). For continuous models, the dominant eigenvalue, $\lambda_1$, is approximately the rate of change of a perturbation, $x$, from an equilibrium, 
 \begin{equation}
   (\#eq:2x)
   x_t=x_0e^{\lambda_{1}t}.
 \end{equation}
  Thus, the more negative the value, the faster the exponential decline back toward the equilibrium (i.e., toward $x=0$). We can think of the dominant eigenvalue as a ``perturbation growth rate'': negative values mean negative growth (i.e. a decline of the perturbation), and positive values indicate positive growth of the perturbation, causing the system to diverge or be repelled away from the equilibrium.
 
-In addition to the dominant eigenvalue, we need to consider the other eigenvalues. Table \@ref(tab:eiginterpret) provides a summary for interpreting eigenvalues with respect to the dynamics of the system. The eigenvalues depend upon elements of the Jacobian, and values calculated from the elements, notably the determinant, the trace, and the discriminant; a similar set of rules of system behavior can be based upon these values [@Roughgarden1998]. For instance, the \index{Routh-Hurwitz criteria}*Routh-Hurwitz criterion* for stability tells us that a two-species equilibrium will be locally stable, only if $\mathbf{J_{11}} + \mathbf{J_{22}} < 0$ and if $\mathbf{J_{11}}\mathbf{J_{22}-\mathbf{J_{12}}\mathbf{J_{21}}} > 0$. The biological interpretation of this criterion will be posed as a problem at the end of the chapter. For now, Table \@ref(tab:eiginterpret) will suffice.
+In addition to the dominant eigenvalue, we need to consider the other eigenvalues. Table \@ref(tab:eiginterpret) provides a summary for interpreting eigenvalues with respect to the dynamics of the system. The eigenvalues depend upon elements of the Jacobian, and values calculated from the elements, notably the determinant, the trace, and the discriminant; a similar set of rules of system behavior can be based upon these values [@Roughgarden1998]. For instance, the *Routh-Hurwitz criterion* for stability tells us that a two-species equilibrium will be locally stable, only if $\mathbf{J_{11}} + \mathbf{J_{22}} < 0$ and if $\mathbf{J_{11}}\mathbf{J_{22}-\mathbf{J_{12}}\mathbf{J_{21}}} > 0$. The biological interpretation of this criterion will be posed as a problem at the end of the chapter. For now, Table \@ref(tab:eiginterpret) will suffice.
 
 
 
@@ -546,7 +544,7 @@ Imaginary parts present ($\pm\omega i$) & Oscillations with period $2\pi/\omega$
 \end{tabular}
 \end{table}
 
-\paragraph{Eigenanalysis of the Jacobian matrix in R} is easy once we evaluated the Jacobian matrix at its equilibrium (above). We simply perform eigenanalysis on the matrix (from previous boxes: $\alpha_{11}=\alpha_{22}=0.01,\,\alpha_{12}=\alpha_{21}=0.001,\, r=1$).
+**Eigenanalysis of the Jacobian matrix in R** is easy once we evaluated the Jacobian matrix at its equilibrium (above). We simply perform eigenanalysis on the matrix (from previous boxes: $\alpha_{11}=\alpha_{22}=0.01,\,\alpha_{12}=\alpha_{21}=0.001,\, r=1$).
 ```{r}
 eigStable <- eigen(J1); eigStable[["values"]]
 ```
@@ -561,9 +559,9 @@ Given our stability criteria above, let us next examine the dominant eigenvalue 
 (\#eq:8)
   \beta_{ij}=\alpha_{ij}/\alpha_{jj}
 \end{equation}
-where, if $\beta_{ij}<1$, species $i$ can invade. This ratio is the relative strength of inter- \emph{vs.} intraspecific competitive effect. It turns out to be useful to calculate $\lambda_1$ (``perturbation growth rate'') for combinations of $\beta_{ij},\,\beta_{ji}$.
+where, if $\beta_{ij}<1$, species $i$ can invade. This ratio is the relative strength of inter- *vs.* intraspecific competitive effect. It turns out to be useful to calculate $\lambda_1$ (``perturbation growth rate'') for combinations of $\beta_{ij},\,\beta_{ji}$.
 
-\paragraph{Stable equilibrium -- $\beta_{ij},\, \beta_{ji} <1$}: These criteria correspond to $\alpha_{12}<\alpha_{22}\, , \, \alpha_{21}<\alpha_{11}$. As the relative strength of interspecific effects increases toward 1.0, $\lambda_1$ approaches zero, at which point the system would no longer have a single global point attractor.
+**Stable equilibrium -- $\beta_{ij},\, \beta_{ji} <1$**: These criteria correspond to $\alpha_{12}<\alpha_{22}\, , \, \alpha_{21}<\alpha_{11}$. As the relative strength of interspecific effects increases toward 1.0, $\lambda_1$ approaches zero, at which point the system would no longer have a single global point attractor.
 
 When $\beta_{ij},\, \beta_{ji} <1$, then both species can invade each other. We find that all of the eigenvalues of the Jacobian are negative and real (Fig. \@ref(fig:LVeig), demonstrating that these populations will reach a stable equilibrium (Table \@ref(tab:eiginterpret). When we plot these eigenvalues for these combinations of $\beta$, we see that the dominant eigenvalue increases from negative values toward zero as either $\beta_{12}$ or $\beta_{21}$ approaches 1 (Fig. \@ref(fig:LVeig)). 
 
@@ -641,12 +639,12 @@ for( i in 1:length(n1) ) {Ns <- ode(c(n1[i],n2[i]), 1:200,
 
 
 
-\paragraph{Unstable equilibria -- $\beta_{ij}, \, \beta_{ji} > 1$}
+**Unstable equilibria -- $\beta_{ij}, \, \beta_{ji} > 1$**
   
 These criteria correspond to  $\alpha_{12}>\alpha_{22} ,\, \alpha_{21}>\alpha_{11}$ (Fig. \@ref(fig:LVeigU)). 
-As we saw above, the Lotka-Volterra competition model has not only stable equilibria, but also unstable equilibria, when both populations are greater than zero. Although an unstable equilibrium cannot persist, $\beta_{ij}, \, \beta_{ji} > 1$ creates interesting and probably important dynamics[@Hastings2004a]. One of the results is referred to as \emph{founder control}, where either species can colonize a patch, and whichever species  gets there first (i.e. the founder) can resist any invader [@Bolker2003a].
+As we saw above, the Lotka-Volterra competition model has not only stable equilibria, but also unstable equilibria, when both populations are greater than zero. Although an unstable equilibrium cannot persist, $\beta_{ij}, \, \beta_{ji} > 1$ creates interesting and probably important dynamics[@Hastings2004a]. One of the results is referred to as *founder control*, where either species can colonize a patch, and whichever species  gets there first (i.e. the founder) can resist any invader [@Bolker2003a].
 
-Another interesting phenomenon is the \emph{saddle} itself; this unstable equilibrium is an \emph{attractor-repeller}, that is, it attracts from some directions and repels from others (Fig. \@ref(fig:LVeigU)). This implies that the final outcome of dynamics may be difficult to predict from initial trajectories.
+Another interesting phenomenon is the *saddle* itself; this unstable equilibrium is an *attractor-repeller*, that is, it attracts from some directions and repels from others (Fig. \@ref(fig:LVeigU)). This implies that the final outcome of dynamics may be difficult to predict from initial trajectories.
 
 ```{r LVeigU, echo=FALSE, fig.cap="Unstable equilibria: as the relative strength of interspecific competition increases (B(ij) > 1), instability increases (lambda(1) > 0). The unstable equilibrium may attract trajectories from some initial states, but repel from others (solid dots represent initial abundances).", fig.width=4, fig.height=4, fig.show='hold', out.width="50%"}
 dat2 <- expand.grid(B12=seq(1.01, 2.01, by=0.05), 
@@ -689,7 +687,7 @@ for( i in 1:length(n1) ) {Ns <- ode(c(n1[i],n2[i]), 1:100,
 Recall the geometric interpretation of this unstable equilibrium --- a saddle. The trajectory of a ball rolling across a saddle can depend to a very large degree on where the ball starts. Place it on the crown of the saddle, and it will tend to roll in a very deterministic fashion directly toward the unstable equilibrium, even if it eventually rolls off the side.
 
 
-\paragraph{Eigenanalysis in R of the Jacobian where $\beta_{ij}, \, \beta_{ji} > 1$}:  Here we create values for $\bm{\alpha}$ that create an unstable equilbrium.
+**Eigenanalysis in R of the Jacobian where $\beta_{ij}, \, \beta_{ji} > 1$**:  Here we create values for $\bm{\alpha}$ that create an unstable equilbrium.
 ```{r}
 a11 <- a22 <- 0.01
 a12 <- a21 <- 0.011
@@ -698,18 +696,18 @@ eigen( eval(J) )[["values"]]
 ```
 The dominant eigenvalue is now positive, while the other is negative,  indicating a saddle (Table \@ref(tab:eiginterpret).
 
-\paragraph{Neutral equilibria --- $\beta_{ij} =  \beta_{ji} = 1$}: What happens when the inter- and intraspecific effects of each species are equal? This puts the populations on a knife's edge, between an unstable saddle and a stable attractor. Let's think first about a geometric interpretation, where we shift between a bowl, representing a stable attractor, and a saddle, representing what we call a \index{saddle!neutral}*neutral saddle*. 
+**Neutral equilibria --- $\beta_{ij} =  \beta_{ji} = 1$**: What happens when the inter- and intraspecific effects of each species are equal? This puts the populations on a knife's edge, between an unstable saddle and a stable attractor. Let's think first about a geometric interpretation, where we shift between a bowl, representing a stable attractor, and a saddle, representing what we call a *neutral saddle*. 
 
 Imagine that we begin with a stable attractor, represented by a bowl, where $\alpha_{ij} < \alpha_{ii}$. We drop a ball in a bowl, and the bowl rolls to the bottom --- the global attractor. As we increase the interspecific competition coefficients, $\alpha_{ij} \to \alpha_{ii}$, we are pressing down on just two points on opposite sides of the bowl. Our hands push down on two opposite sides, until the bowl is flat in one direction, but has two remaining sides that slope downward. Perhaps you think this looks like a taco shell? The same shape is easily replicated by just picking up a piece of paper by opposite edges, letting it sag in the middle. This is the neutral saddle.  What would eigenanalysis tell us? Let's find out.
 
-We could just charge ahead in R, and I encourage you to do so, repeating the steps above. You would find that doesn't work because when $\beta_{ij} =  \beta_{ji} = 1$, our equilibria are undefined (numerator and denominator are zero in \@ref(eq:lvn1eq), \@ref(eq:lvn2eq). Hmmm. Perhaps we can simplify things by taking the \emph{limit} of the equilibrium, as $\alpha_{ij} \to \alpha_{jj}$. Let $\alpha_{12}=a$ and $\alpha_{22}=a+h$, and let $\alpha_{21}=b$ and $\alpha_{11}=b+h$. Then we want the limit of the equilibrium as $h$ goes to zero.
+We could just charge ahead in R, and I encourage you to do so, repeating the steps above. You would find that doesn't work because when $\beta_{ij} =  \beta_{ji} = 1$, our equilibria are undefined (numerator and denominator are zero in \@ref(eq:lvn1eq), \@ref(eq:lvn2eq). Hmmm. Perhaps we can simplify things by taking the *limit* of the equilibrium, as $\alpha_{ij} \to \alpha_{jj}$. Let $\alpha_{12}=a$ and $\alpha_{22}=a+h$, and let $\alpha_{21}=b$ and $\alpha_{11}=b+h$. Then we want the limit of the equilibrium as $h$ goes to zero.
 \begin{align}
   (\#eq:lim)
   \lim_{h \to 0}\frac{\left(a+h\right)-a}{\left(a+h\right)\left(b+h\right) - ab} &=\frac{1}{a+b}
 \end{align}
 Thus, $N_1^* = 1/(\alpha_{11}+\alpha_{22})$, assuming $\alpha_{12} = \alpha_{22}$ and $\alpha_{21}=\alpha_{11}$. Therefore, the equilibrium population size is simply the inverse of the sum of these coefficients.
 
-\paragraph{Eigenanalysis in R of the Jacobian where $\beta_{ij} =  \beta_{ji} = 1$}:  Here we create values for $\bm{\alpha}$ that create a neutral equilbrium.
+**Eigenanalysis in R of the Jacobian where $\beta_{ij} =  \beta_{ji} = 1$**:  Here we create values for $\bm{\alpha}$ that create a neutral equilbrium.
 ```{r}
 a11 <- a21 <- 0.01; a22 <- a12 <- 0.015
 ```
@@ -725,7 +723,7 @@ eigen( eval(J) )[["values"]]
 ```
 Again $\lambda_1=0$ so this equilibrium is also neutral.
 
-When we perform eigenanalysis, we find that the largest of the two eigenvalues is zero, while the other is negative. This reveals that we have neither a bowl nor an unstable saddle, but rather, a \index{taco shell|see{saddle, neutral}}taco shell, with a level bottom --- a neutral saddle.
+When we perform eigenanalysis, we find that the largest of the two eigenvalues is zero, while the other is negative. This reveals that we have neither a bowl nor an unstable saddle, but rather, a taco shell, with a level bottom --- a neutral saddle.
 
 
 ```{r lvstabneut, echo=FALSE, fig.cap="Trajectories of N(1),N(2) for B(12),B(21)=1. The entire isocline is an attractor, a neutral saddle, and the final abundances depend on the initial abundances and the ratio of alpha(11)/alpha(22). The circle represents our one derived equilibrium.", fig.width=4, fig.height=4, out.width="50%"}
@@ -775,7 +773,7 @@ print(contourplot(L ~ B12 + B21, dat3, cuts=20, labels=T,
 
 For example, if the populations start at low abundances, both populations will tend to increase at constant rates until they run into the isocline. Thus, both populations can increase when rare, but the relative abundances will never change, regardless of initial abundances.
 
-Recall the Lotka-Volterra isoclines, and what we originally stated about them. We stated that \emph{the equilibrium will be the point where the isoclines cross}. When all $\beta_{ij} =  \beta_{ji} = 1$, \emph{the isoclines completely overlap}, so we have an infinite number of equilibria---all the points along the line 
+Recall the Lotka-Volterra isoclines, and what we originally stated about them. We stated that the equilibrium will be the point where the isoclines cross. When all $\beta_{ij} =  \beta_{ji} = 1$, the *isoclines completely overlap*, so we have an infinite number of equilibria---all the points along the line 
 \begin{equation}
   N_2= \frac{1}{\alpha_{22}} - \frac{\alpha_{11}}{\alpha_{22}}N_1
 \end{equation}
@@ -783,12 +781,12 @@ and the initial abundances determine the trajectory and the equilibrium (Fig. \@
 
 
 ## Return Time and the Effect of $r$
-Above, we referred to \index{$\lambda_1$|see{return time}}$\lambda_1$ as the \index{perturbation growth rate|see{return time, stability analysis}}perturbation growth rate. More commonly, people refer to another quantity known as \emph{characteristic \index{return time}return time}. Return time is commonly calculated as the negative inverse of the largest real part of the eigenvalues,
+Above, we referred to $\lambda_1$ as the perturbation growth rate. More commonly, people refer to another quantity known as *characteristic return time*. Return time is commonly calculated as the negative inverse of the largest real part of the eigenvalues,
 \begin{equation}
   (\#eq:rt4)
   RT = -\frac{1}{\lambda_1}.
 \end{equation}
-It is the time required to return a fraction of the distance\footnote{This fraction is about 63\% or $1/e$; thus the hypothetical initial perturbation $x_0$ shrinks to $0.37x_0$.} back toward an equilibrium. Negative return times ($\lambda_1>0$) refer to ``backward time,'' or time into the past when this population would have been this far away  (Fig. \@ref(fig:RT).
+It is the time required to return a fraction of the distance^[This fraction is about 63\% or $1/e$; thus the hypothetical initial perturbation $x_0$ shrinks to $0.37x_0$.] back toward an equilibrium. Negative return times ($\lambda_1>0$) refer to ``backward time,'' or time into the past when this population would have been this far away  (Fig. \@ref(fig:RT).
 
 If we envision the populations sitting at an equilibrium, we can then envision a small perturbation that shifts them away from that point in state space. Let's call this displacement $x_0$. The rate of change of in $x$ is approximately the exponential rate,
 \begin{equation}
@@ -816,7 +814,7 @@ abline(h=0)
 
 
 
-\paragraph{Effect of $r$ on stability and return time}
+**Effect of $r$ on stability and return time**
 
 Consider the Jacobian matrix \@ref(eq:jac), and note that $-r_i$ appears in each Jacobian element. Therefore, the larger the $r$, the greater the magnitude of the Jacobian elements. This causes $\lambda_1$ to increase in magnitude, reflecting greater responsiveness to perturbation at the equilibrium (Fig. \@ref(fig:LVeigR).
 
@@ -1178,12 +1176,12 @@ arrows(.9, .4, .8, .2, lty=1)
 \newpage
 ## Summary
 This chapter has provided several useful results. 
-\begin{itemize}
-\item We can represent species effects on each other in precisely the same way we represented their effects on themselves.
-  \item Considering only two species, species $i$ can invade species $j$ when the effect of species $j$ on species $i$ is less than its effect of species $j$ on itself.
-\item Two species coexist stably when their effects on each other are smaller than their effects on themselves.
-\item The dominant eigenvalue of the Jacobian matrix (perturbation growth rate), and its negative inverse, return time, are useful  mathematical definitions of stability. 
-\item Perturbation growth rate decreases as $\beta_{ij},\, \beta_{ji}$ decrease, and are either both less than one or both greater than 1 ($\beta_{ij} = \alpha_{ij}/\alpha_{jj}$).
-\item The magnitude of perturbation growth rate increases with $r$.
-\end{itemize}
+
+* We can represent species effects on each other in precisely the same way we represented their effects on themselves.
+* Considering only two species, species $i$ can invade species $j$ when the effect of species $j$ on species $i$ is less than its effect of species $j$ on itself.
+* Two species coexist stably when their effects on each other are smaller than their effects on themselves.
+* The dominant eigenvalue of the Jacobian matrix (perturbation growth rate), and its negative inverse, return time, are useful  mathematical definitions of stability. 
+* Perturbation growth rate decreases as $\beta_{ij},\, \beta_{ji}$ decrease, and are either both less than one or both greater than 1 ($\beta_{ij} = \alpha_{ij}/\alpha_{jj}$).
+* The magnitude of perturbation growth rate increases with $r$.
+
 
