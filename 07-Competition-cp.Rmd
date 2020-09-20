@@ -835,6 +835,7 @@ Consumption is key to life. Energy consumption occurs as heterotrophs consume in
 
 In this chapter, we work through an example of resource competition among photoautotrophs for inorganic resources [@Tilman1982]. As with nearly all the models in this book, We represent the growth of resources and consumers as growth rate = gains - losses. Here we start with a relatively simple version, with two plant species competing for one limiting resource such as nitrogen [@Roughgarden1998].
 
+### Linear and nonlinear responses
 Let our resource $R$ be supplied at a constant rate, $S$, perhaps determined by nitrifying soil microbes at steady state. This rate declines as the amount of resource grows, or $S-aR$. This is likely to happen when a resource is washed out of the soil, or if a high amount of resource suppresses its production. 
 $$\frac{dR}{dt} = S-aR$$
 In the absence of anything else removing the resource, the equilibrium amount would be
@@ -925,11 +926,10 @@ curve( (S *x - a*d2)/(x*w2*d2),  0, 3,
 })
 ```
 
-### Nonlinear growth
-As presented by @Tilman1982, the consumers had nonlinear resource-dependent growth rates,
+In the above model, per capita growth rates were linear functions of resource concentration. In Tilman's presentation of resource competition, the consumers had nonlinear resource-dependent growth rates,
 $$\frac{dP_i}{Pdt}= r_i\frac{R}{k_i + R} - d_i$$
-You might recognize this as related to Michaelis-Menton enzyme kinetics. Its was used in bacteriology by Monod to model culture growth in chemostats. I looks like Fig. ().
-```{r monod, fig.cap="*The Monod function for growth rate of a culture.*"}
+You might recognize this as related to Michaelis-Menton enzyme kinetics. It was used in bacteriology by Monod to model culture growth in chemostats. It looks like Fig. \@ref(fig:monod).
+```{r monod, fig.cap="*The Monod function for per capita resource-dependent growth rates of two different populations.*"}
 r <-c(1, .5); k=c(5, .1); d = 0.3
 {curve(r[1]*x/(k[1]+x) - d, 0, 10, ylab=bquote(dP/(Pdt)), xlab="R")
 curve(r[2]*x/(k[2] + x) - d, lty=2, add=TRUE)
@@ -1210,7 +1210,7 @@ curve(r1*c11*x/(k11 + x)-m1, 0, 3, xlab=expression("R"["j"]),
 # })
 ```
 
-```{r rrode2, echo=FALSE, fig.cap="*Dynamics of competing species and the resources that they consume.*", out.width="75%"}
+```{r rode2, echo=FALSE, fig.cap="*Dynamics of competing species and the resources that they consume.*", out.width="75%"}
 t <- seq(0, 20, by=0.01)
 y0 <- c(R1=1, R2=2, N1=2, N2=1)
 rr <- ode(y=y0, times=t, func=resratio, parms=parameters) 

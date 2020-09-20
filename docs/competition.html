@@ -246,7 +246,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 <li class="chapter" data-level="7.4" data-path="competition.html"><a href="competition.html#return-time-and-the-effect-of-r"><i class="fa fa-check"></i><b>7.4</b> Return Time and the Effect of <span class="math inline">\(r\)</span></a></li>
 <li class="chapter" data-level="7.5" data-path="competition.html"><a href="competition.html#indirect-competition-for-resources"><i class="fa fa-check"></i><b>7.5</b> Indirect competition for resources</a><ul>
-<li class="chapter" data-level="7.5.1" data-path="competition.html"><a href="competition.html#nonlinear-growth"><i class="fa fa-check"></i><b>7.5.1</b> Nonlinear growth</a></li>
+<li class="chapter" data-level="7.5.1" data-path="competition.html"><a href="competition.html#linear-and-nonlinear-responses"><i class="fa fa-check"></i><b>7.5.1</b> Linear and nonlinear responses</a></li>
 <li class="chapter" data-level="7.5.2" data-path="competition.html"><a href="competition.html#relative-nonlinearity"><i class="fa fa-check"></i><b>7.5.2</b> Relative nonlinearity</a></li>
 <li class="chapter" data-level="7.5.3" data-path="competition.html"><a href="competition.html#competition-for-two-resources-the-resource-ratio-model"><i class="fa fa-check"></i><b>7.5.3</b> Competition for two resources: the resource ratio model</a></li>
 </ul></li>
@@ -813,6 +813,8 @@ Figure 7.9: <em>The dominant eigenvalue of the Jacobian matrix varies with r as 
 <h2><span class="header-section-number">7.5</span> Indirect competition for resources</h2>
 <p>Consumption is key to life. Energy consumption occurs as heterotrophs consume inorganic material and autotrophs use the sun or oxidation of inorganic molecules to acquire energy. All organisms require carbon and inorganic materials such as nitrogen and phosphorus as basic building blocks of cells. when one or more of these limit growth, we refer to these as <em>limiting resources</em>, and when differential growth limitation among species occurs as a result of this short supply, we refer to this as <em>resource limitation</em> and consequently <em>resource competition</em>.</p>
 <p>In this chapter, we work through an example of resource competition among photoautotrophs for inorganic resources <span class="citation">(Tilman <a href="#ref-Tilman1982" role="doc-biblioref">1982</a>)</span>. As with nearly all the models in this book, We represent the growth of resources and consumers as growth rate = gains - losses. Here we start with a relatively simple version, with two plant species competing for one limiting resource such as nitrogen <span class="citation">(Roughgarden <a href="#ref-Roughgarden1998" role="doc-biblioref">1998</a>)</span>.</p>
+<div id="linear-and-nonlinear-responses" class="section level3">
+<h3><span class="header-section-number">7.5.1</span> Linear and nonlinear responses</h3>
 <p>Let our resource <span class="math inline">\(R\)</span> be supplied at a constant rate, <span class="math inline">\(S\)</span>, perhaps determined by nitrifying soil microbes at steady state. This rate declines as the amount of resource grows, or <span class="math inline">\(S-aR\)</span>. This is likely to happen when a resource is washed out of the soil, or if a high amount of resource suppresses its production.
 <span class="math display">\[\frac{dR}{dt} = S-aR\]</span>
 In the absence of anything else removing the resource, the equilibrium amount would be
@@ -895,20 +897,18 @@ P^*_2 &amp;= \frac{S u_2 - a d_2}{u_2 w_2 d_2}
 <span id="cb30-5"><a href="competition.html#cb30-5"></a>       <span class="dt">ylab=</span><span class="kw">bquote</span>((S <span class="op">*</span>u[<span class="dv">2</span>] <span class="op">-</span><span class="st"> </span>a<span class="op">*</span>d[<span class="dv">2</span>])<span class="op">/</span>(u[<span class="dv">2</span>]<span class="op">*</span>w[<span class="dv">2</span>]<span class="op">*</span>d[<span class="dv">2</span>])), <span class="dt">xlab=</span><span class="kw">bquote</span>(u[<span class="dv">2</span>]) )</span>
 <span id="cb30-6"><a href="competition.html#cb30-6"></a>})</span></code></pre></div>
 <p><img src="_main_files/figure-html/unnamed-chunk-18-1.png" width="672" /></p>
-<div id="nonlinear-growth" class="section level3">
-<h3><span class="header-section-number">7.5.1</span> Nonlinear growth</h3>
-<p>As presented by <span class="citation">Tilman (<a href="#ref-Tilman1982" role="doc-biblioref">1982</a>)</span>, the consumers had nonlinear resource-dependent growth rates,
+<p>In the above model, per capita growth rates were linear functions of resource concentration. In Tilman’s presentation of resource competition, the consumers had nonlinear resource-dependent growth rates,
 <span class="math display">\[\frac{dP_i}{Pdt}= r_i\frac{R}{k_i + R} - d_i\]</span>
-You might recognize this as related to Michaelis-Menton enzyme kinetics. Its was used in bacteriology by Monod to model culture growth in chemostats. I looks like Fig. ().</p>
+You might recognize this as related to Michaelis-Menton enzyme kinetics. It was used in bacteriology by Monod to model culture growth in chemostats. It looks like Fig. <a href="competition.html#fig:monod">7.11</a>.</p>
 <div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb31-1"><a href="competition.html#cb31-1"></a>r &lt;-<span class="kw">c</span>(<span class="dv">1</span>, <span class="fl">.5</span>); k=<span class="kw">c</span>(<span class="dv">5</span>, <span class="fl">.1</span>); d =<span class="st"> </span><span class="fl">0.3</span></span>
 <span id="cb31-2"><a href="competition.html#cb31-2"></a>{<span class="kw">curve</span>(r[<span class="dv">1</span>]<span class="op">*</span>x<span class="op">/</span>(k[<span class="dv">1</span>]<span class="op">+</span>x) <span class="op">-</span><span class="st"> </span>d, <span class="dv">0</span>, <span class="dv">10</span>, <span class="dt">ylab=</span><span class="kw">bquote</span>(dP<span class="op">/</span>(Pdt)), <span class="dt">xlab=</span><span class="st">&quot;R&quot;</span>)</span>
 <span id="cb31-3"><a href="competition.html#cb31-3"></a><span class="kw">curve</span>(r[<span class="dv">2</span>]<span class="op">*</span>x<span class="op">/</span>(k[<span class="dv">2</span>] <span class="op">+</span><span class="st"> </span>x) <span class="op">-</span><span class="st"> </span>d, <span class="dt">lty=</span><span class="dv">2</span>, <span class="dt">add=</span><span class="ot">TRUE</span>)</span>
 <span id="cb31-4"><a href="competition.html#cb31-4"></a><span class="kw">abline</span>(<span class="dt">h=</span><span class="dv">0</span>, <span class="dt">lty=</span><span class="dv">3</span>); <span class="kw">text</span>(<span class="fl">7.5</span>, <span class="dv">0</span>, <span class="st">&quot;gain = loss&quot;</span>, <span class="dt">adj=</span><span class="kw">c</span>(.<span class="dv">5</span>, <span class="fl">-.3</span>))</span>
 <span id="cb31-5"><a href="competition.html#cb31-5"></a>}</span></code></pre></div>
 <div class="figure"><span id="fig:monod"></span>
-<img src="_main_files/figure-html/monod-1.png" alt="*The Monod function for growth rate of a culture.*" width="672" />
+<img src="_main_files/figure-html/monod-1.png" alt="*The Monod function for per capita resource-dependent growth rates of two different populations.*" width="672" />
 <p class="caption">
-Figure 7.11: <em>The Monod function for growth rate of a culture.</em>
+Figure 7.11: <em>The Monod function for per capita resource-dependent growth rates of two different populations.</em>
 </p>
 </div>
 <p>As we saw earlier with linear mass-specific growth rates, one species will have a lower <span class="math inline">\(R^*\)</span> than the other, and this model predicts that it will outcompete the other.</p>
@@ -990,8 +990,8 @@ Figure 7.16: <em>What happens with greedy species. When species consume more of 
 (#fig:pcgr.RR)<em>Per capita growth rate.</em>
 </p>
 </div>
-<div class="figure"><span id="fig:rrode2"></span>
-<img src="_main_files/figure-html/rrode2-1.png" alt="*Dynamics of competing species and the resources that they consume.*" width="75%" />
+<div class="figure"><span id="fig:rode2"></span>
+<img src="_main_files/figure-html/rode2-1.png" alt="*Dynamics of competing species and the resources that they consume.*" width="75%" />
 <p class="caption">
 Figure 7.17: <em>Dynamics of competing species and the resources that they consume.</em>
 </p>
