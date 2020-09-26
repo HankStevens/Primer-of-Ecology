@@ -2,9 +2,7 @@
 
 ## Background
 
-Mutualisms occur in a wide variety of different species. Mutualisms form the
-foundations of ecosystems including coral reefs (coral and zooxanthellae), grasslands, and forests (plants and mycorrhizal fungi, pollinators, and dispersers). The natural history of mutualisms are wildly diverse and complex, and 
-and @Boucherecologymutualism1982 list types of mutualisms:
+Mutualisms occur in a wide variety of different species. Mutualisms form the foundations of ecosystems including coral reefs (coral and zooxanthellae), grasslands, and forests (plants and mycorrhizal fungi, pollinators, and dispersers). The natural history of mutualisms are wildly diverse and complex, and and @Boucher1982 list types of mutualisms:
   
 * Energetic
 * Nutritional
@@ -21,7 +19,7 @@ consider a three plant species that all compete for the same limiting
 resource. When species A suppresses species B, it is indirectly
 helping species C [@Miller1994]. 
 
-Here we will focus on *direct mutualisms*, and in this chapter, we'll focus on two approaches to models, Lotka-Volterra models and consumer-resource models.
+We will focus on *direct mutualisms*, and in this chapter, we'll explore two approaches to modeling mutualisms, Lotka-Volterra models and consumer-resource models.
 
 ## Lotka-Volterra mutualism
 Lotka-Volterra mutualism is very straightforward, following the same template as competition. All that we have to do is change the sign associated with the other species. As usual, $\alpha_{ij}$ is the per capita effect of species $j$ on species $i$.
@@ -47,7 +45,7 @@ The equilibria are
 $$N_i^* = \frac{\alpha_{jj} + \alpha_{ij}}{\alpha_{ii}\alpha_{jj} - \alpha_{ij}\alpha_{ji}}$$
 Note this assumes that both $\alpha_{jj}$ and $\alpha_{ji}$, per se, are greater than zero, because our equation assumed it was so. 
 
-Let's use this to describe a facultative mutualism, that is, one in which neither species needs the other to persist, but in which they each do better. What we mean by that is that let $ r>0$. For now, we will also stipulate that the mutualism provides only a modest benefit, and so $\alpha_{ii} > \alpha_{ij}$. The dynamics are stable (Fig. \@ref(fig:LVmut))
+Let's use this to describe a facultative mutualism, that is, one in which neither species needs the other to persist, but in which they each do better. What we mean by that is that let $ r>0$. For now, we will also assume that the mutualism provides only a modest benefit, where species benefits to each is smaller than the negative effects on themselves ($\alpha_{ii} > \alpha_{ij}$). The dynamics are stable (Fig. \@ref(fig:LVmut))
 
 
 ```{r fig=TRUE, fig.width=2.5, fig.height=2.5, echo=FALSE, eval=FALSE}
@@ -68,7 +66,7 @@ zngi.m + geom_segment(data=df2, aes(x=x, y=y, xend=xend, yend=yend),
 
 ```
 
-To describe this popuation, we will paramterize an ODE model. Our parameters meet our stipulations, above.
+To illustrate the dynamics of this population, we will parameterize an ODE model. Our parameters meet our assumptions stated above.
 ```{r}
 parameters <- c(alpha11 = .2, alpha22 = .2, alpha12 = .1, alpha21=.1,
                 r1=.01, r2=.01)
@@ -92,48 +90,54 @@ out <- ode(y=c(11,11), time=t, mutualism.LV, parameters)
 #plot(out)
 ```
 
-The Lotka-Volterra approach fails if we try to describe two realistic scenarios. First,
-we cannot describe an obligate mutualism. An obligate mutualism is one in which growth rate is negative in the absence of the mutualism. The way to describe that in Lotka-Volterra models is to set $r < 0$. Second, if the benefit, is greater than the negative intraspecific effect, we get an uncontrolled positive feedback loop.
+The Lotka-Volterra approach predicts exclusion of one species in two realistic scenarios, obligate mutualisms and mutualisms with large effects. An obligate mutualism is one in which growth rate is negative in the absence of the mutualism. The way to describe that in Lotka-Volterra models is to set $r < 0$. This results in an unstable equilibrium which is a global repellor which results in the loss of one species. Second, if the benefit is greater than the negative intraspecific effect, we get an uncontrolled positive feedback loop leading to infinite population sizes. In this sense, it is like exponential growth: a potentially very useful idea, but it must be moderated somehow in order to reflect long term trajectories.
 
 ```{r LVmut, echo=FALSE, fig=TRUE, fig.show = 'hold', fig.cap="Only weak facultative mutualisms are stable.", fig.width=3, fig.height=3.5, out.width='33%'}
 #source("nullclines2.R")
+{
 umut.flowfield <-  flowField(mutualism.LV, xlim = c(0, 15), ylim = c(0,15),
                                  parameters = parameters, points = 11, add = FALSE, 
                              ylab="N2", xlab="N1", 
-main=bquote(-alpha[ii] >  alpha[ij]))
+main=bquote(alpha[ii] >  alpha[ij]))
 
 umut.nullclines <- nullclines(mutualism.LV, xlim = c(0, 15), ylim = c(0,15), parameters = parameters, add.legend = FALSE)
+}
 
-p.o <- c(alpha11 = .2, alpha22 = .2, alpha12 = .1, alpha21=.1,
+{p.o <- c(alpha11 = .2, alpha22 = .2, alpha12 = .1, alpha21=.1,
                 r1 = -0.01, r2 = -0.01)
-umut.flowfield <-  flowField(mutualism.LV, xlim = c(0, 15), ylim = c(0,15),
-                                 parameters = p.o, points = 11, add = FALSE, 
-                             ylab="N2", xlab="N1", main= bquote(italic(r) < 0))
-
-umut.nullclines <- nullclines(mutualism.LV, xlim = c(0, 15), ylim = c(0,15), 
-                              parameters = p.o, add.legend = FALSE)
-
-p.p <- c(alpha11 = .2, alpha22 = .2, alpha12 = .3, alpha21=.3,
-                r1 = 0.1, r2 = 0.1)
-umut.flowfield <-  flowField(mutualism.LV, xlim = c(0, 15), ylim = c(0,15),
-                                 parameters = p.p, points = 11, add = FALSE, 
+umut.flowfield <-  flowField(mutualism.LV, xlim = c(0, 15), 
+                             ylim = c(0,15), parameters = p.o, 
+                             points = 11, add = FALSE, 
                              ylab="N2", xlab="N1", 
-                             main=bquote(abs(alpha[ii])<alpha[ij]))
-umut.nullclines <- nullclines(mutualism.LV, xlim = c(0, 15), ylim = c(0,15), 
+                             main= bquote(italic(r) < 0))
+
+umut.nullclines <- nullclines(mutualism.LV, xlim = c(0, 15), 
+                              ylim = c(0,15), 
+                              parameters = p.o, add.legend = FALSE)
+}
+
+{p.p <- c(alpha11 = .2, alpha22 = .2, alpha12 = .3, alpha21=.3,
+                r1 = 0.1, r2 = 0.1)
+umut.flowfield <-  flowField(mutualism.LV, xlim = c(0, 15), 
+                             ylim = c(0,15),
+                            parameters = p.p, points = 11, add = FALSE, 
+                             ylab="N2", xlab="N1", 
+                             main=bquote(alpha[ii]<alpha[ij]))
+umut.nullclines <- nullclines(mutualism.LV, xlim = c(0, 15), 
+                              ylim = c(0,15), 
                               parameters = p.p,  add.legend = FALSE)
+}
 
 ```
 
 ## Consumer-resource mutualism
 
-In this section, we will model mutualisms using a framework that, unlike our Lotka-Volterra approach, is intended specifically to describe resource consumption by one or both partners [@macarthur1972Geographical]. 
+In this section, we will model mutualisms using a framework that, unlike our Lotka-Volterra approach, is intended specifically to describe resource consumption by one or both partners [@MacArthur1972]. 
 
 Sometimes mutualists share resources, as with mycorrhizal
 associations, where species share a resource or a product that they
-can acquire or manufacture in surplus and trade it for a resource or product that is
-limiting. This is a bi-drectional mutualism (Fig. \ref{fig:mut3})
-because the flow of \emph{resources} are bidirectional: both species provide a resource to the other [@Holland2010]. 
-```{r figs, echo=FALSE}
+can acquire or manufacture in surplus and trade it for a resource or product that is limiting. This is a bi-drectional mutualism (Fig. \ref{fig:mut3}) because the flow of \emph{resources} are bidirectional: both species provide a resource to the other [@Holland2010]. 
+```{r mut3, echo=FALSE, fig.cap="Bidirection, unidirectional, and indirect mutualisms. Normal arrowhead is a positive effect, whereas an open dot arrowhead is a negative effect. A dashed line indicates a service, and a solid line indicates a consumable resource.", fig.show="hold", out.width="33%"}
 # a digraph is a directed graph
 # the model is written in the "dot" language
 bimut <-
@@ -170,33 +174,19 @@ R2 -> M2; M2 -> R2[arrowhead='odot'];
 R1 -> R2[arrowhead='odot']; R2 -> R1[arrowhead='odot'];
 }"
 
-# grViz(imut)
+# grViz(bimut) %>%
+#   export_svg %>% charToRaw %>% rsvg_pdf("bimut.pdf")
+# 
+# grViz(umut) %>%
+#   export_svg %>% charToRaw %>% rsvg_pdf("umut.pdf")
+# 
+# grViz(imut) %>%
+#   export_svg %>% charToRaw %>% rsvg_pdf("imut.pdf")
 
-grViz(bimut) %>%
-  export_svg %>% charToRaw %>% rsvg_pdf("bimut.pdf")
-
-grViz(umut) %>%
-  export_svg %>% charToRaw %>% rsvg_pdf("umut.pdf")
-
-grViz(imut) %>%
-  export_svg %>% charToRaw %>% rsvg_pdf("imut.pdf")
+grViz(bimut)
+grViz(umut)
+grViz(imut)
 ```
-
-\begin{figure}
-\begin{center}
-\hfill
-\includegraphics[width=.4\linewidth]{bimut} 
-\hfill
-\includegraphics[width=.4\linewidth]{umut}
-\hfill 
-\\
-\includegraphics[width=.4\linewidth]{imut}
-\caption{Bidirection, unidirectional, and indirect mutualisms. Normal
-  arrowhead is a positive effect, whereas an open dot arrowhead is a
-  negative effect. A dashed line indicates a service, and a solid line
-  indicates a consumeable resource. \label{fig:mut3}}
-\end{center}
-\end{figure}
 
 In other cases, mutualists may share services, as with moray
 eel-grouper foraging. In this particular case, grouper and the giant
@@ -208,15 +198,14 @@ evidence of coordinated behavior, but nonetheless a mutualism arises via the ind
 
 In the following, we explore the type of mutualism in which one
 species provides a resource and the other species provides a
-service (Fig. \ref{fig:mut3}). This is a uni-directional mutualism because
-the flow of \emph{resources} is only unidrectional, from one species to the other [@Holland2010].
+service (Fig. \@ref(fig:mut3)). This is a uni-directional mutualism because the flow of *resources* is only unidrectional, from one species to the other [@Holland2010].
 
 A good example of a uni-directional of mutualism is seed dispersal via
 a frugivore that disperses seeds. A plant species provides a 
 fruit that is nutritious for an animal. A primary benefit for the
 plant is that seeds are carried away from the parent plant. This may
 help seeds escape enemies that accumulate near parent plants
-(Connell-Janzen hyptothesis). In addition, it provides a bet hedging
+(Connell-Janzen hypothesis). In addition, it provides a bet hedging
 opportunity wherein seeds are dispersed to a variety of habitats any
 one of which may be better for survival than the current location. It
 is even possible that dispersal is *directed* to preferred
@@ -227,9 +216,8 @@ the fruit surrounding the seed. An interesting case arises when seed
 predators collect seeds but do not kill them before having buried,
 cached, or moved seeds. 
 
-Another important example example of this type of mutualism is pollination. Pollinators (bats, insects, birds) receive resources (nectar, pollen) and provide services (pollination, gene flow). 
+Another very important example example of this type of mutualism is pollination. Pollinators (bats, insects, birds) receive resources (nectar, pollen) and provide services (pollination, gene flow). 
 
-  
 ### A model of uni-directional mutualism
 
 Here we describe a model of a facultative unidirectional mutualism that uses type II foraging model for both consumption of the resource and provision of the service. 
@@ -328,15 +316,12 @@ for(i in 1:nrow(y0) ){
 
 Holland and DeAngelis (2009) vary $a_{21}$ between $(0.25,\ldots,\,0.4)$ to vary the relation from mutualism to predation. Try that now. Save a picture of your results.
 
-
-\newpage
 ## Plant-soil feedbacks
 Vascular plants form the basis of terrestrial 
 ecosystems, and they live in intimate contact with the most diverse
 group of organisms on Earth--soil microbes. Ecologists have
-begun to focus on this intimate relationship, and Jim Bever [@BeverSoilcommunityfeedback2003] has been
+begun to focus on this intimate relationship, and Jim Bever [@Bever2003] has been
 one of ecologists helping lead the way (Fig. \@ref(fig:beverfig)). 
-
 
 ```{r beverfig, echo=FALSE, fig.cap="Plants and soil microbes can interact in negative or positive ways. Plants may grow more poorly with their own soil flora than with that of a competitor's."}
 library(diagram)
@@ -346,50 +331,53 @@ bm <- matrix(c("a11", "ca","1", 0, "cb", "a22", "0", "nu",
 
 bm <- matrix(c( 
   "-1/K[A]", "-c[A]/K[A]",1, 0,
-               "-c[B]/K[B]", "-1/K[B]",0, "nu",
-               "alpha[A]", "alpha[B]", -1, 0,
-               "beta[A]","beta[B]", 0, -1 
-  ), nc=4)
+  "-c[B]/K[B]", "-1/K[B]",0, "nu",
+  "alpha[A]", "alpha[B]", -1, 0,
+  "beta[A]","beta[B]", 0, -1 
+), nc=4)
 name <- c(expression(N[A]), expression(N[B]), expression(S[A]), expression(S[B]))
 par(mar=c(0,0,0,0))
 plotmat(bm, pos=c(2,2), name=name)
 ```
 
 Fig. \@ref(fig:theory) reflects the following Lotka-Volterra style model of plant species $N_A$ and $N_B$, and soil microbial floras $S_A$ and $S_B$:
-\begin{equation}
-  \frac{dN_A}{dt} = r_A N_A \left( 1 + \alpha_A S_A + \beta_A S_B -
-    \frac{N_A + c_B N_B}{K_A}\right) 
+  \begin{equation}
+\frac{dN_A}{dt} = r_A N_A \left( 1 + \alpha_A S_A + \beta_A S_B -
+                                   \frac{N_A + c_B N_B}{K_A}\right) 
 \end{equation}
 where the effects of microbes ($\alpha$, $\beta$) could be positive or negative (e.g. pathogenic). The plants each have their own carrying capacities ($K$), and negative effects on each other ($c$). 
 
 The corresponding equation for the other plant species is 
 \begin{equation}
-  \frac{dN_B}{dt} = r_B N_B \left( 1 + \alpha_B S_A + \beta_B S_B -
-    \frac{c_A N_A + N_B}{K_B}\right).
+\frac{dN_B}{dt} = r_B N_B \left( 1 + \alpha_B S_A + \beta_B S_B -
+                                   \frac{c_A N_A + N_B}{K_B}\right).
 \end{equation}
 
 We often refer to the soil flora associated with a single plant species as its *home* flora, and the other as the *away* flora. Each microbial flora comprises many, many species and we aggregate the net effects. Bever (2003) further simplified his model by placing  constraints on soil microbes, so that $S_A + S_B=1$. This allows him to focus on the relations among microbes and plants. With these assumptions, he showed that the net effect of each flora as a single state variable for the home flora of each species:
-$$\frac{S_A}{dt} = S_A(1-S_A) \left( \frac{N_A}{N_A + N_B} - \nu\frac{N_B}{N_A + N_B}\right)$$
-and that $$S_B=1-S_A$$.
+  $$\frac{S_A}{dt} = S_A(1-S_A) \left( \frac{N_A}{N_A + N_B} - \nu\frac{N_B}{N_A + N_B}\right)$$
+  and that $$S_B=1-S_A$$.
+
 
 **Coexistence criteria**
-Bever states that (2003, p. 467, bottom of the second column) out that the interactions are more stable if 
+  Bever states that (2003, p. 467, bottom of the second column) out that the interactions are more stable if 
 $$\alpha_A + \beta_B < \alpha_B + \beta_A $$
-which means that the effects of the home floras own their home plants are less positive (or more negative) then on the other species. 
+  which means that the effects of the home floras own their home plants are less positive (or more negative) then on the other species. 
 
-Bever also argued that for either plant species to increase when rare (i.e. coexist), that the interspecific competition has to be less than the benefits of the interactions of the soil floras. However, his criterion in eqn 5 (p. 469) is not sufficient, and this is revealed by its lack of consistency with the parameter set and outcomes in Fig. 4. So, we will alter his equation a bit to reveal what probably would work. We use the parameterization from Chapter \@ref(Competition)) so that it is consistent with others [@Bolker2003;@Chesson2000]. We reformulate the carrying capacities and $c_A$ and $c_B$ as 
+Bever also argued that for either plant species to increase when rare (i.e. coexist), that the interspecific competition has to be less than the benefits of the interactions of the soil floras. However, his criterion in eqn 5 (p. 469) is not sufficient, and this is revealed by its lack of consistency with the parameter set and outcomes in Fig. 4. So, we will alter his equation a bit to reveal what probably would work. We use the parameterization from Chapter \@ref(Competition)) so that it is consistent with others [@Bolker2003a;@Chesson2000a]. We reformulate the carrying capacities and $c_A$ and $c_B$ as 
 
 $$\alpha_{AA}=1/K_A;\,\alpha_{BB}=K_B;\,\alpha_{BA}= c_A/K_B;\,\alpha_{AB}=c_B/K_A$$
-If we recall our earlier work, we showed that each species $i$ can invade when 
+  If we recall our earlier work, we showed that each species $i$ can invade when 
 $$\frac{\alpha_{ij}}{\alpha_{jj}} < 0$$ 
-This translates to the Lotka-Volterra invasion criterion for species A is
+  This translates to the Lotka-Volterra invasion criterion for species A is
 $$\frac{\alpha_{AB}}{\alpha_{BB}} =\frac{c_b}{K_A}K_B$$
-The invasion criterion for species B is 
+  The invasion criterion for species B is 
 $$\frac{\alpha_{BA}}{\alpha_{AA}} =\frac{c_a}{K_B}K_A$$
-The coexistence criterion is that *each* species must be able to invade when rare, including when the soil flora has no effect. Therefore, we have
+  The coexistence criterion is that *each* species must be able to invade when rare, including when the soil flora has no effect. Therefore, we have
 
 $$\left(\frac{c_b}{K_A}K_B,\, \frac{c_a}{K_B}K_A\right)< \frac{(1+\alpha_B)(1+\beta_A)}{(1+\alpha_A)(1+\beta_B)}(\#eq:bevercrit)$$
-where both conditions on the left must be satisfied. In the numerator on the right, we have the effect of each soil flora on their away plant species. In the denominator, we have the effects of each flora on the home plant species. Thus, the fraction on the right is the relative benefit of the soil flora. If there is no effect at all of the soil flora, then the ca.
+
+ where both conditions on the left must be satisfied. In the numerator on the right, we have the effect of each soil flora on their away plant species. In the denominator, we have the effects of each flora on the home plant species. Thus, the fraction on the right is the relative benefit of the soil flora. If there is no effect at all of the soil flora, then the ca.??
+
 
 Now we will create an ODE function that will let us see the dynamics play out. We need only model one soil flora because $S_B = 1-S_A$.
 ```{r}
@@ -400,34 +388,28 @@ bever3 <- function(t,y,p){
     dSA <- SA*(1-SA) * ( Na/(Na+Nb) - nu*Nb/(Na+Nb) )
     return(list(c(dNa, dNb, dSA), SB=1-SA))
   })
-}
+  }
 ```
-
 We will parameterize the model in a way that reveals the importance of the soil floras to coexistence, according to criteria stated above \@ref(eq:bevercrit). We will create a vector of parameters, and then test whether the inequality in \@ref(eq:bevercrit) is true. We start with an absence of a soil flora effect.
 ```{r}
 p0 <- list(ra=0.7, rb=0.5, Ka = 10, Kb=12, cA=.98, cB=.98, 
-       alphaA=0, alphaB=0, betaA=0, betaB=0, nu=0.8)
+           alphaA=0, alphaB=0, betaA=0, betaB=0, nu=0.8)
 ```
-Use the criterion above, and paper and a pencil, and see what you discover. We could also do it in R.
+                                                                                Use the criterion above, and paper and a pencil, and see what you discover. We could also do it in R.
 ```{r}
 with(p0, { cA/Kb*Ka  < (1+alphaB)*(1+betaA) / ( (1+alphaA)*(1+betaB)) })
 with(p0, { cB/Ka*Kb < (1+alphaB)*(1+betaA) / ( (1+alphaA)*(1+betaB)) })
 ```
-This shows us we will not get coexistence in the absence of soil flora. 
-
-Now we add the soil flora.
+                                                                                This shows us we will not get coexistence in the absence of soil flora. Now we add the soil flora.
 ```{r}
-p <- list(ra=0.7, rb=0.5, Ka = 10, Kb=12, cA=.98, cB=.98, 
-       alphaA=-0.03, alphaB=0.1, betaA=0.1, betaB=-0.2, nu=0.8)
+p <- list(ra=0.7, rb=0.5, Ka = 10, Kb=12, cA=.98, cB=.98, alphaA=-0.03, alphaB=0.1, betaA=0.1, betaB=-0.2, nu=0.8)
 ```
-Try your hand again, with paper and pencil. And then do it in R.
+                                                                                Try your hand again, with paper and pencil. And then do it in R.
 ```{r}
 with(p, { cA/Kb*Ka  < (1+alphaB)*(1+betaA) / ( (1+alphaA)*(1+betaB)) })
 with(p, { cB/Ka*Kb < (1+alphaB)*(1+betaA) / ( (1+alphaA)*(1+betaB)) })
 ```
-
 On this basis, we should see that each species can invade when rare. 
-
 Now let's see the dynamics play out.
 ```{r beverplot, echo=FALSE, fig=TRUE, width=10, height=10, include=TRUE, fig.cap="Dynamics of competing plant species, subject to self-limiting negative feedbacks with soil pathogens.", out.width="50%", fig.show='hold'}
 t <- seq(0,200, .1)
@@ -443,7 +425,6 @@ plot(outdf$Na, outdf$Nb, type='l', ylab="N_B", xlab="N_A")
 ### Make the start clear
 points(y0[1], y0[2], cex=2, col=2, pch=19)
 text(y[1], y[2], "Start here (t=0)", adj=c(-.2,.5), srt=-45, col="green")
-
 ```
 
 ```{r echo=FALSE, eval=FALSE}
@@ -478,10 +459,10 @@ The core of our simulations will use a general purpose Lotka-Volterra model that
 ```{r, message = FALSE, echo = TRUE, results='hide'}
 lvg <- function (time, n, parameters) 
 {
-    r <- parameters[[1]]
-    a <- parameters[[2]]
-    dns.dt <- r * n * (1 + (a %*% n))
-    return(list(c(dns.dt)))
+  r <- parameters[[1]]
+  a <- parameters[[2]]
+  dns.dt <- r * n * (1 + (a %*% n))
+  return(list(c(dns.dt)))
 }
 ```
 
@@ -593,7 +574,6 @@ ggplot(sim.N, aes(a12, a21)) + geom_point()
 What do we learn from just this figure? Write down a possible set of conditions necessary to get these anomalous results.
 
 
-
 ### Comparing simulation results to analytical solutions
 
 Any time we do something novel in our modeling, we need to find a way to evaluate the novel approach to make sure it is doing what we think it is. When we have an analytical solution for our model, it is great to compare the analytical solution to the simulations.
@@ -668,8 +648,8 @@ J1 <- matrix(c(-.1*12.5, -.02*12.5,
 eigen(J1)
 ```
 What do these results mean?
-
-\bigskip
+  
+  \bigskip
 
 A nonsensical equilibrium
 ```{r echo = TRUE, results='markup'}
@@ -679,11 +659,12 @@ J2 <- matrix( c( -.1*(-10), -.2*(-10),
 eigen(J2)
 ```
 What do these results mean?
-
-### *In Fine*
-So, how can you digest and communicate what you have found? You shjould be able to answer these questions:
-
-1. Did the simulation perform as you thought and how do you know?
-2. Did the simulation *confirm* something we first assessed analytically? If so, how?
-3. How do you explain the differences between the simulations and analytical equilibrium (extremely large vs. negative population sizes)?
-
+  
+  ### *In Fine*
+  So, how can you digest and communicate what you have found? You shjould be able to answer these questions:
+  
+  1. Did the simulation perform as you thought and how do you know?
+  2. Did the simulation *confirm* something we first assessed analytically? If so, how?
+  3. How do you explain the differences between the simulations and analytical equilibrium (extremely large vs. negative population sizes)?
+  
+  
