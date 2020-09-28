@@ -24,7 +24,7 @@
 <meta name="author" content="Hank Stevens" />
 
 
-<meta name="date" content="2020-09-26" />
+<meta name="date" content="2020-09-28" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -51,6 +51,10 @@
 
 
 <script src="libs/accessible-code-block-0.0.1/empty-anchor.js"></script>
+<script src="libs/kePrint-0.0.1/kePrint.js"></script>
+<link href="libs/lightable-0.0.1/lightable.css" rel="stylesheet" />
+<link href="libs/bsTable-3.3.7/bootstrapTable.min.css" rel="stylesheet" />
+<script src="libs/bsTable-3.3.7/bootstrapTable.js"></script>
 <script src="libs/htmlwidgets-1.5.1/htmlwidgets.js"></script>
 <script src="libs/viz-1.8.2/viz.js"></script>
 <link href="libs/DiagrammeR-styles-0.2/styles.css" rel="stylesheet" />
@@ -261,7 +265,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="8.4" data-path="mutualisms.html"><a href="mutualisms.html#plant-soil-feedbacks"><i class="fa fa-check"></i><b>8.4</b> Plant-soil feedbacks</a></li>
 <li class="chapter" data-level="8.5" data-path="mutualisms.html"><a href="mutualisms.html#simulations-for-learning"><i class="fa fa-check"></i><b>8.5</b> Simulations for learning</a><ul>
 <li class="chapter" data-level="8.5.1" data-path="mutualisms.html"><a href="mutualisms.html#lvg"><i class="fa fa-check"></i><b>8.5.1</b> <code>lvg()</code></a></li>
-<li class="chapter" data-level="8.5.2" data-path="mutualisms.html"><a href="mutualisms.html#simulations"><i class="fa fa-check"></i><b>8.5.2</b> Simulations</a></li>
+<li class="chapter" data-level="8.5.2" data-path="mutualisms.html"><a href="mutualisms.html#systematic-simulations"><i class="fa fa-check"></i><b>8.5.2</b> Systematic simulations</a></li>
 <li class="chapter" data-level="8.5.3" data-path="mutualisms.html"><a href="mutualisms.html#checking-simulation-results"><i class="fa fa-check"></i><b>8.5.3</b> Checking simulation results</a></li>
 <li class="chapter" data-level="8.5.4" data-path="mutualisms.html"><a href="mutualisms.html#comparing-simulation-results-to-analytical-solutions"><i class="fa fa-check"></i><b>8.5.4</b> Comparing simulation results to analytical solutions</a></li>
 <li class="chapter" data-level="8.5.5" data-path="mutualisms.html"><a href="mutualisms.html#one-last-thing-using-the-jacobian-matrix"><i class="fa fa-check"></i><b>8.5.5</b> One last thing: using the Jacobian matrix</a></li>
@@ -329,20 +333,20 @@ N_2 &amp;=\frac{\alpha_{11}}{\alpha_{12}}N_1 - 1/\alpha_{12}
 Note this assumes that both <span class="math inline">\(\alpha_{jj}\)</span> and <span class="math inline">\(\alpha_{ji}\)</span>, per se, are greater than zero, because our equation assumed it was so.</p>
 <p>Let’s use this to describe a facultative mutualism, that is, one in which neither species needs the other to persist, but in which they each do better. What we mean by that is that let $ r&gt;0<span class="math inline">\(. For now, we will also assume that the mutualism provides only a modest benefit, where species benefits to each is smaller than the negative effects on themselves (\)</span><em>{ii} &gt; </em>{ij}$). The dynamics are stable (Fig. <a href="mutualisms.html#fig:LVmut">8.1</a>)</p>
 <p>To illustrate the dynamics of this population, we will parameterize an ODE model. Our parameters meet our assumptions stated above.</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="mutualisms.html#cb1-1"></a>parameters &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dt">alpha11 =</span> <span class="fl">.2</span>, <span class="dt">alpha22 =</span> <span class="fl">.2</span>, <span class="dt">alpha12 =</span> <span class="fl">.1</span>, <span class="dt">alpha21=</span>.<span class="dv">1</span>,</span>
-<span id="cb1-2"><a href="mutualisms.html#cb1-2"></a>                <span class="dt">r1=</span>.<span class="dv">01</span>, <span class="dt">r2=</span>.<span class="dv">01</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb227"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb227-1"><a href="mutualisms.html#cb227-1"></a>parameters &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dt">alpha11 =</span> <span class="fl">.2</span>, <span class="dt">alpha22 =</span> <span class="fl">.2</span>, <span class="dt">alpha12 =</span> <span class="fl">.1</span>, <span class="dt">alpha21=</span>.<span class="dv">1</span>,</span>
+<span id="cb227-2"><a href="mutualisms.html#cb227-2"></a>                <span class="dt">r1=</span>.<span class="dv">01</span>, <span class="dt">r2=</span>.<span class="dv">01</span>)</span></code></pre></div>
 <p>Here we write an ODE model to help anaylze dynamics.</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="mutualisms.html#cb2-1"></a>mutualism.LV &lt;-<span class="st"> </span><span class="cf">function</span>(t, y, params){</span>
-<span id="cb2-2"><a href="mutualisms.html#cb2-2"></a>  n1 &lt;-<span class="st"> </span>y[<span class="dv">1</span>]; n2 &lt;-<span class="st"> </span>y[<span class="dv">2</span>]</span>
-<span id="cb2-3"><a href="mutualisms.html#cb2-3"></a>  <span class="kw">with</span>(<span class="kw">as.list</span>(params), {</span>
-<span id="cb2-4"><a href="mutualisms.html#cb2-4"></a>    dn1.dt =<span class="st"> </span>r1<span class="op">*</span>n1<span class="op">*</span>(<span class="dv">1</span> <span class="op">-</span><span class="st"> </span>alpha11<span class="op">*</span>n1 <span class="op">+</span><span class="st"> </span>alpha12<span class="op">*</span>n2)</span>
-<span id="cb2-5"><a href="mutualisms.html#cb2-5"></a>    dn2.dt =<span class="st"> </span>r2<span class="op">*</span>n2<span class="op">*</span>(<span class="dv">1</span> <span class="op">+</span><span class="st"> </span>alpha21<span class="op">*</span>n1 <span class="op">-</span><span class="st"> </span>alpha22<span class="op">*</span>n2)</span>
-<span id="cb2-6"><a href="mutualisms.html#cb2-6"></a>    <span class="kw">return</span>(<span class="kw">list</span>( <span class="kw">c</span>(dn1.dt, dn2.dt) ) )</span>
-<span id="cb2-7"><a href="mutualisms.html#cb2-7"></a>  })</span>
-<span id="cb2-8"><a href="mutualisms.html#cb2-8"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb228"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb228-1"><a href="mutualisms.html#cb228-1"></a>mutualism.LV &lt;-<span class="st"> </span><span class="cf">function</span>(t, y, params){</span>
+<span id="cb228-2"><a href="mutualisms.html#cb228-2"></a>  n1 &lt;-<span class="st"> </span>y[<span class="dv">1</span>]; n2 &lt;-<span class="st"> </span>y[<span class="dv">2</span>]</span>
+<span id="cb228-3"><a href="mutualisms.html#cb228-3"></a>  <span class="kw">with</span>(<span class="kw">as.list</span>(params), {</span>
+<span id="cb228-4"><a href="mutualisms.html#cb228-4"></a>    dn1.dt =<span class="st"> </span>r1<span class="op">*</span>n1<span class="op">*</span>(<span class="dv">1</span> <span class="op">-</span><span class="st"> </span>alpha11<span class="op">*</span>n1 <span class="op">+</span><span class="st"> </span>alpha12<span class="op">*</span>n2)</span>
+<span id="cb228-5"><a href="mutualisms.html#cb228-5"></a>    dn2.dt =<span class="st"> </span>r2<span class="op">*</span>n2<span class="op">*</span>(<span class="dv">1</span> <span class="op">+</span><span class="st"> </span>alpha21<span class="op">*</span>n1 <span class="op">-</span><span class="st"> </span>alpha22<span class="op">*</span>n2)</span>
+<span id="cb228-6"><a href="mutualisms.html#cb228-6"></a>    <span class="kw">return</span>(<span class="kw">list</span>( <span class="kw">c</span>(dn1.dt, dn2.dt) ) )</span>
+<span id="cb228-7"><a href="mutualisms.html#cb228-7"></a>  })</span>
+<span id="cb228-8"><a href="mutualisms.html#cb228-8"></a>}</span></code></pre></div>
 <p>The Lotka-Volterra approach predicts exclusion of one species in two realistic scenarios, obligate mutualisms and mutualisms with large effects. An obligate mutualism is one in which growth rate is negative in the absence of the mutualism. The way to describe that in Lotka-Volterra models is to set <span class="math inline">\(r &lt; 0\)</span>. This results in an unstable equilibrium which is a global repellor which results in the loss of one species. Second, if the benefit is greater than the negative intraspecific effect, we get an uncontrolled positive feedback loop leading to infinite population sizes. In this sense, it is like exponential growth: a potentially very useful idea, but it must be moderated somehow in order to reflect long term trajectories.</p>
 <div class="figure"><span id="fig:LVmut"></span>
-<img src="_main_files/figure-html/LVmut-1.png" alt="Only weak facultative mutualisms are stable." width="33%" /><img src="_main_files/figure-html/LVmut-2.png" alt="Only weak facultative mutualisms are stable." width="33%" /><img src="_main_files/figure-html/LVmut-3.png" alt="Only weak facultative mutualisms are stable." width="33%" />
+<img src="figs/LVmut-1.png" alt="Only weak facultative mutualisms are stable." width="33%" /><img src="figs/LVmut-2.png" alt="Only weak facultative mutualisms are stable." width="33%" /><img src="figs/LVmut-3.png" alt="Only weak facultative mutualisms are stable." width="33%" />
 <p class="caption">
 Figure 8.1: Only weak facultative mutualisms are stable.
 </p>
@@ -355,22 +359,8 @@ Sometimes mutualists share resources, as with mycorrhizal
 associations, where species share a resource or a product that they
 can acquire or manufacture in surplus and trade it for a resource or product that is limiting. This is a bi-drectional mutualism (Fig. ) because the flow of  are bidirectional: both species provide a resource to the other <span class="citation">(Holland and Deangelis <a href="#ref-Holland2010" role="doc-biblioref">2010</a>)</span>.
 <div class="figure"><span id="fig:mut3"></span>
-<div id="htmlwidget-45921aeb4942c4a0913d" style="width:33%;height:480px;" class="grViz html-widget"></div>
-<script type="application/json" data-for="htmlwidget-45921aeb4942c4a0913d">{"x":{"diagram":"digraph{\n  rankdir = LR;\nnode[shape=box];\n// oval is the default node shape\n  M1 -> M2[label=\"R\"];\nM2 -> M1[label=\"R\"];\n}","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script>
-<p class="caption">
-Figure 8.2: Bidirection, unidirectional, and indirect mutualisms. Normal arrowhead is a positive effect, whereas an open dot arrowhead is a negative effect. A dashed line indicates a service, and a solid line indicates a consumable resource.
-</p>
-</div>
-<div class="figure"><span id="fig:mut3"></span>
-<div id="htmlwidget-15a9c17fb3c9d027c209" style="width:33%;height:480px;" class="grViz html-widget"></div>
-<script type="application/json" data-for="htmlwidget-15a9c17fb3c9d027c209">{"x":{"diagram":"digraph{\n  rankdir = LR;\nnode[shape=box];\n// oval is the default node shape\n  M1 -> M2[label=\"R\"];\nM2 -> M1[label=\"S\", style=dashed]\n}","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script>
-<p class="caption">
-Figure 8.2: Bidirection, unidirectional, and indirect mutualisms. Normal arrowhead is a positive effect, whereas an open dot arrowhead is a negative effect. A dashed line indicates a service, and a solid line indicates a consumable resource.
-</p>
-</div>
-<div class="figure"><span id="fig:mut3"></span>
-<div id="htmlwidget-019b844f5e4f93f22d45" style="width:33%;height:480px;" class="grViz html-widget"></div>
-<script type="application/json" data-for="htmlwidget-019b844f5e4f93f22d45">{"x":{"diagram":"digraph{\n  rankdir = TB;\nnode[shape=box];\n{rank=max; R1; R2;}\n{rank=min; M1; M2;}\n// oval is the default node shape\n  M1 -> M2[label=\"R\"];\nM2 -> M1[label=\"S\", style=dashed]\nR1 -> M1; M1 -> R1[arrowhead=\"odot\"];\nR2 -> M2; M2 -> R2[arrowhead=\"odot\"];\nR1 -> R2[arrowhead=\"odot\"]; R2 -> R1[arrowhead=\"odot\"];\n}","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-de29020d73f005031d52" style="width:33%;height:480px;" class="grViz html-widget"></div>
+<script type="application/json" data-for="htmlwidget-de29020d73f005031d52">{"x":{"diagram":"digraph{\n  rankdir = TB;\nnode[shape=box];\n{rank=max; R1; R2;}\n{rank=min; M1; M2;}\n// oval is the default node shape\n  M1 -> M2[label=\"R\"];\nM2 -> M1[label=\"S\", style=dashed]\nR1 -> M1; M1 -> R1[arrowhead=\"odot\"];\nR2 -> M2; M2 -> R2[arrowhead=\"odot\"];\nR1 -> R2[arrowhead=\"odot\"]; R2 -> R1[arrowhead=\"odot\"];\n}","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script>
 <p class="caption">
 Figure 8.2: Bidirection, unidirectional, and indirect mutualisms. Normal arrowhead is a positive effect, whereas an open dot arrowhead is a negative effect. A dashed line indicates a service, and a solid line indicates a consumable resource.
 </p>
@@ -407,16 +397,16 @@ cached, or moved seeds.</p>
 <p>The growth equation for the plant species, <span class="math inline">\(M_1\)</span>, includes logistic growth, and has terms for the benefit it receives from its mutualist frugivore and the cost paid to that frugivore.</p>
 <p><span class="math display">\[\frac{dM_1}{dt} = r_1 M_1\left(1-d_1M_1\right)  - aM_2\left(\frac{M_1}{h_1 + M_1}\right) + sM_1\left(\frac{M_2}{h_2 + M_2}\right)\]</span></p>
 <p>The plant species (<span class="math inline">\(M_1\)</span>) grows logistically in the absence of fruit consumption or seed dispersal <span class="math inline">\(r_1 M_1\left(1-d_1M_1\right)\)</span>. Consumption of fruits are governed by a type II functional response by the frugivore <span class="math inline">\(aM_2\left(\frac{M_1}{h_1 + M_1}\right)\)</span>, so that the consumption rate of a single frugivore has an upper limit (Fig. <a href="mutualisms.html#fig:funcResp">8.3</a>). Successful seed dispersal and establishment is also governed by a type II functional response. The success of a single seed reaches an upper limit as the number of frugivores continues to increase, <span class="math inline">\(c_1M_1\left(\frac{M_2}{h_2 + M_2}\right)\)</span> (Fig. <a href="mutualisms.html#fig:funcResp">8.3</a>).</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="mutualisms.html#cb3-1"></a><span class="kw">ggplot</span>(<span class="kw">data.frame</span>(<span class="dt">x=</span><span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">1</span>)), <span class="kw">aes</span>(<span class="dt">x=</span>x) ) <span class="op">+</span><span class="st"> </span></span>
-<span id="cb3-2"><a href="mutualisms.html#cb3-2"></a><span class="st">  </span><span class="kw">stat_function</span>(<span class="dt">fun=</span><span class="cf">function</span>(x) { <span class="dv">10</span><span class="op">*</span>x<span class="op">/</span>(<span class="dv">1</span><span class="op">+</span><span class="dv">10</span><span class="op">*</span>x) }) <span class="op">+</span></span>
-<span id="cb3-3"><a href="mutualisms.html#cb3-3"></a><span class="st">  </span><span class="kw">labs</span>( <span class="dt">x=</span><span class="st">&quot;Fruit abundance&quot;</span>, <span class="dt">y=</span><span class="st">&quot;Consumption Rate of a frugivore&quot;</span>)</span>
-<span id="cb3-4"><a href="mutualisms.html#cb3-4"></a></span>
-<span id="cb3-5"><a href="mutualisms.html#cb3-5"></a></span>
-<span id="cb3-6"><a href="mutualisms.html#cb3-6"></a><span class="kw">ggplot</span>(<span class="kw">data.frame</span>(<span class="dt">x=</span><span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">1</span>)), <span class="kw">aes</span>(<span class="dt">x=</span>x) ) <span class="op">+</span><span class="st"> </span></span>
-<span id="cb3-7"><a href="mutualisms.html#cb3-7"></a><span class="st">  </span><span class="kw">stat_function</span>(<span class="dt">fun=</span><span class="cf">function</span>(x) { <span class="dv">10</span><span class="op">*</span>x<span class="op">/</span>(<span class="dv">1</span><span class="op">+</span><span class="dv">10</span><span class="op">*</span>x) }) <span class="op">+</span></span>
-<span id="cb3-8"><a href="mutualisms.html#cb3-8"></a><span class="st">  </span><span class="kw">labs</span>( <span class="dt">x=</span><span class="st">&quot;Frugivore abundance&quot;</span>, <span class="dt">y=</span><span class="st">&quot;Dispersal rate of a seed&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb229"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb229-1"><a href="mutualisms.html#cb229-1"></a><span class="kw">ggplot</span>(<span class="kw">data.frame</span>(<span class="dt">x=</span><span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">1</span>)), <span class="kw">aes</span>(<span class="dt">x=</span>x) ) <span class="op">+</span><span class="st"> </span></span>
+<span id="cb229-2"><a href="mutualisms.html#cb229-2"></a><span class="st">  </span><span class="kw">stat_function</span>(<span class="dt">fun=</span><span class="cf">function</span>(x) { <span class="dv">10</span><span class="op">*</span>x<span class="op">/</span>(<span class="dv">1</span><span class="op">+</span><span class="dv">10</span><span class="op">*</span>x) }) <span class="op">+</span></span>
+<span id="cb229-3"><a href="mutualisms.html#cb229-3"></a><span class="st">  </span><span class="kw">labs</span>( <span class="dt">x=</span><span class="st">&quot;Fruit abundance&quot;</span>, <span class="dt">y=</span><span class="st">&quot;Consumption Rate of a frugivore&quot;</span>)</span>
+<span id="cb229-4"><a href="mutualisms.html#cb229-4"></a></span>
+<span id="cb229-5"><a href="mutualisms.html#cb229-5"></a></span>
+<span id="cb229-6"><a href="mutualisms.html#cb229-6"></a><span class="kw">ggplot</span>(<span class="kw">data.frame</span>(<span class="dt">x=</span><span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">1</span>)), <span class="kw">aes</span>(<span class="dt">x=</span>x) ) <span class="op">+</span><span class="st"> </span></span>
+<span id="cb229-7"><a href="mutualisms.html#cb229-7"></a><span class="st">  </span><span class="kw">stat_function</span>(<span class="dt">fun=</span><span class="cf">function</span>(x) { <span class="dv">10</span><span class="op">*</span>x<span class="op">/</span>(<span class="dv">1</span><span class="op">+</span><span class="dv">10</span><span class="op">*</span>x) }) <span class="op">+</span></span>
+<span id="cb229-8"><a href="mutualisms.html#cb229-8"></a><span class="st">  </span><span class="kw">labs</span>( <span class="dt">x=</span><span class="st">&quot;Frugivore abundance&quot;</span>, <span class="dt">y=</span><span class="st">&quot;Dispersal rate of a seed&quot;</span>)</span></code></pre></div>
 <div class="figure"><span id="fig:funcResp"></span>
-<img src="_main_files/figure-html/funcResp-1.png" alt="Fruit consumption by a single frugivore is governed by a type II functional response as fruit abundance increases. Successful seed dispersal and establishment is governed by a type II functional response as frugivores increase." width="50%" /><img src="_main_files/figure-html/funcResp-2.png" alt="Fruit consumption by a single frugivore is governed by a type II functional response as fruit abundance increases. Successful seed dispersal and establishment is governed by a type II functional response as frugivores increase." width="50%" />
+<img src="figs/funcResp-1.png" alt="Fruit consumption by a single frugivore is governed by a type II functional response as fruit abundance increases. Successful seed dispersal and establishment is governed by a type II functional response as frugivores increase." width="40%" /><img src="figs/funcResp-2.png" alt="Fruit consumption by a single frugivore is governed by a type II functional response as fruit abundance increases. Successful seed dispersal and establishment is governed by a type II functional response as frugivores increase." width="40%" />
 <p class="caption">
 Figure 8.3: Fruit consumption by a single frugivore is governed by a type II functional response as fruit abundance increases. Successful seed dispersal and establishment is governed by a type II functional response as frugivores increase.
 </p>
@@ -429,35 +419,10 @@ The animal seed disperser grows logistically in in the absence of consuming this
 <li><span class="math inline">\(s &gt; c\)</span>, service &gt; consumption = net mutualism</li>
 </ul>
 <p>The dynamics can result in <em>multiple basins of attraction</em> or <em>alternative stable states</em> (Fig. <a href="mutualisms.html#fig:mba">8.4</a>).</p>
-<pre><code>## 137.0835703891437128.423312376777</code></pre>
-<pre><code>## 235.600172138675124.891090909269</code></pre>
-<pre><code>## 335.5885514507685124.791099793716</code></pre>
-<pre><code>## 435.5885183668737124.791019514334</code></pre>
-<pre><code>## Fixed point at (x,y) = 35.58852124.79102</code></pre>
-<pre><code>## tr = -0.56936, Delta = -0.84461, discriminant = 3.70261, classification = Saddle</code></pre>
-<pre><code>## Fixed point at (x,y) = 0100</code></pre>
-<pre><code>## tr = -99.6012, Delta = 98.6012, discriminant = 9525.99354, classification = Stable node</code></pre>
-<pre><code>## 137.0892921231497132.996524233904</code></pre>
-<pre><code>## 235.772193418193125.26864235383</code></pre>
-<pre><code>## 335.5888221123859124.792836789925</code></pre>
-<pre><code>## 435.5885183770963124.791019540783</code></pre>
-<pre><code>## 535.5885183668666124.791019514282</code></pre>
-<pre><code>## Fixed point at (x,y) = 35.58852124.79102</code></pre>
-<pre><code>## tr = -0.56936, Delta = -0.84461, discriminant = 3.70261, classification = Saddle</code></pre>
-<pre><code>## 1107.001877459755128.520100338788</code></pre>
-<pre><code>## 2104.041344303652125.025783205449</code></pre>
-<pre><code>## 3103.955650871781124.928137776074</code></pre>
-<pre><code>## 4103.955576520931124.928061402129</code></pre>
-<pre><code>## Fixed point at (x,y) = 103.95558124.92806</code></pre>
-<pre><code>## tr = -1.93038, Delta = 0.85115, discriminant = 0.3218, classification = Stable node</code></pre>
-<pre><code>## Fixed point at (x,y) = 00</code></pre>
-<pre><code>## tr = 2, Delta = 1, discriminant = 0, classification = Unstable node</code></pre>
-<pre><code>## Fixed point at (x,y) = 1000</code></pre>
-<pre><code>## tr = 0.24925, Delta = -1.24925, discriminant = 5.05914, classification = Saddle</code></pre>
 <div class="figure"><span id="fig:mba"></span>
-<img src="_main_files/figure-html/mba-1.png" alt="A resource-service mutualism may result in alternative stable states. If both species achieve moderate abundance, then both species increase toward a stable mutualism. However, if the frugivore is too abundant relative to the plant, then its consumption dominates the interaction and drives the equilibrium mutualism" width="480" />
+<img src="figs/mba-1.png" alt="A resource-service mutualism may result in alternative stable states. If both species achieve moderate abundance, then both species increase toward a stable mutualism. However, if the frugivore is too abundant relative to the plant, then its consumption dominates the interaction and drives the equilibrium mutualism." width="75%" />
 <p class="caption">
-Figure 8.4: A resource-service mutualism may result in alternative stable states. If both species achieve moderate abundance, then both species increase toward a stable mutualism. However, if the frugivore is too abundant relative to the plant, then its consumption dominates the interaction and drives the equilibrium mutualism
+Figure 8.4: A resource-service mutualism may result in alternative stable states. If both species achieve moderate abundance, then both species increase toward a stable mutualism. However, if the frugivore is too abundant relative to the plant, then its consumption dominates the interaction and drives the equilibrium mutualism.
 </p>
 </div>
 <p>Holland and DeAngelis (2009) vary <span class="math inline">\(a_{21}\)</span> between <span class="math inline">\((0.25,\ldots,\,0.4)\)</span> to vary the relation from mutualism to predation. Try that now. Save a picture of your results.</p>
@@ -471,7 +436,7 @@ group of organisms on Earth–soil microbes. Ecologists have
 begun to focus on this intimate relationship, and Jim Bever <span class="citation">(Bever <a href="#ref-Bever2003" role="doc-biblioref">2003</a>)</span> has been
 one of ecologists helping lead the way (Fig. <a href="mutualisms.html#fig:beverfig">8.5</a>).</p>
 <div class="figure"><span id="fig:beverfig"></span>
-<img src="_main_files/figure-html/beverfig-1.png" alt="Plants and soil microbes can interact in negative or positive ways. Plants may grow more poorly with their own soil flora than with that of a competitor's." width="672" />
+<img src="figs/beverfig-1.png" alt="Plants and soil microbes can interact in negative or positive ways. Plants may grow more poorly with their own soil flora than with that of a competitor's." width="75%" />
 <p class="caption">
 Figure 8.5: Plants and soil microbes can interact in negative or positive ways. Plants may grow more poorly with their own soil flora than with that of a competitor’s.
 </p>
@@ -506,33 +471,34 @@ The coexistence criterion is that <em>each</em> species must be able to invade w
 <p><span class="math display" id="eq:bevercrit">\[\left(\frac{c_b}{K_A}K_B,\, \frac{c_a}{K_B}K_A\right)&lt; \frac{(1+\alpha_B)(1+\beta_A)}{(1+\al\tag{8.1}B)}(#eq:bevercrit)\]</span></p>
 <p>where both conditions on the left must be satisfied. In the numerator on the right, we have the effect of each soil flora on their away plant species. In the denominator, we have the effects of each flora on the home plant species. Thus, the fraction on the right is the relative benefit of the soil flora. If there is no effect at all of the soil flora, then the ca.??</p>
 <p>Now we will create an ODE function that will let us see the dynamics play out. We need only model one soil flora because <span class="math inline">\(S_B = 1-S_A\)</span>.</p>
-<div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb29-1"><a href="mutualisms.html#cb29-1"></a>bever3 &lt;-<span class="st"> </span><span class="cf">function</span>(t,y,p){</span>
-<span id="cb29-2"><a href="mutualisms.html#cb29-2"></a>  <span class="kw">with</span>(<span class="kw">as.list</span>(<span class="kw">c</span>(y,p)), {</span>
-<span id="cb29-3"><a href="mutualisms.html#cb29-3"></a>    dNa &lt;-<span class="st"> </span>ra <span class="op">*</span><span class="st"> </span>Na <span class="op">*</span><span class="st"> </span>(<span class="dv">1</span><span class="op">+</span>alphaA<span class="op">*</span>SA <span class="op">+</span><span class="st"> </span>betaA<span class="op">*</span>(<span class="dv">1</span><span class="op">-</span>SA) <span class="op">-</span><span class="st"> </span>(Na <span class="op">+</span><span class="st"> </span>cB<span class="op">*</span>Nb)<span class="op">/</span>Ka)</span>
-<span id="cb29-4"><a href="mutualisms.html#cb29-4"></a>    dNb &lt;-<span class="st"> </span>rb <span class="op">*</span><span class="st"> </span>Nb <span class="op">*</span><span class="st"> </span>(<span class="dv">1</span><span class="op">+</span>alphaB<span class="op">*</span>SA <span class="op">+</span><span class="st"> </span>betaB<span class="op">*</span>(<span class="dv">1</span><span class="op">-</span>SA) <span class="op">-</span><span class="st"> </span>(cA<span class="op">*</span>Na <span class="op">+</span><span class="st"> </span>Nb)<span class="op">/</span>Kb)</span>
-<span id="cb29-5"><a href="mutualisms.html#cb29-5"></a>    dSA &lt;-<span class="st"> </span>SA<span class="op">*</span>(<span class="dv">1</span><span class="op">-</span>SA) <span class="op">*</span><span class="st"> </span>( Na<span class="op">/</span>(Na<span class="op">+</span>Nb) <span class="op">-</span><span class="st"> </span>nu<span class="op">*</span>Nb<span class="op">/</span>(Na<span class="op">+</span>Nb) )</span>
-<span id="cb29-6"><a href="mutualisms.html#cb29-6"></a>    <span class="kw">return</span>(<span class="kw">list</span>(<span class="kw">c</span>(dNa, dNb, dSA), <span class="dt">SB=</span><span class="dv">1</span><span class="op">-</span>SA))</span>
-<span id="cb29-7"><a href="mutualisms.html#cb29-7"></a>  })</span>
-<span id="cb29-8"><a href="mutualisms.html#cb29-8"></a>  }</span></code></pre></div>
+<div class="sourceCode" id="cb230"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb230-1"><a href="mutualisms.html#cb230-1"></a>bever3 &lt;-<span class="st"> </span><span class="cf">function</span>(t,y,p){</span>
+<span id="cb230-2"><a href="mutualisms.html#cb230-2"></a>  <span class="kw">with</span>(<span class="kw">as.list</span>(<span class="kw">c</span>(y,p)), {</span>
+<span id="cb230-3"><a href="mutualisms.html#cb230-3"></a>    dNa &lt;-<span class="st"> </span>ra <span class="op">*</span><span class="st"> </span>Na <span class="op">*</span><span class="st"> </span>(<span class="dv">1</span><span class="op">+</span>alphaA<span class="op">*</span>SA <span class="op">+</span><span class="st"> </span>betaA<span class="op">*</span>(<span class="dv">1</span><span class="op">-</span>SA) <span class="op">-</span><span class="st"> </span>(Na <span class="op">+</span><span class="st"> </span>cB<span class="op">*</span>Nb)<span class="op">/</span>Ka)</span>
+<span id="cb230-4"><a href="mutualisms.html#cb230-4"></a>    dNb &lt;-<span class="st"> </span>rb <span class="op">*</span><span class="st"> </span>Nb <span class="op">*</span><span class="st"> </span>(<span class="dv">1</span><span class="op">+</span>alphaB<span class="op">*</span>SA <span class="op">+</span><span class="st"> </span>betaB<span class="op">*</span>(<span class="dv">1</span><span class="op">-</span>SA) <span class="op">-</span><span class="st"> </span>(cA<span class="op">*</span>Na <span class="op">+</span><span class="st"> </span>Nb)<span class="op">/</span>Kb)</span>
+<span id="cb230-5"><a href="mutualisms.html#cb230-5"></a>    dSA &lt;-<span class="st"> </span>SA<span class="op">*</span>(<span class="dv">1</span><span class="op">-</span>SA) <span class="op">*</span><span class="st"> </span>( Na<span class="op">/</span>(Na<span class="op">+</span>Nb) <span class="op">-</span><span class="st"> </span>nu<span class="op">*</span>Nb<span class="op">/</span>(Na<span class="op">+</span>Nb) )</span>
+<span id="cb230-6"><a href="mutualisms.html#cb230-6"></a>    <span class="kw">return</span>(<span class="kw">list</span>(<span class="kw">c</span>(dNa, dNb, dSA), <span class="dt">SB=</span><span class="dv">1</span><span class="op">-</span>SA))</span>
+<span id="cb230-7"><a href="mutualisms.html#cb230-7"></a>  })</span>
+<span id="cb230-8"><a href="mutualisms.html#cb230-8"></a>  }</span></code></pre></div>
 <p>We will parameterize the model in a way that reveals the importance of the soil floras to coexistence, according to criteria stated above <a href="mutualisms.html#eq:bevercrit">(8.1)</a>. We will create a vector of parameters, and then test whether the inequality in <a href="mutualisms.html#eq:bevercrit">(8.1)</a> is true. We start with an absence of a soil flora effect.</p>
-<div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb30-1"><a href="mutualisms.html#cb30-1"></a>p0 &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="dt">ra=</span><span class="fl">0.7</span>, <span class="dt">rb=</span><span class="fl">0.5</span>, <span class="dt">Ka =</span> <span class="dv">10</span>, <span class="dt">Kb=</span><span class="dv">12</span>, <span class="dt">cA=</span>.<span class="dv">98</span>, <span class="dt">cB=</span>.<span class="dv">98</span>, </span>
-<span id="cb30-2"><a href="mutualisms.html#cb30-2"></a>           <span class="dt">alphaA=</span><span class="dv">0</span>, <span class="dt">alphaB=</span><span class="dv">0</span>, <span class="dt">betaA=</span><span class="dv">0</span>, <span class="dt">betaB=</span><span class="dv">0</span>, <span class="dt">nu=</span><span class="fl">0.8</span>)</span></code></pre></div>
-<pre><code>                                                                            Use the criterion above, and paper and a pencil, and see what you discover. We could also do it in R.</code></pre>
-<div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb32-1"><a href="mutualisms.html#cb32-1"></a><span class="kw">with</span>(p0, { cA<span class="op">/</span>Kb<span class="op">*</span>Ka  <span class="op">&lt;</span><span class="st"> </span>(<span class="dv">1</span><span class="op">+</span>alphaB)<span class="op">*</span>(<span class="dv">1</span><span class="op">+</span>betaA) <span class="op">/</span><span class="st"> </span>( (<span class="dv">1</span><span class="op">+</span>alphaA)<span class="op">*</span>(<span class="dv">1</span><span class="op">+</span>betaB)) })</span></code></pre></div>
+<div class="sourceCode" id="cb231"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb231-1"><a href="mutualisms.html#cb231-1"></a>p0 &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="dt">ra=</span><span class="fl">0.7</span>, <span class="dt">rb=</span><span class="fl">0.5</span>, <span class="dt">Ka =</span> <span class="dv">10</span>, <span class="dt">Kb=</span><span class="dv">12</span>, <span class="dt">cA=</span>.<span class="dv">98</span>, <span class="dt">cB=</span>.<span class="dv">98</span>, </span>
+<span id="cb231-2"><a href="mutualisms.html#cb231-2"></a>           <span class="dt">alphaA=</span><span class="dv">0</span>, <span class="dt">alphaB=</span><span class="dv">0</span>, <span class="dt">betaA=</span><span class="dv">0</span>, <span class="dt">betaB=</span><span class="dv">0</span>, <span class="dt">nu=</span><span class="fl">0.8</span>)</span></code></pre></div>
+<p>Use the criterion above, and paper and a pencil, and see what you discover. We could also do it in R.</p>
+<div class="sourceCode" id="cb232"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb232-1"><a href="mutualisms.html#cb232-1"></a><span class="kw">with</span>(p0, { cA<span class="op">/</span>Kb<span class="op">*</span>Ka  <span class="op">&lt;</span><span class="st"> </span>(<span class="dv">1</span><span class="op">+</span>alphaB)<span class="op">*</span>(<span class="dv">1</span><span class="op">+</span>betaA) <span class="op">/</span><span class="st"> </span>( (<span class="dv">1</span><span class="op">+</span>alphaA)<span class="op">*</span>(<span class="dv">1</span><span class="op">+</span>betaB)) })</span></code></pre></div>
 <pre><code>## [1] TRUE</code></pre>
-<div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb34-1"><a href="mutualisms.html#cb34-1"></a><span class="kw">with</span>(p0, { cB<span class="op">/</span>Ka<span class="op">*</span>Kb <span class="op">&lt;</span><span class="st"> </span>(<span class="dv">1</span><span class="op">+</span>alphaB)<span class="op">*</span>(<span class="dv">1</span><span class="op">+</span>betaA) <span class="op">/</span><span class="st"> </span>( (<span class="dv">1</span><span class="op">+</span>alphaA)<span class="op">*</span>(<span class="dv">1</span><span class="op">+</span>betaB)) })</span></code></pre></div>
+<div class="sourceCode" id="cb234"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb234-1"><a href="mutualisms.html#cb234-1"></a><span class="kw">with</span>(p0, { cB<span class="op">/</span>Ka<span class="op">*</span>Kb <span class="op">&lt;</span><span class="st"> </span>(<span class="dv">1</span><span class="op">+</span>alphaB)<span class="op">*</span>(<span class="dv">1</span><span class="op">+</span>betaA) <span class="op">/</span><span class="st"> </span>( (<span class="dv">1</span><span class="op">+</span>alphaA)<span class="op">*</span>(<span class="dv">1</span><span class="op">+</span>betaB)) })</span></code></pre></div>
 <pre><code>## [1] FALSE</code></pre>
-<pre><code>                                                                            This shows us we will not get coexistence in the absence of soil flora. Now we add the soil flora.</code></pre>
-<div class="sourceCode" id="cb37"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb37-1"><a href="mutualisms.html#cb37-1"></a>p &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="dt">ra=</span><span class="fl">0.7</span>, <span class="dt">rb=</span><span class="fl">0.5</span>, <span class="dt">Ka =</span> <span class="dv">10</span>, <span class="dt">Kb=</span><span class="dv">12</span>, <span class="dt">cA=</span>.<span class="dv">98</span>, <span class="dt">cB=</span>.<span class="dv">98</span>, <span class="dt">alphaA=</span><span class="op">-</span><span class="fl">0.03</span>, <span class="dt">alphaB=</span><span class="fl">0.1</span>, <span class="dt">betaA=</span><span class="fl">0.1</span>, <span class="dt">betaB=</span><span class="op">-</span><span class="fl">0.2</span>, <span class="dt">nu=</span><span class="fl">0.8</span>)</span></code></pre></div>
-<pre><code>                                                                            Try your hand again, with paper and pencil. And then do it in R.</code></pre>
-<div class="sourceCode" id="cb39"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb39-1"><a href="mutualisms.html#cb39-1"></a><span class="kw">with</span>(p, { cA<span class="op">/</span>Kb<span class="op">*</span>Ka  <span class="op">&lt;</span><span class="st"> </span>(<span class="dv">1</span><span class="op">+</span>alphaB)<span class="op">*</span>(<span class="dv">1</span><span class="op">+</span>betaA) <span class="op">/</span><span class="st"> </span>( (<span class="dv">1</span><span class="op">+</span>alphaA)<span class="op">*</span>(<span class="dv">1</span><span class="op">+</span>betaB)) })</span></code></pre></div>
+<pre><code>                                                                            This shows us we will not get coexistence in the absence of soil flora. Now we add the soil flora.
+                                                                            </code></pre>
+<div class="sourceCode" id="cb237"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb237-1"><a href="mutualisms.html#cb237-1"></a>p &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="dt">ra=</span><span class="fl">0.7</span>, <span class="dt">rb=</span><span class="fl">0.5</span>, <span class="dt">Ka =</span> <span class="dv">10</span>, <span class="dt">Kb=</span><span class="dv">12</span>, <span class="dt">cA=</span>.<span class="dv">98</span>, <span class="dt">cB=</span>.<span class="dv">98</span>, <span class="dt">alphaA=</span><span class="op">-</span><span class="fl">0.03</span>, <span class="dt">alphaB=</span><span class="fl">0.1</span>, <span class="dt">betaA=</span><span class="fl">0.1</span>, <span class="dt">betaB=</span><span class="op">-</span><span class="fl">0.2</span>, <span class="dt">nu=</span><span class="fl">0.8</span>)</span></code></pre></div>
+<p>Try your hand again, with paper and pencil. And then do it in R.</p>
+<div class="sourceCode" id="cb238"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb238-1"><a href="mutualisms.html#cb238-1"></a><span class="kw">with</span>(p, { cA<span class="op">/</span>Kb<span class="op">*</span>Ka  <span class="op">&lt;</span><span class="st"> </span>(<span class="dv">1</span><span class="op">+</span>alphaB)<span class="op">*</span>(<span class="dv">1</span><span class="op">+</span>betaA) <span class="op">/</span><span class="st"> </span>( (<span class="dv">1</span><span class="op">+</span>alphaA)<span class="op">*</span>(<span class="dv">1</span><span class="op">+</span>betaB)) })</span></code></pre></div>
 <pre><code>## [1] TRUE</code></pre>
-<div class="sourceCode" id="cb41"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb41-1"><a href="mutualisms.html#cb41-1"></a><span class="kw">with</span>(p, { cB<span class="op">/</span>Ka<span class="op">*</span>Kb <span class="op">&lt;</span><span class="st"> </span>(<span class="dv">1</span><span class="op">+</span>alphaB)<span class="op">*</span>(<span class="dv">1</span><span class="op">+</span>betaA) <span class="op">/</span><span class="st"> </span>( (<span class="dv">1</span><span class="op">+</span>alphaA)<span class="op">*</span>(<span class="dv">1</span><span class="op">+</span>betaB)) })</span></code></pre></div>
+<div class="sourceCode" id="cb240"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb240-1"><a href="mutualisms.html#cb240-1"></a><span class="kw">with</span>(p, { cB<span class="op">/</span>Ka<span class="op">*</span>Kb <span class="op">&lt;</span><span class="st"> </span>(<span class="dv">1</span><span class="op">+</span>alphaB)<span class="op">*</span>(<span class="dv">1</span><span class="op">+</span>betaA) <span class="op">/</span><span class="st"> </span>( (<span class="dv">1</span><span class="op">+</span>alphaA)<span class="op">*</span>(<span class="dv">1</span><span class="op">+</span>betaB)) })</span></code></pre></div>
 <pre><code>## [1] TRUE</code></pre>
 On this basis, we should see that each species can invade when rare.
 Now let’s see the dynamics play out.
 <div class="figure"><span id="fig:beverplot"></span>
-<img src="_main_files/figure-html/beverplot-1.png" alt="Dynamics of competing plant species, subject to self-limiting negative feedbacks with soil pathogens." width="50%" /><img src="_main_files/figure-html/beverplot-2.png" alt="Dynamics of competing plant species, subject to self-limiting negative feedbacks with soil pathogens." width="50%" />
+<img src="figs/beverplot-1.png" alt="Dynamics of competing plant species, subject to self-limiting negative feedbacks with soil pathogens." width="40%" /><img src="figs/beverplot-2.png" alt="Dynamics of competing plant species, subject to self-limiting negative feedbacks with soil pathogens." width="40%" />
 <p class="caption">
 Figure 8.6: Dynamics of competing plant species, subject to self-limiting negative feedbacks with soil pathogens.
 </p>
@@ -545,26 +511,26 @@ Figure 8.6: Dynamics of competing plant species, subject to self-limiting negati
 <div id="lvg" class="section level3">
 <h3><span class="header-section-number">8.5.1</span> <code>lvg()</code></h3>
 <p>The core of our simulations will use a general purpose Lotka-Volterra model that simpy takes an interaction matrix and <span class="math inline">\(r\)</span> as inputs.</p>
-<div class="sourceCode" id="cb43"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb43-1"><a href="mutualisms.html#cb43-1"></a>lvg &lt;-<span class="st"> </span><span class="cf">function</span> (time, n, parameters) </span>
-<span id="cb43-2"><a href="mutualisms.html#cb43-2"></a>{</span>
-<span id="cb43-3"><a href="mutualisms.html#cb43-3"></a>  r &lt;-<span class="st"> </span>parameters[[<span class="dv">1</span>]]</span>
-<span id="cb43-4"><a href="mutualisms.html#cb43-4"></a>  a &lt;-<span class="st"> </span>parameters[[<span class="dv">2</span>]]</span>
-<span id="cb43-5"><a href="mutualisms.html#cb43-5"></a>  dns.dt &lt;-<span class="st"> </span>r <span class="op">*</span><span class="st"> </span>n <span class="op">*</span><span class="st"> </span>(<span class="dv">1</span> <span class="op">+</span><span class="st"> </span>(a <span class="op">%*%</span><span class="st"> </span>n))</span>
-<span id="cb43-6"><a href="mutualisms.html#cb43-6"></a>  <span class="kw">return</span>(<span class="kw">list</span>(<span class="kw">c</span>(dns.dt)))</span>
-<span id="cb43-7"><a href="mutualisms.html#cb43-7"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb242"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb242-1"><a href="mutualisms.html#cb242-1"></a>lvg &lt;-<span class="st"> </span><span class="cf">function</span> (time, n, parameters) </span>
+<span id="cb242-2"><a href="mutualisms.html#cb242-2"></a>{</span>
+<span id="cb242-3"><a href="mutualisms.html#cb242-3"></a>  r &lt;-<span class="st"> </span>parameters[[<span class="dv">1</span>]]</span>
+<span id="cb242-4"><a href="mutualisms.html#cb242-4"></a>  a &lt;-<span class="st"> </span>parameters[[<span class="dv">2</span>]]</span>
+<span id="cb242-5"><a href="mutualisms.html#cb242-5"></a>  dns.dt &lt;-<span class="st"> </span>r <span class="op">*</span><span class="st"> </span>n <span class="op">*</span><span class="st"> </span>(<span class="dv">1</span> <span class="op">+</span><span class="st"> </span>(a <span class="op">%*%</span><span class="st"> </span>n))</span>
+<span id="cb242-6"><a href="mutualisms.html#cb242-6"></a>  <span class="kw">return</span>(<span class="kw">list</span>(<span class="kw">c</span>(dns.dt)))</span>
+<span id="cb242-7"><a href="mutualisms.html#cb242-7"></a>}</span></code></pre></div>
 <p>In this model, the parameters are a <em>list</em> (a type of R data object) with two components. The first is a vector of <em>r</em>, one for each species we want to model. The second component of the list is the matrix of interaction coefficients. This matrix is square (same number of rows and columns). The elements of this matrix must have the correct sign. For instance, to represent competition, the relevant elements would have to be negative.</p>
 <p>Here we create an interaction matrix for a two-species Lotka-Volterra mutualism, where each species suffers from intraspecific competition, and benefits from its mutualist.</p>
-<div class="sourceCode" id="cb44"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb44-1"><a href="mutualisms.html#cb44-1"></a>a &lt;-<span class="st"> </span><span class="kw">matrix</span>(<span class="kw">c</span>( <span class="fl">-.1</span>, <span class="fl">.02</span>,</span>
-<span id="cb44-2"><a href="mutualisms.html#cb44-2"></a>               <span class="fl">.02</span>, <span class="fl">-.09</span>), <span class="dt">nrow =</span> <span class="dv">2</span>, <span class="dt">byrow=</span><span class="ot">TRUE</span>)</span>
-<span id="cb44-3"><a href="mutualisms.html#cb44-3"></a>a</span></code></pre></div>
+<div class="sourceCode" id="cb243"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb243-1"><a href="mutualisms.html#cb243-1"></a>a &lt;-<span class="st"> </span><span class="kw">matrix</span>(<span class="kw">c</span>( <span class="fl">-.1</span>, <span class="fl">.02</span>,</span>
+<span id="cb243-2"><a href="mutualisms.html#cb243-2"></a>               <span class="fl">.02</span>, <span class="fl">-.09</span>), <span class="dt">nrow =</span> <span class="dv">2</span>, <span class="dt">byrow=</span><span class="ot">TRUE</span>)</span>
+<span id="cb243-3"><a href="mutualisms.html#cb243-3"></a>a</span></code></pre></div>
 <pre><code>##       [,1]  [,2]
 ## [1,] -0.10  0.02
 ## [2,]  0.02 -0.09</code></pre>
 <p>Now let’s numerically integrate, or simulate, the model and plot the outcome. Comment your code to help remind you what is going on.</p>
-<div class="sourceCode" id="cb46"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb46-1"><a href="mutualisms.html#cb46-1"></a><span class="co"># Let r be the same fpor each species</span></span>
-<span id="cb46-2"><a href="mutualisms.html#cb46-2"></a>r &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">1</span>)</span>
-<span id="cb46-3"><a href="mutualisms.html#cb46-3"></a>parms &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="dt">r=</span>r, <span class="dt">a=</span>a)</span>
-<span id="cb46-4"><a href="mutualisms.html#cb46-4"></a>parms</span></code></pre></div>
+<div class="sourceCode" id="cb245"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb245-1"><a href="mutualisms.html#cb245-1"></a><span class="co"># Let r be the same fpor each species</span></span>
+<span id="cb245-2"><a href="mutualisms.html#cb245-2"></a>r &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">1</span>)</span>
+<span id="cb245-3"><a href="mutualisms.html#cb245-3"></a>parms &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="dt">r=</span>r, <span class="dt">a=</span>a)</span>
+<span id="cb245-4"><a href="mutualisms.html#cb245-4"></a>parms</span></code></pre></div>
 <pre><code>## $r
 ## [1] 1 1
 ## 
@@ -572,33 +538,34 @@ Figure 8.6: Dynamics of competing plant species, subject to self-limiting negati
 ##       [,1]  [,2]
 ## [1,] -0.10  0.02
 ## [2,]  0.02 -0.09</code></pre>
-<div class="sourceCode" id="cb48"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb48-1"><a href="mutualisms.html#cb48-1"></a>t=<span class="kw">seq</span>(<span class="dv">0</span>,<span class="dv">30</span>, <span class="dt">by=</span>.<span class="dv">1</span>)</span>
-<span id="cb48-2"><a href="mutualisms.html#cb48-2"></a>N0 &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dt">N1=</span><span class="dv">20</span>, <span class="dt">N2=</span><span class="dv">5</span>)</span>
-<span id="cb48-3"><a href="mutualisms.html#cb48-3"></a>lvout &lt;-<span class="st"> </span><span class="kw">as.data.frame</span>( <span class="kw">ode</span>(N0, t, lvg, parms) )</span>
-<span id="cb48-4"><a href="mutualisms.html#cb48-4"></a>lvL &lt;-<span class="st"> </span><span class="kw">pivot_longer</span>(lvout, <span class="op">-</span>time, <span class="dt">names_to=</span><span class="st">&quot;State_vars&quot;</span>, </span>
-<span id="cb48-5"><a href="mutualisms.html#cb48-5"></a>            <span class="dt">values_to=</span><span class="st">&quot;N&quot;</span>)</span>
-<span id="cb48-6"><a href="mutualisms.html#cb48-6"></a></span>
-<span id="cb48-7"><a href="mutualisms.html#cb48-7"></a><span class="kw">ggplot</span>(lvL, <span class="kw">aes</span>(time, N, <span class="dt">colour=</span>State_vars, <span class="dt">linetype=</span>State_vars)) <span class="op">+</span><span class="st"> </span><span class="kw">geom_line</span>() <span class="op">+</span><span class="st"> </span></span>
-<span id="cb48-8"><a href="mutualisms.html#cb48-8"></a><span class="st">  </span><span class="kw">geom_hline</span>(<span class="dt">yintercept=</span><span class="kw">c</span>(<span class="op">-</span><span class="dv">1</span><span class="op">/</span>a[<span class="dv">1</span>,<span class="dv">1</span>], <span class="dv">-1</span><span class="op">/</span>a[<span class="dv">2</span>,<span class="dv">2</span>]), <span class="dt">linetype=</span><span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">3</span>)) <span class="op">+</span></span>
-<span id="cb48-9"><a href="mutualisms.html#cb48-9"></a><span class="st">  </span><span class="kw">annotate</span>(<span class="dt">geom=</span><span class="st">&quot;text&quot;</span>, </span>
-<span id="cb48-10"><a href="mutualisms.html#cb48-10"></a>           <span class="dt">x=</span><span class="kw">c</span>(<span class="dv">15</span>, <span class="dv">20</span>),<span class="dt">y=</span><span class="kw">c</span>(<span class="op">-</span><span class="dv">1</span><span class="op">/</span>a[<span class="dv">1</span>,<span class="dv">1</span>], <span class="dv">-1</span><span class="op">/</span>a[<span class="dv">2</span>,<span class="dv">2</span>]), <span class="dt">label=</span><span class="kw">c</span>(<span class="st">&quot;K1&quot;</span>, <span class="st">&quot;K2&quot;</span>), <span class="dt">vjust=</span><span class="op">-</span><span class="fl">0.2</span> )</span></code></pre></div>
-<div class="figure"><span id="fig:unnamed-chunk-13"></span>
-<img src="_main_files/figure-html/unnamed-chunk-13-1.png" alt="Dyanmics of a Lotka-Volterra mutualism. " width="672" />
+<div class="sourceCode" id="cb247"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb247-1"><a href="mutualisms.html#cb247-1"></a>t=<span class="kw">seq</span>(<span class="dv">0</span>,<span class="dv">30</span>, <span class="dt">by=</span>.<span class="dv">1</span>)</span>
+<span id="cb247-2"><a href="mutualisms.html#cb247-2"></a>N0 &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dt">N1=</span><span class="dv">20</span>, <span class="dt">N2=</span><span class="dv">5</span>)</span>
+<span id="cb247-3"><a href="mutualisms.html#cb247-3"></a>lvout &lt;-<span class="st"> </span><span class="kw">as.data.frame</span>( <span class="kw">ode</span>(N0, t, lvg, parms) )</span>
+<span id="cb247-4"><a href="mutualisms.html#cb247-4"></a>lvL &lt;-<span class="st"> </span><span class="kw">pivot_longer</span>(lvout, <span class="op">-</span>time, <span class="dt">names_to=</span><span class="st">&quot;State_vars&quot;</span>, </span>
+<span id="cb247-5"><a href="mutualisms.html#cb247-5"></a>            <span class="dt">values_to=</span><span class="st">&quot;N&quot;</span>)</span>
+<span id="cb247-6"><a href="mutualisms.html#cb247-6"></a></span>
+<span id="cb247-7"><a href="mutualisms.html#cb247-7"></a><span class="kw">ggplot</span>(lvL, <span class="kw">aes</span>(time, N, <span class="dt">colour=</span>State_vars, <span class="dt">linetype=</span>State_vars)) <span class="op">+</span><span class="st"> </span></span>
+<span id="cb247-8"><a href="mutualisms.html#cb247-8"></a><span class="st">  </span><span class="kw">geom_line</span>() <span class="op">+</span><span class="st"> </span></span>
+<span id="cb247-9"><a href="mutualisms.html#cb247-9"></a><span class="st">  </span><span class="kw">geom_hline</span>(<span class="dt">yintercept=</span><span class="kw">c</span>(<span class="op">-</span><span class="dv">1</span><span class="op">/</span>a[<span class="dv">1</span>,<span class="dv">1</span>], <span class="dv">-1</span><span class="op">/</span>a[<span class="dv">2</span>,<span class="dv">2</span>]), <span class="dt">linetype=</span><span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">3</span>)) <span class="op">+</span></span>
+<span id="cb247-10"><a href="mutualisms.html#cb247-10"></a><span class="st">  </span><span class="kw">annotate</span>(<span class="dt">geom=</span><span class="st">&quot;text&quot;</span>, </span>
+<span id="cb247-11"><a href="mutualisms.html#cb247-11"></a>           <span class="dt">x=</span><span class="kw">c</span>(<span class="dv">15</span>, <span class="dv">20</span>),<span class="dt">y=</span><span class="kw">c</span>(<span class="op">-</span><span class="dv">1</span><span class="op">/</span>a[<span class="dv">1</span>,<span class="dv">1</span>], <span class="dv">-1</span><span class="op">/</span>a[<span class="dv">2</span>,<span class="dv">2</span>]), <span class="dt">label=</span><span class="kw">c</span>(<span class="st">&quot;K1&quot;</span>, <span class="st">&quot;K2&quot;</span>), <span class="dt">vjust=</span><span class="op">-</span><span class="fl">0.2</span> )</span></code></pre></div>
+<div class="figure"><span id="fig:unnamed-chunk-99"></span>
+<img src="figs/unnamed-chunk-99-1.png" alt="Dyanmics of a Lotka-Volterra mutualism. " width="90%" />
 <p class="caption">
 Figure 8.7: Dyanmics of a Lotka-Volterra mutualism.
 </p>
 </div>
 </div>
-<div id="simulations" class="section level3">
-<h3><span class="header-section-number">8.5.2</span> Simulations</h3>
+<div id="systematic-simulations" class="section level3">
+<h3><span class="header-section-number">8.5.2</span> Systematic simulations</h3>
 <p>When we use a model to explore the consequences of our assumptions, we want to use a range of plausible assumptions. In a case like this one where we are exploring a model more than the natural phenomenon it represents, we should use a wide range of parameter values that include cases where it is likely to fail. In our case, we will hold intraspecific density dependence constant and vary interspecific interaction coefficients from zero to twice the value of intraspecific interactions.</p>
 <p>We start with building the bits and pieces that the simulation will use, and then use a for-loop to cycle through all the parameter combinations we are interested in.</p>
-<div class="sourceCode" id="cb49"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb49-1"><a href="mutualisms.html#cb49-1"></a><span class="co"># Use expand.grid to create systematically combinations of parameters</span></span>
-<span id="cb49-2"><a href="mutualisms.html#cb49-2"></a>df &lt;-<span class="st"> </span><span class="kw">expand.grid</span>(<span class="dt">a11 =</span> <span class="fl">-0.1</span>, <span class="dt">a12=</span><span class="kw">seq</span>(<span class="dv">0</span>, <span class="fl">.2</span>, <span class="dt">by =</span>.<span class="dv">02</span>),</span>
-<span id="cb49-3"><a href="mutualisms.html#cb49-3"></a>                  <span class="dt">a21 =</span> <span class="kw">seq</span>(<span class="dv">0</span>, <span class="fl">.2</span>, <span class="dt">by=</span>.<span class="dv">02</span>),  <span class="dt">a22=</span><span class="op">-</span><span class="fl">0.1</span> )</span>
-<span id="cb49-4"><a href="mutualisms.html#cb49-4"></a><span class="kw">dim</span>(df) <span class="co"># The number of rows and columns</span></span></code></pre></div>
+<div class="sourceCode" id="cb248"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb248-1"><a href="mutualisms.html#cb248-1"></a><span class="co"># Use expand.grid to create systematically combinations of parameters</span></span>
+<span id="cb248-2"><a href="mutualisms.html#cb248-2"></a>df &lt;-<span class="st"> </span><span class="kw">expand.grid</span>(<span class="dt">a11 =</span> <span class="fl">-0.1</span>, <span class="dt">a12=</span><span class="kw">seq</span>(<span class="dv">0</span>, <span class="fl">.2</span>, <span class="dt">by =</span>.<span class="dv">02</span>),</span>
+<span id="cb248-3"><a href="mutualisms.html#cb248-3"></a>                  <span class="dt">a21 =</span> <span class="kw">seq</span>(<span class="dv">0</span>, <span class="fl">.2</span>, <span class="dt">by=</span>.<span class="dv">02</span>),  <span class="dt">a22=</span><span class="op">-</span><span class="fl">0.1</span> )</span>
+<span id="cb248-4"><a href="mutualisms.html#cb248-4"></a><span class="kw">dim</span>(df) <span class="co"># The number of rows and columns</span></span></code></pre></div>
 <pre><code>## [1] 121   4</code></pre>
-<div class="sourceCode" id="cb51"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb51-1"><a href="mutualisms.html#cb51-1"></a><span class="kw">head</span>(df) <span class="co"># the top of the data frame</span></span></code></pre></div>
+<div class="sourceCode" id="cb250"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb250-1"><a href="mutualisms.html#cb250-1"></a><span class="kw">head</span>(df) <span class="co"># the top of the data frame</span></span></code></pre></div>
 <pre><code>##    a11  a12 a21  a22
 ## 1 -0.1 0.00   0 -0.1
 ## 2 -0.1 0.02   0 -0.1
@@ -606,235 +573,12 @@ Figure 8.7: Dyanmics of a Lotka-Volterra mutualism.
 ## 4 -0.1 0.06   0 -0.1
 ## 5 -0.1 0.08   0 -0.1
 ## 6 -0.1 0.10   0 -0.1</code></pre>
-<div class="sourceCode" id="cb53"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb53-1"><a href="mutualisms.html#cb53-1"></a><span class="co"># set intrinsic rates of increase...</span></span>
-<span id="cb53-2"><a href="mutualisms.html#cb53-2"></a>r &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">1</span>)</span>
-<span id="cb53-3"><a href="mutualisms.html#cb53-3"></a></span>
-<span id="cb53-4"><a href="mutualisms.html#cb53-4"></a><span class="co"># and starting values...</span></span>
-<span id="cb53-5"><a href="mutualisms.html#cb53-5"></a>N0 &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dt">N1 =</span> <span class="dv">10</span>, <span class="dt">N2=</span> <span class="fl">10.001</span>)</span>
-<span id="cb53-6"><a href="mutualisms.html#cb53-6"></a></span>
-<span id="cb53-7"><a href="mutualisms.html#cb53-7"></a><span class="co"># and times for which to return output.</span></span>
-<span id="cb53-8"><a href="mutualisms.html#cb53-8"></a>t &lt;-<span class="st"> </span><span class="dv">0</span><span class="op">:</span><span class="dv">200</span></span>
-<span id="cb53-9"><a href="mutualisms.html#cb53-9"></a></span>
-<span id="cb53-10"><a href="mutualisms.html#cb53-10"></a><span class="co"># Set values that will be useful later on in our for-loop.</span></span>
-<span id="cb53-11"><a href="mutualisms.html#cb53-11"></a>n &lt;-<span class="st"> </span><span class="kw">length</span>( t <span class="op">+</span><span class="st"> </span><span class="dv">1</span> )</span>
-<span id="cb53-12"><a href="mutualisms.html#cb53-12"></a>npar &lt;-<span class="st"> </span><span class="kw">nrow</span>( df ) </span>
-<span id="cb53-13"><a href="mutualisms.html#cb53-13"></a></span>
-<span id="cb53-14"><a href="mutualisms.html#cb53-14"></a><span class="co"># create an empty data frame to hold our simulation output.</span></span>
-<span id="cb53-15"><a href="mutualisms.html#cb53-15"></a>output &lt;-<span class="st"> </span><span class="kw">data.frame</span>( <span class="dt">t =</span> <span class="kw">numeric</span>(npar), <span class="dt">N1 =</span> <span class="kw">numeric</span>( npar ), </span>
-<span id="cb53-16"><a href="mutualisms.html#cb53-16"></a>                      <span class="dt">N2 =</span> <span class="kw">numeric</span>( npar ) )</span>
-<span id="cb53-17"><a href="mutualisms.html#cb53-17"></a></span>
-<span id="cb53-18"><a href="mutualisms.html#cb53-18"></a><span class="co">### USE A  FOR-LOOP TO INTEGRATE THE MODEL FOR EACH COMBINATION OF PARAMETERS</span></span>
-<span id="cb53-19"><a href="mutualisms.html#cb53-19"></a><span class="cf">for</span>( i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span>npar ) {</span>
-<span id="cb53-20"><a href="mutualisms.html#cb53-20"></a>  coefs.true &lt;-<span class="st"> </span><span class="kw">matrix</span>( <span class="kw">as.numeric</span>( df[i,] ), </span>
-<span id="cb53-21"><a href="mutualisms.html#cb53-21"></a>                        <span class="dt">nrow =</span> <span class="dv">2</span>, <span class="dt">byrow =</span> <span class="ot">TRUE</span>)</span>
-<span id="cb53-22"><a href="mutualisms.html#cb53-22"></a>  <span class="kw">capture.output</span>( </span>
-<span id="cb53-23"><a href="mutualisms.html#cb53-23"></a>    <span class="co"># capture.output is a function that allows us to avoid seeing warnings...</span></span>
-<span id="cb53-24"><a href="mutualisms.html#cb53-24"></a>    <span class="co"># not usually a good idea to ignore warnings!!!</span></span>
-<span id="cb53-25"><a href="mutualisms.html#cb53-25"></a>    <span class="co"># but it is OK here....</span></span>
-<span id="cb53-26"><a href="mutualisms.html#cb53-26"></a>    lvout &lt;-<span class="st"> </span><span class="kw">ode</span>(N0, t, lvg, <span class="dt">parms =</span> <span class="kw">list</span>(r, coefs.true) )</span>
-<span id="cb53-27"><a href="mutualisms.html#cb53-27"></a>  )</span>
-<span id="cb53-28"><a href="mutualisms.html#cb53-28"></a>  </span>
-<span id="cb53-29"><a href="mutualisms.html#cb53-29"></a>  <span class="co"># hang on to only the last row of output, and  </span></span>
-<span id="cb53-30"><a href="mutualisms.html#cb53-30"></a>  <span class="co"># put it in the i-th row of our output data frame.</span></span>
-<span id="cb53-31"><a href="mutualisms.html#cb53-31"></a>  last &lt;-<span class="st"> </span><span class="kw">nrow</span>(lvout)</span>
-<span id="cb53-32"><a href="mutualisms.html#cb53-32"></a>   output[i,] &lt;-<span class="st"> </span>lvout[last,]</span>
-<span id="cb53-33"><a href="mutualisms.html#cb53-33"></a>}</span></code></pre></div>
-<pre><code>## Warning in lsoda(y, times, func, parms, ...): an excessive amount of work (&gt;
-## maxsteps ) was done, but integration was not successful - increase maxsteps</code></pre>
-<pre><code>## Warning in lsoda(y, times, func, parms, ...): Returning early. Results are
-## accurate, as far as they go</code></pre>
-<pre><code>## Warning in lsoda(y, times, func, parms, ...): an excessive amount of work (&gt;
-## maxsteps ) was done, but integration was not successful - increase maxsteps</code></pre>
-<pre><code>## Warning in lsoda(y, times, func, parms, ...): Returning early. Results are
-## accurate, as far as they go</code></pre>
-<pre><code>## Warning in lsoda(y, times, func, parms, ...): an excessive amount of work (&gt;
-## maxsteps ) was done, but integration was not successful - increase maxsteps</code></pre>
-<pre><code>## Warning in lsoda(y, times, func, parms, ...): Returning early. Results are
-## accurate, as far as they go</code></pre>
-<pre><code>## Warning in lsoda(y, times, func, parms, ...): an excessive amount of work (&gt;
-## maxsteps ) was done, but integration was not successful - increase maxsteps</code></pre>
-<pre><code>## Warning in lsoda(y, times, func, parms, ...): Returning early. Results are
-## accurate, as far as they go</code></pre>
-<pre><code>## Warning in lsoda(y, times, func, parms, ...): an excessive amount of work (&gt;
-## maxsteps ) was done, but integration was not successful - increase maxsteps</code></pre>
-<pre><code>## Warning in lsoda(y, times, func, parms, ...): Returning early. Results are
-## accurate, as far as they go</code></pre>
-<pre><code>## Warning in lsoda(y, times, func, parms, ...): an excessive amount of work (&gt;
-## maxsteps ) was done, but integration was not successful - increase maxsteps</code></pre>
-<pre><code>## Warning in lsoda(y, times, func, parms, ...): Returning early. Results are
-## accurate, as far as they go</code></pre>
-<pre><code>## Warning in lsoda(y, times, func, parms, ...): an excessive amount of work (&gt;
-## maxsteps ) was done, but integration was not successful - increase maxsteps</code></pre>
-<pre><code>## Warning in lsoda(y, times, func, parms, ...): Returning early. Results are
-## accurate, as far as they go</code></pre>
-<pre><code>## Warning in lsoda(y, times, func, parms, ...): an excessive amount of work (&gt;
-## maxsteps ) was done, but integration was not successful - increase maxsteps</code></pre>
-<pre><code>## Warning in lsoda(y, times, func, parms, ...): Returning early. Results are
-## accurate, as far as they go</code></pre>
-<pre><code>## Warning in lsoda(y, times, func, parms, ...): an excessive amount of work (&gt;
-## maxsteps ) was done, but integration was not successful - increase maxsteps</code></pre>
-<pre><code>## Warning in lsoda(y, times, func, parms, ...): Returning early. Results are
-## accurate, as far as they go</code></pre>
-<pre><code>## Warning in lsoda(y, times, func, parms, ...): an excessive amount of work (&gt;
-## maxsteps ) was done, but integration was not successful - increase maxsteps</code></pre>
-<pre><code>## Warning in lsoda(y, times, func, parms, ...): Returning early. Results are
-## accurate, as far as they go</code></pre>
-<pre><code>## Warning in lsoda(y, times, func, parms, ...): an excessive amount of work (&gt;
-## maxsteps ) was done, but integration was not successful - increase maxsteps</code></pre>
-<pre><code>## Warning in lsoda(y, times, func, parms, ...): Returning early. Results are
-## accurate, as far as they go</code></pre>
-<pre><code>## Warning in lsoda(y, times, func, parms, ...): an excessive amount of work (&gt;
-## maxsteps ) was done, but integration was not successful - increase maxsteps</code></pre>
-<pre><code>## Warning in lsoda(y, times, func, parms, ...): Returning early. Results are
-## accurate, as far as they go</code></pre>
-<pre><code>## Warning in lsoda(y, times, func, parms, ...): an excessive amount of work (&gt;
-## maxsteps ) was done, but integration was not successful - increase maxsteps</code></pre>
-<pre><code>## Warning in lsoda(y, times, func, parms, ...): Returning early. Results are
-## accurate, as far as they go</code></pre>
-<pre><code>## Warning in lsoda(y, times, func, parms, ...): an excessive amount of work (&gt;
-## maxsteps ) was done, but integration was not successful - increase maxsteps</code></pre>
-<pre><code>## Warning in lsoda(y, times, func, parms, ...): Returning early. Results are
-## accurate, as far as they go</code></pre>
-<pre><code>## Warning in lsoda(y, times, func, parms, ...): an excessive amount of work (&gt;
-## maxsteps ) was done, but integration was not successful - increase maxsteps</code></pre>
-<pre><code>## Warning in lsoda(y, times, func, parms, ...): Returning early. Results are
-## accurate, as far as they go</code></pre>
-<pre><code>## Warning in lsoda(y, times, func, parms, ...): an excessive amount of work (&gt;
-## maxsteps ) was done, but integration was not successful - increase maxsteps</code></pre>
-<pre><code>## Warning in lsoda(y, times, func, parms, ...): Returning early. Results are
-## accurate, as far as they go</code></pre>
-<pre><code>## Warning in lsoda(y, times, func, parms, ...): an excessive amount of work (&gt;
-## maxsteps ) was done, but integration was not successful - increase maxsteps</code></pre>
-<pre><code>## Warning in lsoda(y, times, func, parms, ...): Returning early. Results are
-## accurate, as far as they go</code></pre>
-<pre><code>## Warning in lsoda(y, times, func, parms, ...): an excessive amount of work (&gt;
-## maxsteps ) was done, but integration was not successful - increase maxsteps</code></pre>
-<pre><code>## Warning in lsoda(y, times, func, parms, ...): Returning early. Results are
-## accurate, as far as they go</code></pre>
-<pre><code>## Warning in lsoda(y, times, func, parms, ...): an excessive amount of work (&gt;
-## maxsteps ) was done, but integration was not successful - increase maxsteps</code></pre>
-<pre><code>## Warning in lsoda(y, times, func, parms, ...): Returning early. Results are
-## accurate, as far as they go</code></pre>
-<pre><code>## Warning in lsoda(y, times, func, parms, ...): an excessive amount of work (&gt;
-## maxsteps ) was done, but integration was not successful - increase maxsteps</code></pre>
-<pre><code>## Warning in lsoda(y, times, func, parms, ...): Returning early. Results are
-## accurate, as far as they go</code></pre>
-<pre><code>## Warning in lsoda(y, times, func, parms, ...): an excessive amount of work (&gt;
-## maxsteps ) was done, but integration was not successful - increase maxsteps</code></pre>
-<pre><code>## Warning in lsoda(y, times, func, parms, ...): Returning early. Results are
-## accurate, as far as they go</code></pre>
-<pre><code>## Warning in lsoda(y, times, func, parms, ...): an excessive amount of work (&gt;
-## maxsteps ) was done, but integration was not successful - increase maxsteps</code></pre>
-<pre><code>## Warning in lsoda(y, times, func, parms, ...): Returning early. Results are
-## accurate, as far as they go</code></pre>
-<pre><code>## Warning in lsoda(y, times, func, parms, ...): an excessive amount of work (&gt;
-## maxsteps ) was done, but integration was not successful - increase maxsteps</code></pre>
-<pre><code>## Warning in lsoda(y, times, func, parms, ...): Returning early. Results are
-## accurate, as far as they go</code></pre>
-<pre><code>## Warning in lsoda(y, times, func, parms, ...): an excessive amount of work (&gt;
-## maxsteps ) was done, but integration was not successful - increase maxsteps</code></pre>
-<pre><code>## Warning in lsoda(y, times, func, parms, ...): Returning early. Results are
-## accurate, as far as they go</code></pre>
-<pre><code>## Warning in lsoda(y, times, func, parms, ...): an excessive amount of work (&gt;
-## maxsteps ) was done, but integration was not successful - increase maxsteps</code></pre>
-<pre><code>## Warning in lsoda(y, times, func, parms, ...): Returning early. Results are
-## accurate, as far as they go</code></pre>
-<pre><code>## Warning in lsoda(y, times, func, parms, ...): an excessive amount of work (&gt;
-## maxsteps ) was done, but integration was not successful - increase maxsteps</code></pre>
-<pre><code>## Warning in lsoda(y, times, func, parms, ...): Returning early. Results are
-## accurate, as far as they go</code></pre>
-<pre><code>## Warning in lsoda(y, times, func, parms, ...): an excessive amount of work (&gt;
-## maxsteps ) was done, but integration was not successful - increase maxsteps</code></pre>
-<pre><code>## Warning in lsoda(y, times, func, parms, ...): Returning early. Results are
-## accurate, as far as they go</code></pre>
-<pre><code>## Warning in lsoda(y, times, func, parms, ...): an excessive amount of work (&gt;
-## maxsteps ) was done, but integration was not successful - increase maxsteps</code></pre>
-<pre><code>## Warning in lsoda(y, times, func, parms, ...): Returning early. Results are
-## accurate, as far as they go</code></pre>
-<pre><code>## Warning in lsoda(y, times, func, parms, ...): an excessive amount of work (&gt;
-## maxsteps ) was done, but integration was not successful - increase maxsteps</code></pre>
-<pre><code>## Warning in lsoda(y, times, func, parms, ...): Returning early. Results are
-## accurate, as far as they go</code></pre>
-<pre><code>## Warning in lsoda(y, times, func, parms, ...): an excessive amount of work (&gt;
-## maxsteps ) was done, but integration was not successful - increase maxsteps</code></pre>
-<pre><code>## Warning in lsoda(y, times, func, parms, ...): Returning early. Results are
-## accurate, as far as they go</code></pre>
-<pre><code>## Warning in lsoda(y, times, func, parms, ...): an excessive amount of work (&gt;
-## maxsteps ) was done, but integration was not successful - increase maxsteps</code></pre>
-<pre><code>## Warning in lsoda(y, times, func, parms, ...): Returning early. Results are
-## accurate, as far as they go</code></pre>
-<pre><code>## Warning in lsoda(y, times, func, parms, ...): an excessive amount of work (&gt;
-## maxsteps ) was done, but integration was not successful - increase maxsteps</code></pre>
-<pre><code>## Warning in lsoda(y, times, func, parms, ...): Returning early. Results are
-## accurate, as far as they go</code></pre>
-<pre><code>## Warning in lsoda(y, times, func, parms, ...): an excessive amount of work (&gt;
-## maxsteps ) was done, but integration was not successful - increase maxsteps</code></pre>
-<pre><code>## Warning in lsoda(y, times, func, parms, ...): Returning early. Results are
-## accurate, as far as they go</code></pre>
-<pre><code>## Warning in lsoda(y, times, func, parms, ...): an excessive amount of work (&gt;
-## maxsteps ) was done, but integration was not successful - increase maxsteps</code></pre>
-<pre><code>## Warning in lsoda(y, times, func, parms, ...): Returning early. Results are
-## accurate, as far as they go</code></pre>
-<pre><code>## Warning in lsoda(y, times, func, parms, ...): an excessive amount of work (&gt;
-## maxsteps ) was done, but integration was not successful - increase maxsteps</code></pre>
-<pre><code>## Warning in lsoda(y, times, func, parms, ...): Returning early. Results are
-## accurate, as far as they go</code></pre>
-<pre><code>## Warning in lsoda(y, times, func, parms, ...): an excessive amount of work (&gt;
-## maxsteps ) was done, but integration was not successful - increase maxsteps</code></pre>
-<pre><code>## Warning in lsoda(y, times, func, parms, ...): Returning early. Results are
-## accurate, as far as they go</code></pre>
-<pre><code>## Warning in lsoda(y, times, func, parms, ...): an excessive amount of work (&gt;
-## maxsteps ) was done, but integration was not successful - increase maxsteps</code></pre>
-<pre><code>## Warning in lsoda(y, times, func, parms, ...): Returning early. Results are
-## accurate, as far as they go</code></pre>
-<pre><code>## Warning in lsoda(y, times, func, parms, ...): an excessive amount of work (&gt;
-## maxsteps ) was done, but integration was not successful - increase maxsteps</code></pre>
-<pre><code>## Warning in lsoda(y, times, func, parms, ...): Returning early. Results are
-## accurate, as far as they go</code></pre>
-<pre><code>## Warning in lsoda(y, times, func, parms, ...): an excessive amount of work (&gt;
-## maxsteps ) was done, but integration was not successful - increase maxsteps</code></pre>
-<pre><code>## Warning in lsoda(y, times, func, parms, ...): Returning early. Results are
-## accurate, as far as they go</code></pre>
-<pre><code>## Warning in lsoda(y, times, func, parms, ...): an excessive amount of work (&gt;
-## maxsteps ) was done, but integration was not successful - increase maxsteps</code></pre>
-<pre><code>## Warning in lsoda(y, times, func, parms, ...): Returning early. Results are
-## accurate, as far as they go</code></pre>
-<pre><code>## Warning in lsoda(y, times, func, parms, ...): an excessive amount of work (&gt;
-## maxsteps ) was done, but integration was not successful - increase maxsteps</code></pre>
-<pre><code>## Warning in lsoda(y, times, func, parms, ...): Returning early. Results are
-## accurate, as far as they go</code></pre>
-<pre><code>## Warning in lsoda(y, times, func, parms, ...): an excessive amount of work (&gt;
-## maxsteps ) was done, but integration was not successful - increase maxsteps</code></pre>
-<pre><code>## Warning in lsoda(y, times, func, parms, ...): Returning early. Results are
-## accurate, as far as they go</code></pre>
-<pre><code>## Warning in lsoda(y, times, func, parms, ...): an excessive amount of work (&gt;
-## maxsteps ) was done, but integration was not successful - increase maxsteps</code></pre>
-<pre><code>## Warning in lsoda(y, times, func, parms, ...): Returning early. Results are
-## accurate, as far as they go</code></pre>
-<pre><code>## Warning in lsoda(y, times, func, parms, ...): an excessive amount of work (&gt;
-## maxsteps ) was done, but integration was not successful - increase maxsteps</code></pre>
-<pre><code>## Warning in lsoda(y, times, func, parms, ...): Returning early. Results are
-## accurate, as far as they go</code></pre>
-<pre><code>## Warning in lsoda(y, times, func, parms, ...): an excessive amount of work (&gt;
-## maxsteps ) was done, but integration was not successful - increase maxsteps</code></pre>
-<pre><code>## Warning in lsoda(y, times, func, parms, ...): Returning early. Results are
-## accurate, as far as they go</code></pre>
-<pre><code>## Warning in lsoda(y, times, func, parms, ...): an excessive amount of work (&gt;
-## maxsteps ) was done, but integration was not successful - increase maxsteps</code></pre>
-<pre><code>## Warning in lsoda(y, times, func, parms, ...): Returning early. Results are
-## accurate, as far as they go</code></pre>
-<pre><code>## Warning in lsoda(y, times, func, parms, ...): an excessive amount of work (&gt;
-## maxsteps ) was done, but integration was not successful - increase maxsteps</code></pre>
-<pre><code>## Warning in lsoda(y, times, func, parms, ...): Returning early. Results are
-## accurate, as far as they go</code></pre>
-<div class="sourceCode" id="cb148"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb148-1"><a href="mutualisms.html#cb148-1"></a><span class="co"># Combine columns of parameters and output.</span></span>
-<span id="cb148-2"><a href="mutualisms.html#cb148-2"></a>simdat &lt;-<span class="st"> </span><span class="kw">cbind</span>(df, output)</span></code></pre></div>
 </div>
 <div id="checking-simulation-results" class="section level3">
 <h3><span class="header-section-number">8.5.3</span> Checking simulation results</h3>
 <p>Let’s look for anomalous results, such as negative population sizes, or infinite or “too” large sizes.</p>
-<div class="sourceCode" id="cb149"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb149-1"><a href="mutualisms.html#cb149-1"></a><span class="co"># Do simplistic numerical summaries.</span></span>
-<span id="cb149-2"><a href="mutualisms.html#cb149-2"></a><span class="kw">summary</span>(simdat[,<span class="dv">5</span><span class="op">:</span><span class="dv">7</span>])</span></code></pre></div>
+<div class="sourceCode" id="cb252"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb252-1"><a href="mutualisms.html#cb252-1"></a><span class="co"># Do simplistic numerical summaries.</span></span>
+<span id="cb252-2"><a href="mutualisms.html#cb252-2"></a><span class="kw">summary</span>(simdat[,<span class="dv">5</span><span class="op">:</span><span class="dv">7</span>])</span></code></pre></div>
 <pre><code>##        t                  N1                   N2            
 ##  Min.   :  0.6931   Min.   : 1.000e+01   Min.   : 1.000e+01  
 ##  1st Qu.:  1.5576   1st Qu.: 2.100e+01   1st Qu.: 2.100e+01  
@@ -844,9 +588,9 @@ Figure 8.7: Dyanmics of a Lotka-Volterra mutualism.
 ##  Max.   :200.0000   Max.   :8.187e+147   Max.   :8.187e+147</code></pre>
 <p>If we run this, we see some strange population sizes and time was not always 200, showing that the numerical integration failed before completing. Also, <span class="math inline">\(N\)</span> included unreasonably large values.</p>
 <p>Let’s look for all rows in which <em>either</em> <span class="math inline">\(N_1\)</span> <em>or</em> <span class="math inline">\(N_2\)</span> are huge (<span class="math inline">\(&gt; 10\,000\)</span>).</p>
-<div class="sourceCode" id="cb151"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb151-1"><a href="mutualisms.html#cb151-1"></a><span class="co"># the vertical bar | means &quot;or&quot;</span></span>
-<span id="cb151-2"><a href="mutualisms.html#cb151-2"></a>sim.N &lt;-<span class="st"> </span><span class="kw">subset</span>(simdat, N1 <span class="op">&gt;</span><span class="st"> </span><span class="dv">10000</span> <span class="op">|</span><span class="st"> </span>N2 <span class="op">&gt;</span><span class="st"> </span><span class="dv">10000</span>)</span>
-<span id="cb151-3"><a href="mutualisms.html#cb151-3"></a><span class="kw">head</span>(sim.N)</span></code></pre></div>
+<div class="sourceCode" id="cb254"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb254-1"><a href="mutualisms.html#cb254-1"></a><span class="co"># the vertical bar | means &quot;or&quot;</span></span>
+<span id="cb254-2"><a href="mutualisms.html#cb254-2"></a>sim.N &lt;-<span class="st"> </span><span class="kw">subset</span>(simdat, N1 <span class="op">&gt;</span><span class="st"> </span><span class="dv">10000</span> <span class="op">|</span><span class="st"> </span>N2 <span class="op">&gt;</span><span class="st"> </span><span class="dv">10000</span>)</span>
+<span id="cb254-3"><a href="mutualisms.html#cb254-3"></a><span class="kw">head</span>(sim.N)</span></code></pre></div>
 <pre><code>##     a11  a12  a21  a22        t            N1            N2
 ## 43 -0.1 0.18 0.06 -0.1 3.241398 2.434044e+103 1.390882e+103
 ## 44 -0.1 0.20 0.06 -0.1 2.399838  1.164783e+99  6.212179e+98
@@ -856,8 +600,13 @@ Figure 8.7: Dyanmics of a Lotka-Volterra mutualism.
 ## 55 -0.1 0.20 0.08 -0.1 1.541959 1.041579e+147 6.249472e+146</code></pre>
 <p>Notice also that values for <span class="math inline">\(t\)</span> indicate that the integration couldn’t find values beyond a certain time point. Hmm. For now, let’s assume our simulation is doing what we think it is and that these results indicate a true lack of equilibrium.</p>
 <p>What could we do to learn the emerging rules? What if we just plot the values of <span class="math inline">\(\alpha_{ij},\,\alpha_{ji}\)</span> where <span class="math inline">\(N\)</span> is really, really big?</p>
-<div class="sourceCode" id="cb153"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb153-1"><a href="mutualisms.html#cb153-1"></a><span class="kw">ggplot</span>(sim.N, <span class="kw">aes</span>(a12, a21)) <span class="op">+</span><span class="st"> </span><span class="kw">geom_point</span>()</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-18-1.png" width="288" /></p>
+<div class="sourceCode" id="cb256"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb256-1"><a href="mutualisms.html#cb256-1"></a><span class="kw">ggplot</span>(sim.N, <span class="kw">aes</span>(a12, a21)) <span class="op">+</span><span class="st"> </span><span class="kw">geom_point</span>()</span></code></pre></div>
+<div class="figure"><span id="fig:unnamed-chunk-104"></span>
+<img src="figs/unnamed-chunk-104-1.png" alt="*Values of $alpha$ when N is extraordinarily large.*" width="50%" />
+<p class="caption">
+Figure 8.8: <em>Values of <span class="math inline">\(alpha\)</span> when N is extraordinarily large.</em>
+</p>
+</div>
 <p>What do we learn from just this figure? Write down a possible set of conditions necessary to get these anomalous results.</p>
 </div>
 <div id="comparing-simulation-results-to-analytical-solutions" class="section level3">
@@ -866,52 +615,52 @@ Figure 8.7: Dyanmics of a Lotka-Volterra mutualism.
 <p>One thing we can do is to compare the long-term steady state values we get in simulation to the analytical equilibria of this mutualism model.</p>
 <p>First, we find analytical solutions for all of the equilibria predicted by the coefficients. Consult the equilibrium solution in the first section of the chapter. We then compare these to numerical solutions.</p>
 <p>Here we calculate the predicted equilibria for each row of our coefficients, using the above solution.</p>
-<div class="sourceCode" id="cb154"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb154-1"><a href="mutualisms.html#cb154-1"></a>denom &lt;-<span class="st"> </span>simdat[,<span class="dv">1</span>] <span class="op">*</span><span class="st"> </span>simdat[,<span class="dv">4</span>] <span class="op">-</span><span class="st"> </span>simdat[,<span class="dv">2</span>] <span class="op">*</span><span class="st"> </span>simdat[,<span class="dv">3</span>]</span>
-<span id="cb154-2"><a href="mutualisms.html#cb154-2"></a><span class="co"># note this solution is subtracting the negative intraspecific comp coef.</span></span>
-<span id="cb154-3"><a href="mutualisms.html#cb154-3"></a><span class="co"># making it consistent with our equations in section 1</span></span>
-<span id="cb154-4"><a href="mutualisms.html#cb154-4"></a>num1 &lt;-<span class="st"> </span>simdat[,<span class="dv">2</span>] <span class="op">-</span><span class="st"> </span>simdat[,<span class="dv">4</span>]</span>
-<span id="cb154-5"><a href="mutualisms.html#cb154-5"></a>num2 &lt;-<span class="st"> </span>simdat[,<span class="dv">3</span>] <span class="op">-</span><span class="st"> </span>simdat[,<span class="dv">1</span>]</span>
-<span id="cb154-6"><a href="mutualisms.html#cb154-6"></a>N1.eq &lt;-<span class="st"> </span>num1 <span class="op">/</span><span class="st"> </span>denom</span>
-<span id="cb154-7"><a href="mutualisms.html#cb154-7"></a>N2.eq &lt;-num2 <span class="op">/</span><span class="st"> </span>denom</span>
-<span id="cb154-8"><a href="mutualisms.html#cb154-8"></a></span>
-<span id="cb154-9"><a href="mutualisms.html#cb154-9"></a><span class="co"># combine with simulation data set</span></span>
-<span id="cb154-10"><a href="mutualisms.html#cb154-10"></a>sim.check1 &lt;-<span class="st"> </span><span class="kw">cbind</span>(simdat, N1.eq, N2.eq)</span>
-<span id="cb154-11"><a href="mutualisms.html#cb154-11"></a><span class="co"># sim.check1[order(sim.check1$a12, sim.check1$a21),]</span></span></code></pre></div>
+<div class="sourceCode" id="cb257"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb257-1"><a href="mutualisms.html#cb257-1"></a>denom &lt;-<span class="st"> </span>simdat[,<span class="dv">1</span>] <span class="op">*</span><span class="st"> </span>simdat[,<span class="dv">4</span>] <span class="op">-</span><span class="st"> </span>simdat[,<span class="dv">2</span>] <span class="op">*</span><span class="st"> </span>simdat[,<span class="dv">3</span>]</span>
+<span id="cb257-2"><a href="mutualisms.html#cb257-2"></a><span class="co"># note this solution is subtracting the negative intraspecific comp coef.</span></span>
+<span id="cb257-3"><a href="mutualisms.html#cb257-3"></a><span class="co"># making it consistent with our equations in section 1</span></span>
+<span id="cb257-4"><a href="mutualisms.html#cb257-4"></a>num1 &lt;-<span class="st"> </span>simdat[,<span class="dv">2</span>] <span class="op">-</span><span class="st"> </span>simdat[,<span class="dv">4</span>]</span>
+<span id="cb257-5"><a href="mutualisms.html#cb257-5"></a>num2 &lt;-<span class="st"> </span>simdat[,<span class="dv">3</span>] <span class="op">-</span><span class="st"> </span>simdat[,<span class="dv">1</span>]</span>
+<span id="cb257-6"><a href="mutualisms.html#cb257-6"></a>N1.eq &lt;-<span class="st"> </span>num1 <span class="op">/</span><span class="st"> </span>denom</span>
+<span id="cb257-7"><a href="mutualisms.html#cb257-7"></a>N2.eq &lt;-num2 <span class="op">/</span><span class="st"> </span>denom</span>
+<span id="cb257-8"><a href="mutualisms.html#cb257-8"></a></span>
+<span id="cb257-9"><a href="mutualisms.html#cb257-9"></a><span class="co"># combine with simulation data set</span></span>
+<span id="cb257-10"><a href="mutualisms.html#cb257-10"></a>sim.check1 &lt;-<span class="st"> </span><span class="kw">cbind</span>(simdat, N1.eq, N2.eq)</span>
+<span id="cb257-11"><a href="mutualisms.html#cb257-11"></a><span class="co"># sim.check1[order(sim.check1$a12, sim.check1$a21),]</span></span></code></pre></div>
 <p>Let’s find the subset with potential problems, such as for <span class="math inline">\(N_1\)</span> or <span class="math inline">\(N_2\)</span> less than than zero or really, really big (<span class="math inline">\(&gt;10000\)</span>).</p>
-<div class="sourceCode" id="cb155"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb155-1"><a href="mutualisms.html#cb155-1"></a>problems1 &lt;-<span class="st"> </span><span class="kw">subset</span>(sim.check1, (N1 <span class="op">&lt;</span><span class="st"> </span><span class="dv">0</span> <span class="op">|</span><span class="st"> </span>N2 <span class="op">&lt;</span><span class="st"> </span><span class="dv">0</span> <span class="op">|</span><span class="st"> </span>N1 <span class="op">&gt;</span><span class="st"> </span><span class="fl">1e4</span> <span class="op">|</span><span class="st"> </span>N2 <span class="op">&gt;</span><span class="st"> </span><span class="fl">1e4</span> ) )</span>
-<span id="cb155-2"><a href="mutualisms.html#cb155-2"></a><span class="co"># look at the subset</span></span>
-<span id="cb155-3"><a href="mutualisms.html#cb155-3"></a><span class="kw">ggplot</span>(problems1, <span class="kw">aes</span>(N1, N1.eq)) <span class="op">+</span><span class="st"> </span><span class="kw">geom_point</span>()</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-20-1.png" width="288" /></p>
+<div class="sourceCode" id="cb258"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb258-1"><a href="mutualisms.html#cb258-1"></a>problems1 &lt;-<span class="st"> </span><span class="kw">subset</span>(sim.check1, (N1 <span class="op">&lt;</span><span class="st"> </span><span class="dv">0</span> <span class="op">|</span><span class="st"> </span>N2 <span class="op">&lt;</span><span class="st"> </span><span class="dv">0</span> <span class="op">|</span><span class="st"> </span>N1 <span class="op">&gt;</span><span class="st"> </span><span class="fl">1e4</span> <span class="op">|</span><span class="st"> </span>N2 <span class="op">&gt;</span><span class="st"> </span><span class="fl">1e4</span> ) )</span>
+<span id="cb258-2"><a href="mutualisms.html#cb258-2"></a><span class="co"># look at the subset</span></span>
+<span id="cb258-3"><a href="mutualisms.html#cb258-3"></a><span class="kw">ggplot</span>(problems1, <span class="kw">aes</span>(N1, N1.eq)) <span class="op">+</span><span class="st"> </span><span class="kw">geom_point</span>()</span></code></pre></div>
+<div class="figure"><span id="fig:unnamed-chunk-106"></span>
+<img src="figs/unnamed-chunk-106-1.png" alt="*Analytically calculated predictions for $N^*$* vs. observed simulated $N$." width="50%" />
+<p class="caption">
+Figure 8.9: <em>Analytically calculated predictions for <span class="math inline">\(N^*\)</span></em> vs. observed simulated <span class="math inline">\(N\)</span>.
+</p>
+</div>
 <p>Fascinating! Both the analytical and the simulated results give us wacky, but very different results. Let’s examine the coefficients that generated these results.</p>
-<div class="sourceCode" id="cb156"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb156-1"><a href="mutualisms.html#cb156-1"></a>problems1[<span class="dv">1</span><span class="op">:</span><span class="dv">5</span>,]</span></code></pre></div>
-<pre><code>##     a11  a12  a21  a22        t            N1            N2      N1.eq      N2.eq
-## 43 -0.1 0.18 0.06 -0.1 3.241398 2.434044e+103 1.390882e+103 -350.00000 -200.00000
-## 44 -0.1 0.20 0.06 -0.1 2.399838  1.164783e+99  6.212179e+98 -150.00000  -80.00000
-## 52 -0.1 0.14 0.08 -0.1 2.889456  1.856660e+65  1.392495e+65 -200.00000 -150.00000
-## 53 -0.1 0.16 0.08 -0.1 2.139629 1.175804e+109 8.140182e+108  -92.85714  -64.28571
-## 54 -0.1 0.18 0.08 -0.1 1.774181 9.054385e+146 5.820676e+146  -63.63636  -40.90909</code></pre>
+<div class="sourceCode" id="cb259"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb259-1"><a href="mutualisms.html#cb259-1"></a>problems1[<span class="dv">1</span><span class="op">:</span><span class="dv">5</span>,]</span></code></pre></div>
+<pre><code>##     a11  a12  a21  a22        t            N1            N2      N1.eq
+## 43 -0.1 0.18 0.06 -0.1 3.241398 2.434044e+103 1.390882e+103 -350.00000
+## 44 -0.1 0.20 0.06 -0.1 2.399838  1.164783e+99  6.212179e+98 -150.00000
+## 52 -0.1 0.14 0.08 -0.1 2.889456  1.856660e+65  1.392495e+65 -200.00000
+## 53 -0.1 0.16 0.08 -0.1 2.139629 1.175804e+109 8.140182e+108  -92.85714
+## 54 -0.1 0.18 0.08 -0.1 1.774181 9.054385e+146 5.820676e+146  -63.63636
+##         N2.eq
+## 43 -200.00000
+## 44  -80.00000
+## 52 -150.00000
+## 53  -64.28571
+## 54  -40.90909</code></pre>
 <p>What do you notice about these coefficients?</p>
 <ul>
 <li>What would you get for each term in the for the analytical equilibrium using the first row of data?</li>
 <li>How do you reconcile these results?</li>
 </ul>
 <p>Once we understand the anomalous results above, let’s compare the simulated and the analytical solutions for <span class="math inline">\(N_1\)</span> and <span class="math inline">\(N_2\)</span> both greater than zero and both less than a huge number.</p>
-<div class="sourceCode" id="cb158"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb158-1"><a href="mutualisms.html#cb158-1"></a><span class="kw">str</span>(sim.check1)</span></code></pre></div>
-<pre><code>## &#39;data.frame&#39;:	121 obs. of  9 variables:
-##  $ a11  : num  -0.1 -0.1 -0.1 -0.1 -0.1 -0.1 -0.1 -0.1 -0.1 -0.1 ...
-##  $ a12  : num  0 0.02 0.04 0.06 0.08 0.1 0.12 0.14 0.16 0.18 ...
-##  $ a21  : num  0 0 0 0 0 0 0 0 0 0 ...
-##  $ a22  : num  -0.1 -0.1 -0.1 -0.1 -0.1 -0.1 -0.1 -0.1 -0.1 -0.1 ...
-##  $ t    : num  200 200 200 200 200 200 200 200 200 200 ...
-##  $ N1   : num  10 12 14 16 18 20 22 24 26 28 ...
-##  $ N2   : num  10 10 10 10 10 10 10 10 10 10 ...
-##  $ N1.eq: num  10 12 14 16 18 20 22 24 26 28 ...
-##  $ N2.eq: num  10 10 10 10 10 10 10 10 10 10 ...</code></pre>
-<div class="sourceCode" id="cb160"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb160-1"><a href="mutualisms.html#cb160-1"></a>check2 &lt;-<span class="st"> </span><span class="kw">subset</span>(sim.check1, (N1.eq <span class="op">&gt;</span><span class="st"> </span><span class="dv">0</span> <span class="op">&amp;</span><span class="st"> </span>N2.eq <span class="op">&gt;</span><span class="st"> </span><span class="dv">0</span>) <span class="op">&amp;</span><span class="st"> </span>(N1 <span class="op">&lt;</span><span class="st"> </span><span class="fl">1e4</span> <span class="op">&amp;</span><span class="st"> </span>N2 <span class="op">&lt;</span><span class="st"> </span><span class="fl">1e4</span> ))</span></code></pre></div>
+<div class="sourceCode" id="cb261"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb261-1"><a href="mutualisms.html#cb261-1"></a>check2 &lt;-<span class="st"> </span><span class="kw">subset</span>(sim.check1, (N1.eq <span class="op">&gt;</span><span class="st"> </span><span class="dv">0</span> <span class="op">&amp;</span><span class="st"> </span>N2.eq <span class="op">&gt;</span><span class="st"> </span><span class="dv">0</span>) <span class="op">&amp;</span><span class="st"> </span>(N1 <span class="op">&lt;</span><span class="st"> </span><span class="fl">1e4</span> <span class="op">&amp;</span><span class="st"> </span>N2 <span class="op">&lt;</span><span class="st"> </span><span class="fl">1e4</span> ))</span></code></pre></div>
 <p>Next we calculate the differences between the analytical solutions and the simulated values.</p>
-<div class="sourceCode" id="cb161"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb161-1"><a href="mutualisms.html#cb161-1"></a>N1.diff &lt;-<span class="st"> </span>check2<span class="op">$</span>N1 <span class="op">-</span><span class="st"> </span>check2<span class="op">$</span>N1.eq</span>
-<span id="cb161-2"><a href="mutualisms.html#cb161-2"></a>N2.diff &lt;-<span class="st"> </span>check2<span class="op">$</span>N2 <span class="op">-</span><span class="st"> </span>check2<span class="op">$</span>N2.eq</span>
-<span id="cb161-3"><a href="mutualisms.html#cb161-3"></a><span class="kw">summary</span>(N1.diff); <span class="kw">summary</span>(N2.diff)</span></code></pre></div>
+<div class="sourceCode" id="cb262"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb262-1"><a href="mutualisms.html#cb262-1"></a>N1.diff &lt;-<span class="st"> </span>check2<span class="op">$</span>N1 <span class="op">-</span><span class="st"> </span>check2<span class="op">$</span>N1.eq</span>
+<span id="cb262-2"><a href="mutualisms.html#cb262-2"></a>N2.diff &lt;-<span class="st"> </span>check2<span class="op">$</span>N2 <span class="op">-</span><span class="st"> </span>check2<span class="op">$</span>N2.eq</span>
+<span id="cb262-3"><a href="mutualisms.html#cb262-3"></a><span class="kw">summary</span>(N1.diff); <span class="kw">summary</span>(N2.diff)</span></code></pre></div>
 <pre><code>##       Min.    1st Qu.     Median       Mean    3rd Qu.       Max. 
 ## -1.421e-14  1.776e-15  3.553e-15  1.363e-13  7.105e-15  3.183e-12</code></pre>
 <pre><code>##       Min.    1st Qu.     Median       Mean    3rd Qu.       Max. 
@@ -925,13 +674,13 @@ Figure 8.7: Dyanmics of a Lotka-Volterra mutualism.
 <p>Use eigenanalysis of the Jacobian matrix to assess the stability of these equilibria. Consult eq. 5.21 and Table 5.2 of Stevens (2009).</p>
 
 <p>A sensible equilibrium.</p>
-<div class="sourceCode" id="cb164"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb164-1"><a href="mutualisms.html#cb164-1"></a><span class="kw">subset</span>(sim.check1, a12 <span class="op">==</span><span class="st"> </span><span class="fl">.02</span> <span class="op">&amp;</span><span class="st"> </span>a21 <span class="op">==</span><span class="st"> </span><span class="fl">.02</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb265"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb265-1"><a href="mutualisms.html#cb265-1"></a><span class="kw">subset</span>(sim.check1, a12 <span class="op">==</span><span class="st"> </span><span class="fl">.02</span> <span class="op">&amp;</span><span class="st"> </span>a21 <span class="op">==</span><span class="st"> </span><span class="fl">.02</span>)</span></code></pre></div>
 <pre><code>##     a11  a12  a21  a22   t   N1   N2 N1.eq N2.eq
 ## 13 -0.1 0.02 0.02 -0.1 200 12.5 12.5  12.5  12.5</code></pre>
-<div class="sourceCode" id="cb166"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb166-1"><a href="mutualisms.html#cb166-1"></a><span class="co"># form remember that we set r = 1</span></span>
-<span id="cb166-2"><a href="mutualisms.html#cb166-2"></a>J1 &lt;-<span class="st"> </span><span class="kw">matrix</span>(<span class="kw">c</span>(<span class="op">-</span>.<span class="dv">1</span><span class="op">*</span><span class="fl">12.5</span>, <span class="fl">-.02</span><span class="op">*</span><span class="fl">12.5</span>,</span>
-<span id="cb166-3"><a href="mutualisms.html#cb166-3"></a>               <span class="fl">-.02</span><span class="op">*</span><span class="fl">12.5</span>, <span class="fl">-.1</span><span class="op">*</span><span class="fl">12.5</span>), <span class="dt">nrow=</span><span class="dv">2</span>, <span class="dt">byrow=</span><span class="ot">TRUE</span>)</span>
-<span id="cb166-4"><a href="mutualisms.html#cb166-4"></a><span class="kw">eigen</span>(J1)</span></code></pre></div>
+<div class="sourceCode" id="cb267"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb267-1"><a href="mutualisms.html#cb267-1"></a><span class="co"># form remember that we set r = 1</span></span>
+<span id="cb267-2"><a href="mutualisms.html#cb267-2"></a>J1 &lt;-<span class="st"> </span><span class="kw">matrix</span>(<span class="kw">c</span>(<span class="op">-</span>.<span class="dv">1</span><span class="op">*</span><span class="fl">12.5</span>, <span class="fl">-.02</span><span class="op">*</span><span class="fl">12.5</span>,</span>
+<span id="cb267-3"><a href="mutualisms.html#cb267-3"></a>               <span class="fl">-.02</span><span class="op">*</span><span class="fl">12.5</span>, <span class="fl">-.1</span><span class="op">*</span><span class="fl">12.5</span>), <span class="dt">nrow=</span><span class="dv">2</span>, <span class="dt">byrow=</span><span class="ot">TRUE</span>)</span>
+<span id="cb267-4"><a href="mutualisms.html#cb267-4"></a><span class="kw">eigen</span>(J1)</span></code></pre></div>
 <pre><code>## eigen() decomposition
 ## $values
 ## [1] -1.0 -1.5
@@ -943,12 +692,12 @@ Figure 8.7: Dyanmics of a Lotka-Volterra mutualism.
 <p>What do these results mean?</p>
 <p></p>
 <p>A nonsensical equilibrium</p>
-<div class="sourceCode" id="cb168"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb168-1"><a href="mutualisms.html#cb168-1"></a><span class="kw">subset</span>(sim.check1, a12 <span class="op">==</span><span class="st"> </span><span class="fl">.2</span> <span class="op">&amp;</span><span class="st"> </span>a21 <span class="op">==</span><span class="st"> </span><span class="fl">.2</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb269"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb269-1"><a href="mutualisms.html#cb269-1"></a><span class="kw">subset</span>(sim.check1, a12 <span class="op">==</span><span class="st"> </span><span class="fl">.2</span> <span class="op">&amp;</span><span class="st"> </span>a21 <span class="op">==</span><span class="st"> </span><span class="fl">.2</span>)</span></code></pre></div>
 <pre><code>##      a11 a12 a21  a22         t            N1            N2 N1.eq N2.eq
 ## 121 -0.1 0.2 0.2 -0.1 0.6931166 8.389656e+145 8.389656e+145   -10   -10</code></pre>
-<div class="sourceCode" id="cb170"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb170-1"><a href="mutualisms.html#cb170-1"></a>J2 &lt;-<span class="st"> </span><span class="kw">matrix</span>( <span class="kw">c</span>( <span class="fl">-.1</span><span class="op">*</span>(<span class="op">-</span><span class="dv">10</span>), <span class="fl">-.2</span><span class="op">*</span>(<span class="op">-</span><span class="dv">10</span>), </span>
-<span id="cb170-2"><a href="mutualisms.html#cb170-2"></a>                 <span class="fl">-.2</span><span class="op">*</span>(<span class="op">-</span><span class="dv">10</span>), <span class="fl">-.1</span><span class="op">*</span>(<span class="op">-</span><span class="dv">10</span>)), <span class="dt">nrow=</span><span class="dv">2</span>, <span class="dt">byrow=</span><span class="ot">TRUE</span>) </span>
-<span id="cb170-3"><a href="mutualisms.html#cb170-3"></a><span class="kw">eigen</span>(J2)</span></code></pre></div>
+<div class="sourceCode" id="cb271"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb271-1"><a href="mutualisms.html#cb271-1"></a>J2 &lt;-<span class="st"> </span><span class="kw">matrix</span>( <span class="kw">c</span>( <span class="fl">-.1</span><span class="op">*</span>(<span class="op">-</span><span class="dv">10</span>), <span class="fl">-.2</span><span class="op">*</span>(<span class="op">-</span><span class="dv">10</span>), </span>
+<span id="cb271-2"><a href="mutualisms.html#cb271-2"></a>                 <span class="fl">-.2</span><span class="op">*</span>(<span class="op">-</span><span class="dv">10</span>), <span class="fl">-.1</span><span class="op">*</span>(<span class="op">-</span><span class="dv">10</span>)), <span class="dt">nrow=</span><span class="dv">2</span>, <span class="dt">byrow=</span><span class="ot">TRUE</span>) </span>
+<span id="cb271-3"><a href="mutualisms.html#cb271-3"></a><span class="kw">eigen</span>(J2)</span></code></pre></div>
 <pre><code>## eigen() decomposition
 ## $values
 ## [1]  3 -1

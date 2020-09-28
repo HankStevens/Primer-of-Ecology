@@ -183,9 +183,9 @@ R1 -> R2[arrowhead='odot']; R2 -> R1[arrowhead='odot'];
 # grViz(imut) %>%
 #   export_svg %>% charToRaw %>% rsvg_pdf("imut.pdf")
 
-grViz(bimut)
+{grViz(bimut)
 grViz(umut)
-grViz(imut)
+grViz(imut)}
 ```
 
 In other cases, mutualists may share services, as with moray
@@ -228,7 +228,7 @@ $$\frac{dM_1}{dt} = r_1 M_1\left(1-d_1M_1\right)  - aM_2\left(\frac{M_1}{h_1 + M
 
 The plant species ($M_1$) grows logistically in the absence of fruit consumption or seed dispersal $r_1 M_1\left(1-d_1M_1\right)$. Consumption of fruits are governed by a type II functional response by the frugivore $aM_2\left(\frac{M_1}{h_1 + M_1}\right)$, so that the consumption rate of a single frugivore has an upper limit (Fig. \@ref(fig:funcResp)). Successful seed dispersal and establishment is also governed by a type II functional response. The success of a single seed reaches an upper limit as the number of frugivores continues to increase, $c_1M_1\left(\frac{M_2}{h_2 + M_2}\right)$ (Fig. \@ref(fig:funcResp)). 
 
-```{r funcResp, echo=TRUE, fig=TRUE, fig.show = 'hold', fig.width=3, fig.height=3.5, out.width='50%', fig.cap="Fruit consumption by a single frugivore is governed by a type II functional response as fruit abundance increases. Successful seed dispersal and establishment is governed by a type II functional response as frugivores increase."}
+```{r funcResp, echo=TRUE, fig=TRUE, fig.show = 'hold', fig.width=3, fig.height=3.5, out.width='40%', fig.cap="Fruit consumption by a single frugivore is governed by a type II functional response as fruit abundance increases. Successful seed dispersal and establishment is governed by a type II functional response as frugivores increase."}
 
 ggplot(data.frame(x=c(0, 1)), aes(x=x) ) + 
   stat_function(fun=function(x) { 10*x/(1+10*x) }) +
@@ -252,7 +252,7 @@ The animal seed disperser grows logistically in in the absence of consuming this
 
 The dynamics can result in *multiple basins of attraction* or *alternative stable states* (Fig. \@ref(fig:mba)).
 
-```{r mba, echo=FALSE, fig=TRUE,  fig.width=5, fig.height=5.5, fig.cap="A resource-service mutualism may result in alternative stable states. If both species achieve moderate abundance, then both species increase toward a stable mutualism. However, if the frugivore is too abundant relative to the plant, then its consumption dominates the interaction and drives the equilibrium mutualism"} 
+```{r mba, echo=FALSE, fig=TRUE,  fig.width=5, fig.height=5.5, fig.cap="A resource-service mutualism may result in alternative stable states. If both species achieve moderate abundance, then both species increase toward a stable mutualism. However, if the frugivore is too abundant relative to the plant, then its consumption dominates the interaction and drives the equilibrium mutualism.", out.width="75%"} 
 # The derivative 
 ## A two-species consumer-resource mutualism
 ## Holland and DeAngelis 2009, Ecology Letters Ecology Letters, 12: 1357–1366.
@@ -323,7 +323,7 @@ group of organisms on Earth--soil microbes. Ecologists have
 begun to focus on this intimate relationship, and Jim Bever [@Bever2003] has been
 one of ecologists helping lead the way (Fig. \@ref(fig:beverfig)). 
 
-```{r beverfig, echo=FALSE, fig.cap="Plants and soil microbes can interact in negative or positive ways. Plants may grow more poorly with their own soil flora than with that of a competitor's."}
+```{r beverfig, echo=FALSE, fig.cap="Plants and soil microbes can interact in negative or positive ways. Plants may grow more poorly with their own soil flora than with that of a competitor's.", out.width="75%"}
 library(diagram)
 bm <- matrix(c("a11", "ca","1", 0, "cb", "a22", "0", "nu", 
                "alphaA", "alphaB", 0,0,
@@ -359,16 +359,16 @@ We often refer to the soil flora associated with a single plant species as its *
 
 
 **Coexistence criteria**
-  Bever states that (2003, p. 467, bottom of the second column) out that the interactions are more stable if 
+Bever states that (2003, p. 467, bottom of the second column) out that the interactions are more stable if 
 $$\alpha_A + \beta_B < \alpha_B + \beta_A $$
-  which means that the effects of the home floras own their home plants are less positive (or more negative) then on the other species. 
+which means that the effects of the home floras own their home plants are less positive (or more negative) then on the other species. 
 
 Bever also argued that for either plant species to increase when rare (i.e. coexist), that the interspecific competition has to be less than the benefits of the interactions of the soil floras. However, his criterion in eqn 5 (p. 469) is not sufficient, and this is revealed by its lack of consistency with the parameter set and outcomes in Fig. 4. So, we will alter his equation a bit to reveal what probably would work. We use the parameterization from Chapter \@ref(Competition)) so that it is consistent with others [@Bolker2003a;@Chesson2000a]. We reformulate the carrying capacities and $c_A$ and $c_B$ as 
 
 $$\alpha_{AA}=1/K_A;\,\alpha_{BB}=K_B;\,\alpha_{BA}= c_A/K_B;\,\alpha_{AB}=c_B/K_A$$
   If we recall our earlier work, we showed that each species $i$ can invade when 
 $$\frac{\alpha_{ij}}{\alpha_{jj}} < 0$$ 
-  This translates to the Lotka-Volterra invasion criterion for species A is
+This translates to the Lotka-Volterra invasion criterion for species A is
 $$\frac{\alpha_{AB}}{\alpha_{BB}} =\frac{c_b}{K_A}K_B$$
   The invasion criterion for species B is 
 $$\frac{\alpha_{BA}}{\alpha_{AA}} =\frac{c_a}{K_B}K_A$$
@@ -390,28 +390,35 @@ bever3 <- function(t,y,p){
   })
   }
 ```
+
 We will parameterize the model in a way that reveals the importance of the soil floras to coexistence, according to criteria stated above \@ref(eq:bevercrit). We will create a vector of parameters, and then test whether the inequality in \@ref(eq:bevercrit) is true. We start with an absence of a soil flora effect.
+
 ```{r}
 p0 <- list(ra=0.7, rb=0.5, Ka = 10, Kb=12, cA=.98, cB=.98, 
            alphaA=0, alphaB=0, betaA=0, betaB=0, nu=0.8)
 ```
-                                                                                Use the criterion above, and paper and a pencil, and see what you discover. We could also do it in R.
+
+Use the criterion above, and paper and a pencil, and see what you discover. We could also do it in R.
+
 ```{r}
 with(p0, { cA/Kb*Ka  < (1+alphaB)*(1+betaA) / ( (1+alphaA)*(1+betaB)) })
 with(p0, { cB/Ka*Kb < (1+alphaB)*(1+betaA) / ( (1+alphaA)*(1+betaB)) })
 ```
                                                                                 This shows us we will not get coexistence in the absence of soil flora. Now we add the soil flora.
+                                                                                
 ```{r}
 p <- list(ra=0.7, rb=0.5, Ka = 10, Kb=12, cA=.98, cB=.98, alphaA=-0.03, alphaB=0.1, betaA=0.1, betaB=-0.2, nu=0.8)
 ```
-                                                                                Try your hand again, with paper and pencil. And then do it in R.
+
+Try your hand again, with paper and pencil. And then do it in R.
+
 ```{r}
 with(p, { cA/Kb*Ka  < (1+alphaB)*(1+betaA) / ( (1+alphaA)*(1+betaB)) })
 with(p, { cB/Ka*Kb < (1+alphaB)*(1+betaA) / ( (1+alphaA)*(1+betaB)) })
 ```
 On this basis, we should see that each species can invade when rare. 
 Now let's see the dynamics play out.
-```{r beverplot, echo=FALSE, fig=TRUE, width=10, height=10, include=TRUE, fig.cap="Dynamics of competing plant species, subject to self-limiting negative feedbacks with soil pathogens.", out.width="50%", fig.show='hold'}
+```{r beverplot, echo=FALSE, fig=TRUE, width=10, height=10, include=TRUE, fig.cap="Dynamics of competing plant species, subject to self-limiting negative feedbacks with soil pathogens.", out.width="40%", fig.show='hold'}
 t <- seq(0,200, .1)
 y0 <- c(Na=4, Nb=9, SA=0.5)
 {outdf <- as.data.frame( ode(y=y0, times=t, fun=bever3, parms=p) )
@@ -473,7 +480,6 @@ Here we create an interaction matrix for a two-species Lotka-Volterra mutualism,
 a <- matrix(c( -.1, .02,
                .02, -.09), nrow = 2, byrow=TRUE)
 a
-
 ```
 
 Now let's numerically integrate, or simulate, the model and plot the outcome. Comment your code to help remind you what is going on.
@@ -490,13 +496,14 @@ lvout <- as.data.frame( ode(N0, t, lvg, parms) )
 lvL <- pivot_longer(lvout, -time, names_to="State_vars", 
             values_to="N")
 
-ggplot(lvL, aes(time, N, colour=State_vars, linetype=State_vars)) + geom_line() + 
+ggplot(lvL, aes(time, N, colour=State_vars, linetype=State_vars)) + 
+  geom_line() + 
   geom_hline(yintercept=c(-1/a[1,1], -1/a[2,2]), linetype=c(1,3)) +
   annotate(geom="text", 
            x=c(15, 20),y=c(-1/a[1,1], -1/a[2,2]), label=c("K1", "K2"), vjust=-0.2 )
 ```
 
-### Simulations
+### Systematic simulations
 When we use a model to explore the consequences of our assumptions, we want to use a range of plausible assumptions. In a case like this one where we are exploring a model more than the natural phenomenon it represents, we should use a wide range of parameter values that include cases where it is likely to fail. In our case, we will hold intraspecific density dependence constant and vary interspecific interaction coefficients from zero to twice the value of intraspecific interactions. 
 
 We start with building the bits and pieces that the simulation will use, and then use a for-loop to cycle through all the parameter combinations we are interested in.
@@ -508,7 +515,7 @@ dim(df) # The number of rows and columns
 head(df) # the top of the data frame
 ```
 
-```{r}
+```{r include=FALSE}
 # set intrinsic rates of increase...
 r <- c(1,1)
 
@@ -530,18 +537,20 @@ output <- data.frame( t = numeric(npar), N1 = numeric( npar ),
 for( i in 1:npar ) {
   coefs.true <- matrix( as.numeric( df[i,] ), 
                         nrow = 2, byrow = TRUE)
-  capture.output( 
+  invisible(
+    capture.output( 
     # capture.output is a function that allows us to avoid seeing warnings...
     # not usually a good idea to ignore warnings!!!
     # but it is OK here....
     lvout <- ode(N0, t, lvg, parms = list(r, coefs.true) )
-  )
+  ) )
   
   # hang on to only the last row of output, and  
   # put it in the i-th row of our output data frame.
   last <- nrow(lvout)
    output[i,] <- lvout[last,]
 }
+
 
 
 # Combine columns of parameters and output.
@@ -567,7 +576,7 @@ Notice also that values for $t$ indicate that the integration couldn't find valu
 
 What could we do to learn the emerging rules? What if we just plot the values of $\alpha_{ij},\,\alpha_{ji}$ where $N$ is really, really big?
 
-```{r echo = TRUE, results='markup' , fig.width=3, fig.height=2.5}
+```{r echo = TRUE, results='markup', fig.cap="*Values of $alpha$ when N is extraordinarily large.*", fig.width=3, fig.height=2.5, out.width="50%"}
 ggplot(sim.N, aes(a12, a21)) + geom_point()
 ```
 
@@ -598,7 +607,7 @@ sim.check1 <- cbind(simdat, N1.eq, N2.eq)
 ```
 Let's find the subset with potential problems, such as for $N_1$ or $N_2$ less than than zero or really, really big ($>10000$).
 
-```{r echo = TRUE, results='markup' ,fig.width=3, fig.height=2.5}
+```{r echo = TRUE, results='markup', fig.cap="*Analytically calculated predictions for $N^*$* vs. observed simulated $N$.", out.width="50%", fig.width=3, fig.height=2.5}
 problems1 <- subset(sim.check1, (N1 < 0 | N2 < 0 | N1 > 1e4 | N2 > 1e4 ) )
 # look at the subset
 ggplot(problems1, aes(N1, N1.eq)) + geom_point()
@@ -615,7 +624,6 @@ What do you notice about these coefficients?
 
 Once we understand the anomalous results above, let's compare the simulated and the analytical solutions for $N_1$ and $N_2$ both greater than zero and both less than a huge number.
 ```{r echo = TRUE, results='markup' }
-str(sim.check1)
 check2 <- subset(sim.check1, (N1.eq > 0 & N2.eq > 0) & (N1 < 1e4 & N2 < 1e4 ))
 ```
 
