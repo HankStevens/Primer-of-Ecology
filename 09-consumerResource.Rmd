@@ -1,35 +1,39 @@
 # Consumer Resource Interactions
 
-In this chapter, we discuss interactions between consumers and resources. In general, we can conceptualize these as coupled equations,
-\begin{align*}
-\dot{R} &= f(R) - g(R,C)\\
-\dot{C} &= h(R,C) - i(C)
-\end{align*}
-in which the resource growth depends on $R$, but consumption depends on both $R$ and $C$. The consumer is the mirror image, where its growth depends on $R$ and $C$, but its death depends only on $C$.
+Consumption is unavoidably fundamental to life. Organisms are at a disequilibrium with their surroundings, requiring inputs of resources to maintain themselves, grow, and reproduce. We first considered organisms from this biophysical or energetic context when we discussed foraging. Optimal foraging theory seeks to understand individual behavior of diet choice as a solution to the problem of maximizing net resource gain per unit time. 
 
-We start with a famous consumer-resource pairing, that of predator and prey. 
+We have also considered population growth from a demographic context beginning in chapter 3 and have continued, as we described with
+$$\Delta N = B+I-D-E$$.
+
+In consumer-resource theory, we combine biophysical and demographic approaches.
+
+In this chapter, we discuss interactions between consumers and resources. In what we consider, the consumer is always an organism. However, we will consider cases in which the resource an inorganic substrate, such as nitrogen, and well as cases the resource is another organism. In general, we can conceptualize these as coupled equations,
+\begin{align*}
+\frac{1}{R}\frac{dR}{dt}&= f_R\left(R,C\right)\\
+\frac{1}{C}\frac{dC}{dt} &= f_C\left(C,R\right)
+\end{align*}
+in which per-unit change in the resource is a function, $f_R$, of the resource itself and the consumer. Likewise, per-unit change in the consumer is a function, $f_C$, of the consumer itself, and the resource. @Holt2011th identified five universal propositions including that the consumption of resource necessarily reduces the amount of the resource. Both of these depend on the environmental context, but we'll ignore that for now. 
+
+We start with a famous consumer-resource pairing, that of predator and prey, also known as enemy-victim interactions. 
 
 ## A beginning
-Let's go all the way back to the beginning of this book where we introduced exponential growth. Let's imagine that our population is a predator grew at rate 
+Let's go all the way back to the beginning of this book where we introduced exponential growth. Let's imagine that our exponentially growing population grows at rate
+$$\dot{N} = bN-dN$$
+We knew that this, like all models, was wrong, but have argued that it is very useful. Indeed, it is in some ways null model for biological systems because exponential growth is so fundamental to life. 
 
-$$\dot{N} = bN-dN = rN$$
-We knew that this, like all models, was wrong, but have argued that it is very useful. Indeed, it is in some ways null model for biological systems. 
-
-
-Let us stick with this idea of simplicity, and link a 
-predator $P$ to the prey. A very simple way to do this is to include predators as a source of death of prey ($aN$), and prey as the source of life for predators ($eaN$),
+Let us stick with this idea of simplicity, and link a predator $P$ to the prey. A very simple way to do this is to include predators as a source of death of prey ($aN$), and prey as the source of life for predators ($eaN$),
 \begin{align*}
-\dot{N} &= b_1N-d_1N -aN\\
-\dot{P} &= eaN - d_2P
+\dot{N} &= bN-dN -aN\\
+\dot{P} &= eaN - mP
 \end{align*}
-where $e$ is the efficiency with which predators turn captured prey into new predators.
+where $e<1$ and is the relative efficiency with which predators turn captured prey into new predators. This efficiency shows us another general proposition about enemy-victim interactions; if we consider enemy and victim in the same units (e.g., grams), that the cost to the victim is always greater than the benefit to the enemy. This is simply the result of the second law of thermodynamics.
 
 With these two equations, we can make a simple prediction regarding the equilibrium, $P^*$, by setting $\dot{P} = 0$,
-$$P^* = \frac{ea}{d_2}N\quad ; \quad \frac{P}{N} = \frac{ea}{d_2}$$
+$$P^* = \frac{ea}{m}N\quad ; \quad \frac{P}{N} = \frac{ea}{m}$$
 
 Thus, this simple theory predicts that the relative abundances of predator and prey will be constant. Because the prey only grow (or die) exponentially, this theory can make no prediction about $N^*$. However, it does predict that predator and prey will persist at a constant ratio, assuming the parameters are fixed.
 
-## Ratio dependence
+### Ratio dependence
 
 If prey grows exponentially, so will the predators. If this is true, then it makes sense that the prey get captured at a constant per capita rate: the predators will always be lurking about at the same relative abundance. And this leads us to another way to think about these equations.
 
@@ -38,26 +42,29 @@ $$aP\frac{N}{P}$$
 In this expression, we see that the capture rate of prey and growth rate of predators depends on the *ratio* of prey to predators. 
 Putting this explicit treatment back into our model, we have
 \begin{align*}
-\dot{N} &= b_1N-d_1N -aP\frac{N}{P}\\
-\dot{P} &= eaP\frac{N}{P} - d_2P
+\dot{N} &= bN-dN -aP\frac{N}{P}\\
+\dot{P} &= eaP\frac{N}{P} - mP
 \end{align*}
 
 We refer to this simple predator prey model as *ratio-dependent* predation (Arditi and Ginzburg 1989). We have added biological and mathematical complexity, and what is the end result? If we simplify these expressions, and let the $P$'s cancel out, we wind up just where we were before. That is reassuring. Both of these pairs of equations are the same: they describe ratio-dependent predation.
 
-## Prey dependence
-Another widely used model of predator-prey is the Lotka-Volterra model. In this formulation, the per predator capture rate depends only on the prey abundance, not on the ratio of prey to predators. When capture rate is independent of the number of other predators in the population, we describe it thus.
+### Prey dependence
+Perhaps a more widely used model of predator-prey dynamics is that of Alfred Lotka and Vito Volterra. In this formulation, the per predator capture rate depends only on the prey abundance, not on the ratio of prey to predators. When capture rate is independent of the number of other predators in the population, we describe it thus.
 \begin{align*}
-\dot{N} &= b_1N-d_1N -aNP\\
-\dot{P} &= eaNP- d_2P
+\dot{N} &= bN-dN -aNP\\
+\dot{P} &= eaNP- mP
 \end{align*}
 Here the per predator capture rate is simply $aN$. 
+
+We find equilibria by setting $\dot{P} = 0$ and ,
+$$P^* = \frac{ea}{m}N\quad ; \quad \frac{P}{N} = \frac{ea}{m}$$
 
 ## Functional response: what an individual predator does 
 We refer to the per predator capture rate as the *functional response*. It is the response of a predator to different levels of $N$ and $P$. The functional response of the ratio-dependent model is $aN/P$, where as for the prey-dependent model it is $aN$. These are referred to as *type I* functional responses.
 
-Are these type I functional responses realistic? They both imply that a predator captures a constant fraction of all prey, *no matter how many prey there are.* It predicts that regardless whether there are two prey individuals or one gazillion prey, a single predator can nonetheless capture the same fraction. So, no, in extreme cases, type I functional responses are not realistic.
+Are these type I functional responses realistic? They both imply that a predator captures a constant fraction of all prey, *no matter how many prey there are.* It predicts that regardless whether there are two prey individuals or one gazillion prey, a single predator can nonetheless capture the same fraction. So, if prey reach high densities, then type I functional responses are not realistic. However, if prey never reach high densities, then type I is reasonable with the bounds of realized prey densities.
 
-What would be more realistic is if the predator satiates, where the capture rate approaches a plateau as the density of prey increases. After all, a predator has to catch, subdue, and kill a prey item, swallow it, and then move on. Ecologists refer to this activity as "handling" and the time required to do that as *handling time*. Buzz Holling (1959) developed a mathematical form for a functional response that includes handling time:
+What is typically thought to be more realistic is if the predator satiates, where the capture rate approaches a plateau as the density of prey increases. After all, a predator has to catch, subdue, and kill a prey item, swallow it, and then move on. Optimal foraging models (Chapter 2) tyupically account for this. Ecologists refer to this activity as "handling" and the time required to do that as *handling time*. Buzz Holling (1959) developed a mathematical form for a functional response that includes handling time:
 $$\frac{aN}{1+ahN}$$
 where $a$ is attack rate, and $h$ ia handling time. As $N$ gets really big, this fraction approaches $1/h$,
 $$\lim_{N \rightarrow \infty} \frac{aN}{1+ahN} = \frac{1}{h}$$
