@@ -424,8 +424,8 @@ Figure 8.3: Fruit consumption by a single frugivore is governed by a type II fun
 <p><span class="math display">\[\frac{dM_2}{dt} =  r_2M_2\left(1-d_2M_2\right) + eaM_2\left(\frac{M_1}{h_1+M_1}\right) \]</span>
 The animal seed disperser grows logistically in in the absence of consuming this particular plant species <span class="math inline">\(r_2M_2\left(1-d_2M_2\right)\)</span>. The animal benefits from consuming the fruit which it attacks at the same rate as for <span class="math inline">\(M_1\)</span>, <span class="math inline">\(aM_2\left(\frac{M_1}{h_1+M_1}\right)\)</span>, but converts the fruit into new individuals with efficiency <span class="math inline">\(e\)</span>.</p>
 <ul>
-<li><span class="math inline">\(c &gt; s\)</span>, consumption &gt; service = net predation</li>
-<li><span class="math inline">\(s &gt; c\)</span>, service &gt; consumption = net mutualism</li>
+<li>consumption &gt; service = net predation</li>
+<li>service &gt; consumption = net mutualism</li>
 </ul>
 <p>Here we provide code for the ODE for the complete bidirectional mutualism. When we define the parameters, we will set some of them equal to zero so that it represents a unidirectional consumer-resource mutualism.</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="mutualisms.html#cb4-1"></a><span class="co"># The derivative </span></span>
@@ -463,7 +463,7 @@ The animal seed disperser grows logistically in in the absence of consuming this
 <span id="cb5-16"><a href="mutualisms.html#cb5-16"></a>outL &lt;-<span class="st"> </span><span class="kw">pivot_longer</span>(outdf, <span class="op">-</span>time, </span>
 <span id="cb5-17"><a href="mutualisms.html#cb5-17"></a>                     <span class="dt">names_to=</span><span class="st">&quot;State_var&quot;</span>, <span class="dt">values_to=</span><span class="st">&quot;N&quot;</span>)</span>
 <span id="cb5-18"><a href="mutualisms.html#cb5-18"></a><span class="kw">ggplot</span>(outL, <span class="kw">aes</span>(time, N, <span class="dt">colour=</span>State_var)) <span class="op">+</span><span class="st"> </span><span class="kw">geom_line</span>()</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-26-1.png" width="672" /></p>
+<p><img src="_main_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
 <p>The dynamics can result in <em>multiple basins of attraction</em> or <em>alternative stable states</em> (Fig. <a href="mutualisms.html#fig:mba">8.4</a>).</p>
 <div class="figure"><span id="fig:mba"></span>
 <img src="_main_files/figure-html/mba-1.png" alt="A resource-service mutualism may result in alternative stable states. If both species achieve moderate abundance, then both species increase toward a stable mutualism. However, if the frugivore is too abundant relative to the plant, then its consumption dominates the interaction and drives the equilibrium mutualism." width="75%" />
@@ -499,13 +499,13 @@ where the effects of microbes (<span class="math inline">\(\alpha\)</span>, <spa
                                    \frac{c_A N_A + N_B}{K_B}\right).
 \end{equation}\]</span></p>
 <p>We often refer to the soil flora associated with a single plant species as its <em>home</em> flora, and the other as the <em>away</em> flora. Each microbial flora comprises many, many species and we aggregate the net effects. Bever (2003) further simplified his model by placing constraints on soil microbes, so that <span class="math inline">\(S_A + S_B=1\)</span>. This allows him to focus on the relations among microbes and plants. With these assumptions, he showed that the net effect of each flora as a single state variable for the home flora of each species:
-<span class="math display">\[\frac{S_A}{dt} = S_A(1-S_A) \left( \frac{N_A}{N_A + N_B} - \nu\frac{N_B}{N_A + N_B}\right)\]</span>
+<span class="math display">\[\frac{dS_A}{dt} = S_A(1-S_A) \left( \frac{N_A}{N_A + N_B} - \nu\frac{N_B}{N_A + N_B}\right)\]</span>
 and that <span class="math display">\[S_B=1-S_A\]</span>.</p>
 <p><strong>Coexistence criteria</strong>
 Bever states that (2003, p. 467, bottom of the second column) out that the interactions are more stable if
 <span class="math display">\[\alpha_A + \beta_B &lt; \alpha_B + \beta_A \]</span>
 which means that the effects of the home floras own their home plants are less positive (or more negative) then on the other species.</p>
-<p>Bever also argued that for either plant species to increase when rare (i.e. coexist), that the interspecific competition has to be less than the benefits of the interactions of the soil floras. However, his criterion in eqn 5 (p. 469) is not sufficient, and this is revealed by its lack of consistency with the parameter set and outcomes in Fig. 4. So, we will alter his equation a bit to reveal what probably would work. We use the parameterization from Chapter <a href="#Competition"><strong>??</strong></a>) so that it is consistent with others <span class="citation">(Bolker, Pacala, and Neuhauser <a href="#ref-Bolker2003a" role="doc-biblioref">2003</a>; Chesson <a href="#ref-Chesson2000a" role="doc-biblioref">2000</a>)</span>. We reformulate the carrying capacities and <span class="math inline">\(c_A\)</span> and <span class="math inline">\(c_B\)</span> as</p>
+<p>Bever also argued that for either plant species to increase when rare (i.e. coexist), that the interspecific competition has to be less than the benefits of the interactions of the soil floras. However, his criterion in eqn 5 (p. 469) is not sufficient, and this is revealed by its lack of consistency with the parameter set and outcomes in Fig. 4. So, we will alter his equation a bit to reveal what probably would work. We use the parameterization from Chapter <a href="#Competition"><strong>??</strong></a> so that it is consistent with others <span class="citation">(Bolker, Pacala, and Neuhauser <a href="#ref-Bolker2003a" role="doc-biblioref">2003</a>; Chesson <a href="#ref-Chesson2000a" role="doc-biblioref">2000</a>)</span>. We reformulate the carrying capacities and <span class="math inline">\(c_A\)</span> and <span class="math inline">\(c_B\)</span> as</p>
 <p><span class="math display">\[\alpha_{AA}=1/K_A;\,\alpha_{BB}=K_B;\,\alpha_{BA}= c_A/K_B;\,\alpha_{AB}=c_B/K_A\]</span>
 If we recall our earlier work, we showed that each species <span class="math inline">\(i\)</span> can invade when
 <span class="math display">\[\frac{\alpha_{ij}}{\alpha_{jj}} &lt; 0\]</span>
@@ -514,7 +514,10 @@ This translates to the Lotka-Volterra invasion criterion for species A is
 The invasion criterion for species B is
 <span class="math display">\[\frac{\alpha_{BA}}{\alpha_{AA}} =\frac{c_a}{K_B}K_A\]</span>
 The coexistence criterion is that each species must be able to invade when rare, including when the soil flora has no effect. Therefore, we have</p>
-<p><span class="math display">\[\left(\frac{c_b}{K_A}K_B,\, \frac{c_a}{K_B}K_A\right) &lt; \frac{(1+\alpha_B)(1+\beta_A)}{(1+\alpha_A)(1+\beta_B)}\]</span></p>
+<p><span class="math display" id="eq:bevercrit">\[\begin{equation}
+\left(\frac{c_b}{K_A}K_B,\, \frac{c_a}{K_B}K_A\right) &lt; \frac{(1+\alpha_B)(1+\beta_A)}{(1+\alpha_A)(1+\beta_B)}
+\tag{8.1}
+\end{equation}\]</span></p>
 <p>where both conditions on the left must be satisfied. In the numerator on the right, we have the effect of each soil flora on their away plant species. In the denominator, we have the effects of each flora on the home plant species. Thus, the fraction on the right is the relative benefit of the soil flora.</p>
 <p>Now we will create an ODE function that will let us see the dynamics play out. We need only model one soil flora because <span class="math inline">\(S_B = 1-S_A\)</span>.</p>
 <div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="mutualisms.html#cb6-1"></a>bever3 &lt;-<span class="st"> </span><span class="cf">function</span>(t,y,p){</span>
@@ -525,7 +528,7 @@ The coexistence criterion is that each species must be able to invade when rare,
 <span id="cb6-6"><a href="mutualisms.html#cb6-6"></a>    <span class="kw">return</span>(<span class="kw">list</span>(<span class="kw">c</span>(dNa, dNb, dSA), <span class="dt">SB=</span><span class="dv">1</span><span class="op">-</span>SA))</span>
 <span id="cb6-7"><a href="mutualisms.html#cb6-7"></a>  })</span>
 <span id="cb6-8"><a href="mutualisms.html#cb6-8"></a>  }</span></code></pre></div>
-<p>We will parameterize the model in a way that reveals the importance of the soil floras to coexistence, according to criteria stated above <a href="#eq:bevercrit">(<strong>??</strong>)</a>. We will create a vector of parameters, and then test whether the inequality in <a href="#eq:bevercrit">(<strong>??</strong>)</a> is true. We start with an absence of a soil flora effect.</p>
+<p>We will parameterize the model in a way that reveals the importance of the soil floras to coexistence, according to criteria stated above <a href="mutualisms.html#eq:bevercrit">(8.1)</a>. We will create a vector of parameters, and then test whether the inequality in <a href="mutualisms.html#eq:bevercrit">(8.1)</a> is true. We start with an absence of a soil flora effect.</p>
 <div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="mutualisms.html#cb7-1"></a>p0 &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="dt">ra=</span><span class="fl">0.7</span>, <span class="dt">rb=</span><span class="fl">0.5</span>, <span class="dt">Ka =</span> <span class="dv">10</span>, <span class="dt">Kb=</span><span class="dv">12</span>, <span class="dt">cA=</span>.<span class="dv">98</span>, <span class="dt">cB=</span>.<span class="dv">98</span>, </span>
 <span id="cb7-2"><a href="mutualisms.html#cb7-2"></a>           <span class="dt">alphaA=</span><span class="dv">0</span>, <span class="dt">alphaB=</span><span class="dv">0</span>, <span class="dt">betaA=</span><span class="dv">0</span>, <span class="dt">betaB=</span><span class="dv">0</span>, <span class="dt">nu=</span><span class="fl">0.8</span>)</span></code></pre></div>
 <p>Use the criterion above, and paper and a pencil, and see what you discover. We could also do it in R.</p>
@@ -544,7 +547,7 @@ The coexistence criterion is that each species must be able to invade when rare,
 On this basis, we should see that each species can invade when rare.
 Now let’s see the dynamics play out.
 <div class="figure"><span id="fig:beverplot"></span>
-<img src="_main_files/figure-html/beverplot-1.png" alt="Dynamics of competing plant species, subject to self-limiting negative feedbacks with soil pathogens." width="40%" /><img src="_main_files/figure-html/beverplot-2.png" alt="Dynamics of competing plant species, subject to self-limiting negative feedbacks with soil pathogens." width="40%" />
+<img src="_main_files/figure-html/beverplot-1.png" alt="Dynamics of competing plant species, subject to self-limiting negative feedbacks with soil pathogens." width="50%" /><img src="_main_files/figure-html/beverplot-2.png" alt="Dynamics of competing plant species, subject to self-limiting negative feedbacks with soil pathogens." width="50%" />
 <p class="caption">
 Figure 8.6: Dynamics of competing plant species, subject to self-limiting negative feedbacks with soil pathogens.
 </p>
@@ -595,8 +598,8 @@ Figure 8.6: Dynamics of competing plant species, subject to self-limiting negati
 <span id="cb23-9"><a href="mutualisms.html#cb23-9"></a><span class="st">  </span><span class="kw">geom_hline</span>(<span class="dt">yintercept=</span><span class="kw">c</span>(<span class="op">-</span><span class="dv">1</span><span class="op">/</span>a[<span class="dv">1</span>,<span class="dv">1</span>], <span class="dv">-1</span><span class="op">/</span>a[<span class="dv">2</span>,<span class="dv">2</span>]), <span class="dt">linetype=</span><span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">3</span>)) <span class="op">+</span></span>
 <span id="cb23-10"><a href="mutualisms.html#cb23-10"></a><span class="st">  </span><span class="kw">annotate</span>(<span class="dt">geom=</span><span class="st">&quot;text&quot;</span>, </span>
 <span id="cb23-11"><a href="mutualisms.html#cb23-11"></a>           <span class="dt">x=</span><span class="kw">c</span>(<span class="dv">15</span>, <span class="dv">20</span>),<span class="dt">y=</span><span class="kw">c</span>(<span class="op">-</span><span class="dv">1</span><span class="op">/</span>a[<span class="dv">1</span>,<span class="dv">1</span>], <span class="dv">-1</span><span class="op">/</span>a[<span class="dv">2</span>,<span class="dv">2</span>]), <span class="dt">label=</span><span class="kw">c</span>(<span class="st">&quot;K1&quot;</span>, <span class="st">&quot;K2&quot;</span>), <span class="dt">vjust=</span><span class="op">-</span><span class="fl">0.2</span> )</span></code></pre></div>
-<div class="figure"><span id="fig:unnamed-chunk-35"></span>
-<img src="_main_files/figure-html/unnamed-chunk-35-1.png" alt="Dyanmics of a Lotka-Volterra mutualism. " width="672" />
+<div class="figure"><span id="fig:unnamed-chunk-15"></span>
+<img src="_main_files/figure-html/unnamed-chunk-15-1.png" alt="Dyanmics of a Lotka-Volterra mutualism. " width="672" />
 <p class="caption">
 Figure 8.7: Dyanmics of a Lotka-Volterra mutualism.
 </p>
@@ -647,8 +650,8 @@ Figure 8.7: Dyanmics of a Lotka-Volterra mutualism.
 <p>Notice also that values for <span class="math inline">\(t\)</span> indicate that the integration couldn’t find values beyond a certain time point. Hmm. For now, let’s assume our simulation is doing what we think it is and that these results indicate a true lack of equilibrium.</p>
 <p>What could we do to learn the emerging rules? What if we just plot the values of <span class="math inline">\(\alpha_{ij},\,\alpha_{ji}\)</span> where <span class="math inline">\(N\)</span> is really, really big?</p>
 <div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb32-1"><a href="mutualisms.html#cb32-1"></a><span class="kw">ggplot</span>(sim.N, <span class="kw">aes</span>(a12, a21)) <span class="op">+</span><span class="st"> </span><span class="kw">geom_point</span>()</span></code></pre></div>
-<div class="figure"><span id="fig:unnamed-chunk-40"></span>
-<img src="_main_files/figure-html/unnamed-chunk-40-1.png" alt="*Values of $alpha$ when N is extraordinarily large.*" width="50%" />
+<div class="figure"><span id="fig:unnamed-chunk-20"></span>
+<img src="_main_files/figure-html/unnamed-chunk-20-1.png" alt="*Values of $alpha$ when N is extraordinarily large.*" width="50%" />
 <p class="caption">
 Figure 8.8: <em>Values of <span class="math inline">\(alpha\)</span> when N is extraordinarily large.</em>
 </p>
@@ -676,20 +679,26 @@ Figure 8.8: <em>Values of <span class="math inline">\(alpha\)</span> when N is e
 <div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb34-1"><a href="mutualisms.html#cb34-1"></a>problems1 &lt;-<span class="st"> </span><span class="kw">subset</span>(sim.check1, (N1 <span class="op">&lt;</span><span class="st"> </span><span class="dv">0</span> <span class="op">|</span><span class="st"> </span>N2 <span class="op">&lt;</span><span class="st"> </span><span class="dv">0</span> <span class="op">|</span><span class="st"> </span>N1 <span class="op">&gt;</span><span class="st"> </span><span class="fl">1e4</span> <span class="op">|</span><span class="st"> </span>N2 <span class="op">&gt;</span><span class="st"> </span><span class="fl">1e4</span> ) )</span>
 <span id="cb34-2"><a href="mutualisms.html#cb34-2"></a><span class="co"># look at the subset</span></span>
 <span id="cb34-3"><a href="mutualisms.html#cb34-3"></a><span class="kw">ggplot</span>(problems1, <span class="kw">aes</span>(N1, N1.eq)) <span class="op">+</span><span class="st"> </span><span class="kw">geom_point</span>()</span></code></pre></div>
-<div class="figure"><span id="fig:unnamed-chunk-42"></span>
-<img src="_main_files/figure-html/unnamed-chunk-42-1.png" alt="*Analytically calculated predictions for $N^*$* vs. observed simulated $N$." width="50%" />
+<div class="figure"><span id="fig:unnamed-chunk-22"></span>
+<img src="_main_files/figure-html/unnamed-chunk-22-1.png" alt="*Analytically calculated predictions for $N^*$* vs. observed simulated $N$." width="50%" />
 <p class="caption">
 Figure 8.9: <em>Analytically calculated predictions for <span class="math inline">\(N^*\)</span></em> vs. observed simulated <span class="math inline">\(N\)</span>.
 </p>
 </div>
 <p>Fascinating! Both the analytical and the simulated results give us wacky, but very different results. Let’s examine the coefficients that generated these results.</p>
 <div class="sourceCode" id="cb35"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb35-1"><a href="mutualisms.html#cb35-1"></a>problems1[<span class="dv">1</span><span class="op">:</span><span class="dv">5</span>,]</span></code></pre></div>
-<pre><code>##     a11  a12  a21  a22        t            N1            N2      N1.eq      N2.eq
-## 43 -0.1 0.18 0.06 -0.1 3.241398 2.434044e+103 1.390882e+103 -350.00000 -200.00000
-## 44 -0.1 0.20 0.06 -0.1 2.399838  1.164783e+99  6.212179e+98 -150.00000  -80.00000
-## 52 -0.1 0.14 0.08 -0.1 2.889456  1.856660e+65  1.392495e+65 -200.00000 -150.00000
-## 53 -0.1 0.16 0.08 -0.1 2.139629 1.175804e+109 8.140182e+108  -92.85714  -64.28571
-## 54 -0.1 0.18 0.08 -0.1 1.774181 9.054385e+146 5.820676e+146  -63.63636  -40.90909</code></pre>
+<pre><code>##     a11  a12  a21  a22        t            N1            N2      N1.eq
+## 43 -0.1 0.18 0.06 -0.1 3.241398 2.434044e+103 1.390882e+103 -350.00000
+## 44 -0.1 0.20 0.06 -0.1 2.399838  1.164783e+99  6.212179e+98 -150.00000
+## 52 -0.1 0.14 0.08 -0.1 2.889456  1.856660e+65  1.392495e+65 -200.00000
+## 53 -0.1 0.16 0.08 -0.1 2.139629 1.175804e+109 8.140182e+108  -92.85714
+## 54 -0.1 0.18 0.08 -0.1 1.774181 9.054385e+146 5.820676e+146  -63.63636
+##         N2.eq
+## 43 -200.00000
+## 44  -80.00000
+## 52 -150.00000
+## 53  -64.28571
+## 54  -40.90909</code></pre>
 <p>What do you notice about these coefficients?</p>
 <ul>
 <li>What would you get for each term in the for the analytical equilibrium using the first row of data?</li>
@@ -733,8 +742,10 @@ Figure 8.9: <em>Analytically calculated predictions for <span class="math inline
 <p></p>
 <p>A nonsensical equilibrium</p>
 <div class="sourceCode" id="cb45"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb45-1"><a href="mutualisms.html#cb45-1"></a><span class="kw">subset</span>(sim.check1, a12 <span class="op">==</span><span class="st"> </span><span class="fl">.2</span> <span class="op">&amp;</span><span class="st"> </span>a21 <span class="op">==</span><span class="st"> </span><span class="fl">.2</span>)</span></code></pre></div>
-<pre><code>##      a11 a12 a21  a22         t            N1            N2 N1.eq N2.eq
-## 121 -0.1 0.2 0.2 -0.1 0.6931166 8.389656e+145 8.389656e+145   -10   -10</code></pre>
+<pre><code>##      a11 a12 a21  a22         t            N1            N2 N1.eq
+## 121 -0.1 0.2 0.2 -0.1 0.6931166 8.389656e+145 8.389656e+145   -10
+##     N2.eq
+## 121   -10</code></pre>
 <div class="sourceCode" id="cb47"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb47-1"><a href="mutualisms.html#cb47-1"></a>J2 &lt;-<span class="st"> </span><span class="kw">matrix</span>( <span class="kw">c</span>( <span class="fl">-.1</span><span class="op">*</span>(<span class="op">-</span><span class="dv">10</span>), <span class="fl">-.2</span><span class="op">*</span>(<span class="op">-</span><span class="dv">10</span>), </span>
 <span id="cb47-2"><a href="mutualisms.html#cb47-2"></a>                 <span class="fl">-.2</span><span class="op">*</span>(<span class="op">-</span><span class="dv">10</span>), <span class="fl">-.1</span><span class="op">*</span>(<span class="op">-</span><span class="dv">10</span>)), <span class="dt">nrow=</span><span class="dv">2</span>, <span class="dt">byrow=</span><span class="ot">TRUE</span>) </span>
 <span id="cb47-3"><a href="mutualisms.html#cb47-3"></a><span class="kw">eigen</span>(J2)</span></code></pre></div>

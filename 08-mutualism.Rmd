@@ -244,8 +244,8 @@ The growth equation for the frugivore species, $M_2$, includes logistic growth, 
 $$\frac{dM_2}{dt} =  r_2M_2\left(1-d_2M_2\right) + eaM_2\left(\frac{M_1}{h_1+M_1}\right) $$
 The animal seed disperser grows logistically in in the absence of consuming this particular plant species $r_2M_2\left(1-d_2M_2\right)$. The animal benefits from consuming the fruit which it attacks at the same rate as for $M_1$, $aM_2\left(\frac{M_1}{h_1+M_1}\right)$, but converts the fruit into new individuals with efficiency $e$.
 
-* $c > s$, consumption > service = net predation
-* $s > c$, service > consumption = net mutualism
+* consumption > service = net predation
+* service > consumption = net mutualism
 
 Here we provide code for the ODE for the complete bidirectional mutualism. When we define the parameters, we will set some of them equal to zero so that it represents a unidirectional consumer-resource mutualism.
 ```{r}
@@ -370,7 +370,7 @@ The corresponding equation for the other plant species is
 \end{equation}
 
 We often refer to the soil flora associated with a single plant species as its *home* flora, and the other as the *away* flora. Each microbial flora comprises many, many species and we aggregate the net effects. Bever (2003) further simplified his model by placing  constraints on soil microbes, so that $S_A + S_B=1$. This allows him to focus on the relations among microbes and plants. With these assumptions, he showed that the net effect of each flora as a single state variable for the home flora of each species:
-  $$\frac{S_A}{dt} = S_A(1-S_A) \left( \frac{N_A}{N_A + N_B} - \nu\frac{N_B}{N_A + N_B}\right)$$
+  $$\frac{dS_A}{dt} = S_A(1-S_A) \left( \frac{N_A}{N_A + N_B} - \nu\frac{N_B}{N_A + N_B}\right)$$
   and that $$S_B=1-S_A$$.
 
 
@@ -379,7 +379,7 @@ Bever states that (2003, p. 467, bottom of the second column) out that the inter
 $$\alpha_A + \beta_B < \alpha_B + \beta_A $$
 which means that the effects of the home floras own their home plants are less positive (or more negative) then on the other species. 
 
-Bever also argued that for either plant species to increase when rare (i.e. coexist), that the interspecific competition has to be less than the benefits of the interactions of the soil floras. However, his criterion in eqn 5 (p. 469) is not sufficient, and this is revealed by its lack of consistency with the parameter set and outcomes in Fig. 4. So, we will alter his equation a bit to reveal what probably would work. We use the parameterization from Chapter \@ref(Competition)) so that it is consistent with others [@Bolker2003a;@Chesson2000a]. We reformulate the carrying capacities and $c_A$ and $c_B$ as 
+Bever also argued that for either plant species to increase when rare (i.e. coexist), that the interspecific competition has to be less than the benefits of the interactions of the soil floras. However, his criterion in eqn 5 (p. 469) is not sufficient, and this is revealed by its lack of consistency with the parameter set and outcomes in Fig. 4. So, we will alter his equation a bit to reveal what probably would work. We use the parameterization from Chapter \@ref(Competition) so that it is consistent with others [@Bolker2003a;@Chesson2000a]. We reformulate the carrying capacities and $c_A$ and $c_B$ as 
 
 $$\alpha_{AA}=1/K_A;\,\alpha_{BB}=K_B;\,\alpha_{BA}= c_A/K_B;\,\alpha_{AB}=c_B/K_A$$
   If we recall our earlier work, we showed that each species $i$ can invade when 
@@ -390,7 +390,10 @@ $$\frac{\alpha_{AB}}{\alpha_{BB}} =\frac{c_b}{K_A}K_B$$
 $$\frac{\alpha_{BA}}{\alpha_{AA}} =\frac{c_a}{K_B}K_A$$
   The coexistence criterion is that each species must be able to invade when rare, including when the soil flora has no effect. Therefore, we have
 
-$$\left(\frac{c_b}{K_A}K_B,\, \frac{c_a}{K_B}K_A\right) < \frac{(1+\alpha_B)(1+\beta_A)}{(1+\alpha_A)(1+\beta_B)}$$
+\begin{equation}
+\left(\frac{c_b}{K_A}K_B,\, \frac{c_a}{K_B}K_A\right) < \frac{(1+\alpha_B)(1+\beta_A)}{(1+\alpha_A)(1+\beta_B)}
+(\#eq:bevercrit)
+\end{equation}
 
  where both conditions on the left must be satisfied. In the numerator on the right, we have the effect of each soil flora on their away plant species. In the denominator, we have the effects of each flora on the home plant species. Thus, the fraction on the right is the relative benefit of the soil flora. 
 
@@ -433,7 +436,7 @@ with(p, { cB/Ka*Kb < (1+alphaB)*(1+betaA) / ( (1+alphaA)*(1+betaB)) })
 ```
 On this basis, we should see that each species can invade when rare. 
 Now let's see the dynamics play out.
-```{r beverplot, echo=FALSE, fig=TRUE, width=10, height=10, include=TRUE, fig.cap="Dynamics of competing plant species, subject to self-limiting negative feedbacks with soil pathogens.", out.width="40%", fig.show='hold'}
+```{r beverplot, echo=FALSE, fig=TRUE, width=10, height=10, include=TRUE, fig.cap="Dynamics of competing plant species, subject to self-limiting negative feedbacks with soil pathogens.", out.width="50%", fig.show='hold'}
 t <- seq(0,200, .1)
 y0 <- c(Na=4, Nb=9, SA=0.5)
 {outdf <- as.data.frame( ode(y=y0, times=t, fun=bever3, parms=p) )
