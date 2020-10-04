@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>10 Disease | Primer of Ecology using R</title>
+  <meta name="description" content="10 Disease | Primer of Ecology using R" />
+  <meta name="generator" content="bookdown 0.20 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="10 Disease | Primer of Ecology using R" />
+  <meta property="og:type" content="book" />
+  
+  
+  
+  <meta name="github-repo" content="HankStevens/Primer-of-Ecology" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="10 Disease | Primer of Ecology using R" />
+  
+  
+  
+
+<meta name="author" content="Hank Stevens" />
+
+
+<meta name="date" content="2020-10-04" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="consumer-resource-interactions.html"/>
+<link rel="next" href="references.html"/>
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+<script src="libs/accessible-code-block-0.0.1/empty-anchor.js"></script>
+<script src="libs/kePrint-0.0.1/kePrint.js"></script>
+<link href="libs/lightable-0.0.1/lightable.css" rel="stylesheet" />
+<link href="libs/bsTable-3.3.7/bootstrapTable.min.css" rel="stylesheet" />
+<script src="libs/bsTable-3.3.7/bootstrapTable.js"></script>
+<script src="libs/htmlwidgets-1.5.1/htmlwidgets.js"></script>
+<script src="libs/viz-1.8.2/viz.js"></script>
+<link href="libs/DiagrammeR-styles-0.2/styles.css" rel="stylesheet" />
+<script src="libs/grViz-binding-1.0.6.1/grViz.js"></script>
+
+
+<style type="text/css">
+code.sourceCode > span { display: inline-block; line-height: 1.25; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Preface</a></li>
+<li class="chapter" data-level="1" data-path="theory.html"><a href="theory.html"><i class="fa fa-check"></i><b>1</b> Theory in Ecology</a><ul>
+<li class="chapter" data-level="1.1" data-path="theory.html"><a href="theory.html#examples-of-theories"><i class="fa fa-check"></i><b>1.1</b> Examples of theories</a><ul>
+<li class="chapter" data-level="1.1.1" data-path="theory.html"><a href="theory.html#hierarchy-theory"><i class="fa fa-check"></i><b>1.1.1</b> Hierarchy theory</a></li>
+<li class="chapter" data-level="1.1.2" data-path="theory.html"><a href="theory.html#a-general-theory-of-ecology"><i class="fa fa-check"></i><b>1.1.2</b> A general theory of ecology</a></li>
+<li class="chapter" data-level="1.1.3" data-path="theory.html"><a href="theory.html#efficient-theory"><i class="fa fa-check"></i><b>1.1.3</b> Efficient theory</a></li>
+</ul></li>
+<li class="chapter" data-level="1.2" data-path="theory.html"><a href="theory.html#metabolic_scaling"><i class="fa fa-check"></i><b>1.2</b> An example: Metabolic Theory of Ecology</a><ul>
+<li class="chapter" data-level="1.2.1" data-path="theory.html"><a href="theory.html#body-size-dependence"><i class="fa fa-check"></i><b>1.2.1</b> Body-size dependence</a></li>
+<li class="chapter" data-level="1.2.2" data-path="theory.html"><a href="theory.html#temperature-dependence"><i class="fa fa-check"></i><b>1.2.2</b> Temperature dependence</a></li>
+</ul></li>
+<li class="chapter" data-level="1.3" data-path="theory.html"><a href="theory.html#power-law-scaling-implies-constant-relative-differences"><i class="fa fa-check"></i><b>1.3</b> Power law scaling implies constant relative differences</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="oft.html"><a href="oft.html"><i class="fa fa-check"></i><b>2</b> Optimal Foraging</a><ul>
+<li class="chapter" data-level="2.1" data-path="oft.html"><a href="oft.html#a-prey-model"><i class="fa fa-check"></i><b>2.1</b> A prey model</a><ul>
+<li class="chapter" data-level="2.1.1" data-path="oft.html"><a href="oft.html#our-intuition"><i class="fa fa-check"></i><b>2.1.1</b> Our intuition</a></li>
+<li class="chapter" data-level="2.1.2" data-path="oft.html"><a href="oft.html#mathematical-support"><i class="fa fa-check"></i><b>2.1.2</b> Mathematical support</a></li>
+</ul></li>
+<li class="chapter" data-level="2.2" data-path="oft.html"><a href="oft.html#the-patch-model"><i class="fa fa-check"></i><b>2.2</b> The patch model</a></li>
+<li class="chapter" data-level="2.3" data-path="oft.html"><a href="oft.html#a-simulation-of-a-prey-model"><i class="fa fa-check"></i><b>2.3</b> A simulation of a prey model</a><ul>
+<li class="chapter" data-level="2.3.1" data-path="oft.html"><a href="oft.html#lab-exercise"><i class="fa fa-check"></i><b>2.3.1</b> Lab exercise</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="expo.html"><a href="expo.html"><i class="fa fa-check"></i><b>3</b> Simple density-independent growth</a><ul>
+<li class="chapter" data-level="3.1" data-path="expo.html"><a href="expo.html#discrete-growth-rates-of-fruit-flies-in-my-kitchen"><i class="fa fa-check"></i><b>3.1</b> Discrete growth rates of fruit flies in my kitchen</a></li>
+<li class="chapter" data-level="3.2" data-path="expo.html"><a href="expo.html#fruit-flies-with-continuous-overlapping-generations"><i class="fa fa-check"></i><b>3.2</b> Fruit flies with continuous overlapping generations</a></li>
+<li class="chapter" data-level="3.3" data-path="expo.html"><a href="expo.html#properties-of-geometric-and-exponential-growth"><i class="fa fa-check"></i><b>3.3</b> Properties of geometric and exponential growth</a><ul>
+<li class="chapter" data-level="3.3.1" data-path="expo.html"><a href="expo.html#average-growth-rate"><i class="fa fa-check"></i><b>3.3.1</b> Average growth rate</a></li>
+</ul></li>
+<li class="chapter" data-level="3.4" data-path="expo.html"><a href="expo.html#modeling-with-data-simulated-dynamics"><i class="fa fa-check"></i><b>3.4</b> Modeling with Data: Simulated Dynamics</a><ul>
+<li class="chapter" data-level="3.4.1" data-path="expo.html"><a href="expo.html#data-based-approaches"><i class="fa fa-check"></i><b>3.4.1</b> Data-based approaches</a></li>
+<li class="chapter" data-level="3.4.2" data-path="expo.html"><a href="expo.html#creating-and-visualizing-the-data"><i class="fa fa-check"></i><b>3.4.2</b> Creating and visualizing the data</a></li>
+<li class="chapter" data-level="3.4.3" data-path="expo.html"><a href="expo.html#one-simulation"><i class="fa fa-check"></i><b>3.4.3</b> One simulation</a></li>
+<li class="chapter" data-level="3.4.4" data-path="expo.html"><a href="expo.html#multiple-simulations"><i class="fa fa-check"></i><b>3.4.4</b> Multiple simulations</a></li>
+<li class="chapter" data-level="3.4.5" data-path="expo.html"><a href="expo.html#a-distribution-of-possible-futures"><i class="fa fa-check"></i><b>3.4.5</b> A distribution of possible futures</a></li>
+<li class="chapter" data-level="3.4.6" data-path="expo.html"><a href="expo.html#analyzing-results"><i class="fa fa-check"></i><b>3.4.6</b> Analyzing results</a></li>
+<li class="chapter" data-level="3.4.7" data-path="expo.html"><a href="expo.html#inferring-processes-underlying-growth-rate"><i class="fa fa-check"></i><b>3.4.7</b> Inferring processes underlying growth rate</a></li>
+<li class="chapter" data-level="3.4.8" data-path="expo.html"><a href="expo.html#f-environmental-noise"><i class="fa fa-check"></i><b>3.4.8</b> 1/<span class="math inline">\(f\)</span> environmental noise</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="DID.html"><a href="DID.html"><i class="fa fa-check"></i><b>4</b> Density-independent Demography</a><ul>
+<li class="chapter" data-level="4.1" data-path="DID.html"><a href="DID.html#a-two-stage-matrix-model"><i class="fa fa-check"></i><b>4.1</b> A two stage matrix model</a></li>
+<li class="chapter" data-level="4.2" data-path="DID.html"><a href="DID.html#a-brief-primer-on-matrices"><i class="fa fa-check"></i><b>4.2</b> A brief primer on matrices</a></li>
+<li class="chapter" data-level="4.3" data-path="DID.html"><a href="DID.html#decomposing-a"><i class="fa fa-check"></i><b>4.3</b> Decomposing <strong>A</strong></a></li>
+<li class="chapter" data-level="4.4" data-path="DID.html"><a href="DID.html#a-three-stage-model"><i class="fa fa-check"></i><b>4.4</b> A three stage model</a></li>
+<li class="chapter" data-level="4.5" data-path="DID.html"><a href="DID.html#projection"><i class="fa fa-check"></i><b>4.5</b> Projection</a></li>
+<li class="chapter" data-level="4.6" data-path="DID.html"><a href="DID.html#analyzing-the-transition-matrix"><i class="fa fa-check"></i><b>4.6</b> Analyzing the transition matrix</a><ul>
+<li class="chapter" data-level="4.6.1" data-path="DID.html"><a href="DID.html#eigenanalysis"><i class="fa fa-check"></i><b>4.6.1</b> Eigenanalysis</a></li>
+<li class="chapter" data-level="4.6.2" data-path="DID.html"><a href="DID.html#finite-rate-of-increase"><i class="fa fa-check"></i><b>4.6.2</b> Finite rate of increase</a></li>
+<li class="chapter" data-level="4.6.3" data-path="DID.html"><a href="DID.html#stable-stage-distribution"><i class="fa fa-check"></i><b>4.6.3</b> Stable stage distribution</a></li>
+<li class="chapter" data-level="4.6.4" data-path="DID.html"><a href="DID.html#calculating-the-stable-stage-distribution"><i class="fa fa-check"></i><b>4.6.4</b> Calculating the stable stage distribution</a></li>
+<li class="chapter" data-level="4.6.5" data-path="DID.html"><a href="DID.html#reproductive-value"><i class="fa fa-check"></i><b>4.6.5</b> Reproductive value</a></li>
+<li class="chapter" data-level="4.6.6" data-path="DID.html"><a href="DID.html#sensitivity-and-elasticity"><i class="fa fa-check"></i><b>4.6.6</b> Sensitivity and elasticity</a></li>
+</ul></li>
+<li class="chapter" data-level="4.7" data-path="DID.html"><a href="DID.html#integral-projection"><i class="fa fa-check"></i><b>4.7</b> Integral projection</a><ul>
+<li class="chapter" data-level="4.7.1" data-path="DID.html"><a href="DID.html#a-size-based-ipm-of-smooth-coneflower"><i class="fa fa-check"></i><b>4.7.1</b> A size-based IPM of smooth coneflower</a></li>
+<li class="chapter" data-level="4.7.2" data-path="DID.html"><a href="DID.html#population-summaries"><i class="fa fa-check"></i><b>4.7.2</b> Population summaries</a></li>
+</ul></li>
+<li class="chapter" data-level="4.8" data-path="DID.html"><a href="DID.html#r-packges-for-demography"><i class="fa fa-check"></i><b>4.8</b> R packges for demography</a></li>
+<li class="chapter" data-level="4.9" data-path="DID.html"><a href="DID.html#exploring-a-real-population"><i class="fa fa-check"></i><b>4.9</b> Exploring a real population</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="DDgrowth.html"><a href="DDgrowth.html"><i class="fa fa-check"></i><b>5</b> Density-dependent growth</a><ul>
+<li class="chapter" data-level="5.1" data-path="DDgrowth.html"><a href="DDgrowth.html#continuous-logistic-growth"><i class="fa fa-check"></i><b>5.1</b> Continuous logistic growth</a></li>
+<li class="chapter" data-level="5.2" data-path="DDgrowth.html"><a href="DDgrowth.html#dynamics-around-the-equilibria-stability"><i class="fa fa-check"></i><b>5.2</b> Dynamics around the equilibria — stability</a><ul>
+<li class="chapter" data-level="5.2.1" data-path="DDgrowth.html"><a href="DDgrowth.html#analytical-linear-stability-analysis"><i class="fa fa-check"></i><b>5.2.1</b> Analytical linear stability analysis</a></li>
+<li class="chapter" data-level="5.2.2" data-path="DDgrowth.html"><a href="DDgrowth.html#projection-with-numerical-integration"><i class="fa fa-check"></i><b>5.2.2</b> Projection with numerical integration</a></li>
+</ul></li>
+<li class="chapter" data-level="5.3" data-path="DDgrowth.html"><a href="DDgrowth.html#other-forms-of-density-dependent-growth"><i class="fa fa-check"></i><b>5.3</b> Other forms of density-dependent growth</a><ul>
+<li class="chapter" data-level="5.3.1" data-path="DDgrowth.html"><a href="DDgrowth.html#effects-of-n-on-birth-and-death-rates"><i class="fa fa-check"></i><b>5.3.1</b> Effects of N on birth and death rates</a></li>
+<li class="chapter" data-level="5.3.2" data-path="DDgrowth.html"><a href="DDgrowth.html#theta-logistic-growth"><i class="fa fa-check"></i><b>5.3.2</b> Theta-logistic growth</a></li>
+<li class="chapter" data-level="5.3.3" data-path="DDgrowth.html"><a href="DDgrowth.html#allee-effect"><i class="fa fa-check"></i><b>5.3.3</b> Allee effect</a></li>
+<li class="chapter" data-level="5.3.4" data-path="DDgrowth.html"><a href="DDgrowth.html#the-integral-of-logistic-growth"><i class="fa fa-check"></i><b>5.3.4</b> The integral of logistic growth</a></li>
+</ul></li>
+<li class="chapter" data-level="5.4" data-path="DDgrowth.html"><a href="DDgrowth.html#discrete-density-dependent-growth"><i class="fa fa-check"></i><b>5.4</b> Discrete Density-dependent Growth</a><ul>
+<li class="chapter" data-level="5.4.1" data-path="DDgrowth.html"><a href="DDgrowth.html#effects-of-r_d"><i class="fa fa-check"></i><b>5.4.1</b> Effects of <span class="math inline">\(r_d\)</span></a></li>
+<li class="chapter" data-level="5.4.2" data-path="DDgrowth.html"><a href="DDgrowth.html#bifurcations"><i class="fa fa-check"></i><b>5.4.2</b> Bifurcations</a></li>
+</ul></li>
+<li class="chapter" data-level="5.5" data-path="DDgrowth.html"><a href="DDgrowth.html#maximum-sustained-yield"><i class="fa fa-check"></i><b>5.5</b> Maximum Sustained Yield</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="meta.html"><a href="meta.html"><i class="fa fa-check"></i><b>6</b> Populations in Space</a><ul>
+<li class="chapter" data-level="6.1" data-path="meta.html"><a href="meta.html#source-sink-dynamics"><i class="fa fa-check"></i><b>6.1</b> Source-sink Dynamics</a><ul>
+<li class="chapter" data-level="6.1.1" data-path="meta.html"><a href="meta.html#complications-and-cases"><i class="fa fa-check"></i><b>6.1.1</b> Complications and cases</a></li>
+</ul></li>
+<li class="chapter" data-level="6.2" data-path="meta.html"><a href="meta.html#metapopulations"><i class="fa fa-check"></i><b>6.2</b> Metapopulations</a><ul>
+<li class="chapter" data-level="6.2.1" data-path="meta.html"><a href="meta.html#the-classic-levins-model"><i class="fa fa-check"></i><b>6.2.1</b> The classic Levins model</a></li>
+<li class="chapter" data-level="6.2.2" data-path="meta.html"><a href="meta.html#propagule-rain"><i class="fa fa-check"></i><b>6.2.2</b> Propagule rain</a></li>
+<li class="chapter" data-level="6.2.3" data-path="meta.html"><a href="meta.html#the-rescue-effect-and-the-core-satellite-model"><i class="fa fa-check"></i><b>6.2.3</b> The rescue effect and the core-satellite model</a></li>
+<li class="chapter" data-level="6.2.4" data-path="meta.html"><a href="meta.html#parallels-with-logistic-growth"><i class="fa fa-check"></i><b>6.2.4</b> Parallels with Logistic Growth</a></li>
+<li class="chapter" data-level="6.2.5" data-path="meta.html"><a href="meta.html#levins-vs.-hanski"><i class="fa fa-check"></i><b>6.2.5</b> Levins <span class="math inline">\(vs\)</span>. Hanski</a></li>
+<li class="chapter" data-level="6.2.6" data-path="meta.html"><a href="meta.html#habitat-destruction"><i class="fa fa-check"></i><b>6.2.6</b> Habitat Destruction</a></li>
+<li class="chapter" data-level="6.2.7" data-path="meta.html"><a href="meta.html#illustrating-the-effects-of-habitat-destruction"><i class="fa fa-check"></i><b>6.2.7</b> Illustrating the effects of habitat destruction</a></li>
+<li class="chapter" data-level="6.2.8" data-path="meta.html"><a href="meta.html#different-assumptions-lead-to-different-predictions-about-rates-of-extinction"><i class="fa fa-check"></i><b>6.2.8</b> Different assumptions lead to different predictions about rates of extinction</a></li>
+</ul></li>
+<li class="chapter" data-level="6.3" data-path="meta.html"><a href="meta.html#hanskis-incidence-function"><i class="fa fa-check"></i><b>6.3</b> Hanski’s incidence function</a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="competition.html"><a href="competition.html"><i class="fa fa-check"></i><b>7</b> Competition</a><ul>
+<li class="chapter" data-level="7.1" data-path="competition.html"><a href="competition.html#lotka-volterra-interspecific-competition"><i class="fa fa-check"></i><b>7.1</b> Lotka-Volterra Interspecific Competition</a></li>
+<li class="chapter" data-level="7.2" data-path="competition.html"><a href="competition.html#equilbria"><i class="fa fa-check"></i><b>7.2</b> Equilbria</a><ul>
+<li class="chapter" data-level="7.2.1" data-path="competition.html"><a href="competition.html#isoclines"><i class="fa fa-check"></i><b>7.2.1</b> Isoclines</a></li>
+<li class="chapter" data-level="7.2.2" data-path="competition.html"><a href="competition.html#finding-equilibria"><i class="fa fa-check"></i><b>7.2.2</b> Finding equilibria</a></li>
+<li class="chapter" data-level="7.2.3" data-path="competition.html"><a href="competition.html#coexistence-the-invasion-criterion"><i class="fa fa-check"></i><b>7.2.3</b> Coexistence — the invasion criterion</a></li>
+<li class="chapter" data-level="7.2.4" data-path="competition.html"><a href="competition.html#other-equilibria"><i class="fa fa-check"></i><b>7.2.4</b> Other equilibria</a></li>
+</ul></li>
+<li class="chapter" data-level="7.3" data-path="competition.html"><a href="competition.html#dynamics-at-the-equilibria"><i class="fa fa-check"></i><b>7.3</b> Dynamics at the Equilibria</a><ul>
+<li class="chapter" data-level="7.3.1" data-path="competition.html"><a href="competition.html#determine-the-equilibria"><i class="fa fa-check"></i><b>7.3.1</b> Determine the equilibria</a></li>
+<li class="chapter" data-level="7.3.2" data-path="competition.html"><a href="competition.html#create-the-jacobian-matrix"><i class="fa fa-check"></i><b>7.3.2</b> Create the Jacobian matrix</a></li>
+<li class="chapter" data-level="7.3.3" data-path="competition.html"><a href="competition.html#solve-the-jacobian-at-an-equilibrium"><i class="fa fa-check"></i><b>7.3.3</b> Solve the Jacobian at an equilibrium</a></li>
+<li class="chapter" data-level="7.3.4" data-path="competition.html"><a href="competition.html#use-the-jacobian-matrix"><i class="fa fa-check"></i><b>7.3.4</b> Use the Jacobian matrix</a></li>
+<li class="chapter" data-level="7.3.5" data-path="competition.html"><a href="competition.html#three-interesting-equilbria"><i class="fa fa-check"></i><b>7.3.5</b> Three interesting equilbria</a></li>
+</ul></li>
+<li class="chapter" data-level="7.4" data-path="competition.html"><a href="competition.html#return-time-and-the-effect-of-r"><i class="fa fa-check"></i><b>7.4</b> Return Time and the Effect of <span class="math inline">\(r\)</span></a></li>
+<li class="chapter" data-level="7.5" data-path="competition.html"><a href="competition.html#indirect-competition-for-resources"><i class="fa fa-check"></i><b>7.5</b> Indirect competition for resources</a><ul>
+<li class="chapter" data-level="7.5.1" data-path="competition.html"><a href="competition.html#linear-and-nonlinear-responses"><i class="fa fa-check"></i><b>7.5.1</b> Linear and nonlinear responses</a></li>
+<li class="chapter" data-level="7.5.2" data-path="competition.html"><a href="competition.html#relative-nonlinearity"><i class="fa fa-check"></i><b>7.5.2</b> Relative nonlinearity</a></li>
+<li class="chapter" data-level="7.5.3" data-path="competition.html"><a href="competition.html#competition-for-two-resources-the-resource-ratio-model"><i class="fa fa-check"></i><b>7.5.3</b> Competition for two resources: the resource ratio model</a></li>
+</ul></li>
+<li class="chapter" data-level="7.6" data-path="competition.html"><a href="competition.html#summary"><i class="fa fa-check"></i><b>7.6</b> Summary</a></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="mutualisms.html"><a href="mutualisms.html"><i class="fa fa-check"></i><b>8</b> Mutualisms</a><ul>
+<li class="chapter" data-level="8.1" data-path="mutualisms.html"><a href="mutualisms.html#background"><i class="fa fa-check"></i><b>8.1</b> Background</a></li>
+<li class="chapter" data-level="8.2" data-path="mutualisms.html"><a href="mutualisms.html#lotka-volterra-mutualism"><i class="fa fa-check"></i><b>8.2</b> Lotka-Volterra mutualism</a></li>
+<li class="chapter" data-level="8.3" data-path="mutualisms.html"><a href="mutualisms.html#consumer-resource-mutualism"><i class="fa fa-check"></i><b>8.3</b> Consumer-resource mutualism</a><ul>
+<li class="chapter" data-level="8.3.1" data-path="mutualisms.html"><a href="mutualisms.html#a-model-of-uni-directional-mutualism"><i class="fa fa-check"></i><b>8.3.1</b> A model of uni-directional mutualism</a></li>
+</ul></li>
+<li class="chapter" data-level="8.4" data-path="mutualisms.html"><a href="mutualisms.html#plant-soil-feedbacks"><i class="fa fa-check"></i><b>8.4</b> Plant-soil feedbacks</a></li>
+<li class="chapter" data-level="8.5" data-path="mutualisms.html"><a href="mutualisms.html#simulations-for-learning"><i class="fa fa-check"></i><b>8.5</b> Simulations for learning</a><ul>
+<li class="chapter" data-level="8.5.1" data-path="mutualisms.html"><a href="mutualisms.html#lvg"><i class="fa fa-check"></i><b>8.5.1</b> <code>lvg()</code></a></li>
+<li class="chapter" data-level="8.5.2" data-path="mutualisms.html"><a href="mutualisms.html#systematic-simulations"><i class="fa fa-check"></i><b>8.5.2</b> Systematic simulations</a></li>
+<li class="chapter" data-level="8.5.3" data-path="mutualisms.html"><a href="mutualisms.html#checking-simulation-results"><i class="fa fa-check"></i><b>8.5.3</b> Checking simulation results</a></li>
+<li class="chapter" data-level="8.5.4" data-path="mutualisms.html"><a href="mutualisms.html#comparing-simulation-results-to-analytical-solutions"><i class="fa fa-check"></i><b>8.5.4</b> Comparing simulation results to analytical solutions</a></li>
+<li class="chapter" data-level="8.5.5" data-path="mutualisms.html"><a href="mutualisms.html#one-last-thing-using-the-jacobian-matrix"><i class="fa fa-check"></i><b>8.5.5</b> One last thing: using the Jacobian matrix</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="9" data-path="consumer-resource-interactions.html"><a href="consumer-resource-interactions.html"><i class="fa fa-check"></i><b>9</b> Consumer-resource Interactions</a><ul>
+<li class="chapter" data-level="9.1" data-path="consumer-resource-interactions.html"><a href="consumer-resource-interactions.html#ratio-dependence"><i class="fa fa-check"></i><b>9.1</b> Ratio dependence</a><ul>
+<li class="chapter" data-level="9.1.1" data-path="consumer-resource-interactions.html"><a href="consumer-resource-interactions.html#dynamics-of-ratio-dependent-predation"><i class="fa fa-check"></i><b>9.1.1</b> Dynamics of ratio dependent predation</a></li>
+</ul></li>
+<li class="chapter" data-level="9.2" data-path="consumer-resource-interactions.html"><a href="consumer-resource-interactions.html#prey-dependence"><i class="fa fa-check"></i><b>9.2</b> Prey dependence</a><ul>
+<li class="chapter" data-level="9.2.1" data-path="consumer-resource-interactions.html"><a href="consumer-resource-interactions.html#dyanmics-of-prey-dependent-predation"><i class="fa fa-check"></i><b>9.2.1</b> Dyanmics of prey-dependent predation</a></li>
+</ul></li>
+<li class="chapter" data-level="9.3" data-path="consumer-resource-interactions.html"><a href="consumer-resource-interactions.html#interlude-functional-response---what-an-individual-predator-does"><i class="fa fa-check"></i><b>9.3</b> Interlude: Functional response - what an individual predator does</a></li>
+<li class="chapter" data-level="9.4" data-path="consumer-resource-interactions.html"><a href="consumer-resource-interactions.html#stability-analysis-for-the-prey-dependent-lotkavolterra-model"><i class="fa fa-check"></i><b>9.4</b> Stability analysis for the prey-dependent Lotka–Volterra model</a></li>
+<li class="chapter" data-level="9.5" data-path="consumer-resource-interactions.html"><a href="consumer-resource-interactions.html#prey-carrying-capacity-and-type-ii-functional-response"><i class="fa fa-check"></i><b>9.5</b> Prey carrying capacity and type II functional response</a><ul>
+<li class="chapter" data-level="9.5.1" data-path="consumer-resource-interactions.html"><a href="consumer-resource-interactions.html#paradox-of-enrichment"><i class="fa fa-check"></i><b>9.5.1</b> Paradox of enrichment</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="10" data-path="disease.html"><a href="disease.html"><i class="fa fa-check"></i><b>10</b> Disease</a><ul>
+<li class="chapter" data-level="10.0.1" data-path="disease.html"><a href="disease.html#sir-with-frequencydependent-transmission"><i class="fa fa-check"></i><b>10.0.1</b> SIR with frequency–dependent transmission</a></li>
+<li class="chapter" data-level="10.0.2" data-path="disease.html"><a href="disease.html#antonovic-et-al.-metapopulation-disease-dynamics"><i class="fa fa-check"></i><b>10.0.2</b> Antonovic et al. Metapopulation disease dynamics</a></li>
+<li class="chapter" data-level="10.0.3" data-path="disease.html"><a href="disease.html#lyme-disease"><i class="fa fa-check"></i><b>10.0.3</b> Lyme Disease</a></li>
+</ul></li>
+<li class="chapter" data-level="11" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i><b>11</b> References</a></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Primer of Ecology using R</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="disease" class="section level1">
+<h1><span class="header-section-number">10</span> Disease</h1>
+<p>Here we discuss epidemiological disease models. Pathogens cause diseases, and are typically defined as microorganisms (fungi, bacteria, and viruses) with some host specificity, and which undergo population growth within the host.</p>
+Our simplest models of disease are funny, in that they don’t model pathogens (the enemy) at all. These famous models, by <span class="citation">Kermack and McCormick (<a href="#ref-Kermack:1927fk" role="doc-biblioref">1927</a>)</span>, keep track of different types of hosts, primarily those with and without diseas that model all <span class="math inline">\(N\)</span> hosts by keeping track of
+
+<p>where <span class="math inline">\(N=S+I+R\)</span>. It is important to note that <span class="math inline">\(N\)</span>, <span class="math inline">\(S\)</span>, <span class="math inline">\(I\)</span>, and <span class="math inline">\(R\)</span> are . That is, we track numbers of individuals in a fixed area. This is important because it has direct consequences for the spread, or transmission, of disease <span class="citation">(McCallum, Barlow, and Hone <a href="#ref-McCallum2001" role="doc-biblioref">2001</a>)</span>.</p>
+<p>Disease spreads from infected individuals to susceptible individuals. The rate depends to some extent on the number or alternatively, on the fraction of the population that is infected. Resistant individuals are not typically considered vectors of the pathogens, and so increased abundance of resistant individuals slow the transmission rate by diluting the other two groups.</p>
+<p>A good starting place is a simple SIR model for a population of constant size, with no immigration or emigration <span class="citation">(Ellner and Guckenheimer <a href="#ref-Ellner:2006qe" role="doc-biblioref">2006</a>, @Kermack:1927fk)</span>.
+<span class="math display" id="eq:SIR">\[\begin{align*}
+  \tag{10.1}
+  \frac{d S}{d t} &amp;= -\beta IS\\
+  \frac{d I}{d t} &amp;=\beta IS  - \gamma I\\
+  \frac{d R}{d t} &amp;= \gamma I
+\end{align*}\]</span></p>
+<div class="sourceCode" id="cb284"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb284-1"><a href="disease.html#cb284-1"></a><span class="co"># Here we create the function for the simple SIR model.</span></span>
+<span id="cb284-2"><a href="disease.html#cb284-2"></a>SIR &lt;-<span class="st"> </span><span class="cf">function</span>(t, y, p) {</span>
+<span id="cb284-3"><a href="disease.html#cb284-3"></a>  <span class="kw">with</span>( <span class="kw">as.list</span>(<span class="kw">c</span>(y, p)), {</span>
+<span id="cb284-4"><a href="disease.html#cb284-4"></a>    dS.dt &lt;-<span class="st"> </span><span class="op">-</span>B<span class="op">*</span>I<span class="op">*</span>S</span>
+<span id="cb284-5"><a href="disease.html#cb284-5"></a>    dI.dt &lt;-<span class="st"> </span>B<span class="op">*</span>I<span class="op">*</span>S <span class="op">-</span><span class="st"> </span>g<span class="op">*</span>I</span>
+<span id="cb284-6"><a href="disease.html#cb284-6"></a>    dR.dt &lt;-<span class="st"> </span>g<span class="op">*</span>I</span>
+<span id="cb284-7"><a href="disease.html#cb284-7"></a>   <span class="kw">return</span>( <span class="kw">list</span>(<span class="kw">c</span>(dS.dt, dI.dt, dR.dt)) )</span>
+<span id="cb284-8"><a href="disease.html#cb284-8"></a>  } )</span>
+<span id="cb284-9"><a href="disease.html#cb284-9"></a>}</span></code></pre></div>
+<p>In this model, the <em>transmission coefficient</em>, <span class="math inline">\(\beta\)</span>, describes the instantaneous rate at which the number of infected hosts increases per infected individual. It is directly analogous to the attack rate of type I prey-dependent models. Recall that it is based on the law of mass action, borrowed from physics and chemistry. It assumes that the rate at which events occur (new infections) is due to complete and random mixing of the reactants (<span class="math inline">\(S,\,I\)</span>), and the rate at which the reactants collide and react can be described by a single constant, <span class="math inline">\(\beta\)</span>. As density of either type of molecule increases, so too does the rate of interaction. In prey-dependent predation, we referred to <span class="math inline">\(aN\)</span> as a linear functional response; here we refer to <span class="math inline">\(\beta S\)</span> as the <em>density-dependent transmission function</em>. The <em>transmission rate</em> is the instantaneous rate for the number of <em>new infections</em> or cases per unit time <span class="citation">(McCallum, Barlow, and Hone <a href="#ref-McCallum2001" role="doc-biblioref">2001</a>)</span>.</p>
+<p>Resistant individuals might be resistant for one of two reasons. They may die, or they may develop immunities. In either case, we assume they cannot catch the disease again, nor spread the disease. As this model assumses a constant population size, we continue to count all <span class="math inline">\(R\)</span> individuals, regardless of whether they become immune or die.</p>
+<p>The individuals become resistant to this disease at the constant per capita rate, <span class="math inline">\(\gamma\)</span>. The rate <span class="math inline">\(\gamma\)</span> is also the inverse of the mean residence time, or , of the disease.</p>
+<p>Disease  is the number of new infections or cases occurring over a defined time interval. This definition makes incidence a discrete-time version of transmission rate.  is the fraction of the population that is infected <span class="math inline">\(I/N\)</span>.</p>
+<p>A common question in disease ecology is to ask under what conditions will an outbreak occur. Another way of asking that is to ask what conditions cause <span class="math inline">\(\dot{I}&gt;0\)</span>. We can set <span class="math inline">\(dI/dt &gt; 0\)</span> and solve for something interesting about what is required for an outbreak to occur.
+<span class="math display">\[\begin{align}
+  0 &amp; &lt; \beta IS - \gamma I\notag\\
+  \frac{\gamma}{\beta} &amp;&lt; S
+\end{align}\]</span>
+What does this tell us? First, because we could divide through by <span class="math inline">\(I\)</span>, it means that if no one is infected, then an outbreak can’t happen — it is the usual, but typically unstable equilibrium at 0. Second, it tells us that an outbreak will occur if the absolute density of susceptibles<a href="#fn53" class="footnote-ref" id="fnref53"><sup>53</sup></a> is greater than <span class="math inline">\(\gamma / \beta\)</span>. If we consider the pre-outbreak situation where <span class="math inline">\(S \approx N\)</span>, then simply making the population size (and density) low enough can halt the spread of disease. This is why outbreaks tend to occur in high density populations, such as agricultural hosts (e.g., cattle), or historically in urban human populations, or in schools.</p>
+<p>Vaccinations are a way to reduce <span class="math inline">\(S\)</span> without reducing <span class="math inline">\(N\)</span>. If a sufficient number of individuals in the population are vaccinated to reduce <span class="math inline">\(S\)</span> below <span class="math inline">\(\gamma / \beta\)</span>, this tends to protect the unvaccinated individuals as well.</p>
+<p>Another common representation of this is called the <em>force of infection</em> or <em>basic reproductive rate of the disease.</em> If we assume that in a large population <span class="math inline">\(S \approx N\)</span>, then rearranging eq. <a href="disease.html#eq:R0">(10.2)</a> gives us
+<span class="math display" id="eq:R0">\[\begin{equation}
+\tag{10.2}
+  R_0=\frac{\beta N}{\gamma}
+\end{equation}\]</span>
+where <span class="math inline">\(R_0\)</span> is the basic reproductive rate of the disease. If <span class="math inline">\(R_0 &gt; 1\)</span>, then an outbreak (i.e., disease growth) is plausible. This is analogous to the finite rate of increase of a population where <span class="math inline">\(\lambda&gt;1\)</span>.</p>
+<p>Here we model the outbreak of a nonlethal disease (e.g., a new cold virus in winter on a university campus). We assume that the disease is neither life-threatening, and nor is anyone resistant, thus <span class="math inline">\(R_{t=0}=0\)</span>. We can investigate the SIR model by pretending that, as is often the case, we begin with a largely uninfected population and <span class="math inline">\(t=0\)</span>, so <span class="math inline">\(I_0=1\)</span> and <span class="math inline">\(S_0\approx N\)</span>. We first set parameters. Let’s imagine that a</p>
+<div class="sourceCode" id="cb285"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb285-1"><a href="disease.html#cb285-1"></a>N &lt;-<span class="st"> </span><span class="dv">10</span><span class="op">^</span><span class="dv">4</span>; I &lt;-<span class="st"> </span>R &lt;-<span class="st"> </span><span class="dv">1</span>; S &lt;-<span class="st"> </span>N <span class="op">-</span><span class="st"> </span>I <span class="op">-</span><span class="st"> </span>R</span>
+<span id="cb285-2"><a href="disease.html#cb285-2"></a>y &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dt">S=</span>S, <span class="dt">I=</span>I, <span class="dt">R=</span>R)</span>
+<span id="cb285-3"><a href="disease.html#cb285-3"></a>parms &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dt">B=</span>.<span class="dv">01</span>, <span class="dt">g=</span><span class="dv">4</span>)</span>
+<span id="cb285-4"><a href="disease.html#cb285-4"></a><span class="co"># Next we integrate for three months.</span></span>
+<span id="cb285-5"><a href="disease.html#cb285-5"></a>months &lt;-<span class="st"> </span><span class="kw">seq</span>(<span class="dv">0</span>,<span class="dv">3</span>, <span class="dt">by=</span><span class="fl">0.01</span>)</span>
+<span id="cb285-6"><a href="disease.html#cb285-6"></a>out1 &lt;-<span class="st"> </span><span class="kw">data.frame</span>( <span class="kw">ode</span>(y, months, SIR, parms) )</span>
+<span id="cb285-7"><a href="disease.html#cb285-7"></a>out2 &lt;-<span class="st"> </span><span class="kw">pivot_longer</span>(out1, <span class="dt">cols=</span>S<span class="op">:</span>R, <span class="dt">names_to=</span><span class="st">&quot;Host&quot;</span>, <span class="dt">values_to=</span><span class="st">&quot;N&quot;</span>)</span>
+<span id="cb285-8"><a href="disease.html#cb285-8"></a><span class="kw">ggplot</span>(out2, <span class="kw">aes</span>(time, N, <span class="dt">linetype=</span>Host)) <span class="op">+</span><span class="st"> </span><span class="kw">geom_line</span>() <span class="op">+</span><span class="st"> </span><span class="kw">labs</span>(<span class="dt">x=</span><span class="st">&quot;Months&quot;</span>)</span></code></pre></div>
+<p><img src="figs/cold-1.png" width="90%" /></p>
+<div class="sourceCode" id="cb286"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb286-1"><a href="disease.html#cb286-1"></a><span class="co"># Emerald ash borer?</span></span>
+<span id="cb286-2"><a href="disease.html#cb286-2"></a>N &lt;-<span class="st"> </span><span class="dv">10</span><span class="op">^</span><span class="dv">4</span>; I &lt;-<span class="st"> </span>R &lt;-<span class="st"> </span><span class="dv">1</span>; S &lt;-<span class="st"> </span>N <span class="op">-</span><span class="st"> </span>I <span class="op">-</span><span class="st"> </span>R</span>
+<span id="cb286-3"><a href="disease.html#cb286-3"></a>y &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dt">S=</span>S, <span class="dt">I=</span>I, <span class="dt">R=</span>R)</span>
+<span id="cb286-4"><a href="disease.html#cb286-4"></a><span class="co"># ash death takes about 4 years to die, </span></span>
+<span id="cb286-5"><a href="disease.html#cb286-5"></a><span class="co"># meaning it is infected for about 4 years</span></span>
+<span id="cb286-6"><a href="disease.html#cb286-6"></a>duration &lt;-<span class="st"> </span><span class="dv">4</span></span>
+<span id="cb286-7"><a href="disease.html#cb286-7"></a>gamma =<span class="st"> </span><span class="dv">1</span><span class="op">/</span>duration</span>
+<span id="cb286-8"><a href="disease.html#cb286-8"></a><span class="co"># question = how to estimate beta?</span></span>
+<span id="cb286-9"><a href="disease.html#cb286-9"></a>beta =<span class="st"> </span><span class="fl">.0005</span></span>
+<span id="cb286-10"><a href="disease.html#cb286-10"></a>parms &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dt">B=</span>beta, <span class="dt">g=</span>gamma)</span>
+<span id="cb286-11"><a href="disease.html#cb286-11"></a>years &lt;-<span class="st"> </span><span class="kw">seq</span>(<span class="dv">0</span>,<span class="dv">10</span>, <span class="dt">by=</span><span class="fl">0.01</span>)</span>
+<span id="cb286-12"><a href="disease.html#cb286-12"></a>out1 &lt;-<span class="st"> </span><span class="kw">data.table</span>( <span class="kw">ode</span>(y, years, SIR, parms)  )</span>
+<span id="cb286-13"><a href="disease.html#cb286-13"></a>out2 &lt;-<span class="st"> </span><span class="kw">pivot_longer</span>(out1, <span class="dt">cols=</span>S<span class="op">:</span>R, <span class="dt">names_to=</span><span class="st">&quot;Host&quot;</span>, <span class="dt">values_to=</span><span class="st">&quot;N&quot;</span>)</span>
+<span id="cb286-14"><a href="disease.html#cb286-14"></a><span class="kw">ggplot</span>(out2, <span class="kw">aes</span>(time, N, <span class="dt">linetype=</span>Host)) <span class="op">+</span><span class="st"> </span><span class="kw">geom_line</span>() <span class="op">+</span><span class="st"> </span><span class="kw">labs</span>(<span class="dt">x=</span><span class="st">&quot;Years&quot;</span>)</span></code></pre></div>
+<p><img src="figs/ash-1.png" width="90%" />
+It is important at this point to reiterate a point we made above — <em>these conclusions apply when S, I, and R are densities</em> <span class="citation">(McCallum, Barlow, and Hone <a href="#ref-McCallum2001" role="doc-biblioref">2001</a>)</span>. If you increase population size but also the area associated with the population, then you have not changed density. If population size only increases, but density is constant, then interaction frequency does not increase. Some populations may increase in density as they increase is size, but some may not. Mass action dynamics are the same as type I functional response as predators — there is a constant linear increase in per capita infection rate as the number of susceptible hosts increases.</p>
+<div id="sir-with-frequencydependent-transmission" class="section level3">
+<h3><span class="header-section-number">10.0.1</span> SIR with frequency–dependent transmission</h3>
+<p>In addition to density dependent transmission, investigators have used other forms of density dependence. One the most common is typically known as <em>frequency–dependent</em> transmission, where transmission depends on the <em>prevalence</em>, or the frequency of infecteds in the population, <span class="math inline">\(I/N\)</span>.
+<span class="math display">\[\begin{align}
+  \frac{d S}{d t} &amp;= - \beta \frac{SI}{N} \#eq:SIRfd1\\
+  \frac{d I}{d t} &amp;=   \beta \frac{SI}{N} - \gamma I \#eq:SIRfd2\\
+  \frac{d I}{d t} &amp;=   \gamma I. \#eq:SIRfd2
+\end{align}\]</span></p>
+<p>Here we create the function for the system of ODEs in eq. .</p>
+<div class="sourceCode" id="cb287"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb287-1"><a href="disease.html#cb287-1"></a>SIRf &lt;-<span class="st"> </span><span class="cf">function</span>(t, y, p) {</span>
+<span id="cb287-2"><a href="disease.html#cb287-2"></a>  N &lt;-<span class="st"> </span><span class="kw">sum</span>(y)</span>
+<span id="cb287-3"><a href="disease.html#cb287-3"></a>  <span class="kw">with</span>( <span class="kw">as.list</span>(<span class="kw">c</span>(y,p)), {</span>
+<span id="cb287-4"><a href="disease.html#cb287-4"></a>    dS.dt &lt;-<span class="st"> </span><span class="op">-</span>B<span class="op">*</span>I<span class="op">*</span>S<span class="op">/</span>N</span>
+<span id="cb287-5"><a href="disease.html#cb287-5"></a>    dI.dt &lt;-<span class="st"> </span>B<span class="op">*</span>I<span class="op">*</span>S<span class="op">/</span>N <span class="op">-</span><span class="st"> </span>g<span class="op">*</span>I</span>
+<span id="cb287-6"><a href="disease.html#cb287-6"></a>    dR.dt &lt;-<span class="st"> </span>g<span class="op">*</span>I</span>
+<span id="cb287-7"><a href="disease.html#cb287-7"></a>   <span class="kw">return</span>( <span class="kw">list</span>(<span class="kw">c</span>(dS.dt, dI.dt, dR.dt)) )</span>
+<span id="cb287-8"><a href="disease.html#cb287-8"></a>  } )</span>
+<span id="cb287-9"><a href="disease.html#cb287-9"></a>}</span></code></pre></div>
+<p>The proper form of the transmission function depends on the mode of transmission <span class="citation">(McCallum, Barlow, and Hone <a href="#ref-McCallum2001" role="doc-biblioref">2001</a>)</span>. Imagine two people are on an elevator, one sick (infected), and one healthy but susceptible, and then the sick individual sneezes <span class="citation">(Ellner and Guckenheimer <a href="#ref-Ellner:2006qe" role="doc-biblioref">2006</a>)</span>. This results in a particular probability, <span class="math inline">\(\beta\)</span>, that the susceptible individual gets infected. Now imagine resistant individuals get on the elevator — should adding resistant individuals change the probability that the susceptible individual gets infected? Note what has and has not changed. First, with the addition of a resistant individual, <span class="math inline">\(N\)</span> has increased, and prevalence, <span class="math inline">\(I/N\)</span>, has decreased. However, the densities of <span class="math inline">\(I\)</span> and <span class="math inline">\(S\)</span> remain the same (1 per elevator). What might happen? There are at least two possible outcomes:</p>
+<ol style="list-style-type: decimal">
+<li>If sufficient amounts of the virus spread evenly throughout the elevator, adding a resistant individual does <em>not</em> change the probability of the susceptible becoming sick, and the rate of spread will remain dependent on the densities of <span class="math inline">\(I\)</span> and <span class="math inline">\(S\)</span> — the rate will not vary with declining prevalence.</li>
+<li>If only the immediate neighbor gets exposed to the pathogen, then the probability that the neighbor is susceptible declines with increasing <span class="math inline">\(R\)</span>, and thus the rate of spread <em>will</em> decline with declining prevalence.</li>
+</ol>
+<p>It is fairly easy to imagine different scenarios, and it is very important to justify the form of the function.</p>
+<div class="sourceCode" id="cb288"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb288-1"><a href="disease.html#cb288-1"></a>R &lt;-<span class="st"> </span><span class="dv">0</span>; S &lt;-<span class="st"> </span>I &lt;-<span class="st"> </span><span class="dv">1000</span>; Ss &lt;-<span class="st"> </span>Is &lt;-<span class="st"> </span><span class="kw">seq</span>(<span class="dv">1</span>, S, <span class="dt">length=</span><span class="dv">11</span>); N &lt;-<span class="st"> </span>S<span class="op">+</span>I<span class="op">+</span>R</span>
+<span id="cb288-2"><a href="disease.html#cb288-2"></a>betaD &lt;-<span class="st"> </span><span class="fl">0.1</span>; betaF &lt;-<span class="st"> </span>betaD<span class="op">*</span>N</span>
+<span id="cb288-3"><a href="disease.html#cb288-3"></a></span>
+<span id="cb288-4"><a href="disease.html#cb288-4"></a><span class="co"># sapply will calculate the transmission functions for each combination of</span></span>
+<span id="cb288-5"><a href="disease.html#cb288-5"></a><span class="co"># the values of $I$ and $S$.</span></span>
+<span id="cb288-6"><a href="disease.html#cb288-6"></a>mat1 &lt;-<span class="st"> </span><span class="kw">sapply</span>(Is, <span class="cf">function</span>(i) betaD <span class="op">*</span><span class="st"> </span>i <span class="op">*</span><span class="st"> </span>Ss)</span>
+<span id="cb288-7"><a href="disease.html#cb288-7"></a>mat2 &lt;-<span class="st"> </span><span class="kw">sapply</span>(Is, <span class="cf">function</span>(i) betaF <span class="op">*</span><span class="st"> </span>i <span class="op">*</span><span class="st"> </span>Ss <span class="op">/</span><span class="st"> </span>(i <span class="op">+</span><span class="st"> </span>Ss <span class="op">+</span><span class="st"> </span>R) )</span>
+<span id="cb288-8"><a href="disease.html#cb288-8"></a><span class="co"># Now we plot these matrices. </span></span>
+<span id="cb288-9"><a href="disease.html#cb288-9"></a></span>
+<span id="cb288-10"><a href="disease.html#cb288-10"></a>{</span>
+<span id="cb288-11"><a href="disease.html#cb288-11"></a>  <span class="kw">layout</span>(<span class="kw">matrix</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">2</span>, <span class="dt">nr=</span><span class="dv">1</span>))</span>
+<span id="cb288-12"><a href="disease.html#cb288-12"></a><span class="kw">persp</span>(mat1, <span class="dt">theta=</span><span class="dv">20</span>, <span class="dt">phi=</span><span class="dv">15</span>, <span class="dt">r=</span><span class="dv">10</span>, <span class="dt">zlim=</span><span class="kw">c</span>(<span class="dv">0</span>,betaD<span class="op">*</span>S<span class="op">*</span>I), </span>
+<span id="cb288-13"><a href="disease.html#cb288-13"></a>      <span class="dt">main=</span><span class="st">&quot;Density Dependent&quot;</span>,</span>
+<span id="cb288-14"><a href="disease.html#cb288-14"></a>      <span class="dt">xlab=</span><span class="st">&quot;I&quot;</span>, <span class="dt">ylab=</span><span class="st">&quot;S&quot;</span>, <span class="dt">zlab=</span><span class="st">&quot;Transmission Rate&quot;</span>)</span>
+<span id="cb288-15"><a href="disease.html#cb288-15"></a><span class="kw">persp</span>(mat2, <span class="dt">theta=</span><span class="dv">20</span>, <span class="dt">phi=</span><span class="dv">15</span>, <span class="dt">r=</span><span class="dv">10</span>, <span class="dt">zlim=</span><span class="kw">c</span>(<span class="dv">0</span>,betaF<span class="op">*</span>S<span class="op">*</span>I<span class="op">/</span>N), </span>
+<span id="cb288-16"><a href="disease.html#cb288-16"></a>      <span class="dt">main=</span><span class="st">&quot;Frequency Dependent&quot;</span>,</span>
+<span id="cb288-17"><a href="disease.html#cb288-17"></a>      <span class="dt">xlab=</span><span class="st">&quot;I&quot;</span>, <span class="dt">ylab=</span><span class="st">&quot;S&quot;</span>, <span class="dt">zlab=</span><span class="st">&quot;Transmission Rate&quot;</span>)</span>
+<span id="cb288-18"><a href="disease.html#cb288-18"></a>}</span></code></pre></div>
+<p><img src="figs/unnamed-chunk-121-1.png" width="90%" /></p>
+</div>
+<div id="antonovic-et-al.-metapopulation-disease-dynamics" class="section level3">
+<h3><span class="header-section-number">10.0.2</span> Antonovic et al. Metapopulation disease dynamics</h3>
+<p><em>Silene alba</em> and <em>Microbotryum violacea</em>
+Proportion of subpopulations that have an infected plant increases with the size of the subpopulation</p>
+<p>Disease prevalence declines with subpopulation size. This is characteristic of frequency-dependent transmission.</p>
+</div>
+<div id="lyme-disease" class="section level3">
+<h3><span class="header-section-number">10.0.3</span> Lyme Disease</h3>
+<p>Van Buskirk and Ostfeld 1995 Eco. Appl.
+<em>Borrelia burgdorferi</em> spirochete
+Blacklegged tick <em>Ixodes scapularis</em>
+<em>Peromyscus leucopus</em> Whitefooted mouse
+Whitetailed deer <em>Oedicoilius virginiana</em>
+spring 1: eggs
+summer 1: larva on intermediate host - small mammal or bird
+spring 2: nymph a new intermediate host small mammal or bird
+summer 2: drops off host 2, seeks definitive host (tyupically deer); most dangerous to humans
+fall 2: adult on deer (low risk to humans)</p>
+<p>host competence: whitefooted mice vs. chipmunks and birds</p>
+
+</div>
+</div>
+<h3> References</h3>
+<div id="refs" class="references">
+<div id="ref-Ellner:2006qe">
+<p>Ellner, S P, and J Guckenheimer. 2006. <em>Dynamic Models in Biology</em>. Princeton University Press, Princeton, NJ.</p>
+</div>
+<div id="ref-Kermack:1927fk">
+<p>Kermack, W O, and W G McCormick. 1927. “A contribution to the mathematical theory of epidemics.” <em>Proceedings of the Royal Society, Series A</em> 115: 700–721.</p>
+</div>
+<div id="ref-McCallum2001">
+<p>McCallum, Hamish, Nigel Barlow, and Jim Hone. 2001. “How should pathogen transmission be modelled?” <em>Trends in Ecology and Evolution</em> 16 (6): 295–300.</p>
+</div>
+</div>
+<div class="footnotes">
+<hr />
+<ol start="53">
+<li id="fn53"><p><span class="math inline">\(S\)</span> is the absolute density, whereas <span class="math inline">\(S/N\)</span> is the relative density.<a href="disease.html#fnref53" class="footnote-back">↩︎</a></p></li>
+</ol>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="consumer-resource-interactions.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="references.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": null,
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

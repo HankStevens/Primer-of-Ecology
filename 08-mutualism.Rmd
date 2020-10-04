@@ -8,9 +8,9 @@ Mutualisms occur in a wide variety of different species. Mutualisms form the fou
 * Nutritional
 * Defense
 * Transport
-* Obligate \emph{vs.} facultative
-* Direct \emph{vs.} indirect
-* Symbiotic \emph{vs.} independent
+* Obligate *vs.* facultative
+* Direct *vs.* indirect
+* Symbiotic *vs.* independent
 
 One of the most common of these is
 *indirect mutualism* (Fig. \@ref(fig:mut3)). In this case, a series of negative direct interactions can yield net positive indirect interactions, as in the classic
@@ -45,7 +45,7 @@ The equilibria are
 $$N_i^* = \frac{\alpha_{jj} + \alpha_{ij}}{\alpha_{ii}\alpha_{jj} - \alpha_{ij}\alpha_{ji}}$$
 Note this assumes that both $\alpha_{jj}$ and $\alpha_{ji}$, per se, are greater than zero, because our equation assumed it was so. 
 
-Let's use this to describe a facultative mutualism, that is, one in which neither species needs the other to persist, but in which they each do better. What we mean by that is that let $ r>0$. For now, we will also assume that the mutualism provides only a modest benefit, where species benefits to each is smaller than the negative effects on themselves ($\alpha_{ii} > \alpha_{ij}$). The dynamics are stable (Fig. \@ref(fig:LVmut))
+Let's use this to describe a facultative mutualism, that is, one in which neither species needs the other to persist, but in which they each do better. What we mean by that is that let $r>0$. For now, we will also assume that the mutualism provides only a modest benefit, where species benefits to each is smaller than the negative effects on themselves ($\alpha_{ii} > \alpha_{ij}$). The dynamics are stable (Fig. \@ref(fig:LVmut))
 
 
 ```{r fig=TRUE, fig.width=2.5, fig.height=2.5, echo=FALSE, eval=FALSE}
@@ -136,7 +136,7 @@ In this section, we will model mutualisms using a framework that, unlike our Lot
 
 Sometimes mutualists share resources, as with mycorrhizal
 associations, where species share a resource or a product that they
-can acquire or manufacture in surplus and trade it for a resource or product that is limiting. This is a bi-drectional mutualism (Fig. \ref{fig:mut3}) because the flow of \emph{resources} are bidirectional: both species provide a resource to the other [@Holland2010]. 
+can acquire or manufacture in surplus and trade it for a resource or product that is limiting. This is a bi-drectional mutualism (Fig. \@ref(fig:mut3)) because the flow of \emph{resources} are bidirectional: both species provide a resource to the other [@Holland2010]. 
 ```{r mut3, echo=FALSE, fig.cap="Bidirection, unidirectional, and indirect mutualisms. Normal arrowhead is a positive effect, whereas an open dot arrowhead is a negative effect. A dashed line indicates a service, and a solid line indicates a consumable resource.", fig.show="hold", out.width="33%"}
 # a digraph is a directed graph
 # the model is written in the "dot" language
@@ -174,18 +174,16 @@ R2 -> M2; M2 -> R2[arrowhead='odot'];
 R1 -> R2[arrowhead='odot']; R2 -> R1[arrowhead='odot'];
 }"
 
-# grViz(bimut) %>%
-#   export_svg %>% charToRaw %>% rsvg_pdf("bimut.pdf")
-# 
-# grViz(umut) %>%
-#   export_svg %>% charToRaw %>% rsvg_pdf("umut.pdf")
-# 
-# grViz(imut) %>%
-#   export_svg %>% charToRaw %>% rsvg_pdf("imut.pdf")
+grViz(bimut) %>%
+  export_svg %>% charToRaw %>% rsvg_png("bimut.png")
 
-{grViz(bimut)
-grViz(umut)
-grViz(imut)}
+grViz(umut) %>%
+  export_svg %>% charToRaw %>% rsvg_png("umut.png")
+
+grViz(imut) %>%
+  export_svg %>% charToRaw %>% rsvg_png("imut.png")
+
+include_graphics(c("bimut.png","umut.png","imut.png"))
 ```
 
 In other cases, mutualists may share services, as with moray
@@ -249,19 +247,17 @@ The animal seed disperser grows logistically in in the absence of consuming this
 * $c > s$, consumption > service = net predation
 * $s > c$, service > consumption = net mutualism
 
-
-The dynamics can result in *multiple basins of attraction* or *alternative stable states* (Fig. \@ref(fig:mba)).
-
-```{r mba, echo=FALSE, fig=TRUE,  fig.width=5, fig.height=5.5, fig.cap="A resource-service mutualism may result in alternative stable states. If both species achieve moderate abundance, then both species increase toward a stable mutualism. However, if the frugivore is too abundant relative to the plant, then its consumption dominates the interaction and drives the equilibrium mutualism.", out.width="75%"} 
+Here we provide code for the ODE for the complete bidirectional mutualism. When we define the parameters, we will set some of them equal to zero so that it represents a unidirectional consumer-resource mutualism.
+```{r}
 # The derivative 
 ## A two-species consumer-resource mutualism
 ## Holland and DeAngelis 2009, Ecology Letters Ecology Letters, 12: 1357–1366.
 ## The parameterization follows that in this article. It differs from those 
-## in the above equations.
+## in the above equations. Can you see the differences?
 
-bimut <- function(t,y,parameters) {
-  M1 <- y[1] # Plant
-  M2 <- y[2] # Frugivore
+cr_bimut <- function(t,y,parameters) {
+  M1 <- y[1] # 
+  M2 <- y[2] # 
   with( as.list( parameters ), {
     dM1 <- M1 * (r1 - d1*M1 + a12*M2/(h2 + M2) - B1*M2/(e1+M1) )
     dM2 <- M2 * (r2 - d2*M2 + a21*M1/(h1 + M1) - B2*M1/(e2+M2) )
@@ -270,7 +266,10 @@ bimut <- function(t,y,parameters) {
   )
 }
 
-##### 
+```
+
+And here are the parameters, and we graph the time series.
+```{r}
 ### These parameters create a unidirectional, resource-service mutualism (B2 = 0)
 ## Translating, a12 = a above, and a21 = ea above, and B1 = s above
 ## therefore e = a21/a12
@@ -281,23 +280,37 @@ p.u <- list(r1 = 1, r2 = 1, d1=0.01, d2=0.01,
 
 #####
 # times series
-t <- 0:100
-y <- c(M1=50, M2=50)
+t <- seq(0,25, by=.1)
+y <- c(M1=50, M2=1)
 
+out <- ode(y=y, times=t, func= cr_bimut, parms=p.u)
+outdf <- data.frame(out)
+outL <- pivot_longer(outdf, -time, 
+                     names_to="State_var", values_to="N")
+ggplot(outL, aes(time, N, colour=State_var)) + geom_line()
+```
+
+
+The dynamics can result in *multiple basins of attraction* or *alternative stable states* (Fig. \@ref(fig:mba)).
+
+```{r mba, echo=FALSE, fig=TRUE,  fig.width=5, fig.height=5.5, fig.cap="A resource-service mutualism may result in alternative stable states. If both species achieve moderate abundance, then both species increase toward a stable mutualism. However, if the frugivore is too abundant relative to the plant, then its consumption dominates the interaction and drives the equilibrium mutualism.", out.width="75%"} 
 #####
 ## Phase plane diagram
-umut.flowfield <-  flowField(bimut, xlim = c(0, 170), ylim = c(0,220),
+umut.flowfield <-  flowField(cr_bimut, xlim = c(0, 170), ylim = c(0,220),
                              parameters = p.u, points = 21, add = FALSE, 
                              ylab="M2 - Frugivore", xlab="M1 - Garden tree species")
 
-umut.nullclines <- nullclines(bimut, c(0, 170), ylim = c(0,220), parameters = p.u,
+umut.nullclines <- nullclines(cr_bimut, c(0, 170), ylim = c(0,220), 
+                              parameters = p.u,
                                   add.legend = FALSE)
 
 #####
 # manifold for the interior saddle
-isad <- findEquilibrium(bimut, y0 = c(40,150), parameters = p.u, system = "two.dim",
-                              tol = 1e-16, max.iter = 50, h = 1e-06, plot.it = TRUE,
-                              summary = TRUE)
+isad <- findEquilibrium(cr_bimut, y0 = c(40,150), 
+                        parameters = p.u, system = "two.dim",
+                              tol = 1e-16, max.iter = 50, 
+                        h = 1e-06, plot.it = TRUE,
+                              summary = FALSE)
 
 # umut.manifolds <- drawManifolds(bimut, parameters = p.u, y0=as.numeric(isad$ystar),
  #                                  add.legend = FALSE)
@@ -308,9 +321,12 @@ y0 <- matrix(c(0, 25,125, 0, 100,
                   100,100,150, 0,0), nc=2)
 eqs <- list(NULL)
 for(i in 1:nrow(y0) ){
-  eqs[[i]] <- findEquilibrium(bimut, y0 = y0[i,], parameters = p.u, system = "two.dim",
-                              tol = 1e-16, max.iter = 50, h = 1e-06, plot.it = TRUE,
-                              summary = TRUE)
+  eqs[[i]] <- findEquilibrium(cr_bimut, y0 = y0[i,], 
+                              parameters = p.u, 
+                              system = "two.dim",
+                              tol = 1e-16, max.iter = 50, 
+                              h = 1e-06, plot.it = TRUE,
+                              summary = FALSE)
 }
 ```
 
