@@ -2,16 +2,18 @@
 Here we discuss epidemiological disease models. Pathogens cause diseases, and are typically defined as microorganisms (fungi, bacteria, and viruses) with some host specificity, and which undergo population growth within the host. 
 
 Our simplest models of disease are funny, in that they don't model pathogens (the enemy) at all. These famous models, by @Kermack:1927fk, keep track of different types of hosts, primarily those with and without diseas that model all $N$ hosts by keeping track of 
-\begin{description}
-\item[\textbf{Susceptible hosts}] Individuals which are not infected, but could become infected,
-\item[\textbf{Infected hosts}] Individuals which are already infected, and
-  \item[\textbf{Resistant hosts}] Individuals which are resistant to the disease, typically assumed to have built up an immunity through past exposure,
-\end{description}
-where $N=S+I+R$. It is important to note that $N$, $S$, $I$, and $R$ are \emph{densities}. That is, we track numbers of individuals in a fixed area. This is important because it has direct consequences for the spread, or transmission, of disease [@McCallum2001].
+
+* **Susceptible hosts** Individuals which are not infected, but could become infected,
+* **Infected hosts** Individuals which are already infected, and
+* **Resistant hosts** Individuals which are resistant to the disease, typically assumed to have built up an immunity through past exposure,
+
+where $N=S+I+R$. It is important to note that $N$, $S$, $I$, and $R$ are *densities*. That is, we track numbers of individuals in a fixed area. This is important because it has direct consequences for the spread, or transmission, of disease [@McCallum2001].
 
 Disease spreads from infected individuals to susceptible individuals. The rate depends to some extent on the number or alternatively, on the fraction of the population that is infected. Resistant individuals are not typically considered vectors of the pathogens, and so increased abundance of resistant individuals slow the transmission rate by diluting the other two groups. 
 
-A good starting place is a simple SIR model for a population of constant size, with no immigration or emigration [@Ellner:2006qe, @Kermack:1927fk]. 
+## Constant population size
+
+A good starting place is a simple SIR model for a population of constant size, with no immigration or emigration,  [@Ellner:2006qe, @Kermack:1927fk]. 
 \begin{align*}
   (\#eq:SIR)
   \frac{d S}{d t} &= -\beta IS\\
@@ -32,6 +34,7 @@ SIR <- function(t, y, p) {
 }
 ```
 
+### Density-dependent transmission
 In this model, the *transmission coefficient*, $\beta$, describes the instantaneous rate at which the number of infected hosts increases per infected individual. It is directly analogous to the attack rate of type I prey-dependent models. Recall that it is based on the law of mass action, borrowed from physics and chemistry. It assumes that the rate at which events occur (new infections) is due to complete and random mixing of the reactants ($S,\,I$), and the rate at which the reactants collide and react can be described by a single constant, $\beta$. As density of either type of molecule increases, so too does the rate of interaction. In prey-dependent predation, we referred to $aN$ as a linear functional response; here we refer to $\beta S$ as the *density-dependent transmission function*. The *transmission rate* is the instantaneous rate for the number of *new infections* or cases per unit time [@McCallum2001].
 
 Resistant individuals might be resistant for one of two reasons. They may die, or they may develop immunities. In either case, we assume they cannot catch the disease again, nor spread the disease. As this model assumses  a constant population  size, we continue to count all $R$ individuals, regardless of whether they become immune or die.
@@ -41,16 +44,16 @@ The individuals become resistant to this disease at the constant per capita rate
 Disease \emph{\index{incidence}incidence} is the number of new infections or cases occurring over a defined time interval. This definition makes incidence a discrete-time version of transmission rate. \emph{\index{prevalence}Prevalence} is the fraction of the population that is infected $I/N$.
 
 
-A common question in disease ecology is to ask under what conditions will an \index{outbreak}outbreak occur. Another way of asking that is to ask what conditions cause $\dot{I}>0$. We can set $dI/dt > 0$ and solve for something interesting about what is required for an outbreak to occur.
+A common question in disease ecology is to ask under what conditions will an outbreak occur. Another way of asking that is to ask what conditions cause $\dot{I}>0$. We can set $dI/dt > 0$ and solve for something interesting about what is required for an outbreak to occur.
 \begin{align}
   0 & < \beta IS - \gamma I\notag\\
   \frac{\gamma}{\beta} &< S
 \end{align}
 What does this tell us? First, because we could divide through by $I$, it means that if no one is infected, then an outbreak can't happen --- it is the usual, but typically unstable equilibrium at 0. Second, it tells us that an outbreak will occur if the absolute density of susceptibles^[$S$ is the absolute density, whereas $S/N$ is the relative density.] is greater than $\gamma / \beta$. If we consider the pre-outbreak situation where $S \approx N$, then simply making the population size (and density) low enough can halt the spread of disease. This is why outbreaks tend to occur in high density populations, such as agricultural hosts (e.g., cattle), or historically in urban human populations, or in schools. 
 
-\index{vaccinations}Vaccinations are a way to reduce $S$ without reducing $N$. If a sufficient number of individuals in the population are vaccinated to reduce $S$ below $\gamma / \beta$, this tends to protect the unvaccinated individuals as well.
+Vaccinations are a way to reduce $S$ without reducing $N$. If a sufficient number of individuals in the population are vaccinated to reduce $S$ below $\gamma / \beta$, this tends to protect the unvaccinated individuals as well.
 
-Another common representation of this is called the \index{force of infection}*force of infection* or \index{basic reproductive rate of disease}*basic reproductive rate of the disease.* If we assume that in a large population $S \approx N$, then rearranging eq. \@ref(eq:R0) gives us 
+Another common representation of this is called the *force of infection* or }*basic reproductive rate of the disease.* If we assume that in a large population $S \approx N$, then rearranging eq. \@ref(eq:R0) gives us 
 \begin{equation}
 (\#eq:R0)
   R_0=\frac{\beta N}{\gamma}
@@ -86,9 +89,8 @@ ggplot(out2, aes(time, N, linetype=Host)) + geom_line() + labs(x="Years")
 ```
 It is important at this point to reiterate a point we made above --- *these conclusions apply when S, I, and R are densities* [@McCallum2001]. If you increase population size but also the area associated with the population, then you have not changed density. If population size only increases, but density is constant, then interaction frequency does not increase. Some populations may increase in density as they increase is size, but some may not. Mass action dynamics are the same as type I functional response as predators --- there is a constant linear increase in per capita infection rate as the number of susceptible hosts increases.
 
-
-### SIR with \index{frequency--dependent transmission}frequency--dependent transmission
-In addition to density dependent transmission, investigators have used other forms of density dependence. One the most common is typically known as *frequency--dependent* transmission, where transmission depends on the *prevalence*, or the frequency of infecteds in the population, $I/N$.
+### Frequency-dependent transmission
+In addition to density-dependent transmission, investigators have used other forms of density dependence. One the most common is typically known as *frequency--dependent* transmission, where transmission depends on the *prevalence*, or the frequency of infecteds in the population, $I/N$.
 \begin{align}
   \frac{d S}{d t} &= - \beta \frac{SI}{N} \#eq:SIRfd1\\
   \frac{d I}{d t} &=   \beta \frac{SI}{N} - \gamma I \#eq:SIRfd2\\
@@ -137,16 +139,17 @@ persp(mat2, theta=20, phi=15, r=10, zlim=c(0,betaF*S*I/N),
 ``` 
 
 
+Elaborate on this stuff?
 
-### Antonovic et al. Metapopulation disease dynamics
-
+Antonovic et al. Metapopulation disease dynamics
 
 *Silene alba* and *Microbotryum violacea*
 Proportion of subpopulations that have an infected plant increases with the size of the subpopulation 
 
 Disease prevalence declines with subpopulation size. This is characteristic of frequency-dependent transmission. 
 
-### Lyme Disease
+Lyme Disease
+
 Van Buskirk and Ostfeld 1995 Eco. Appl.
 *Borrelia burgdorferi* spirochete
 Blacklegged tick *Ixodes scapularis*
