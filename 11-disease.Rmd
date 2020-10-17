@@ -1,7 +1,9 @@
 # Disease-draft
 Here we discuss epidemiological disease models. Pathogens cause diseases, and are typically defined as microorganisms (fungi, bacteria, and viruses) with some host specificity, and which undergo population growth within the host. 
 
-Our simplest models of disease are funny, in that they don't model pathogens (the enemy) at all. These famous models, by @Kermack:1927fk, keep track of different types of hosts, primarily those with and without diseas that model all $N$ hosts by keeping track of 
+I think, without tons of evidence, that one nice aspect of disease ecology and the use epidemiological models is that they have helped ecologists feel more comfortable with short term dynamics and also the importance of prediction. Human epidemiology is rightly obsessed with understanding the disease outbreak in front of us, whether it is the common cold, or SARS-CoV-2 and how to alter its course. It is even more interested in being able to predict the course of an outbreak. In contrast, ecology has often been more interested in asymptotic dynamics rather than short term, and more on understanding than prediction. There is a place for everything, and it is good to see the two having merged a bit.
+
+Our simplest models of disease are funny, in that they don't model pathogens (the enemy) at all. These famous models, by @Kermack:1927fk, keep track of different types of hosts, primarily those with and without disease:
 
 * **Susceptible hosts** Individuals which are not infected, but could become infected,
 * **Infected hosts** Individuals which are already infected, and
@@ -13,9 +15,10 @@ Disease spreads from infected individuals to susceptible individuals. The rate d
 
 ## Constant population size
 
-A good starting place is a simple SIR model for a population of constant size, with no immigration or emigration,  [@Ellner:2006qe, @Kermack:1927fk]. 
+
+A good starting place is a simple SIR model for a population of constant size, with no immigration or emigration,  [@Ellner:2006qe, @Kermack:1927fk]. It assumes a constant population size. This is a reasonable assumption over relatively short time intervals, which is fine if we are interested in the progression of a single disease outbreak.
 \begin{align*}
-  (\#eq:SIR)
+  (\#eq:SIRd)
   \frac{d S}{d t} &= -\beta IS\\
   \frac{d I}{d t} &=\beta IS  - \gamma I\\
   \frac{d R}{d t} &= \gamma I
@@ -24,7 +27,12 @@ A good starting place is a simple SIR model for a population of constant size, w
 
 ```{r sir}
 # Here we create the function for the simple SIR model.
-SIR <- function(t, y, p) {
+SIRd <- function(t, y, p) {
+  {
+        S <- y[1]
+        I <- y[2]
+        R <- y[3]
+    }
   with( as.list(c(y, p)), {
     dS.dt <- -B*I*S
     dI.dt <- B*I*S - g*I
@@ -35,17 +43,18 @@ SIR <- function(t, y, p) {
 ```
 
 ### Density-dependent transmission
-In this model, the *transmission coefficient*, $\beta$, describes the instantaneous rate at which the number of infected hosts increases per infected individual. It is directly analogous to the attack rate of type I prey-dependent models. Recall that it is based on the law of mass action, borrowed from physics and chemistry. It assumes that the rate at which events occur (new infections) is due to complete and random mixing of the reactants ($S,\,I$), and the rate at which the reactants collide and react can be described by a single constant, $\beta$. As density of either type of molecule increases, so too does the rate of interaction. In prey-dependent predation, we referred to $aN$ as a linear functional response; here we refer to $\beta S$ as the *density-dependent transmission function*. The *transmission rate* is the instantaneous rate for the number of *new infections* or cases per unit time [@McCallum2001].
+
+In \@ref(eq:SIRd), the total transmission rate depends on the density of susceptible hosts. The *transmission coefficient*, $\beta$, describes the instantaneous rate at which the number of infected hosts increases per infected individual. It is directly analogous to the attack rate of type I prey-dependent models. Recall that it is based on the law of mass action, borrowed from physics and chemistry. It assumes that the rate at which events occur (new infections) is due to complete and random mixing of the reactants ($S,\,I$), and the rate at which the reactants collide and react can be described by a single constant, $\beta$. As density of either type of molecule increases, so too does the rate of interaction. In prey-dependent predation, we referred to $aN$ as a linear functional response; here we refer to $\beta S$ as the *density-dependent transmission function*. The *transmission rate* is the instantaneous rate for the number of *new infections* or cases per unit time [@McCallum2001].
 
 Resistant individuals might be resistant for one of two reasons. They may die, or they may develop immunities. In either case, we assume they cannot catch the disease again, nor spread the disease. As this model assumses  a constant population  size, we continue to count all $R$ individuals, regardless of whether they become immune or die.
 
 The individuals become resistant to this disease at the constant per capita rate, \index{$\gamma$}$\gamma$. The rate $\gamma$ is also the inverse of the mean \index{residence time}residence time, or \emph{\index{duration|see{residence time}}duration}, of the disease\footnote{This is an interesting phenomenon of exponential processes---the mean time associated with the process is equal to the inverse of the rate. This is analogous to turnover time or residence time for a molecule of water in a well-mixed lake.}.  
 
-Disease \emph{\index{incidence}incidence} is the number of new infections or cases occurring over a defined time interval. This definition makes incidence a discrete-time version of transmission rate. \emph{\index{prevalence}Prevalence} is the fraction of the population that is infected $I/N$.
-
+Disease *incidence* is the number of new infections or cases occurring over a defined time interval. This definition makes incidence a discrete-time version of transmission rate. Disease *prevalence* is the fraction of the population that is infected $I/N$.
 
 A common question in disease ecology is to ask under what conditions will an outbreak occur. Another way of asking that is to ask what conditions cause $\dot{I}>0$. We can set $dI/dt > 0$ and solve for something interesting about what is required for an outbreak to occur.
 \begin{align}
+(\#eq:sird-threshold)
   0 & < \beta IS - \gamma I\notag\\
   \frac{\gamma}{\beta} &< S
 \end{align}
@@ -53,25 +62,26 @@ What does this tell us? First, because we could divide through by $I$, it means 
 
 Vaccinations are a way to reduce $S$ without reducing $N$. If a sufficient number of individuals in the population are vaccinated to reduce $S$ below $\gamma / \beta$, this tends to protect the unvaccinated individuals as well.
 
-Another common representation of this is called the *force of infection* or }*basic reproductive rate of the disease.* If we assume that in a large population $S \approx N$, then rearranging eq. \@ref(eq:R0) gives us 
+Another common representation of this is called the *force of infection* or *basic reproductive rate of the disease.* If we assume that in a large population $S \approx N$, then rearranging \@ref(eq:sird-threshold) gives us 
 \begin{equation}
 (\#eq:R0)
   R_0=\frac{\beta N}{\gamma}
 \end{equation}
-where \index{R@$R_0$|see{basic reproductive rate}}$R_0$ is the basic reproductive rate of the disease. If $R_0 > 1$, then an outbreak (i.e., disease growth) is plausible. This is analogous to the finite rate of increase of a population where $\lambda>1$.
+where $R_0$ is the basic reproductive rate of the disease. If $R_0 > 1$, then an outbreak (i.e., disease growth) is plausible. Try not to confuse density of resistant hosts, $R$, with the basic reproductive rate of the disease, $R_0$. This is analogous to the finite rate of increase of a population where $\lambda>1$.
 
-Here we model the outbreak of a nonlethal disease (e.g.,  a new cold virus in winter on a university campus). We assume that the disease is neither life-threatening, and nor is anyone resistant, thus $R_{t=0}=0$. We can investigate the SIR model by pretending that, as is often the case, we begin with a largely uninfected population and $t=0$, so $I_0=1$ and $S_0\approx N$.  We first set parameters. Let's imagine that a 
+Here we model the outbreak of a nonlethal disease (e.g.,  a new cold virus in winter at university). We assume that the disease is neither life-threatening, and nor is anyone resistant, thus $R=0$. We can investigate the SIR model by pretending that, as is often the case, we begin with a largely uninfected population and $t=0$, so $I_0=1$ and $S_0\approx N$.  We first set parameters. Let's assume that a cold lasts about a week - that is the duration of the disease, which is $1/\gamma$. This assumes that the duration ot he cold symptoms are exponentially distributed. 
 ```{r cold}
-N <- 10^4; I <- R <- 1; S <- N - I - R
+parms <- c(B=.001, g=1/7)
+N <- 10^3; I <- R <- 1; S <- N - I - R
 y <- c(S=S, I=I, R=R)
-parms <- c(B=.01, g=4)
-# Next we integrate for three months.
-months <- seq(0,3, by=0.01)
-out1 <- data.frame( ode(y, months, SIR, parms) )
+
+# Next we integrate for 20 weeks.
+weeks <- seq(0, 20, by=0.01)
+out1 <- data.frame( ode(y, weeks, SIRd, parms) )
 out2 <- pivot_longer(out1, cols=S:R, names_to="Host", values_to="N")
-ggplot(out2, aes(time, N, linetype=Host)) + geom_line() + labs(x="Months")
+ggplot(out2, aes(time, N, linetype=Host)) + geom_line() + labs(x="Weeks")
 ```
-```{r ash}
+```{r ash, echo=FALSE, eval=FALSE}
 # Emerald ash borer?
 N <- 10^4; I <- R <- 1; S <- N - I - R
 y <- c(S=S, I=I, R=R)
@@ -87,20 +97,26 @@ out1 <- data.table( ode(y, years, SIR, parms)  )
 out2 <- pivot_longer(out1, cols=S:R, names_to="Host", values_to="N")
 ggplot(out2, aes(time, N, linetype=Host)) + geom_line() + labs(x="Years")
 ```
+
 It is important at this point to reiterate a point we made above---*these conclusions apply when S, I, and R are densities* [@McCallum2001]. If you increase population size but also the area associated with the population, then you have not changed density. If population size only increases, but density is constant, then interaction frequency does not increase. Some populations may increase in density as they increase is size, but some may not. Mass action dynamics are the same as type I functional response as predators---there is a constant linear increase in per capita infection rate as the number of susceptible hosts increases.
 
 ### Frequency-dependent transmission
 In addition to density-dependent transmission, investigators have used other forms of density dependence. One the most common is typically known as *frequency--dependent* transmission, where transmission depends on the *prevalence*, or the frequency of infecteds in the population, $I/N$.
 \begin{align}
-  \frac{d S}{d t} &= - \beta \frac{SI}{N} \#eq:SIRfd1\\
-  \frac{d I}{d t} &=   \beta \frac{SI}{N} - \gamma I \#eq:SIRfd2\\
-  \frac{d I}{d t} &=   \gamma I. \#eq:SIRfd2
+  \frac{d S}{d t} &= - \beta \frac{SI}{N} (\#eq:SIRfd1)\\
+  \frac{d I}{d t} &=   \beta \frac{SI}{N} - \gamma I (\#eq:SIRfd2)\\
+  \frac{d I}{d t} &=   \gamma I. (\#eq:SIRfd3)
 \end{align}
 
 Here we create the function for the system of ODEs in eq. \ref{eq:SIR}.
 ```{r}
 SIRf <- function(t, y, p) {
-  N <- sum(y)
+  {
+        S <- y[1]
+        I <- y[2]
+        R <- y[3]
+        N <- S + I + R
+    }
   with( as.list(c(y,p)), {
     dS.dt <- -B*I*S/N
     dI.dt <- B*I*S/N - g*I
@@ -156,9 +172,8 @@ S <- 4^(0:4);  I <- 1; parmsf <- c(B=1, g=0); parmsd <- c(B=1/16, g=0)
 ```
 We next integrate for six months, letting $R=S/2$.
 ```{r}
-detach("package:phaseR")
 Months <- seq(0, 8, by=0.1)
-outd <- sapply(S, function(s) {out <- ode(c(s,I,R), Months, SIR, parmsd)
+outd <- sapply(S, function(s) {out <- ode(c(s,I,R), Months, SIRd, parmsd)
                                out[,3]/apply(out[,2:4], 1, sum) } )
 outf <- sapply(S, function(s) {out <- ode(c(s,I,R), Months, SIRf, parmsf)
                                out[,3]/apply(out[,2:4], 1, sum) } )
