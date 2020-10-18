@@ -1,5 +1,6 @@
-# Disease-draft
-Here we discuss epidemiological disease models. Pathogens cause diseases, and are typically defined as microorganisms (fungi, bacteria, and viruses) with some host specificity, and which undergo population growth within the host. 
+# Disease
+Here we discuss epidemiological disease models. Pathogens cause diseases, and are typically defined as microorganisms (fungi, bacteria, and viruses) with some host specificity, and which undergo population growth within the host. The curious reader may want to consult @Ellner:2006qe and @Bjornstad2018b.
+
 
 I think, without tons of evidence, that one nice aspect of disease ecology and the use epidemiological models is that they have helped ecologists feel more comfortable with short term dynamics and also the importance of prediction. Human epidemiology is rightly obsessed with understanding the disease outbreak in front of us, whether it is the common cold, or SARS-CoV-2 and how to alter its course. It is even more interested in being able to predict the course of an outbreak. In contrast, ecology has often been more interested in asymptotic dynamics rather than short term, and more on understanding than prediction. There is a place for everything, and it is good to see the two having merged a bit.
 
@@ -13,17 +14,16 @@ where $N=S+I+R$. It is important to note that $N$, $S$, $I$, and $R$ are *densit
 
 Disease spreads from infected individuals to susceptible individuals. The rate depends to some extent on the number or alternatively, on the fraction of the population that is infected. Resistant individuals are not typically considered vectors of the pathogens, and so increased abundance of resistant individuals slow the transmission rate by diluting the other two groups. 
 
-## Constant population size
+## Closed epidemics
 
 
-A good starting place is a simple SIR model for a population of constant size, with no immigration or emigration,  [@Ellner:2006qe, @Kermack:1927fk]. It assumes a constant population size. This is a reasonable assumption over relatively short time intervals, which is fine if we are interested in the progression of a single disease outbreak.
+A good starting place is the simplest SIR models, that for a *closed* epidemic. By this we mean that births, deaths, and migration are essentially zero, such that we have a fixed population size. This is a reasonable assumption over relatively short time intervals, which is fine if we are interested in the progression of a single disease outbreak.
 \begin{align*}
   (\#eq:SIRd)
   \frac{d S}{d t} &= -\beta IS\\
   \frac{d I}{d t} &=\beta IS  - \gamma I\\
   \frac{d R}{d t} &= \gamma I
 \end{align*}
-
 
 ```{r sir}
 # Here we create the function for the simple SIR model.
@@ -48,7 +48,7 @@ In \@ref(eq:SIRd), the total transmission rate depends on the density of suscept
 
 Resistant individuals might be resistant for one of two reasons. They may die, or they may develop immunities. In either case, we assume they cannot catch the disease again, nor spread the disease. As this model assumses  a constant population  size, we continue to count all $R$ individuals, regardless of whether they become immune or die.
 
-The individuals become resistant to this disease at the constant per capita rate, \index{$\gamma$}$\gamma$. The rate $\gamma$ is also the inverse of the mean \index{residence time}residence time, or \emph{\index{duration|see{residence time}}duration}, of the disease\footnote{This is an interesting phenomenon of exponential processes---the mean time associated with the process is equal to the inverse of the rate. This is analogous to turnover time or residence time for a molecule of water in a well-mixed lake.}.  
+The individuals become resistant to this disease at the constant per capita rate, $\gamma$. The rate $\gamma$ is also the inverse of the mean residence time, or *duration*, of the disease^[This is an interesting phenomenon of exponential processes---the mean time associated with the process is equal to the inverse of the rate. This is analogous to turnover time or residence time for a molecule of water in a well-mixed lake.].  
 
 Disease *incidence* is the number of new infections or cases occurring over a defined time interval. This definition makes incidence a discrete-time version of transmission rate. Disease *prevalence* is the fraction of the population that is infected $I/N$.
 
@@ -165,7 +165,8 @@ As we did above, let's consider the pre-outbreak situation where $S \approx N$, 
 Another interesting phenomenon with frequency--dependent transmission is that prevalence ($I/N$) can decline with increasing population size (Fig. \@ref(fig:sirFD)). Two phenomena contribute to this pattern. First, outbreak in a completely susceptible population typically begins with a single individual, and so initial prevalence is always $I/N=1/N$. Second, as a consequence of this, the transmission rate is lower in larger populations because $\beta SI/N$ is small. As a consequence, prevalence remains low for a relatively long time. In a seasonal population, most individuals in large populations remain uninfected after four months. Depending upon the organism, this could be long enough to reproduce. In contrast, a density--dependent model typically shows the oppositive, pattern, with more rapid, extreme outbreaks and greater prevalence in more dense populations (Fig. \@ref(fig:sirFD)).
 
 *SIR* dynamics with frequency--dependent transmission (Fig. \ref(fig:sirFD)). 
-Here we demonstrate that prevalence can decline with increasing population size in a frequency--dependent disease (e.g.,  a smut on plant [@Antonovics:1992rm]).  Let us assume that resistance cannot be acquired, so $\gamma=0$, and $R = 0$. We can investigate the SIR model by pretending that, as is often the case, we begin with a largely uninfected population and $t=0$, so $I_0=1$ and $S_0\approx N$.  We first set parameters.
+
+Here we demonstrate that prevalence can decline with increasing population size in a frequency--dependent disease (e.g.,  a smut on plant [@Antonovics1992]).  Let us assume that resistance cannot be acquired, so $\gamma=0$, and $R = 0$. We can investigate the SIR model by pretending that, as is often the case, we begin with a largely uninfected population and $t=0$, so $I_0=1$ and $S_0\approx N$.  We first set parameters.
 
 ```{r}
 S <- 4^(0:4);  I <- 1; parmsf <- c(B=1, g=0); parmsd <- c(B=1/16, g=0)
@@ -187,30 +188,49 @@ legend('bottomright', legend=S, lty=1:length(S),  bty='n')
 #plot(S, TR)
 ```
 
-## SIR with population dynamics
-The above model assumes a constant population size---sort of. Recall that the "resistant group" could consist of those that acquire the ultimate immunity, death. In any event, we could make a more complex model that includes population growth and death unrelated to disease. Here we add births, $b$, potentially by all types, sick or not ($S+I+R$), and we assume that the newborns are susceptible only. We also added a mortality term to each group ($mS,\,mI,\,mR$).
+## Open epidemics
+The above model assumes a constant population size. Here expand this to include population growth and death unrelated to disease (Fig. \@ref(fig:sirmod)). 
+```{r sirmod, fig.cap="*Conceptual model of an open epidemic. We'll let lambda be migration and births, and mu be mortality. Births may come from any group.*"}
+A <- matrix(NA, nrow=7, ncol=7)
+a <- matrix(c( 2,1, 3,2, 4,3, 5,2, 6,3, 7,4), ncol=2, byrow=TRUE)
+A[a] <- 1
+plotmat(A, pos=c(4,3), box.type=c('none', 'square','square','square','none','none','none'), curve=0,
+        arr.pos=.6, segment.from=.1, segment.to=.9,
+        relsize=.8, dtext=NA, box.size=.05,
+        name=c(expression(lambda), 'S', 'I', 'R', 
+               expression(mu),
+               expression(mu),
+               expression(mu))) 
+```
+Here we get specific, and add births, $b$, potentially by all types, sick or not ($S+I+R$), and we assume that the newborns are susceptible only. We also add a mortality term to each group ($\mu S,\,\mu I,\,\mu R$).
 \begin{align}
   (\#eq:SIRbd)
-  \frac{\D S}{\D t} &= b \left( S+I+R \right) - \beta SI - mS\\
-  \frac{\D I}{\D t} &=\beta SI  - \gamma I - mI\\
-  \frac{\D R}{\D t} &= \gamma I - mR
+  \frac{d S}{d t} &= b \left( S+I+R \right) - \beta SI - \mu S\\
+  \frac{d I}{d t} &=\beta SI  - \gamma I - \mu I\\
+  \frac{d R}{d t} &= \gamma I - \mu R
 \end{align}
 Note that the births add only to the susceptible group, whereas density independent mortality subtracts from each group. 
 
 **Disease model with population growth**
 Here we create the function for the system of ODE's in \@ref(eq:SIRbd).
 ```{r}
-SIRbd <- function(t, y, p) {
-  S <- y[1]; I <- y[2]; R <- y[3]
+SIRmod <- function(t, y, p) {
+  S <- y[1]; I <- y[2]; R <- y[3]; N <- sum(y)
   with( as.list(p), {
-    dS.dt <- b*(S+I+R) - B*I*S - m*S
-    dI.dt <- B*I*S - g*I - m*I
-    dR.dt <- g*I - m*R
+    dS.dt <- b*N - B*I*S/N^z - mu*S
+    dI.dt <- B*I*S/N^z - g*I - mu*I
+    dR.dt <- g*I - mu*R
    return( list(c(dS.dt, dI.dt, dR.dt)) )
   } )
   }
 ```
-Let's start to work with this model---that frequently means making simplifying assumptions. We might start by assuming that if infected and resistant individuals can contribute to offspring, then the disease is relatively benign. Therefore, we can assume that mortality is the same for all groups ($m_i=m$). Last, let us assume (again) a constant population size. This means that birth rate equals mortality or $b=m$.
+Let's start to work with this model---that frequently means making simplifying assumptions. We might start by assuming that if infected and resistant individuals can contribute to offspring, then the disease is relatively benign. Therefore, we can assume that mortality is the same for all groups ($\mu_i= \mu$). We'll also assume (again) a constant population size. This means that birth rate equals mortality or $b=\mu$.
+
+We add additional complexity by allowing transmission to be partially frequency dependent. We introduce a scaling parameter $z$, where transmission is
+$$\beta I \frac{S}{N^z}$$
+so that when $z=0$ we have pure density dependence, and $z=1$ is pure frequency dependence.
+
+Note that if we let $z,\, b,\, \mu =0$, the we have the simplest SIR model with which we bagn the chapter.
 
 Now imagine a large city, with say, a million people. Let's then assume that we start of with a population of virtually all susceptible people, but we introduce a single infected person.
 ```{r}
@@ -236,42 +256,131 @@ B <- R0 * (g + b) / N
 ```
 Finally, we can integrate the population and its states. We create a named vector of parameters, and decide on the time interval. 
 ```{r}
-parms <- c(B = B, g = g, b = b, m=b)
+parms <- c(B = B, g = g, b = b, mu=b, z=0)
 years <- seq(0,30, by=.1)
 ```
-It turns out that because of the relatively extreme dynamics (Fig. \ref{fig:sirbd}), we want to tell the ODE solver to take baby steps, so as to properly capture the dynamics---we use the \texttt{hmax} argument to make sure that the maximum step it takes is relatively small.
+It turns out that because of the relatively extreme dynamics (Fig. \@ref(fig:sirbd)), we want to tell the ODE solver to take baby steps, so as to properly capture the dynamics---we use the `hmax` argument to make sure that the maximum step it takes is relatively small.
 ```{r sirbd, fig.cap="*Epidemic for a nonlethal disease, with an SIR model which includes births and deaths, and a constant population size.*", out.width="70%"}
-SIRbd.out <- data.frame(ode(c(S=S,I=I,R=R), years, SIRbd, parms, hmax=.01)) 
-matplot(SIRbd.out[,1], sqrt(SIRbd.out[,-1]), type='l', col=1,
-        lty=1:3, ylab="sqrt(No. of Individuals)", xlab='Years')
-legend('right', c('S','I','R'), lty=1:3, bty='n')
+out <- data.frame(ode(c(S=S,I=I,R=R), years, SIRmod, parms, hmax=.01)) 
+SIRbd.out <- pivot_longer(out, cols=2:4, names_to="Populations", values_to="Density")
+ggplot(SIRbd.out, aes(time, Density+1, colour=Populations)) + 
+  geom_line() + scale_y_log10() + xlab('Years')
 ```
 
 
-Note that the population quickly becomes resistant (Fig. \ref{fig:sirbd}). Note also that we have oscillations, albeit damped oscillations. An analytical treatment of the model, including eigenanalysis of the Jacobian matrix could show us precisely the predicted periodicity \cite{Ellner:2006qe}. It depends on the the age at onset, and the duration of the disease. 
+Note that the population quickly becomes resistant (Fig. \@ref(fig:sirbd)). Note also that we have oscillations, albeit damped oscillations. An analytical treatment of the model, including eigenanalysis of the Jacobian matrix could show us precisely the predicted periodicity [@Ellner:2006qe]. It depends on the the age at onset, and the duration of the disease. 
 
 
+## Modeling data from Bombay
+Here we try our hand at fitting the SIR model to some data. Kermack and McCormick \@ref(Kermack:1927fk) provided data on the number of plague deaths per week in Bombay^[Bombay is the coastal city now known as Mumbai, and is the capital of Maharashtra; it is one of the largest cities in the world.] in 1905--06. We first enter them and look at them.^[Data provided kindly by S.P. Ellner]
 
-Elaborate on this stuff?
+```{r sir2, fig.cap="*Cumulative deaths for plague, in Bombay, India, 1905--1906 (raw data and fitted model, as described in this section).*"}
+data(ross)
+qplot(x=Week, y=CumulativeDeaths, data=ross)
+```
 
-Antonovic et al. Metapopulation disease dynamics
+As with most such enterprises, we wish we knew far more than we do about the which depends on fleas, rodents, humans, and *Yersinia pestis* on which the dynamics depend. To squeeze this real-life scenario  into a model with a small number of parameters requires a few assumptions.
 
-*Silene alba* and *Microbotryum violacea*
-Proportion of subpopulations that have an infected plant increases with the size of the subpopulation 
+%We begin by assuming, and Kermack and Mckendrick did, that mortality from bubonic plague, in Bombay, in 1905, was quite high, close to 90\%. Next, we realize that the only data we have is deaths. Given, however, that the mortality is very high, we might approximate the number of infections by saying that Deaths = 0.9 $\times$ Infections.
 
-Disease prevalence declines with subpopulation size. This is characteristic of frequency-dependent transmission. 
+A good starting place is a simple SIR model for a population of constant size \@ref(eq:SIRd) [@Ellner:2006qe; @Kermack:1927fk].
 
-Lyme Disease
+### Optimization
+We next want to let R find the most accurate estimates of our model parameters $\beta,\,\gamma$. The best and most accessible reference for this is @Bolker:2008rr. Please read the Appendix (for the moment, available on request) for more explanation regarding optimization and objective functions.
 
-Van Buskirk and Ostfeld 1995 Eco. Appl.
-*Borrelia burgdorferi* spirochete
-Blacklegged tick *Ixodes scapularis*
-*Peromyscus leucopus* Whitefooted mouse
-Whitetailed deer *Oedicoilius virginiana*
-spring 1: eggs
-summer 1: larva on intermediate host - small mammal or bird
-spring 2: nymph a new intermediate host small mammal or bird 
-summer 2: drops off host 2, seeks definitive host (tyupically deer); most dangerous to humans
-fall 2: adult on deer (low risk to humans)
+Now we create the objective function. An objective function compares a model to data, and calculates a measure of fit (e.g., residual sum of squares or likelihood). Our objective function will calculate the likelihood^[Likelihood is proportional the probability of data, given a particular model and its parameters.] of particular values for SIR model parameters. These parameters include  $\gamma$ and $\beta$ of the SIR model. We will also estimate $I_0$, initial size of the infected population at our $t=0$. A survey of easily accessed census data suggests the population at the time was in the neighborhood of $\sim 9.5 \times 10^5$ individuals. We also might assume that $I_0$ would be a very small number, perhaps $\sim 1$ in principle, so we will use that. We would really like to estimate $N$ and $I_0$, but we'll save that for another day.
 
-host competence: whitefooted mice vs. chipmunks and birds
+Some details about our objective function:
+
+1. Arguments are transformed parameters (this allows the optimizer to work on the logit^[A logit is the transformation of a proportion which will linearize the logistic curve, logit (p) = $\log ( p/(1-p) )$.] and log scales).
+1. Transformed parameters are backtransformed to the scale of the model.
+1. Parameters are used to integrate the ODEs using `ode`, retaining only the resistant (i.e. dead) group (the fourth column of the output); this provides the *predicted values* given the parameters and the time from onset, and the standard deviation of the residuals around the predicted values.
+1. It returns the negative log-likelihood of the data, given the parameter values.
+
+Here is our objective function. Note that its last value is the negative sum of the log-probabilities of the data (given a particular realization of the model).
+```{r sirLL}
+sirLL=function(logit.B, logit.g, log.I0, log.N) {
+  #parameters
+  parms <- c(B=plogis(logit.B), g=plogis(logit.g));
+  # starting point
+  x0 <- c(S=exp(log.N), I=exp(log.I0), R=0)
+  # solve
+  Rs <- ode(y=x0, ross$Week, SIRd, parms, hmax=.01)[,4]
+  # calculate the root mean squared error of the fit
+  SD <- sqrt( sum( (ross$CumulativeDeaths - Rs)^2)/length(ross$Week) )
+  # calculate the negative loglikelihood
+   -sum(dnorm(ross$CumulativeDeaths, mean=Rs, sd=SD, log=TRUE))
+}
+```
+We then use this function, `sirLL`, to find the likelihood of the best parameters. The `mle2` function in the `bbmle` library^[You will need to install the `bbmle` package, unless someone has already done this for the computer you are using.] will minimize the negative log-likelihood generated by `sirLL`, and return values for the parameters of interest.
+
+We will use a robust, but relatively slow method called Nelder-Mead (it is the default). We supply `mle2` with the objective function and a list of initial parameter values. This can take a few minutes, but that's okay.
+```{r eval=FALSE}
+library(bbmle)
+# we used fixed to fix N and I0 to particular values and not estimate them.
+fit <- mle2(sirLL, start=list(logit.B=qlogis(1e-5), logit.g=qlogis(.2), 
+                     log.N=log(9.5e5), log.I0=0), 
+                     method="Nelder-Mead") 
+```
+```{r echo=FALSE, results='hide'}
+load("rossfits.Rdata")
+```
+Let's look at a summary of the fit, as far as it went. Here is what I get.
+```{r}
+summary(fit)
+```
+This gets us some parameter estimates, but they are probably not accurate because  the computer couldn't settle on what it thought was  a stable solution (convergence failure. This occurs frequently when we ask the computer to estimate too many, often correlated, parameters for a given data set. Therefore, we have to make assumptions regarding selected parameters. Let us assume for the time being that the two variable estimates are correct, that the population size of the vulnerable population was approximately exp(```rround(coef(fit)[3],1)```) and the number of infections at the onset of the outbreak was ```r round(coef(fit)[4],1)```. We will hold these constant and ask R to refit the model, using the default method.
+```{r eval=FALSE}
+fit2 <- mle2(sirLL, start=as.list(coef(fit)[1:2]),
+            fixed=list(log.N=coef(fit)[4], log.I0=coef(fit)[3]), method="BFGS")
+summary(fit2)
+```
+
+Next we want to find confidence intervals for $\beta$ and $\gamma$. This can take more than several minutes, but it results in a likelihood profile for these parameters, which show the confidence regions for these parameters (Fig. \@ref(fig:profile)). 
+```{r eval=FALSE}
+pr2 <- profile(fit2)
+```
+
+```{r profile, fig.cap="*The likelihood profile plots show us the confidence intervals on transformed SIR model parameters.*"}
+par(mar=c(5,4,4,1))
+plot(pr2)
+```
+```{r eval=FALSE, echo=FALSE}
+save(fit,fit2,pr2, file="rossfits.Rdata")
+```
+
+
+Last we get to plot our curve with the data. We first backtransform the coefficients of the objective function.
+```{r}
+p <- as.numeric(c(plogis(coef(fit)[1:2]),
+       exp(coef(fit)[3:4])) ); p
+```
+We then get ready to integrate the disease dynamics over this time period.
+```{r}
+inits <- c(S = p[4], I=p[3], R=0)
+params <- c(B=p[1], g=p[2])
+outdf <- data.frame( ode(inits, ross$Week, SIRd, params) )
+```
+
+Last, we plot the model and the data (Fig. \ref{fig:sir2}).
+```{r}
+sir.Bombay <- pivot_longer(data=outdf, 2:4, names_to="Populations", values_to="Density")
+ggplot(sir.Bombay, aes(time, Density, colour=Populations)) + geom_line() + 
+  geom_point(data=ross, 
+             mapping=aes(x=Week, y=CumulativeDeaths), 
+             inherit.aes=FALSE )
+# inherit.aes=FALSE tells geom_point not color by "Populations" 
+```
+So, what does this mean (Fig. \@ref(fig:sir2)? We might check what these values mean, against what we know about the reality. Our model predicts that logit of $\gamma$ was a confidence interval,
+```{r}
+(CIs <- confint(pr2))
+```
+This corresponds to a confidence interval for $\gamma$ of 
+```{r}
+(gs <- as.numeric(plogis(CIs[2,]) ))
+```
+Recall that the duration of the disease in the host is $1/\gamma$. Therefore, our model predicts a confidence interval for the duration (in days) of 
+```{r}
+7*1/gs
+```
+Thus, based on this analysis, the duration of the disease is about 9.5 days.  This seems to agree with what we know about the biology of the Bubonic plague. Its duration, in a human host, is typically thought to last 4--10 days.

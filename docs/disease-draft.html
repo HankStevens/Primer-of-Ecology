@@ -24,7 +24,7 @@
 <meta name="author" content="Hank Stevens" />
 
 
-<meta name="date" content="2020-10-17" />
+<meta name="date" content="2020-10-18" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -51,10 +51,6 @@
 
 
 <script src="libs/accessible-code-block-0.0.1/empty-anchor.js"></script>
-<script src="libs/kePrint-0.0.1/kePrint.js"></script>
-<link href="libs/lightable-0.0.1/lightable.css" rel="stylesheet" />
-<link href="libs/bsTable-3.3.7/bootstrapTable.min.css" rel="stylesheet" />
-<script src="libs/bsTable-3.3.7/bootstrapTable.js"></script>
 
 
 <style type="text/css">
@@ -292,11 +288,14 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="10.4" data-path="mutualisms.html"><a href="mutualisms.html#in-fine"><i class="fa fa-check"></i><b>10.4</b> <em>In Fine</em></a></li>
 </ul></li>
 <li class="chapter" data-level="11" data-path="disease-draft.html"><a href="disease-draft.html"><i class="fa fa-check"></i><b>11</b> Disease-draft</a><ul>
-<li class="chapter" data-level="11.1" data-path="disease-draft.html"><a href="disease-draft.html#constant-population-size"><i class="fa fa-check"></i><b>11.1</b> Constant population size</a><ul>
+<li class="chapter" data-level="11.1" data-path="disease-draft.html"><a href="disease-draft.html#closed-epidemics"><i class="fa fa-check"></i><b>11.1</b> Closed epidemics</a><ul>
 <li class="chapter" data-level="11.1.1" data-path="disease-draft.html"><a href="disease-draft.html#density-dependent-transmission"><i class="fa fa-check"></i><b>11.1.1</b> Density-dependent transmission</a></li>
 <li class="chapter" data-level="11.1.2" data-path="disease-draft.html"><a href="disease-draft.html#frequency-dependent-transmission"><i class="fa fa-check"></i><b>11.1.2</b> Frequency-dependent transmission</a></li>
 </ul></li>
-<li class="chapter" data-level="11.2" data-path="disease-draft.html"><a href="disease-draft.html#sir-with-population-dynamics"><i class="fa fa-check"></i><b>11.2</b> SIR with population dynamics</a></li>
+<li class="chapter" data-level="11.2" data-path="disease-draft.html"><a href="disease-draft.html#open-epidemics"><i class="fa fa-check"></i><b>11.2</b> Open epidemics</a></li>
+<li class="chapter" data-level="11.3" data-path="disease-draft.html"><a href="disease-draft.html#modeling-data-from-bombay"><i class="fa fa-check"></i><b>11.3</b> Modeling data from Bombay</a><ul>
+<li class="chapter" data-level="11.3.1" data-path="disease-draft.html"><a href="disease-draft.html#optimization"><i class="fa fa-check"></i><b>11.3.1</b> Optimization</a></li>
+</ul></li>
 </ul></li>
 <li class="chapter" data-level="12" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i><b>12</b> References</a></li>
 </ul>
@@ -318,7 +317,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
             <section class="normal" id="section-">
 <div id="disease-draft" class="section level1">
 <h1><span class="header-section-number">11</span> Disease-draft</h1>
-<p>Here we discuss epidemiological disease models. Pathogens cause diseases, and are typically defined as microorganisms (fungi, bacteria, and viruses) with some host specificity, and which undergo population growth within the host.</p>
+<p>Here we discuss epidemiological disease models. Pathogens cause diseases, and are typically defined as microorganisms (fungi, bacteria, and viruses) with some host specificity, and which undergo population growth within the host. The curious reader may want to consult <span class="citation">Ellner and Guckenheimer (<a href="#ref-Ellner:2006qe" role="doc-biblioref">2006</a>)</span> and <span class="citation">(<span class="citeproc-not-found" data-reference-id="Bjornstad2018B"><strong>???</strong></span>)</span>.</p>
 <p>I think, without tons of evidence, that one nice aspect of disease ecology and the use epidemiological models is that they have helped ecologists feel more comfortable with short term dynamics and also the importance of prediction. Human epidemiology is rightly obsessed with understanding the disease outbreak in front of us, whether it is the common cold, or SARS-CoV-2 and how to alter its course. It is even more interested in being able to predict the course of an outbreak. In contrast, ecology has often been more interested in asymptotic dynamics rather than short term, and more on understanding than prediction. There is a place for everything, and it is good to see the two having merged a bit.</p>
 <p>Our simplest models of disease are funny, in that they don’t model pathogens (the enemy) at all. These famous models, by <span class="citation">Kermack and McCormick (<a href="#ref-Kermack:1927fk" role="doc-biblioref">1927</a>)</span>, keep track of different types of hosts, primarily those with and without disease:</p>
 <ul>
@@ -328,29 +327,29 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul>
 <p>where <span class="math inline">\(N=S+I+R\)</span>. It is important to note that <span class="math inline">\(N\)</span>, <span class="math inline">\(S\)</span>, <span class="math inline">\(I\)</span>, and <span class="math inline">\(R\)</span> are <em>densities</em>. That is, we track numbers of individuals in a fixed area. This is important because it has direct consequences for the spread, or transmission, of disease <span class="citation">(McCallum, Barlow, and Hone <a href="#ref-McCallum2001" role="doc-biblioref">2001</a>)</span>.</p>
 <p>Disease spreads from infected individuals to susceptible individuals. The rate depends to some extent on the number or alternatively, on the fraction of the population that is infected. Resistant individuals are not typically considered vectors of the pathogens, and so increased abundance of resistant individuals slow the transmission rate by diluting the other two groups.</p>
-<div id="constant-population-size" class="section level2">
-<h2><span class="header-section-number">11.1</span> Constant population size</h2>
-<p>A good starting place is a simple SIR model for a population of constant size, with no immigration or emigration, <span class="citation">(Ellner and Guckenheimer <a href="#ref-Ellner:2006qe" role="doc-biblioref">2006</a>, @Kermack:1927fk)</span>. It assumes a constant population size. This is a reasonable assumption over relatively short time intervals, which is fine if we are interested in the progression of a single disease outbreak.
+<div id="closed-epidemics" class="section level2">
+<h2><span class="header-section-number">11.1</span> Closed epidemics</h2>
+<p>A good starting place is the simplest SIR models, that for a <em>closed</em> epidemic. By this we mean that births, deaths, and migration are essentially zero, such that we have a fixed population size. This is a reasonable assumption over relatively short time intervals, which is fine if we are interested in the progression of a single disease outbreak.
 <span class="math display" id="eq:SIRd">\[\begin{align*}
   \tag{11.1}
   \frac{d S}{d t} &amp;= -\beta IS\\
   \frac{d I}{d t} &amp;=\beta IS  - \gamma I\\
   \frac{d R}{d t} &amp;= \gamma I
 \end{align*}\]</span></p>
-<div class="sourceCode" id="cb320"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb320-1"><a href="disease-draft.html#cb320-1"></a><span class="co"># Here we create the function for the simple SIR model.</span></span>
-<span id="cb320-2"><a href="disease-draft.html#cb320-2"></a>SIRd &lt;-<span class="st"> </span><span class="cf">function</span>(t, y, p) {</span>
-<span id="cb320-3"><a href="disease-draft.html#cb320-3"></a>  {</span>
-<span id="cb320-4"><a href="disease-draft.html#cb320-4"></a>        S &lt;-<span class="st"> </span>y[<span class="dv">1</span>]</span>
-<span id="cb320-5"><a href="disease-draft.html#cb320-5"></a>        I &lt;-<span class="st"> </span>y[<span class="dv">2</span>]</span>
-<span id="cb320-6"><a href="disease-draft.html#cb320-6"></a>        R &lt;-<span class="st"> </span>y[<span class="dv">3</span>]</span>
-<span id="cb320-7"><a href="disease-draft.html#cb320-7"></a>    }</span>
-<span id="cb320-8"><a href="disease-draft.html#cb320-8"></a>  <span class="kw">with</span>( <span class="kw">as.list</span>(<span class="kw">c</span>(y, p)), {</span>
-<span id="cb320-9"><a href="disease-draft.html#cb320-9"></a>    dS.dt &lt;-<span class="st"> </span><span class="op">-</span>B<span class="op">*</span>I<span class="op">*</span>S</span>
-<span id="cb320-10"><a href="disease-draft.html#cb320-10"></a>    dI.dt &lt;-<span class="st"> </span>B<span class="op">*</span>I<span class="op">*</span>S <span class="op">-</span><span class="st"> </span>g<span class="op">*</span>I</span>
-<span id="cb320-11"><a href="disease-draft.html#cb320-11"></a>    dR.dt &lt;-<span class="st"> </span>g<span class="op">*</span>I</span>
-<span id="cb320-12"><a href="disease-draft.html#cb320-12"></a>   <span class="kw">return</span>( <span class="kw">list</span>(<span class="kw">c</span>(dS.dt, dI.dt, dR.dt)) )</span>
-<span id="cb320-13"><a href="disease-draft.html#cb320-13"></a>  } )</span>
-<span id="cb320-14"><a href="disease-draft.html#cb320-14"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="disease-draft.html#cb1-1"></a><span class="co"># Here we create the function for the simple SIR model.</span></span>
+<span id="cb1-2"><a href="disease-draft.html#cb1-2"></a>SIRd &lt;-<span class="st"> </span><span class="cf">function</span>(t, y, p) {</span>
+<span id="cb1-3"><a href="disease-draft.html#cb1-3"></a>  {</span>
+<span id="cb1-4"><a href="disease-draft.html#cb1-4"></a>        S &lt;-<span class="st"> </span>y[<span class="dv">1</span>]</span>
+<span id="cb1-5"><a href="disease-draft.html#cb1-5"></a>        I &lt;-<span class="st"> </span>y[<span class="dv">2</span>]</span>
+<span id="cb1-6"><a href="disease-draft.html#cb1-6"></a>        R &lt;-<span class="st"> </span>y[<span class="dv">3</span>]</span>
+<span id="cb1-7"><a href="disease-draft.html#cb1-7"></a>    }</span>
+<span id="cb1-8"><a href="disease-draft.html#cb1-8"></a>  <span class="kw">with</span>( <span class="kw">as.list</span>(<span class="kw">c</span>(y, p)), {</span>
+<span id="cb1-9"><a href="disease-draft.html#cb1-9"></a>    dS.dt &lt;-<span class="st"> </span><span class="op">-</span>B<span class="op">*</span>I<span class="op">*</span>S</span>
+<span id="cb1-10"><a href="disease-draft.html#cb1-10"></a>    dI.dt &lt;-<span class="st"> </span>B<span class="op">*</span>I<span class="op">*</span>S <span class="op">-</span><span class="st"> </span>g<span class="op">*</span>I</span>
+<span id="cb1-11"><a href="disease-draft.html#cb1-11"></a>    dR.dt &lt;-<span class="st"> </span>g<span class="op">*</span>I</span>
+<span id="cb1-12"><a href="disease-draft.html#cb1-12"></a>   <span class="kw">return</span>( <span class="kw">list</span>(<span class="kw">c</span>(dS.dt, dI.dt, dR.dt)) )</span>
+<span id="cb1-13"><a href="disease-draft.html#cb1-13"></a>  } )</span>
+<span id="cb1-14"><a href="disease-draft.html#cb1-14"></a>}</span></code></pre></div>
 <div id="density-dependent-transmission" class="section level3">
 <h3><span class="header-section-number">11.1.1</span> Density-dependent transmission</h3>
 <p>In <a href="disease-draft.html#eq:SIRd">(11.1)</a>, the total transmission rate depends on the density of susceptible hosts. The <em>transmission coefficient</em>, <span class="math inline">\(\beta\)</span>, describes the instantaneous rate at which the number of infected hosts increases per infected individual. It is directly analogous to the attack rate of type I prey-dependent models. Recall that it is based on the law of mass action, borrowed from physics and chemistry. It assumes that the rate at which events occur (new infections) is due to complete and random mixing of the reactants (<span class="math inline">\(S,\,I\)</span>), and the rate at which the reactants collide and react can be described by a single constant, <span class="math inline">\(\beta\)</span>. As density of either type of molecule increases, so too does the rate of interaction. In prey-dependent predation, we referred to <span class="math inline">\(aN\)</span> as a linear functional response; here we refer to <span class="math inline">\(\beta S\)</span> as the <em>density-dependent transmission function</em>. The <em>transmission rate</em> is the instantaneous rate for the number of <em>new infections</em> or cases per unit time <span class="citation">(McCallum, Barlow, and Hone <a href="#ref-McCallum2001" role="doc-biblioref">2001</a>)</span>.</p>
@@ -363,7 +362,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   0 &amp; &lt; \beta IS - \gamma I\notag\\
   \frac{\gamma}{\beta} &amp;&lt; S
 \end{align}\]</span>
-What does this tell us? First, because we could divide through by <span class="math inline">\(I\)</span>, it means that if no one is infected, then an outbreak can’t happen—it is the usual, but typically unstable equilibrium at 0. Second, it tells us that an outbreak will occur if the absolute density of susceptibles<a href="#fn57" class="footnote-ref" id="fnref57"><sup>57</sup></a> is greater than <span class="math inline">\(\gamma / \beta\)</span>. If we consider the pre-outbreak situation where <span class="math inline">\(S \approx N\)</span>, then simply making the population size (and density) low enough can halt the spread of disease. This is why outbreaks tend to occur in high density populations, such as agricultural hosts (e.g., cattle), or historically in urban human populations, or in schools.</p>
+What does this tell us? First, because we could divide through by <span class="math inline">\(I\)</span>, it means that if no one is infected, then an outbreak can’t happen—it is the usual, but typically unstable equilibrium at 0. Second, it tells us that an outbreak will occur if the absolute density of susceptibles<a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a> is greater than <span class="math inline">\(\gamma / \beta\)</span>. If we consider the pre-outbreak situation where <span class="math inline">\(S \approx N\)</span>, then simply making the population size (and density) low enough can halt the spread of disease. This is why outbreaks tend to occur in high density populations, such as agricultural hosts (e.g., cattle), or historically in urban human populations, or in schools.</p>
 <p>Vaccinations are a way to reduce <span class="math inline">\(S\)</span> without reducing <span class="math inline">\(N\)</span>. If a sufficient number of individuals in the population are vaccinated to reduce <span class="math inline">\(S\)</span> below <span class="math inline">\(\gamma / \beta\)</span>, this tends to protect the unvaccinated individuals as well.</p>
 <p>Another common representation of this is called the <em>force of infection</em> or <em>basic reproductive rate of the disease.</em> If we assume that in a large population <span class="math inline">\(S \approx N\)</span>, then rearranging <a href="disease-draft.html#eq:sird-threshold">(11.2)</a> gives us
 <span class="math display" id="eq:R0">\[\begin{equation}
@@ -372,16 +371,16 @@ What does this tell us? First, because we could divide through by <span class="m
 \end{equation}\]</span>
 where <span class="math inline">\(R_0\)</span> is the basic reproductive rate of the disease. If <span class="math inline">\(R_0 &gt; 1\)</span>, then an outbreak (i.e., disease growth) is plausible. Try not to confuse density of resistant hosts, <span class="math inline">\(R\)</span>, with the basic reproductive rate of the disease, <span class="math inline">\(R_0\)</span>. This is analogous to the finite rate of increase of a population where <span class="math inline">\(\lambda&gt;1\)</span>.</p>
 <p>Here we model the outbreak of a nonlethal disease (e.g., a new cold virus in winter at university). We assume that the disease is neither life-threatening, and nor is anyone resistant, thus <span class="math inline">\(R=0\)</span>. We can investigate the SIR model by pretending that, as is often the case, we begin with a largely uninfected population and <span class="math inline">\(t=0\)</span>, so <span class="math inline">\(I_0=1\)</span> and <span class="math inline">\(S_0\approx N\)</span>. We first set parameters. Let’s assume that a cold lasts about a week - that is the duration of the disease, which is <span class="math inline">\(1/\gamma\)</span>. This assumes that the duration ot he cold symptoms are exponentially distributed.</p>
-<div class="sourceCode" id="cb321"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb321-1"><a href="disease-draft.html#cb321-1"></a>parms &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dt">B=</span>.<span class="dv">001</span>, <span class="dt">g=</span><span class="dv">1</span><span class="op">/</span><span class="dv">7</span>)</span>
-<span id="cb321-2"><a href="disease-draft.html#cb321-2"></a>N &lt;-<span class="st"> </span><span class="dv">10</span><span class="op">^</span><span class="dv">3</span>; I &lt;-<span class="st"> </span>R &lt;-<span class="st"> </span><span class="dv">1</span>; S &lt;-<span class="st"> </span>N <span class="op">-</span><span class="st"> </span>I <span class="op">-</span><span class="st"> </span>R</span>
-<span id="cb321-3"><a href="disease-draft.html#cb321-3"></a>y &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dt">S=</span>S, <span class="dt">I=</span>I, <span class="dt">R=</span>R)</span>
-<span id="cb321-4"><a href="disease-draft.html#cb321-4"></a></span>
-<span id="cb321-5"><a href="disease-draft.html#cb321-5"></a><span class="co"># Next we integrate for 20 weeks.</span></span>
-<span id="cb321-6"><a href="disease-draft.html#cb321-6"></a>weeks &lt;-<span class="st"> </span><span class="kw">seq</span>(<span class="dv">0</span>, <span class="dv">20</span>, <span class="dt">by=</span><span class="fl">0.01</span>)</span>
-<span id="cb321-7"><a href="disease-draft.html#cb321-7"></a>out1 &lt;-<span class="st"> </span><span class="kw">data.frame</span>( <span class="kw">ode</span>(y, weeks, SIRd, parms) )</span>
-<span id="cb321-8"><a href="disease-draft.html#cb321-8"></a>out2 &lt;-<span class="st"> </span><span class="kw">pivot_longer</span>(out1, <span class="dt">cols=</span>S<span class="op">:</span>R, <span class="dt">names_to=</span><span class="st">&quot;Host&quot;</span>, <span class="dt">values_to=</span><span class="st">&quot;N&quot;</span>)</span>
-<span id="cb321-9"><a href="disease-draft.html#cb321-9"></a><span class="kw">ggplot</span>(out2, <span class="kw">aes</span>(time, N, <span class="dt">linetype=</span>Host)) <span class="op">+</span><span class="st"> </span><span class="kw">geom_line</span>() <span class="op">+</span><span class="st"> </span><span class="kw">labs</span>(<span class="dt">x=</span><span class="st">&quot;Weeks&quot;</span>)</span></code></pre></div>
-<p><img src="figs/cold-1.png" width="90%" /></p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="disease-draft.html#cb2-1"></a>parms &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dt">B=</span>.<span class="dv">001</span>, <span class="dt">g=</span><span class="dv">1</span><span class="op">/</span><span class="dv">7</span>)</span>
+<span id="cb2-2"><a href="disease-draft.html#cb2-2"></a>N &lt;-<span class="st"> </span><span class="dv">10</span><span class="op">^</span><span class="dv">3</span>; I &lt;-<span class="st"> </span>R &lt;-<span class="st"> </span><span class="dv">1</span>; S &lt;-<span class="st"> </span>N <span class="op">-</span><span class="st"> </span>I <span class="op">-</span><span class="st"> </span>R</span>
+<span id="cb2-3"><a href="disease-draft.html#cb2-3"></a>y &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dt">S=</span>S, <span class="dt">I=</span>I, <span class="dt">R=</span>R)</span>
+<span id="cb2-4"><a href="disease-draft.html#cb2-4"></a></span>
+<span id="cb2-5"><a href="disease-draft.html#cb2-5"></a><span class="co"># Next we integrate for 20 weeks.</span></span>
+<span id="cb2-6"><a href="disease-draft.html#cb2-6"></a>weeks &lt;-<span class="st"> </span><span class="kw">seq</span>(<span class="dv">0</span>, <span class="dv">20</span>, <span class="dt">by=</span><span class="fl">0.01</span>)</span>
+<span id="cb2-7"><a href="disease-draft.html#cb2-7"></a>out1 &lt;-<span class="st"> </span><span class="kw">data.frame</span>( <span class="kw">ode</span>(y, weeks, SIRd, parms) )</span>
+<span id="cb2-8"><a href="disease-draft.html#cb2-8"></a>out2 &lt;-<span class="st"> </span><span class="kw">pivot_longer</span>(out1, <span class="dt">cols=</span>S<span class="op">:</span>R, <span class="dt">names_to=</span><span class="st">&quot;Host&quot;</span>, <span class="dt">values_to=</span><span class="st">&quot;N&quot;</span>)</span>
+<span id="cb2-9"><a href="disease-draft.html#cb2-9"></a><span class="kw">ggplot</span>(out2, <span class="kw">aes</span>(time, N, <span class="dt">linetype=</span>Host)) <span class="op">+</span><span class="st"> </span><span class="kw">geom_line</span>() <span class="op">+</span><span class="st"> </span><span class="kw">labs</span>(<span class="dt">x=</span><span class="st">&quot;Weeks&quot;</span>)</span></code></pre></div>
+<p><img src="_main_files/figure-html/cold-1.png" width="672" /></p>
 <p>It is important at this point to reiterate a point we made above—<em>these conclusions apply when S, I, and R are densities</em> <span class="citation">(McCallum, Barlow, and Hone <a href="#ref-McCallum2001" role="doc-biblioref">2001</a>)</span>. If you increase population size but also the area associated with the population, then you have not changed density. If population size only increases, but density is constant, then interaction frequency does not increase. Some populations may increase in density as they increase is size, but some may not. Mass action dynamics are the same as type I functional response as predators—there is a constant linear increase in per capita infection rate as the number of susceptible hosts increases.</p>
 </div>
 <div id="frequency-dependent-transmission" class="section level3">
@@ -393,45 +392,45 @@ where <span class="math inline">\(R_0\)</span> is the basic reproductive rate of
   \frac{d I}{d t} &amp;=   \gamma I. \tag{11.6}
 \end{align}\]</span></p>
 <p>Here we create the function for the system of ODEs in eq. .</p>
-<div class="sourceCode" id="cb322"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb322-1"><a href="disease-draft.html#cb322-1"></a>SIRf &lt;-<span class="st"> </span><span class="cf">function</span>(t, y, p) {</span>
-<span id="cb322-2"><a href="disease-draft.html#cb322-2"></a>  {</span>
-<span id="cb322-3"><a href="disease-draft.html#cb322-3"></a>        S &lt;-<span class="st"> </span>y[<span class="dv">1</span>]</span>
-<span id="cb322-4"><a href="disease-draft.html#cb322-4"></a>        I &lt;-<span class="st"> </span>y[<span class="dv">2</span>]</span>
-<span id="cb322-5"><a href="disease-draft.html#cb322-5"></a>        R &lt;-<span class="st"> </span>y[<span class="dv">3</span>]</span>
-<span id="cb322-6"><a href="disease-draft.html#cb322-6"></a>        N &lt;-<span class="st"> </span>S <span class="op">+</span><span class="st"> </span>I <span class="op">+</span><span class="st"> </span>R</span>
-<span id="cb322-7"><a href="disease-draft.html#cb322-7"></a>    }</span>
-<span id="cb322-8"><a href="disease-draft.html#cb322-8"></a>  <span class="kw">with</span>( <span class="kw">as.list</span>(<span class="kw">c</span>(y,p)), {</span>
-<span id="cb322-9"><a href="disease-draft.html#cb322-9"></a>    dS.dt &lt;-<span class="st"> </span><span class="op">-</span>B<span class="op">*</span>I<span class="op">*</span>S<span class="op">/</span>N</span>
-<span id="cb322-10"><a href="disease-draft.html#cb322-10"></a>    dI.dt &lt;-<span class="st"> </span>B<span class="op">*</span>I<span class="op">*</span>S<span class="op">/</span>N <span class="op">-</span><span class="st"> </span>g<span class="op">*</span>I</span>
-<span id="cb322-11"><a href="disease-draft.html#cb322-11"></a>    dR.dt &lt;-<span class="st"> </span>g<span class="op">*</span>I</span>
-<span id="cb322-12"><a href="disease-draft.html#cb322-12"></a>   <span class="kw">return</span>( <span class="kw">list</span>(<span class="kw">c</span>(dS.dt, dI.dt, dR.dt)) )</span>
-<span id="cb322-13"><a href="disease-draft.html#cb322-13"></a>  } )</span>
-<span id="cb322-14"><a href="disease-draft.html#cb322-14"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="disease-draft.html#cb3-1"></a>SIRf &lt;-<span class="st"> </span><span class="cf">function</span>(t, y, p) {</span>
+<span id="cb3-2"><a href="disease-draft.html#cb3-2"></a>  {</span>
+<span id="cb3-3"><a href="disease-draft.html#cb3-3"></a>        S &lt;-<span class="st"> </span>y[<span class="dv">1</span>]</span>
+<span id="cb3-4"><a href="disease-draft.html#cb3-4"></a>        I &lt;-<span class="st"> </span>y[<span class="dv">2</span>]</span>
+<span id="cb3-5"><a href="disease-draft.html#cb3-5"></a>        R &lt;-<span class="st"> </span>y[<span class="dv">3</span>]</span>
+<span id="cb3-6"><a href="disease-draft.html#cb3-6"></a>        N &lt;-<span class="st"> </span>S <span class="op">+</span><span class="st"> </span>I <span class="op">+</span><span class="st"> </span>R</span>
+<span id="cb3-7"><a href="disease-draft.html#cb3-7"></a>    }</span>
+<span id="cb3-8"><a href="disease-draft.html#cb3-8"></a>  <span class="kw">with</span>( <span class="kw">as.list</span>(<span class="kw">c</span>(y,p)), {</span>
+<span id="cb3-9"><a href="disease-draft.html#cb3-9"></a>    dS.dt &lt;-<span class="st"> </span><span class="op">-</span>B<span class="op">*</span>I<span class="op">*</span>S<span class="op">/</span>N</span>
+<span id="cb3-10"><a href="disease-draft.html#cb3-10"></a>    dI.dt &lt;-<span class="st"> </span>B<span class="op">*</span>I<span class="op">*</span>S<span class="op">/</span>N <span class="op">-</span><span class="st"> </span>g<span class="op">*</span>I</span>
+<span id="cb3-11"><a href="disease-draft.html#cb3-11"></a>    dR.dt &lt;-<span class="st"> </span>g<span class="op">*</span>I</span>
+<span id="cb3-12"><a href="disease-draft.html#cb3-12"></a>   <span class="kw">return</span>( <span class="kw">list</span>(<span class="kw">c</span>(dS.dt, dI.dt, dR.dt)) )</span>
+<span id="cb3-13"><a href="disease-draft.html#cb3-13"></a>  } )</span>
+<span id="cb3-14"><a href="disease-draft.html#cb3-14"></a>}</span></code></pre></div>
 <p>The proper form of the transmission function depends on the mode of transmission <span class="citation">(McCallum, Barlow, and Hone <a href="#ref-McCallum2001" role="doc-biblioref">2001</a>)</span>. Imagine two people are on an elevator, one sick (infected), and one healthy but susceptible, and then the sick individual sneezes <span class="citation">(Ellner and Guckenheimer <a href="#ref-Ellner:2006qe" role="doc-biblioref">2006</a>)</span>. This results in a particular probability, <span class="math inline">\(\beta\)</span>, that the susceptible individual gets infected. Now imagine resistant individuals get on the elevator—should adding resistant individuals change the probability that the susceptible individual gets infected? Note what has and has not changed. First, with the addition of a resistant individual, <span class="math inline">\(N\)</span> has increased, and prevalence, <span class="math inline">\(I/N\)</span>, has decreased. However, the densities of <span class="math inline">\(I\)</span> and <span class="math inline">\(S\)</span> remain the same (1 per elevator). What might happen? There are at least two possible outcomes:</p>
 <ol style="list-style-type: decimal">
 <li>If sufficient amounts of the virus spread evenly throughout the elevator, adding a resistant individual does <em>not</em> change the probability of the susceptible becoming sick, and the rate of spread will remain dependent on the densities of <span class="math inline">\(I\)</span> and <span class="math inline">\(S\)</span>—the rate will not vary with declining prevalence.</li>
 <li>If only the immediate neighbor gets exposed to the pathogen, then the probability that the neighbor is susceptible declines with increasing <span class="math inline">\(R\)</span>, and thus the rate of spread <em>will</em> decline with declining prevalence.</li>
 </ol>
 <p>It is fairly easy to imagine different scenarios, and it is very important to justify the form of the function. Density- and frequency-dependent transmission are the two most common caricatures.</p>
-<div class="sourceCode" id="cb323"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb323-1"><a href="disease-draft.html#cb323-1"></a>R &lt;-<span class="st"> </span><span class="dv">0</span>; S &lt;-<span class="st"> </span>I &lt;-<span class="st"> </span><span class="dv">1000</span>; Ss &lt;-<span class="st"> </span>Is &lt;-<span class="st"> </span><span class="kw">seq</span>(<span class="dv">1</span>, S, <span class="dt">length=</span><span class="dv">11</span>); N &lt;-<span class="st"> </span>S<span class="op">+</span>I<span class="op">+</span>R</span>
-<span id="cb323-2"><a href="disease-draft.html#cb323-2"></a>betaD &lt;-<span class="st"> </span><span class="fl">0.1</span>; betaF &lt;-<span class="st"> </span>betaD<span class="op">*</span>N</span>
-<span id="cb323-3"><a href="disease-draft.html#cb323-3"></a></span>
-<span id="cb323-4"><a href="disease-draft.html#cb323-4"></a><span class="co"># sapply will calculate the transmission functions for each combination of</span></span>
-<span id="cb323-5"><a href="disease-draft.html#cb323-5"></a><span class="co"># the values of $I$ and $S$.</span></span>
-<span id="cb323-6"><a href="disease-draft.html#cb323-6"></a>mat1 &lt;-<span class="st"> </span><span class="kw">sapply</span>(Is, <span class="cf">function</span>(i) betaD <span class="op">*</span><span class="st"> </span>i <span class="op">*</span><span class="st"> </span>Ss)</span>
-<span id="cb323-7"><a href="disease-draft.html#cb323-7"></a>mat2 &lt;-<span class="st"> </span><span class="kw">sapply</span>(Is, <span class="cf">function</span>(i) betaF <span class="op">*</span><span class="st"> </span>i <span class="op">*</span><span class="st"> </span>Ss <span class="op">/</span><span class="st"> </span>(i <span class="op">+</span><span class="st"> </span>Ss <span class="op">+</span><span class="st"> </span>R) )</span>
-<span id="cb323-8"><a href="disease-draft.html#cb323-8"></a><span class="co"># Now we plot these matrices. </span></span>
-<span id="cb323-9"><a href="disease-draft.html#cb323-9"></a></span>
-<span id="cb323-10"><a href="disease-draft.html#cb323-10"></a>{</span>
-<span id="cb323-11"><a href="disease-draft.html#cb323-11"></a>  <span class="kw">layout</span>(<span class="kw">matrix</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">2</span>, <span class="dt">nr=</span><span class="dv">1</span>))</span>
-<span id="cb323-12"><a href="disease-draft.html#cb323-12"></a><span class="kw">persp</span>(mat1, <span class="dt">theta=</span><span class="dv">20</span>, <span class="dt">phi=</span><span class="dv">15</span>, <span class="dt">r=</span><span class="dv">10</span>, <span class="dt">zlim=</span><span class="kw">c</span>(<span class="dv">0</span>,betaD<span class="op">*</span>S<span class="op">*</span>I), </span>
-<span id="cb323-13"><a href="disease-draft.html#cb323-13"></a>      <span class="dt">main=</span><span class="st">&quot;Density Dependent&quot;</span>,</span>
-<span id="cb323-14"><a href="disease-draft.html#cb323-14"></a>      <span class="dt">xlab=</span><span class="st">&quot;I&quot;</span>, <span class="dt">ylab=</span><span class="st">&quot;S&quot;</span>, <span class="dt">zlab=</span><span class="st">&quot;Transmission Rate&quot;</span>)</span>
-<span id="cb323-15"><a href="disease-draft.html#cb323-15"></a><span class="kw">persp</span>(mat2, <span class="dt">theta=</span><span class="dv">20</span>, <span class="dt">phi=</span><span class="dv">15</span>, <span class="dt">r=</span><span class="dv">10</span>, <span class="dt">zlim=</span><span class="kw">c</span>(<span class="dv">0</span>,betaF<span class="op">*</span>S<span class="op">*</span>I<span class="op">/</span>N), </span>
-<span id="cb323-16"><a href="disease-draft.html#cb323-16"></a>      <span class="dt">main=</span><span class="st">&quot;Frequency Dependent&quot;</span>,</span>
-<span id="cb323-17"><a href="disease-draft.html#cb323-17"></a>      <span class="dt">xlab=</span><span class="st">&quot;I&quot;</span>, <span class="dt">ylab=</span><span class="st">&quot;S&quot;</span>, <span class="dt">zlab=</span><span class="st">&quot;Transmission Rate&quot;</span>)</span>
-<span id="cb323-18"><a href="disease-draft.html#cb323-18"></a>}</span></code></pre></div>
-<p><img src="figs/unnamed-chunk-150-1.png" width="90%" /></p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="disease-draft.html#cb4-1"></a>R &lt;-<span class="st"> </span><span class="dv">0</span>; S &lt;-<span class="st"> </span>I &lt;-<span class="st"> </span><span class="dv">1000</span>; Ss &lt;-<span class="st"> </span>Is &lt;-<span class="st"> </span><span class="kw">seq</span>(<span class="dv">1</span>, S, <span class="dt">length=</span><span class="dv">11</span>); N &lt;-<span class="st"> </span>S<span class="op">+</span>I<span class="op">+</span>R</span>
+<span id="cb4-2"><a href="disease-draft.html#cb4-2"></a>betaD &lt;-<span class="st"> </span><span class="fl">0.1</span>; betaF &lt;-<span class="st"> </span>betaD<span class="op">*</span>N</span>
+<span id="cb4-3"><a href="disease-draft.html#cb4-3"></a></span>
+<span id="cb4-4"><a href="disease-draft.html#cb4-4"></a><span class="co"># sapply will calculate the transmission functions for each combination of</span></span>
+<span id="cb4-5"><a href="disease-draft.html#cb4-5"></a><span class="co"># the values of $I$ and $S$.</span></span>
+<span id="cb4-6"><a href="disease-draft.html#cb4-6"></a>mat1 &lt;-<span class="st"> </span><span class="kw">sapply</span>(Is, <span class="cf">function</span>(i) betaD <span class="op">*</span><span class="st"> </span>i <span class="op">*</span><span class="st"> </span>Ss)</span>
+<span id="cb4-7"><a href="disease-draft.html#cb4-7"></a>mat2 &lt;-<span class="st"> </span><span class="kw">sapply</span>(Is, <span class="cf">function</span>(i) betaF <span class="op">*</span><span class="st"> </span>i <span class="op">*</span><span class="st"> </span>Ss <span class="op">/</span><span class="st"> </span>(i <span class="op">+</span><span class="st"> </span>Ss <span class="op">+</span><span class="st"> </span>R) )</span>
+<span id="cb4-8"><a href="disease-draft.html#cb4-8"></a><span class="co"># Now we plot these matrices. </span></span>
+<span id="cb4-9"><a href="disease-draft.html#cb4-9"></a></span>
+<span id="cb4-10"><a href="disease-draft.html#cb4-10"></a>{</span>
+<span id="cb4-11"><a href="disease-draft.html#cb4-11"></a>  <span class="kw">layout</span>(<span class="kw">matrix</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">2</span>, <span class="dt">nr=</span><span class="dv">1</span>))</span>
+<span id="cb4-12"><a href="disease-draft.html#cb4-12"></a><span class="kw">persp</span>(mat1, <span class="dt">theta=</span><span class="dv">20</span>, <span class="dt">phi=</span><span class="dv">15</span>, <span class="dt">r=</span><span class="dv">10</span>, <span class="dt">zlim=</span><span class="kw">c</span>(<span class="dv">0</span>,betaD<span class="op">*</span>S<span class="op">*</span>I), </span>
+<span id="cb4-13"><a href="disease-draft.html#cb4-13"></a>      <span class="dt">main=</span><span class="st">&quot;Density Dependent&quot;</span>,</span>
+<span id="cb4-14"><a href="disease-draft.html#cb4-14"></a>      <span class="dt">xlab=</span><span class="st">&quot;I&quot;</span>, <span class="dt">ylab=</span><span class="st">&quot;S&quot;</span>, <span class="dt">zlab=</span><span class="st">&quot;Transmission Rate&quot;</span>)</span>
+<span id="cb4-15"><a href="disease-draft.html#cb4-15"></a><span class="kw">persp</span>(mat2, <span class="dt">theta=</span><span class="dv">20</span>, <span class="dt">phi=</span><span class="dv">15</span>, <span class="dt">r=</span><span class="dv">10</span>, <span class="dt">zlim=</span><span class="kw">c</span>(<span class="dv">0</span>,betaF<span class="op">*</span>S<span class="op">*</span>I<span class="op">/</span>N), </span>
+<span id="cb4-16"><a href="disease-draft.html#cb4-16"></a>      <span class="dt">main=</span><span class="st">&quot;Frequency Dependent&quot;</span>,</span>
+<span id="cb4-17"><a href="disease-draft.html#cb4-17"></a>      <span class="dt">xlab=</span><span class="st">&quot;I&quot;</span>, <span class="dt">ylab=</span><span class="st">&quot;S&quot;</span>, <span class="dt">zlab=</span><span class="st">&quot;Transmission Rate&quot;</span>)</span>
+<span id="cb4-18"><a href="disease-draft.html#cb4-18"></a>}</span></code></pre></div>
+<p><img src="_main_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
 <p>What does frequency–dependent transmission imply about dynamics? Let’s solve for <span class="math inline">\(dI / dt &gt; 0\)</span>.
 <span class="math display" id="eq:19">\[\begin{align}
   \tag{11.7}
@@ -442,95 +441,210 @@ As we did above, let’s consider the pre-outbreak situation where <span class="
 <p>Another interesting phenomenon with frequency–dependent transmission is that prevalence (<span class="math inline">\(I/N\)</span>) can decline with increasing population size (Fig. <a href="#fig:sirFD"><strong>??</strong></a>). Two phenomena contribute to this pattern. First, outbreak in a completely susceptible population typically begins with a single individual, and so initial prevalence is always <span class="math inline">\(I/N=1/N\)</span>. Second, as a consequence of this, the transmission rate is lower in larger populations because <span class="math inline">\(\beta SI/N\)</span> is small. As a consequence, prevalence remains low for a relatively long time. In a seasonal population, most individuals in large populations remain uninfected after four months. Depending upon the organism, this could be long enough to reproduce. In contrast, a density–dependent model typically shows the oppositive, pattern, with more rapid, extreme outbreaks and greater prevalence in more dense populations (Fig. <a href="#fig:sirFD"><strong>??</strong></a>).</p>
 <p><em>SIR</em> dynamics with frequency–dependent transmission (Fig. (fig:sirFD)).
 Here we demonstrate that prevalence can decline with increasing population size in a frequency–dependent disease (e.g., a smut on plant <span class="citation">(Antonovics and Alexander <a href="#ref-Antonovics:1992rm" role="doc-biblioref">1992</a>)</span>). Let us assume that resistance cannot be acquired, so <span class="math inline">\(\gamma=0\)</span>, and <span class="math inline">\(R = 0\)</span>. We can investigate the SIR model by pretending that, as is often the case, we begin with a largely uninfected population and <span class="math inline">\(t=0\)</span>, so <span class="math inline">\(I_0=1\)</span> and <span class="math inline">\(S_0\approx N\)</span>. We first set parameters.</p>
-<div class="sourceCode" id="cb324"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb324-1"><a href="disease-draft.html#cb324-1"></a>S &lt;-<span class="st"> </span><span class="dv">4</span><span class="op">^</span>(<span class="dv">0</span><span class="op">:</span><span class="dv">4</span>);  I &lt;-<span class="st"> </span><span class="dv">1</span>; parmsf &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dt">B=</span><span class="dv">1</span>, <span class="dt">g=</span><span class="dv">0</span>); parmsd &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dt">B=</span><span class="dv">1</span><span class="op">/</span><span class="dv">16</span>, <span class="dt">g=</span><span class="dv">0</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="disease-draft.html#cb5-1"></a>S &lt;-<span class="st"> </span><span class="dv">4</span><span class="op">^</span>(<span class="dv">0</span><span class="op">:</span><span class="dv">4</span>);  I &lt;-<span class="st"> </span><span class="dv">1</span>; parmsf &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dt">B=</span><span class="dv">1</span>, <span class="dt">g=</span><span class="dv">0</span>); parmsd &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dt">B=</span><span class="dv">1</span><span class="op">/</span><span class="dv">16</span>, <span class="dt">g=</span><span class="dv">0</span>)</span></code></pre></div>
 <p>We next integrate for six months, letting <span class="math inline">\(R=S/2\)</span>.</p>
-<div class="sourceCode" id="cb325"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb325-1"><a href="disease-draft.html#cb325-1"></a>Months &lt;-<span class="st"> </span><span class="kw">seq</span>(<span class="dv">0</span>, <span class="dv">8</span>, <span class="dt">by=</span><span class="fl">0.1</span>)</span>
-<span id="cb325-2"><a href="disease-draft.html#cb325-2"></a>outd &lt;-<span class="st"> </span><span class="kw">sapply</span>(S, <span class="cf">function</span>(s) {out &lt;-<span class="st"> </span><span class="kw">ode</span>(<span class="kw">c</span>(s,I,R), Months, SIRd, parmsd)</span>
-<span id="cb325-3"><a href="disease-draft.html#cb325-3"></a>                               out[,<span class="dv">3</span>]<span class="op">/</span><span class="kw">apply</span>(out[,<span class="dv">2</span><span class="op">:</span><span class="dv">4</span>], <span class="dv">1</span>, sum) } )</span>
-<span id="cb325-4"><a href="disease-draft.html#cb325-4"></a>outf &lt;-<span class="st"> </span><span class="kw">sapply</span>(S, <span class="cf">function</span>(s) {out &lt;-<span class="st"> </span><span class="kw">ode</span>(<span class="kw">c</span>(s,I,R), Months, SIRf, parmsf)</span>
-<span id="cb325-5"><a href="disease-draft.html#cb325-5"></a>                               out[,<span class="dv">3</span>]<span class="op">/</span><span class="kw">apply</span>(out[,<span class="dv">2</span><span class="op">:</span><span class="dv">4</span>], <span class="dv">1</span>, sum) } )</span>
-<span id="cb325-6"><a href="disease-draft.html#cb325-6"></a><span class="co">#TR &lt;- sapply(S, function(s) {R &lt;- s/2; parmsf[&quot;B&quot;]*s*I/(s+I+R)})</span></span></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="disease-draft.html#cb6-1"></a>Months &lt;-<span class="st"> </span><span class="kw">seq</span>(<span class="dv">0</span>, <span class="dv">8</span>, <span class="dt">by=</span><span class="fl">0.1</span>)</span>
+<span id="cb6-2"><a href="disease-draft.html#cb6-2"></a>outd &lt;-<span class="st"> </span><span class="kw">sapply</span>(S, <span class="cf">function</span>(s) {out &lt;-<span class="st"> </span><span class="kw">ode</span>(<span class="kw">c</span>(s,I,R), Months, SIRd, parmsd)</span>
+<span id="cb6-3"><a href="disease-draft.html#cb6-3"></a>                               out[,<span class="dv">3</span>]<span class="op">/</span><span class="kw">apply</span>(out[,<span class="dv">2</span><span class="op">:</span><span class="dv">4</span>], <span class="dv">1</span>, sum) } )</span>
+<span id="cb6-4"><a href="disease-draft.html#cb6-4"></a>outf &lt;-<span class="st"> </span><span class="kw">sapply</span>(S, <span class="cf">function</span>(s) {out &lt;-<span class="st"> </span><span class="kw">ode</span>(<span class="kw">c</span>(s,I,R), Months, SIRf, parmsf)</span>
+<span id="cb6-5"><a href="disease-draft.html#cb6-5"></a>                               out[,<span class="dv">3</span>]<span class="op">/</span><span class="kw">apply</span>(out[,<span class="dv">2</span><span class="op">:</span><span class="dv">4</span>], <span class="dv">1</span>, sum) } )</span>
+<span id="cb6-6"><a href="disease-draft.html#cb6-6"></a><span class="co">#TR &lt;- sapply(S, function(s) {R &lt;- s/2; parmsf[&quot;B&quot;]*s*I/(s+I+R)})</span></span></code></pre></div>
 <p>Last, we make the figures.</p>
-<div class="sourceCode" id="cb326"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb326-1"><a href="disease-draft.html#cb326-1"></a><span class="kw">matplot</span>(Months, outd, <span class="dt">type=</span><span class="st">&#39;l&#39;</span>, <span class="dt">col=</span><span class="dv">1</span>, <span class="dt">ylab=</span><span class="st">&quot;Prevalence (I/N)&quot;</span>)</span>
-<span id="cb326-2"><a href="disease-draft.html#cb326-2"></a><span class="kw">matplot</span>(Months, outf, <span class="dt">type=</span><span class="st">&#39;l&#39;</span>, <span class="dt">col=</span><span class="dv">1</span>, <span class="dt">ylab=</span><span class="st">&quot;Prevalence (I/N)&quot;</span>)</span>
-<span id="cb326-3"><a href="disease-draft.html#cb326-3"></a><span class="kw">legend</span>(<span class="st">&#39;bottomright&#39;</span>, <span class="dt">legend=</span>S, <span class="dt">lty=</span><span class="dv">1</span><span class="op">:</span><span class="kw">length</span>(S),  <span class="dt">bty=</span><span class="st">&#39;n&#39;</span>)</span>
-<span id="cb326-4"><a href="disease-draft.html#cb326-4"></a><span class="co">#plot(S, TR)</span></span></code></pre></div>
-<p><img src="figs/SIRfd-1.png" width="40%" /><img src="figs/SIRfd-2.png" width="40%" /></p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="disease-draft.html#cb7-1"></a><span class="kw">matplot</span>(Months, outd, <span class="dt">type=</span><span class="st">&#39;l&#39;</span>, <span class="dt">col=</span><span class="dv">1</span>, <span class="dt">ylab=</span><span class="st">&quot;Prevalence (I/N)&quot;</span>)</span>
+<span id="cb7-2"><a href="disease-draft.html#cb7-2"></a><span class="kw">matplot</span>(Months, outf, <span class="dt">type=</span><span class="st">&#39;l&#39;</span>, <span class="dt">col=</span><span class="dv">1</span>, <span class="dt">ylab=</span><span class="st">&quot;Prevalence (I/N)&quot;</span>)</span>
+<span id="cb7-3"><a href="disease-draft.html#cb7-3"></a><span class="kw">legend</span>(<span class="st">&#39;bottomright&#39;</span>, <span class="dt">legend=</span>S, <span class="dt">lty=</span><span class="dv">1</span><span class="op">:</span><span class="kw">length</span>(S),  <span class="dt">bty=</span><span class="st">&#39;n&#39;</span>)</span>
+<span id="cb7-4"><a href="disease-draft.html#cb7-4"></a><span class="co">#plot(S, TR)</span></span></code></pre></div>
+<p><img src="_main_files/figure-html/SIRfd-1.png" width="40%" /><img src="_main_files/figure-html/SIRfd-2.png" width="40%" /></p>
 </div>
 </div>
-<div id="sir-with-population-dynamics" class="section level2">
-<h2><span class="header-section-number">11.2</span> SIR with population dynamics</h2>
-<p>The above model assumes a constant population size—sort of. Recall that the “resistant group” could consist of those that acquire the ultimate immunity, death. In any event, we could make a more complex model that includes population growth and death unrelated to disease. Here we add births, <span class="math inline">\(b\)</span>, potentially by all types, sick or not (<span class="math inline">\(S+I+R\)</span>), and we assume that the newborns are susceptible only. We also added a mortality term to each group (<span class="math inline">\(mS,\,mI,\,mR\)</span>).
+<div id="open-epidemics" class="section level2">
+<h2><span class="header-section-number">11.2</span> Open epidemics</h2>
+<p>The above model assumes a constant population size. Here expand this to include population growth and death unrelated to disease (Fig. <a href="disease-draft.html#fig:sirmod">11.1</a>).</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="disease-draft.html#cb8-1"></a>A &lt;-<span class="st"> </span><span class="kw">matrix</span>(<span class="ot">NA</span>, <span class="dt">nrow=</span><span class="dv">7</span>, <span class="dt">ncol=</span><span class="dv">7</span>)</span>
+<span id="cb8-2"><a href="disease-draft.html#cb8-2"></a>a &lt;-<span class="st"> </span><span class="kw">matrix</span>(<span class="kw">c</span>( <span class="dv">2</span>,<span class="dv">1</span>, <span class="dv">3</span>,<span class="dv">2</span>, <span class="dv">4</span>,<span class="dv">3</span>, <span class="dv">5</span>,<span class="dv">2</span>, <span class="dv">6</span>,<span class="dv">3</span>, <span class="dv">7</span>,<span class="dv">4</span>), <span class="dt">ncol=</span><span class="dv">2</span>, <span class="dt">byrow=</span><span class="ot">TRUE</span>)</span>
+<span id="cb8-3"><a href="disease-draft.html#cb8-3"></a>A[a] &lt;-<span class="st"> </span><span class="dv">1</span></span>
+<span id="cb8-4"><a href="disease-draft.html#cb8-4"></a><span class="kw">plotmat</span>(A, <span class="dt">pos=</span><span class="kw">c</span>(<span class="dv">4</span>,<span class="dv">3</span>), <span class="dt">box.type=</span><span class="kw">c</span>(<span class="st">&#39;none&#39;</span>, <span class="st">&#39;square&#39;</span>,<span class="st">&#39;square&#39;</span>,<span class="st">&#39;square&#39;</span>,<span class="st">&#39;none&#39;</span>,<span class="st">&#39;none&#39;</span>,<span class="st">&#39;none&#39;</span>), <span class="dt">curve=</span><span class="dv">0</span>,</span>
+<span id="cb8-5"><a href="disease-draft.html#cb8-5"></a>        <span class="dt">arr.pos=</span>.<span class="dv">6</span>, <span class="dt">segment.from=</span>.<span class="dv">1</span>, <span class="dt">segment.to=</span>.<span class="dv">9</span>,</span>
+<span id="cb8-6"><a href="disease-draft.html#cb8-6"></a>        <span class="dt">relsize=</span>.<span class="dv">8</span>, <span class="dt">dtext=</span><span class="ot">NA</span>, <span class="dt">box.size=</span>.<span class="dv">05</span>,</span>
+<span id="cb8-7"><a href="disease-draft.html#cb8-7"></a>        <span class="dt">name=</span><span class="kw">c</span>(<span class="kw">expression</span>(lambda), <span class="st">&#39;S&#39;</span>, <span class="st">&#39;I&#39;</span>, <span class="st">&#39;R&#39;</span>, </span>
+<span id="cb8-8"><a href="disease-draft.html#cb8-8"></a>               <span class="kw">expression</span>(mu),</span>
+<span id="cb8-9"><a href="disease-draft.html#cb8-9"></a>               <span class="kw">expression</span>(mu),</span>
+<span id="cb8-10"><a href="disease-draft.html#cb8-10"></a>               <span class="kw">expression</span>(mu))) </span></code></pre></div>
+<div class="figure"><span id="fig:sirmod"></span>
+<img src="_main_files/figure-html/sirmod-1.png" alt="*Conceptual model of an open epidemic. We'll let lambda be migration and births, and mu be mortality. Births may come from any group.*" width="672" />
+<p class="caption">
+Figure 11.1: <em>Conceptual model of an open epidemic. We’ll let lambda be migration and births, and mu be mortality. Births may come from any group.</em>
+</p>
+</div>
+<p>Here we get specific, and add births, <span class="math inline">\(b\)</span>, potentially by all types, sick or not (<span class="math inline">\(S+I+R\)</span>), and we assume that the newborns are susceptible only. We also add a mortality term to each group (<span class="math inline">\(\mu S,\,\mu I,\,\mu R\)</span>).
 <span class="math display" id="eq:SIRbd">\[\begin{align}
   \tag{11.8}
-  \frac{\D S}{\D t} &amp;= b \left( S+I+R \right) - \beta SI - mS\\
-  \frac{\D I}{\D t} &amp;=\beta SI  - \gamma I - mI\\
-  \frac{\D R}{\D t} &amp;= \gamma I - mR
+  \frac{d S}{d t} &amp;= b \left( S+I+R \right) - \beta SI - \mu S\\
+  \frac{d I}{d t} &amp;=\beta SI  - \gamma I - \mu I\\
+  \frac{d R}{d t} &amp;= \gamma I - \mu R
 \end{align}\]</span>
 Note that the births add only to the susceptible group, whereas density independent mortality subtracts from each group.</p>
 <p><strong>Disease model with population growth</strong>
 Here we create the function for the system of ODE’s in <a href="disease-draft.html#eq:SIRbd">(11.8)</a>.</p>
-<div class="sourceCode" id="cb327"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb327-1"><a href="disease-draft.html#cb327-1"></a>SIRbd &lt;-<span class="st"> </span><span class="cf">function</span>(t, y, p) {</span>
-<span id="cb327-2"><a href="disease-draft.html#cb327-2"></a>  S &lt;-<span class="st"> </span>y[<span class="dv">1</span>]; I &lt;-<span class="st"> </span>y[<span class="dv">2</span>]; R &lt;-<span class="st"> </span>y[<span class="dv">3</span>]</span>
-<span id="cb327-3"><a href="disease-draft.html#cb327-3"></a>  <span class="kw">with</span>( <span class="kw">as.list</span>(p), {</span>
-<span id="cb327-4"><a href="disease-draft.html#cb327-4"></a>    dS.dt &lt;-<span class="st"> </span>b<span class="op">*</span>(S<span class="op">+</span>I<span class="op">+</span>R) <span class="op">-</span><span class="st"> </span>B<span class="op">*</span>I<span class="op">*</span>S <span class="op">-</span><span class="st"> </span>m<span class="op">*</span>S</span>
-<span id="cb327-5"><a href="disease-draft.html#cb327-5"></a>    dI.dt &lt;-<span class="st"> </span>B<span class="op">*</span>I<span class="op">*</span>S <span class="op">-</span><span class="st"> </span>g<span class="op">*</span>I <span class="op">-</span><span class="st"> </span>m<span class="op">*</span>I</span>
-<span id="cb327-6"><a href="disease-draft.html#cb327-6"></a>    dR.dt &lt;-<span class="st"> </span>g<span class="op">*</span>I <span class="op">-</span><span class="st"> </span>m<span class="op">*</span>R</span>
-<span id="cb327-7"><a href="disease-draft.html#cb327-7"></a>   <span class="kw">return</span>( <span class="kw">list</span>(<span class="kw">c</span>(dS.dt, dI.dt, dR.dt)) )</span>
-<span id="cb327-8"><a href="disease-draft.html#cb327-8"></a>  } )</span>
-<span id="cb327-9"><a href="disease-draft.html#cb327-9"></a>  }</span></code></pre></div>
-<p>Let’s start to work with this model—that frequently means making simplifying assumptions. We might start by assuming that if infected and resistant individuals can contribute to offspring, then the disease is relatively benign. Therefore, we can assume that mortality is the same for all groups (<span class="math inline">\(m_i=m\)</span>). Last, let us assume (again) a constant population size. This means that birth rate equals mortality or <span class="math inline">\(b=m\)</span>.</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="disease-draft.html#cb9-1"></a>SIRmod &lt;-<span class="st"> </span><span class="cf">function</span>(t, y, p) {</span>
+<span id="cb9-2"><a href="disease-draft.html#cb9-2"></a>  S &lt;-<span class="st"> </span>y[<span class="dv">1</span>]; I &lt;-<span class="st"> </span>y[<span class="dv">2</span>]; R &lt;-<span class="st"> </span>y[<span class="dv">3</span>]; N &lt;-<span class="st"> </span><span class="kw">sum</span>(y)</span>
+<span id="cb9-3"><a href="disease-draft.html#cb9-3"></a>  <span class="kw">with</span>( <span class="kw">as.list</span>(p), {</span>
+<span id="cb9-4"><a href="disease-draft.html#cb9-4"></a>    dS.dt &lt;-<span class="st"> </span>b<span class="op">*</span>N <span class="op">-</span><span class="st"> </span>B<span class="op">*</span>I<span class="op">*</span>S<span class="op">/</span>N<span class="op">^</span>z <span class="op">-</span><span class="st"> </span>mu<span class="op">*</span>S</span>
+<span id="cb9-5"><a href="disease-draft.html#cb9-5"></a>    dI.dt &lt;-<span class="st"> </span>B<span class="op">*</span>I<span class="op">*</span>S<span class="op">/</span>N<span class="op">^</span>z <span class="op">-</span><span class="st"> </span>g<span class="op">*</span>I <span class="op">-</span><span class="st"> </span>mu<span class="op">*</span>I</span>
+<span id="cb9-6"><a href="disease-draft.html#cb9-6"></a>    dR.dt &lt;-<span class="st"> </span>g<span class="op">*</span>I <span class="op">-</span><span class="st"> </span>mu<span class="op">*</span>R</span>
+<span id="cb9-7"><a href="disease-draft.html#cb9-7"></a>   <span class="kw">return</span>( <span class="kw">list</span>(<span class="kw">c</span>(dS.dt, dI.dt, dR.dt)) )</span>
+<span id="cb9-8"><a href="disease-draft.html#cb9-8"></a>  } )</span>
+<span id="cb9-9"><a href="disease-draft.html#cb9-9"></a>  }</span></code></pre></div>
+<p>Let’s start to work with this model—that frequently means making simplifying assumptions. We might start by assuming that if infected and resistant individuals can contribute to offspring, then the disease is relatively benign. Therefore, we can assume that mortality is the same for all groups (<span class="math inline">\(\mu_i= \mu\)</span>). We’ll also assume (again) a constant population size. This means that birth rate equals mortality or <span class="math inline">\(b=\mu\)</span>.</p>
+<p>We add additional complexity by allowing transmission to be partially frequency dependent. We introduce a scaling parameter <span class="math inline">\(z\)</span>, where transmission is
+<span class="math display">\[\beta I \frac{S}{N^z}\]</span>
+so that when <span class="math inline">\(z=0\)</span> we have pure density dependence, and <span class="math inline">\(z=1\)</span> is pure frequency dependence.</p>
+<p>Note that if we let <span class="math inline">\(z,\, b,\, \mu =0\)</span>, the we have the simplest SIR model with which we bagn the chapter.</p>
 <p>Now imagine a large city, with say, a million people. Let’s then assume that we start of with a population of virtually all susceptible people, but we introduce a single infected person.</p>
-<div class="sourceCode" id="cb328"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb328-1"><a href="disease-draft.html#cb328-1"></a>N &lt;-<span class="st"> </span><span class="dv">10</span><span class="op">^</span><span class="dv">6</span></span>
-<span id="cb328-2"><a href="disease-draft.html#cb328-2"></a>R &lt;-<span class="st"> </span><span class="dv">0</span>; I &lt;-<span class="st"> </span><span class="dv">1</span>; S &lt;-<span class="st"> </span>N <span class="op">-</span><span class="st"> </span>I <span class="op">-</span><span class="st"> </span>R</span></code></pre></div>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="disease-draft.html#cb10-1"></a>N &lt;-<span class="st"> </span><span class="dv">10</span><span class="op">^</span><span class="dv">6</span></span>
+<span id="cb10-2"><a href="disease-draft.html#cb10-2"></a>R &lt;-<span class="st"> </span><span class="dv">0</span>; I &lt;-<span class="st"> </span><span class="dv">1</span>; S &lt;-<span class="st"> </span>N <span class="op">-</span><span class="st"> </span>I <span class="op">-</span><span class="st"> </span>R</span></code></pre></div>
 <p>Let us further pretend that the disease runs its course over about 10–14 days. Recall that <span class="math inline">\(\gamma\)</span> (gamma) is the inverse of the <em>duration</em> of the disease.</p>
-<div class="sourceCode" id="cb329"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb329-1"><a href="disease-draft.html#cb329-1"></a>g &lt;-<span class="st"> </span><span class="dv">1</span><span class="op">/</span>(<span class="dv">13</span><span class="op">/</span><span class="dv">365</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="disease-draft.html#cb11-1"></a>g &lt;-<span class="st"> </span><span class="dv">1</span><span class="op">/</span>(<span class="dv">13</span><span class="op">/</span><span class="dv">365</span>)</span></code></pre></div>
 <p>Given a constant population size and exponential growth, then the average life span is the inverse of the birth rate. Let us pretend that the average life span is 50 years.</p>
-<div class="sourceCode" id="cb330"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb330-1"><a href="disease-draft.html#cb330-1"></a>b &lt;-<span class="st"> </span><span class="dv">1</span><span class="op">/</span><span class="dv">50</span></span></code></pre></div>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="disease-draft.html#cb12-1"></a>b &lt;-<span class="st"> </span><span class="dv">1</span><span class="op">/</span><span class="dv">50</span></span></code></pre></div>
 <p>For this model, the force of infection turns out to be <span class="math inline">\(R_0 = 1 + 1 / \left(b + \alpha\right)\)</span>, where <span class="math inline">\(\alpha\)</span> is the average age at onset of the disease <span class="citation">(Ellner and Guckenheimer <a href="#ref-Ellner:2006qe" role="doc-biblioref">2006</a>)</span>. We can therefore estimate <span class="math inline">\(\beta\)</span> from all the other parameters, including population size, average life span, average age at onset, and the average duration of the disease. For instance, imagine that we have a disease of children, where the average onset of disease is 5,y, so we have</p>
-<div class="sourceCode" id="cb331"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb331-1"><a href="disease-draft.html#cb331-1"></a>age &lt;-<span class="st"> </span><span class="dv">5</span></span>
-<span id="cb331-2"><a href="disease-draft.html#cb331-2"></a>R0 &lt;-<span class="st"> </span><span class="dv">1</span> <span class="op">+</span><span class="st"> </span><span class="dv">1</span><span class="op">/</span>(b<span class="op">*</span>age)</span></code></pre></div>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="disease-draft.html#cb13-1"></a>age &lt;-<span class="st"> </span><span class="dv">5</span></span>
+<span id="cb13-2"><a href="disease-draft.html#cb13-2"></a>R0 &lt;-<span class="st"> </span><span class="dv">1</span> <span class="op">+</span><span class="st"> </span><span class="dv">1</span><span class="op">/</span>(b<span class="op">*</span>age)</span></code></pre></div>
 <p>so <span class="math inline">\(\beta\)</span> becomes</p>
-<div class="sourceCode" id="cb332"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb332-1"><a href="disease-draft.html#cb332-1"></a>B &lt;-<span class="st"> </span>R0 <span class="op">*</span><span class="st"> </span>(g <span class="op">+</span><span class="st"> </span>b) <span class="op">/</span><span class="st"> </span>N</span></code></pre></div>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="disease-draft.html#cb14-1"></a>B &lt;-<span class="st"> </span>R0 <span class="op">*</span><span class="st"> </span>(g <span class="op">+</span><span class="st"> </span>b) <span class="op">/</span><span class="st"> </span>N</span></code></pre></div>
 <p>Finally, we can integrate the population and its states. We create a named vector of parameters, and decide on the time interval.</p>
-<div class="sourceCode" id="cb333"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb333-1"><a href="disease-draft.html#cb333-1"></a>parms &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dt">B =</span> B, <span class="dt">g =</span> g, <span class="dt">b =</span> b, <span class="dt">m=</span>b)</span>
-<span id="cb333-2"><a href="disease-draft.html#cb333-2"></a>years &lt;-<span class="st"> </span><span class="kw">seq</span>(<span class="dv">0</span>,<span class="dv">30</span>, <span class="dt">by=</span>.<span class="dv">1</span>)</span></code></pre></div>
-<p>It turns out that because of the relatively extreme dynamics (Fig. ), we want to tell the ODE solver to take baby steps, so as to properly capture the dynamics—we use the  argument to make sure that the maximum step it takes is relatively small.</p>
-<div class="sourceCode" id="cb334"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb334-1"><a href="disease-draft.html#cb334-1"></a>SIRbd.out &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="kw">ode</span>(<span class="kw">c</span>(<span class="dt">S=</span>S,<span class="dt">I=</span>I,<span class="dt">R=</span>R), years, SIRbd, parms, <span class="dt">hmax=</span>.<span class="dv">01</span>)) </span>
-<span id="cb334-2"><a href="disease-draft.html#cb334-2"></a><span class="kw">matplot</span>(SIRbd.out[,<span class="dv">1</span>], <span class="kw">sqrt</span>(SIRbd.out[,<span class="op">-</span><span class="dv">1</span>]), <span class="dt">type=</span><span class="st">&#39;l&#39;</span>, <span class="dt">col=</span><span class="dv">1</span>,</span>
-<span id="cb334-3"><a href="disease-draft.html#cb334-3"></a>        <span class="dt">lty=</span><span class="dv">1</span><span class="op">:</span><span class="dv">3</span>, <span class="dt">ylab=</span><span class="st">&quot;sqrt(No. of Individuals)&quot;</span>, <span class="dt">xlab=</span><span class="st">&#39;Years&#39;</span>)</span>
-<span id="cb334-4"><a href="disease-draft.html#cb334-4"></a><span class="kw">legend</span>(<span class="st">&#39;right&#39;</span>, <span class="kw">c</span>(<span class="st">&#39;S&#39;</span>,<span class="st">&#39;I&#39;</span>,<span class="st">&#39;R&#39;</span>), <span class="dt">lty=</span><span class="dv">1</span><span class="op">:</span><span class="dv">3</span>, <span class="dt">bty=</span><span class="st">&#39;n&#39;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="disease-draft.html#cb15-1"></a>parms &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dt">B =</span> B, <span class="dt">g =</span> g, <span class="dt">b =</span> b, <span class="dt">mu=</span>b, <span class="dt">z=</span><span class="dv">0</span>)</span>
+<span id="cb15-2"><a href="disease-draft.html#cb15-2"></a>years &lt;-<span class="st"> </span><span class="kw">seq</span>(<span class="dv">0</span>,<span class="dv">30</span>, <span class="dt">by=</span>.<span class="dv">1</span>)</span></code></pre></div>
+<p>It turns out that because of the relatively extreme dynamics (Fig. ), we want to tell the ODE solver to take baby steps, so as to properly capture the dynamics—we use the <code>hmax</code> argument to make sure that the maximum step it takes is relatively small.</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="disease-draft.html#cb16-1"></a>out &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="kw">ode</span>(<span class="kw">c</span>(<span class="dt">S=</span>S,<span class="dt">I=</span>I,<span class="dt">R=</span>R), years, SIRmod, parms, <span class="dt">hmax=</span>.<span class="dv">01</span>)) </span>
+<span id="cb16-2"><a href="disease-draft.html#cb16-2"></a>SIRbd.out &lt;-<span class="st"> </span><span class="kw">pivot_longer</span>(out, <span class="dt">cols=</span><span class="dv">2</span><span class="op">:</span><span class="dv">4</span>, <span class="dt">names_to=</span><span class="st">&quot;Populations&quot;</span>, <span class="dt">values_to=</span><span class="st">&quot;Density&quot;</span>)</span>
+<span id="cb16-3"><a href="disease-draft.html#cb16-3"></a><span class="kw">ggplot</span>(SIRbd.out, <span class="kw">aes</span>(time, Density<span class="op">+</span><span class="dv">1</span>, <span class="dt">colour=</span>Populations)) <span class="op">+</span><span class="st"> </span></span>
+<span id="cb16-4"><a href="disease-draft.html#cb16-4"></a><span class="st">  </span><span class="kw">geom_line</span>() <span class="op">+</span><span class="st"> </span><span class="kw">scale_y_log10</span>() <span class="op">+</span><span class="st"> </span><span class="kw">xlab</span>(<span class="st">&#39;Years&#39;</span>)</span></code></pre></div>
 <div class="figure"><span id="fig:sirbd"></span>
-<img src="figs/sirbd-1.png" alt="*Epidemic for a nonlethal disease, with an SIR model which includes births and deaths, and a constant population size.*" width="70%" />
+<img src="_main_files/figure-html/sirbd-1.png" alt="*Epidemic for a nonlethal disease, with an SIR model which includes births and deaths, and a constant population size.*" width="70%" />
 <p class="caption">
-Figure 11.1: <em>Epidemic for a nonlethal disease, with an SIR model which includes births and deaths, and a constant population size.</em>
+Figure 11.2: <em>Epidemic for a nonlethal disease, with an SIR model which includes births and deaths, and a constant population size.</em>
 </p>
 </div>
-<p>Note that the population quickly becomes resistant (Fig. ). Note also that we have oscillations, albeit damped oscillations. An analytical treatment of the model, including eigenanalysis of the Jacobian matrix could show us precisely the predicted periodicity . It depends on the the age at onset, and the duration of the disease.</p>
-<p>Elaborate on this stuff?</p>
-<p>Antonovic et al. Metapopulation disease dynamics</p>
-<p><em>Silene alba</em> and <em>Microbotryum violacea</em>
-Proportion of subpopulations that have an infected plant increases with the size of the subpopulation</p>
-<p>Disease prevalence declines with subpopulation size. This is characteristic of frequency-dependent transmission.</p>
-<p>Lyme Disease</p>
-<p>Van Buskirk and Ostfeld 1995 Eco. Appl.
-<em>Borrelia burgdorferi</em> spirochete
-Blacklegged tick <em>Ixodes scapularis</em>
-<em>Peromyscus leucopus</em> Whitefooted mouse
-Whitetailed deer <em>Oedicoilius virginiana</em>
-spring 1: eggs
-summer 1: larva on intermediate host - small mammal or bird
-spring 2: nymph a new intermediate host small mammal or bird
-summer 2: drops off host 2, seeks definitive host (tyupically deer); most dangerous to humans
-fall 2: adult on deer (low risk to humans)</p>
-<p>host competence: whitefooted mice vs. chipmunks and birds</p>
+<p>Note that the population quickly becomes resistant (Fig. <a href="disease-draft.html#fig:sirbd">11.2</a>). Note also that we have oscillations, albeit damped oscillations. An analytical treatment of the model, including eigenanalysis of the Jacobian matrix could show us precisely the predicted periodicity <span class="citation">(Ellner and Guckenheimer <a href="#ref-Ellner:2006qe" role="doc-biblioref">2006</a>)</span>. It depends on the the age at onset, and the duration of the disease.</p>
+</div>
+<div id="modeling-data-from-bombay" class="section level2">
+<h2><span class="header-section-number">11.3</span> Modeling data from Bombay</h2>
+<p>Here we try our hand at fitting the SIR model to some data. Kermack and McCormick <a href="#Kermack:1927fk"><strong>??</strong></a> provided data on the number of plague deaths per week in Bombay<a href="#fn2" class="footnote-ref" id="fnref2"><sup>2</sup></a> in 1905–06. We first enter them and look at them<a href="#fn3" class="footnote-ref" id="fnref3"><sup>3</sup></a>.</p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="disease-draft.html#cb17-1"></a><span class="kw">data</span>(ross)</span>
+<span id="cb17-2"><a href="disease-draft.html#cb17-2"></a><span class="kw">qplot</span>(<span class="dt">x=</span>Week, <span class="dt">y=</span>CumulativeDeaths, <span class="dt">data=</span>ross)</span></code></pre></div>
+<div class="figure"><span id="fig:sir2"></span>
+<img src="_main_files/figure-html/sir2-1.png" alt="*Cumulative deaths for plague, in Bombay, India, 1905--1906 (raw data and fitted model, as described in this section).*" width="672" />
+<p class="caption">
+Figure 11.3: <em>Cumulative deaths for plague, in Bombay, India, 1905–1906 (raw data and fitted model, as described in this section).</em>
+</p>
+</div>
+<p>As with most such enterprises, we wish we knew far more than we do about the which depends on fleas, rodents, humans, and <em>Yersinia pestis</em> on which the dynamics depend. To squeeze this real-life scenario into a model with a small number of parameters requires a few assumptions.</p>
+<p>%We begin by assuming, and Kermack and Mckendrick did, that mortality from bubonic plague, in Bombay, in 1905, was quite high, close to 90%. Next, we realize that the only data we have is deaths. Given, however, that the mortality is very high, we might approximate the number of infections by saying that <span class="math inline">\(Deaths = 0.9 \times Infections\)</span>.</p>
+<p>A good starting place is a simple SIR model for a population of constant size (<a href="#eq:SIR">(<strong>??</strong>)</a>) [<span class="citation">Ellner and Guckenheimer (<a href="#ref-Ellner:2006qe" role="doc-biblioref">2006</a>)</span>; Kermack:1927fk].</p>
+<div id="optimization" class="section level3">
+<h3><span class="header-section-number">11.3.1</span> Optimization</h3>
+<p>We next want to let R find the most accurate estimates of our model parameters <span class="math inline">\(\beta,\,\gamma\)</span>. The best and most accessible reference for this is <span class="citation">Bolker (<a href="#ref-Bolker:2008rr" role="doc-biblioref">2008</a>)</span>. Please read the Appendix (for the moment, available on request) for more explanation regarding optimization and objective functions.</p>
+<p>Now we create the objective function. An objective function compares a model to data, and calculates a measure of fit (e.g., residual sum of squares or likelihood). Our objective function will calculate the likelihood<a href="#fn4" class="footnote-ref" id="fnref4"><sup>4</sup></a> of particular values for SIR model parameters. These parameters include <span class="math inline">\(\gamma\)</span> and <span class="math inline">\(\beta\)</span> of the SIR model. We will also estimate <span class="math inline">\(I_0\)</span>, initial size of the infected population at our <span class="math inline">\(t=0\)</span>. A survey of easily accessed census data suggests the population at the time was in the neighborhood of <span class="math inline">\(\sim 9.5 \times 10^5\)</span> individuals. We also might assume that <span class="math inline">\(I_0\)</span> would be a very small number, perhaps <span class="math inline">\(\sim 1\)</span> in principle, so we will use that. We would really like to estimate <span class="math inline">\(N\)</span> and <span class="math inline">\(I_0\)</span>, but we’ll save that for another day.</p>
+<p>Some details about our objective function:</p>
+<ol style="list-style-type: decimal">
+<li>Arguments are transformed parameters (this allows the optimizer to work on the logit<a href="#fn5" class="footnote-ref" id="fnref5"><sup>5</sup></a> and log scales).</li>
+<li>Transformed parameters are backtransformed to the scale of the model.</li>
+<li>Parameters are used to integrate the ODEs using <code>ode</code>, retaining only the resistant (i.e. dead) group (the fourth column of the output); this provides the <em>predicted values</em> given the parameters and the time from onset, and the standard deviation of the residuals around the predicted values.</li>
+<li>It returns the negative log-likelihood of the data, given the parameter values.</li>
+</ol>
+<p>Here is our objective function. Note that its last value is the negative sum of the log-probabilities of the data (given a particular realization of the model).</p>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="disease-draft.html#cb18-1"></a>sirLL=<span class="cf">function</span>(logit.B, logit.g, log.I0, log.N) {</span>
+<span id="cb18-2"><a href="disease-draft.html#cb18-2"></a>  <span class="co">#parameters</span></span>
+<span id="cb18-3"><a href="disease-draft.html#cb18-3"></a>  parms &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dt">B=</span><span class="kw">plogis</span>(logit.B), <span class="dt">g=</span><span class="kw">plogis</span>(logit.g));</span>
+<span id="cb18-4"><a href="disease-draft.html#cb18-4"></a>  <span class="co"># starting point</span></span>
+<span id="cb18-5"><a href="disease-draft.html#cb18-5"></a>  x0 &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dt">S=</span><span class="kw">exp</span>(log.N), <span class="dt">I=</span><span class="kw">exp</span>(log.I0), <span class="dt">R=</span><span class="dv">0</span>)</span>
+<span id="cb18-6"><a href="disease-draft.html#cb18-6"></a>  <span class="co"># solve</span></span>
+<span id="cb18-7"><a href="disease-draft.html#cb18-7"></a>  Rs &lt;-<span class="st"> </span><span class="kw">ode</span>(<span class="dt">y=</span>x0, ross<span class="op">$</span>Week, SIRd, parms, <span class="dt">hmax=</span>.<span class="dv">01</span>)[,<span class="dv">4</span>]</span>
+<span id="cb18-8"><a href="disease-draft.html#cb18-8"></a>  <span class="co"># calculate the root mean squared error of the fit</span></span>
+<span id="cb18-9"><a href="disease-draft.html#cb18-9"></a>  SD &lt;-<span class="st"> </span><span class="kw">sqrt</span>( <span class="kw">sum</span>( (ross<span class="op">$</span>CumulativeDeaths <span class="op">-</span><span class="st"> </span>Rs)<span class="op">^</span><span class="dv">2</span>)<span class="op">/</span><span class="kw">length</span>(ross<span class="op">$</span>Week) )</span>
+<span id="cb18-10"><a href="disease-draft.html#cb18-10"></a>  <span class="co"># calculate the negative loglikelihood</span></span>
+<span id="cb18-11"><a href="disease-draft.html#cb18-11"></a>   <span class="op">-</span><span class="kw">sum</span>(<span class="kw">dnorm</span>(ross<span class="op">$</span>CumulativeDeaths, <span class="dt">mean=</span>Rs, <span class="dt">sd=</span>SD, <span class="dt">log=</span><span class="ot">TRUE</span>))</span>
+<span id="cb18-12"><a href="disease-draft.html#cb18-12"></a>}</span></code></pre></div>
+<p>We then use this function, <code>sirLL</code>, to find the likelihood of the best parameters. The <code>mle2</code> function in the <code>bbmle</code> library<a href="#fn6" class="footnote-ref" id="fnref6"><sup>6</sup></a> will minimize the negative log-likelihood generated by <code>sirLL</code>, and return values for the parameters of interest.</p>
+<p>We will use a robust, but relatively slow method called Nelder-Mead (it is the default). We supply <code>mle2</code> with the objective function and a list of initial parameter values. This can take a few minutes, but that’s okay.</p>
+<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="disease-draft.html#cb19-1"></a><span class="kw">library</span>(bbmle)</span>
+<span id="cb19-2"><a href="disease-draft.html#cb19-2"></a><span class="co"># we used fixed to fix N and I0 to particular values and not estimate them.</span></span>
+<span id="cb19-3"><a href="disease-draft.html#cb19-3"></a>fit &lt;-<span class="st"> </span><span class="kw">mle2</span>(sirLL, <span class="dt">start=</span><span class="kw">list</span>(<span class="dt">logit.B=</span><span class="kw">qlogis</span>(<span class="fl">1e-5</span>), <span class="dt">logit.g=</span><span class="kw">qlogis</span>(.<span class="dv">2</span>), </span>
+<span id="cb19-4"><a href="disease-draft.html#cb19-4"></a>                     <span class="dt">log.N=</span><span class="kw">log</span>(<span class="fl">9.5e5</span>), <span class="dt">log.I0=</span><span class="dv">0</span>), </span>
+<span id="cb19-5"><a href="disease-draft.html#cb19-5"></a>                     <span class="dt">method=</span><span class="st">&quot;Nelder-Mead&quot;</span>) </span></code></pre></div>
+<p>Let’s look at a summary of the fit, as far as it went. Here is what I get.</p>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="disease-draft.html#cb20-1"></a><span class="kw">summary</span>(fit)</span></code></pre></div>
+<pre><code>## Maximum likelihood estimation
+## 
+## Call:
+## mle2(minuslogl = sirLL, start = list(logit.B = qlogis(1e-05), 
+##     logit.g = qlogis(0.2), log.N = log(950000), log.I0 = 0), 
+##     method = &quot;Nelder-Mead&quot;)
+## 
+## Coefficients:
+##           Estimate Std. Error   z value     Pr(z)    
+## logit.B -9.4310986  0.0083175 -1133.886 &lt; 2.2e-16 ***
+## logit.g  1.0274890  0.0102931    99.823 &lt; 2.2e-16 ***
+## log.I0   1.0960841  0.0391551    27.993 &lt; 2.2e-16 ***
+## log.N    9.5900667  0.0081991  1169.651 &lt; 2.2e-16 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## -2 log L: 388.0868</code></pre>
+<p>This gets us some parameter estimates, but they are probably not accurate because the computer couldn’t settle on what it thought was a stable solution (convergence failure. This occurs frequently when we ask the computer to estimate too many, often correlated, parameters for a given data set. Therefore, we have to make assumptions regarding selected parameters. Let us assume for the time being that the two variable estimates are correct, that the population size of the vulnerable population was approximately exp(<code>rround(coef(fit)[3],1)</code>) and the number of infections at the onset of the outbreak was <code>9.6</code>. We will hold these constant and ask R to refit the model, using the default method.</p>
+<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb22-1"><a href="disease-draft.html#cb22-1"></a>fit2 &lt;-<span class="st"> </span><span class="kw">mle2</span>(sirLL, <span class="dt">start=</span><span class="kw">as.list</span>(<span class="kw">coef</span>(fit)[<span class="dv">1</span><span class="op">:</span><span class="dv">2</span>]),</span>
+<span id="cb22-2"><a href="disease-draft.html#cb22-2"></a>            <span class="dt">fixed=</span><span class="kw">list</span>(<span class="dt">log.N=</span><span class="kw">coef</span>(fit)[<span class="dv">4</span>], <span class="dt">log.I0=</span><span class="kw">coef</span>(fit)[<span class="dv">3</span>]), <span class="dt">method=</span><span class="st">&quot;BFGS&quot;</span>)</span>
+<span id="cb22-3"><a href="disease-draft.html#cb22-3"></a><span class="kw">summary</span>(fit2)</span></code></pre></div>
+<p>Next we want to find confidence intervals for <span class="math inline">\(\beta\)</span> and <span class="math inline">\(\gamma\)</span>. This can take more than several minutes, but it results in a likelihood profile for these parameters, which show the confidence regions for these parameters (Fig. <a href="disease-draft.html#fig:profile">11.4</a>).</p>
+<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="disease-draft.html#cb23-1"></a>pr2 &lt;-<span class="st"> </span><span class="kw">profile</span>(fit2)</span></code></pre></div>
+<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="disease-draft.html#cb24-1"></a><span class="kw">par</span>(<span class="dt">mar=</span><span class="kw">c</span>(<span class="dv">5</span>,<span class="dv">4</span>,<span class="dv">4</span>,<span class="dv">1</span>))</span>
+<span id="cb24-2"><a href="disease-draft.html#cb24-2"></a><span class="kw">plot</span>(pr2)</span></code></pre></div>
+<div class="figure"><span id="fig:profile"></span>
+<img src="_main_files/figure-html/profile-1.png" alt="*The likelihood profile plots show us the confidence intervals on transformed SIR model parameters.*" width="672" />
+<p class="caption">
+Figure 11.4: <em>The likelihood profile plots show us the confidence intervals on transformed SIR model parameters.</em>
+</p>
+</div>
+<p>Last we get to plot our curve with the data. We first backtransform the coefficients of the objective function.</p>
+<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb25-1"><a href="disease-draft.html#cb25-1"></a>p &lt;-<span class="st"> </span><span class="kw">as.numeric</span>(<span class="kw">c</span>(<span class="kw">plogis</span>(<span class="kw">coef</span>(fit)[<span class="dv">1</span><span class="op">:</span><span class="dv">2</span>]),</span>
+<span id="cb25-2"><a href="disease-draft.html#cb25-2"></a>       <span class="kw">exp</span>(<span class="kw">coef</span>(fit)[<span class="dv">3</span><span class="op">:</span><span class="dv">4</span>])) ); p</span></code></pre></div>
+<pre><code>## [1] 8.018462e-05 7.364288e-01 2.992425e+00 1.461884e+04</code></pre>
+<p>We then get ready to integrate the disease dynamics over this time period.</p>
+<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb27-1"><a href="disease-draft.html#cb27-1"></a>inits &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dt">S =</span> p[<span class="dv">4</span>], <span class="dt">I=</span>p[<span class="dv">3</span>], <span class="dt">R=</span><span class="dv">0</span>)</span>
+<span id="cb27-2"><a href="disease-draft.html#cb27-2"></a>params &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dt">B=</span>p[<span class="dv">1</span>], <span class="dt">g=</span>p[<span class="dv">2</span>])</span>
+<span id="cb27-3"><a href="disease-draft.html#cb27-3"></a>outdf &lt;-<span class="st"> </span><span class="kw">data.frame</span>( <span class="kw">ode</span>(inits, ross<span class="op">$</span>Week, SIRd, params) )</span></code></pre></div>
+<p>Last, we plot the model and the data (Fig. ).</p>
+<div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb28-1"><a href="disease-draft.html#cb28-1"></a>sir.Bombay &lt;-<span class="st"> </span><span class="kw">pivot_longer</span>(<span class="dt">data=</span>outdf, <span class="dv">2</span><span class="op">:</span><span class="dv">4</span>, <span class="dt">names_to=</span><span class="st">&quot;Populations&quot;</span>, <span class="dt">values_to=</span><span class="st">&quot;Density&quot;</span>)</span>
+<span id="cb28-2"><a href="disease-draft.html#cb28-2"></a><span class="kw">ggplot</span>(sir.Bombay, <span class="kw">aes</span>(time, Density, <span class="dt">colour=</span>Populations)) <span class="op">+</span><span class="st"> </span><span class="kw">geom_line</span>() <span class="op">+</span><span class="st"> </span></span>
+<span id="cb28-3"><a href="disease-draft.html#cb28-3"></a><span class="st">  </span><span class="kw">geom_point</span>(<span class="dt">data=</span>ross, </span>
+<span id="cb28-4"><a href="disease-draft.html#cb28-4"></a>             <span class="dt">mapping=</span><span class="kw">aes</span>(<span class="dt">x=</span>Week, <span class="dt">y=</span>CumulativeDeaths), </span>
+<span id="cb28-5"><a href="disease-draft.html#cb28-5"></a>             <span class="dt">inherit.aes=</span><span class="ot">FALSE</span> )</span></code></pre></div>
+<p><img src="_main_files/figure-html/unnamed-chunk-20-1.png" width="672" /></p>
+<div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb29-1"><a href="disease-draft.html#cb29-1"></a><span class="co"># inherit.aes=FALSE tells geom_point not color by &quot;Populations&quot; </span></span></code></pre></div>
+<p>So, what does this mean (Fig. )? We might check what these values mean, against what we know about the reality. Our model predicts that logit of <span class="math inline">\(\gamma\)</span> was a confidence interval,</p>
+<div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb30-1"><a href="disease-draft.html#cb30-1"></a>(CIs &lt;-<span class="st"> </span><span class="kw">confint</span>(pr2))</span></code></pre></div>
+<pre><code>##              2.5 %    97.5 %
+## logit.B -9.4425402 -9.416570
+## logit.g  0.9659977  1.114912</code></pre>
+<p>This corresponds to a confidence interval for <span class="math inline">\(\gamma\)</span> of</p>
+<div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb32-1"><a href="disease-draft.html#cb32-1"></a>(gs &lt;-<span class="st"> </span><span class="kw">as.numeric</span>(<span class="kw">plogis</span>(CIs[<span class="dv">2</span>,]) ))</span></code></pre></div>
+<pre><code>## [1] 0.7243210 0.7530437</code></pre>
+<p>Recall that the duration of the disease in the host is <span class="math inline">\(1/\gamma\)</span>. Therefore, our model predicts a confidence interval for the duration (in days) of</p>
+<div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb34-1"><a href="disease-draft.html#cb34-1"></a><span class="dv">7</span><span class="op">*</span><span class="dv">1</span><span class="op">/</span>gs</span></code></pre></div>
+<pre><code>## [1] 9.664223 9.295610</code></pre>
+<p>Thus, based on this analysis, the duration of the disease is about 9.5 days. This seems to agree with what we know about the biology of the Bubonic plague. Its duration, in a human host, is typically thought to last 4–10 days.</p>
 
+</div>
 </div>
 </div>
 <h3> References</h3>
 <div id="refs" class="references">
 <div id="ref-Antonovics:1992rm">
 <p>Antonovics, J, and H M Alexander. 1992. “Epidemiology of anther-smut infection of {<span class="math inline">\(\backslash\)</span>em Silene alba} (= {<span class="math inline">\(\backslash\)</span>em S. latifolia}) caused by {<span class="math inline">\(\backslash\)</span>em Ustilago violacea} – patterns of spore deposition in experimental populations.” <em>Proceedings of the Royal Society B-Biological Sciences</em> 250: 157–63.</p>
+</div>
+<div id="ref-Bolker:2008rr">
+<p>Bolker, B M. 2008. <em>Ecological Models and Data in R</em>. Princeton, NJ: Princeton University Press.</p>
 </div>
 <div id="ref-Ellner:2006qe">
 <p>Ellner, S P, and J Guckenheimer. 2006. <em>Dynamic Models in Biology</em>. Princeton University Press, Princeton, NJ.</p>
@@ -544,8 +658,13 @@ fall 2: adult on deer (low risk to humans)</p>
 </div>
 <div class="footnotes">
 <hr />
-<ol start="57">
-<li id="fn57"><p><span class="math inline">\(S\)</span> is the absolute density, whereas <span class="math inline">\(S/N\)</span> is the relative density.<a href="disease-draft.html#fnref57" class="footnote-back">↩︎</a></p></li>
+<ol start="1">
+<li id="fn1"><p><span class="math inline">\(S\)</span> is the absolute density, whereas <span class="math inline">\(S/N\)</span> is the relative density.<a href="disease-draft.html#fnref1" class="footnote-back">↩︎</a></p></li>
+<li id="fn2"><p>Bombay is the coastal city now known as Mumbai, and is the capital of Maharashtra; it is one of the largest cities in the world.<a href="disease-draft.html#fnref2" class="footnote-back">↩︎</a></p></li>
+<li id="fn3"><p>Data provided kindly by S.P. Ellner<a href="disease-draft.html#fnref3" class="footnote-back">↩︎</a></p></li>
+<li id="fn4"><p>Likelihood is proportional the probability of data, given a particular model and its parameters.<a href="disease-draft.html#fnref4" class="footnote-back">↩︎</a></p></li>
+<li id="fn5"><p>A logit is the transformation of a proportion which will linearize the logistic curve, logit (p) = <span class="math inline">\(\log ( p/(1-p) )\)</span>.<a href="disease-draft.html#fnref5" class="footnote-back">↩︎</a></p></li>
+<li id="fn6"><p>You will need to install the <code>bbmle</code> package, unless someone has already done this for the computer you are using.<a href="disease-draft.html#fnref6" class="footnote-back">↩︎</a></p></li>
 </ol>
 </div>
             </section>
