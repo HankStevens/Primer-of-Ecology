@@ -32,7 +32,7 @@ We need language to describe the components of a food web, such as *links* and *
 
 A few important network descriptors and emergent properties include,
 
-* **Node** A point of connection among links, a.k.a. trophospecies; each node in the web may be any set of organisms that share sufficiently similar feeding relations; in Fig. \@ref(fig:web), $P$ may be a single population of one species, or it may be a suite of species that all feed on both $B$ and $R$. 
+* **Node** A point of connection among links, a.k.a. trophospecies; each node in the web may be any set of organisms that share sufficiently similar feeding relations; in Fig. \@ref(fig:web), $F$ may be a single population of one species, or it may be a suite of species that all feed on both $I$ and $A$. 
 * **Link** A feeding relation; a connection between nodes or trophospecies; may be directed (one way) or undirected. A directed link is indicated by an arrow, and is the effect ($+,\,-$) of one species on another. An undirected link is indicated by a line (no arrow head), and is merely a connection, usually with positive and negative effects assumed, but not quantified. 
 * **Connectance** The proportion of possible links realized. Connectance may be based on either directed, $C_{D}$, or undirected, $C_{U}$, links. For Fig. \@ref(fig:web) these would be
 \begin{gather*}
@@ -40,13 +40,13 @@ C_{D}=\frac{L}{S^{2}}=\frac{8}{16}=0.5 \\
 C_{U}=\frac{L}{\left(S^2-S\right)/2}=\frac{4}{6}=0.67
 \end{gather*}
 where $S$ is the number of species or nodes.
-* **Degree distribution**, $\mathrm{Pr}(i)$ The probability that a randomly chosen node will have degree $i$, that is, be connected to $i$ other nodes [@May:2006lr]. In Fig. \@ref(fig:web), $A$ is of degree 1 (i.e., is connected to one other species).  $P$ and $B$ are of degree 2, and $R$ is of degree 3. If we divide through by the number of nodes (4, in Fig. \@ref(fig:web)), then the degree distribution consists of the probabilities $\mathrm{Pr}\left(i\right)=\{0.25,\,0.5,\,0.25\}$. As webs increase in size, we can describe this distribution as we would a statistical distribution. For instance, for a web with randomly placed connections, the degree distribution is the binomial distribution [@Cohen1990d].
+* **Degree distribution**, $\mathrm{Pr}(i)$ The probability that a randomly chosen node will have degree $i$, that is, be connected to $i$ other nodes [@May:2006lr]. In Fig. \@ref(fig:web), $S$ is of degree 1 (i.e., is connected to one other species).  $F$ and $I$ are of degree 2, and $A$ is of degree 3. If we divide through by the number of nodes (4, in Fig. \@ref(fig:web)), then the degree distribution consists of the probabilities $\mathrm{Pr}\left(i\right)=\{0.25,\,0.5,\,0.25\}$. As webs increase in size, we can describe this distribution as we would a statistical distribution. For instance, for a web with randomly placed connections, the degree distribution is the binomial distribution [@Cohen1990d].
 * **Characteristic path length** Sometimes defined as the average shortest path between any two nodes [@Dunne2002aa]. For instance, for Fig. \@ref(fig:web), the shortest path  between $S$ and $A$ is 1 link, and between $A$ and $I$ is 2 links. The average of all pairwise shortest paths is $(1+1+1+1+2+2)/6=1.\bar{3}$. It is also sometimes defined as the average of all paths between each pair of nodes.
 * **Modularity, Compartmentation** The degree to which subsets of species are highly connected or independent of other species. This tends to arise in consumer-resource interactions [@Thebault2010].
 
 To calculate modularity in a food web, first assume each species interacts with itself. Next, calculate the proportion of shared interactions, $p_{ij}$ for each pair of species, by comparing the lists of species with which each species in a pair interacts. The numerator of $p_{ij}$ is the number of species with which both of the pair interact. The denominator is the total number of different species with which either species interacts. \medskip
 
-As an example, let's calculate this for the above food web (Fig. \@ref(fig:web)). $A$ interacts with $A$ and $R$, $B$ interacts with $B$, $R$, and $P$. Therefore, $A$ and $B$ both interact with only $R$, whereas, together, $A$ and $B$ interact with $A$, $B$, $R$, and $P$. The proportion, $p_{ij}$, therefore is $1/4 = 0.25$. We do this for each species pair. \smallskip
+As an example, let's calculate this for the above food web (Fig. \@ref(fig:web)). $S$ interacts with $S$ and $A$, $I$ interacts with $I$, $A$, and $F$. Therefore, $S$ and $I$ both interact with only $A$, whereas, together, $S$ and $I$ interact with $S$, $I$, $A$, and $F$. The proportion, $p_{ij}$, therefore is $1/4 = 0.25$. We do this for each species pair. \smallskip
 
 Next we sum the proportions, and  divide the sum by the maximum possible number of undirected links, $C_U$.
 
@@ -76,7 +76,7 @@ This occurs when nodes are connected via a small number of links through a node 
 include_graphics("figs/motifs.png")
 ```
 
-* **Trophic level, trophic position** may simply be categorized as basal, intermediate or top trophic positions. Basal positions are those in which the trophospecies feed on no other species. The top positions are those in which the trophospecies are fed upon by nothing. One can also calculate a quantitative measure of trophic level. This is important in part because omnivory, something rampant in real food webs, complicates identification of a trophic level. We can calculate trophic level for the top predator, $P$ (Fig. \@ref(fig:web)), and let us assume that $P$ gets two-thirds of what it needs from $B$, and gets one-third from $A$. $B$ itself is on the second trophic level, so given that, the trophic level of $P$ is calculated as
+* **Trophic level, trophic position** may simply be categorized as basal, intermediate or top trophic positions. Basal positions are those in which the trophospecies feed on no other species. The top positions are those in which the trophospecies are fed upon by nothing. One can also calculate a quantitative measure of trophic level. This is important in part because omnivory, something rampant in real food webs, complicates identification of a trophic level. We can calculate trophic level for the top predator, $F$ (Fig. \@ref(fig:web)), and let us assume that $F$ gets two-thirds of what it needs from $I$, and gets one-third from $A$. $I$ itself is on the second trophic level, so given that, the trophic level of $P$ is calculated as
 \begin{equation*}
 T_{i}=1+\sum_{j=1}^{S}T_{j}p_{ij}=1+\left(2\left(0.67\right)+1\left(0.33\right)\right)=2.67
 \end{equation*}
