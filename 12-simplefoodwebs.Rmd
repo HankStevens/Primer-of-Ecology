@@ -1,4 +1,4 @@
-# Food webs
+# Food webs and other networks
 
 A food web is a real or a model of a *set of feeding relations among species or functional groups*. This chapter has two foci, (i) a very brief introduction to multi-species webs as networks, and (ii) a re-examination of old lessons regarding the effect of food chain length on a web's dynamical properties.
 
@@ -92,7 +92,7 @@ This list of food web descriptors is a fine start but is by no means exhaustive.
 
 
 ## Food chain length
-There are many interesting questions about food webs that we could address; let us address one that has a long history, and as yet, no complete answer: What determines the length of a food chain? Some have argued that chance plays a large role [@Cohen1990d;@Hubbell2001; @Williams2000a],  and others have shown that area [@MacArthur1967; @Rosenzweig1995] or ecosystem size [@Post:2002bs] may play roles. The explanation that we will focus on here is *dynamical stability*. Communities with more species had been hypothesized to be less stable, and therefore less likely to persist and be observed in nature. Stuart Pimm and John Lawton [@Pimm1977] extended this work by testing whether *food chain length* could be limited by the instability of long food chains.
+There are many interesting questions about food webs that we could address; let us address one that has a long history, and as yet, no complete answer: What determines the length of a food chain? Some have argued that chance plays a large role  [@Cohen1990d;@Hubbell2001; @Williams2000a],  and others have shown that area [@MacArthur1967; @Rosenzweig1995] or ecosystem size [@Post:2002bs] may play roles. The explanation that we will focus on here is *dynamical stability*. Communities with more species had been hypothesized to be less stable, and therefore less likely to persist and be observed in nature. Stuart Pimm and John Lawton [@Pimm1977] extended this work by testing whether *food chain length* could be limited by the instability of long food chains.
 
 ### Multi-species Lotka--Volterra notation
 A many-species Lotka--Volterra model can be represented in a very compact form,
@@ -322,8 +322,12 @@ May's work showed that stability is related to interaction strength. Let's exami
 
 May's work showed that stability is related to interaction strength. Let's examine how the dominant eigenvalue is related to interaction strength.^[Recall that if we think of stability analysis as the analysis of a small perturbation at the equilibrium, then the dominant eigenvalue is the growth rate of that perturbation.]
 ```{r pairsA, fig.cap="Perturbations at the equilibrium tend to dissipate more rapidly (more negative dominant eigenvalues) with greater intraspecific negative density dependence (IntraDD) and greater interspecific interaction strength (I). This graph also demonstrates the independence of IntraDD and I in these simulations."}
+out.A$I.rel <- with(out.A, log(I/IntraDD) )
 pairs(out.A)
-#ggplot(data=out.A, aes(I, DomEig)) + geom_point() + facet_wrap(~cut(IntraDD, 6) )
+# out.A$Idd <-  cut(out.A$IntraDD, 
+#          quantile(out.A$IntraDD), include.lowest=TRUE )
+# ggplot(data=out.A, aes(I, DomEig)) + geom_point() +
+#   geom_smooth() + facet_wrap(~ Idd)
 ```
 
 The results of our simulation (Fig. \@ref(fig:pairsA)) show that the dominant eigenvalue can become more negative with greater intraspecific negative density dependence (`IntraDD`) and greater intersepcifiic interaction strength (`I`). Recall what this means --- the dominant eigenvalue is akin to a perturbation growth rate at the equilibrium and is the negative inverse of return time. Therefore, stability can increase and return time decrease with increasing interaction strengths.
@@ -339,8 +343,7 @@ Pimm and Lawton addressed this by picking an arbitrarily large number (150) and 
 ```{r}
   sum( RT.A > 150 ) / 2000
 ```
-Now let's extract the return times that are less than or equal to
-150 and make a histogram with the right number of divisions or bins to allow it to look like the one in the original [@Pimm1977].
+Now let's extract the return times that are less than or equal to 150 and make a histogram with the right number of divisions or bins to allow it to look like the one in the original [@Pimm1977].
 ```{r histA, fig.cap="*A linear four-species food chain has is only somewhat likely to have reasonble return times.*"}
 A.fast <-RT.A[RT.A < 150]
 histA <- hist(A.fast, breaks=seq(0,150, by=5), main=NULL)
@@ -387,8 +390,8 @@ Real webs also have omnivory --- feeding on more than one trophic level. A naggi
 ```{r}
 Bq <- matrix(c(
   -1, -10,   0,     0,
-  0.1,  0,   -10,   -10,
-  0,    0.1,   0,    -10,
+  0.1,  0,   -10,   -2,
+  0,    0.02,   0,    -10,
   0,    0.1,    0.1,   0),
   nrow=4, byrow=TRUE)
 #plotmat(Bq, relsize=.8)
@@ -398,15 +401,15 @@ summary(out.B)
 ```
 With omnivory, we now see that most webs have $\lambda_1>0$, and thus are *unstable*. This was one of the main points made by Pimm and Lawton. Let's look at the data for just the stable webs.
 ```{r}
-pairs(out.B[out.B[,"DomEig"]<0,])
+out.B.stable <- out.B[out.B[,"DomEig"]<0,]
+pairs(out.B.stable)
 ```
 
 It means that most of the randomly constructed webs were not stable point equilibria. To be complete, let's graph what Pimm and Lawton did. They graphed the return times that were positive, and ignored those that were negative.
 ```{r histB, fig.cap="*Of the relatively few omnivorous webs that were qualitatively stable, a moderate fraction had low return times.*"}
 RT.B <- -1/out.B[["DomEig"]]
-B.fast <- RT.B[RT.B < 150 & RT.B>0 ]
-out.B.fast <- out.B[RT.B < 150 & RT.B>0,]
-out.B.stab <- out.B[RT.B>0 ,]
+B.fast <- RT.B[RT.B < 150 & RT.B > 0 ]
+out.B.fast <- out.B[RT.B < 150 & RT.B > 0,]
 histB <- hist(B.fast, breaks=seq(0,150, by=5),
               main=NULL)
 ```
@@ -459,4 +462,227 @@ One feature of our simulations that we ignored were oscillations implied by the 
 
 Pimm and Lawton made very important contributions to this lengthy debate, and we are finally figuring out how to interpret their results.
 
+## Exploring the stability of bipartite networks
+
+Understanding the effects of network architecture on network resilience is a core mission of community ecology. In this section, we compare how mutualist and antagonist bipartite networks affect network resilience [@Thebault2010]. A bipartite network is one in which there are two separate groups of species, in which species interact between groups, but never within groups. Two such examples would be herbivores and plants, or pollinators and plants. @Thebault2010 compared both empirical and simulated plant-pollinator and plant-herbivore bipartite webs and found they differed in the network structure and the consequences for network stability.
+
+In the following comparison between mutualist and antagonist bipartite networks, we control for network structure, and ask whether the subsequent effects of diversity, connectance, nestedness, and modularity on resilience differ between mutualist and antagonist networks (Fig. \@ref(fig:TandF)). In brief, you will find that they do.  
+```{r TandF, echo=FALSE, fig.cap="*Possible effects of species richness, connectance, modularity, and nestedness on network resilience.*", out.width="50%"}
+tf <-
+"digraph{
+  rankdir = BT;
+//node[shape=box];
+//{rank=max; R;}
+//{rank=min; S; C;}
+// oval is the default node shape
+S -> M; 
+S -> N;
+S -> R
+C -> M;
+C -> N;
+C -> R;
+M -> R;
+N -> R;
+}"
+
+grViz(tf) %>%
+  export_svg %>% charToRaw %>% rsvg_png("TandF.png")
+
+include_graphics("TandF")
+```
+
+Our questions are derived from @Thebault2010a, but the approach we use is different. They simulated dynamic communities using systems of ODEs that are similar to those that we have seen in earlier chapters on mutualism and consumer-resource interactions. They include negative density dependence in plants and type II functional responses in mutualists and herbivores.
+
+We will use the approach we used earlier, that of May (1973) and @Pimm1977 @Pimm1978. In this approach, we do not simulate the dynamics. Instead, we assume that the species involved coexist, and we draw their interaction strengths at random from a specified distribution. This determines their instantaneous per capita effect on each other's population growth rate, that is, the Jacobian matrix that describes their interactions. 
+
+In our approach, we will establish interactions at random, in which each pair of species (plant and animal) has the same probability of interacting. That probability is connectance ($L/(PA)$), where $P$ and $A$ are the numbers of plants and animals in the network. This means that the structure (who is connected to whom) will be determined randomly rather than as a result of the dynamics of ODE models as in Thebault and Fontaine (2010). Further, the number of species and the connectance will both be draw at random, within specified ranges.
+
+
+### Creating bipartite webs
+
+We'll start by creating a toy example of a bipartite web of mutualists: plants and their pollinators.
+```{r cars}
+# The number of species of plants
+Sp <- 5
+# The number of species of pollinators
+Sa <- 12
+# the total number of species
+S <- Sa+Sp
+```
+
+We then set the connectance, and then generate random interactions between species.
+```{r}
+# The connectance in this web. 
+contc <- .5
+
+# Create interactions at random, drawing 0's and 1's with a probability of contc=0.5
+interactions <- rbinom( n = Sa * Sp, size=1, prob=contc)
+
+# Put those connections into our web
+bip.network <- matrix(interactions, nrow=Sp, ncol=Sa)
+rownames(bip.network) <- paste("plant", LETTERS[1:Sp], sep="")
+colnames(bip.network) <- paste("bug", LETTERS[1:Sa], sep="")
+#...and look at it
+bip.network
+```
+
+Now that we have randomly constructed topology, let's create a realistic assumption about *how much* each of the pollinators interact with those plant species. It is generally observed that most interactions are weak (e.g., infrequent visits) and a few are strong (e.g., frequent visits). That pattern can be approximated by an exponential distribution. We will create those interactions and then plot them.
+```{r}
+# Exponentially distributed of interaction strengths
+# Random numbers from and exponential distribution
+x <- rexp(Sa*Sp)
+
+# express these as a probability distribution (divide by the sum)
+xp <- x/sum(x)
+
+# assign those exponential probabilities to our interactions,
+# creating the Quantitative network
+bip.networkQ <- bip.network * xp
+```
+
+Next we can make some pretty pictures of this web. To do this, you'll need to load the `bipartite` package.
+```{r toys, fig.cap="*Illustrations of a hypothetical plant-pollinator network. The two matrices organize the species to highlight either nestedness (left) or modularity (right).*" }
+{
+  # library(bipartite) if needed
+  # visweb and plotweb are in the bipartite package
+  layout(matrix(c(1,2,3,4), nc=2, byrow=TRUE) )
+  hist(bip.networkQ, main="", xlab="interaction strength")
+  bipartite::plotweb(bip.networkQ, method='normal') 
+  bipartite::visweb(bip.networkQ, type='nested')
+  bipartite::visweb(bip.networkQ, type='diagonal')
+  }
+```
+
+To measure the nestedness and the modularity, we use functions from packages `igraph`. 
+```{r properties}
+# Nestedness:
+# quant. version of NODF  (Almeida-Neto et al. 2008, 2011)
+networklevel(bip.networkQ, index=c("weighted NODF"))
+metaComputeModules(bip.networkQ, N=5, method="Beckett") @ likelihood
+```
+This measure of nestedness (WNODF, @Almeido2011) varies between 0 and 100 for completely nonnested and nested networks. This measure of modularity varies between 0 and 1 for completely non-modular and modular networks.
+
+To measure stability of this plant by animal matrix, we first convert it to a square matrix, add a little negative denisty dependence, and then use eigenanalysis to find the dominant eigenvalue.
+```{r}
+n <- matrix(0, nr=S, nc=S) 
+# upper triangular part
+n[1:Sp, (Sp+1):S] <- bip.networkQ
+# lower triangular part
+n[(Sp+1):S, 1:Sp] <- t(bip.networkQ) 
+# Add negative density dependence that is the 
+# same magnitude as other species interactions
+diag(n) <- -1*max(rowSums(n))
+
+#Calculate stability
+Re(eigen(n)$values[1])
+```
+ 
+That is just an example of the type of network we will create in our simulation---we create a bipartite web with a random number of species, and random connectance, each within specified bounds.
+
+### Testing effects of nestedness and modularity on network resilience.
+
+In our webs, we can compare the effects of negative vs. positive interactions directly, because we will create one network with interaction strengths, and then simply reverse the signs of the effects of the animals on the plants to get herbivory *vs.* mutualism.
+
+We simulate 1000 random bipartite webs using a large number of different numbers of plant and animal species. We select a connectance by drawing randomly from a uniform distribution between the values in argument `C`. 
+
+When we generate a random network, we save one version that represents mutualists (+,+), and then we reverse the sign for the effect of the animal to represent herbivory (+,-).
+
+The function `bip_stability()` performs eigananalysis on the resulting Jacobian matrix to estimate *resilience*, which we define as the negative of the real part of the dominant eigenvalue. This way, greater resilience is a larger positive number. It calculates the resilience for both the mutualist and the herbivorous versions of each random network. It also calculates *nestedness* and *modularity* in ways similar to that in Thebault and Fontaine (2010). It can calculate modularity in two ways, using either the binary adjacency matrix (ones and zeroes) or a quantitative matrix; the latter takes much moore time to calculate, so it uses the binary matrix by default. It also tallies diversity as the total number of species and the connectance as the total number of links divided by the number of possible links.
+
+To use `bip_stability`, you will need to install a couple more packages. If you've already installed them, you have nothing to do.
+```{r}
+# pkgs <- c("bipartite","igraph", "rARPACK")
+# install.packages(pkgs)
+```
+
+This package has several arguments which you can see described in the help file. Among them are
+* `Spp.a` and `Spp.p`: vectors from which the numbers of animal and plant species are drawn at random,
+* `C`: a two-element vector provide the min and max of possible connectances drawn at random,
+* `reps`: the number of random networks to create. 
+
+Here we use it to generate 1000 random webs. We will then use those to examine the relations between various emergent properties of the networks.
+```{r}
+library(primer)
+b <- bip_stability(Spp.a = 16:60, Spp.p = 8:30, C=c(.05, 0.5), reps=100, quant=FALSE)
+```
+
+We can get a summary of the output of the 1000 simulated webs here.
+```{r}
+summary(b)
+```
+
+Are these webs stable? What are the medians and ranges of each of the web properties? How do the resiliences of the two interaction types differ?
+
+We can also graph these relations.
+```{r}
+pairs(b)
+```
+
+If you have a copy of Thebault and Fontaine (2010), you might check whether the above relations are similar to theirs.
+
+## Path Analysis
+
+Now we do the same sort of analysis that Thebault and Fontaine did to get their Fig. 2 C,D. Path analysis is a relatively simple way to model sets of correlations among dependent variables. To do this, we will use the `lavaan` package.
+
+If we look above, we see curvature in some of the relations. In simple path analysis, as in Thebault and Fontaine, these relations are assumed to be linear. Here we transform these data a tad to help linearize these relations.
+```{r}
+out.tr <- (b)^.75
+pairs( out.tr )
+```
+
+We next scale our data so that all variables have a mean of zero and a standard deviation of 1. This will simplify the interpretation of the path analysis output: the regression coefficients partial correlation coefficients and will be effect sizes that are each comparable to the others.
+```{r}
+dat <- data.frame( scale(out.tr) ) 
+```
+
+We specify each of the relationships, where `y ~ x` is "y as a function of x". We then fit the model and get the path coefficients.
+
+To mimic Thebault and Fontaine, we will include all and only the interactions in their figure 2. We start with the mutualism web. Start by loading the `lavaan` package if you haven't previously.
+
+```{r}
+# library(lavvan)
+# Step 1: Specify model
+model <- 'resilience.m ~ nestedness + modularity + S + C
+          nestedness ~  S + C
+          modularity ~ S + C '
+
+# Step 2: Estimate model of mutualism
+mod.m.fit <- sem(model, data=dat)
+coef(mod.m.fit)
+```
+
+Look at the estimates of the regressions. Those are the path coefficients.
+
+Now it is up to you to get a pencil and paper and draw the picture....
+
+Next, do the same thing for herbivory.
+```{r}
+# Step 1: Specify model
+model <- 'resilience.h ~ nestedness + modularity + S + C
+          nestedness ~ S + C
+          modularity ~ S + C'
+
+# Step 2: Estimate model of herbivory
+mod.h.fit <- sem(model, data=dat)
+coef(mod.h.fit)  
+
+```
+
+To make these figures, you'll need the `semPlot` package.
+```{r paths, fig.cap="*Given the same bipartite network sturcture and the identical interaction strengths, antagonistic and mutualistic webs show different relations among emergent properties.*", fig.show='hold', out.width="50%"}
+# library(semPlot)
+semPaths(mod.m.fit, what='path', whatLabels="std", 
+         curve=1, curvature=1, sizeMan=10,
+         edge.label.cex = 1.5, nCharNodes=4,
+         edge.label.position=.7, layout='tree2')
+semPaths(mod.h.fit, what='path', whatLabels="std", 
+         curve=1, curvature=1, sizeMan=10,
+         edge.label.cex = 1.5, nCharNodes=4,
+         edge.label.position=.7, layout='tree2')
+
+```
+
+Here we see that some of the relations among empergent properties differs in the two web types. It is reassuring that the relations between richness and connectance *vs.* nestedness and modularity are identical. This is because the topologies (connections) are identical, as the only difference is the sign of some of the interactions. 
+
+The differences lie in the effects on resilience. What are those differences, and are they consistent with Thebault and Fontaine (2010). Are they consistent with what is generally presumed about the role of mutualisms and consumption in food webs?
 

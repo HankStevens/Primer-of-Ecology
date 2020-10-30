@@ -1,0 +1,1072 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>12 Food webs and other networks | Primer of Ecology using R</title>
+  <meta name="description" content="12 Food webs and other networks | Primer of Ecology using R" />
+  <meta name="generator" content="bookdown 0.20 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="12 Food webs and other networks | Primer of Ecology using R" />
+  <meta property="og:type" content="book" />
+  
+  
+  
+  <meta name="github-repo" content="HankStevens/Primer-of-Ecology" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="12 Food webs and other networks | Primer of Ecology using R" />
+  
+  
+  
+
+<meta name="author" content="Hank Stevens" />
+
+
+<meta name="date" content="2020-10-30" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="disease.html"/>
+<link rel="next" href="references.html"/>
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+<script src="libs/accessible-code-block-0.0.1/empty-anchor.js"></script>
+<script src="libs/kePrint-0.0.1/kePrint.js"></script>
+<link href="libs/lightable-0.0.1/lightable.css" rel="stylesheet" />
+<link href="libs/bsTable-3.3.7/bootstrapTable.min.css" rel="stylesheet" />
+<script src="libs/bsTable-3.3.7/bootstrapTable.js"></script>
+
+
+<style type="text/css">
+code.sourceCode > span { display: inline-block; line-height: 1.25; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Preface</a></li>
+<li class="chapter" data-level="1" data-path="theory.html"><a href="theory.html"><i class="fa fa-check"></i><b>1</b> Theory in Ecology</a><ul>
+<li class="chapter" data-level="1.1" data-path="theory.html"><a href="theory.html#examples-of-theories"><i class="fa fa-check"></i><b>1.1</b> Examples of theories</a><ul>
+<li class="chapter" data-level="1.1.1" data-path="theory.html"><a href="theory.html#hierarchy-theory"><i class="fa fa-check"></i><b>1.1.1</b> Hierarchy theory</a></li>
+<li class="chapter" data-level="1.1.2" data-path="theory.html"><a href="theory.html#a-general-theory-of-ecology"><i class="fa fa-check"></i><b>1.1.2</b> A general theory of ecology</a></li>
+<li class="chapter" data-level="1.1.3" data-path="theory.html"><a href="theory.html#efficient-theory"><i class="fa fa-check"></i><b>1.1.3</b> Efficient theory</a></li>
+</ul></li>
+<li class="chapter" data-level="1.2" data-path="theory.html"><a href="theory.html#metabolic_scaling"><i class="fa fa-check"></i><b>1.2</b> An example: Metabolic Theory of Ecology</a><ul>
+<li class="chapter" data-level="1.2.1" data-path="theory.html"><a href="theory.html#body-size-dependence"><i class="fa fa-check"></i><b>1.2.1</b> Body-size dependence</a></li>
+<li class="chapter" data-level="1.2.2" data-path="theory.html"><a href="theory.html#temperature-dependence"><i class="fa fa-check"></i><b>1.2.2</b> Temperature dependence</a></li>
+</ul></li>
+<li class="chapter" data-level="1.3" data-path="theory.html"><a href="theory.html#power-law-scaling-implies-constant-relative-differences"><i class="fa fa-check"></i><b>1.3</b> Power law scaling implies constant relative differences</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="oft.html"><a href="oft.html"><i class="fa fa-check"></i><b>2</b> Optimal Foraging</a><ul>
+<li class="chapter" data-level="2.1" data-path="oft.html"><a href="oft.html#a-prey-model"><i class="fa fa-check"></i><b>2.1</b> A prey model</a><ul>
+<li class="chapter" data-level="2.1.1" data-path="oft.html"><a href="oft.html#our-intuition"><i class="fa fa-check"></i><b>2.1.1</b> Our intuition</a></li>
+<li class="chapter" data-level="2.1.2" data-path="oft.html"><a href="oft.html#mathematical-support"><i class="fa fa-check"></i><b>2.1.2</b> Mathematical support</a></li>
+</ul></li>
+<li class="chapter" data-level="2.2" data-path="oft.html"><a href="oft.html#the-patch-model"><i class="fa fa-check"></i><b>2.2</b> The patch model</a></li>
+<li class="chapter" data-level="2.3" data-path="oft.html"><a href="oft.html#a-simulation-of-a-prey-model"><i class="fa fa-check"></i><b>2.3</b> A simulation of a prey model</a><ul>
+<li class="chapter" data-level="2.3.1" data-path="oft.html"><a href="oft.html#lab-exercise"><i class="fa fa-check"></i><b>2.3.1</b> Lab exercise</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="expo.html"><a href="expo.html"><i class="fa fa-check"></i><b>3</b> Simple density-independent growth</a><ul>
+<li class="chapter" data-level="3.1" data-path="expo.html"><a href="expo.html#discrete-growth-rates-of-fruit-flies-in-my-kitchen"><i class="fa fa-check"></i><b>3.1</b> Discrete growth rates of fruit flies in my kitchen</a></li>
+<li class="chapter" data-level="3.2" data-path="expo.html"><a href="expo.html#fruit-flies-with-continuous-overlapping-generations"><i class="fa fa-check"></i><b>3.2</b> Fruit flies with continuous overlapping generations</a></li>
+<li class="chapter" data-level="3.3" data-path="expo.html"><a href="expo.html#properties-of-geometric-and-exponential-growth"><i class="fa fa-check"></i><b>3.3</b> Properties of geometric and exponential growth</a><ul>
+<li class="chapter" data-level="3.3.1" data-path="expo.html"><a href="expo.html#average-growth-rate"><i class="fa fa-check"></i><b>3.3.1</b> Average growth rate</a></li>
+</ul></li>
+<li class="chapter" data-level="3.4" data-path="expo.html"><a href="expo.html#modeling-with-data-simulated-dynamics"><i class="fa fa-check"></i><b>3.4</b> Modeling with Data: Simulated Dynamics</a><ul>
+<li class="chapter" data-level="3.4.1" data-path="expo.html"><a href="expo.html#data-based-approaches"><i class="fa fa-check"></i><b>3.4.1</b> Data-based approaches</a></li>
+<li class="chapter" data-level="3.4.2" data-path="expo.html"><a href="expo.html#creating-and-visualizing-the-data"><i class="fa fa-check"></i><b>3.4.2</b> Creating and visualizing the data</a></li>
+<li class="chapter" data-level="3.4.3" data-path="expo.html"><a href="expo.html#one-simulation"><i class="fa fa-check"></i><b>3.4.3</b> One simulation</a></li>
+<li class="chapter" data-level="3.4.4" data-path="expo.html"><a href="expo.html#multiple-simulations"><i class="fa fa-check"></i><b>3.4.4</b> Multiple simulations</a></li>
+<li class="chapter" data-level="3.4.5" data-path="expo.html"><a href="expo.html#a-distribution-of-possible-futures"><i class="fa fa-check"></i><b>3.4.5</b> A distribution of possible futures</a></li>
+<li class="chapter" data-level="3.4.6" data-path="expo.html"><a href="expo.html#analyzing-results"><i class="fa fa-check"></i><b>3.4.6</b> Analyzing results</a></li>
+<li class="chapter" data-level="3.4.7" data-path="expo.html"><a href="expo.html#inferring-processes-underlying-growth-rate"><i class="fa fa-check"></i><b>3.4.7</b> Inferring processes underlying growth rate</a></li>
+<li class="chapter" data-level="3.4.8" data-path="expo.html"><a href="expo.html#f-environmental-noise"><i class="fa fa-check"></i><b>3.4.8</b> 1/<span class="math inline">\(f\)</span> environmental noise</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="DID.html"><a href="DID.html"><i class="fa fa-check"></i><b>4</b> Density-independent Demography</a><ul>
+<li class="chapter" data-level="4.1" data-path="DID.html"><a href="DID.html#a-two-stage-matrix-model"><i class="fa fa-check"></i><b>4.1</b> A two stage matrix model</a></li>
+<li class="chapter" data-level="4.2" data-path="DID.html"><a href="DID.html#a-brief-primer-on-matrices"><i class="fa fa-check"></i><b>4.2</b> A brief primer on matrices</a></li>
+<li class="chapter" data-level="4.3" data-path="DID.html"><a href="DID.html#decomposing-a"><i class="fa fa-check"></i><b>4.3</b> Decomposing <strong>A</strong></a></li>
+<li class="chapter" data-level="4.4" data-path="DID.html"><a href="DID.html#a-three-stage-model"><i class="fa fa-check"></i><b>4.4</b> A three stage model</a></li>
+<li class="chapter" data-level="4.5" data-path="DID.html"><a href="DID.html#projection"><i class="fa fa-check"></i><b>4.5</b> Projection</a></li>
+<li class="chapter" data-level="4.6" data-path="DID.html"><a href="DID.html#analyzing-the-transition-matrix"><i class="fa fa-check"></i><b>4.6</b> Analyzing the transition matrix</a><ul>
+<li class="chapter" data-level="4.6.1" data-path="DID.html"><a href="DID.html#eigenanalysis"><i class="fa fa-check"></i><b>4.6.1</b> Eigenanalysis</a></li>
+<li class="chapter" data-level="4.6.2" data-path="DID.html"><a href="DID.html#finite-rate-of-increase"><i class="fa fa-check"></i><b>4.6.2</b> Finite rate of increase</a></li>
+<li class="chapter" data-level="4.6.3" data-path="DID.html"><a href="DID.html#stable-stage-distribution"><i class="fa fa-check"></i><b>4.6.3</b> Stable stage distribution</a></li>
+<li class="chapter" data-level="4.6.4" data-path="DID.html"><a href="DID.html#calculating-the-stable-stage-distribution"><i class="fa fa-check"></i><b>4.6.4</b> Calculating the stable stage distribution</a></li>
+<li class="chapter" data-level="4.6.5" data-path="DID.html"><a href="DID.html#reproductive-value"><i class="fa fa-check"></i><b>4.6.5</b> Reproductive value</a></li>
+<li class="chapter" data-level="4.6.6" data-path="DID.html"><a href="DID.html#sensitivity-and-elasticity"><i class="fa fa-check"></i><b>4.6.6</b> Sensitivity and elasticity</a></li>
+</ul></li>
+<li class="chapter" data-level="4.7" data-path="DID.html"><a href="DID.html#integral-projection"><i class="fa fa-check"></i><b>4.7</b> Integral projection</a><ul>
+<li class="chapter" data-level="4.7.1" data-path="DID.html"><a href="DID.html#a-size-based-ipm-of-smooth-coneflower"><i class="fa fa-check"></i><b>4.7.1</b> A size-based IPM of smooth coneflower</a></li>
+<li class="chapter" data-level="4.7.2" data-path="DID.html"><a href="DID.html#population-summaries"><i class="fa fa-check"></i><b>4.7.2</b> Population summaries</a></li>
+</ul></li>
+<li class="chapter" data-level="4.8" data-path="DID.html"><a href="DID.html#r-packges-for-demography"><i class="fa fa-check"></i><b>4.8</b> R packges for demography</a></li>
+<li class="chapter" data-level="4.9" data-path="DID.html"><a href="DID.html#exploring-a-real-population"><i class="fa fa-check"></i><b>4.9</b> Exploring a real population</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="DDgrowth.html"><a href="DDgrowth.html"><i class="fa fa-check"></i><b>5</b> Density-dependent growth</a><ul>
+<li class="chapter" data-level="5.1" data-path="DDgrowth.html"><a href="DDgrowth.html#continuous-logistic-growth"><i class="fa fa-check"></i><b>5.1</b> Continuous logistic growth</a></li>
+<li class="chapter" data-level="5.2" data-path="DDgrowth.html"><a href="DDgrowth.html#dynamics-around-the-equilibria-stability"><i class="fa fa-check"></i><b>5.2</b> Dynamics around the equilibria — stability</a><ul>
+<li class="chapter" data-level="5.2.1" data-path="DDgrowth.html"><a href="DDgrowth.html#analytical-linear-stability-analysis"><i class="fa fa-check"></i><b>5.2.1</b> Analytical linear stability analysis</a></li>
+<li class="chapter" data-level="5.2.2" data-path="DDgrowth.html"><a href="DDgrowth.html#projection-with-numerical-integration"><i class="fa fa-check"></i><b>5.2.2</b> Projection with numerical integration</a></li>
+</ul></li>
+<li class="chapter" data-level="5.3" data-path="DDgrowth.html"><a href="DDgrowth.html#other-forms-of-density-dependent-growth"><i class="fa fa-check"></i><b>5.3</b> Other forms of density-dependent growth</a><ul>
+<li class="chapter" data-level="5.3.1" data-path="DDgrowth.html"><a href="DDgrowth.html#effects-of-n-on-birth-and-death-rates"><i class="fa fa-check"></i><b>5.3.1</b> Effects of N on birth and death rates</a></li>
+<li class="chapter" data-level="5.3.2" data-path="DDgrowth.html"><a href="DDgrowth.html#theta-logistic-growth"><i class="fa fa-check"></i><b>5.3.2</b> Theta-logistic growth</a></li>
+<li class="chapter" data-level="5.3.3" data-path="DDgrowth.html"><a href="DDgrowth.html#allee-effect"><i class="fa fa-check"></i><b>5.3.3</b> Allee effect</a></li>
+<li class="chapter" data-level="5.3.4" data-path="DDgrowth.html"><a href="DDgrowth.html#the-integral-of-logistic-growth"><i class="fa fa-check"></i><b>5.3.4</b> The integral of logistic growth</a></li>
+</ul></li>
+<li class="chapter" data-level="5.4" data-path="DDgrowth.html"><a href="DDgrowth.html#discrete-density-dependent-growth"><i class="fa fa-check"></i><b>5.4</b> Discrete Density-dependent Growth</a><ul>
+<li class="chapter" data-level="5.4.1" data-path="DDgrowth.html"><a href="DDgrowth.html#effects-of-r_d"><i class="fa fa-check"></i><b>5.4.1</b> Effects of <span class="math inline">\(r_d\)</span></a></li>
+<li class="chapter" data-level="5.4.2" data-path="DDgrowth.html"><a href="DDgrowth.html#bifurcations"><i class="fa fa-check"></i><b>5.4.2</b> Bifurcations</a></li>
+</ul></li>
+<li class="chapter" data-level="5.5" data-path="DDgrowth.html"><a href="DDgrowth.html#maximum-sustained-yield"><i class="fa fa-check"></i><b>5.5</b> Maximum Sustained Yield</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="meta.html"><a href="meta.html"><i class="fa fa-check"></i><b>6</b> Populations in Space</a><ul>
+<li class="chapter" data-level="6.1" data-path="meta.html"><a href="meta.html#source-sink-dynamics"><i class="fa fa-check"></i><b>6.1</b> Source-sink Dynamics</a><ul>
+<li class="chapter" data-level="6.1.1" data-path="meta.html"><a href="meta.html#complications-and-cases"><i class="fa fa-check"></i><b>6.1.1</b> Complications and cases</a></li>
+</ul></li>
+<li class="chapter" data-level="6.2" data-path="meta.html"><a href="meta.html#metapopulations"><i class="fa fa-check"></i><b>6.2</b> Metapopulations</a><ul>
+<li class="chapter" data-level="6.2.1" data-path="meta.html"><a href="meta.html#the-classic-levins-model"><i class="fa fa-check"></i><b>6.2.1</b> The classic Levins model</a></li>
+<li class="chapter" data-level="6.2.2" data-path="meta.html"><a href="meta.html#propagule-rain"><i class="fa fa-check"></i><b>6.2.2</b> Propagule rain</a></li>
+<li class="chapter" data-level="6.2.3" data-path="meta.html"><a href="meta.html#the-rescue-effect-and-the-core-satellite-model"><i class="fa fa-check"></i><b>6.2.3</b> The rescue effect and the core-satellite model</a></li>
+<li class="chapter" data-level="6.2.4" data-path="meta.html"><a href="meta.html#parallels-with-logistic-growth"><i class="fa fa-check"></i><b>6.2.4</b> Parallels with Logistic Growth</a></li>
+<li class="chapter" data-level="6.2.5" data-path="meta.html"><a href="meta.html#levins-vs.-hanski"><i class="fa fa-check"></i><b>6.2.5</b> Levins <span class="math inline">\(vs\)</span>. Hanski</a></li>
+<li class="chapter" data-level="6.2.6" data-path="meta.html"><a href="meta.html#habitat-destruction"><i class="fa fa-check"></i><b>6.2.6</b> Habitat Destruction</a></li>
+<li class="chapter" data-level="6.2.7" data-path="meta.html"><a href="meta.html#illustrating-the-effects-of-habitat-destruction"><i class="fa fa-check"></i><b>6.2.7</b> Illustrating the effects of habitat destruction</a></li>
+<li class="chapter" data-level="6.2.8" data-path="meta.html"><a href="meta.html#different-assumptions-lead-to-different-predictions-about-rates-of-extinction"><i class="fa fa-check"></i><b>6.2.8</b> Different assumptions lead to different predictions about rates of extinction</a></li>
+</ul></li>
+<li class="chapter" data-level="6.3" data-path="meta.html"><a href="meta.html#hanskis-incidence-function"><i class="fa fa-check"></i><b>6.3</b> Hanski’s incidence function</a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="competition.html"><a href="competition.html"><i class="fa fa-check"></i><b>7</b> Competition</a><ul>
+<li class="chapter" data-level="7.1" data-path="competition.html"><a href="competition.html#lotka-volterra-interspecific-competition"><i class="fa fa-check"></i><b>7.1</b> Lotka-Volterra Interspecific Competition</a></li>
+<li class="chapter" data-level="7.2" data-path="competition.html"><a href="competition.html#equilbria"><i class="fa fa-check"></i><b>7.2</b> Equilbria</a><ul>
+<li class="chapter" data-level="7.2.1" data-path="competition.html"><a href="competition.html#isoclines"><i class="fa fa-check"></i><b>7.2.1</b> Isoclines</a></li>
+<li class="chapter" data-level="7.2.2" data-path="competition.html"><a href="competition.html#finding-equilibria"><i class="fa fa-check"></i><b>7.2.2</b> Finding equilibria</a></li>
+<li class="chapter" data-level="7.2.3" data-path="competition.html"><a href="competition.html#coexistence-the-invasion-criterion"><i class="fa fa-check"></i><b>7.2.3</b> Coexistence — the invasion criterion</a></li>
+<li class="chapter" data-level="7.2.4" data-path="competition.html"><a href="competition.html#other-equilibria"><i class="fa fa-check"></i><b>7.2.4</b> Other equilibria</a></li>
+</ul></li>
+<li class="chapter" data-level="7.3" data-path="competition.html"><a href="competition.html#dynamics-at-the-equilibria"><i class="fa fa-check"></i><b>7.3</b> Dynamics at the Equilibria</a><ul>
+<li class="chapter" data-level="7.3.1" data-path="competition.html"><a href="competition.html#determine-the-equilibria"><i class="fa fa-check"></i><b>7.3.1</b> Determine the equilibria</a></li>
+<li class="chapter" data-level="7.3.2" data-path="competition.html"><a href="competition.html#create-the-jacobian-matrix"><i class="fa fa-check"></i><b>7.3.2</b> Create the Jacobian matrix</a></li>
+<li class="chapter" data-level="7.3.3" data-path="competition.html"><a href="competition.html#solve-the-jacobian-at-an-equilibrium"><i class="fa fa-check"></i><b>7.3.3</b> Solve the Jacobian at an equilibrium</a></li>
+<li class="chapter" data-level="7.3.4" data-path="competition.html"><a href="competition.html#use-the-jacobian-matrix"><i class="fa fa-check"></i><b>7.3.4</b> Use the Jacobian matrix</a></li>
+<li class="chapter" data-level="7.3.5" data-path="competition.html"><a href="competition.html#three-interesting-equilbria"><i class="fa fa-check"></i><b>7.3.5</b> Three interesting equilbria</a></li>
+</ul></li>
+<li class="chapter" data-level="7.4" data-path="competition.html"><a href="competition.html#return-time-and-the-effect-of-r"><i class="fa fa-check"></i><b>7.4</b> Return Time and the Effect of <span class="math inline">\(r\)</span></a></li>
+<li class="chapter" data-level="7.5" data-path="competition.html"><a href="competition.html#indirect-competition-for-resources"><i class="fa fa-check"></i><b>7.5</b> Indirect competition for resources</a><ul>
+<li class="chapter" data-level="7.5.1" data-path="competition.html"><a href="competition.html#linear-and-nonlinear-responses"><i class="fa fa-check"></i><b>7.5.1</b> Linear and nonlinear responses</a></li>
+<li class="chapter" data-level="7.5.2" data-path="competition.html"><a href="competition.html#relative-nonlinearity"><i class="fa fa-check"></i><b>7.5.2</b> Relative nonlinearity</a></li>
+<li class="chapter" data-level="7.5.3" data-path="competition.html"><a href="competition.html#competition-for-two-resources-the-resource-ratio-model"><i class="fa fa-check"></i><b>7.5.3</b> Competition for two resources: the resource ratio model</a></li>
+</ul></li>
+<li class="chapter" data-level="7.6" data-path="competition.html"><a href="competition.html#summary"><i class="fa fa-check"></i><b>7.6</b> Summary</a></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="mutualisms.html"><a href="mutualisms.html"><i class="fa fa-check"></i><b>8</b> Mutualisms</a><ul>
+<li class="chapter" data-level="8.1" data-path="mutualisms.html"><a href="mutualisms.html#background"><i class="fa fa-check"></i><b>8.1</b> Background</a></li>
+<li class="chapter" data-level="8.2" data-path="mutualisms.html"><a href="mutualisms.html#lotka-volterra-mutualism"><i class="fa fa-check"></i><b>8.2</b> Lotka-Volterra mutualism</a></li>
+<li class="chapter" data-level="8.3" data-path="mutualisms.html"><a href="mutualisms.html#consumer-resource-mutualism"><i class="fa fa-check"></i><b>8.3</b> Consumer-resource mutualism</a><ul>
+<li class="chapter" data-level="8.3.1" data-path="mutualisms.html"><a href="mutualisms.html#a-model-of-uni-directional-mutualism"><i class="fa fa-check"></i><b>8.3.1</b> A model of uni-directional mutualism</a></li>
+</ul></li>
+<li class="chapter" data-level="8.4" data-path="mutualisms.html"><a href="mutualisms.html#plant-soil-feedbacks"><i class="fa fa-check"></i><b>8.4</b> Plant-soil feedbacks</a></li>
+<li class="chapter" data-level="8.5" data-path="mutualisms.html"><a href="mutualisms.html#simulations-for-learning"><i class="fa fa-check"></i><b>8.5</b> Simulations for learning</a><ul>
+<li class="chapter" data-level="8.5.1" data-path="mutualisms.html"><a href="mutualisms.html#lvg"><i class="fa fa-check"></i><b>8.5.1</b> <code>lvg()</code></a></li>
+<li class="chapter" data-level="8.5.2" data-path="mutualisms.html"><a href="mutualisms.html#systematic-simulations"><i class="fa fa-check"></i><b>8.5.2</b> Systematic simulations</a></li>
+<li class="chapter" data-level="8.5.3" data-path="mutualisms.html"><a href="mutualisms.html#checking-simulation-results"><i class="fa fa-check"></i><b>8.5.3</b> Checking simulation results</a></li>
+<li class="chapter" data-level="8.5.4" data-path="mutualisms.html"><a href="mutualisms.html#comparing-simulation-results-to-analytical-solutions"><i class="fa fa-check"></i><b>8.5.4</b> Comparing simulation results to analytical solutions</a></li>
+<li class="chapter" data-level="8.5.5" data-path="mutualisms.html"><a href="mutualisms.html#one-last-thing-using-the-jacobian-matrix"><i class="fa fa-check"></i><b>8.5.5</b> One last thing: using the Jacobian matrix</a></li>
+<li class="chapter" data-level="8.5.6" data-path="mutualisms.html"><a href="mutualisms.html#in-fine"><i class="fa fa-check"></i><b>8.5.6</b> <em>In Fine</em></a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="9" data-path="consumer-resource-interactions.html"><a href="consumer-resource-interactions.html"><i class="fa fa-check"></i><b>9</b> Consumer-resource Interactions</a><ul>
+<li class="chapter" data-level="9.1" data-path="consumer-resource-interactions.html"><a href="consumer-resource-interactions.html#ratio-dependence"><i class="fa fa-check"></i><b>9.1</b> Ratio dependence</a><ul>
+<li class="chapter" data-level="9.1.1" data-path="consumer-resource-interactions.html"><a href="consumer-resource-interactions.html#dynamics-of-ratio-dependent-predation"><i class="fa fa-check"></i><b>9.1.1</b> Dynamics of ratio dependent predation</a></li>
+</ul></li>
+<li class="chapter" data-level="9.2" data-path="consumer-resource-interactions.html"><a href="consumer-resource-interactions.html#prey-dependence"><i class="fa fa-check"></i><b>9.2</b> Prey dependence</a><ul>
+<li class="chapter" data-level="9.2.1" data-path="consumer-resource-interactions.html"><a href="consumer-resource-interactions.html#dyanmics-of-prey-dependent-predation"><i class="fa fa-check"></i><b>9.2.1</b> Dyanmics of prey-dependent predation</a></li>
+</ul></li>
+<li class="chapter" data-level="9.3" data-path="consumer-resource-interactions.html"><a href="consumer-resource-interactions.html#interlude-functional-response---what-an-individual-predator-does"><i class="fa fa-check"></i><b>9.3</b> Interlude: Functional response - what an individual predator does</a></li>
+<li class="chapter" data-level="9.4" data-path="consumer-resource-interactions.html"><a href="consumer-resource-interactions.html#stability-analysis-for-the-prey-dependent-lotkavolterra-model"><i class="fa fa-check"></i><b>9.4</b> Stability analysis for the prey-dependent Lotka–Volterra model</a></li>
+<li class="chapter" data-level="9.5" data-path="consumer-resource-interactions.html"><a href="consumer-resource-interactions.html#prey-carrying-capacity-and-type-ii-functional-response"><i class="fa fa-check"></i><b>9.5</b> Prey carrying capacity and type II functional response</a><ul>
+<li class="chapter" data-level="9.5.1" data-path="consumer-resource-interactions.html"><a href="consumer-resource-interactions.html#paradox-of-enrichment"><i class="fa fa-check"></i><b>9.5.1</b> Paradox of enrichment</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="10" data-path="host-parasitoid-relations.html"><a href="host-parasitoid-relations.html"><i class="fa fa-check"></i><b>10</b> Host-parasitoid relations</a><ul>
+<li class="chapter" data-level="10.1" data-path="host-parasitoid-relations.html"><a href="host-parasitoid-relations.html#independent-and-random-attacks"><i class="fa fa-check"></i><b>10.1</b> Independent and random attacks</a><ul>
+<li class="chapter" data-level="10.1.1" data-path="host-parasitoid-relations.html"><a href="host-parasitoid-relations.html#simulating-simple-host-parasitoid-dynamics"><i class="fa fa-check"></i><b>10.1.1</b> Simulating simple host-parasitoid dynamics</a></li>
+</ul></li>
+<li class="chapter" data-level="10.2" data-path="host-parasitoid-relations.html"><a href="host-parasitoid-relations.html#aggregation-leads-to-coexistence"><i class="fa fa-check"></i><b>10.2</b> Aggregation leads to coexistence</a><ul>
+<li class="chapter" data-level="10.2.1" data-path="host-parasitoid-relations.html"><a href="host-parasitoid-relations.html#equilibria-for-a-discrete-time-model"><i class="fa fa-check"></i><b>10.2.1</b> Equilibria for a discrete-time model</a></li>
+</ul></li>
+<li class="chapter" data-level="10.3" data-path="host-parasitoid-relations.html"><a href="host-parasitoid-relations.html#stability-of-hostparasitoid-dynamics"><i class="fa fa-check"></i><b>10.3</b> Stability of host–parasitoid dynamics</a></li>
+<li class="chapter" data-level="10.4" data-path="mutualisms.html"><a href="mutualisms.html#in-fine"><i class="fa fa-check"></i><b>10.4</b> <em>In Fine</em></a></li>
+</ul></li>
+<li class="chapter" data-level="11" data-path="disease.html"><a href="disease.html"><i class="fa fa-check"></i><b>11</b> Disease</a><ul>
+<li class="chapter" data-level="11.1" data-path="disease.html"><a href="disease.html#closed-epidemics"><i class="fa fa-check"></i><b>11.1</b> Closed epidemics</a><ul>
+<li class="chapter" data-level="11.1.1" data-path="disease.html"><a href="disease.html#density-dependent-transmission"><i class="fa fa-check"></i><b>11.1.1</b> Density-dependent transmission</a></li>
+<li class="chapter" data-level="11.1.2" data-path="disease.html"><a href="disease.html#frequency-dependent-transmission"><i class="fa fa-check"></i><b>11.1.2</b> Frequency-dependent transmission</a></li>
+</ul></li>
+<li class="chapter" data-level="11.2" data-path="disease.html"><a href="disease.html#open-epidemics"><i class="fa fa-check"></i><b>11.2</b> Open epidemics</a></li>
+<li class="chapter" data-level="11.3" data-path="disease.html"><a href="disease.html#modeling-data-from-bombay"><i class="fa fa-check"></i><b>11.3</b> Modeling data from Bombay</a><ul>
+<li class="chapter" data-level="11.3.1" data-path="disease.html"><a href="disease.html#optimization"><i class="fa fa-check"></i><b>11.3.1</b> Optimization</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="12" data-path="food-webs-and-other-networks.html"><a href="food-webs-and-other-networks.html"><i class="fa fa-check"></i><b>12</b> Food webs and other networks</a><ul>
+<li class="chapter" data-level="12.1" data-path="food-webs-and-other-networks.html"><a href="food-webs-and-other-networks.html#food-web-characteristics"><i class="fa fa-check"></i><b>12.1</b> Food Web Characteristics</a></li>
+<li class="chapter" data-level="12.2" data-path="food-webs-and-other-networks.html"><a href="food-webs-and-other-networks.html#food-chain-length"><i class="fa fa-check"></i><b>12.2</b> Food chain length</a><ul>
+<li class="chapter" data-level="12.2.1" data-path="food-webs-and-other-networks.html"><a href="food-webs-and-other-networks.html#multi-species-lotkavolterra-notation"><i class="fa fa-check"></i><b>12.2.1</b> Multi-species Lotka–Volterra notation</a></li>
+<li class="chapter" data-level="12.2.2" data-path="mutualisms.html"><a href="mutualisms.html#background"><i class="fa fa-check"></i><b>12.2.2</b> Background</a></li>
+</ul></li>
+<li class="chapter" data-level="12.3" data-path="food-webs-and-other-networks.html"><a href="food-webs-and-other-networks.html#implementing-pimm-and-lawtons-methods"><i class="fa fa-check"></i><b>12.3</b> Implementing Pimm and Lawton’s Methods</a><ul>
+<li class="chapter" data-level="12.3.1" data-path="food-webs-and-other-networks.html"><a href="food-webs-and-other-networks.html#shortening-the-chain"><i class="fa fa-check"></i><b>12.3.1</b> Shortening the Chain</a></li>
+<li class="chapter" data-level="12.3.2" data-path="food-webs-and-other-networks.html"><a href="food-webs-and-other-networks.html#adding-omnivory"><i class="fa fa-check"></i><b>12.3.2</b> Adding Omnivory</a></li>
+<li class="chapter" data-level="12.3.3" data-path="food-webs-and-other-networks.html"><a href="food-webs-and-other-networks.html#comparing-chain-a-versus-b"><i class="fa fa-check"></i><b>12.3.3</b> Comparing Chain A versus B</a></li>
+</ul></li>
+<li class="chapter" data-level="12.4" data-path="food-webs-and-other-networks.html"><a href="food-webs-and-other-networks.html#re-evaluating-take-home-messages"><i class="fa fa-check"></i><b>12.4</b> Re-evaluating Take-Home Messages</a></li>
+<li class="chapter" data-level="12.5" data-path="food-webs-and-other-networks.html"><a href="food-webs-and-other-networks.html#exploring-the-stability-of-bipartite-networks"><i class="fa fa-check"></i><b>12.5</b> Exploring the stability of bipartite networks</a><ul>
+<li class="chapter" data-level="12.5.1" data-path="food-webs-and-other-networks.html"><a href="food-webs-and-other-networks.html#creating-bipartite-webs"><i class="fa fa-check"></i><b>12.5.1</b> Creating bipartite webs</a></li>
+<li class="chapter" data-level="12.5.2" data-path="food-webs-and-other-networks.html"><a href="food-webs-and-other-networks.html#testing-effects-of-nestedness-and-modularity-on-network-resilience."><i class="fa fa-check"></i><b>12.5.2</b> Testing effects of nestedness and modularity on network resilience.</a></li>
+</ul></li>
+<li class="chapter" data-level="12.6" data-path="food-webs-and-other-networks.html"><a href="food-webs-and-other-networks.html#path-analysis"><i class="fa fa-check"></i><b>12.6</b> Path Analysis</a></li>
+</ul></li>
+<li class="chapter" data-level="13" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i><b>13</b> References</a></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Primer of Ecology using R</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="food-webs-and-other-networks" class="section level1">
+<h1><span class="header-section-number">12</span> Food webs and other networks</h1>
+<p>A food web is a real or a model of a <em>set of feeding relations among species or functional groups</em>. This chapter has two foci, (i) a very brief introduction to multi-species webs as networks, and (ii) a re-examination of old lessons regarding the effect of food chain length on a web’s dynamical properties.</p>
+<div class="figure"><span id="fig:web"></span>
+<img src="figs/web-1.png" alt="A food web is a map of feeding relations. Here, snails (S) and invertebrates (I) feed on algae, and fish, F, feed on invertebrates and algae. We can represent this as a graph or a matrix." width="40%" />
+<p class="caption">
+Figure 12.1: A food web is a map of feeding relations. Here, snails (S) and invertebrates (I) feed on algae, and fish, F, feed on invertebrates and algae. We can represent this as a graph or a matrix.
+</p>
+</div>
+<span class="math display">\[\begin{matrix}
+&amp; ~A~ &amp; ~I~ &amp; ~S~ &amp; ~F~\\
+\hline
+A&amp;0&amp;-&amp;-&amp;-\\
+I&amp;+&amp;0&amp;0&amp;-\\
+S&amp;+&amp;0&amp;0&amp;0\\
+F&amp;+&amp;+&amp;0&amp;0
+\end{matrix}\]</span>
+<div id="food-web-characteristics" class="section level2">
+<h2><span class="header-section-number">12.1</span> Food Web Characteristics</h2>
+<p>We need language to describe the components of a food web, such as <em>links</em> and <em>nodes</em>, and we also need language to describe the properties of a web as a whole. Generally speaking, networks such as food webs have <em>emergent properties</em> <span class="citation">(May <a href="#ref-May:2006lr" role="doc-biblioref">2006</a>)</span>, such as the number of nodes in the network. Emergent properties are typically considered to be nothing more than characteristics which do not exist at simpler levels of organization. For instance, one emergent property of a population is its density, because population density cannot be measured in an individual; that is why density is an emergent property.<a href="#fn64" class="footnote-ref" id="fnref64"><sup>64</sup></a> While all food web models are based on simple pairwise interactions, the resulting emergent properties of multispecies webs quickly become complex due to indirect interactions and coupled oscillations <span class="citation">(Berlow et al. <a href="#ref-Berlow:2004yq" role="doc-biblioref">2004</a>; Vandermeer <a href="#ref-Vandermeer:2006fj" role="doc-biblioref">2006</a>)</span>. In addition, any extrinsic factor (e.g., seasonality) that might influence species interactions may also influence the emergent properties of food webs.</p>
+<p>A few important network descriptors and emergent properties include,</p>
+<ul>
+<li><strong>Node</strong> A point of connection among links, a.k.a. trophospecies; each node in the web may be any set of organisms that share sufficiently similar feeding relations; in Fig. <a href="food-webs-and-other-networks.html#fig:web">12.1</a>, <span class="math inline">\(F\)</span> may be a single population of one species, or it may be a suite of species that all feed on both <span class="math inline">\(I\)</span> and <span class="math inline">\(A\)</span>.</li>
+<li><strong>Link</strong> A feeding relation; a connection between nodes or trophospecies; may be directed (one way) or undirected. A directed link is indicated by an arrow, and is the effect (<span class="math inline">\(+,\,-\)</span>) of one species on another. An undirected link is indicated by a line (no arrow head), and is merely a connection, usually with positive and negative effects assumed, but not quantified.</li>
+<li><strong>Connectance</strong> The proportion of possible links realized. Connectance may be based on either directed, <span class="math inline">\(C_{D}\)</span>, or undirected, <span class="math inline">\(C_{U}\)</span>, links. For Fig. <a href="food-webs-and-other-networks.html#fig:web">12.1</a> these would be
+<span class="math display">\[\begin{gather*}
+C_{D}=\frac{L}{S^{2}}=\frac{8}{16}=0.5 \\
+C_{U}=\frac{L}{\left(S^2-S\right)/2}=\frac{4}{6}=0.67
+\end{gather*}\]</span>
+where <span class="math inline">\(S\)</span> is the number of species or nodes.</li>
+<li><strong>Degree distribution</strong>, <span class="math inline">\(\mathrm{Pr}(i)\)</span> The probability that a randomly chosen node will have degree <span class="math inline">\(i\)</span>, that is, be connected to <span class="math inline">\(i\)</span> other nodes <span class="citation">(May <a href="#ref-May:2006lr" role="doc-biblioref">2006</a>)</span>. In Fig. <a href="food-webs-and-other-networks.html#fig:web">12.1</a>, <span class="math inline">\(S\)</span> is of degree 1 (i.e., is connected to one other species). <span class="math inline">\(F\)</span> and <span class="math inline">\(I\)</span> are of degree 2, and <span class="math inline">\(A\)</span> is of degree 3. If we divide through by the number of nodes (4, in Fig. <a href="food-webs-and-other-networks.html#fig:web">12.1</a>), then the degree distribution consists of the probabilities <span class="math inline">\(\mathrm{Pr}\left(i\right)=\{0.25,\,0.5,\,0.25\}\)</span>. As webs increase in size, we can describe this distribution as we would a statistical distribution. For instance, for a web with randomly placed connections, the degree distribution is the binomial distribution <span class="citation">(Cohen, Briand, and Newman <a href="#ref-Cohen1990d" role="doc-biblioref">1990</a>)</span>.</li>
+<li><strong>Characteristic path length</strong> Sometimes defined as the average shortest path between any two nodes <span class="citation">(Dunne, Williams, and Martinez <a href="#ref-Dunne2002aa" role="doc-biblioref">2002</a>)</span>. For instance, for Fig. <a href="food-webs-and-other-networks.html#fig:web">12.1</a>, the shortest path between <span class="math inline">\(S\)</span> and <span class="math inline">\(A\)</span> is 1 link, and between <span class="math inline">\(A\)</span> and <span class="math inline">\(I\)</span> is 2 links. The average of all pairwise shortest paths is <span class="math inline">\((1+1+1+1+2+2)/6=1.\bar{3}\)</span>. It is also sometimes defined as the average of all paths between each pair of nodes.</li>
+<li><strong>Modularity, Compartmentation</strong> The degree to which subsets of species are highly connected or independent of other species. This tends to arise in consumer-resource interactions <span class="citation">(Thebault and Fontaine <a href="#ref-Thebault2010" role="doc-biblioref">2010</a>)</span>.</li>
+</ul>
+<p>To calculate modularity in a food web, first assume each species interacts with itself. Next, calculate the proportion of shared interactions, <span class="math inline">\(p_{ij}\)</span> for each pair of species, by comparing the lists of species with which each species in a pair interacts. The numerator of <span class="math inline">\(p_{ij}\)</span> is the number of species with which both of the pair interact. The denominator is the total number of different species with which either species interacts. </p>
+<p>As an example, let’s calculate this for the above food web (Fig. <a href="food-webs-and-other-networks.html#fig:web">12.1</a>). <span class="math inline">\(S\)</span> interacts with <span class="math inline">\(S\)</span> and <span class="math inline">\(A\)</span>, <span class="math inline">\(I\)</span> interacts with <span class="math inline">\(I\)</span>, <span class="math inline">\(A\)</span>, and <span class="math inline">\(F\)</span>. Therefore, <span class="math inline">\(S\)</span> and <span class="math inline">\(I\)</span> both interact with only <span class="math inline">\(A\)</span>, whereas, together, <span class="math inline">\(S\)</span> and <span class="math inline">\(I\)</span> interact with <span class="math inline">\(S\)</span>, <span class="math inline">\(I\)</span>, <span class="math inline">\(A\)</span>, and <span class="math inline">\(F\)</span>. The proportion, <span class="math inline">\(p_{ij}\)</span>, therefore is <span class="math inline">\(1/4 = 0.25\)</span>. We do this for each species pair. </p>
+<p>Next we sum the proportions, and divide the sum by the maximum possible number of undirected links, <span class="math inline">\(C_U\)</span>.</p>
+<span class="math display">\[\begin{matrix}
+ &amp; S &amp; I &amp; F\\
+\hline
+A&amp;2/4&amp;3/4&amp;3/4\\
+S&amp;  &amp;1/4&amp;1/4\\
+I&amp;  &amp;  &amp;3/3
+\end{matrix}\]</span>
+<p><span class="math display">\[\begin{align*}
+C_{I}&amp;=\frac{\sum_{i=1}^{S-1}\sum_{j=i+1}^{S}p_{ij}}{\left(S^2-S\right)/2}\\
+    &amp;=3.5/6\\
+    &amp;=0.58
+\end{align*}\]</span></p>
+<p>To reiterate: For any pair of species, <span class="math inline">\(i\)</span> and <span class="math inline">\(j\)</span> (<span class="math inline">\(i\neq j\)</span>), <span class="math inline">\(p_{ij}\)</span> is the proportion of shared interactions, calculated from the number of species that interact with both species <span class="math inline">\(i\)</span> and <span class="math inline">\(j\)</span>, divided by the number of species that interact with either species <span class="math inline">\(i\)</span> or species <span class="math inline">\(j\)</span>. As above, <span class="math inline">\(S\)</span> is the number of species or nodes in the web.</p>
+<ul>
+<li><strong>Nestedness</strong> the degree to which specialists make connections that generalists do too. A completely nested network is one in which we can rank species by the number of interactions, and find that species that interact with fewer other species are always interacting with species that generalists also interact with. This tends to arise in plant-pollinator networks <span class="citation">(Thebault and Fontaine <a href="#ref-Thebault2010" role="doc-biblioref">2010</a>)</span>.</li>
+<li><strong>Motif</strong> A repeating pattern; most commonly, a unique set of unidirectional patterns of consumption (Fig. <a href="food-webs-and-other-networks.html#fig:motifs">12.2</a>). A motif <em>profile</em> of a species is the variety of motifs that that species is part of, and the relative frequency with which they play each role.</li>
+<li><strong>Small world architecture</strong> The degree to which characteristic path length, <span class="math inline">\(L\)</span>, grows with the logarithm of the number of nodes in the web, <span class="math inline">\(N\)</span>,
+<span class="math display">\[L \propto log(N)\]</span>
+This occurs when nodes are connected via a small number of links through a node with a large number of connections. This occurs in social networks when individuals are connected via shared acquaintances.</li>
+</ul>
+<div class="figure"><span id="fig:motifs"></span>
+<img src="figs/motifs.png" alt="There are 13 different possible motifs for three species. These links record only consumption. For instance, S1 is a simple linear food chain and S4 is a single species that is consumed by two other species. motifs D1-D8 all include mutual consumption. This is likely to occur between species in the same guild, and when adults of one feed on juveniles of another." width="90%" />
+<p class="caption">
+Figure 12.2: There are 13 different possible motifs for three species. These links record only consumption. For instance, S1 is a simple linear food chain and S4 is a single species that is consumed by two other species. motifs D1-D8 all include mutual consumption. This is likely to occur between species in the same guild, and when adults of one feed on juveniles of another.
+</p>
+</div>
+<ul>
+<li><p><strong>Trophic level, trophic position</strong> may simply be categorized as basal, intermediate or top trophic positions. Basal positions are those in which the trophospecies feed on no other species. The top positions are those in which the trophospecies are fed upon by nothing. One can also calculate a quantitative measure of trophic level. This is important in part because omnivory, something rampant in real food webs, complicates identification of a trophic level. We can calculate trophic level for the top predator, <span class="math inline">\(F\)</span> (Fig. <a href="food-webs-and-other-networks.html#fig:web">12.1</a>), and let us assume that <span class="math inline">\(F\)</span> gets two-thirds of what it needs from <span class="math inline">\(I\)</span>, and gets one-third from <span class="math inline">\(A\)</span>. <span class="math inline">\(I\)</span> itself is on the second trophic level, so given that, the trophic level of <span class="math inline">\(P\)</span> is calculated as
+<span class="math display">\[\begin{equation*}
+T_{i}=1+\sum_{j=1}^{S}T_{j}p_{ij}=1+\left(2\left(0.67\right)+1\left(0.33\right)\right)=2.67
+\end{equation*}\]</span>
+where <span class="math inline">\(T_{i}\)</span> is the trophic level of species <span class="math inline">\(i\)</span>,
+<span class="math inline">\(T_{j}\)</span> is the trophic level of prey species <span class="math inline">\(j\)</span>,
+and <span class="math inline">\(p_{ij}\)</span> is the proportion of the diet of predator
+<span class="math inline">\(i\)</span> consisting of prey <span class="math inline">\(j\)</span>.</p></li>
+<li><p><strong>Omnivory</strong> Feeding on more than one <em>trophic</em> level; it is <em>not</em> merely feeding on different species or resources.</p></li>
+<li><p><strong>Intraguild predation</strong> A type of omnivory in which predation occurs between consumers that share a resource; in Fig. <a href="food-webs-and-other-networks.html#fig:web">12.1</a> <span class="math inline">\(F\)</span> and <span class="math inline">\(I\)</span> share prey <span class="math inline">\(A\)</span>. When <span class="math inline">\(F\)</span> gets most of its energy from <span class="math inline">\(I\)</span>, we typically refer to that as omnivory; when <span class="math inline">\(F\)</span> gets most of its energy from <span class="math inline">\(A\)</span>, we typically refer to that as intraguild predation because two species that share a resource occasionally eat each other.</p></li>
+</ul>
+<p>This list of food web descriptors is a fine start but is by no means exhaustive.</p>
+</div>
+<div id="food-chain-length" class="section level2">
+<h2><span class="header-section-number">12.2</span> Food chain length</h2>
+<p>There are many interesting questions about food webs that we could address; let us address one that has a long history, and as yet, no complete answer: What determines the length of a food chain? Some have argued that chance plays a large role <span class="citation">(Cohen, Briand, and Newman <a href="#ref-Cohen1990d" role="doc-biblioref">1990</a>; Hubbell <a href="#ref-Hubbell2001" role="doc-biblioref">2001</a>; Williams and Hurst <a href="#ref-Williams2000a" role="doc-biblioref">2000</a>)</span>, and others have shown that area <span class="citation">(MacArthur and Wilson <a href="#ref-MacArthur1967" role="doc-biblioref">1967</a>; Rosenzweig <a href="#ref-Rosenzweig1995" role="doc-biblioref">1995</a>)</span> or ecosystem size <span class="citation">(Post <a href="#ref-Post:2002bs" role="doc-biblioref">2002</a>)</span> may play roles. The explanation that we will focus on here is <em>dynamical stability</em>. Communities with more species had been hypothesized to be less stable, and therefore less likely to persist and be observed in nature. Stuart Pimm and John Lawton <span class="citation">(Pimm and Lawton <a href="#ref-Pimm1977" role="doc-biblioref">1977</a>)</span> extended this work by testing whether <em>food chain length</em> could be limited by the instability of long food chains.</p>
+<div id="multi-species-lotkavolterra-notation" class="section level3">
+<h3><span class="header-section-number">12.2.1</span> Multi-species Lotka–Volterra notation</h3>
+<p>A many-species Lotka–Volterra model can be represented in a very compact form,
+<span class="math display" id="eq:compact">\[\begin{equation}
+\tag{12.1}
+\frac{d X_{i}}{d t}=X_{i}\left(b_{i}+\sum_{j=1}^{S}a_{ij}X_{j}\right)
+\end{equation}\]</span>
+where <span class="math inline">\(S\)</span> is the number of species in the web, <span class="math inline">\(b_i\)</span> is the intrinsic rate of increase of species <span class="math inline">\(i\)</span> (i.e., <span class="math inline">\(r_i\)</span>), and <span class="math inline">\(a_{ij}\)</span> is a per capita effect of species <span class="math inline">\(j\)</span> on species <span class="math inline">\(i\)</span>.</p>
+<p>When <span class="math inline">\(i=j\)</span>, <span class="math inline">\(a_{ij}\)</span> refers to an <em>intra</em>specific effect, which is typically negative. Recall that in our earlier chapters on competition, we used <span class="math inline">\(\alpha_{ii}\)</span> to represent intraspecific per capita effects. Here for notational convenience, we leave <span class="math inline">\(i\)</span> and <span class="math inline">\(j\)</span> in the equation, realizing that <span class="math inline">\(i=j\)</span> for intraspecific interactions. Further, we let <span class="math inline">\(a_{ij}\)</span> be any sign, either positive or negative, and sum the effects. If we let <span class="math inline">\(X=N\)</span>, <span class="math inline">\(b=r\)</span>, and <span class="math inline">\(a=r \alpha\)</span>, then the following are equivalent:
+<span class="math display">\[\begin{gather*}
+  \dot{N_1} =r_1N_1\left(1-\alpha_{11}N_1 - \alpha_{12}N_2\right)\\
+  \dot{X} =X_1\left(b_1+a_{11}X_1+a_{12}X_2 \right)
+\end{gather*}\]</span>
+The notation in <a href="food-webs-and-other-networks.html#eq:compact">(12.1)</a> is at once both simple and flexible. When <span class="math inline">\(a_{ij}\)</span> is negative, it may represent competition or the effect of a predator, <span class="math inline">\(j\)</span>, on its prey, <span class="math inline">\(i\)</span>. When <span class="math inline">\(a_{ij}\)</span> is positive, it may represent mutualism or the effect of prey~<span class="math inline">\(j\)</span> on a predator~<span class="math inline">\(i\)</span>.</p>
+</div>
+<div id="background" class="section level3">
+<h3><span class="header-section-number">12.2.2</span> Background</h3>
+In the early and mid-1970’s, Robert May and others demonstrated that important predictions could be made with relatively simple Lotka–Volterra models <span class="citation">(May <a href="#ref-May1973ab" role="doc-biblioref">1973</a>)</span>, and this work still comprises an important compendium of lessons for ecologists today <span class="citation">(May <a href="#ref-May:2006lr" role="doc-biblioref">2006</a>)</span>. May used simple Lotka–Volterra models to show that increasing the number of species in a food web tended to make the food web less stable <span class="citation">(May <a href="#ref-May1973ab" role="doc-biblioref">1973</a>, <a href="#ref-May1972" role="doc-biblioref">1972</a>)</span>. In species-rich webs, species were more likely to become extinct. Further, he showed that the more connections there were among species in the web (higher connectance), and the stronger those connections (higher interaction strength), the less stable the web. At the time, this ran counter to a prevailing sentiment that more diverse ecosystems were more stable, and led to heated discussion.
+<div class="figure"><span id="fig:PLABE"></span>
+<img src="figs/PLABE-1.png" alt="Three of the six webs investigated by Pimm and Lawton (1977). Left to right, these correspond to Pimm and Lawton (1977) Figs. 1A, E, and B. All basal species exhibit negative density dependence." width="50%" /><img src="figs/PLABE-2.png" alt="Three of the six webs investigated by Pimm and Lawton (1977). Left to right, these correspond to Pimm and Lawton (1977) Figs. 1A, E, and B. All basal species exhibit negative density dependence." width="50%" /><img src="figs/PLABE-3.png" alt="Three of the six webs investigated by Pimm and Lawton (1977). Left to right, these correspond to Pimm and Lawton (1977) Figs. 1A, E, and B. All basal species exhibit negative density dependence." width="50%" />
+<p class="caption">
+Figure 12.3: Three of the six webs investigated by Pimm and Lawton (1977). Left to right, these correspond to Pimm and Lawton (1977) Figs. 1A, E, and B. All basal species exhibit negative density dependence.
+</p>
+</div>
+<p>May used specific quantitative definitions of all of his ideas. He defined connectance as the proportion of interactions in a web, given the total number of all possible directed interactions (i.e., directed connectance). Thus a linear food chain with four species (Fig. <a href="food-webs-and-other-networks.html#fig:PLABE">12.3</a>, web A), and intraspecific competition in the basal (bottom) species would have a connectance of <span class="math inline">\(4/16=0.25\)</span>. May’s definition of interaction strength was the square root of the average of all <span class="math inline">\(a_{ij}^2\)</span> (<span class="math inline">\(i \neq j\)</span>),
+<span class="math display" id="eq:IS">\[\begin{equation}
+  \tag{12.2}
+  I =\sqrt{ \frac{\sum_{i=1}^S\sum_{j=1, i \neq j}^S a_{ij}}{S^2-S}}.
+\end{equation}\]</span>
+Squaring the <span class="math inline">\(a_{ij}\)</span> focuses on magnitudes, putting negative and positive values on equal footing.</p>
+<p>An important component of May’s work explored the properties of <em>randomly</em> connected food webs. At first glance this might seem ludicrous, but upon consideration, we might wonder where else one could start. Often, simpler (in this case, random) might be better. The conclusions from the random connection models act as null hypotheses for how food webs might be structured; deviations from May’s conclusions might be explained by deviations from his assumptions. Since this work, many ecologists have studied the particular ways in which webs in nature appear non-random.</p>
+One conclusion May derived was a threshold between stability and instability for random webs, defined by the relation
+<span class="math display" id="eq:1">\[\begin{equation}
+  \tag{12.3}
+  I\left( S C_D \right)^{1/2} = 1
+\end{equation}\]</span>
+where <span class="math inline">\(I\)</span> is the average interaction strength, <span class="math inline">\(S\)</span> is the number of species, and <span class="math inline">\(C_D\)</span> is directed connectance. If <span class="math inline">\(I\left( S C \right)^{1/2} &gt; 1\)</span>, the system tended to be unstable (Fig. <a href="food-webs-and-other-networks.html#fig:may1">12.4</a>). Thus, if we
+increase the number of species, we need to decrease the average interaction
+strength if we want them to persist. The larger and more tightly connected (larger <span class="math inline">\(I\)</span>, <span class="math inline">\(S\)</span>, and <span class="math inline">\(C_D\)</span>) the
+web, the more likely it was to come crashing down. Therefore, if longer food
+chains were longer by virtue of having more species, they would be less stable
+because of the extra species, if for no other reason.
+<div class="figure"><span id="fig:may1"></span>
+<img src="figs/may1-1.png" alt="Relation between the average interaction strength and the number of species able to coexist (here directed connectance is $C_D = 0.3$). The line represents the maximum number of species that are predicted to be able to coexist at equilibrium. Fewer species could coexist, but, on average, more species cannot coexist at equilibrium." width="60%" />
+<p class="caption">
+Figure 12.4: Relation between the average interaction strength and the number of species able to coexist (here directed connectance is <span class="math inline">\(C_D = 0.3\)</span>). The line represents the maximum number of species that are predicted to be able to coexist at equilibrium. Fewer species could coexist, but, on average, more species cannot coexist at equilibrium.
+</p>
+</div>
+<p>Pimm and Lawton felt that it seemed reasonable that long chains might be less
+stable also because predator-prey dynamics appear inherently unstable, and a
+connected series of unstable relations seemed less likely to persist than
+shorter chains. They tested whether food chain length
+<em>per se</em>, and not the number of species, influenced the stability of food
+chains. Another question they addressed concerned omnivory. At the time, surveys of naturally occurring
+food webs had indicated that omnivory was rare <span class="citation">(Pimm and Lawton <a href="#ref-Pimm1978" role="doc-biblioref">1978</a>)</span>. Pimm and Lawton tested whether omnivory stabilized or destabilized food webs <span class="citation">(Pimm and Lawton <a href="#ref-Pimm1977" role="doc-biblioref">1977</a>, <a href="#ref-Pimm1978" role="doc-biblioref">1978</a>)</span>.</p>
+<p>Like May, Pimm and Lawton <span class="citation">(Pimm and Lawton <a href="#ref-Pimm1977" role="doc-biblioref">1977</a>)</span> used Lotka–Volterra models to
+investigate their ideas. They designed six different food web configurations
+that varied food chain length, but held the number of species constant (Fig.
+<a href="food-webs-and-other-networks.html#fig:PLABE">12.3</a>). For each food web configuration, they varied randomly interaction strength and tested whether an
+otherwise randomly structured food web was stable. Their food webs included
+negative density dependence only in the basal species.</p>
+<p>Pimm and Lawton concluded that (i) shorter chains were more stable than longer chains, and (ii) omnivory destabilized food webs. While these conclusions have stood the test of time, Pimm and Lawton failed to highlight another aspect of their data — that omnivory shortened return times for those webs that were qualitatively stable (Fig. <a href="food-webs-and-other-networks.html#fig:histsAB">12.10</a>). Thus, omnivory could make more stable those webs that it didn’t destroy. Subsequent work has elaborated on this, showing that weak omnivory is very likely to stabilize food webs <span class="citation">(McCann, Hastings, and Huxel <a href="#ref-McCann1998a" role="doc-biblioref">1998</a>)</span>.</p>
+</div>
+</div>
+<div id="implementing-pimm-and-lawtons-methods" class="section level2">
+<h2><span class="header-section-number">12.3</span> Implementing Pimm and Lawton’s Methods</h2>
+<p>Here we use R code to illustrate how one might replicate, and begin to extend, the work of Pimm and Lawton <span class="citation">(Pimm and Lawton <a href="#ref-Pimm1977" role="doc-biblioref">1977</a>)</span>.</p>
+<p>In previous chapters, we began with explicit time derivatives, found partial derivatives and solved them at their equilibria. Rather than do all this, Pimm and Lawton bypassed these steps and went straight to the evaluated Jacobian matrix. They inserted random estimates for the elements of the Jacobian into each non-zero element in the food web matrix. These estimates were constrained within (presumably) reasonable limits, given large less abundant predators and small more abundant prey.</p>
+<p>Their methods followed this approach.</p>
+<ol style="list-style-type: decimal">
+<li>Specify a food web interaction matrix.<a href="#fn65" class="footnote-ref" id="fnref65"><sup>65</sup></a></li>
+<li>Include negative density dependence for basal species only.</li>
+<li>Set upper and lower bounds for the effects of predators on prey (<span class="math inline">\(0\)</span> to
+<span class="math inline">\(-10\)</span>) and prey on predators(<span class="math inline">\(0\)</span> to <span class="math inline">\(+0.1\)</span>); these are the Jacobian elements.</li>
+<li>Generate a large number of random Jacobian matrices and perform linear
+stability analysis.</li>
+<li>Determine qualitative stability (test <span class="math inline">\(\lambda_1&lt;0\)</span>), and return time for each random matrix. Use these to examine key features of the distributions of return times (e.g., average return time).</li>
+<li>Compare the stability and return times among different food web configurations that varied systematically in food chain length and the presence
+of omnivory, but hold the number of species constant.</li>
+</ol>
+<p>It is worth discussing briefly the Jacobian elements. <span class="citation">May (<a href="#ref-May1973ab" role="doc-biblioref">1973</a>)</span> defined interaction strength as the Jacobian element of a matrix, which represents the <em>total effect of one individual on the population growth rate of another species</em>. Think about how you calculate the Jacobian — as the partial derivative of one species’ growth rate with respect to the size of the other population. It is the instantaneous change in the population growth rate per unit change in the population of another, at the equilibrium. The units chosen for the Jacobian elements thus mean that individual predators have relatively much larger effects on the population growth rates of prey than <em>vice versa</em>.</p>
+<p>Let’s build a function that does what Pimm and Lawton did. There are an infinite number of ways to do this, but this will suffice. First, we’ll create a matrix that represents qualitatively the simplest longest food chain where each species feeds only on one other species and where no prey are fed upon by more than one consumer. Initially, we will use the values of greatest magnitude used by Pimm and Lawton.</p>
+<div class="sourceCode" id="cb356"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb356-1"><a href="food-webs-and-other-networks.html#cb356-1"></a>Aq =<span class="st"> </span><span class="kw">matrix</span>(<span class="kw">c</span>(</span>
+<span id="cb356-2"><a href="food-webs-and-other-networks.html#cb356-2"></a>  <span class="dv">-1</span>,   <span class="dv">-10</span>,   <span class="dv">0</span>,     <span class="dv">0</span>,</span>
+<span id="cb356-3"><a href="food-webs-and-other-networks.html#cb356-3"></a>  <span class="fl">0.1</span>, <span class="dv">0</span>,   <span class="dv">-10</span>,  <span class="dv">0</span>,</span>
+<span id="cb356-4"><a href="food-webs-and-other-networks.html#cb356-4"></a>  <span class="dv">0</span>,    <span class="fl">0.1</span>,   <span class="dv">0</span>,    <span class="dv">-10</span>,</span>
+<span id="cb356-5"><a href="food-webs-and-other-networks.html#cb356-5"></a>  <span class="dv">0</span>,      <span class="dv">0</span>,    <span class="fl">0.1</span>,   <span class="dv">0</span>),</span>
+<span id="cb356-6"><a href="food-webs-and-other-networks.html#cb356-6"></a>  <span class="dt">nrow=</span><span class="dv">4</span>, <span class="dt">byrow=</span><span class="ot">TRUE</span>)</span></code></pre></div>
+<p>Note that this matrix indicates a negative effect of the basal species on itself, large negative effects (<span class="math inline">\(-10\)</span>) of each consumer on its prey, and small positive effects of each prey on its consumer.</p>
+<p>We can do a quick check of this web using the <code>diagram</code> package.</p>
+<div class="sourceCode" id="cb357"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb357-1"><a href="food-webs-and-other-networks.html#cb357-1"></a><span class="kw">library</span>(diagram)</span>
+<span id="cb357-2"><a href="food-webs-and-other-networks.html#cb357-2"></a><span class="kw">plotmat</span>(Aq,<span class="dt">relsize=</span>.<span class="dv">8</span>)</span></code></pre></div>
+<p><img src="figs/unnamed-chunk-166-1.png" width="90%" /></p>
+<p>Without any additional arguments, it shows us pretty much all we need to see.</p>
+<p>For subsequent calculations, it is convenient to to find out from the matrix itself how big the matrix is, that is, how many species, <span class="math inline">\(S\)</span>, are in the web.</p>
+<div class="sourceCode" id="cb358"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb358-1"><a href="food-webs-and-other-networks.html#cb358-1"></a>S &lt;-<span class="st"> </span><span class="kw">nrow</span>(Aq)</span></code></pre></div>
+<p>Next, we create a random realization of this matrix by multiplying each element times a unique random number between zero and 1. For this matrix, that requires <span class="math inline">\(4^2\)</span> unique numbers.</p>
+<div class="sourceCode" id="cb359"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb359-1"><a href="food-webs-and-other-networks.html#cb359-1"></a>M &lt;-<span class="st"> </span>Aq <span class="op">*</span><span class="st"> </span><span class="kw">runif</span>(S<span class="op">^</span><span class="dv">2</span>)</span></code></pre></div>
+<p>Next we perform eigenanalysis on it, retaining the eigenvalues.</p>
+<div class="sourceCode" id="cb360"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb360-1"><a href="food-webs-and-other-networks.html#cb360-1"></a>eM &lt;-<span class="st"> </span><span class="kw">eigen</span>(M)[[<span class="st">&quot;values&quot;</span>]]</span></code></pre></div>
+<p>Pimm and Lawton tested whether the dominant eigenvalue was greater than 0 (unstable) and if less than zero, they calculated return time. We will simply record the dominant eigenvalue (the maximum of the real parts of the eigenvalues).</p>
+<div class="sourceCode" id="cb361"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb361-1"><a href="food-webs-and-other-networks.html#cb361-1"></a>deM &lt;-<span class="st"> </span><span class="kw">max</span>( <span class="kw">Re</span>(eM) )</span></code></pre></div>
+<p>Given the stabilizing effect of the intraspecific negative density dependence, we will hang on to that as well.</p>
+<div class="sourceCode" id="cb362"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb362-1"><a href="food-webs-and-other-networks.html#cb362-1"></a>intraNDD &lt;-<span class="st"> </span><span class="kw">sqrt</span>(<span class="kw">sum</span>(<span class="kw">diag</span>(M)<span class="op">^</span><span class="dv">2</span>)<span class="op">/</span>S)</span></code></pre></div>
+<p>Given lessons from May’s work, we might also want to calculate the average interaction strength, not including the intraspecific interactions. Here we set the diagonal interactions equal to zero, square the remaining elements, find their average, and take the square root.</p>
+<div class="sourceCode" id="cb363"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb363-1"><a href="food-webs-and-other-networks.html#cb363-1"></a><span class="kw">diag</span>(M) &lt;-<span class="st"> </span><span class="dv">0</span></span>
+<span id="cb363-2"><a href="food-webs-and-other-networks.html#cb363-2"></a>IS &lt;-<span class="st"> </span><span class="kw">sqrt</span>( <span class="kw">sum</span>(M<span class="op">^</span><span class="dv">2</span>)<span class="op">/</span>(S<span class="op">*</span>(S<span class="dv">-1</span>)) )</span></code></pre></div>
+<p>Recall that weak omnivory is supposed to stabilize food webs <span class="citation">(McCann and Hastings <a href="#ref-McCann1997" role="doc-biblioref">1997</a>)</span>. For webs that include omnivory, we will calculate the interaction strength of omnivory in the same way we do for other interactions, as the square root of the average of the squared <span class="math inline">\(a_{ij}\)</span> <a href="food-webs-and-other-networks.html#eq:IS">(12.2)</a>.</p>
+<p>We can wrap all this up in a function where we specify the <span class="math inline">\(i,\,j\)</span> of one of the directed omnivorous links. It does not matter which we specify, either the <span class="math inline">\(ij\)</span> or the <span class="math inline">\(ji\)</span>.</p>
+<p>See the arguments in the function.</p>
+<div class="sourceCode" id="cb364"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb364-1"><a href="food-webs-and-other-networks.html#cb364-1"></a><span class="kw">args</span>(pimmlawton)</span></code></pre></div>
+<pre><code>## function (mat, N = 1, omni.i = NA, omni.j = NA, omega = NULL) 
+## NULL</code></pre>
+<p>Now we can check this function for a single simulation for our first web,</p>
+<div class="sourceCode" id="cb366"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb366-1"><a href="food-webs-and-other-networks.html#cb366-1"></a><span class="kw">set.seed</span>(<span class="dv">1</span>)</span>
+<span id="cb366-2"><a href="food-webs-and-other-networks.html#cb366-2"></a><span class="kw">pimmlawton</span>(Aq)</span></code></pre></div>
+<pre><code>##        DomEig        Im   IntraDD        I
+## 1 -0.01593096 0.4626425 0.1327543 2.304443</code></pre>
+<p>Now let’s do it 2000 times, as Pimm and Lawton did. Each row will be an independent randomization, and the columns will be the dominant eigenvalue, the intraspecific density dependence, and the average interaction strength.</p>
+<div class="sourceCode" id="cb368"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb368-1"><a href="food-webs-and-other-networks.html#cb368-1"></a>out.A &lt;-<span class="st"> </span><span class="kw">pimmlawton</span>(Aq, <span class="dt">N=</span><span class="dv">2000</span>) </span></code></pre></div>
+<p>We might like to look at basic summary statistics of the information we collected — what are their minima and maxima and mean?</p>
+<div class="sourceCode" id="cb369"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb369-1"><a href="food-webs-and-other-networks.html#cb369-1"></a><span class="kw">summary</span>(out.A)</span></code></pre></div>
+<pre><code>##      DomEig                 Im            IntraDD                I         
+##  Min.   :-2.281e-01   Min.   :0.0000   Min.   :0.0001776   Min.   :0.2652  
+##  1st Qu.:-4.303e-02   1st Qu.:0.3009   1st Qu.:0.1178734   1st Qu.:2.2405  
+##  Median :-1.498e-02   Median :0.6342   Median :0.2456105   Median :2.8509  
+##  Mean   :-2.916e-02   Mean   :0.5916   Mean   :0.2464662   Mean   :2.7665  
+##  3rd Qu.:-3.534e-03   3rd Qu.:0.8813   3rd Qu.:0.3761273   3rd Qu.:3.3695  
+##  Max.   :-7.000e-08   Max.   :1.3732   Max.   :0.4997094   Max.   :4.7617</code></pre>
+<p>We see that out of 2000 random food chains, the largest dominant eigenvalue is still less than zero (<span class="math inline">\(\lambda_1&lt;0\)</span>). What does that mean? It means that all of the chains are qualitatively stable, and that the return times are greater than zero (<span class="math inline">\(-1/\lambda_1&gt;0\)</span>).<a href="#fn66" class="footnote-ref" id="fnref66"><sup>66</sup></a></p>
+<p>May’s work showed that stability is related to interaction strength. Let’s examine how the dominant eigenvalue is related to interaction strength.<a href="#fn67" class="footnote-ref" id="fnref67"><sup>67</sup></a></p>
+<p>May’s work showed that stability is related to interaction strength. Let’s examine how the dominant eigenvalue is related to interaction strength.<a href="#fn68" class="footnote-ref" id="fnref68"><sup>68</sup></a></p>
+<div class="sourceCode" id="cb371"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb371-1"><a href="food-webs-and-other-networks.html#cb371-1"></a>out.A<span class="op">$</span>I.rel &lt;-<span class="st"> </span><span class="kw">with</span>(out.A, <span class="kw">log</span>(I<span class="op">/</span>IntraDD) )</span>
+<span id="cb371-2"><a href="food-webs-and-other-networks.html#cb371-2"></a><span class="kw">pairs</span>(out.A)</span></code></pre></div>
+<div class="figure"><span id="fig:pairsA"></span>
+<img src="figs/pairsA-1.png" alt="Perturbations at the equilibrium tend to dissipate more rapidly (more negative dominant eigenvalues) with greater intraspecific negative density dependence (IntraDD) and greater interspecific interaction strength (I). This graph also demonstrates the independence of IntraDD and I in these simulations." width="90%" />
+<p class="caption">
+Figure 12.5: Perturbations at the equilibrium tend to dissipate more rapidly (more negative dominant eigenvalues) with greater intraspecific negative density dependence (IntraDD) and greater interspecific interaction strength (I). This graph also demonstrates the independence of IntraDD and I in these simulations.
+</p>
+</div>
+<div class="sourceCode" id="cb372"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb372-1"><a href="food-webs-and-other-networks.html#cb372-1"></a><span class="co"># out.A$Idd &lt;-  cut(out.A$IntraDD, </span></span>
+<span id="cb372-2"><a href="food-webs-and-other-networks.html#cb372-2"></a><span class="co">#          quantile(out.A$IntraDD), include.lowest=TRUE )</span></span>
+<span id="cb372-3"><a href="food-webs-and-other-networks.html#cb372-3"></a><span class="co"># ggplot(data=out.A, aes(I, DomEig)) + geom_point() +</span></span>
+<span id="cb372-4"><a href="food-webs-and-other-networks.html#cb372-4"></a><span class="co">#   geom_smooth() + facet_wrap(~ Idd)</span></span></code></pre></div>
+<p>The results of our simulation (Fig. <a href="food-webs-and-other-networks.html#fig:pairsA">12.5</a>) show that the dominant eigenvalue can become more negative with greater intraspecific negative density dependence (<code>IntraDD</code>) and greater intersepcifiic interaction strength (<code>I</code>). Recall what this means — the dominant eigenvalue is akin to a perturbation growth rate at the equilibrium and is the negative inverse of return time. Therefore, stability can increase and return time decrease with increasing interaction strengths.</p>
+<p>Note also (Fig. <a href="food-webs-and-other-networks.html#fig:pairsA">12.5</a>) that many eigenvalues seem very close to zero — what does this mean for return times? The inverse of a very small number is a very big number, so it appears that many return times will be very, very large, and rendering the webs effectively unstable. Let’s calculate return times and examine a summary.</p>
+<div class="sourceCode" id="cb373"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb373-1"><a href="food-webs-and-other-networks.html#cb373-1"></a>  RT.A &lt;-<span class="st"> </span><span class="dv">-1</span><span class="op">/</span>out.A[[<span class="st">&quot;DomEig&quot;</span>]]</span>
+<span id="cb373-2"><a href="food-webs-and-other-networks.html#cb373-2"></a>  <span class="kw">summary</span>(RT.A)</span></code></pre></div>
+<pre><code>##     Min.  1st Qu.   Median     Mean  3rd Qu.     Max. 
+##        4       23       67    11698      283 13909682</code></pre>
+<p>We find that the maximum return time is a very large number, and even the median is fairly large (<code>67</code>). In an ever-changing world, is there any meaningful difference between a return time of 1000 generations <em>vs.</em> being unstable or neutrally stable?</p>
+<p>Pimm and Lawton addressed this by picking an arbitrarily large number (150) and recording the percentage of return times greater than that. This percentage will tell us the percentage of webs that are not effectively stable.</p>
+<div class="sourceCode" id="cb375"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb375-1"><a href="food-webs-and-other-networks.html#cb375-1"></a>  <span class="kw">sum</span>( RT.A <span class="op">&gt;</span><span class="st"> </span><span class="dv">150</span> ) <span class="op">/</span><span class="st"> </span><span class="dv">2000</span></span></code></pre></div>
+<pre><code>## [1] 0.348</code></pre>
+<p>Now let’s extract the return times that are less than or equal to 150 and make a histogram with the right number of divisions or bins to allow it to look like the one in the original <span class="citation">(Pimm and Lawton <a href="#ref-Pimm1977" role="doc-biblioref">1977</a>)</span>.</p>
+<div class="sourceCode" id="cb377"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb377-1"><a href="food-webs-and-other-networks.html#cb377-1"></a>A.fast &lt;-RT.A[RT.A <span class="op">&lt;</span><span class="st"> </span><span class="dv">150</span>]</span>
+<span id="cb377-2"><a href="food-webs-and-other-networks.html#cb377-2"></a>histA &lt;-<span class="st"> </span><span class="kw">hist</span>(A.fast, <span class="dt">breaks=</span><span class="kw">seq</span>(<span class="dv">0</span>,<span class="dv">150</span>, <span class="dt">by=</span><span class="dv">5</span>), <span class="dt">main=</span><span class="ot">NULL</span>)</span></code></pre></div>
+<div class="figure"><span id="fig:histA"></span>
+<img src="figs/histA-1.png" alt="*A linear four-species food chain has is only somewhat likely to have reasonble return times.*" width="90%" />
+<p class="caption">
+Figure 12.6: <em>A linear four-species food chain has is only somewhat likely to have reasonble return times.</em>
+</p>
+</div>
+<p>This histogram (Fig. <a href="food-webs-and-other-networks.html#fig:histA">12.6</a>) provides us with a picture of the stability for a linear Lotka-Volterra food chain. Next, we will compare this to other webs.</p>
+<div id="shortening-the-chain" class="section level3">
+<h3><span class="header-section-number">12.3.1</span> Shortening the Chain</h3>
+<p>Now let’s repeat all this (more quickly) for a shorter chain, but with the same number of species (Fig. <a href="food-webs-and-other-networks.html#fig:PLABE">12.3</a>, web E). So, we first make the web function. Next we run the 2000 simulations, and check a quick summary.</p>
+<div class="sourceCode" id="cb378"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb378-1"><a href="food-webs-and-other-networks.html#cb378-1"></a>Eq =<span class="st"> </span><span class="kw">matrix</span>(<span class="kw">c</span>(</span>
+<span id="cb378-2"><a href="food-webs-and-other-networks.html#cb378-2"></a>  <span class="dv">-1</span>,   <span class="dv">0</span>,   <span class="dv">0</span>, <span class="dv">-10</span>,</span>
+<span id="cb378-3"><a href="food-webs-and-other-networks.html#cb378-3"></a>  <span class="dv">0</span>,   <span class="dv">-1</span>,   <span class="dv">0</span>, <span class="dv">-10</span>,</span>
+<span id="cb378-4"><a href="food-webs-and-other-networks.html#cb378-4"></a>  <span class="dv">0</span>,    <span class="dv">0</span>,   <span class="dv">-1</span>, <span class="dv">-10</span>,</span>
+<span id="cb378-5"><a href="food-webs-and-other-networks.html#cb378-5"></a>  <span class="fl">0.1</span>, <span class="fl">0.1</span>, <span class="fl">0.1</span>,  <span class="dv">0</span>),</span>
+<span id="cb378-6"><a href="food-webs-and-other-networks.html#cb378-6"></a>  <span class="dt">nrow=</span><span class="dv">4</span>, <span class="dt">byrow=</span><span class="ot">TRUE</span>)</span>
+<span id="cb378-7"><a href="food-webs-and-other-networks.html#cb378-7"></a><span class="co"># to confirm we got it right:</span></span>
+<span id="cb378-8"><a href="food-webs-and-other-networks.html#cb378-8"></a><span class="co"># plotmat(Eq, relsize=.8)</span></span></code></pre></div>
+<p>Now we can run the simulation.</p>
+<div class="sourceCode" id="cb379"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb379-1"><a href="food-webs-and-other-networks.html#cb379-1"></a>out.E &lt;-<span class="st"> </span><span class="kw">pimmlawton</span>(Eq, <span class="dt">N=</span><span class="dv">2000</span>)</span>
+<span id="cb379-2"><a href="food-webs-and-other-networks.html#cb379-2"></a><span class="kw">summary</span>(out.E)</span></code></pre></div>
+<pre><code>##      DomEig                Im            IntraDD              I        
+##  Min.   :-0.486312   Min.   :0.0000   Min.   :0.04714   Min.   :0.206  
+##  1st Qu.:-0.284289   1st Qu.:0.1425   1st Qu.:0.38941   1st Qu.:2.301  
+##  Median :-0.201512   Median :0.6742   Median :0.49014   Median :2.861  
+##  Mean   :-0.208653   Mean   :0.5832   Mean   :0.48049   Mean   :2.799  
+##  3rd Qu.:-0.124729   3rd Qu.:0.8967   3rd Qu.:0.58144   3rd Qu.:3.372  
+##  Max.   :-0.002686   Max.   :1.4232   Max.   :0.83458   Max.   :4.772</code></pre>
+<p>The summary shows that, again, that all webs are stable (<span class="math inline">\(\lambda_1&lt;0\)</span>). A histogram of return times also shows very short return times (Fig. <a href="food-webs-and-other-networks.html#fig:histE">12.8</a>). Plots of <span class="math inline">\(\lambda_1\)</span> <em>vs.</em> interaction strengths show that with this short chain, and three basal species that the role of intraspecfic density dependence becomes even more important, and the predator-prey interactions less important in governing <span class="math inline">\(\lambda_1\)</span>.</p>
+<div class="sourceCode" id="cb381"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb381-1"><a href="food-webs-and-other-networks.html#cb381-1"></a><span class="kw">layout</span>(<span class="kw">matrix</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">2</span>,<span class="dt">nr=</span><span class="dv">1</span>))</span>
+<span id="cb381-2"><a href="food-webs-and-other-networks.html#cb381-2"></a><span class="kw">plot</span>(DomEig <span class="op">~</span><span class="st"> </span>IntraDD, <span class="dt">data=</span>out.E)</span>
+<span id="cb381-3"><a href="food-webs-and-other-networks.html#cb381-3"></a><span class="kw">plot</span>(DomEig <span class="op">~</span><span class="st"> </span>I, <span class="dt">data=</span>out.E)</span></code></pre></div>
+<div class="figure"><span id="fig:E1"></span>
+<img src="figs/E1-1.png" alt="For a food chain with two levels, and three basal species, perturbation growth rate (lambda_1) declines with increasing intraspecific negative density dependence (IntraDD) and is unrelated to predator-prey interaction strengths." width="9" />
+<p class="caption">
+Figure 12.7: For a food chain with two levels, and three basal species, perturbation growth rate (lambda_1) declines with increasing intraspecific negative density dependence (IntraDD) and is unrelated to predator-prey interaction strengths.
+</p>
+</div>
+<p>Note that with the shorter food chain, a greater proportion of the <span class="math inline">\(\lambda_1\)</span> are more negative (farther away from zero) than in the four level food chain. Clearly then, shortening the web and increasing the amount of negative density dependence stabilizes it, in spite of still having the same number of species.</p>
+<p>Let us again categorize these as having long and short return times, and graph the distribution of the short ones.</p>
+<div class="sourceCode" id="cb382"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb382-1"><a href="food-webs-and-other-networks.html#cb382-1"></a>RT.E &lt;-<span class="st"> </span><span class="dv">-1</span><span class="op">/</span>out.E[[<span class="st">&quot;DomEig&quot;</span>]]</span>
+<span id="cb382-2"><a href="food-webs-and-other-networks.html#cb382-2"></a>E.fast &lt;-RT.E[RT.E <span class="op">&lt;</span><span class="st"> </span><span class="dv">150</span>]</span>
+<span id="cb382-3"><a href="food-webs-and-other-networks.html#cb382-3"></a>histE &lt;-<span class="st"> </span><span class="kw">hist</span>(E.fast, <span class="dt">breaks=</span><span class="kw">seq</span>(<span class="dv">0</span>,<span class="dv">150</span>, <span class="dt">by=</span><span class="dv">5</span>), <span class="dt">main=</span><span class="ot">NULL</span>)</span></code></pre></div>
+<div class="figure"><span id="fig:histE"></span>
+<img src="figs/histE-1.png" alt="*One predator and three prey, each with negative density dependence results in very stable webs.*" width="90%" />
+<p class="caption">
+Figure 12.8: <em>One predator and three prey, each with negative density dependence results in very stable webs.</em>
+</p>
+</div>
+</div>
+<div id="adding-omnivory" class="section level3">
+<h3><span class="header-section-number">12.3.2</span> Adding Omnivory</h3>
+<p>Real webs also have omnivory — feeding on more than one trophic level. A nagging question, then and now, concerns the effect of omnivory on food web dynamics. Pimm and Lawton compared food web dynamics with and without omnivory. Let’s now create the omnivorous web they used to compare directly with their linear food chain (Fig. <a href="food-webs-and-other-networks.html#fig:PLABE">12.3</a>, B vs. A). Next we run the 2000 simulations, and check a quick summary.</p>
+<div class="sourceCode" id="cb383"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb383-1"><a href="food-webs-and-other-networks.html#cb383-1"></a>Bq &lt;-<span class="st"> </span><span class="kw">matrix</span>(<span class="kw">c</span>(</span>
+<span id="cb383-2"><a href="food-webs-and-other-networks.html#cb383-2"></a>  <span class="dv">-1</span>, <span class="dv">-10</span>,   <span class="dv">0</span>,     <span class="dv">0</span>,</span>
+<span id="cb383-3"><a href="food-webs-and-other-networks.html#cb383-3"></a>  <span class="fl">0.1</span>,  <span class="dv">0</span>,   <span class="dv">-10</span>,   <span class="dv">-2</span>,</span>
+<span id="cb383-4"><a href="food-webs-and-other-networks.html#cb383-4"></a>  <span class="dv">0</span>,    <span class="fl">0.02</span>,   <span class="dv">0</span>,    <span class="dv">-10</span>,</span>
+<span id="cb383-5"><a href="food-webs-and-other-networks.html#cb383-5"></a>  <span class="dv">0</span>,    <span class="fl">0.1</span>,    <span class="fl">0.1</span>,   <span class="dv">0</span>),</span>
+<span id="cb383-6"><a href="food-webs-and-other-networks.html#cb383-6"></a>  <span class="dt">nrow=</span><span class="dv">4</span>, <span class="dt">byrow=</span><span class="ot">TRUE</span>)</span>
+<span id="cb383-7"><a href="food-webs-and-other-networks.html#cb383-7"></a><span class="co">#plotmat(Bq, relsize=.8)</span></span>
+<span id="cb383-8"><a href="food-webs-and-other-networks.html#cb383-8"></a><span class="co"># recall we have to tell the function which links are omnivorous</span></span>
+<span id="cb383-9"><a href="food-webs-and-other-networks.html#cb383-9"></a>out.B &lt;-<span class="st">  </span><span class="kw">pimmlawton</span>(Bq, <span class="dt">N=</span><span class="dv">2000</span>, <span class="dt">omni.i=</span><span class="dv">2</span>, <span class="dt">omni.j=</span><span class="dv">4</span>)</span>
+<span id="cb383-10"><a href="food-webs-and-other-networks.html#cb383-10"></a><span class="kw">summary</span>(out.B)</span></code></pre></div>
+<pre><code>##      DomEig              Im             IntraDD               I        
+##  Min.   :-0.1879   Min.   :0.00000   Min.   :0.000291   Min.   :0.174  
+##  1st Qu.: 0.3012   1st Qu.:0.00000   1st Qu.:0.125840   1st Qu.:2.266  
+##  Median : 0.6625   Median :0.00000   Median :0.245659   Median :2.849  
+##  Mean   : 0.6889   Mean   :0.03929   Mean   :0.248152   Mean   :2.781  
+##  3rd Qu.: 1.0336   3rd Qu.:0.00000   3rd Qu.:0.371943   3rd Qu.:3.336  
+##  Max.   : 1.9895   Max.   :0.99803   Max.   :0.499965   Max.   :4.887  
+##      I.omni        
+##  Min.   :0.001468  
+##  1st Qu.:0.343668  
+##  Median :0.691801  
+##  Mean   :0.700981  
+##  3rd Qu.:1.048982  
+##  Max.   :1.412821</code></pre>
+<p>With omnivory, we now see that most webs have <span class="math inline">\(\lambda_1&gt;0\)</span>, and thus are <em>unstable</em>. This was one of the main points made by Pimm and Lawton. Let’s look at the data for just the stable webs.</p>
+<div class="sourceCode" id="cb385"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb385-1"><a href="food-webs-and-other-networks.html#cb385-1"></a>out.B.stable &lt;-<span class="st"> </span>out.B[out.B[,<span class="st">&quot;DomEig&quot;</span>]<span class="op">&lt;</span><span class="dv">0</span>,]</span>
+<span id="cb385-2"><a href="food-webs-and-other-networks.html#cb385-2"></a><span class="kw">pairs</span>(out.B.stable)</span></code></pre></div>
+<p><img src="figs/unnamed-chunk-182-1.png" width="90%" /></p>
+<p>It means that most of the randomly constructed webs were not stable point equilibria. To be complete, let’s graph what Pimm and Lawton did. They graphed the return times that were positive, and ignored those that were negative.</p>
+<div class="sourceCode" id="cb386"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb386-1"><a href="food-webs-and-other-networks.html#cb386-1"></a>RT.B &lt;-<span class="st"> </span><span class="dv">-1</span><span class="op">/</span>out.B[[<span class="st">&quot;DomEig&quot;</span>]]</span>
+<span id="cb386-2"><a href="food-webs-and-other-networks.html#cb386-2"></a>B.fast &lt;-<span class="st"> </span>RT.B[RT.B <span class="op">&lt;</span><span class="st"> </span><span class="dv">150</span> <span class="op">&amp;</span><span class="st"> </span>RT.B <span class="op">&gt;</span><span class="st"> </span><span class="dv">0</span> ]</span>
+<span id="cb386-3"><a href="food-webs-and-other-networks.html#cb386-3"></a>out.B.fast &lt;-<span class="st"> </span>out.B[RT.B <span class="op">&lt;</span><span class="st"> </span><span class="dv">150</span> <span class="op">&amp;</span><span class="st"> </span>RT.B <span class="op">&gt;</span><span class="st"> </span><span class="dv">0</span>,]</span>
+<span id="cb386-4"><a href="food-webs-and-other-networks.html#cb386-4"></a>histB &lt;-<span class="st"> </span><span class="kw">hist</span>(B.fast, <span class="dt">breaks=</span><span class="kw">seq</span>(<span class="dv">0</span>,<span class="dv">150</span>, <span class="dt">by=</span><span class="dv">5</span>),</span>
+<span id="cb386-5"><a href="food-webs-and-other-networks.html#cb386-5"></a>              <span class="dt">main=</span><span class="ot">NULL</span>)</span></code></pre></div>
+<div class="figure"><span id="fig:histB"></span>
+<img src="figs/histB-1.png" alt="*Of the relatively few omnivorous webs that were qualitatively stable, a moderate fraction had low return times.*" width="90%" />
+<p class="caption">
+Figure 12.9: <em>Of the relatively few omnivorous webs that were qualitatively stable, a moderate fraction had low return times.</em>
+</p>
+</div>
+</div>
+<div id="comparing-chain-a-versus-b" class="section level3">
+<h3><span class="header-section-number">12.3.3</span> Comparing Chain A versus B</h3>
+<p>Now let’s compare the properties of the two chains, without, and with, omnivory, chains <strong>A</strong> and <strong>B</strong> (Fig. <a href="food-webs-and-other-networks.html#fig:PLABE">12.3</a>, webs A and B). Because these are stochastic simulations, it means we have <em>distributions</em> of results. For instance, we have a distribution of return times for chain <strong>A</strong> and a distribution for return times for chain <strong>B</strong>. That is,
+we can plot histograms for each of them. Pimm and Lawton compared their webs in common sense ways. They compared simple summaries, including</p>
+<ul>
+<li>the proportion of random webs that were qualitatively stable (positive return times),</li>
+<li>the proportion of stable random webs with return times greater than 150.</li>
+</ul>
+<p>Now let’s try graphical displays. Rather than simply chopping off the long return times, we use base 10 logarithms of return times because the
+distributions are so right-skewed. First, we make a data frame with a column for web ID (A or B) and a column for all the return times. We then filter for just positive return times</p>
+<div class="sourceCode" id="cb387"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb387-1"><a href="food-webs-and-other-networks.html#cb387-1"></a>ret.time &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">web=</span><span class="kw">rep</span>(LETTERS[<span class="dv">1</span><span class="op">:</span><span class="dv">2</span>], <span class="dt">each=</span><span class="dv">2000</span>),</span>
+<span id="cb387-2"><a href="food-webs-and-other-networks.html#cb387-2"></a>                       <span class="dt">return.time =</span> <span class="kw">c</span>(RT.A, RT.B)) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb387-3"><a href="food-webs-and-other-networks.html#cb387-3"></a><span class="st">  </span><span class="kw">filter</span>(return.time<span class="op">&gt;</span><span class="dv">0</span>)</span></code></pre></div>
+<p>Next we create a histogram of return times using probability density instead of counts.<a href="#fn69" class="footnote-ref" id="fnref69"><sup>69</sup></a> We also add a nonparametric density estimator.</p>
+<div class="sourceCode" id="cb388"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb388-1"><a href="food-webs-and-other-networks.html#cb388-1"></a><span class="kw">ggplot</span>(ret.time, <span class="kw">aes</span>(return.time, <span class="dt">fill=</span>web)) <span class="op">+</span><span class="st"> </span></span>
+<span id="cb388-2"><a href="food-webs-and-other-networks.html#cb388-2"></a><span class="st">  </span><span class="kw">geom_histogram</span>(<span class="kw">aes</span>(<span class="dt">y =</span> ..density..),</span>
+<span id="cb388-3"><a href="food-webs-and-other-networks.html#cb388-3"></a>                 <span class="dt">alpha=</span>.<span class="dv">5</span>, <span class="dt">position=</span><span class="st">&quot;identity&quot;</span>) <span class="op">+</span><span class="st"> </span></span>
+<span id="cb388-4"><a href="food-webs-and-other-networks.html#cb388-4"></a><span class="st">  </span><span class="kw">geom_density</span>(<span class="kw">aes</span>(<span class="dt">fill=</span><span class="ot">NULL</span>, <span class="dt">colour=</span>web)) <span class="op">+</span><span class="st"> </span></span>
+<span id="cb388-5"><a href="food-webs-and-other-networks.html#cb388-5"></a><span class="st">  </span><span class="kw">scale_x_log10</span>() </span></code></pre></div>
+<div class="figure"><span id="fig:histsAB"></span>
+<img src="figs/histsAB-1.png" alt="*Comparing the distributions of return times for chain **A** and **B**. 'Density' is probability density.*" width="90%" />
+<p class="caption">
+Figure 12.10: <em>Comparing the distributions of return times for chain <strong>A</strong> and <strong>B</strong>. ‘Density’ is probability density.</em>
+</p>
+</div>
+<p>By overlaying these distributions, we make an interesting observation. The omnivorous webs with positive return times (those plotted) actually tended to have shorter return times than the linear chain. Pimm and Lawton noted this, but did not emphasize it. Rather, they sensibly focused on the more obvious result, that over 90% of the omnivorous webs had negative return times, indicating an absence of a stable point equilibrium.</p>
+</div>
+</div>
+<div id="re-evaluating-take-home-messages" class="section level2">
+<h2><span class="header-section-number">12.4</span> Re-evaluating Take-Home Messages</h2>
+<p>The primary messages made by <span class="citation">Pimm and Lawton (<a href="#ref-Pimm1977" role="doc-biblioref">1977</a>)</span> were that</p>
+<ul>
+<li>shorter webs are more stable than long chains,</li>
+<li>omnivory destabilized webs.</li>
+</ul>
+<p>These conclusions were a major part of the lively debate surrounding these issues. It was consistent with the apparent observation of the time, that empirical food webs revealed little omnivory <span class="citation">(Pimm and Lawton <a href="#ref-Pimm1977" role="doc-biblioref">1977</a>, <a href="#ref-Pimm1978" role="doc-biblioref">1978</a>)</span>, and that food chains in nature seemed to be much shorter than could occur, if primary productivity (green plants and algae) was channeled upwards into a linear chain.</p>
+<p>Let’s consider their assumptions.</p>
+<p>First, Pimm and Lawton made the argument, as many others have (including us), that systems with stable point equilibria (nodes or foci) are more likely to persist than systems with persistent oscillations, such as stable limit cycles. It is easy to show that a system can be pushed from a stable equilibrium into oscillations which eventually become so big as to drive an element of the system to extinction. This is a very reasonable assumption, but one which is not challenged enough. Other measures of system stability could be used, such as the minimum that occurs in a long series of fluctuations <span class="citation">(Huxel and McCann <a href="#ref-Huxel1998" role="doc-biblioref">1998</a>; McCann and Hastings <a href="#ref-McCann1997" role="doc-biblioref">1997</a>)</span>.</p>
+<p>Second, Pimm and Lawton ignored the effects of self-regulated basal species. By exhibiting negative density dependence, the basal species stabilized the web. When Pimm and Lawton made a shorter web, they also added more self-regulated populations. Thus, they necessarily confounded chain length with the number of species with negative density dependence. Which change caused the observed differences among webs? We don’t know.</p>
+<p>Third, they assumed that the effect of web topology (i.e., short <em>vs.</em> long chain) was best evaluated with the <em>average</em> properties of the topology, rather than the maximum properties of the topology. By these criteria, webs without omnivory were clearly better. On average, webs without omnivory were more often stable than chains with omnivory, even if some of their return times tended to be quite long. Therefore, one might argue that if a web assembles in nature, it is more likely to persist (i.e., be stable) if it lacks omnivory.</p>
+<p>However, let us consider this preceding argument further. The world is a messy place, with constant insults and disturbances, and resources and environmental conditions fluctuating constantly. In addition, there is a constant rain of propagules dropping into communities, and species abundances are changing all the time. In a sense then, communities are being constantly perturbed. The only webs that can persist in the face of this onslaught are the <em>most</em> stable ones, that is the ones with the shortest return times. We just showed that Pimm and Lawton’s own analyses showed that <em>the most stable webs tended to be those with omnivory</em>. Subsequent work supports this claim that omnivory is rampant in nature <span class="citation">(Polis <a href="#ref-Polis1991" role="doc-biblioref">1991</a>)</span>, and this is supported by theory that shows weak interactions, including omnivory, stabilize food webs <span class="citation">(McCann <a href="#ref-McCann1998" role="doc-biblioref">1998</a>; McCann and Hastings <a href="#ref-McCann1997" role="doc-biblioref">1997</a>)</span>.</p>
+<p>One feature of our simulations that we ignored were oscillations implied by the imaginary component of each eigenvalue. Recall that larger imaginary parts imply shorter cycles, while zero means no oscillation at all.</p>
+<p>Pimm and Lawton made very important contributions to this lengthy debate, and we are finally figuring out how to interpret their results.</p>
+</div>
+<div id="exploring-the-stability-of-bipartite-networks" class="section level2">
+<h2><span class="header-section-number">12.5</span> Exploring the stability of bipartite networks</h2>
+<p>Understanding the effects of network architecture on network resilience is a core mission of community ecology. In this section, we compare how mutualist and antagonist bipartite networks affect network resilience <span class="citation">(Thebault and Fontaine <a href="#ref-Thebault2010" role="doc-biblioref">2010</a>)</span>. A bipartite network is one in which there are two separate groups of species, in which species interact between groups, but never within groups. Two such examples would be herbivores and plants, or pollinators and plants. <span class="citation">Thebault and Fontaine (<a href="#ref-Thebault2010" role="doc-biblioref">2010</a>)</span> compared both empirical and simulated plant-pollinator and plant-herbivore bipartite webs and found they differed in the network structure and the consequences for network stability.</p>
+In the following comparison between mutualist and antagonist bipartite networks, we control for network structure, and ask whether the subsequent effects of diversity, connectance, nestedness, and modularity on resilience differ between mutualist and antagonist networks (Fig. <a href="food-webs-and-other-networks.html#fig:TandF">12.11</a>). In brief, you will find that they do.<br />
+
+<div class="figure"><span id="fig:TandF"></span>
+<img src="TandF.png" alt="*Possible effects of species richness, connectance, modularity, and nestedness on network resilience.*" width="70%" />
+<p class="caption">
+Figure 12.11: <em>Possible effects of species richness, connectance, modularity, and nestedness on network resilience.</em>
+</p>
+</div>
+<p>Our questions are derived from <span class="citation">Thébault and Fontaine (<a href="#ref-Thebault2010a" role="doc-biblioref">2010</a>)</span>, but the approach we use is different. They simulated dynamic communities using systems of ODEs that are similar to those that we have seen in earlier chapters on mutualism and consumer-resource interactions. They include negative density dependence in plants and type II functional responses in mutualists and herbivores.</p>
+<p>We will use the approach we used earlier, that of May (1973) and <span class="citation">Pimm and Lawton (<a href="#ref-Pimm1977" role="doc-biblioref">1977</a>)</span> <span class="citation">Pimm and Lawton (<a href="#ref-Pimm1978" role="doc-biblioref">1978</a>)</span>. In this approach, we do not simulate the dynamics. Instead, we assume that the species involved coexist, and we draw their interaction strengths at random from a specified distribution. This determines their instantaneous per capita effect on each other’s population growth rate, that is, the Jacobian matrix that describes their interactions.</p>
+<p>In our approach, we will establish interactions at random, in which each pair of species (plant and animal) has the same probability of interacting. That probability is connectance (<span class="math inline">\(L/(PA)\)</span>), where <span class="math inline">\(P\)</span> and <span class="math inline">\(A\)</span> are the numbers of plants and animals in the network. This means that the structure (who is connected to whom) will be determined randomly rather than as a result of the dynamics of ODE models as in Thebault and Fontaine (2010). Further, the number of species and the connectance will both be draw at random, within specified ranges.</p>
+<div id="creating-bipartite-webs" class="section level3">
+<h3><span class="header-section-number">12.5.1</span> Creating bipartite webs</h3>
+<p>We’ll start by creating a toy example of a bipartite web of mutualists: plants and their pollinators.</p>
+<div class="sourceCode" id="cb389"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb389-1"><a href="food-webs-and-other-networks.html#cb389-1"></a><span class="co"># The number of species of plants</span></span>
+<span id="cb389-2"><a href="food-webs-and-other-networks.html#cb389-2"></a>Sp &lt;-<span class="st"> </span><span class="dv">5</span></span>
+<span id="cb389-3"><a href="food-webs-and-other-networks.html#cb389-3"></a><span class="co"># The number of species of pollinators</span></span>
+<span id="cb389-4"><a href="food-webs-and-other-networks.html#cb389-4"></a>Sa &lt;-<span class="st"> </span><span class="dv">12</span></span>
+<span id="cb389-5"><a href="food-webs-and-other-networks.html#cb389-5"></a><span class="co"># the total number of species</span></span>
+<span id="cb389-6"><a href="food-webs-and-other-networks.html#cb389-6"></a>S &lt;-<span class="st"> </span>Sa<span class="op">+</span>Sp</span></code></pre></div>
+<p>We then set the connectance, and then generate random interactions between species.</p>
+<div class="sourceCode" id="cb390"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb390-1"><a href="food-webs-and-other-networks.html#cb390-1"></a><span class="co"># The connectance in this web. </span></span>
+<span id="cb390-2"><a href="food-webs-and-other-networks.html#cb390-2"></a>contc &lt;-<span class="st"> </span><span class="fl">.5</span></span>
+<span id="cb390-3"><a href="food-webs-and-other-networks.html#cb390-3"></a></span>
+<span id="cb390-4"><a href="food-webs-and-other-networks.html#cb390-4"></a><span class="co"># Create interactions at random, drawing 0&#39;s and 1&#39;s with a probability of contc=0.5</span></span>
+<span id="cb390-5"><a href="food-webs-and-other-networks.html#cb390-5"></a>interactions &lt;-<span class="st"> </span><span class="kw">rbinom</span>( <span class="dt">n =</span> Sa <span class="op">*</span><span class="st"> </span>Sp, <span class="dt">size=</span><span class="dv">1</span>, <span class="dt">prob=</span>contc)</span>
+<span id="cb390-6"><a href="food-webs-and-other-networks.html#cb390-6"></a></span>
+<span id="cb390-7"><a href="food-webs-and-other-networks.html#cb390-7"></a><span class="co"># Put those connections into our web</span></span>
+<span id="cb390-8"><a href="food-webs-and-other-networks.html#cb390-8"></a>bip.network &lt;-<span class="st"> </span><span class="kw">matrix</span>(interactions, <span class="dt">nrow=</span>Sp, <span class="dt">ncol=</span>Sa)</span>
+<span id="cb390-9"><a href="food-webs-and-other-networks.html#cb390-9"></a><span class="kw">rownames</span>(bip.network) &lt;-<span class="st"> </span><span class="kw">paste</span>(<span class="st">&quot;plant&quot;</span>, LETTERS[<span class="dv">1</span><span class="op">:</span>Sp], <span class="dt">sep=</span><span class="st">&quot;&quot;</span>)</span>
+<span id="cb390-10"><a href="food-webs-and-other-networks.html#cb390-10"></a><span class="kw">colnames</span>(bip.network) &lt;-<span class="st"> </span><span class="kw">paste</span>(<span class="st">&quot;bug&quot;</span>, LETTERS[<span class="dv">1</span><span class="op">:</span>Sa], <span class="dt">sep=</span><span class="st">&quot;&quot;</span>)</span>
+<span id="cb390-11"><a href="food-webs-and-other-networks.html#cb390-11"></a><span class="co">#...and look at it</span></span>
+<span id="cb390-12"><a href="food-webs-and-other-networks.html#cb390-12"></a>bip.network</span></code></pre></div>
+<pre><code>##        bugA bugB bugC bugD bugE bugF bugG bugH bugI bugJ bugK bugL
+## plantA    1    1    0    0    1    0    1    0    0    1    1    1
+## plantB    1    1    1    0    0    1    1    0    0    1    0    0
+## plantC    0    1    0    0    0    1    0    1    0    0    0    1
+## plantD    0    0    0    1    1    0    0    1    1    0    0    1
+## plantE    1    0    0    1    0    0    0    1    0    0    0    1</code></pre>
+<p>Now that we have randomly constructed topology, let’s create a realistic assumption about <em>how much</em> each of the pollinators interact with those plant species. It is generally observed that most interactions are weak (e.g., infrequent visits) and a few are strong (e.g., frequent visits). That pattern can be approximated by an exponential distribution. We will create those interactions and then plot them.</p>
+<div class="sourceCode" id="cb392"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb392-1"><a href="food-webs-and-other-networks.html#cb392-1"></a><span class="co"># Exponentially distributed of interaction strengths</span></span>
+<span id="cb392-2"><a href="food-webs-and-other-networks.html#cb392-2"></a><span class="co"># Random numbers from and exponential distribution</span></span>
+<span id="cb392-3"><a href="food-webs-and-other-networks.html#cb392-3"></a>x &lt;-<span class="st"> </span><span class="kw">rexp</span>(Sa<span class="op">*</span>Sp)</span>
+<span id="cb392-4"><a href="food-webs-and-other-networks.html#cb392-4"></a></span>
+<span id="cb392-5"><a href="food-webs-and-other-networks.html#cb392-5"></a><span class="co"># express these as a probability distribution (divide by the sum)</span></span>
+<span id="cb392-6"><a href="food-webs-and-other-networks.html#cb392-6"></a>xp &lt;-<span class="st"> </span>x<span class="op">/</span><span class="kw">sum</span>(x)</span>
+<span id="cb392-7"><a href="food-webs-and-other-networks.html#cb392-7"></a></span>
+<span id="cb392-8"><a href="food-webs-and-other-networks.html#cb392-8"></a><span class="co"># assign those exponential probabilities to our interactions,</span></span>
+<span id="cb392-9"><a href="food-webs-and-other-networks.html#cb392-9"></a><span class="co"># creating the Quantitative network</span></span>
+<span id="cb392-10"><a href="food-webs-and-other-networks.html#cb392-10"></a>bip.networkQ &lt;-<span class="st"> </span>bip.network <span class="op">*</span><span class="st"> </span>xp</span></code></pre></div>
+<p>Next we can make some pretty pictures of this web. To do this, you’ll need to load the <code>bipartite</code> package.</p>
+<div class="sourceCode" id="cb393"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb393-1"><a href="food-webs-and-other-networks.html#cb393-1"></a>{</span>
+<span id="cb393-2"><a href="food-webs-and-other-networks.html#cb393-2"></a>  <span class="co"># library(bipartite) if needed</span></span>
+<span id="cb393-3"><a href="food-webs-and-other-networks.html#cb393-3"></a>  <span class="co"># visweb and plotweb are in the bipartite package</span></span>
+<span id="cb393-4"><a href="food-webs-and-other-networks.html#cb393-4"></a>  <span class="kw">layout</span>(<span class="kw">matrix</span>(<span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">4</span>), <span class="dt">nc=</span><span class="dv">2</span>, <span class="dt">byrow=</span><span class="ot">TRUE</span>) )</span>
+<span id="cb393-5"><a href="food-webs-and-other-networks.html#cb393-5"></a>  <span class="kw">hist</span>(bip.networkQ, <span class="dt">main=</span><span class="st">&quot;&quot;</span>, <span class="dt">xlab=</span><span class="st">&quot;interaction strength&quot;</span>)</span>
+<span id="cb393-6"><a href="food-webs-and-other-networks.html#cb393-6"></a>  bipartite<span class="op">::</span><span class="kw">plotweb</span>(bip.networkQ, <span class="dt">method=</span><span class="st">&#39;normal&#39;</span>) </span>
+<span id="cb393-7"><a href="food-webs-and-other-networks.html#cb393-7"></a>  bipartite<span class="op">::</span><span class="kw">visweb</span>(bip.networkQ, <span class="dt">type=</span><span class="st">&#39;nested&#39;</span>)</span>
+<span id="cb393-8"><a href="food-webs-and-other-networks.html#cb393-8"></a>  bipartite<span class="op">::</span><span class="kw">visweb</span>(bip.networkQ, <span class="dt">type=</span><span class="st">&#39;diagonal&#39;</span>)</span>
+<span id="cb393-9"><a href="food-webs-and-other-networks.html#cb393-9"></a>  }</span></code></pre></div>
+<div class="figure"><span id="fig:toys"></span>
+<img src="figs/toys-1.png" alt="*Illustrations of a hypothetical plant-pollinator network. The two matrices organize the species to highlight either nestedness (left) or modularity (right).*" width="90%" />
+<p class="caption">
+Figure 12.12: <em>Illustrations of a hypothetical plant-pollinator network. The two matrices organize the species to highlight either nestedness (left) or modularity (right).</em>
+</p>
+</div>
+<p>To measure the nestedness and the modularity, we use functions from packages <code>igraph</code>.</p>
+<div class="sourceCode" id="cb394"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb394-1"><a href="food-webs-and-other-networks.html#cb394-1"></a><span class="co"># Nestedness:</span></span>
+<span id="cb394-2"><a href="food-webs-and-other-networks.html#cb394-2"></a><span class="co"># quant. version of NODF  (Almeida-Neto et al. 2008, 2011)</span></span>
+<span id="cb394-3"><a href="food-webs-and-other-networks.html#cb394-3"></a><span class="kw">networklevel</span>(bip.networkQ, <span class="dt">index=</span><span class="kw">c</span>(<span class="st">&quot;weighted NODF&quot;</span>))</span></code></pre></div>
+<pre><code>## weighted NODF 
+##      23.07018</code></pre>
+<div class="sourceCode" id="cb396"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb396-1"><a href="food-webs-and-other-networks.html#cb396-1"></a><span class="kw">metaComputeModules</span>(bip.networkQ, <span class="dt">N=</span><span class="dv">5</span>, <span class="dt">method=</span><span class="st">&quot;Beckett&quot;</span>) <span class="op">@</span><span class="st"> </span>likelihood</span></code></pre></div>
+<pre><code>## [1] 0.4902305</code></pre>
+<p>This measure of nestedness (WNODF, <span class="citation">(<span class="citeproc-not-found" data-reference-id="Almeido2011"><strong>???</strong></span>)</span>) varies between 0 and 100 for completely nonnested and nested networks. This measure of modularity varies between 0 and 1 for completely non-modular and modular networks.</p>
+<p>To measure stability of this plant by animal matrix, we first convert it to a square matrix, add a little negative denisty dependence, and then use eigenanalysis to find the dominant eigenvalue.</p>
+<div class="sourceCode" id="cb398"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb398-1"><a href="food-webs-and-other-networks.html#cb398-1"></a>n &lt;-<span class="st"> </span><span class="kw">matrix</span>(<span class="dv">0</span>, <span class="dt">nr=</span>S, <span class="dt">nc=</span>S) </span>
+<span id="cb398-2"><a href="food-webs-and-other-networks.html#cb398-2"></a><span class="co"># upper triangular part</span></span>
+<span id="cb398-3"><a href="food-webs-and-other-networks.html#cb398-3"></a>n[<span class="dv">1</span><span class="op">:</span>Sp, (Sp<span class="op">+</span><span class="dv">1</span>)<span class="op">:</span>S] &lt;-<span class="st"> </span>bip.networkQ</span>
+<span id="cb398-4"><a href="food-webs-and-other-networks.html#cb398-4"></a><span class="co"># lower triangular part</span></span>
+<span id="cb398-5"><a href="food-webs-and-other-networks.html#cb398-5"></a>n[(Sp<span class="op">+</span><span class="dv">1</span>)<span class="op">:</span>S, <span class="dv">1</span><span class="op">:</span>Sp] &lt;-<span class="st"> </span><span class="kw">t</span>(bip.networkQ) </span>
+<span id="cb398-6"><a href="food-webs-and-other-networks.html#cb398-6"></a><span class="co"># Add negative density dependence that is the </span></span>
+<span id="cb398-7"><a href="food-webs-and-other-networks.html#cb398-7"></a><span class="co"># same magnitude as other species interactions</span></span>
+<span id="cb398-8"><a href="food-webs-and-other-networks.html#cb398-8"></a><span class="kw">diag</span>(n) &lt;-<span class="st"> </span><span class="dv">-1</span><span class="op">*</span><span class="kw">max</span>(<span class="kw">rowSums</span>(n))</span>
+<span id="cb398-9"><a href="food-webs-and-other-networks.html#cb398-9"></a></span>
+<span id="cb398-10"><a href="food-webs-and-other-networks.html#cb398-10"></a><span class="co">#Calculate stability</span></span>
+<span id="cb398-11"><a href="food-webs-and-other-networks.html#cb398-11"></a><span class="kw">Re</span>(<span class="kw">eigen</span>(n)<span class="op">$</span>values[<span class="dv">1</span>])</span></code></pre></div>
+<pre><code>## [1] -0.02928834</code></pre>
+<p>That is just an example of the type of network we will create in our simulation—we create a bipartite web with a random number of species, and random connectance, each within specified bounds.</p>
+</div>
+<div id="testing-effects-of-nestedness-and-modularity-on-network-resilience." class="section level3">
+<h3><span class="header-section-number">12.5.2</span> Testing effects of nestedness and modularity on network resilience.</h3>
+<p>In our webs, we can compare the effects of negative vs. positive interactions directly, because we will create one network with interaction strengths, and then simply reverse the signs of the effects of the animals on the plants to get herbivory <em>vs.</em> mutualism.</p>
+<p>We simulate 1000 random bipartite webs using a large number of different numbers of plant and animal species. We select a connectance by drawing randomly from a uniform distribution between the values in argument <code>C</code>.</p>
+<p>When we generate a random network, we save one version that represents mutualists (+,+), and then we reverse the sign for the effect of the animal to represent herbivory (+,-).</p>
+<p>The function <code>bip_stability()</code> performs eigananalysis on the resulting Jacobian matrix to estimate <em>resilience</em>, which we define as the negative of the real part of the dominant eigenvalue. This way, greater resilience is a larger positive number. It calculates the resilience for both the mutualist and the herbivorous versions of each random network. It also calculates <em>nestedness</em> and <em>modularity</em> in ways similar to that in Thebault and Fontaine (2010). It can calculate modularity in two ways, using either the binary adjacency matrix (ones and zeroes) or a quantitative matrix; the latter takes much moore time to calculate, so it uses the binary matrix by default. It also tallies diversity as the total number of species and the connectance as the total number of links divided by the number of possible links.</p>
+<p>To use <code>bip_stability</code>, you will need to install a couple more packages. If you’ve already installed them, you have nothing to do.</p>
+<div class="sourceCode" id="cb400"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb400-1"><a href="food-webs-and-other-networks.html#cb400-1"></a><span class="co"># pkgs &lt;- c(&quot;bipartite&quot;,&quot;igraph&quot;, &quot;rARPACK&quot;)</span></span>
+<span id="cb400-2"><a href="food-webs-and-other-networks.html#cb400-2"></a><span class="co"># install.packages(pkgs)</span></span></code></pre></div>
+<p>This package has several arguments which you can see described in the help file. Among them are
+* <code>Spp.a</code> and <code>Spp.p</code>: vectors from which the numbers of animal and plant species are drawn at random,
+* <code>C</code>: a two-element vector provide the min and max of possible connectances drawn at random,
+* <code>reps</code>: the number of random networks to create.</p>
+<p>Here we use it to generate 1000 random webs. We will then use those to examine the relations between various emergent properties of the networks.</p>
+<div class="sourceCode" id="cb401"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb401-1"><a href="food-webs-and-other-networks.html#cb401-1"></a><span class="kw">library</span>(primer)</span>
+<span id="cb401-2"><a href="food-webs-and-other-networks.html#cb401-2"></a>b &lt;-<span class="st"> </span><span class="kw">bip_stability</span>(<span class="dt">Spp.a =</span> <span class="dv">16</span><span class="op">:</span><span class="dv">60</span>, <span class="dt">Spp.p =</span> <span class="dv">8</span><span class="op">:</span><span class="dv">30</span>, <span class="dt">C=</span><span class="kw">c</span>(.<span class="dv">05</span>, <span class="fl">0.5</span>), <span class="dt">reps=</span><span class="dv">100</span>, <span class="dt">quant=</span><span class="ot">FALSE</span>)</span></code></pre></div>
+<p>We can get a summary of the output of the 1000 simulated webs here.</p>
+<div class="sourceCode" id="cb402"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb402-1"><a href="food-webs-and-other-networks.html#cb402-1"></a><span class="kw">summary</span>(b)</span></code></pre></div>
+<pre><code>##        S               C             modularity       nestedness    
+##  Min.   :25.00   Min.   :0.09217   Min.   :0.0000   Min.   : 2.778  
+##  1st Qu.:44.00   1st Qu.:0.18290   1st Qu.:0.0000   1st Qu.: 8.874  
+##  Median :57.50   Median :0.25020   Median :0.1289   Median :13.130  
+##  Mean   :56.19   Mean   :0.26618   Mean   :0.2002   Mean   :13.561  
+##  3rd Qu.:69.00   3rd Qu.:0.34804   3rd Qu.:0.3984   3rd Qu.:18.628  
+##  Max.   :87.00   Max.   :0.50850   Max.   :0.7489   Max.   :28.227  
+##   resilience.m       resilience.h     
+##  Min.   :0.006857   Min.   :0.004284  
+##  1st Qu.:0.024364   1st Qu.:0.011981  
+##  Median :0.032009   Median :0.015025  
+##  Mean   :0.035159   Mean   :0.016767  
+##  3rd Qu.:0.042864   3rd Qu.:0.021233  
+##  Max.   :0.067793   Max.   :0.036620</code></pre>
+<p>Are these webs stable? What are the medians and ranges of each of the web properties? How do the resiliences of the two interaction types differ?</p>
+<p>We can also graph these relations.</p>
+<div class="sourceCode" id="cb404"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb404-1"><a href="food-webs-and-other-networks.html#cb404-1"></a><span class="kw">pairs</span>(b)</span></code></pre></div>
+<p><img src="figs/unnamed-chunk-190-1.png" width="90%" /></p>
+<p>If you have a copy of Thebault and Fontaine (2010), you might check whether the above relations are similar to theirs.</p>
+</div>
+</div>
+<div id="path-analysis" class="section level2">
+<h2><span class="header-section-number">12.6</span> Path Analysis</h2>
+<p>Now we do the same sort of analysis that Thebault and Fontaine did to get their Fig. 2 C,D. Path analysis is a relatively simple way to model sets of correlations among dependent variables. To do this, we will use the <code>lavaan</code> package.</p>
+<p>If we look above, we see curvature in some of the relations. In simple path analysis, as in Thebault and Fontaine, these relations are assumed to be linear. Here we transform these data a tad to help linearize these relations.</p>
+<div class="sourceCode" id="cb405"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb405-1"><a href="food-webs-and-other-networks.html#cb405-1"></a>out.tr &lt;-<span class="st"> </span>(b)<span class="op">^</span>.<span class="dv">75</span></span>
+<span id="cb405-2"><a href="food-webs-and-other-networks.html#cb405-2"></a><span class="kw">pairs</span>( out.tr )</span></code></pre></div>
+<p><img src="figs/unnamed-chunk-191-1.png" width="90%" /></p>
+<p>We next scale our data so that all variables have a mean of zero and a standard deviation of 1. This will simplify the interpretation of the path analysis output: the regression coefficients partial correlation coefficients and will be effect sizes that are each comparable to the others.</p>
+<div class="sourceCode" id="cb406"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb406-1"><a href="food-webs-and-other-networks.html#cb406-1"></a>dat &lt;-<span class="st"> </span><span class="kw">data.frame</span>( <span class="kw">scale</span>(out.tr) ) </span></code></pre></div>
+<p>We specify each of the relationships, where <code>y ~ x</code> is “y as a function of x”. We then fit the model and get the path coefficients.</p>
+<p>To mimic Thebault and Fontaine, we will include all and only the interactions in their figure 2. We start with the mutualism web. Start by loading the <code>lavaan</code> package if you haven’t previously.</p>
+<div class="sourceCode" id="cb407"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb407-1"><a href="food-webs-and-other-networks.html#cb407-1"></a><span class="co"># library(lavvan)</span></span>
+<span id="cb407-2"><a href="food-webs-and-other-networks.html#cb407-2"></a><span class="co"># Step 1: Specify model</span></span>
+<span id="cb407-3"><a href="food-webs-and-other-networks.html#cb407-3"></a>model &lt;-<span class="st"> &#39;resilience.m ~ nestedness + modularity + S + C</span></span>
+<span id="cb407-4"><a href="food-webs-and-other-networks.html#cb407-4"></a><span class="st">          nestedness ~  S + C</span></span>
+<span id="cb407-5"><a href="food-webs-and-other-networks.html#cb407-5"></a><span class="st">          modularity ~ S + C &#39;</span></span>
+<span id="cb407-6"><a href="food-webs-and-other-networks.html#cb407-6"></a></span>
+<span id="cb407-7"><a href="food-webs-and-other-networks.html#cb407-7"></a><span class="co"># Step 2: Estimate model of mutualism</span></span>
+<span id="cb407-8"><a href="food-webs-and-other-networks.html#cb407-8"></a>mod.m.fit &lt;-<span class="st"> </span><span class="kw">sem</span>(model, <span class="dt">data=</span>dat)</span>
+<span id="cb407-9"><a href="food-webs-and-other-networks.html#cb407-9"></a><span class="kw">coef</span>(mod.m.fit)</span></code></pre></div>
+<pre><code>##    resilience.m~nestedness    resilience.m~modularity 
+##                      0.089                      0.183 
+##             resilience.m~S             resilience.m~C 
+##                      0.662                      0.723 
+##               nestedness~S               nestedness~C 
+##                      0.069                      0.953 
+##               modularity~S               modularity~C 
+##                     -0.371                     -0.811 
+## resilience.m~~resilience.m     nestedness~~nestedness 
+##                      0.135                      0.076 
+##     modularity~~modularity 
+##                      0.155</code></pre>
+<p>Look at the estimates of the regressions. Those are the path coefficients.</p>
+<p>Now it is up to you to get a pencil and paper and draw the picture….</p>
+<p>Next, do the same thing for herbivory.</p>
+<div class="sourceCode" id="cb409"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb409-1"><a href="food-webs-and-other-networks.html#cb409-1"></a><span class="co"># Step 1: Specify model</span></span>
+<span id="cb409-2"><a href="food-webs-and-other-networks.html#cb409-2"></a>model &lt;-<span class="st"> &#39;resilience.h ~ nestedness + modularity + S + C</span></span>
+<span id="cb409-3"><a href="food-webs-and-other-networks.html#cb409-3"></a><span class="st">          nestedness ~ S + C</span></span>
+<span id="cb409-4"><a href="food-webs-and-other-networks.html#cb409-4"></a><span class="st">          modularity ~ S + C&#39;</span></span>
+<span id="cb409-5"><a href="food-webs-and-other-networks.html#cb409-5"></a></span>
+<span id="cb409-6"><a href="food-webs-and-other-networks.html#cb409-6"></a><span class="co"># Step 2: Estimate model of herbivory</span></span>
+<span id="cb409-7"><a href="food-webs-and-other-networks.html#cb409-7"></a>mod.h.fit &lt;-<span class="st"> </span><span class="kw">sem</span>(model, <span class="dt">data=</span>dat)</span>
+<span id="cb409-8"><a href="food-webs-and-other-networks.html#cb409-8"></a><span class="kw">coef</span>(mod.h.fit)  </span></code></pre></div>
+<pre><code>##    resilience.h~nestedness    resilience.h~modularity 
+##                      0.251                     -0.439 
+##             resilience.h~S             resilience.h~C 
+##                      0.372                     -0.072 
+##               nestedness~S               nestedness~C 
+##                      0.069                      0.953 
+##               modularity~S               modularity~C 
+##                     -0.371                     -0.811 
+## resilience.h~~resilience.h     nestedness~~nestedness 
+##                      0.332                      0.076 
+##     modularity~~modularity 
+##                      0.155</code></pre>
+<p>To make these figures, you’ll need the <code>semPlot</code> package.</p>
+<div class="sourceCode" id="cb411"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb411-1"><a href="food-webs-and-other-networks.html#cb411-1"></a><span class="co"># library(semPlot)</span></span>
+<span id="cb411-2"><a href="food-webs-and-other-networks.html#cb411-2"></a><span class="kw">semPaths</span>(mod.m.fit, <span class="dt">what=</span><span class="st">&#39;path&#39;</span>, <span class="dt">whatLabels=</span><span class="st">&quot;std&quot;</span>, </span>
+<span id="cb411-3"><a href="food-webs-and-other-networks.html#cb411-3"></a>         <span class="dt">curve=</span><span class="dv">1</span>, <span class="dt">curvature=</span><span class="dv">1</span>, <span class="dt">sizeMan=</span><span class="dv">10</span>,</span>
+<span id="cb411-4"><a href="food-webs-and-other-networks.html#cb411-4"></a>         <span class="dt">edge.label.cex =</span> <span class="fl">1.5</span>, <span class="dt">nCharNodes=</span><span class="dv">4</span>,</span>
+<span id="cb411-5"><a href="food-webs-and-other-networks.html#cb411-5"></a>         <span class="dt">edge.label.position=</span>.<span class="dv">7</span>, <span class="dt">layout=</span><span class="st">&#39;tree2&#39;</span>)</span>
+<span id="cb411-6"><a href="food-webs-and-other-networks.html#cb411-6"></a><span class="kw">semPaths</span>(mod.h.fit, <span class="dt">what=</span><span class="st">&#39;path&#39;</span>, <span class="dt">whatLabels=</span><span class="st">&quot;std&quot;</span>, </span>
+<span id="cb411-7"><a href="food-webs-and-other-networks.html#cb411-7"></a>         <span class="dt">curve=</span><span class="dv">1</span>, <span class="dt">curvature=</span><span class="dv">1</span>, <span class="dt">sizeMan=</span><span class="dv">10</span>,</span>
+<span id="cb411-8"><a href="food-webs-and-other-networks.html#cb411-8"></a>         <span class="dt">edge.label.cex =</span> <span class="fl">1.5</span>, <span class="dt">nCharNodes=</span><span class="dv">4</span>,</span>
+<span id="cb411-9"><a href="food-webs-and-other-networks.html#cb411-9"></a>         <span class="dt">edge.label.position=</span>.<span class="dv">7</span>, <span class="dt">layout=</span><span class="st">&#39;tree2&#39;</span>)</span></code></pre></div>
+<div class="figure"><span id="fig:paths"></span>
+<img src="figs/paths-1.png" alt="*Given the same bipartite network sturcture and the identical interaction strengths, antagonistic and mutualistic webs show different relations among emergent properties.*" width="50%" /><img src="figs/paths-2.png" alt="*Given the same bipartite network sturcture and the identical interaction strengths, antagonistic and mutualistic webs show different relations among emergent properties.*" width="50%" />
+<p class="caption">
+Figure 12.13: <em>Given the same bipartite network sturcture and the identical interaction strengths, antagonistic and mutualistic webs show different relations among emergent properties.</em>
+</p>
+</div>
+<p>Here we see that some of the relations among empergent properties differs in the two web types. It is reassuring that the relations between richness and connectance <em>vs.</em> nestedness and modularity are identical. This is because the topologies (connections) are identical, as the only difference is the sign of some of the interactions.</p>
+<p>The differences lie in the effects on resilience. What are those differences, and are they consistent with Thebault and Fontaine (2010). Are they consistent with what is generally presumed about the role of mutualisms and consumption in food webs?</p>
+
+</div>
+</div>
+<h3> References</h3>
+<div id="refs" class="references">
+<div id="ref-Berlow:2004yq">
+<p>Berlow, E L, A M Neutel, J E Cohen, P C de Ruiter, B Ebenman, M Emmerson, J W Fox, et al. 2004. “Interaction strengths in food webs: Issues and opportunities.” <em>Journal of Animal Ecology</em> 73: 585–98.</p>
+</div>
+<div id="ref-Cohen1990d">
+<p>Cohen, J. E., F. Briand, and C. M. Newman. 1990. <em>Community {F}ood {W}ebs: {D}ata and {T}heory</em>. Vol. 20. Biomathematics. Berlin: Springer-Verlag.</p>
+</div>
+<div id="ref-Dunne2002aa">
+<p>Dunne, J A, R J Williams, and N D Martinez. 2002. “Food-web structure and network theory: The role of connectance and size.” <em>Proceedings of the National Academy of Sciences of the United States of America</em> 99: 12917–22.</p>
+</div>
+<div id="ref-Hubbell2001">
+<p>Hubbell, S P. 2001. <em>A {U}nified {T}heory of {B}iodiversity and {B}iogeography</em>. Monographs in Population Biology. Princeton, N.J.: Princeton University Press.</p>
+</div>
+<div id="ref-Huxel1998">
+<p>Huxel, G R, and K McCann. 1998. “Food web stability: The influence of trophic flows across habitats.” <em>American Naturalist</em> 152: 460–69.</p>
+</div>
+<div id="ref-MacArthur1967">
+<p>MacArthur, R H, and E O Wilson. 1967. <em>The {T}heory of {I}sland {B}iogeography</em>. Monographs in Population Biology. Princeton: Princeton University Press.</p>
+</div>
+<div id="ref-May1972">
+<p>May, R M. 1972. “Will a large complex system be stable?” <em>Nature</em> 238: 413–14.</p>
+</div>
+<div id="ref-May1973ab">
+<p>May, R M. 1973. <em>Stability and Complexity in Model Ecosystems</em>. Vol. 6. Monographs in Population Biology. Princeton, NJ: Princeton University Press.</p>
+</div>
+<div id="ref-May:2006lr">
+<p>May, R M. 2006. “Network structure and the biology of populations.” <em>Trends in Ecology &amp; Evolution</em> 21: 394–99.</p>
+</div>
+<div id="ref-McCann1998">
+<p>McCann, K. 1998. “Density-dependent coexistence in fish communities.” <em>Ecology</em> 79: 2957–67.</p>
+</div>
+<div id="ref-McCann1997">
+<p>McCann, K, and A Hastings. 1997. “Re-evaluating the omnivory - stability relationship in food webs.” <em>Proceedings of the Royal Society of London Series B-Biological Sciences</em> 264: 1249–54.</p>
+</div>
+<div id="ref-McCann1998a">
+<p>McCann, K, A Hastings, and G R Huxel. 1998. “Weak trophic interactions and the balance of nature.” <em>Nature</em> 395: 794–98.</p>
+</div>
+<div id="ref-Pimm1977">
+<p>Pimm, S L, and J H Lawton. 1977. “Number of trophic levels in ecological communities.” <em>Nature</em> 268: 329 331.</p>
+</div>
+<div id="ref-Pimm1978">
+<p>Pimm, S L, and J H Lawton. 1978. “On feeding on more than one trophic level.” <em>Nature</em> 275: 542–44.</p>
+</div>
+<div id="ref-Polis1991">
+<p>Polis, G A. 1991. “Complex trophic interactions in deserts: an empirical critique of food web ecology.” <em>The American Naturalist</em> 138: 123–55.</p>
+</div>
+<div id="ref-Post:2002bs">
+<p>Post, D M. 2002. “The long and short of food-chain length.” <em>Trends in Ecology &amp; Evolution</em> 17: 269–77.</p>
+</div>
+<div id="ref-Rosenzweig1995">
+<p>Rosenzweig, M L. 1995. <em>Species {D}iversity in {S}pace and {T}ime</em>. Cambridge: Cambridge University Press.</p>
+</div>
+<div id="ref-Thebault2010">
+<p>Thebault, E., and C. Fontaine. 2010. “Stability of Ecological Communities and the Architecture of Mutualistic and Trophic Networks.” <em>Science</em> 329 (5993): 853–56. <a href="http://arxiv.org/abs/0112110">http://arxiv.org/abs/0112110</a>.</p>
+</div>
+<div id="ref-Thebault2010a">
+<p>Thébault, Elisa, and Colin Fontaine. 2010. “Stability of ecological communities and the architecture of mutualistic and trophic networks.” <em>Science (New York, N.Y.)</em> 329 (5993): 853–6.</p>
+</div>
+<div id="ref-Vandermeer:2006fj">
+<p>Vandermeer, J. 2006. “Oscillating populations and biodiversity maintenance.” <em>Bioscience</em> 56: 967–75.</p>
+</div>
+<div id="ref-Williams2000a">
+<p>Williams, E J, and L D Hurst. 2000. “The proteins of linked genes evolve at similar rates.” <em>Nature</em> 407 (6806): 900–903.</p>
+</div>
+</div>
+<div class="footnotes">
+<hr />
+<ol start="64">
+<li id="fn64"><p>If we assume no supernatural or spectral interference, then we can also assume that density arises mechanistically from complicated interactions among individuals and their environments, rather than via magic. Other scientists will disagree and say that properties like density that are merely additive aggregates do not qualify for the lofty title of “emergent property.”<a href="food-webs-and-other-networks.html#fnref64" class="footnote-back">↩︎</a></p></li>
+<li id="fn65"><p>In the original publication, webs E and D seem to be represented incorrectly.<a href="food-webs-and-other-networks.html#fnref65" class="footnote-back">↩︎</a></p></li>
+<li id="fn66"><p>Recall that a negative return time indicates that any ``perturbation’’ at the equilibrium would have been closer to zero at some time in the past, i.e., that the perturbation is growing.<a href="food-webs-and-other-networks.html#fnref66" class="footnote-back">↩︎</a></p></li>
+<li id="fn67"><p>Recall that if we think of stability analysis as the analysis of a small perturbation at the equilibrium, then the dominant eigenvalue is the growth rate of that perturbation.<a href="food-webs-and-other-networks.html#fnref67" class="footnote-back">↩︎</a></p></li>
+<li id="fn68"><p>Recall that if we think of stability analysis as the analysis of a small perturbation at the equilibrium, then the dominant eigenvalue is the growth rate of that perturbation.<a href="food-webs-and-other-networks.html#fnref68" class="footnote-back">↩︎</a></p></li>
+<li id="fn69"><p>Note that now we use probabilities for the <span class="math inline">\(y\)</span>-axis, rather than counts. The probability associated with any particular return time is the product of the height of the column and the width of the column (or bin).<a href="food-webs-and-other-networks.html#fnref69" class="footnote-back">↩︎</a></p></li>
+</ol>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="disease.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="references.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": null,
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

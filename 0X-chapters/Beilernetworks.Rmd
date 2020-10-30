@@ -1,0 +1,208 @@
+---
+title: "Beiler et al. 2015"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(ggplot2)
+library(igraph)
+```
+
+## properties assessed
+node = tree
+link = a connection between two trees, 1 or more genets = 1 link 
+
+
+Network properties
+
+* link density
+* degree distribution
+* global or network clustering coefficient, global transivity; (no. of closed triplets) / (no. of open + no. closed triplets)
+* mean clustering coefficient among nodes in each network
+* Betweenness centrality: quantifies the number of times a node acts as a bridge along the shortest path between two other nodes. How important is this node in making connections for other nodes?
+
+Evaluated by testing whether the observed differ from random ER network models based on the same number of nodes and average node degree as empirical MNs
+
+
+Node properties
+
+* degree
+* normalized degree: (d / all possible d)
+* node clustering coefficient (local transivity): how close its neighbors are to being a clique themselves. "proportion of links between the vertices within its neighbourhood divided by the number of links that could possibly exist between them" (Wikipedia, clustering coefficient) 
+
+
+"Network classifications were verified by contrasting empirical networks against undirected random Erdos-Renyi configurations ... having the same number of nodes and mean node degree as the empirical networks, when pairs of nodes are linked at random." 
+
+
+## Results 
+
+* Vesiculosus more structured than vinicolor
+* Vinicolor nested within vesiculosus
+
+No significant relations found between site (soil moisture) and netowrk properties
+
+* network density
+* mean node degree, or
+* network clustering coefficient 
+
+However, node clustering coefficient and node degree increased with tree dbh (Fig. 4). Seems strange then, that there is a negative relation between node clustering coef and node degree. 
+
+
+## Data from Beiler et al.
+
+Plot 1
+* 26 trees, 258 links (Table 1), node clustering coefficient: 0.84
+
+```{r }
+# for Plot 1
+V <- 26
+E <- 258
+
+gr <- erdos.renyi.game(V, E, type = "gnm")
+# graph "order" and "size"
+gorder(gr); gsize(gr)
+
+plot(gr, vertex.label= NA, edge.arrow.size=0.02,vertex.size = 0.5, xlab = "Random Network: G(V,E) model")
+```
+
+```{r}
+# betweenness centrality
+bc <- betweenness(gr, v = V(gr), directed = TRUE, weights = NULL,
+  nobigint = TRUE, normalized = FALSE)
+bcbar <- mean(bc)
+
+# node clustering coefficients (per node)
+ncc <- transitivity(gr, type = "local")
+# mean node clustering coefficient
+mean(ncc) # cf 0.84
+
+# degrees of each node
+d <- degree(gr)
+# mean degree
+mean(d) # cf 18
+
+qplot(d, ncc, geom="jitter")
+```
+
+### for all plots
+
+```{r} 
+V <- c(26, 13, 31, 27, 27, 41)
+E <- c(258, 66, 283, 254, 177, 434)
+pV <- c(.846, .5, .875, .846, .778, .889)
+dbar <- c(18, 695, 17.15, 17.52, 12.21, 20.19)
+nccbar <- c(.84, .63, .84, .85, .83, .8)
+plot <- 1:6
+df <- data.frame(plot=plot, V=V, E=E, pV=pV, dbar=dbar, nccbar=nccbar)
+
+myStats <- function(ve){
+  # ve is a vector of V, E
+  V <- ve[1];  E <- ve[2]
+  gr <- erdos.renyi.game(V, E, type = "gnm")
+  
+  bc <- betweenness(gr, directed = FALSE, weights = NULL,
+  nobigint = TRUE, normalized = FALSE)
+  bcbar <- mean(bc)
+  
+  #Network clustering coefficient
+  gcc <- transitivity(gr)
+  
+  ncc <- transitivity(gr, type = "local")
+# mean node clustering coefficient
+ nccbar.o <- mean(ncc) # cf 0.84
+# degrees of each node
+d <- degree(gr)
+# mean degree
+dbar.o <- mean(d) # cf 18
+return( c(bcbar.op=bcbar, gcc.o=gcc, nccbar.o=nccbar.o, dbar.o=dbar.o))
+}
+df2 <- cbind(df, t(apply(df[,2:3], 1, myStats)) )
+pairs(df2[,5:10])
+```
+## Fig. 2 but with random graphs
+```{r}
+
+
+ncc1 <- unlist( apply(df[1:3,2:3], 1, function(ve){
+   gr <- erdos.renyi.game(ve[1], ve[2], type = "gnm")
+   transitivity(gr, type = "local")
+ }))
+ncc2 <- unlist( apply(df[4:6,2:3], 1, function(ve){
+   gr <- erdos.renyi.game(ve[1], ve[2], type = "gnm")
+   transitivity(gr, type = "local")
+ }))
+ 
+d1 <- unlist( apply(df[1:3,2:3], 1, function(ve){
+   gr <- erdos.renyi.game(ve[1], ve[2], type = "gnm")
+   degree(gr)
+ }))
+d2 <- unlist( apply(df[4:6,2:3], 1, function(ve){
+   gr <- erdos.renyi.game(ve[1], ve[2], type = "gnm")
+   degree(gr)
+ }))
+dff2 <- data.frame(site = factor(c(rep(1, length(ncc1)), rep(2, length(ncc2)))),
+                            ncc =c(ncc1, ncc2), d=c(d1,d2) )
+ggplot(dff2, aes(d, ncc, colour=site) ) + geom_jitter()
+```
+
+## Fig. 2 but with scale-free graphs
+```{r}
+
+exp.out <- 2.1
+ncc1 <- unlist( apply(df[1:3,2:3], 1, function(ve){
+  gsf <- sample_fitness_pl(ve[1], ve[2], exponent.out= exp.out, exponent.in = -1, loops = FALSE, multiple = FALSE, finite.size.correction = TRUE)
+   transitivity(gsf, type = "local")
+ }))
+ncc2 <- unlist( apply(df[4:6,2:3], 1, function(ve){
+  gsf <- sample_fitness_pl(ve[1], ve[2], exponent.out= exp.out, exponent.in = -1, loops = FALSE, multiple = FALSE, finite.size.correction = TRUE)
+   transitivity(gsf, type = "local")
+ }))
+ 
+d1 <- unlist( apply(df[1:3,2:3], 1, function(ve){
+  gsf <- sample_fitness_pl(ve[1], ve[2], exponent.out= exp.out, exponent.in = -1, loops = FALSE, multiple = FALSE, finite.size.correction = TRUE)
+   degree(gsf)
+ }))
+qplot(d1, ncc1)
+d2 <- unlist( apply(df[4:6,2:3], 1, function(ve){
+   gsf <- sample_fitness_pl(ve[1], ve[2], exponent.out= exp.out, exponent.in = -1, loops = FALSE, multiple = FALSE, finite.size.correction = TRUE)
+   degree(gsf)
+ }))
+dff2 <- data.frame(site = factor(c(rep(1, length(ncc1)), rep(2, length(ncc2)))),
+                            ncc =c(ncc1, ncc2), d=c(d1,d2) )
+ggplot(dff2, aes(d, ncc, colour=site) ) + geom_jitter()
+```
+
+## Fig. 2 but with small-world
+```{r}
+dm=2
+nei=3
+p=.2
+{
+ncc1 <- unlist( apply(df[1:3,2:3], 1, function(ve){
+  size <- ceiling((ve[1])^(1/dm))
+  gsw <- sample_smallworld(dim=2, size, nei , p )
+   transitivity(gsw, type = "local")
+ }))
+ncc2 <- unlist( apply(df[4:6,2:3], 1, function(ve){
+    size <- ceiling((ve[1])^(1/dm))
+  gsw <- sample_smallworld(dim=2, size, nei, p)
+   transitivity(gsw, type = "local")
+ }))
+ 
+d1 <- unlist( apply(df[1:3,2:3], 1, function(ve){
+   size <- ceiling((ve[1])^(1/dm))
+  gsw <- sample_smallworld(dim=2, size, nei, p)
+   degree(gsw)
+ }))
+qplot(d1, ncc1)
+d2 <- unlist( apply(df[4:6,2:3], 1, function(ve){
+      size <- ceiling((ve[1])^(1/dm))
+  gsw <- sample_smallworld(dim=2, size, nei, p)
+   degree(gsw)
+ }))
+dff2 <- data.frame(site = factor(c(rep(1, length(ncc1)), rep(2, length(ncc2)))),
+                            ncc =c(ncc1, ncc2), d=c(d1,d2) )
+ggplot(dff2, aes(d, ncc, colour=site) ) + geom_jitter()
+}
+```
