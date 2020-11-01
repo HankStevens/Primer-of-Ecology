@@ -24,7 +24,7 @@
 <meta name="author" content="Hank Stevens" />
 
 
-<meta name="date" content="2020-10-30" />
+<meta name="date" content="2020-11-01" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -316,6 +316,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="12.3.1" data-path="food-webs-and-other-networks.html"><a href="food-webs-and-other-networks.html#creating-bipartite-webs"><i class="fa fa-check"></i><b>12.3.1</b> Creating bipartite webs</a></li>
 <li class="chapter" data-level="12.3.2" data-path="food-webs-and-other-networks.html"><a href="food-webs-and-other-networks.html#testing-effects-of-nestedness-and-modularity-on-network-resilience."><i class="fa fa-check"></i><b>12.3.2</b> Testing effects of nestedness and modularity on network resilience.</a></li>
 <li class="chapter" data-level="12.3.3" data-path="food-webs-and-other-networks.html"><a href="food-webs-and-other-networks.html#path-analysis"><i class="fa fa-check"></i><b>12.3.3</b> Path Analysis</a></li>
+</ul></li>
+<li class="chapter" data-level="12.4" data-path="food-webs-and-other-networks.html"><a href="food-webs-and-other-networks.html#exploring-pandora-right-here-at-home"><i class="fa fa-check"></i><b>12.4</b> Exploring Pandora, right here at home</a><ul>
+<li class="chapter" data-level="12.4.1" data-path="food-webs-and-other-networks.html"><a href="food-webs-and-other-networks.html#properties-assessed"><i class="fa fa-check"></i><b>12.4.1</b> Properties assessed</a></li>
 </ul></li>
 </ul></li>
 <li class="chapter" data-level="13" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i><b>13</b> References</a></li>
@@ -713,8 +716,14 @@ Figure 12.10: <em>Comparing the distributions of return times for chain <strong>
 </div>
 <div id="perhaps-mutualism-stabilizes-bipartite-networks" class="section level2">
 <h2><span class="header-section-number">12.3</span> Perhaps mutualism stabilizes bipartite networks</h2>
-<p>Understanding the effects of network architecture on network resilience is a core mission of community ecology. In this section, we compare how mutualist and antagonist bipartite networks affect network resilience <span class="citation">(Thebault and Fontaine <a href="#ref-Thebault2010" role="doc-biblioref">2010</a>)</span>. A bipartite network is one in which there are two separate groups of species, in which species interact between groups, but never within groups. Two such examples would be herbivores and plants, or pollinators and plants. <span class="citation">Thebault and Fontaine (<a href="#ref-Thebault2010" role="doc-biblioref">2010</a>)</span> compared both empirical and simulated plant-pollinator and plant-herbivore bipartite webs and found they differed in the network structure and the consequences for network stability.</p>
-In the following comparison between mutualist and antagonist bipartite networks, we control for network structure, and ask whether the subsequent effects of diversity, connectance, nestedness, and modularity on resilience differ between mutualist and antagonist networks (Fig. <a href="food-webs-and-other-networks.html#fig:TandF">12.11</a>). In brief, you will find that they do.<br />
+<p>Understanding the effects of network architecture on network resilience is a core mission of community ecology. In this section, we compare how mutualist and antagonist interactions in bipartite networks affect network resilience <span class="citation">(Thebault and Fontaine <a href="#ref-Thebault2010" role="doc-biblioref">2010</a>)</span>. A bipartite network is one in which there are two separate groups of species, in which species interact between groups, but never within groups. Two such examples would be herbivores and plants, or pollinators and plants. <span class="citation">Thebault and Fontaine (<a href="#ref-Thebault2010" role="doc-biblioref">2010</a>)</span> compared both empirical and simulated plant-pollinator and plant-herbivore bipartite webs and found they differed in the network structure and the consequences for network stability.</p>
+<p>To run the code in this section, you will need to install a few more packages. If you’ve already installed them, just load them.</p>
+<div class="sourceCode" id="cb389"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb389-1"><a href="food-webs-and-other-networks.html#cb389-1"></a>pkgs &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;bipartite&quot;</span>, <span class="st">&quot;igraph&quot;</span>, <span class="st">&quot;rARPACK&quot;</span>, <span class="st">&quot;lavaan&quot;</span>, <span class="st">&quot;semPlot&quot;</span>)</span>
+<span id="cb389-2"><a href="food-webs-and-other-networks.html#cb389-2"></a><span class="co"># install.packages(pkgs)</span></span>
+<span id="cb389-3"><a href="food-webs-and-other-networks.html#cb389-3"></a><span class="kw">invisible</span>( <span class="co"># to hide messages</span></span>
+<span id="cb389-4"><a href="food-webs-and-other-networks.html#cb389-4"></a>  <span class="kw">lapply</span>(pkgs, library, <span class="dt">character.only=</span><span class="ot">TRUE</span>)</span>
+<span id="cb389-5"><a href="food-webs-and-other-networks.html#cb389-5"></a>)</span></code></pre></div>
+In the following comparison between mutualist and antagonist bipartite networks, we control for network structure, and measure direct and indirect effects of diversity, connectance, nestedness, and modularity on resilience. We can then ask whether these effects differ between mutualist and antagonist networks (Fig. <a href="food-webs-and-other-networks.html#fig:TandF">12.11</a>). In brief, you will find that they do.<br />
 
 <div class="figure"><span id="fig:TandF"></span>
 <img src="TandF.png" alt="*Possible effects of species richness, connectance, modularity, and nestedness on network resilience.*" width="50%" />
@@ -722,86 +731,96 @@ In the following comparison between mutualist and antagonist bipartite networks,
 Figure 12.11: <em>Possible effects of species richness, connectance, modularity, and nestedness on network resilience.</em>
 </p>
 </div>
-<p>Our questions are derived from <span class="citation">Thébault and Fontaine (<a href="#ref-Thebault2010a" role="doc-biblioref">2010</a>)</span>, but the approach we use is different. They simulated dynamic communities using systems of ODEs that are similar to those that we have seen in earlier chapters on mutualism and consumer-resource interactions. They include negative density dependence in plants and type II functional responses in mutualists and herbivores.</p>
-<p>We will use the approach we used earlier, that of May (1973) and <span class="citation">Pimm and Lawton (<a href="#ref-Pimm1977" role="doc-biblioref">1977</a>)</span> <span class="citation">Pimm and Lawton (<a href="#ref-Pimm1978" role="doc-biblioref">1978</a>)</span>. In this approach, we do not simulate the dynamics. Instead, we assume that the species involved coexist, and we draw their interaction strengths at random from a specified distribution. This determines their instantaneous per capita effect on each other’s population growth rate, that is, the Jacobian matrix that describes their interactions.</p>
-<p>In our approach, we will establish interactions at random, in which each pair of species (plant and animal) has the same probability of interacting. That probability is connectance (<span class="math inline">\(L/(PA)\)</span>), where <span class="math inline">\(P\)</span> and <span class="math inline">\(A\)</span> are the numbers of plants and animals in the network. This means that the structure (who is connected to whom) will be determined randomly rather than as a result of the dynamics of ODE models as in Thebault and Fontaine (2010). Further, the number of species and the connectance will both be draw at random, within specified ranges.</p>
+<p>Our questions are derived from <span class="citation">Thébault and Fontaine (<a href="#ref-Thebault2010a" role="doc-biblioref">2010</a>)</span>, but the approach we use is different. They simulated dynamic communities using systems of ODEs that are similar to those that we have seen in earlier chapters on mutualism and consumer-resource interactions. These ODEs included negative density dependence in plants and type II functional responses in mutualists and herbivores.</p>
+<p>We will use the approach we used earlier, that of May (1973), <span class="citation">Pimm and Lawton (<a href="#ref-Pimm1977" role="doc-biblioref">1977</a>)</span> and <span class="citation">Pimm and Lawton (<a href="#ref-Pimm1978" role="doc-biblioref">1978</a>)</span>. In this approach, we do not simulate the dynamics. Instead, we assume that the species coexist, and we draw their interaction strengths at random from a specified distribution. This determines their instantaneous per capita effect on each other’s population growth rate, that is, the Jacobian matrix that describes their interactions.</p>
+<p>In our approach, we will establish interactions at random, in which each pair of species (plant and animal) has the same probability of interacting. That probability is connectance (<span class="math inline">\(L/(PA)\)</span>), where <span class="math inline">\(P\)</span> and <span class="math inline">\(A\)</span> are the numbers of plants and animals in the network. Note that this measure of connectance differs from previous definitions, because we are ruling out all within-group interactions. This means that the structure (who is connected to whom) will be determined randomly rather than as a result of the dynamics of ODE models as in Thebault and Fontaine (2010). Further, the number of species and the connectance will both be draw at random, within specified ranges.</p>
 <div id="creating-bipartite-webs" class="section level3">
 <h3><span class="header-section-number">12.3.1</span> Creating bipartite webs</h3>
-<p>We’ll start by creating a toy example of a bipartite web of mutualists: plants and their pollinators.</p>
-<div class="sourceCode" id="cb389"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb389-1"><a href="food-webs-and-other-networks.html#cb389-1"></a><span class="co"># The number of species of plants</span></span>
-<span id="cb389-2"><a href="food-webs-and-other-networks.html#cb389-2"></a>Sp &lt;-<span class="st"> </span><span class="dv">5</span></span>
-<span id="cb389-3"><a href="food-webs-and-other-networks.html#cb389-3"></a><span class="co"># The number of species of pollinators</span></span>
-<span id="cb389-4"><a href="food-webs-and-other-networks.html#cb389-4"></a>Sa &lt;-<span class="st"> </span><span class="dv">12</span></span>
-<span id="cb389-5"><a href="food-webs-and-other-networks.html#cb389-5"></a><span class="co"># the total number of species</span></span>
-<span id="cb389-6"><a href="food-webs-and-other-networks.html#cb389-6"></a>S &lt;-<span class="st"> </span>Sa<span class="op">+</span>Sp</span></code></pre></div>
-<p>We then set the connectance, and then generate random interactions between species.</p>
-<div class="sourceCode" id="cb390"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb390-1"><a href="food-webs-and-other-networks.html#cb390-1"></a><span class="co"># The connectance in this web. </span></span>
-<span id="cb390-2"><a href="food-webs-and-other-networks.html#cb390-2"></a>contc &lt;-<span class="st"> </span><span class="fl">.5</span></span>
-<span id="cb390-3"><a href="food-webs-and-other-networks.html#cb390-3"></a></span>
-<span id="cb390-4"><a href="food-webs-and-other-networks.html#cb390-4"></a><span class="co"># Create interactions at random, drawing 0&#39;s and 1&#39;s with a probability of contc=0.5</span></span>
-<span id="cb390-5"><a href="food-webs-and-other-networks.html#cb390-5"></a>interactions &lt;-<span class="st"> </span><span class="kw">rbinom</span>( <span class="dt">n =</span> Sa <span class="op">*</span><span class="st"> </span>Sp, <span class="dt">size=</span><span class="dv">1</span>, <span class="dt">prob=</span>contc)</span>
-<span id="cb390-6"><a href="food-webs-and-other-networks.html#cb390-6"></a></span>
-<span id="cb390-7"><a href="food-webs-and-other-networks.html#cb390-7"></a><span class="co"># Put those connections into our web</span></span>
-<span id="cb390-8"><a href="food-webs-and-other-networks.html#cb390-8"></a>bip.network &lt;-<span class="st"> </span><span class="kw">matrix</span>(interactions, <span class="dt">nrow=</span>Sp, <span class="dt">ncol=</span>Sa)</span>
-<span id="cb390-9"><a href="food-webs-and-other-networks.html#cb390-9"></a><span class="kw">rownames</span>(bip.network) &lt;-<span class="st"> </span><span class="kw">paste</span>(<span class="st">&quot;plant&quot;</span>, LETTERS[<span class="dv">1</span><span class="op">:</span>Sp], <span class="dt">sep=</span><span class="st">&quot;&quot;</span>)</span>
-<span id="cb390-10"><a href="food-webs-and-other-networks.html#cb390-10"></a><span class="kw">colnames</span>(bip.network) &lt;-<span class="st"> </span><span class="kw">paste</span>(<span class="st">&quot;bug&quot;</span>, LETTERS[<span class="dv">1</span><span class="op">:</span>Sa], <span class="dt">sep=</span><span class="st">&quot;&quot;</span>)</span>
-<span id="cb390-11"><a href="food-webs-and-other-networks.html#cb390-11"></a><span class="co">#...and look at it</span></span>
-<span id="cb390-12"><a href="food-webs-and-other-networks.html#cb390-12"></a>bip.network</span></code></pre></div>
+<p>We’ll start by demonstrating a toy example of a bipartite web of mutualists: plants and their pollinators. We select the numbers of species and the connectance.</p>
+<div class="sourceCode" id="cb390"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb390-1"><a href="food-webs-and-other-networks.html#cb390-1"></a><span class="co"># The number of species of plants</span></span>
+<span id="cb390-2"><a href="food-webs-and-other-networks.html#cb390-2"></a>Sp &lt;-<span class="st"> </span><span class="dv">5</span></span>
+<span id="cb390-3"><a href="food-webs-and-other-networks.html#cb390-3"></a><span class="co"># The number of species of pollinators</span></span>
+<span id="cb390-4"><a href="food-webs-and-other-networks.html#cb390-4"></a>Sa &lt;-<span class="st"> </span><span class="dv">12</span></span>
+<span id="cb390-5"><a href="food-webs-and-other-networks.html#cb390-5"></a><span class="co"># the total number of species</span></span>
+<span id="cb390-6"><a href="food-webs-and-other-networks.html#cb390-6"></a>S &lt;-<span class="st"> </span>Sa<span class="op">+</span>Sp</span>
+<span id="cb390-7"><a href="food-webs-and-other-networks.html#cb390-7"></a></span>
+<span id="cb390-8"><a href="food-webs-and-other-networks.html#cb390-8"></a><span class="co"># The connectance in this web. </span></span>
+<span id="cb390-9"><a href="food-webs-and-other-networks.html#cb390-9"></a>contc &lt;-<span class="st"> </span><span class="fl">.4</span></span></code></pre></div>
+<p>We then generate random interactions between species using the <em>binomial distribution</em>. This is the distribution of coin flips or rolling of die. If we want to flip a single fair coin ten times, we can use <code>rbinom()</code>.</p>
+<div class="sourceCode" id="cb391"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb391-1"><a href="food-webs-and-other-networks.html#cb391-1"></a><span class="co"># size is the number of coins to flip at once.</span></span>
+<span id="cb391-2"><a href="food-webs-and-other-networks.html#cb391-2"></a><span class="kw">rbinom</span>(<span class="dt">n=</span><span class="dv">10</span>, <span class="dt">size =</span> <span class="dv">1</span>, <span class="dt">prob=</span><span class="fl">0.5</span> )</span></code></pre></div>
+<pre><code>##  [1] 1 1 0 0 1 1 1 1 0 0</code></pre>
+<p>We say this is “ten observations of 1 trial”.</p>
+<p>If we want to flip 10 coins all at once and count the number of heads, we could do this:</p>
+<div class="sourceCode" id="cb393"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb393-1"><a href="food-webs-and-other-networks.html#cb393-1"></a><span class="co"># size is the number of coins to flip at once.</span></span>
+<span id="cb393-2"><a href="food-webs-and-other-networks.html#cb393-2"></a><span class="kw">rbinom</span>(<span class="dt">n=</span><span class="dv">1</span>, <span class="dt">size =</span> <span class="dv">10</span>, <span class="dt">prob=</span><span class="fl">0.5</span> )</span></code></pre></div>
+<pre><code>## [1] 5</code></pre>
+<p>We would say this is “one observation of ten trials”.</p>
+<p>For our bipartite web, we will create <code>Sa * Sp</code> coin flips or observations of one trial, each with the probability of 0.4 of getting a link.</p>
+<div class="sourceCode" id="cb395"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb395-1"><a href="food-webs-and-other-networks.html#cb395-1"></a><span class="co"># Create interactions at random, drawing 0&#39;s and 1&#39;s with a probability of contc=0.5</span></span>
+<span id="cb395-2"><a href="food-webs-and-other-networks.html#cb395-2"></a>interactions &lt;-<span class="st"> </span><span class="kw">rbinom</span>( <span class="dt">n =</span> Sa <span class="op">*</span><span class="st"> </span>Sp, <span class="dt">size=</span><span class="dv">1</span>, <span class="dt">prob=</span>contc)</span></code></pre></div>
+<p>We create a matrix with these links (and no links). This will create our topology.</p>
+<div class="sourceCode" id="cb396"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb396-1"><a href="food-webs-and-other-networks.html#cb396-1"></a>bip.network &lt;-<span class="st"> </span><span class="kw">matrix</span>(interactions, <span class="dt">nrow=</span>Sp, <span class="dt">ncol=</span>Sa)</span>
+<span id="cb396-2"><a href="food-webs-and-other-networks.html#cb396-2"></a><span class="kw">rownames</span>(bip.network) &lt;-<span class="st"> </span><span class="kw">paste</span>(<span class="st">&quot;plant&quot;</span>, LETTERS[<span class="dv">1</span><span class="op">:</span>Sp], <span class="dt">sep=</span><span class="st">&quot;&quot;</span>)</span>
+<span id="cb396-3"><a href="food-webs-and-other-networks.html#cb396-3"></a><span class="kw">colnames</span>(bip.network) &lt;-<span class="st"> </span><span class="kw">paste</span>(<span class="st">&quot;bug&quot;</span>, LETTERS[<span class="dv">1</span><span class="op">:</span>Sa], <span class="dt">sep=</span><span class="st">&quot;&quot;</span>)</span>
+<span id="cb396-4"><a href="food-webs-and-other-networks.html#cb396-4"></a><span class="co">#...and look at it</span></span>
+<span id="cb396-5"><a href="food-webs-and-other-networks.html#cb396-5"></a>bip.network</span></code></pre></div>
 <pre><code>##        bugA bugB bugC bugD bugE bugF bugG bugH bugI bugJ bugK bugL
-## plantA    1    1    0    0    1    0    1    0    0    1    1    1
-## plantB    1    1    1    0    0    1    1    0    0    1    0    0
-## plantC    0    1    0    0    0    1    0    1    0    0    0    1
-## plantD    0    0    0    1    1    0    0    1    1    0    0    1
-## plantE    1    0    0    1    0    0    0    1    0    0    0    1</code></pre>
-<p>Now that we have randomly constructed topology, let’s create a realistic assumption about <em>how much</em> each of the pollinators interact with those plant species. It is generally observed that most interactions are weak (e.g., infrequent visits) and a few are strong (e.g., frequent visits). That pattern can be approximated by an exponential distribution. We will create those interactions and then plot them.</p>
-<div class="sourceCode" id="cb392"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb392-1"><a href="food-webs-and-other-networks.html#cb392-1"></a><span class="co"># Exponentially distributed of interaction strengths</span></span>
-<span id="cb392-2"><a href="food-webs-and-other-networks.html#cb392-2"></a><span class="co"># Random numbers from and exponential distribution</span></span>
-<span id="cb392-3"><a href="food-webs-and-other-networks.html#cb392-3"></a>x &lt;-<span class="st"> </span><span class="kw">rexp</span>(Sa<span class="op">*</span>Sp)</span>
-<span id="cb392-4"><a href="food-webs-and-other-networks.html#cb392-4"></a></span>
-<span id="cb392-5"><a href="food-webs-and-other-networks.html#cb392-5"></a><span class="co"># express these as a probability distribution (divide by the sum)</span></span>
-<span id="cb392-6"><a href="food-webs-and-other-networks.html#cb392-6"></a>xp &lt;-<span class="st"> </span>x<span class="op">/</span><span class="kw">sum</span>(x)</span>
-<span id="cb392-7"><a href="food-webs-and-other-networks.html#cb392-7"></a></span>
-<span id="cb392-8"><a href="food-webs-and-other-networks.html#cb392-8"></a><span class="co"># assign those exponential probabilities to our interactions,</span></span>
-<span id="cb392-9"><a href="food-webs-and-other-networks.html#cb392-9"></a><span class="co"># creating the Quantitative network</span></span>
-<span id="cb392-10"><a href="food-webs-and-other-networks.html#cb392-10"></a>bip.networkQ &lt;-<span class="st"> </span>bip.network <span class="op">*</span><span class="st"> </span>xp</span></code></pre></div>
+## plantA    0    0    0    1    1    0    0    1    0    0    0    0
+## plantB    0    0    0    1    0    1    0    0    0    0    1    0
+## plantC    0    0    1    0    0    0    1    0    0    0    1    0
+## plantD    0    1    0    0    0    1    0    0    0    1    0    0
+## plantE    0    1    0    1    0    0    0    0    1    0    1    0</code></pre>
+<p>Your web may have species that do not interact with any others; that’s okay for now. One day, you might have data like that.</p>
+<p>Now let’s add interaction strength. We’ll rely on a semi-realistic assumption about <em>how much</em> each of the pollinators interact with those plant species. It is generally observed that most interactions are weak (e.g., infrequent visits) and a few are strong (e.g., frequent visits). That pattern can be approximated by an exponential distribution. We will create those interactions and then plot them.</p>
+<div class="sourceCode" id="cb398"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb398-1"><a href="food-webs-and-other-networks.html#cb398-1"></a><span class="co"># Exponentially distributed of interaction strengths</span></span>
+<span id="cb398-2"><a href="food-webs-and-other-networks.html#cb398-2"></a><span class="co"># Random numbers from and exponential distribution</span></span>
+<span id="cb398-3"><a href="food-webs-and-other-networks.html#cb398-3"></a>xp &lt;-<span class="st"> </span><span class="kw">rexp</span>(Sa<span class="op">*</span>Sp)</span>
+<span id="cb398-4"><a href="food-webs-and-other-networks.html#cb398-4"></a></span>
+<span id="cb398-5"><a href="food-webs-and-other-networks.html#cb398-5"></a><span class="co"># express these as a probability distribution (divide by the sum)</span></span>
+<span id="cb398-6"><a href="food-webs-and-other-networks.html#cb398-6"></a>xp &lt;-<span class="st"> </span>xp<span class="op">/</span><span class="kw">sum</span>(xp)</span>
+<span id="cb398-7"><a href="food-webs-and-other-networks.html#cb398-7"></a></span>
+<span id="cb398-8"><a href="food-webs-and-other-networks.html#cb398-8"></a><span class="co"># assign those exponential probabilities to our interactions,</span></span>
+<span id="cb398-9"><a href="food-webs-and-other-networks.html#cb398-9"></a><span class="co"># creating the Quantitative network</span></span>
+<span id="cb398-10"><a href="food-webs-and-other-networks.html#cb398-10"></a>bip.networkQ &lt;-<span class="st"> </span>bip.network <span class="op">*</span><span class="st"> </span>xp</span></code></pre></div>
 <p>Next we can make some pretty pictures of this web. To do this, you’ll need to load the <code>bipartite</code> package.</p>
-<div class="sourceCode" id="cb393"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb393-1"><a href="food-webs-and-other-networks.html#cb393-1"></a>{</span>
-<span id="cb393-2"><a href="food-webs-and-other-networks.html#cb393-2"></a>  <span class="co"># library(bipartite) if needed</span></span>
-<span id="cb393-3"><a href="food-webs-and-other-networks.html#cb393-3"></a>  <span class="co"># visweb and plotweb are in the bipartite package</span></span>
-<span id="cb393-4"><a href="food-webs-and-other-networks.html#cb393-4"></a>  <span class="kw">layout</span>(<span class="kw">matrix</span>(<span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">4</span>), <span class="dt">nc=</span><span class="dv">2</span>, <span class="dt">byrow=</span><span class="ot">TRUE</span>) )</span>
-<span id="cb393-5"><a href="food-webs-and-other-networks.html#cb393-5"></a>  <span class="kw">hist</span>(bip.networkQ, <span class="dt">main=</span><span class="st">&quot;&quot;</span>, <span class="dt">xlab=</span><span class="st">&quot;interaction strength&quot;</span>)</span>
-<span id="cb393-6"><a href="food-webs-and-other-networks.html#cb393-6"></a>  bipartite<span class="op">::</span><span class="kw">plotweb</span>(bip.networkQ, <span class="dt">method=</span><span class="st">&#39;normal&#39;</span>) </span>
-<span id="cb393-7"><a href="food-webs-and-other-networks.html#cb393-7"></a>  bipartite<span class="op">::</span><span class="kw">visweb</span>(bip.networkQ, <span class="dt">type=</span><span class="st">&#39;nested&#39;</span>)</span>
-<span id="cb393-8"><a href="food-webs-and-other-networks.html#cb393-8"></a>  bipartite<span class="op">::</span><span class="kw">visweb</span>(bip.networkQ, <span class="dt">type=</span><span class="st">&#39;diagonal&#39;</span>)</span>
-<span id="cb393-9"><a href="food-webs-and-other-networks.html#cb393-9"></a>  }</span></code></pre></div>
+<div class="sourceCode" id="cb399"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb399-1"><a href="food-webs-and-other-networks.html#cb399-1"></a>{</span>
+<span id="cb399-2"><a href="food-webs-and-other-networks.html#cb399-2"></a>  <span class="co"># library(bipartite) if needed</span></span>
+<span id="cb399-3"><a href="food-webs-and-other-networks.html#cb399-3"></a>  <span class="co"># visweb and plotweb are in the bipartite package</span></span>
+<span id="cb399-4"><a href="food-webs-and-other-networks.html#cb399-4"></a>  <span class="kw">layout</span>(<span class="kw">matrix</span>(<span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">4</span>), <span class="dt">nc=</span><span class="dv">2</span>, <span class="dt">byrow=</span><span class="ot">TRUE</span>) )</span>
+<span id="cb399-5"><a href="food-webs-and-other-networks.html#cb399-5"></a>  <span class="kw">hist</span>(bip.networkQ, <span class="dt">main=</span><span class="st">&quot;&quot;</span>, <span class="dt">xlab=</span><span class="st">&quot;interaction strength&quot;</span>)</span>
+<span id="cb399-6"><a href="food-webs-and-other-networks.html#cb399-6"></a>  bipartite<span class="op">::</span><span class="kw">plotweb</span>(bip.networkQ, <span class="dt">method=</span><span class="st">&#39;normal&#39;</span>) </span>
+<span id="cb399-7"><a href="food-webs-and-other-networks.html#cb399-7"></a>  bipartite<span class="op">::</span><span class="kw">visweb</span>(bip.networkQ, <span class="dt">type=</span><span class="st">&#39;nested&#39;</span>)</span>
+<span id="cb399-8"><a href="food-webs-and-other-networks.html#cb399-8"></a>  bipartite<span class="op">::</span><span class="kw">visweb</span>(bip.networkQ, <span class="dt">type=</span><span class="st">&#39;diagonal&#39;</span>)</span>
+<span id="cb399-9"><a href="food-webs-and-other-networks.html#cb399-9"></a>  }</span></code></pre></div>
 <div class="figure"><span id="fig:toys"></span>
 <img src="figs/toys-1.png" alt="*Illustrations of a hypothetical plant-pollinator network. The two matrices organize the species to highlight either nestedness (left) or modularity (right).*" width="90%" />
 <p class="caption">
 Figure 12.12: <em>Illustrations of a hypothetical plant-pollinator network. The two matrices organize the species to highlight either nestedness (left) or modularity (right).</em>
 </p>
 </div>
-<p>To measure the nestedness and the modularity, we use functions from packages <code>igraph</code>.</p>
-<div class="sourceCode" id="cb394"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb394-1"><a href="food-webs-and-other-networks.html#cb394-1"></a><span class="co"># Nestedness:</span></span>
-<span id="cb394-2"><a href="food-webs-and-other-networks.html#cb394-2"></a><span class="co"># quant. version of NODF  (Almeida-Neto et al. 2008, 2011)</span></span>
-<span id="cb394-3"><a href="food-webs-and-other-networks.html#cb394-3"></a><span class="kw">networklevel</span>(bip.networkQ, <span class="dt">index=</span><span class="kw">c</span>(<span class="st">&quot;weighted NODF&quot;</span>))</span></code></pre></div>
+<p>There are several good network packages in R. We will use <code>bipartite</code> and <code>igraph</code>. Here we will measure the nestedness and the modularity using functions from package <code>bipartite</code>.</p>
+<div class="sourceCode" id="cb400"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb400-1"><a href="food-webs-and-other-networks.html#cb400-1"></a><span class="co"># Nestedness:</span></span>
+<span id="cb400-2"><a href="food-webs-and-other-networks.html#cb400-2"></a><span class="co"># quant. version of NODF  (Almeida-Neto et al. 2008, 2011)</span></span>
+<span id="cb400-3"><a href="food-webs-and-other-networks.html#cb400-3"></a><span class="kw">networklevel</span>(bip.networkQ, <span class="dt">index=</span><span class="kw">c</span>(<span class="st">&quot;weighted NODF&quot;</span>))</span></code></pre></div>
 <pre><code>## weighted NODF 
-##      23.07018</code></pre>
-<div class="sourceCode" id="cb396"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb396-1"><a href="food-webs-and-other-networks.html#cb396-1"></a><span class="kw">metaComputeModules</span>(bip.networkQ, <span class="dt">N=</span><span class="dv">5</span>, <span class="dt">method=</span><span class="st">&quot;Beckett&quot;</span>) <span class="op">@</span><span class="st"> </span>likelihood</span></code></pre></div>
-<pre><code>## [1] 0.4902305</code></pre>
-<p>This measure of nestedness (WNODF, <span class="citation">(<span class="citeproc-not-found" data-reference-id="Almeido2011"><strong>???</strong></span>)</span>) varies between 0 and 100 for completely nonnested and nested networks. This measure of modularity varies between 0 and 1 for completely non-modular and modular networks.</p>
+##      7.272727</code></pre>
+<div class="sourceCode" id="cb402"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb402-1"><a href="food-webs-and-other-networks.html#cb402-1"></a><span class="kw">metaComputeModules</span>(bip.networkQ, <span class="dt">N=</span><span class="dv">5</span>, <span class="dt">method=</span><span class="st">&quot;Beckett&quot;</span>) <span class="op">@</span><span class="st"> </span>likelihood</span></code></pre></div>
+<pre><code>## [1] 0.5686917</code></pre>
+<p>This measure of nestedness (WNODF, <span class="citation">Almeida-Neto and Ulrich (<a href="#ref-AlmeidaNeto2011" role="doc-biblioref">2011</a>)</span>) varies between 0 and 100 for completely nonnested and nested networks. This measure of modularity varies between 0 and 1 for completely non-modular and modular networks.</p>
 <p>To measure stability of this plant by animal matrix, we first convert it to a square matrix, add a little negative denisty dependence, and then use eigenanalysis to find the dominant eigenvalue.</p>
-<div class="sourceCode" id="cb398"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb398-1"><a href="food-webs-and-other-networks.html#cb398-1"></a>n &lt;-<span class="st"> </span><span class="kw">matrix</span>(<span class="dv">0</span>, <span class="dt">nr=</span>S, <span class="dt">nc=</span>S) </span>
-<span id="cb398-2"><a href="food-webs-and-other-networks.html#cb398-2"></a><span class="co"># upper triangular part</span></span>
-<span id="cb398-3"><a href="food-webs-and-other-networks.html#cb398-3"></a>n[<span class="dv">1</span><span class="op">:</span>Sp, (Sp<span class="op">+</span><span class="dv">1</span>)<span class="op">:</span>S] &lt;-<span class="st"> </span>bip.networkQ</span>
-<span id="cb398-4"><a href="food-webs-and-other-networks.html#cb398-4"></a><span class="co"># lower triangular part</span></span>
-<span id="cb398-5"><a href="food-webs-and-other-networks.html#cb398-5"></a>n[(Sp<span class="op">+</span><span class="dv">1</span>)<span class="op">:</span>S, <span class="dv">1</span><span class="op">:</span>Sp] &lt;-<span class="st"> </span><span class="kw">t</span>(bip.networkQ) </span>
-<span id="cb398-6"><a href="food-webs-and-other-networks.html#cb398-6"></a><span class="co"># Add negative density dependence that is the </span></span>
-<span id="cb398-7"><a href="food-webs-and-other-networks.html#cb398-7"></a><span class="co"># same magnitude as other species interactions</span></span>
-<span id="cb398-8"><a href="food-webs-and-other-networks.html#cb398-8"></a><span class="kw">diag</span>(n) &lt;-<span class="st"> </span><span class="dv">-1</span><span class="op">*</span><span class="kw">max</span>(<span class="kw">rowSums</span>(n))</span>
-<span id="cb398-9"><a href="food-webs-and-other-networks.html#cb398-9"></a></span>
-<span id="cb398-10"><a href="food-webs-and-other-networks.html#cb398-10"></a><span class="co">#Calculate stability</span></span>
-<span id="cb398-11"><a href="food-webs-and-other-networks.html#cb398-11"></a><span class="kw">Re</span>(<span class="kw">eigen</span>(n)<span class="op">$</span>values[<span class="dv">1</span>])</span></code></pre></div>
-<pre><code>## [1] -0.02928834</code></pre>
+<div class="sourceCode" id="cb404"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb404-1"><a href="food-webs-and-other-networks.html#cb404-1"></a>n &lt;-<span class="st"> </span><span class="kw">matrix</span>(<span class="dv">0</span>, <span class="dt">nr=</span>S, <span class="dt">nc=</span>S) </span>
+<span id="cb404-2"><a href="food-webs-and-other-networks.html#cb404-2"></a><span class="co"># upper triangular part</span></span>
+<span id="cb404-3"><a href="food-webs-and-other-networks.html#cb404-3"></a>n[<span class="dv">1</span><span class="op">:</span>Sp, (Sp<span class="op">+</span><span class="dv">1</span>)<span class="op">:</span>S] &lt;-<span class="st"> </span>bip.networkQ</span>
+<span id="cb404-4"><a href="food-webs-and-other-networks.html#cb404-4"></a><span class="co"># lower triangular part</span></span>
+<span id="cb404-5"><a href="food-webs-and-other-networks.html#cb404-5"></a>n[(Sp<span class="op">+</span><span class="dv">1</span>)<span class="op">:</span>S, <span class="dv">1</span><span class="op">:</span>Sp] &lt;-<span class="st"> </span><span class="kw">t</span>(bip.networkQ) </span>
+<span id="cb404-6"><a href="food-webs-and-other-networks.html#cb404-6"></a><span class="co"># Add negative density dependence that is the </span></span>
+<span id="cb404-7"><a href="food-webs-and-other-networks.html#cb404-7"></a><span class="co"># same magnitude as other species interactions</span></span>
+<span id="cb404-8"><a href="food-webs-and-other-networks.html#cb404-8"></a><span class="kw">diag</span>(n) &lt;-<span class="st"> </span><span class="dv">-1</span><span class="op">*</span><span class="kw">max</span>(<span class="kw">rowSums</span>(n))</span>
+<span id="cb404-9"><a href="food-webs-and-other-networks.html#cb404-9"></a></span>
+<span id="cb404-10"><a href="food-webs-and-other-networks.html#cb404-10"></a><span class="co">#Calculate stability</span></span>
+<span id="cb404-11"><a href="food-webs-and-other-networks.html#cb404-11"></a><span class="kw">Re</span>(<span class="kw">eigen</span>(n)<span class="op">$</span>values[<span class="dv">1</span>])</span></code></pre></div>
+<pre><code>## [1] -0.02598075</code></pre>
 <p>That is just an example of the type of network we will create in our simulation—we create a bipartite web with a random number of species, and random connectance, each within specified bounds.</p>
 </div>
 <div id="testing-effects-of-nestedness-and-modularity-on-network-resilience." class="section level3">
@@ -810,117 +829,257 @@ Figure 12.12: <em>Illustrations of a hypothetical plant-pollinator network. The 
 <p>We simulate 1000 random bipartite webs using a large number of different numbers of plant and animal species. We select a connectance by drawing randomly from a uniform distribution between the values in argument <code>C</code>.</p>
 <p>When we generate a random network, we save one version that represents mutualists (+,+), and then we reverse the sign for the effect of the animal to represent herbivory (+,-).</p>
 <p>The function <code>bip_stability()</code> performs eigananalysis on the resulting Jacobian matrix to estimate <em>resilience</em>, which we define as the negative of the real part of the dominant eigenvalue. This way, greater resilience is a larger positive number. It calculates the resilience for both the mutualist and the herbivorous versions of each random network. It also calculates <em>nestedness</em> and <em>modularity</em> in ways similar to that in Thebault and Fontaine (2010). It can calculate modularity in two ways, using either the binary adjacency matrix (ones and zeroes) or a quantitative matrix; the latter takes much moore time to calculate, so it uses the binary matrix by default. It also tallies diversity as the total number of species and the connectance as the total number of links divided by the number of possible links.</p>
-<p>To use <code>bip_stability</code> and analyse the results, you will need to install a few more packages. If you’ve already installed them, you have nothing to do.</p>
-<div class="sourceCode" id="cb400"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb400-1"><a href="food-webs-and-other-networks.html#cb400-1"></a><span class="co"># pkgs &lt;- c(&quot;bipartite&quot;, &quot;igraph&quot;, &quot;rARPACK&quot;, &quot;lavvan&quot;, &quot;semPlot&quot;)</span></span>
-<span id="cb400-2"><a href="food-webs-and-other-networks.html#cb400-2"></a><span class="co"># install.packages(pkgs)</span></span></code></pre></div>
-<p>This package has several arguments which you can see described in the help file. Among them are
+<p>This function has several arguments which you can see described in the help file. Among them are
 * <code>Spp.a</code> and <code>Spp.p</code>: vectors from which the numbers of animal and plant species are drawn at random,
 * <code>C</code>: a two-element vector provide the min and max of possible connectances drawn at random,
 * <code>reps</code>: the number of random networks to create.</p>
 <p>Here we use it to generate 1000 random webs. We will then use those to examine the relations between various emergent properties of the networks.</p>
-<div class="sourceCode" id="cb401"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb401-1"><a href="food-webs-and-other-networks.html#cb401-1"></a><span class="kw">library</span>(primer)</span>
-<span id="cb401-2"><a href="food-webs-and-other-networks.html#cb401-2"></a>b &lt;-<span class="st"> </span><span class="kw">bip_stability</span>(<span class="dt">Spp.a =</span> <span class="dv">16</span><span class="op">:</span><span class="dv">60</span>, <span class="dt">Spp.p =</span> <span class="dv">8</span><span class="op">:</span><span class="dv">30</span>, <span class="dt">C=</span><span class="kw">c</span>(.<span class="dv">05</span>, <span class="fl">0.5</span>), <span class="dt">reps=</span><span class="dv">100</span>, <span class="dt">quant=</span><span class="ot">FALSE</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb406"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb406-1"><a href="food-webs-and-other-networks.html#cb406-1"></a><span class="co">#library(primer)</span></span>
+<span id="cb406-2"><a href="food-webs-and-other-networks.html#cb406-2"></a>b &lt;-<span class="st"> </span><span class="kw">bip_stability</span>(<span class="dt">Spp.a =</span> <span class="dv">16</span><span class="op">:</span><span class="dv">60</span>, <span class="dt">Spp.p =</span> <span class="dv">8</span><span class="op">:</span><span class="dv">30</span>, <span class="dt">C=</span><span class="kw">c</span>(.<span class="dv">05</span>, <span class="fl">0.5</span>), <span class="dt">reps=</span><span class="dv">5000</span>, <span class="dt">quant=</span><span class="ot">FALSE</span>)</span></code></pre></div>
 <p>We can get a summary of the output of the 1000 simulated webs here.</p>
-<div class="sourceCode" id="cb402"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb402-1"><a href="food-webs-and-other-networks.html#cb402-1"></a><span class="kw">summary</span>(b)</span></code></pre></div>
-<pre><code>##        S               C             modularity       nestedness    
-##  Min.   :25.00   Min.   :0.09217   Min.   :0.0000   Min.   : 2.778  
-##  1st Qu.:44.00   1st Qu.:0.18290   1st Qu.:0.0000   1st Qu.: 8.874  
-##  Median :57.50   Median :0.25020   Median :0.1289   Median :13.130  
-##  Mean   :56.19   Mean   :0.26618   Mean   :0.2002   Mean   :13.561  
-##  3rd Qu.:69.00   3rd Qu.:0.34804   3rd Qu.:0.3984   3rd Qu.:18.628  
-##  Max.   :87.00   Max.   :0.50850   Max.   :0.7489   Max.   :28.227  
+<div class="sourceCode" id="cb407"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb407-1"><a href="food-webs-and-other-networks.html#cb407-1"></a><span class="kw">summary</span>(b)</span></code></pre></div>
+<pre><code>##        S               C             modularity        nestedness    
+##  Min.   :13.00   Min.   :0.06491   Min.   :0.00000   Min.   : 0.000  
+##  1st Qu.:42.00   1st Qu.:0.17867   1st Qu.:0.00000   1st Qu.: 9.158  
+##  Median :54.00   Median :0.27190   Median :0.09162   Median :14.362  
+##  Mean   :54.56   Mean   :0.28361   Mean   :0.19515   Mean   :14.465  
+##  3rd Qu.:67.00   3rd Qu.:0.38816   3rd Qu.:0.37102   3rd Qu.:19.855  
+##  Max.   :90.00   Max.   :0.56818   Max.   :0.85802   Max.   :32.335  
 ##   resilience.m       resilience.h     
-##  Min.   :0.006857   Min.   :0.004284  
-##  1st Qu.:0.024364   1st Qu.:0.011981  
-##  Median :0.032009   Median :0.015025  
-##  Mean   :0.035159   Mean   :0.016767  
-##  3rd Qu.:0.042864   3rd Qu.:0.021233  
-##  Max.   :0.067793   Max.   :0.036620</code></pre>
-<p>Are these webs stable? What are the medians and ranges of each of the web properties? How do the resiliences of the two interaction types differ?</p>
-<p>We can also graph these relations.</p>
-<div class="sourceCode" id="cb404"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb404-1"><a href="food-webs-and-other-networks.html#cb404-1"></a><span class="kw">pairs</span>(b)</span></code></pre></div>
-<p><img src="figs/unnamed-chunk-190-1.png" width="90%" /></p>
+##  Min.   :0.003216   Min.   :0.001893  
+##  1st Qu.:0.019222   1st Qu.:0.013289  
+##  Median :0.026624   Median :0.019060  
+##  Mean   :0.027845   Mean   :0.020408  
+##  3rd Qu.:0.035156   3rd Qu.:0.026141  
+##  Max.   :0.069583   Max.   :0.057484</code></pre>
+<p>Are these webs stable? What are the means, medians and ranges of each of the web properties? What is the percent differences in the resiliences of the two interaction types?</p>
+<p>We can also graph the pairwise relations.</p>
+<div class="sourceCode" id="cb409"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb409-1"><a href="food-webs-and-other-networks.html#cb409-1"></a><span class="kw">pairs</span>(b)</span></code></pre></div>
+<p><img src="figs/unnamed-chunk-193-1.png" width="90%" /></p>
 <p>If you have a copy of Thebault and Fontaine (2010), you might check whether the above relations are similar to theirs.</p>
 </div>
 <div id="path-analysis" class="section level3">
 <h3><span class="header-section-number">12.3.3</span> Path Analysis</h3>
 <p>Now we do the same sort of analysis that Thebault and Fontaine did to get their Fig. 2 C,D. Path analysis is a relatively simple way to model sets of correlations among dependent variables. To do this, we will use the <code>lavaan</code> package.</p>
 <p>If we look above, we see curvature in some of the relations. In simple path analysis, as in Thebault and Fontaine, these relations are assumed to be linear. Here we transform these data a tad to help linearize these relations.</p>
-<div class="sourceCode" id="cb405"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb405-1"><a href="food-webs-and-other-networks.html#cb405-1"></a>out.tr &lt;-<span class="st"> </span>(b)<span class="op">^</span>.<span class="dv">75</span></span>
-<span id="cb405-2"><a href="food-webs-and-other-networks.html#cb405-2"></a><span class="kw">pairs</span>( out.tr )</span></code></pre></div>
-<p><img src="figs/unnamed-chunk-191-1.png" width="90%" /></p>
+<div class="sourceCode" id="cb410"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb410-1"><a href="food-webs-and-other-networks.html#cb410-1"></a>out.tr &lt;-<span class="st"> </span>(b)<span class="op">^</span>.<span class="dv">75</span></span></code></pre></div>
 <p>We next scale our data so that all variables have a mean of zero and a standard deviation of 1. This will simplify the interpretation of the path analysis output: the regression coefficients partial correlation coefficients and will be effect sizes that are each comparable to the others.</p>
-<div class="sourceCode" id="cb406"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb406-1"><a href="food-webs-and-other-networks.html#cb406-1"></a>dat &lt;-<span class="st"> </span><span class="kw">data.frame</span>( <span class="kw">scale</span>(out.tr) ) </span></code></pre></div>
+<div class="sourceCode" id="cb411"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb411-1"><a href="food-webs-and-other-networks.html#cb411-1"></a>dat &lt;-<span class="st"> </span><span class="kw">data.frame</span>( <span class="kw">scale</span>(out.tr) ) </span></code></pre></div>
 <p>We specify each of the relationships, where <code>y ~ x</code> is “y as a function of x”. We then fit the model and get the path coefficients.</p>
 <p>To mimic Thebault and Fontaine, we will include all and only the interactions in their figure 2. We start with the mutualism web. Start by loading the <code>lavaan</code> package if you haven’t previously.</p>
-<div class="sourceCode" id="cb407"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb407-1"><a href="food-webs-and-other-networks.html#cb407-1"></a><span class="co"># library(lavvan)</span></span>
-<span id="cb407-2"><a href="food-webs-and-other-networks.html#cb407-2"></a><span class="co"># Step 1: Specify model</span></span>
-<span id="cb407-3"><a href="food-webs-and-other-networks.html#cb407-3"></a>model &lt;-<span class="st"> &#39;resilience.m ~ nestedness + modularity + S + C</span></span>
-<span id="cb407-4"><a href="food-webs-and-other-networks.html#cb407-4"></a><span class="st">          nestedness ~  S + C</span></span>
-<span id="cb407-5"><a href="food-webs-and-other-networks.html#cb407-5"></a><span class="st">          modularity ~ S + C &#39;</span></span>
-<span id="cb407-6"><a href="food-webs-and-other-networks.html#cb407-6"></a></span>
-<span id="cb407-7"><a href="food-webs-and-other-networks.html#cb407-7"></a><span class="co"># Step 2: Estimate model of mutualism</span></span>
-<span id="cb407-8"><a href="food-webs-and-other-networks.html#cb407-8"></a>mod.m.fit &lt;-<span class="st"> </span><span class="kw">sem</span>(model, <span class="dt">data=</span>dat)</span>
-<span id="cb407-9"><a href="food-webs-and-other-networks.html#cb407-9"></a><span class="kw">coef</span>(mod.m.fit)</span></code></pre></div>
+<div class="sourceCode" id="cb412"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb412-1"><a href="food-webs-and-other-networks.html#cb412-1"></a><span class="co"># library(lavvan)</span></span>
+<span id="cb412-2"><a href="food-webs-and-other-networks.html#cb412-2"></a><span class="co"># Step 1: Specify model</span></span>
+<span id="cb412-3"><a href="food-webs-and-other-networks.html#cb412-3"></a>model.m &lt;-<span class="st"> &#39;resilience.m ~ nestedness + modularity + S + C</span></span>
+<span id="cb412-4"><a href="food-webs-and-other-networks.html#cb412-4"></a><span class="st">          nestedness ~  S + C</span></span>
+<span id="cb412-5"><a href="food-webs-and-other-networks.html#cb412-5"></a><span class="st">          modularity ~ S + C &#39;</span></span>
+<span id="cb412-6"><a href="food-webs-and-other-networks.html#cb412-6"></a></span>
+<span id="cb412-7"><a href="food-webs-and-other-networks.html#cb412-7"></a><span class="co"># Step 2: Estimate model of mutualism</span></span>
+<span id="cb412-8"><a href="food-webs-and-other-networks.html#cb412-8"></a>mod.m.fit &lt;-<span class="st"> </span><span class="kw">sem</span>(model.m, <span class="dt">data=</span>dat)</span>
+<span id="cb412-9"><a href="food-webs-and-other-networks.html#cb412-9"></a><span class="kw">coef</span>(mod.m.fit)</span></code></pre></div>
 <pre><code>##    resilience.m~nestedness    resilience.m~modularity 
-##                      0.089                      0.183 
+##                      0.095                      0.129 
 ##             resilience.m~S             resilience.m~C 
-##                      0.662                      0.723 
+##                      0.621                      0.684 
 ##               nestedness~S               nestedness~C 
-##                      0.069                      0.953 
+##                      0.062                      0.959 
 ##               modularity~S               modularity~C 
-##                     -0.371                     -0.811 
+##                     -0.324                     -0.828 
 ## resilience.m~~resilience.m     nestedness~~nestedness 
-##                      0.135                      0.076 
+##                      0.125                      0.064 
 ##     modularity~~modularity 
-##                      0.155</code></pre>
-<p>Look at the estimates of the regressions. Those are the path coefficients.</p>
-<p>Now it is up to you to get a pencil and paper and draw the picture….</p>
+##                      0.152</code></pre>
+<p>These are the estimates of the pairwise regressions. Those are the path coefficients that tell us the strengths of the relations among the network properties. Below we make a path diagram using these.</p>
 <p>Next, do the same thing for herbivory.</p>
-<div class="sourceCode" id="cb409"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb409-1"><a href="food-webs-and-other-networks.html#cb409-1"></a><span class="co"># Step 1: Specify model</span></span>
-<span id="cb409-2"><a href="food-webs-and-other-networks.html#cb409-2"></a>model &lt;-<span class="st"> &#39;resilience.h ~ nestedness + modularity + S + C</span></span>
-<span id="cb409-3"><a href="food-webs-and-other-networks.html#cb409-3"></a><span class="st">          nestedness ~ S + C</span></span>
-<span id="cb409-4"><a href="food-webs-and-other-networks.html#cb409-4"></a><span class="st">          modularity ~ S + C&#39;</span></span>
-<span id="cb409-5"><a href="food-webs-and-other-networks.html#cb409-5"></a></span>
-<span id="cb409-6"><a href="food-webs-and-other-networks.html#cb409-6"></a><span class="co"># Step 2: Estimate model of herbivory</span></span>
-<span id="cb409-7"><a href="food-webs-and-other-networks.html#cb409-7"></a>mod.h.fit &lt;-<span class="st"> </span><span class="kw">sem</span>(model, <span class="dt">data=</span>dat)</span>
-<span id="cb409-8"><a href="food-webs-and-other-networks.html#cb409-8"></a><span class="kw">coef</span>(mod.h.fit)  </span></code></pre></div>
-<pre><code>##    resilience.h~nestedness    resilience.h~modularity 
-##                      0.251                     -0.439 
-##             resilience.h~S             resilience.h~C 
-##                      0.372                     -0.072 
-##               nestedness~S               nestedness~C 
-##                      0.069                      0.953 
-##               modularity~S               modularity~C 
-##                     -0.371                     -0.811 
-## resilience.h~~resilience.h     nestedness~~nestedness 
-##                      0.332                      0.076 
-##     modularity~~modularity 
-##                      0.155</code></pre>
-<p>To make these figures, you’ll need the <code>semPlot</code> package.</p>
-<div class="sourceCode" id="cb411"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb411-1"><a href="food-webs-and-other-networks.html#cb411-1"></a><span class="co"># library(semPlot)</span></span>
-<span id="cb411-2"><a href="food-webs-and-other-networks.html#cb411-2"></a><span class="kw">semPaths</span>(mod.m.fit, <span class="dt">what=</span><span class="st">&#39;path&#39;</span>, <span class="dt">whatLabels=</span><span class="st">&quot;std&quot;</span>, </span>
-<span id="cb411-3"><a href="food-webs-and-other-networks.html#cb411-3"></a>         <span class="dt">curve=</span><span class="dv">1</span>, <span class="dt">curvature=</span><span class="dv">1</span>, <span class="dt">sizeMan=</span><span class="dv">10</span>,</span>
-<span id="cb411-4"><a href="food-webs-and-other-networks.html#cb411-4"></a>         <span class="dt">edge.label.cex =</span> <span class="fl">1.5</span>, <span class="dt">nCharNodes=</span><span class="dv">4</span>,</span>
-<span id="cb411-5"><a href="food-webs-and-other-networks.html#cb411-5"></a>         <span class="dt">edge.label.position=</span>.<span class="dv">7</span>, <span class="dt">layout=</span><span class="st">&#39;tree2&#39;</span>)</span>
-<span id="cb411-6"><a href="food-webs-and-other-networks.html#cb411-6"></a><span class="kw">semPaths</span>(mod.h.fit, <span class="dt">what=</span><span class="st">&#39;path&#39;</span>, <span class="dt">whatLabels=</span><span class="st">&quot;std&quot;</span>, </span>
-<span id="cb411-7"><a href="food-webs-and-other-networks.html#cb411-7"></a>         <span class="dt">curve=</span><span class="dv">1</span>, <span class="dt">curvature=</span><span class="dv">1</span>, <span class="dt">sizeMan=</span><span class="dv">10</span>,</span>
-<span id="cb411-8"><a href="food-webs-and-other-networks.html#cb411-8"></a>         <span class="dt">edge.label.cex =</span> <span class="fl">1.5</span>, <span class="dt">nCharNodes=</span><span class="dv">4</span>,</span>
-<span id="cb411-9"><a href="food-webs-and-other-networks.html#cb411-9"></a>         <span class="dt">edge.label.position=</span>.<span class="dv">7</span>, <span class="dt">layout=</span><span class="st">&#39;tree2&#39;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb414"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb414-1"><a href="food-webs-and-other-networks.html#cb414-1"></a><span class="co"># Step 1: Specify model</span></span>
+<span id="cb414-2"><a href="food-webs-and-other-networks.html#cb414-2"></a>model.h &lt;-<span class="st"> &#39;resilience.h ~ nestedness + modularity + S + C</span></span>
+<span id="cb414-3"><a href="food-webs-and-other-networks.html#cb414-3"></a><span class="st">          nestedness ~ S + C</span></span>
+<span id="cb414-4"><a href="food-webs-and-other-networks.html#cb414-4"></a><span class="st">          modularity ~ S + C&#39;</span></span>
+<span id="cb414-5"><a href="food-webs-and-other-networks.html#cb414-5"></a></span>
+<span id="cb414-6"><a href="food-webs-and-other-networks.html#cb414-6"></a><span class="co"># Step 2: Estimate model of herbivory</span></span>
+<span id="cb414-7"><a href="food-webs-and-other-networks.html#cb414-7"></a>mod.h.fit &lt;-<span class="st"> </span><span class="kw">sem</span>(model.h, <span class="dt">data=</span>dat)</span>
+<span id="cb414-8"><a href="food-webs-and-other-networks.html#cb414-8"></a><span class="co">#coef(mod.h.fit)  </span></span></code></pre></div>
+<p>To make the path diagrams, you’ll need the <code>semPlot</code> package.</p>
+<div class="sourceCode" id="cb415"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb415-1"><a href="food-webs-and-other-networks.html#cb415-1"></a><span class="co"># library(semPlot)</span></span>
+<span id="cb415-2"><a href="food-webs-and-other-networks.html#cb415-2"></a><span class="kw">semPaths</span>(mod.m.fit, <span class="dt">what=</span><span class="st">&#39;path&#39;</span>, <span class="dt">whatLabels=</span><span class="st">&quot;std&quot;</span>, </span>
+<span id="cb415-3"><a href="food-webs-and-other-networks.html#cb415-3"></a>         <span class="dt">curve=</span><span class="dv">1</span>, <span class="dt">curvature=</span><span class="dv">1</span>, <span class="dt">sizeMan=</span><span class="dv">10</span>,</span>
+<span id="cb415-4"><a href="food-webs-and-other-networks.html#cb415-4"></a>         <span class="dt">edge.label.cex =</span> <span class="fl">1.5</span>, <span class="dt">nCharNodes=</span><span class="dv">4</span>,</span>
+<span id="cb415-5"><a href="food-webs-and-other-networks.html#cb415-5"></a>         <span class="dt">edge.label.position=</span>.<span class="dv">7</span>, <span class="dt">layout=</span><span class="st">&#39;tree2&#39;</span>)</span>
+<span id="cb415-6"><a href="food-webs-and-other-networks.html#cb415-6"></a><span class="kw">semPaths</span>(mod.h.fit, <span class="dt">what=</span><span class="st">&#39;path&#39;</span>, <span class="dt">whatLabels=</span><span class="st">&quot;std&quot;</span>, </span>
+<span id="cb415-7"><a href="food-webs-and-other-networks.html#cb415-7"></a>         <span class="dt">curve=</span><span class="dv">1</span>, <span class="dt">curvature=</span><span class="dv">1</span>, <span class="dt">sizeMan=</span><span class="dv">10</span>,</span>
+<span id="cb415-8"><a href="food-webs-and-other-networks.html#cb415-8"></a>         <span class="dt">edge.label.cex =</span> <span class="fl">1.5</span>, <span class="dt">nCharNodes=</span><span class="dv">4</span>,</span>
+<span id="cb415-9"><a href="food-webs-and-other-networks.html#cb415-9"></a>         <span class="dt">edge.label.position=</span>.<span class="dv">7</span>, <span class="dt">layout=</span><span class="st">&#39;tree2&#39;</span>)</span></code></pre></div>
 <div class="figure"><span id="fig:paths"></span>
-<img src="figs/paths-1.png" alt="*Given the same bipartite network structure and the identical interaction strengths, mutualistic (left) and antagonistic webs (right) show different relations among emergent properties.*" width="50%" /><img src="figs/paths-2.png" alt="*Given the same bipartite network structure and the identical interaction strengths, mutualistic (left) and antagonistic webs (right) show different relations among emergent properties.*" width="50%" />
+<img src="figs/paths-1.png" alt="*Given the same bipartite network structure and the identical interaction strengths, mutualistic (left) and antagonistic webs (right) show slightly different relations among emergent properties. Recall also that resilience is about *" width="50%" /><img src="figs/paths-2.png" alt="*Given the same bipartite network structure and the identical interaction strengths, mutualistic (left) and antagonistic webs (right) show slightly different relations among emergent properties. Recall also that resilience is about *" width="50%" />
 <p class="caption">
-Figure 12.13: <em>Given the same bipartite network structure and the identical interaction strengths, mutualistic (left) and antagonistic webs (right) show different relations among emergent properties.</em>
+Figure 12.13: <em>Given the same bipartite network structure and the identical interaction strengths, mutualistic (left) and antagonistic webs (right) show slightly different relations among emergent properties. Recall also that resilience is about </em>
 </p>
 </div>
 <p>Here we see that some of the relations among empergent properties differs in the two web types. It is reassuring that the relations between richness and connectance <em>vs.</em> nestedness and modularity are identical. This is because the topologies (connections) are identical, as the only difference is the sign of some of the interactions.</p>
-<p>The differences lie in the effects on resilience. What are those differences, and are they consistent with Thebault and Fontaine (2010). Are they consistent with what is generally presumed about the role of mutualisms and consumption in food webs?</p>
+<p>The differences lie in the slightly different effects on resilience. What are those differences, and are they consistent with Thebault and Fontaine (2010)? Are they consistent with what is generally presumed about the role of mutualisms and consumption in food webs?</p>
+</div>
+</div>
+<div id="exploring-pandora-right-here-at-home" class="section level2">
+<h2><span class="header-section-number">12.4</span> Exploring Pandora, right here at home</h2>
+<p>The Na’vi of Pandora know something of how their world works, and we are working hard to understand ours. Our world is a highly antagonistic world, driven by consumption - a tangled bank, nature, red in tooth and claw. However, all around us and hidden beneath our feet, many species cooperate to survive and thrive in this otherwise harsh world. This cooperation can happen among species and it can also happen among individuals within a species. Suzanne Simard and others have been investigating belowground networks of nutrient flux and information sharing among individuals and between species.</p>
+<p>Most plant species develop mycorrhizae, fungi-root associations which are typically mutualistic interactions. These fungi can often connect individuals of the same species together, creating a network by which one plant can information, nutrients, and carbon with another plant via this fungal highway. However, how these connections are structured is still very poorly known. In an effort to shed some light on this, <span class="citation">Beiler, Simard, and Durall (<a href="#ref-Beiler2015" role="doc-biblioref">2015</a>)</span> described the topology of Douglas fir trees connected by two species of individual fungal genets, in contrasting environments (<a href="food-webs-and-other-networks.html#fig:plot1">12.14</a>).</p>
+<div id="properties-assessed" class="section level3">
+<h3><span class="header-section-number">12.4.1</span> Properties assessed</h3>
+<ol style="list-style-type: decimal">
+<li>Application of networks to mycorrhizae</li>
+</ol>
+<ul>
+<li>node = tree</li>
+<li>link = one or more fungal genets connecting two trees</li>
+<li>triplet = three connected trees (open triplet is connected by two links, closed, by three)</li>
+</ul>
+<ol start="2" style="list-style-type: decimal">
+<li>Network properties</li>
+</ol>
+<ul>
+<li>link density (links/species)</li>
+<li>degree distribution (statistical distribution of node degrees)</li>
+<li>global or network clustering coefficient: fraction of triplets that are closed (no. of closed triplets) / (no. of open + no. closed triplets)</li>
+<li>mean lcoal clustering coefficient among nodes in each network</li>
+<li>Betweenness centrality: the number of times a node acts as a bridge along the shortest path between two other nodes. How important is this node in making connections for other nodes?</li>
+</ul>
+<ol start="3" style="list-style-type: decimal">
+<li>Node properties</li>
+</ol>
+<ul>
+<li>degree (# of links)</li>
+<li>normalized degree: (fraction: d / all possible d)</li>
+<li>node clustering coefficient (local transivity; extent to which its neighbors are are connected)</li>
+</ul>
+<p>All these were evaluated by whether the observed properties differed from properties that emerge from random networks with the same number of nodes and average node degree as the empirical mycorrhizal networks. We can generate such a graph using the <code>igraph</code> package.</p>
+<p>Plot 1, from a xeric site, had 26 trees and 258 links. Therefore, the average node degree must be <span class="math inline">\(258/26\approx 9.9\)</span>. We can create a random graph by simply specify the number of vertices and the number of edges.</p>
+<div class="sourceCode" id="cb416"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb416-1"><a href="food-webs-and-other-networks.html#cb416-1"></a><span class="co"># node clustering coefficient: 0.84</span></span>
+<span id="cb416-2"><a href="food-webs-and-other-networks.html#cb416-2"></a><span class="co"># for Plot 1</span></span>
+<span id="cb416-3"><a href="food-webs-and-other-networks.html#cb416-3"></a>V &lt;-<span class="st"> </span><span class="dv">26</span></span>
+<span id="cb416-4"><a href="food-webs-and-other-networks.html#cb416-4"></a>E &lt;-<span class="st"> </span><span class="dv">258</span></span>
+<span id="cb416-5"><a href="food-webs-and-other-networks.html#cb416-5"></a></span>
+<span id="cb416-6"><a href="food-webs-and-other-networks.html#cb416-6"></a>gr &lt;-<span class="st"> </span><span class="kw">erdos.renyi.game</span>(V, E, <span class="dt">type =</span> <span class="st">&quot;gnm&quot;</span>)</span>
+<span id="cb416-7"><a href="food-webs-and-other-networks.html#cb416-7"></a><span class="co"># graph &quot;order&quot; and &quot;size&quot;</span></span>
+<span id="cb416-8"><a href="food-webs-and-other-networks.html#cb416-8"></a><span class="kw">gorder</span>(gr); <span class="kw">gsize</span>(gr)</span></code></pre></div>
+<pre><code>## [1] 26</code></pre>
+<pre><code>## [1] 258</code></pre>
+<div class="sourceCode" id="cb419"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb419-1"><a href="food-webs-and-other-networks.html#cb419-1"></a><span class="kw">plot</span>(gr, <span class="dt">vertex.label=</span> <span class="ot">NA</span>, <span class="dt">edge.arrow.size=</span><span class="fl">0.02</span>,<span class="dt">vertex.size =</span> <span class="fl">0.5</span>, <span class="dt">xlab =</span> <span class="st">&quot;Random Network: G(V,E) model&quot;</span>)</span></code></pre></div>
+<div class="figure"><span id="fig:plot1"></span>
+<img src="figs/plot1-1.png" alt="*Example of a random graph using the same number of vertices and links as in plot 1 (Beiler et al. (2015)).*" width="70%" />
+<p class="caption">
+Figure 12.14: <em>Example of a random graph using the same number of vertices and links as in plot 1 (Beiler et al. (2015)).</em>
+</p>
+</div>
+<p>We can compare the observed average node clustering coefficient (<span class="math inline">\(0.84 \pm 0.37\)</span>) to that of the random graph we created above. Note that transivity is node clustering.</p>
+<div class="sourceCode" id="cb420"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb420-1"><a href="food-webs-and-other-networks.html#cb420-1"></a><span class="kw">mean</span>(<span class="kw">transitivity</span>(gr, <span class="dt">type =</span> <span class="st">&quot;local&quot;</span>))</span></code></pre></div>
+<pre><code>## [1] 0.7959873</code></pre>
+<p>We find that these differ. The observed can then be compared to 1000s of simulated random networks to see how unusual the observed value is. Here we use a toy example with 100 simulations to compare the node clustering coefficient observed in plot 1 to what we would expect in a random network.</p>
+<div class="sourceCode" id="cb422"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb422-1"><a href="food-webs-and-other-networks.html#cb422-1"></a>ncc.sims &lt;-<span class="st"> </span><span class="kw">replicate</span>(<span class="dv">100</span>, { </span>
+<span id="cb422-2"><a href="food-webs-and-other-networks.html#cb422-2"></a>  gr &lt;-<span class="st"> </span><span class="kw">erdos.renyi.game</span>(V, E, <span class="dt">type =</span> <span class="st">&quot;gnm&quot;</span>)</span>
+<span id="cb422-3"><a href="food-webs-and-other-networks.html#cb422-3"></a>  <span class="kw">mean</span>(<span class="kw">transitivity</span>(gr, <span class="dt">type =</span> <span class="st">&quot;local&quot;</span>))</span>
+<span id="cb422-4"><a href="food-webs-and-other-networks.html#cb422-4"></a>  } )</span>
+<span id="cb422-5"><a href="food-webs-and-other-networks.html#cb422-5"></a><span class="kw">qplot</span>(<span class="dt">x=</span>ncc.sims, <span class="dt">geom=</span><span class="st">&quot;histogram&quot;</span>) <span class="op">+</span><span class="st"> </span></span>
+<span id="cb422-6"><a href="food-webs-and-other-networks.html#cb422-6"></a><span class="st">  </span><span class="kw">geom_vline</span>(<span class="dt">xintercept =</span> <span class="fl">0.84</span>, <span class="dt">linetype=</span><span class="dv">2</span>)</span></code></pre></div>
+<div class="figure"><span id="fig:nccHist"></span>
+<img src="figs/nccHist-1.png" alt="*Observed node clustering appears unuusally high, relatively to that of random networks.*" width="90%" />
+<p class="caption">
+Figure 12.15: <em>Observed node clustering appears unuusally high, relatively to that of random networks.</em>
+</p>
+</div>
+<p>We see that the local node clustering is higher in one real plot than we would expect by chance. Remember that this measures the extent to which a node’s neighbors are connected to each other.</p>
+<p>Among their results, Beiler et al. found that node clustering coefficient and node degree increased with tree size. It is interesting that in spite of these both increasing with tree size, there is a negative relation between them node clustering coef and node degree (Fig. 2). Beiler et al. point out that this happens in ‘scale-free’ graphs.</p>
+<p>A <em>scale-free</em> graph is one in which the probability of a node having L links follows a power law relation,
+<span class="math display">\[Pr(L) \sim L^{-z}\]</span>
+where, apparently, <span class="math inline">\(2&lt;z&lt;3\)</span>. Let’s demonstrate that for one plot.</p>
+<div class="sourceCode" id="cb423"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb423-1"><a href="food-webs-and-other-networks.html#cb423-1"></a><span class="co"># node clustering coefficients (per node)</span></span>
+<span id="cb423-2"><a href="food-webs-and-other-networks.html#cb423-2"></a>ncc &lt;-<span class="st"> </span><span class="kw">transitivity</span>(gr, <span class="dt">type =</span> <span class="st">&quot;local&quot;</span>)</span>
+<span id="cb423-3"><a href="food-webs-and-other-networks.html#cb423-3"></a><span class="co"># degrees of each node</span></span>
+<span id="cb423-4"><a href="food-webs-and-other-networks.html#cb423-4"></a>d &lt;-<span class="st"> </span><span class="kw">degree</span>(gr)</span>
+<span id="cb423-5"><a href="food-webs-and-other-networks.html#cb423-5"></a><span class="kw">qplot</span>(d, ncc, <span class="dt">geom=</span><span class="st">&quot;jitter&quot;</span>)</span></code></pre></div>
+<div class="figure"><span id="fig:plot1sf"></span>
+<img src="figs/plot1sf-1.png" alt="*Emergent relation between node clustering and node degree in a scale-free random network, based on the number of nodes and links in plot 1.*" width="90%" />
+<p class="caption">
+Figure 12.16: <em>Emergent relation between node clustering and node degree in a scale-free random network, based on the number of nodes and links in plot 1.</em>
+</p>
+</div>
+<p>Now let’s combine all the plots into one graph. First I collect all the data from Beiler et al. (Table 1,2, Beiler et al. (2015)).</p>
+<div class="sourceCode" id="cb424"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb424-1"><a href="food-webs-and-other-networks.html#cb424-1"></a><span class="co"># vertices</span></span>
+<span id="cb424-2"><a href="food-webs-and-other-networks.html#cb424-2"></a>V &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">26</span>, <span class="dv">13</span>, <span class="dv">31</span>, <span class="dv">27</span>, <span class="dv">27</span>, <span class="dv">41</span>)</span>
+<span id="cb424-3"><a href="food-webs-and-other-networks.html#cb424-3"></a><span class="co"># egdes</span></span>
+<span id="cb424-4"><a href="food-webs-and-other-networks.html#cb424-4"></a>E &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">258</span>, <span class="dv">66</span>, <span class="dv">283</span>, <span class="dv">254</span>, <span class="dv">177</span>, <span class="dv">434</span>)</span>
+<span id="cb424-5"><a href="food-webs-and-other-networks.html#cb424-5"></a><span class="co"># proportion of trees colonized</span></span>
+<span id="cb424-6"><a href="food-webs-and-other-networks.html#cb424-6"></a>pV &lt;-<span class="st"> </span><span class="kw">c</span>(.<span class="dv">846</span>, <span class="fl">.5</span>, <span class="fl">.875</span>, <span class="fl">.846</span>, <span class="fl">.778</span>, <span class="fl">.889</span>)</span>
+<span id="cb424-7"><a href="food-webs-and-other-networks.html#cb424-7"></a><span class="co"># mean node degree</span></span>
+<span id="cb424-8"><a href="food-webs-and-other-networks.html#cb424-8"></a>mean.deg &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">18</span>, <span class="dv">695</span>, <span class="fl">17.15</span>, <span class="fl">17.52</span>, <span class="fl">12.21</span>, <span class="fl">20.19</span>)</span>
+<span id="cb424-9"><a href="food-webs-and-other-networks.html#cb424-9"></a><span class="co"># mean node clustering coef.</span></span>
+<span id="cb424-10"><a href="food-webs-and-other-networks.html#cb424-10"></a>mean.ncc &lt;-<span class="st"> </span><span class="kw">c</span>(.<span class="dv">84</span>, <span class="fl">.63</span>, <span class="fl">.84</span>, <span class="fl">.85</span>, <span class="fl">.83</span>, <span class="fl">.8</span>)</span>
+<span id="cb424-11"><a href="food-webs-and-other-networks.html#cb424-11"></a>plot &lt;-<span class="st"> </span><span class="dv">1</span><span class="op">:</span><span class="dv">6</span></span>
+<span id="cb424-12"><a href="food-webs-and-other-networks.html#cb424-12"></a>df &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">plot=</span>plot, <span class="dt">V=</span>V, <span class="dt">E=</span>E, <span class="dt">pV=</span>pV, <span class="dt">mean.deg=</span>mean.deg, <span class="dt">mean.ncc=</span>mean.ncc)</span>
+<span id="cb424-13"><a href="food-webs-and-other-networks.html#cb424-13"></a>df</span></code></pre></div>
+<pre><code>##   plot  V   E    pV mean.deg mean.ncc
+## 1    1 26 258 0.846    18.00     0.84
+## 2    2 13  66 0.500   695.00     0.63
+## 3    3 31 283 0.875    17.15     0.84
+## 4    4 27 254 0.846    17.52     0.85
+## 5    5 27 177 0.778    12.21     0.83
+## 6    6 41 434 0.889    20.19     0.80</code></pre>
+<p>Next I make a function that generates a random graph from the data in Beiler et al. and calculates the properties I need.</p>
+<p>For scale free graphs, I will set the power exponent to something between 2 and 3.</p>
+<div class="sourceCode" id="cb426"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb426-1"><a href="food-webs-and-other-networks.html#cb426-1"></a>exp.out &lt;-<span class="st"> </span><span class="fl">2.5</span></span></code></pre></div>
+<p>The following somewhat complicated looking code does the following for each plot in each site</p>
+<ul>
+<li>generates a scale-free random graph</li>
+<li>calculates local node clustering coefficient (transivity) for each resulting “tree”,</li>
+<li>calculates the degree for each “tree”,</li>
+<li>records the site of the plot.</li>
+</ul>
+<p>It then binds together the data collected for each plot at each site.</p>
+<div class="sourceCode" id="cb427"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb427-1"><a href="food-webs-and-other-networks.html#cb427-1"></a>df2 &lt;-<span class="st"> </span><span class="kw">apply</span>(df[,<span class="dv">1</span><span class="op">:</span><span class="dv">3</span>], <span class="dv">1</span>, <span class="cf">function</span>(ve){</span>
+<span id="cb427-2"><a href="food-webs-and-other-networks.html#cb427-2"></a>  <span class="co">#make a scale-free random graph, given V and E</span></span>
+<span id="cb427-3"><a href="food-webs-and-other-networks.html#cb427-3"></a>  gsf &lt;-<span class="st"> </span><span class="kw">sample_fitness_pl</span>(ve[<span class="dv">2</span>], ve[<span class="dv">3</span>], <span class="dt">exponent.out=</span> exp.out,</span>
+<span id="cb427-4"><a href="food-webs-and-other-networks.html#cb427-4"></a>                           <span class="dt">exponent.in =</span> <span class="dv">-1</span>, <span class="dt">loops =</span> <span class="ot">FALSE</span>,</span>
+<span id="cb427-5"><a href="food-webs-and-other-networks.html#cb427-5"></a>                           <span class="dt">multiple =</span> <span class="ot">FALSE</span>, </span>
+<span id="cb427-6"><a href="food-webs-and-other-networks.html#cb427-6"></a>                           <span class="dt">finite.size.correction =</span> <span class="ot">TRUE</span>)</span>
+<span id="cb427-7"><a href="food-webs-and-other-networks.html#cb427-7"></a>  <span class="co"># calculate prpoerties</span></span>
+<span id="cb427-8"><a href="food-webs-and-other-networks.html#cb427-8"></a>  ncc &lt;-<span class="st"> </span><span class="kw">transitivity</span>(gsf, <span class="dt">type =</span> <span class="st">&quot;local&quot;</span>)</span>
+<span id="cb427-9"><a href="food-webs-and-other-networks.html#cb427-9"></a>  deg &lt;-<span class="st"> </span>igraph<span class="op">::</span><span class="kw">degree</span>(gsf)</span>
+<span id="cb427-10"><a href="food-webs-and-other-networks.html#cb427-10"></a>  </span>
+<span id="cb427-11"><a href="food-webs-and-other-networks.html#cb427-11"></a>  <span class="co">#combine in a matrix</span></span>
+<span id="cb427-12"><a href="food-webs-and-other-networks.html#cb427-12"></a>  m &lt;-<span class="st"> </span><span class="kw">matrix</span>(<span class="kw">c</span>(<span class="dt">plot=</span><span class="kw">rep</span>(ve[<span class="dv">1</span>], <span class="kw">length</span>(deg)), ncc, deg), <span class="dt">ncol=</span><span class="dv">3</span>)</span>
+<span id="cb427-13"><a href="food-webs-and-other-networks.html#cb427-13"></a>  m</span>
+<span id="cb427-14"><a href="food-webs-and-other-networks.html#cb427-14"></a> })</span>
+<span id="cb427-15"><a href="food-webs-and-other-networks.html#cb427-15"></a></span>
+<span id="cb427-16"><a href="food-webs-and-other-networks.html#cb427-16"></a><span class="co"># bind together both sites and label columns</span></span>
+<span id="cb427-17"><a href="food-webs-and-other-networks.html#cb427-17"></a>df.sf &lt;-<span class="st"> </span><span class="kw">as.data.frame</span>( <span class="kw">do.call</span>(rbind, df2) )</span>
+<span id="cb427-18"><a href="food-webs-and-other-networks.html#cb427-18"></a><span class="kw">names</span>(df.sf) &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;plot&quot;</span>, <span class="st">&quot;ncc&quot;</span>, <span class="st">&quot;deg&quot;</span>)</span>
+<span id="cb427-19"><a href="food-webs-and-other-networks.html#cb427-19"></a></span>
+<span id="cb427-20"><a href="food-webs-and-other-networks.html#cb427-20"></a><span class="co"># plot the relation between node clustering coefficient</span></span>
+<span id="cb427-21"><a href="food-webs-and-other-networks.html#cb427-21"></a><span class="co"># and node degree</span></span>
+<span id="cb427-22"><a href="food-webs-and-other-networks.html#cb427-22"></a><span class="kw">ggplot</span>(df.sf, <span class="kw">aes</span>(deg, ncc, <span class="dt">colour=</span><span class="kw">as.factor</span>(plot)) ) <span class="op">+</span></span>
+<span id="cb427-23"><a href="food-webs-and-other-networks.html#cb427-23"></a><span class="st">  </span><span class="kw">geom_point</span>()  <span class="op">+</span><span class="st"> </span><span class="kw">geom_smooth</span>( <span class="dt">method=</span><span class="st">&quot;lm&quot;</span>, <span class="dt">se=</span><span class="ot">FALSE</span>) <span class="op">+</span><span class="st"> </span></span>
+<span id="cb427-24"><a href="food-webs-and-other-networks.html#cb427-24"></a><span class="st">  </span><span class="kw">scale_y_log10</span>() </span></code></pre></div>
+<div class="figure"><span id="fig:allplotsf"></span>
+<img src="figs/allplotsf-1.png" alt="*Emergent relations between node clustering and node degree in scale-free random networks, based on the number of nodes and links in each plot.*" width="90%" />
+<p class="caption">
+Figure 12.17: <em>Emergent relations between node clustering and node degree in scale-free random networks, based on the number of nodes and links in each plot.</em>
+</p>
+</div>
+<p>The result is one example (or six examples) of what we would observe in a scale-free network. As one random draw, it may or may not be particularly representative the “typical” properties suggested in Beiler et al. (2015). Many observed networks appear to be scale-free, at least at first glance <span class="citation">(Barabasi, <a href="#ref-Barabasi:2009aa" role="doc-biblioref">n.d.</a>)</span>. They may be a useful approximation of networks where node properties might be self-reinforcing, that is the better-connected nodes tend to become ever better connected.</p>
+<p>Thus far in this book, we’ve barely scratched the surface of food webs and networks. I hope that at least you’ve gotten a sense of the flavor for their investigation.</p>
 
 </div>
 </div>
 </div>
 <h3> References</h3>
 <div id="refs" class="references">
+<div id="ref-AlmeidaNeto2011">
+<p>Almeida-Neto, Mário, and Werner Ulrich. 2011. “A straightforward computational approach for measuring nestedness using quantitative matrices.” <em>Environmental Modelling and Software</em> 26 (2): 173–78.</p>
+</div>
+<div id="ref-Barabasi:2009aa">
+<p>Barabasi, Albert-Laszlo. n.d. “Scale-Free Networks: A Decade and Beyond.” <em>SCIENCE</em> 325 (5939): 412–13.</p>
+</div>
+<div id="ref-Beiler2015">
+<p>Beiler, Kevin J., Suzanne W. Simard, and Daniel M. Durall. 2015. “Topology of tree-mycorrhizal fungus interaction networks in xeric and mesic Douglas-fir forests.” <em>Journal of Ecology</em> 103 (3): 616–28.</p>
+</div>
 <div id="ref-Berlow:2004yq">
 <p>Berlow, E L, A M Neutel, J E Cohen, P C de Ruiter, B Ebenman, M Emmerson, J W Fox, et al. 2004. “Interaction strengths in food webs: Issues and opportunities.” <em>Journal of Animal Ecology</em> 73: 585–98.</p>
 </div>

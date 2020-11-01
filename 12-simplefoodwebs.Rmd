@@ -463,9 +463,19 @@ Pimm and Lawton made very important contributions to this lengthy debate, and we
 
 ## Perhaps mutualism stabilizes bipartite networks
 
-Understanding the effects of network architecture on network resilience is a core mission of community ecology. In this section, we compare how mutualist and antagonist bipartite networks affect network resilience [@Thebault2010]. A bipartite network is one in which there are two separate groups of species, in which species interact between groups, but never within groups. Two such examples would be herbivores and plants, or pollinators and plants. @Thebault2010 compared both empirical and simulated plant-pollinator and plant-herbivore bipartite webs and found they differed in the network structure and the consequences for network stability.
+Understanding the effects of network architecture on network resilience is a core mission of community ecology. In this section, we compare how mutualist and antagonist interactions in bipartite networks affect network resilience [@Thebault2010]. A bipartite network is one in which there are two separate groups of species, in which species interact between groups, but never within groups. Two such examples would be herbivores and plants, or pollinators and plants. @Thebault2010 compared both empirical and simulated plant-pollinator and plant-herbivore bipartite webs and found they differed in the network structure and the consequences for network stability.
 
-In the following comparison between mutualist and antagonist bipartite networks, we control for network structure, and ask whether the subsequent effects of diversity, connectance, nestedness, and modularity on resilience differ between mutualist and antagonist networks (Fig. \@ref(fig:TandF)). In brief, you will find that they do.  
+
+To run the code in this section, you will need to install a few more packages.  If you've already installed them, just load them.
+```{r eval=FALSE}
+pkgs <- c("bipartite", "igraph", "rARPACK", "lavaan", "semPlot")
+# install.packages(pkgs)
+invisible( # to hide messages
+  lapply(pkgs, library, character.only=TRUE)
+)
+```
+
+In the following comparison between mutualist and antagonist bipartite networks, we control for network structure, and measure direct and indirect effects of diversity, connectance, nestedness, and modularity on resilience. We can then ask whether these effects differ between mutualist and antagonist networks (Fig. \@ref(fig:TandF)). In brief, you will find that they do.  
 ```{r TandF, echo=FALSE, fig.cap="*Possible effects of species richness, connectance, modularity, and nestedness on network resilience.*", out.width="50%"}
 tf <-
 "digraph{
@@ -490,16 +500,15 @@ grViz(tf) %>%
 include_graphics("TandF.png")
 ```
 
-Our questions are derived from @Thebault2010a, but the approach we use is different. They simulated dynamic communities using systems of ODEs that are similar to those that we have seen in earlier chapters on mutualism and consumer-resource interactions. They include negative density dependence in plants and type II functional responses in mutualists and herbivores.
+Our questions are derived from @Thebault2010a, but the approach we use is different. They simulated dynamic communities using systems of ODEs that are similar to those that we have seen in earlier chapters on mutualism and consumer-resource interactions. These ODEs included negative density dependence in plants and type II functional responses in mutualists and herbivores.
 
-We will use the approach we used earlier, that of May (1973) and @Pimm1977 @Pimm1978. In this approach, we do not simulate the dynamics. Instead, we assume that the species involved coexist, and we draw their interaction strengths at random from a specified distribution. This determines their instantaneous per capita effect on each other's population growth rate, that is, the Jacobian matrix that describes their interactions. 
+We will use the approach we used earlier, that of May (1973), @Pimm1977 and @Pimm1978. In this approach, we do not simulate the dynamics. Instead, we assume that the species coexist, and we draw their interaction strengths at random from a specified distribution. This determines their instantaneous per capita effect on each other's population growth rate, that is, the Jacobian matrix that describes their interactions. 
 
-In our approach, we will establish interactions at random, in which each pair of species (plant and animal) has the same probability of interacting. That probability is connectance ($L/(PA)$), where $P$ and $A$ are the numbers of plants and animals in the network. This means that the structure (who is connected to whom) will be determined randomly rather than as a result of the dynamics of ODE models as in Thebault and Fontaine (2010). Further, the number of species and the connectance will both be draw at random, within specified ranges.
-
+In our approach, we will establish interactions at random, in which each pair of species (plant and animal) has the same probability of interacting. That probability is connectance ($L/(PA)$), where $P$ and $A$ are the numbers of plants and animals in the network. Note that this measure of connectance differs from previous definitions, because we are ruling out all within-group interactions. This means that the structure (who is connected to whom) will be determined randomly rather than as a result of the dynamics of ODE models as in Thebault and Fontaine (2010). Further, the number of species and the connectance will both be draw at random, within specified ranges.
 
 ### Creating bipartite webs
 
-We'll start by creating a toy example of a bipartite web of mutualists: plants and their pollinators.
+We'll start by demonstrating a toy example of a bipartite web of mutualists: plants and their pollinators. We select the numbers of species and the connectance.  
 ```{r cars}
 # The number of species of plants
 Sp <- 5
@@ -507,17 +516,33 @@ Sp <- 5
 Sa <- 12
 # the total number of species
 S <- Sa+Sp
+
+# The connectance in this web. 
+contc <- .4
 ```
 
-We then set the connectance, and then generate random interactions between species.
+We then generate random interactions between species using the *binomial distribution*. This is the distribution of coin flips or rolling of die. If we want to flip a single fair coin ten times, we can use `rbinom()`. 
 ```{r}
-# The connectance in this web. 
-contc <- .5
+# size is the number of coins to flip at once.
+rbinom(n=10, size = 1, prob=0.5 )
+```
+We say this is "ten observations of 1 trial".
 
+If we want to flip 10 coins all at once and count the number of heads, we could do this:
+```{r}
+# size is the number of coins to flip at once.
+rbinom(n=1, size = 10, prob=0.5 )
+```
+We would say this is "one observation of ten trials".
+
+For our bipartite web, we will create `Sa * Sp` coin flips or observations of one trial, each with the probability of 0.4 of getting a link.
+```{r}
 # Create interactions at random, drawing 0's and 1's with a probability of contc=0.5
 interactions <- rbinom( n = Sa * Sp, size=1, prob=contc)
+```
 
-# Put those connections into our web
+We create a matrix with these links (and no links). This will create our topology.
+```{r}
 bip.network <- matrix(interactions, nrow=Sp, ncol=Sa)
 rownames(bip.network) <- paste("plant", LETTERS[1:Sp], sep="")
 colnames(bip.network) <- paste("bug", LETTERS[1:Sa], sep="")
@@ -525,14 +550,16 @@ colnames(bip.network) <- paste("bug", LETTERS[1:Sa], sep="")
 bip.network
 ```
 
-Now that we have randomly constructed topology, let's create a realistic assumption about *how much* each of the pollinators interact with those plant species. It is generally observed that most interactions are weak (e.g., infrequent visits) and a few are strong (e.g., frequent visits). That pattern can be approximated by an exponential distribution. We will create those interactions and then plot them.
+Your web may have species that do not interact with any others; that's okay for now. One day, you might have data like that.
+
+Now let's add interaction strength. We'll rely on a semi-realistic assumption about *how much* each of the pollinators interact with those plant species. It is generally observed that most interactions are weak (e.g., infrequent visits) and a few are strong (e.g., frequent visits). That pattern can be approximated by an exponential distribution. We will create those interactions and then plot them.
 ```{r}
 # Exponentially distributed of interaction strengths
 # Random numbers from and exponential distribution
-x <- rexp(Sa*Sp)
+xp <- rexp(Sa*Sp)
 
 # express these as a probability distribution (divide by the sum)
-xp <- x/sum(x)
+xp <- xp/sum(xp)
 
 # assign those exponential probabilities to our interactions,
 # creating the Quantitative network
@@ -552,14 +579,14 @@ Next we can make some pretty pictures of this web. To do this, you'll need to lo
   }
 ```
 
-To measure the nestedness and the modularity, we use functions from packages `igraph`. 
+There are several good network packages in R. We will use `bipartite` and `igraph`. Here we will measure the nestedness and the modularity using functions from package `bipartite`. 
 ```{r properties}
 # Nestedness:
 # quant. version of NODF  (Almeida-Neto et al. 2008, 2011)
 networklevel(bip.networkQ, index=c("weighted NODF"))
 metaComputeModules(bip.networkQ, N=5, method="Beckett") @ likelihood
 ```
-This measure of nestedness (WNODF, @Almeido2011) varies between 0 and 100 for completely nonnested and nested networks. This measure of modularity varies between 0 and 1 for completely non-modular and modular networks.
+This measure of nestedness (WNODF, @AlmeidaNeto2011) varies between 0 and 100 for completely nonnested and nested networks. This measure of modularity varies between 0 and 1 for completely non-modular and modular networks.
 
 To measure stability of this plant by animal matrix, we first convert it to a square matrix, add a little negative denisty dependence, and then use eigenanalysis to find the dominant eigenvalue.
 ```{r}
@@ -588,21 +615,16 @@ When we generate a random network, we save one version that represents mutualist
 
 The function `bip_stability()` performs eigananalysis on the resulting Jacobian matrix to estimate *resilience*, which we define as the negative of the real part of the dominant eigenvalue. This way, greater resilience is a larger positive number. It calculates the resilience for both the mutualist and the herbivorous versions of each random network. It also calculates *nestedness* and *modularity* in ways similar to that in Thebault and Fontaine (2010). It can calculate modularity in two ways, using either the binary adjacency matrix (ones and zeroes) or a quantitative matrix; the latter takes much moore time to calculate, so it uses the binary matrix by default. It also tallies diversity as the total number of species and the connectance as the total number of links divided by the number of possible links.
 
-To use `bip_stability` and analyse the results, you will need to install a few more packages.  If you've already installed them, you have nothing to do.
-```{r}
-# pkgs <- c("bipartite", "igraph", "rARPACK", "lavvan", "semPlot")
-# install.packages(pkgs)
-```
 
-This package has several arguments which you can see described in the help file. Among them are
+This function has several arguments which you can see described in the help file. Among them are
 * `Spp.a` and `Spp.p`: vectors from which the numbers of animal and plant species are drawn at random,
 * `C`: a two-element vector provide the min and max of possible connectances drawn at random,
 * `reps`: the number of random networks to create. 
 
 Here we use it to generate 1000 random webs. We will then use those to examine the relations between various emergent properties of the networks.
 ```{r}
-library(primer)
-b <- bip_stability(Spp.a = 16:60, Spp.p = 8:30, C=c(.05, 0.5), reps=100, quant=FALSE)
+#library(primer)
+b <- bip_stability(Spp.a = 16:60, Spp.p = 8:30, C=c(.05, 0.5), reps=5000, quant=FALSE)
 ```
 
 We can get a summary of the output of the 1000 simulated webs here.
@@ -610,9 +632,9 @@ We can get a summary of the output of the 1000 simulated webs here.
 summary(b)
 ```
 
-Are these webs stable? What are the medians and ranges of each of the web properties? How do the resiliences of the two interaction types differ?
+Are these webs stable? What are the means, medians and ranges of each of the web properties? What is the percent differences in the resiliences of the two interaction types? 
 
-We can also graph these relations.
+We can also graph the pairwise relations. 
 ```{r}
 pairs(b)
 ```
@@ -626,7 +648,6 @@ Now we do the same sort of analysis that Thebault and Fontaine did to get their 
 If we look above, we see curvature in some of the relations. In simple path analysis, as in Thebault and Fontaine, these relations are assumed to be linear. Here we transform these data a tad to help linearize these relations.
 ```{r}
 out.tr <- (b)^.75
-pairs( out.tr )
 ```
 
 We next scale our data so that all variables have a mean of zero and a standard deviation of 1. This will simplify the interpretation of the path analysis output: the regression coefficients partial correlation coefficients and will be effect sizes that are each comparable to the others.
@@ -637,38 +658,34 @@ dat <- data.frame( scale(out.tr) )
 We specify each of the relationships, where `y ~ x` is "y as a function of x". We then fit the model and get the path coefficients.
 
 To mimic Thebault and Fontaine, we will include all and only the interactions in their figure 2. We start with the mutualism web. Start by loading the `lavaan` package if you haven't previously.
-
 ```{r}
 # library(lavvan)
 # Step 1: Specify model
-model <- 'resilience.m ~ nestedness + modularity + S + C
+model.m <- 'resilience.m ~ nestedness + modularity + S + C
           nestedness ~  S + C
           modularity ~ S + C '
 
 # Step 2: Estimate model of mutualism
-mod.m.fit <- sem(model, data=dat)
+mod.m.fit <- sem(model.m, data=dat)
 coef(mod.m.fit)
 ```
 
-Look at the estimates of the regressions. Those are the path coefficients.
-
-Now it is up to you to get a pencil and paper and draw the picture....
+These are the estimates of the pairwise regressions. Those are the path coefficients that tell us the strengths of the relations among the network properties. Below we make a path diagram using these.
 
 Next, do the same thing for herbivory.
 ```{r}
 # Step 1: Specify model
-model <- 'resilience.h ~ nestedness + modularity + S + C
+model.h <- 'resilience.h ~ nestedness + modularity + S + C
           nestedness ~ S + C
           modularity ~ S + C'
 
 # Step 2: Estimate model of herbivory
-mod.h.fit <- sem(model, data=dat)
-coef(mod.h.fit)  
-
+mod.h.fit <- sem(model.h, data=dat)
+#coef(mod.h.fit)  
 ```
 
-To make these figures, you'll need the `semPlot` package.
-```{r paths, fig.cap="*Given the same bipartite network structure and the identical interaction strengths, mutualistic (left) and antagonistic webs (right) show different relations among emergent properties.*", fig.show='hold', out.width="50%"}
+To make the path diagrams, you'll need the `semPlot` package.
+```{r paths, fig.cap="*Given the same bipartite network structure and the identical interaction strengths, mutualistic (left) and antagonistic webs (right) show slightly different relations among emergent properties. Recall also that resilience is about *", fig.show='hold', out.width="50%"}
 # library(semPlot)
 semPaths(mod.m.fit, what='path', whatLabels="std", 
          curve=1, curvature=1, sizeMan=10,
@@ -683,5 +700,169 @@ semPaths(mod.h.fit, what='path', whatLabels="std",
 
 Here we see that some of the relations among empergent properties differs in the two web types. It is reassuring that the relations between richness and connectance *vs.* nestedness and modularity are identical. This is because the topologies (connections) are identical, as the only difference is the sign of some of the interactions. 
 
-The differences lie in the effects on resilience. What are those differences, and are they consistent with Thebault and Fontaine (2010). Are they consistent with what is generally presumed about the role of mutualisms and consumption in food webs?
+The differences lie in the slightly different effects on resilience. What are those differences, and are they consistent with Thebault and Fontaine (2010)? Are they consistent with what is generally presumed about the role of mutualisms and consumption in food webs?
+
+
+## Exploring Pandora, right here at home
+
+The Na'vi of Pandora know something of how their world works, and we are working hard to understand ours. Our world is a highly antagonistic world, driven by consumption - a tangled bank, nature, red in tooth and claw. However, all around us and hidden beneath  our feet, many species cooperate to survive and thrive in this otherwise harsh world. This cooperation can happen among species and it can also happen among individuals within a species. Suzanne Simard and others have been investigating belowground networks of nutrient flux and information sharing among individuals and between species.
+
+Most plant species develop mycorrhizae, fungi-root associations which are typically mutualistic interactions. These fungi can often connect individuals of the same species together, creating a network by which one plant can information, nutrients, and carbon with another plant via this fungal highway. However, how these connections are structured is still very poorly known. In an effort to shed some light on this, @Beiler2015 described the topology of Douglas fir trees connected by two species of individual fungal genets, in contrasting environments (\@ref(fig:plot1)).
+
+
+
+
+### Properties assessed
+
+1. Application of networks to mycorrhizae
+* node = tree
+* link = one or more fungal genets connecting  two trees
+* triplet = three connected trees (open triplet is connected by two links, closed, by three)
+2. Network properties
+* link density (links/species)
+* degree distribution (statistical distribution of node degrees)
+* global or network clustering coefficient: fraction of triplets that are closed (no. of closed triplets) / (no. of open + no. closed triplets)
+* mean lcoal clustering coefficient among nodes in each network
+* Betweenness centrality: the number of times a node acts as a bridge along the shortest path between two other nodes. How important is this node in making connections for other nodes?
+3. Node properties
+* degree (# of links)
+* normalized degree: (fraction: d / all possible d)
+* node clustering coefficient (local transivity; extent to which its neighbors are are connected)
+
+All these were evaluated by whether the observed properties differed from properties that emerge from random networks with the same number of nodes and average node degree as the empirical mycorrhizal networks. We can generate such a graph using the `igraph` package. 
+
+Plot 1, from a xeric site, had 26 trees and 258 links. Therefore, the average node degree must be $258/26\approx 9.9$. We can create a random graph by simply specify the number of vertices and the number of edges.
+```{r plot1, fig.cap="*Example of a random graph using the same number of vertices and links as in plot 1 (Beiler et al. (2015)).*", out.width="70%" }
+# node clustering coefficient: 0.84
+# for Plot 1
+V <- 26
+E <- 258
+
+gr <- erdos.renyi.game(V, E, type = "gnm")
+# graph "order" and "size"
+gorder(gr); gsize(gr)
+plot(gr, vertex.label= NA, edge.arrow.size=0.02,vertex.size = 0.5, xlab = "Random Network: G(V,E) model")
+```
+
+We can compare the observed average node clustering coefficient ($0.84 \pm 0.37$) to that of the random graph we created above. Note that transivity is node clustering.
+```{r}
+mean(transitivity(gr, type = "local"))
+```
+We find that these differ. The observed can then be compared to 1000s of simulated random networks to see how unusual the observed value is. Here we use a toy example with 100 simulations to compare the node clustering coefficient observed in plot 1 to what we would expect in a random network.
+```{r nccHist, fig.cap="*Observed node clustering appears unuusally high, relatively to that of random networks.*"}
+ncc.sims <- replicate(100, { 
+  gr <- erdos.renyi.game(V, E, type = "gnm")
+  mean(transitivity(gr, type = "local"))
+  } )
+qplot(x=ncc.sims, geom="histogram") + 
+  geom_vline(xintercept = 0.84, linetype=2)
+```
+
+We see that the local node clustering is higher in one real plot than we would expect by chance. Remember that this measures the extent to which a node's neighbors are connected to each other.
+
+
+Among their results, Beiler et al. found that node clustering coefficient and node degree increased with tree size. It is interesting that in spite of these both increasing with tree size, there is a negative relation between them node clustering coef and node degree (Fig. 2). Beiler et al. point out that this happens in 'scale-free' graphs. 
+
+A *scale-free* graph is one in which the probability of a node having L links follows a power law relation,
+$$Pr(L) \sim L^{-z}$$
+where, apparently, $2<z<3$. Let's demonstrate that for one plot.
+
+```{r plot1sf, fig.cap="*Emergent relation between node clustering and node degree in a scale-free random network, based on the number of nodes and links in plot 1.*"}
+# node clustering coefficients (per node)
+ncc <- transitivity(gr, type = "local")
+# degrees of each node
+d <- degree(gr)
+qplot(d, ncc, geom="jitter")
+```
+
+Now let's combine all the plots into one graph. First I collect all the data from Beiler et al. (Table 1,2, Beiler et al. (2015)).
+
+```{r} 
+# vertices
+V <- c(26, 13, 31, 27, 27, 41)
+# egdes
+E <- c(258, 66, 283, 254, 177, 434)
+# proportion of trees colonized
+pV <- c(.846, .5, .875, .846, .778, .889)
+# mean node degree
+mean.deg <- c(18, 695, 17.15, 17.52, 12.21, 20.19)
+# mean node clustering coef.
+mean.ncc <- c(.84, .63, .84, .85, .83, .8)
+plot <- 1:6
+df <- data.frame(plot=plot, V=V, E=E, pV=pV, mean.deg=mean.deg, mean.ncc=mean.ncc)
+df
+```
+
+
+```{r echo=FALSE, eval=FALSE}
+my_ER_Stats <- function(ve){
+  # ve is a two-element vector of vertices and edges totals
+  
+  V <- ve[1];  E <- ve[2]
+  gr <- erdos.renyi.game(V, E, type = "gnm")
+  
+  # betweenness centrality
+  bc <- igraph::betweenness(gr, directed = FALSE, weights = NULL,
+  nobigint = TRUE, normalized = FALSE)
+  bcbar <- mean(bc)
+  
+  # Network clustering coefficient
+  gcc <- transitivity(gr) # global
+  
+  ncc <- transitivity(gr, type = "local")
+# mean node clustering coefficient
+ nccbar.o <- mean(ncc) # cf 0.84
+# degrees of each node
+d <- igraph::degree(gr)
+# mean degree
+dbar.o <- mean(d) # cf 18
+return( c(bcbar.op=bcbar, gcc.o=gcc, nccbar.o=nccbar.o, dbar.o=dbar.o))
+}
+```
+
+Next I make a function that generates a random graph from the data in Beiler et al. and calculates the properties I need.
+
+For scale free graphs, I will set the power exponent to something between 2 and 3.
+```{r}
+exp.out <- 2.5
+```
+
+The following somewhat complicated looking code does the following for each plot in each site
+
+* generates a scale-free random graph
+* calculates local node clustering coefficient (transivity) for each resulting "tree",
+* calculates the degree for each "tree",
+* records the site of the plot.
+
+It then binds together the data collected for each plot at each site.
+```{r allplotsf, fig.cap="*Emergent relations between node clustering and node degree in scale-free random networks, based on the number of nodes and links in each plot.*"}
+df2 <- apply(df[,1:3], 1, function(ve){
+  #make a scale-free random graph, given V and E
+  gsf <- sample_fitness_pl(ve[2], ve[3], exponent.out= exp.out,
+                           exponent.in = -1, loops = FALSE,
+                           multiple = FALSE, 
+                           finite.size.correction = TRUE)
+  # calculate prpoerties
+  ncc <- transitivity(gsf, type = "local")
+  deg <- igraph::degree(gsf)
+  
+  #combine in a matrix
+  m <- matrix(c(plot=rep(ve[1], length(deg)), ncc, deg), ncol=3)
+  m
+ })
+
+# bind together both sites and label columns
+df.sf <- as.data.frame( do.call(rbind, df2) )
+names(df.sf) <- c("plot", "ncc", "deg")
+
+# plot the relation between node clustering coefficient
+# and node degree
+ggplot(df.sf, aes(deg, ncc, colour=as.factor(plot)) ) +
+  geom_point()  + geom_smooth( method="lm", se=FALSE) + 
+  scale_y_log10() 
+```
+
+The result is one example (or six examples) of what we would observe in a scale-free network. As one random draw, it may or may not be particularly representative the "typical" properties suggested in Beiler et al. (2015). Many observed networks appear to be scale-free, at least at first glance [@Barabasi:2009aa]. They may be a useful approximation of networks where node properties might be self-reinforcing, that is the better-connected nodes tend to become ever better connected. 
+
+Thus far in this book, we've barely scratched the surface of food webs and networks. I hope that at least you've gotten a sense of the flavor for their investigation. 
 
