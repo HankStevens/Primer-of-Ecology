@@ -969,10 +969,10 @@ those 450 change through time, according to the rules laid out in
 <a href="diversity.html#eq:b">(13.5)</a>, <a href="diversity.html#eq:d">(13.6)</a>. Each different species is represented by a different integer; here we show the identities of ten individuals (columns) for generations 901–3.</p>
 <div class="sourceCode" id="cb67"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb67-1"><a href="diversity.html#cb67-1"></a>( a2 &lt;-<span class="st"> </span>a[<span class="dv">901</span><span class="op">:</span><span class="dv">903</span>, <span class="dv">1</span><span class="op">:</span><span class="dv">10</span> ] )</span></code></pre></div>
 <pre><code>##      [,1] [,2] [,3] [,4] [,5] [,6] [,7] [,8] [,9] [,10]
-## [1,]    7    9    2    9    8    9    3    3   15     7
-## [2,]    7    9    2    9    8    9    3    3   15     7
-## [3,]    7    9    2    9    8    9    7    3   15     7</code></pre>
-<p>Thus, in generation 901, tree no. 1 is species <code>7</code> and in generation 902, tree no. 3 is species <code>2</code>.</p>
+## [1,]   16   12   16    1   20   16   13   17    1    16
+## [2,]   16   12   16    1   20   16   13   17    1    16
+## [3,]   16   12   16    1   20   16   13   17    1    16</code></pre>
+<p>Thus, in generation 901, tree no. 1 is species <code>16</code> and in generation 902, tree no. 3 is species <code>16</code>.</p>
 <p>We can make pretty pictures of the communities at time steps 1, 100, and 2500, by having a single point for each tree, and coding species identity by shades of grey. We could use a nice color palette, <code>hcl()</code>, based on hue, chroma, and luminance, for instance <code>hcl(a[i,]*30+50)</code>.</p>
 <div class="sourceCode" id="cb69"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb69-1"><a href="diversity.html#cb69-1"></a>times &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">50</span>,<span class="dv">2500</span>)</span>
 <span id="cb69-2"><a href="diversity.html#cb69-2"></a>sppcolors &lt;-<span class="st"> </span><span class="kw">sapply</span>(times, <span class="cf">function</span>(i) <span class="kw">grey</span>((a[i,]<span class="op">-</span><span class="dv">1</span>)<span class="op">/</span><span class="dv">20</span>) )</span></code></pre></div>
@@ -1007,8 +1007,8 @@ those 450 change through time, according to the rules laid out in
 <span id="cb71-19"><a href="diversity.html#cb71-19"></a>bins</span></code></pre></div>
 <pre><code>##      [,1] [,2] [,3] [,4] [,5] [,6] [,7] [,8] [,9]
 ## [1,]    0    0    0    0    0   20    0    0    0
-## [2,]    0    0    0    0    2   17    1    0    0
-## [3,]    1    0    0    1    2    2    3    2    1</code></pre>
+## [2,]    0    0    0    0    1   17    2    0    0
+## [3,]    0    1    0    1    2    2    0    2    1</code></pre>
 <div class="sourceCode" id="cb73"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb73-1"><a href="diversity.html#cb73-1"></a><span class="kw">colnames</span>(bins) &lt;-<span class="st"> </span><span class="kw">names</span>(<span class="kw">preston</span>(a[times[<span class="dv">3</span>],]))</span>
 <span id="cb73-2"><a href="diversity.html#cb73-2"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="dv">3</span>){</span>
 <span id="cb73-3"><a href="diversity.html#cb73-3"></a>  <span class="kw">par</span>(<span class="dt">las=</span><span class="dv">2</span>)</span>
@@ -1193,7 +1193,7 @@ Preston’s work on connections between the species–area relation and the log-
 <span class="math inline">\(\Delta S\)</span>, will be the difference between immimigration, <span class="math inline">\(I\)</span>, and extinction, <span class="math inline">\(E\)</span>, or
 <span class="math display" id="eq:deltaS">\[\begin{equation}
   \tag{13.11}
-   \Delta R = I - E.
+   \Delta S = I - E.
 \end{equation}\]</span>
 When <span class="math inline">\(\Delta S = 0\)</span>, we have an equilibrium. If we knew the quantitative form of immigration and extinction, we could solve for the equilibrium. That equilibrium would be the point on the <span class="math inline">\(x\)</span> axis, <span class="math inline">\(S\)</span>, where the two rates cross (Fig. <a href="diversity.html#fig:IE">13.15</a>).</p>
 <p>In MacArthur and Wilson’s theory of island biogeography, these rates could be driven by the <em>sizes</em> of the islands, where</p>
