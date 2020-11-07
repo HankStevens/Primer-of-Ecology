@@ -1,0 +1,965 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>13 Diversity | Primer of Ecology using R</title>
+  <meta name="description" content="13 Diversity | Primer of Ecology using R" />
+  <meta name="generator" content="bookdown 0.20 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="13 Diversity | Primer of Ecology using R" />
+  <meta property="og:type" content="book" />
+  
+  
+  
+  <meta name="github-repo" content="HankStevens/Primer-of-Ecology" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="13 Diversity | Primer of Ecology using R" />
+  
+  
+  
+
+<meta name="author" content="Hank Stevens" />
+
+
+<meta name="date" content="2020-11-07" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="food-webs-and-other-networks.html"/>
+<link rel="next" href="references.html"/>
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+<script src="libs/accessible-code-block-0.0.1/empty-anchor.js"></script>
+<script src="libs/kePrint-0.0.1/kePrint.js"></script>
+<link href="libs/lightable-0.0.1/lightable.css" rel="stylesheet" />
+<link href="libs/bsTable-3.3.7/bootstrapTable.min.css" rel="stylesheet" />
+<script src="libs/bsTable-3.3.7/bootstrapTable.js"></script>
+
+
+<style type="text/css">
+code.sourceCode > span { display: inline-block; line-height: 1.25; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Preface</a></li>
+<li class="chapter" data-level="1" data-path="theory.html"><a href="theory.html"><i class="fa fa-check"></i><b>1</b> Theory in Ecology</a><ul>
+<li class="chapter" data-level="1.1" data-path="theory.html"><a href="theory.html#examples-of-theories"><i class="fa fa-check"></i><b>1.1</b> Examples of theories</a><ul>
+<li class="chapter" data-level="1.1.1" data-path="theory.html"><a href="theory.html#hierarchy-theory"><i class="fa fa-check"></i><b>1.1.1</b> Hierarchy theory</a></li>
+<li class="chapter" data-level="1.1.2" data-path="theory.html"><a href="theory.html#a-general-theory-of-ecology"><i class="fa fa-check"></i><b>1.1.2</b> A general theory of ecology</a></li>
+<li class="chapter" data-level="1.1.3" data-path="theory.html"><a href="theory.html#efficient-theory"><i class="fa fa-check"></i><b>1.1.3</b> Efficient theory</a></li>
+</ul></li>
+<li class="chapter" data-level="1.2" data-path="theory.html"><a href="theory.html#metabolic_scaling"><i class="fa fa-check"></i><b>1.2</b> An example: Metabolic Theory of Ecology</a><ul>
+<li class="chapter" data-level="1.2.1" data-path="theory.html"><a href="theory.html#body-size-dependence"><i class="fa fa-check"></i><b>1.2.1</b> Body-size dependence</a></li>
+<li class="chapter" data-level="1.2.2" data-path="theory.html"><a href="theory.html#temperature-dependence"><i class="fa fa-check"></i><b>1.2.2</b> Temperature dependence</a></li>
+</ul></li>
+<li class="chapter" data-level="1.3" data-path="theory.html"><a href="theory.html#power-law-scaling-implies-constant-relative-differences"><i class="fa fa-check"></i><b>1.3</b> Power law scaling implies constant relative differences</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="oft.html"><a href="oft.html"><i class="fa fa-check"></i><b>2</b> Optimal Foraging</a><ul>
+<li class="chapter" data-level="2.1" data-path="oft.html"><a href="oft.html#a-prey-model"><i class="fa fa-check"></i><b>2.1</b> A prey model</a><ul>
+<li class="chapter" data-level="2.1.1" data-path="oft.html"><a href="oft.html#our-intuition"><i class="fa fa-check"></i><b>2.1.1</b> Our intuition</a></li>
+<li class="chapter" data-level="2.1.2" data-path="oft.html"><a href="oft.html#mathematical-support"><i class="fa fa-check"></i><b>2.1.2</b> Mathematical support</a></li>
+</ul></li>
+<li class="chapter" data-level="2.2" data-path="oft.html"><a href="oft.html#the-patch-model"><i class="fa fa-check"></i><b>2.2</b> The patch model</a></li>
+<li class="chapter" data-level="2.3" data-path="oft.html"><a href="oft.html#a-simulation-of-a-prey-model"><i class="fa fa-check"></i><b>2.3</b> A simulation of a prey model</a><ul>
+<li class="chapter" data-level="2.3.1" data-path="oft.html"><a href="oft.html#lab-exercise"><i class="fa fa-check"></i><b>2.3.1</b> Lab exercise</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="expo.html"><a href="expo.html"><i class="fa fa-check"></i><b>3</b> Simple density-independent growth</a><ul>
+<li class="chapter" data-level="3.1" data-path="expo.html"><a href="expo.html#discrete-growth-rates-of-fruit-flies-in-my-kitchen"><i class="fa fa-check"></i><b>3.1</b> Discrete growth rates of fruit flies in my kitchen</a></li>
+<li class="chapter" data-level="3.2" data-path="expo.html"><a href="expo.html#fruit-flies-with-continuous-overlapping-generations"><i class="fa fa-check"></i><b>3.2</b> Fruit flies with continuous overlapping generations</a></li>
+<li class="chapter" data-level="3.3" data-path="expo.html"><a href="expo.html#properties-of-geometric-and-exponential-growth"><i class="fa fa-check"></i><b>3.3</b> Properties of geometric and exponential growth</a><ul>
+<li class="chapter" data-level="3.3.1" data-path="expo.html"><a href="expo.html#average-growth-rate"><i class="fa fa-check"></i><b>3.3.1</b> Average growth rate</a></li>
+</ul></li>
+<li class="chapter" data-level="3.4" data-path="expo.html"><a href="expo.html#modeling-with-data-simulated-dynamics"><i class="fa fa-check"></i><b>3.4</b> Modeling with Data: Simulated Dynamics</a><ul>
+<li class="chapter" data-level="3.4.1" data-path="expo.html"><a href="expo.html#data-based-approaches"><i class="fa fa-check"></i><b>3.4.1</b> Data-based approaches</a></li>
+<li class="chapter" data-level="3.4.2" data-path="expo.html"><a href="expo.html#creating-and-visualizing-the-data"><i class="fa fa-check"></i><b>3.4.2</b> Creating and visualizing the data</a></li>
+<li class="chapter" data-level="3.4.3" data-path="expo.html"><a href="expo.html#one-simulation"><i class="fa fa-check"></i><b>3.4.3</b> One simulation</a></li>
+<li class="chapter" data-level="3.4.4" data-path="expo.html"><a href="expo.html#multiple-simulations"><i class="fa fa-check"></i><b>3.4.4</b> Multiple simulations</a></li>
+<li class="chapter" data-level="3.4.5" data-path="expo.html"><a href="expo.html#a-distribution-of-possible-futures"><i class="fa fa-check"></i><b>3.4.5</b> A distribution of possible futures</a></li>
+<li class="chapter" data-level="3.4.6" data-path="expo.html"><a href="expo.html#analyzing-results"><i class="fa fa-check"></i><b>3.4.6</b> Analyzing results</a></li>
+<li class="chapter" data-level="3.4.7" data-path="expo.html"><a href="expo.html#inferring-processes-underlying-growth-rate"><i class="fa fa-check"></i><b>3.4.7</b> Inferring processes underlying growth rate</a></li>
+<li class="chapter" data-level="3.4.8" data-path="expo.html"><a href="expo.html#f-environmental-noise"><i class="fa fa-check"></i><b>3.4.8</b> 1/<span class="math inline">\(f\)</span> environmental noise</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="DID.html"><a href="DID.html"><i class="fa fa-check"></i><b>4</b> Density-independent Demography</a><ul>
+<li class="chapter" data-level="4.1" data-path="DID.html"><a href="DID.html#a-two-stage-matrix-model"><i class="fa fa-check"></i><b>4.1</b> A two stage matrix model</a></li>
+<li class="chapter" data-level="4.2" data-path="DID.html"><a href="DID.html#a-brief-primer-on-matrices"><i class="fa fa-check"></i><b>4.2</b> A brief primer on matrices</a></li>
+<li class="chapter" data-level="4.3" data-path="DID.html"><a href="DID.html#decomposing-a"><i class="fa fa-check"></i><b>4.3</b> Decomposing <strong>A</strong></a></li>
+<li class="chapter" data-level="4.4" data-path="DID.html"><a href="DID.html#a-three-stage-model"><i class="fa fa-check"></i><b>4.4</b> A three stage model</a></li>
+<li class="chapter" data-level="4.5" data-path="DID.html"><a href="DID.html#projection"><i class="fa fa-check"></i><b>4.5</b> Projection</a></li>
+<li class="chapter" data-level="4.6" data-path="DID.html"><a href="DID.html#analyzing-the-transition-matrix"><i class="fa fa-check"></i><b>4.6</b> Analyzing the transition matrix</a><ul>
+<li class="chapter" data-level="4.6.1" data-path="DID.html"><a href="DID.html#eigenanalysis"><i class="fa fa-check"></i><b>4.6.1</b> Eigenanalysis</a></li>
+<li class="chapter" data-level="4.6.2" data-path="DID.html"><a href="DID.html#finite-rate-of-increase"><i class="fa fa-check"></i><b>4.6.2</b> Finite rate of increase</a></li>
+<li class="chapter" data-level="4.6.3" data-path="DID.html"><a href="DID.html#stable-stage-distribution"><i class="fa fa-check"></i><b>4.6.3</b> Stable stage distribution</a></li>
+<li class="chapter" data-level="4.6.4" data-path="DID.html"><a href="DID.html#calculating-the-stable-stage-distribution"><i class="fa fa-check"></i><b>4.6.4</b> Calculating the stable stage distribution</a></li>
+<li class="chapter" data-level="4.6.5" data-path="DID.html"><a href="DID.html#reproductive-value"><i class="fa fa-check"></i><b>4.6.5</b> Reproductive value</a></li>
+<li class="chapter" data-level="4.6.6" data-path="DID.html"><a href="DID.html#sensitivity-and-elasticity"><i class="fa fa-check"></i><b>4.6.6</b> Sensitivity and elasticity</a></li>
+</ul></li>
+<li class="chapter" data-level="4.7" data-path="DID.html"><a href="DID.html#integral-projection"><i class="fa fa-check"></i><b>4.7</b> Integral projection</a><ul>
+<li class="chapter" data-level="4.7.1" data-path="DID.html"><a href="DID.html#a-size-based-ipm-of-smooth-coneflower"><i class="fa fa-check"></i><b>4.7.1</b> A size-based IPM of smooth coneflower</a></li>
+<li class="chapter" data-level="4.7.2" data-path="DID.html"><a href="DID.html#population-summaries"><i class="fa fa-check"></i><b>4.7.2</b> Population summaries</a></li>
+</ul></li>
+<li class="chapter" data-level="4.8" data-path="DID.html"><a href="DID.html#r-packges-for-demography"><i class="fa fa-check"></i><b>4.8</b> R packges for demography</a></li>
+<li class="chapter" data-level="4.9" data-path="DID.html"><a href="DID.html#exploring-a-real-population"><i class="fa fa-check"></i><b>4.9</b> Exploring a real population</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="DDgrowth.html"><a href="DDgrowth.html"><i class="fa fa-check"></i><b>5</b> Density-dependent growth</a><ul>
+<li class="chapter" data-level="5.1" data-path="DDgrowth.html"><a href="DDgrowth.html#continuous-logistic-growth"><i class="fa fa-check"></i><b>5.1</b> Continuous logistic growth</a></li>
+<li class="chapter" data-level="5.2" data-path="DDgrowth.html"><a href="DDgrowth.html#dynamics-around-the-equilibria-stability"><i class="fa fa-check"></i><b>5.2</b> Dynamics around the equilibria — stability</a><ul>
+<li class="chapter" data-level="5.2.1" data-path="DDgrowth.html"><a href="DDgrowth.html#analytical-linear-stability-analysis"><i class="fa fa-check"></i><b>5.2.1</b> Analytical linear stability analysis</a></li>
+<li class="chapter" data-level="5.2.2" data-path="DDgrowth.html"><a href="DDgrowth.html#projection-with-numerical-integration"><i class="fa fa-check"></i><b>5.2.2</b> Projection with numerical integration</a></li>
+</ul></li>
+<li class="chapter" data-level="5.3" data-path="DDgrowth.html"><a href="DDgrowth.html#other-forms-of-density-dependent-growth"><i class="fa fa-check"></i><b>5.3</b> Other forms of density-dependent growth</a><ul>
+<li class="chapter" data-level="5.3.1" data-path="DDgrowth.html"><a href="DDgrowth.html#effects-of-n-on-birth-and-death-rates"><i class="fa fa-check"></i><b>5.3.1</b> Effects of N on birth and death rates</a></li>
+<li class="chapter" data-level="5.3.2" data-path="DDgrowth.html"><a href="DDgrowth.html#theta-logistic-growth"><i class="fa fa-check"></i><b>5.3.2</b> Theta-logistic growth</a></li>
+<li class="chapter" data-level="5.3.3" data-path="DDgrowth.html"><a href="DDgrowth.html#allee-effect"><i class="fa fa-check"></i><b>5.3.3</b> Allee effect</a></li>
+<li class="chapter" data-level="5.3.4" data-path="DDgrowth.html"><a href="DDgrowth.html#the-integral-of-logistic-growth"><i class="fa fa-check"></i><b>5.3.4</b> The integral of logistic growth</a></li>
+</ul></li>
+<li class="chapter" data-level="5.4" data-path="DDgrowth.html"><a href="DDgrowth.html#discrete-density-dependent-growth"><i class="fa fa-check"></i><b>5.4</b> Discrete Density-dependent Growth</a><ul>
+<li class="chapter" data-level="5.4.1" data-path="DDgrowth.html"><a href="DDgrowth.html#effects-of-r_d"><i class="fa fa-check"></i><b>5.4.1</b> Effects of <span class="math inline">\(r_d\)</span></a></li>
+<li class="chapter" data-level="5.4.2" data-path="DDgrowth.html"><a href="DDgrowth.html#bifurcations"><i class="fa fa-check"></i><b>5.4.2</b> Bifurcations</a></li>
+</ul></li>
+<li class="chapter" data-level="5.5" data-path="DDgrowth.html"><a href="DDgrowth.html#maximum-sustained-yield"><i class="fa fa-check"></i><b>5.5</b> Maximum Sustained Yield</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="meta.html"><a href="meta.html"><i class="fa fa-check"></i><b>6</b> Populations in Space</a><ul>
+<li class="chapter" data-level="6.1" data-path="meta.html"><a href="meta.html#source-sink-dynamics"><i class="fa fa-check"></i><b>6.1</b> Source-sink Dynamics</a><ul>
+<li class="chapter" data-level="6.1.1" data-path="meta.html"><a href="meta.html#complications-and-cases"><i class="fa fa-check"></i><b>6.1.1</b> Complications and cases</a></li>
+</ul></li>
+<li class="chapter" data-level="6.2" data-path="meta.html"><a href="meta.html#metapopulations"><i class="fa fa-check"></i><b>6.2</b> Metapopulations</a><ul>
+<li class="chapter" data-level="6.2.1" data-path="meta.html"><a href="meta.html#the-classic-levins-model"><i class="fa fa-check"></i><b>6.2.1</b> The classic Levins model</a></li>
+<li class="chapter" data-level="6.2.2" data-path="meta.html"><a href="meta.html#propagule-rain"><i class="fa fa-check"></i><b>6.2.2</b> Propagule rain</a></li>
+<li class="chapter" data-level="6.2.3" data-path="meta.html"><a href="meta.html#the-rescue-effect-and-the-core-satellite-model"><i class="fa fa-check"></i><b>6.2.3</b> The rescue effect and the core-satellite model</a></li>
+<li class="chapter" data-level="6.2.4" data-path="meta.html"><a href="meta.html#parallels-with-logistic-growth"><i class="fa fa-check"></i><b>6.2.4</b> Parallels with Logistic Growth</a></li>
+<li class="chapter" data-level="6.2.5" data-path="meta.html"><a href="meta.html#levins-vs.-hanski"><i class="fa fa-check"></i><b>6.2.5</b> Levins <span class="math inline">\(vs\)</span>. Hanski</a></li>
+<li class="chapter" data-level="6.2.6" data-path="meta.html"><a href="meta.html#habitat-destruction"><i class="fa fa-check"></i><b>6.2.6</b> Habitat Destruction</a></li>
+<li class="chapter" data-level="6.2.7" data-path="meta.html"><a href="meta.html#illustrating-the-effects-of-habitat-destruction"><i class="fa fa-check"></i><b>6.2.7</b> Illustrating the effects of habitat destruction</a></li>
+<li class="chapter" data-level="6.2.8" data-path="meta.html"><a href="meta.html#different-assumptions-lead-to-different-predictions-about-rates-of-extinction"><i class="fa fa-check"></i><b>6.2.8</b> Different assumptions lead to different predictions about rates of extinction</a></li>
+</ul></li>
+<li class="chapter" data-level="6.3" data-path="meta.html"><a href="meta.html#hanskis-incidence-function"><i class="fa fa-check"></i><b>6.3</b> Hanski’s incidence function</a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="competition.html"><a href="competition.html"><i class="fa fa-check"></i><b>7</b> Competition</a><ul>
+<li class="chapter" data-level="7.1" data-path="competition.html"><a href="competition.html#lotka-volterra-interspecific-competition"><i class="fa fa-check"></i><b>7.1</b> Lotka-Volterra Interspecific Competition</a></li>
+<li class="chapter" data-level="7.2" data-path="competition.html"><a href="competition.html#equilbria"><i class="fa fa-check"></i><b>7.2</b> Equilbria</a><ul>
+<li class="chapter" data-level="7.2.1" data-path="competition.html"><a href="competition.html#isoclines"><i class="fa fa-check"></i><b>7.2.1</b> Isoclines</a></li>
+<li class="chapter" data-level="7.2.2" data-path="competition.html"><a href="competition.html#finding-equilibria"><i class="fa fa-check"></i><b>7.2.2</b> Finding equilibria</a></li>
+<li class="chapter" data-level="7.2.3" data-path="competition.html"><a href="competition.html#coexistence-the-invasion-criterion"><i class="fa fa-check"></i><b>7.2.3</b> Coexistence — the invasion criterion</a></li>
+<li class="chapter" data-level="7.2.4" data-path="competition.html"><a href="competition.html#other-equilibria"><i class="fa fa-check"></i><b>7.2.4</b> Other equilibria</a></li>
+</ul></li>
+<li class="chapter" data-level="7.3" data-path="competition.html"><a href="competition.html#dynamics-at-the-equilibria"><i class="fa fa-check"></i><b>7.3</b> Dynamics at the Equilibria</a><ul>
+<li class="chapter" data-level="7.3.1" data-path="competition.html"><a href="competition.html#determine-the-equilibria"><i class="fa fa-check"></i><b>7.3.1</b> Determine the equilibria</a></li>
+<li class="chapter" data-level="7.3.2" data-path="competition.html"><a href="competition.html#create-the-jacobian-matrix"><i class="fa fa-check"></i><b>7.3.2</b> Create the Jacobian matrix</a></li>
+<li class="chapter" data-level="7.3.3" data-path="competition.html"><a href="competition.html#solve-the-jacobian-at-an-equilibrium"><i class="fa fa-check"></i><b>7.3.3</b> Solve the Jacobian at an equilibrium</a></li>
+<li class="chapter" data-level="7.3.4" data-path="competition.html"><a href="competition.html#use-the-jacobian-matrix"><i class="fa fa-check"></i><b>7.3.4</b> Use the Jacobian matrix</a></li>
+<li class="chapter" data-level="7.3.5" data-path="competition.html"><a href="competition.html#three-interesting-equilbria"><i class="fa fa-check"></i><b>7.3.5</b> Three interesting equilbria</a></li>
+</ul></li>
+<li class="chapter" data-level="7.4" data-path="competition.html"><a href="competition.html#return-time-and-the-effect-of-r"><i class="fa fa-check"></i><b>7.4</b> Return Time and the Effect of <span class="math inline">\(r\)</span></a></li>
+<li class="chapter" data-level="7.5" data-path="competition.html"><a href="competition.html#indirect-competition-for-resources"><i class="fa fa-check"></i><b>7.5</b> Indirect competition for resources</a><ul>
+<li class="chapter" data-level="7.5.1" data-path="competition.html"><a href="competition.html#linear-and-nonlinear-responses"><i class="fa fa-check"></i><b>7.5.1</b> Linear and nonlinear responses</a></li>
+<li class="chapter" data-level="7.5.2" data-path="competition.html"><a href="competition.html#relative-nonlinearity"><i class="fa fa-check"></i><b>7.5.2</b> Relative nonlinearity</a></li>
+<li class="chapter" data-level="7.5.3" data-path="competition.html"><a href="competition.html#competition-for-two-resources-the-resource-ratio-model"><i class="fa fa-check"></i><b>7.5.3</b> Competition for two resources: the resource ratio model</a></li>
+</ul></li>
+<li class="chapter" data-level="7.6" data-path="competition.html"><a href="competition.html#summary"><i class="fa fa-check"></i><b>7.6</b> Summary</a></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="mutualisms.html"><a href="mutualisms.html"><i class="fa fa-check"></i><b>8</b> Mutualisms</a><ul>
+<li class="chapter" data-level="8.1" data-path="mutualisms.html"><a href="mutualisms.html#background"><i class="fa fa-check"></i><b>8.1</b> Background</a></li>
+<li class="chapter" data-level="8.2" data-path="mutualisms.html"><a href="mutualisms.html#lotka-volterra-mutualism"><i class="fa fa-check"></i><b>8.2</b> Lotka-Volterra mutualism</a></li>
+<li class="chapter" data-level="8.3" data-path="mutualisms.html"><a href="mutualisms.html#consumer-resource-mutualism"><i class="fa fa-check"></i><b>8.3</b> Consumer-resource mutualism</a><ul>
+<li class="chapter" data-level="8.3.1" data-path="mutualisms.html"><a href="mutualisms.html#a-model-of-uni-directional-mutualism"><i class="fa fa-check"></i><b>8.3.1</b> A model of uni-directional mutualism</a></li>
+</ul></li>
+<li class="chapter" data-level="8.4" data-path="mutualisms.html"><a href="mutualisms.html#plant-soil-feedbacks"><i class="fa fa-check"></i><b>8.4</b> Plant-soil feedbacks</a></li>
+<li class="chapter" data-level="8.5" data-path="mutualisms.html"><a href="mutualisms.html#simulations-for-learning"><i class="fa fa-check"></i><b>8.5</b> Simulations for learning</a><ul>
+<li class="chapter" data-level="8.5.1" data-path="mutualisms.html"><a href="mutualisms.html#lvg"><i class="fa fa-check"></i><b>8.5.1</b> <code>lvg()</code></a></li>
+<li class="chapter" data-level="8.5.2" data-path="mutualisms.html"><a href="mutualisms.html#systematic-simulations"><i class="fa fa-check"></i><b>8.5.2</b> Systematic simulations</a></li>
+<li class="chapter" data-level="8.5.3" data-path="mutualisms.html"><a href="mutualisms.html#checking-simulation-results"><i class="fa fa-check"></i><b>8.5.3</b> Checking simulation results</a></li>
+<li class="chapter" data-level="8.5.4" data-path="mutualisms.html"><a href="mutualisms.html#comparing-simulation-results-to-analytical-solutions"><i class="fa fa-check"></i><b>8.5.4</b> Comparing simulation results to analytical solutions</a></li>
+<li class="chapter" data-level="8.5.5" data-path="mutualisms.html"><a href="mutualisms.html#one-last-thing-using-the-jacobian-matrix"><i class="fa fa-check"></i><b>8.5.5</b> One last thing: using the Jacobian matrix</a></li>
+<li class="chapter" data-level="8.5.6" data-path="mutualisms.html"><a href="mutualisms.html#in-fine"><i class="fa fa-check"></i><b>8.5.6</b> <em>In Fine</em></a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="9" data-path="consumer-resource-interactions.html"><a href="consumer-resource-interactions.html"><i class="fa fa-check"></i><b>9</b> Consumer-resource Interactions</a><ul>
+<li class="chapter" data-level="9.1" data-path="consumer-resource-interactions.html"><a href="consumer-resource-interactions.html#ratio-dependence"><i class="fa fa-check"></i><b>9.1</b> Ratio dependence</a><ul>
+<li class="chapter" data-level="9.1.1" data-path="consumer-resource-interactions.html"><a href="consumer-resource-interactions.html#dynamics-of-ratio-dependent-predation"><i class="fa fa-check"></i><b>9.1.1</b> Dynamics of ratio dependent predation</a></li>
+</ul></li>
+<li class="chapter" data-level="9.2" data-path="consumer-resource-interactions.html"><a href="consumer-resource-interactions.html#prey-dependence"><i class="fa fa-check"></i><b>9.2</b> Prey dependence</a><ul>
+<li class="chapter" data-level="9.2.1" data-path="consumer-resource-interactions.html"><a href="consumer-resource-interactions.html#dyanmics-of-prey-dependent-predation"><i class="fa fa-check"></i><b>9.2.1</b> Dyanmics of prey-dependent predation</a></li>
+</ul></li>
+<li class="chapter" data-level="9.3" data-path="consumer-resource-interactions.html"><a href="consumer-resource-interactions.html#interlude-functional-response---what-an-individual-predator-does"><i class="fa fa-check"></i><b>9.3</b> Interlude: Functional response - what an individual predator does</a></li>
+<li class="chapter" data-level="9.4" data-path="consumer-resource-interactions.html"><a href="consumer-resource-interactions.html#stability-analysis-for-the-prey-dependent-lotkavolterra-model"><i class="fa fa-check"></i><b>9.4</b> Stability analysis for the prey-dependent Lotka–Volterra model</a></li>
+<li class="chapter" data-level="9.5" data-path="consumer-resource-interactions.html"><a href="consumer-resource-interactions.html#prey-carrying-capacity-and-type-ii-functional-response"><i class="fa fa-check"></i><b>9.5</b> Prey carrying capacity and type II functional response</a><ul>
+<li class="chapter" data-level="9.5.1" data-path="consumer-resource-interactions.html"><a href="consumer-resource-interactions.html#paradox-of-enrichment"><i class="fa fa-check"></i><b>9.5.1</b> Paradox of enrichment</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="10" data-path="host-parasitoid-relations.html"><a href="host-parasitoid-relations.html"><i class="fa fa-check"></i><b>10</b> Host-parasitoid relations</a><ul>
+<li class="chapter" data-level="10.1" data-path="host-parasitoid-relations.html"><a href="host-parasitoid-relations.html#independent-and-random-attacks"><i class="fa fa-check"></i><b>10.1</b> Independent and random attacks</a><ul>
+<li class="chapter" data-level="10.1.1" data-path="host-parasitoid-relations.html"><a href="host-parasitoid-relations.html#simulating-simple-host-parasitoid-dynamics"><i class="fa fa-check"></i><b>10.1.1</b> Simulating simple host-parasitoid dynamics</a></li>
+</ul></li>
+<li class="chapter" data-level="10.2" data-path="host-parasitoid-relations.html"><a href="host-parasitoid-relations.html#aggregation-leads-to-coexistence"><i class="fa fa-check"></i><b>10.2</b> Aggregation leads to coexistence</a><ul>
+<li class="chapter" data-level="10.2.1" data-path="host-parasitoid-relations.html"><a href="host-parasitoid-relations.html#equilibria-for-a-discrete-time-model"><i class="fa fa-check"></i><b>10.2.1</b> Equilibria for a discrete-time model</a></li>
+</ul></li>
+<li class="chapter" data-level="10.3" data-path="host-parasitoid-relations.html"><a href="host-parasitoid-relations.html#stability-of-hostparasitoid-dynamics"><i class="fa fa-check"></i><b>10.3</b> Stability of host–parasitoid dynamics</a></li>
+<li class="chapter" data-level="10.4" data-path="mutualisms.html"><a href="mutualisms.html#in-fine"><i class="fa fa-check"></i><b>10.4</b> <em>In Fine</em></a></li>
+</ul></li>
+<li class="chapter" data-level="11" data-path="disease.html"><a href="disease.html"><i class="fa fa-check"></i><b>11</b> Disease</a><ul>
+<li class="chapter" data-level="11.1" data-path="disease.html"><a href="disease.html#closed-epidemics"><i class="fa fa-check"></i><b>11.1</b> Closed epidemics</a><ul>
+<li class="chapter" data-level="11.1.1" data-path="disease.html"><a href="disease.html#density-dependent-transmission"><i class="fa fa-check"></i><b>11.1.1</b> Density-dependent transmission</a></li>
+<li class="chapter" data-level="11.1.2" data-path="disease.html"><a href="disease.html#frequency-dependent-transmission"><i class="fa fa-check"></i><b>11.1.2</b> Frequency-dependent transmission</a></li>
+</ul></li>
+<li class="chapter" data-level="11.2" data-path="disease.html"><a href="disease.html#open-epidemics"><i class="fa fa-check"></i><b>11.2</b> Open epidemics</a></li>
+<li class="chapter" data-level="11.3" data-path="disease.html"><a href="disease.html#modeling-data-from-bombay"><i class="fa fa-check"></i><b>11.3</b> Modeling data from Bombay</a><ul>
+<li class="chapter" data-level="11.3.1" data-path="disease.html"><a href="disease.html#optimization"><i class="fa fa-check"></i><b>11.3.1</b> Optimization</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="12" data-path="food-webs-and-other-networks.html"><a href="food-webs-and-other-networks.html"><i class="fa fa-check"></i><b>12</b> Food webs and other networks</a><ul>
+<li class="chapter" data-level="12.1" data-path="food-webs-and-other-networks.html"><a href="food-webs-and-other-networks.html#food-web-characteristics"><i class="fa fa-check"></i><b>12.1</b> Food Web Characteristics</a></li>
+<li class="chapter" data-level="12.2" data-path="food-webs-and-other-networks.html"><a href="food-webs-and-other-networks.html#does-omnivory-destablize-food-chains"><i class="fa fa-check"></i><b>12.2</b> Does omnivory destablize food chains?</a><ul>
+<li class="chapter" data-level="12.2.1" data-path="food-webs-and-other-networks.html"><a href="food-webs-and-other-networks.html#multi-species-lotkavolterra-notation"><i class="fa fa-check"></i><b>12.2.1</b> Multi-species Lotka–Volterra notation</a></li>
+<li class="chapter" data-level="12.2.2" data-path="mutualisms.html"><a href="mutualisms.html#background"><i class="fa fa-check"></i><b>12.2.2</b> Background</a></li>
+<li class="chapter" data-level="12.2.3" data-path="food-webs-and-other-networks.html"><a href="food-webs-and-other-networks.html#implementing-pimm-and-lawtons-methods"><i class="fa fa-check"></i><b>12.2.3</b> Implementing Pimm and Lawton’s Methods</a></li>
+<li class="chapter" data-level="12.2.4" data-path="food-webs-and-other-networks.html"><a href="food-webs-and-other-networks.html#shortening-the-chain"><i class="fa fa-check"></i><b>12.2.4</b> Shortening the Chain</a></li>
+<li class="chapter" data-level="12.2.5" data-path="food-webs-and-other-networks.html"><a href="food-webs-and-other-networks.html#adding-omnivory"><i class="fa fa-check"></i><b>12.2.5</b> Adding Omnivory</a></li>
+<li class="chapter" data-level="12.2.6" data-path="food-webs-and-other-networks.html"><a href="food-webs-and-other-networks.html#comparing-chain-a-versus-b"><i class="fa fa-check"></i><b>12.2.6</b> Comparing Chain A versus B</a></li>
+<li class="chapter" data-level="12.2.7" data-path="food-webs-and-other-networks.html"><a href="food-webs-and-other-networks.html#re-evaluating-take-home-messages"><i class="fa fa-check"></i><b>12.2.7</b> Re-evaluating Take-Home Messages</a></li>
+</ul></li>
+<li class="chapter" data-level="12.3" data-path="food-webs-and-other-networks.html"><a href="food-webs-and-other-networks.html#perhaps-mutualism-stabilizes-bipartite-networks"><i class="fa fa-check"></i><b>12.3</b> Perhaps mutualism stabilizes bipartite networks</a><ul>
+<li class="chapter" data-level="12.3.1" data-path="food-webs-and-other-networks.html"><a href="food-webs-and-other-networks.html#creating-bipartite-webs"><i class="fa fa-check"></i><b>12.3.1</b> Creating bipartite webs</a></li>
+<li class="chapter" data-level="12.3.2" data-path="food-webs-and-other-networks.html"><a href="food-webs-and-other-networks.html#testing-effects-of-nestedness-and-modularity-on-network-resilience."><i class="fa fa-check"></i><b>12.3.2</b> Testing effects of nestedness and modularity on network resilience.</a></li>
+<li class="chapter" data-level="12.3.3" data-path="food-webs-and-other-networks.html"><a href="food-webs-and-other-networks.html#path-analysis"><i class="fa fa-check"></i><b>12.3.3</b> Path Analysis</a></li>
+</ul></li>
+<li class="chapter" data-level="12.4" data-path="food-webs-and-other-networks.html"><a href="food-webs-and-other-networks.html#exploring-pandora-right-here-at-home"><i class="fa fa-check"></i><b>12.4</b> Exploring Pandora, right here at home</a><ul>
+<li class="chapter" data-level="12.4.1" data-path="food-webs-and-other-networks.html"><a href="food-webs-and-other-networks.html#properties-assessed"><i class="fa fa-check"></i><b>12.4.1</b> Properties assessed</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="13" data-path="diversity.html"><a href="diversity.html"><i class="fa fa-check"></i><b>13</b> Diversity</a><ul>
+<li class="chapter" data-level="13.1" data-path="mutualisms.html"><a href="mutualisms.html#background"><i class="fa fa-check"></i><b>13.1</b> Background</a></li>
+<li class="chapter" data-level="13.2" data-path="diversity.html"><a href="diversity.html#species-composition"><i class="fa fa-check"></i><b>13.2</b> Species Composition</a><ul>
+<li class="chapter" data-level="13.2.1" data-path="diversity.html"><a href="diversity.html#measures-of-abundance"><i class="fa fa-check"></i><b>13.2.1</b> Measures of abundance</a></li>
+<li class="chapter" data-level="13.2.2" data-path="diversity.html"><a href="diversity.html#distance"><i class="fa fa-check"></i><b>13.2.2</b> Distance</a></li>
+<li class="chapter" data-level="13.2.3" data-path="diversity.html"><a href="diversity.html#displaying-multidimensional-distances"><i class="fa fa-check"></i><b>13.2.3</b> Displaying multidimensional distances</a></li>
+<li class="chapter" data-level="13.2.4" data-path="diversity.html"><a href="diversity.html#similarity"><i class="fa fa-check"></i><b>13.2.4</b> Similarity</a></li>
+</ul></li>
+<li class="chapter" data-level="13.3" data-path="diversity.html"><a href="diversity.html#diversity-1"><i class="fa fa-check"></i><b>13.3</b> Diversity</a></li>
+<li class="chapter" data-level="13.4" data-path="diversity.html"><a href="diversity.html#species-diversity"><i class="fa fa-check"></i><b>13.4</b> Species diversity</a></li>
+<li class="chapter" data-level="13.5" data-path="diversity.html"><a href="diversity.html#rarefaction-and-total-species-richness"><i class="fa fa-check"></i><b>13.5</b> Rarefaction and total species richness</a><ul>
+<li class="chapter" data-level="13.5.1" data-path="diversity.html"><a href="diversity.html#an-example-of-rarefaction-and-total-species-richness"><i class="fa fa-check"></i><b>13.5.1</b> An example of rarefaction and total species richness</a></li>
+</ul></li>
+<li class="chapter" data-level="13.6" data-path="diversity.html"><a href="diversity.html#distributions"><i class="fa fa-check"></i><b>13.6</b> Distributions</a><ul>
+<li class="chapter" data-level="13.6.1" data-path="diversity.html"><a href="diversity.html#log-normal-distribution"><i class="fa fa-check"></i><b>13.6.1</b> Log-normal distribution</a></li>
+<li class="chapter" data-level="13.6.2" data-path="diversity.html"><a href="diversity.html#other-distributions"><i class="fa fa-check"></i><b>13.6.2</b> Other distributions</a></li>
+<li class="chapter" data-level="13.6.3" data-path="diversity.html"><a href="diversity.html#pattern-vs.-process"><i class="fa fa-check"></i><b>13.6.3</b> Pattern <em>vs.</em> process</a></li>
+</ul></li>
+<li class="chapter" data-level="13.7" data-path="diversity.html"><a href="diversity.html#neutral-theory-of-biodiversity-and-biogeography"><i class="fa fa-check"></i><b>13.7</b> Neutral Theory of Biodiversity and Biogeography</a></li>
+</ul></li>
+<li class="chapter" data-level="14" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i><b>14</b> References</a></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Primer of Ecology using R</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="diversity" class="section level1">
+<h1><span class="header-section-number">13</span> Diversity</h1>
+<div id="background" class="section level2">
+<h2><span class="header-section-number">13.1</span> Background</h2>
+<div class="figure"><span id="fig:BSsuc"></span>
+<img src="figs/BSsuc-1.png" alt="*Empirical rank--abundance distributions of successional plant communities (old-fields) within the temperate deciduous forest biome of North America. 'Year' indicates the time since abandonment from agriculture.  Data from the Buell-Small succession study* (http://www.ecostudies.org/bss/)." width="90%" />
+<p class="caption">
+Figure 13.1: <em>Empirical rank–abundance distributions of successional plant communities (old-fields) within the temperate deciduous forest biome of North America. ‘Year’ indicates the time since abandonment from agriculture. Data from the Buell-Small succession study</em> (<a href="http://www.ecostudies.org/bss/" class="uri">http://www.ecostudies.org/bss/</a>).
+</p>
+</div>
+<p>It seems easy, or at least tractable, to compare the abundance of a single species in two samples. In this chapter, we introduce conceptsthat ecologists use to compare entire communities in two samples. We focus on two quantities: <em>species composition</em>, and <em>diversity</em>. We also discuss several issues related to this, including species–abundance distributions, ecological neutral theory, diversity partitioning, and species–area relations. Several packages in R include functions for dealing specifically with these topics.</p>
+<p>Please see the “Environmetrics” link within the “Task Views” link at any CRAN website for downloading R packages. Perhaps the most comprehensive (including both diversity and composition) is the <code>vegan</code> package, but many others include important features as well.</p>
+</div>
+<div id="species-composition" class="section level2">
+<h2><span class="header-section-number">13.2</span> Species Composition</h2>
+<p>Species composition is merely the set of species in a site or a sample. Typically this includes some measure of abundance at each site, but it may also simply be a list of species at each site, where “abundance” is either presence or absence.</p>
+<p>Imagine we have four sites (A–D) from which we collect density data on two species, <em>Salix whompii</em> and <em>Fraxinus virga</em>. We can enter hypothetical data of the following abundances.</p>
+<div class="sourceCode" id="cb428"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb428-1"><a href="diversity.html#cb428-1"></a>dens &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">Salwho=</span><span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>), <span class="dt">Fravir=</span><span class="kw">c</span>(<span class="dv">21</span>,<span class="dv">8</span>,<span class="dv">13</span>,<span class="dv">5</span>))</span>
+<span id="cb428-2"><a href="diversity.html#cb428-2"></a><span class="kw">row.names</span>(dens) &lt;-<span class="st"> </span>LETTERS[<span class="dv">1</span><span class="op">:</span><span class="dv">4</span>]</span>
+<span id="cb428-3"><a href="diversity.html#cb428-3"></a>dens</span></code></pre></div>
+<pre><code>##   Salwho Fravir
+## A      1     21
+## B      1      8
+## C      2     13
+## D      3      5</code></pre>
+<p>Next, we plot the abundances of both species; the plotted points then are the sites (Fig. ).</p>
+<div class="sourceCode" id="cb430"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb430-1"><a href="diversity.html#cb430-1"></a><span class="kw">plot</span>(dens, <span class="dt">type=</span><span class="st">&#39;n&#39;</span>); <span class="kw">text</span>(dens, <span class="kw">row.names</span>(dens))</span></code></pre></div>
+<div class="figure"><span id="fig:dens"></span>
+<img src="figs/dens-1.png" alt="*Hypothetical species composition for four sites (A--D)*" width="90%" />
+<p class="caption">
+Figure 13.2: <em>Hypothetical species composition for four sites (A–D)</em>
+</p>
+</div>
+<p>In Fig. <a href="diversity.html#fig:dens">13.2</a>, we see that the species composition in site A is most different from the composition of site D. That is, the distance between site A and D is greater than between any other sites. The next question, then, is <em>how</em> far apart are any two sites? Clearly, this depends on the scale of the measurement (e.g., the values on the axes), and also on how we measure distance through multivariate space.</p>
+<div id="measures-of-abundance" class="section level3">
+<h3><span class="header-section-number">13.2.1</span> Measures of abundance</h3>
+<p>Above we pretended that the abundances were absolute densities (i.e., 1 = one stem per sample). We could of course represent all the abundances differently. For instance, we could calculate relative density, where each species in a sample is represented by the proportion of the sample comprised of that species. For site A, we divide each species by the sum of all species.</p>
+<div class="sourceCode" id="cb431"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb431-1"><a href="diversity.html#cb431-1"></a>dens[<span class="dv">1</span>,]<span class="op">/</span><span class="kw">sum</span>(dens[<span class="dv">1</span>,])</span></code></pre></div>
+<pre><code>##       Salwho    Fravir
+## A 0.04545455 0.9545455</code></pre>
+<p>We see that <em>Salix</em> makes up about 5% of the sample for Site A, and <em>Fraxinus</em> makes up about 95% of the sample. Once we calculate relative densities for each species at each site, this eliminates differences in total density at each site because all sites then total to 1.</p>
+<p>We could also calculate relative measures for any type of data, such as biomass or percent cover.</p>
+<p>In most instances, <em>relative density</em> refers to the density of a species <em>relative</em> to the other species in a sample (above), but it can also be density in a sample relative to other samples. We would thus make each <em>species</em> total equal 1, and then its abundance at each site reflects the proportion of a species total abundance comprised by that site. For instance, we can make all <em>Salix</em> densities relative to each other.</p>
+<div class="sourceCode" id="cb433"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb433-1"><a href="diversity.html#cb433-1"></a>dens[,<span class="dv">1</span>]<span class="op">/</span><span class="kw">sum</span>(dens[,<span class="dv">1</span>])</span></code></pre></div>
+<pre><code>## [1] 0.1428571 0.1428571 0.2857143 0.4285714</code></pre>
+<p>Here we see that sites A and B both have about 14% of all <em>Salix</em> stems, and site D has 43%.</p>
+<p>Whether our measures of abundance are absolute or relative, we would like to know how different samples (or sites) are from each other. Perhaps the simplest way to describe the difference among the sites is to calculate the <em>distances</em> between each pair of sites.</p>
+</div>
+<div id="distance" class="section level3">
+<h3><span class="header-section-number">13.2.2</span> Distance</h3>
+<p>There are many ways to calculate a <em>distance</em> between a pair of sites. One of the simplest, which we learned in primary school, is <em>Euclidean distance</em>. With two species, we have two dimensional space, which is Fig. <a href="diversity.html#fig:dens">13.2</a>. The Euclidean distance between two sites is merely the length of the vector connecting those sites. We calculate this as <span class="math inline">\(\sqrt{x^2+y^2}\)</span>, where <span class="math inline">\(x\)</span> and <span class="math inline">\(y\)</span> are the <span class="math inline">\((x,y)\)</span> distances between a pair of sites. The <span class="math inline">\(x\)</span> distance between sites B and C is the difference in <em>Salix</em> abundance between the two sites,</p>
+<div class="sourceCode" id="cb435"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb435-1"><a href="diversity.html#cb435-1"></a>x &lt;-<span class="st"> </span>dens[<span class="dv">2</span>,<span class="dv">1</span>] <span class="op">-</span><span class="st"> </span>dens[<span class="dv">3</span>,<span class="dv">1</span>]</span></code></pre></div>
+<p>where <code>dens</code> is the data frame with sites in rows, and species in different columns. The <span class="math inline">\(y\)</span> distance between sites B and C is difference in <em>Fraxinus</em> abundance between the two sites.</p>
+<div class="sourceCode" id="cb436"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb436-1"><a href="diversity.html#cb436-1"></a>y &lt;-<span class="st"> </span>dens[<span class="dv">2</span>,<span class="dv">2</span>] <span class="op">-</span><span class="st"> </span>dens[<span class="dv">3</span>,<span class="dv">2</span>]</span></code></pre></div>
+<p>The Euclidean distance between these is therefore</p>
+<div class="sourceCode" id="cb437"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb437-1"><a href="diversity.html#cb437-1"></a><span class="kw">sqrt</span>(x<span class="op">^</span><span class="dv">2</span> <span class="op">+</span><span class="st"> </span>y<span class="op">^</span><span class="dv">2</span>)</span></code></pre></div>
+<pre><code>## [1] 5.09902</code></pre>
+<p>Distance is as simple as that. We calculate all pairwise Euclidean distances between sites A–D based on 2 species using built-in functions in R.</p>
+<div class="sourceCode" id="cb439"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb439-1"><a href="diversity.html#cb439-1"></a>(alldists &lt;-<span class="st"> </span><span class="kw">dist</span>(dens))</span></code></pre></div>
+<pre><code>##           A         B         C
+## B 13.000000                    
+## C  8.062258  5.099020          
+## D 16.124515  3.605551  8.062258</code></pre>
+<p>We can generalize this to include any number of species, but it becomes increasingly harder to visualize. We can add a third species, <em>Mandragora officinarum</em>, and recalculate pairwise distances between all sites, but now with three species.</p>
+<div class="sourceCode" id="cb441"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb441-1"><a href="diversity.html#cb441-1"></a>dens[[<span class="st">&quot;Manoff&quot;</span>]] &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">11</span>,<span class="dv">3</span>,<span class="dv">7</span>,<span class="dv">5</span>)</span>
+<span id="cb441-2"><a href="diversity.html#cb441-2"></a>(spp3 &lt;-<span class="st"> </span><span class="kw">dist</span>(dens))</span></code></pre></div>
+<pre><code>##           A         B         C
+## B 15.264338                    
+## C  9.000000  6.480741          
+## D 17.204651  4.123106  8.306624</code></pre>
+<p>We can plot species abundances as we did above, and <code>pairs(dens)</code> would give us all the pairwise plots given three species. However, what we really want for species is a 3-D plot. Here we load another package and create a 3-D scatterplot.</p>
+<div class="sourceCode" id="cb443"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb443-1"><a href="diversity.html#cb443-1"></a><span class="kw">library</span>(scatterplot3d)</span>
+<span id="cb443-2"><a href="diversity.html#cb443-2"></a>sc1 &lt;-<span class="st"> </span><span class="kw">scatterplot3d</span>(dens,  <span class="dt">type=</span><span class="st">&#39;h&#39;</span>, <span class="dt">pch=</span><span class="st">&quot;&quot;</span>,</span>
+<span id="cb443-3"><a href="diversity.html#cb443-3"></a>      <span class="dt">xlim=</span><span class="kw">c</span>(<span class="dv">0</span>,<span class="dv">5</span>), <span class="dt">ylim=</span><span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">25</span>), <span class="dt">zlim=</span><span class="kw">c</span>(<span class="dv">0</span>,<span class="dv">15</span>))</span>
+<span id="cb443-4"><a href="diversity.html#cb443-4"></a><span class="kw">text</span>(sc1<span class="op">$</span><span class="kw">xyz.convert</span>(dens), <span class="dt">labels=</span><span class="kw">rownames</span>(dens))</span></code></pre></div>
+<p><img src="figs/unnamed-chunk-210-1.png" width="90%" />
+In three dimensions, Euclidean distances are calculated the same basic way, but we add a third species, and the calculation becomes <span class="math inline">\(\sqrt{x^2 + y^2 +z^2}\)</span>. Note that we take the square root (as opposed to the cube root) because we originally squared each distance. We can generalize this for two sites for <span class="math inline">\(S\)</span> species as
+<span class="math display">\[D_E = \sqrt{\sum_{i=1}^S\left( x_{ai} - x_{bi}\right)^2}\]</span></p>
+<p>Of course, it is difficult (impossible?) to visualize arrangements of sites with more than three axes (i.e., <span class="math inline">\(&gt;3\)</span> species), but we can always <em>calculate</em> the distances between pairs of sites, regardless of how many species we have.</p>
+<p>There are many ways, in addition to Euclidean distances, to calculate distance. Among the most commonly used in ecology is
+<em>Bray–Curtis</em> distance, which goes by other names, including Sørenson distance.
+<span class="math display">\[D_{BC} = \frac{\sum_{i=1}^S\left| x_{ai} - x_{bi}\right|}{\sum_{i=1}^S (x_{ai} + x_{bi})}\]</span>
+where <span class="math inline">\(S\)</span> is the number of species in all samples. Bray–Curtis distance is merely the total difference in species abundances between two sites, divided by the total abundances at each site. Bray–Curtis distance (and a couple others) tends to result in more intuitively pleasing distances in which both common and rare species have relatively similar weights, whereas Euclidean distance depends more strongly on the most abundant species. This happens because Euclidean distances are based on squared differences, whereas Bray–Curtis uses absolute differences. Squaring always amplifies the importance of larger values. Fig. <a href="diversity.html#fig:mds">13.3</a> compares graphs based on Euclidean and Bray–Curtis distances of the same raw data.</p>
+</div>
+<div id="displaying-multidimensional-distances" class="section level3">
+<h3><span class="header-section-number">13.2.3</span> Displaying multidimensional distances</h3>
+<p>A simple way to display distances for three or more species is to create a plot in two dimensions that attempts to arrange all sites so that they are <em>approximately</em> the correct distances apart. In general this is impossible to achieve precisely, but distances can be approximately correct. One technique that tries to create an optimal (albiet approximate) arrangement is . Here we add a fourth species () to our data set before plotting the distances.</p>
+<div class="sourceCode" id="cb444"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb444-1"><a href="diversity.html#cb444-1"></a>dens<span class="op">$</span>Acolyc &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">16</span>, <span class="dv">0</span>, <span class="dv">9</span>,<span class="dv">4</span>)</span></code></pre></div>
+<p>The non-metric multidimensional scaling function is in the  package. It calculates distances for us using the original data. Here we display Euclidean distances among sites (Fig. <a href="diversity.html#fig:mds">13.3</a>).</p>
+<div class="sourceCode" id="cb445"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb445-1"><a href="diversity.html#cb445-1"></a><span class="co"># ignore warnings for these toy examples</span></span>
+<span id="cb445-2"><a href="diversity.html#cb445-2"></a>mdsE &lt;-<span class="st"> </span><span class="kw">metaMDS</span>(dens, <span class="dt">distance=</span><span class="st">&quot;euc&quot;</span>, <span class="dt">autotransform=</span><span class="ot">FALSE</span>, <span class="dt">trace=</span><span class="dv">0</span>)</span>
+<span id="cb445-3"><a href="diversity.html#cb445-3"></a><span class="kw">plot</span>(mdsE, <span class="dt">display=</span><span class="st">&quot;sites&quot;</span>, <span class="dt">type=</span><span class="st">&quot;text&quot;</span>)</span>
+<span id="cb445-4"><a href="diversity.html#cb445-4"></a>mdsB &lt;-<span class="st"> </span><span class="kw">metaMDS</span>(dens, <span class="dt">distance=</span><span class="st">&quot;bray&quot;</span>, <span class="dt">autotransform=</span><span class="ot">FALSE</span>, <span class="dt">trace=</span><span class="dv">0</span>)</span>
+<span id="cb445-5"><a href="diversity.html#cb445-5"></a><span class="kw">plot</span>(mdsB, <span class="dt">display=</span><span class="st">&quot;sites&quot;</span>, <span class="dt">type=</span><span class="st">&quot;text&quot;</span>)</span></code></pre></div>
+<div class="figure"><span id="fig:mds"></span>
+<img src="figs/mds-1.png" alt="*Nonmetric multidimensional (NMDS) plots showing approximate distances between sites. These two figures display the same raw data, but Euclidean distances tend to emphasize differences due to the more abundant species, whereas Bray-Curtis does not. Because NMDS provides iterative optimizations, it will find slightly different arrangements each time you run it.*" width="45%" /><img src="figs/mds-2.png" alt="*Nonmetric multidimensional (NMDS) plots showing approximate distances between sites. These two figures display the same raw data, but Euclidean distances tend to emphasize differences due to the more abundant species, whereas Bray-Curtis does not. Because NMDS provides iterative optimizations, it will find slightly different arrangements each time you run it.*" width="45%" />
+<p class="caption">
+Figure 13.3: <em>Nonmetric multidimensional (NMDS) plots showing approximate distances between sites. These two figures display the same raw data, but Euclidean distances tend to emphasize differences due to the more abundant species, whereas Bray-Curtis does not. Because NMDS provides iterative optimizations, it will find slightly different arrangements each time you run it.</em>
+</p>
+</div>
+</div>
+<div id="similarity" class="section level3">
+<h3><span class="header-section-number">13.2.4</span> Similarity</h3>
+<p>Sometimes, we would like to know how similar two communities are. Here we describe two measures of similarity, percent similarity, and S{}rensen similarity <span class="citation">(Magurran <a href="#ref-Magurran2004" role="doc-biblioref">2004</a>)</span>.</p>
+<p>Percent similarity may be the simplest of these; it is simply the sum of the minimum percentages for each species in the community. Here we convert each species to its relative abundance; that is, its proportional abundance at each site. To do this, we treat each site (row) separately, and then divide the abundance of each species by the sum of the abundances at each site.</p>
+<div class="sourceCode" id="cb446"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb446-1"><a href="diversity.html#cb446-1"></a>(dens.RA &lt;-<span class="st"> </span><span class="kw">t</span>( <span class="kw">apply</span>(dens, <span class="dv">1</span>, <span class="cf">function</span>(sp.abun) sp.abun<span class="op">/</span><span class="kw">sum</span>(sp.abun) )) )</span></code></pre></div>
+<pre><code>##       Salwho    Fravir    Manoff    Acolyc
+## A 0.02040816 0.4285714 0.2244898 0.3265306
+## B 0.08333333 0.6666667 0.2500000 0.0000000
+## C 0.06451613 0.4193548 0.2258065 0.2903226
+## D 0.17647059 0.2941176 0.2941176 0.2352941</code></pre>
+<p>Next, to compare two sites, we find the minimum relative abundance for each species. Comparing sites A and B, we have,</p>
+<div class="sourceCode" id="cb448"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb448-1"><a href="diversity.html#cb448-1"></a>(mins &lt;-<span class="st"> </span><span class="kw">apply</span>(dens.RA[<span class="dv">1</span><span class="op">:</span><span class="dv">2</span>,], <span class="dv">2</span>, min))</span></code></pre></div>
+<pre><code>##     Salwho     Fravir     Manoff     Acolyc 
+## 0.02040816 0.42857143 0.22448980 0.00000000</code></pre>
+<p>Finally, we sum these, and multiply by 100 to get percentages.</p>
+<div class="sourceCode" id="cb450"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb450-1"><a href="diversity.html#cb450-1"></a><span class="kw">sum</span>(mins) <span class="op">*</span><span class="dv">100</span></span></code></pre></div>
+<pre><code>## [1] 67.34694</code></pre>
+<p>The second measure of similarity we investigate is S{}rensen’s similarity,
+<span class="math display" id=\tag{13.1}\[ (#eq:ss)  S_s = \frac{2C}{A+B}\]</span>
+where <span class="math inline">\(C\)</span> is the number of species two sites have in common, and <span class="math inline">\(A\)</span> and <span class="math inline">\(B\)</span> are the number of species at each site. This is equivalent to dividing the shared species by the average richness.</p>
+<p>To calculate this for sites A and B, we could find the species which have non-zero abundances both sites.</p>
+<div class="sourceCode" id="cb452"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb452-1"><a href="diversity.html#cb452-1"></a>(shared &lt;-<span class="st"> </span><span class="kw">apply</span>(dens[<span class="dv">1</span><span class="op">:</span><span class="dv">2</span>,], <span class="dv">2</span>, <span class="cf">function</span>(abuns) <span class="kw">all</span>(abuns <span class="op">!=</span><span class="st"> </span><span class="dv">0</span>) ) )</span></code></pre></div>
+<pre><code>## Salwho Fravir Manoff Acolyc 
+##   TRUE   TRUE   TRUE  FALSE</code></pre>
+<p>Next we find the richness of each.</p>
+<div class="sourceCode" id="cb454"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb454-1"><a href="diversity.html#cb454-1"></a>(Rs &lt;-<span class="st"> </span><span class="kw">apply</span>(dens[<span class="dv">1</span><span class="op">:</span><span class="dv">2</span>,], <span class="dv">1</span>, <span class="cf">function</span>(x) <span class="kw">sum</span>(x<span class="op">&gt;</span><span class="dv">0</span>)) )</span></code></pre></div>
+<pre><code>## A B 
+## 4 3</code></pre>
+<p>Finally, we divide the shared species by the summed richnesses and multiply by 2.</p>
+<div class="sourceCode" id="cb456"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb456-1"><a href="diversity.html#cb456-1"></a><span class="dv">2</span><span class="op">*</span><span class="kw">sum</span>(shared)<span class="op">/</span><span class="kw">sum</span>(Rs)</span></code></pre></div>
+<pre><code>## [1] 0.8571429</code></pre>
+<p>S{}rensen’s index has also been used in the development of more sophisticated measures of similarity between sites <span class="citation">(Morlon et al. <a href="#ref-Morlon:2008tx" role="doc-biblioref">2008</a>; Plotkin and Muller-Landau <a href="#ref-Plotkin:2002eu" role="doc-biblioref">2002</a>)</span>.</p>
+</div>
+</div>
+<div id="diversity-1" class="section level2">
+<h2><span class="header-section-number">13.3</span> Diversity</h2>
+<p>To my mind, there is no more urgent or interesting goal in ecology and evolutionary biology than understanding the determinants of biodiversity. Biodiversity is many things to many people, but we typically think of it as a measure of the variety of biological life present, perhaps taking into account the relative abundances. For ecologists, we most often think of <em>species diversity</em> as some quantitative measure of the variety or number of different species. This has direct analogues to the genetic diversity within a population <span class="citation">(Crow and Kimura <a href="#ref-Crow1970" role="doc-biblioref">1970</a>; Vellend and Geber <a href="#ref-Vellend2005a" role="doc-biblioref">2005</a>)</span>, and the connections between species and genetic diversity include both shared patterns and shared mechanisms. Here we confine ourselves entirely to a discussion of species diversity, the variety of different species present.</p>
+</div>
+<div id="species-diversity" class="section level2">
+<h2><span class="header-section-number">13.4</span> Species diversity</h2>
+<p>Species diversity represents the variety of species in a community or a sample of a community. Fig. <a href="diversity.html#fig:BSsuc">13.1</a> shows us at a glance the distributions of species abundances, and thus the diversities, of a plant community at different points in time as it undergoes secondary succession. In the figure we see the number of different species that are present (<em>x</em>-axis), and the relative abundances (<em>y</em>-axis). This image gives us an intuition about the variety of species we might encounter. It shows us whether we might expect to encounter many different species, or whether the community might be dominated by one or just a few species. The sense is what we try to capture in a single number that we call a “diversity index”.</p>
+<p>Species diversity is closely allied with mechanisms of coexistence. When two areas differ in their diversity, we are likely to ask why this is so. The number and variety of species present will depend on how many species are available to colonize an area, and also on the mechanisms that allow them to coexist locally. <span class="citation">MacArthur and Wilson (<a href="#ref-MacArthur1963" role="doc-biblioref">1963</a>)</span> envisioned this in terms of ecology, where the number of species in an area is s function of rates of immigration and local extinction,
+<span class="math display">\[S = \Delta I - \Delta E\]</span>
+where mechanisms of coexistence govern <span class="math inline">\(\Delta E\)</span>. This equation is the basis for the theory of island biogeography <span class="citation">(MacArthur and Wilson <a href="#ref-MacArthur1963" role="doc-biblioref">1963</a>, <a href="#ref-MacArthur1967" role="doc-biblioref">1967</a>)</span>. More on that later.</p>
+<p>There are many diversity indices that we could calculate; here, we will calculate four different measures: species richness, Shannon-Weiner diversity, Simpson’s diversity, and Simpson’s inverse diversity. These sometimes are referred to by slightly different names, so it is important to figure out exactly what someone has done.</p>
+<p>Let’s start by creating two samples of two different communities.</p>
+<div class="sourceCode" id="cb458"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb458-1"><a href="diversity.html#cb458-1"></a>comm &lt;-<span class="st"> </span><span class="kw">rep</span>(<span class="kw">c</span>(<span class="st">&quot;X&quot;</span>,<span class="st">&quot;Y&quot;</span>), <span class="dt">each=</span><span class="dv">4</span>)</span>
+<span id="cb458-2"><a href="diversity.html#cb458-2"></a>spp &lt;-<span class="st"> </span>letters[<span class="kw">c</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">4</span>, <span class="dv">1</span><span class="op">:</span><span class="dv">4</span>)]</span>
+<span id="cb458-3"><a href="diversity.html#cb458-3"></a>abun &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">10</span>,<span class="dv">3</span>,<span class="dv">1</span>,<span class="dv">0</span>, <span class="dv">4</span>,<span class="dv">1</span>,<span class="dv">6</span>,<span class="dv">3</span>)</span>
+<span id="cb458-4"><a href="diversity.html#cb458-4"></a>rank &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">4</span>, <span class="dv">2</span>,<span class="dv">4</span>,<span class="dv">1</span>,<span class="dv">3</span>)</span>
+<span id="cb458-5"><a href="diversity.html#cb458-5"></a>df &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">comm=</span>comm, <span class="dt">spp=</span>spp, <span class="dt">n=</span>abun, <span class="dt">rank=</span>rank)</span>
+<span id="cb458-6"><a href="diversity.html#cb458-6"></a><span class="kw">ggplot</span>(df, <span class="kw">aes</span>(rank, n, <span class="dt">colour=</span>comm, <span class="dt">linetype=</span>comm)) <span class="op">+</span><span class="st"> </span></span>
+<span id="cb458-7"><a href="diversity.html#cb458-7"></a><span class="st">  </span><span class="kw">geom_line</span>() <span class="op">+</span><span class="st"> </span><span class="kw">lims</span>(<span class="dt">y=</span><span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">10</span>)) </span></code></pre></div>
+<div class="figure"><span id="fig:comms"></span>
+<img src="figs/comms-1.png" alt="*Two toy communities.*" width="90%" />
+<p class="caption">
+Figure 13.4: <em>Two toy communities.</em>
+</p>
+</div>
+<p>These two samples have different numbers of species, and different distributions. Community Y has a more even distribution of species abundances, whereas community X is dominated by a single species. Now we’ll calculate our different measures of species diversity.</p>
+<p><strong>Species richness</strong> is simply the number of different species in the sample. It is the value of the <em>x</em>-axis in the above figure. To calculate that from these data, we will determine the lengths of the vectors of nonzero abundances.</p>
+<div class="sourceCode" id="cb459"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb459-1"><a href="diversity.html#cb459-1"></a><span class="kw">tapply</span>(<span class="dt">X=</span>df<span class="op">$</span>n, <span class="dt">INDEX=</span>df<span class="op">$</span>comm, </span>
+<span id="cb459-2"><a href="diversity.html#cb459-2"></a>       <span class="dt">FUN =</span> <span class="cf">function</span>(x) {<span class="kw">length</span>(x[x<span class="op">&gt;</span><span class="dv">0</span>])} )</span></code></pre></div>
+<pre><code>## X Y 
+## 3 4</code></pre>
+<p>Species richness increases as the number of individuals in the sample increases. Therefore, care should be taken in comparing the richness of two different samples to make sure that they are sufficiently comparable.</p>
+<p>When most ecologists use the term ‘species diversity’ they are not referring to species richness, but rather some index that incorporates relative abundance as well. One of the most common of these is <strong>Shannon-Weiner diversity</strong> or the Shannon index. This quantity has its roots in information theory and entropy. It measures the disorder in a data set. For instance, if nearly all of the individuals are a single species, then the data are highly predictable and ordered. In contrast, if there are many individuals of many different species, then it would be very difficult to describe in a simple way, and difficult to predict what a sample would look like–disorder, or entropy, would be high. The Shannon index is
+<span class="math display">\[H=-\sum_{i-1}^Sp_i\log p_i\]</span>
+where <span class="math inline">\(p_i\)</span> is the proportion of individuals belonging to species <span class="math inline">\(i\)</span>.</p>
+<div class="sourceCode" id="cb461"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb461-1"><a href="diversity.html#cb461-1"></a><span class="co"># a function that starts with abundances and calculates H</span></span>
+<span id="cb461-2"><a href="diversity.html#cb461-2"></a>shannon &lt;-<span class="st"> </span><span class="cf">function</span>(n) { </span>
+<span id="cb461-3"><a href="diversity.html#cb461-3"></a>  n &lt;-<span class="st"> </span>n[n<span class="op">&gt;</span><span class="dv">0</span>] <span class="co"># remove zero values</span></span>
+<span id="cb461-4"><a href="diversity.html#cb461-4"></a>  p &lt;-<span class="st"> </span>n<span class="op">/</span><span class="kw">sum</span>(n)</span>
+<span id="cb461-5"><a href="diversity.html#cb461-5"></a>  <span class="dv">-1</span> <span class="op">*</span><span class="st"> </span><span class="kw">sum</span>( p<span class="op">*</span><span class="kw">log</span>(p) )</span>
+<span id="cb461-6"><a href="diversity.html#cb461-6"></a>  }</span>
+<span id="cb461-7"><a href="diversity.html#cb461-7"></a><span class="kw">tapply</span>(<span class="dt">X=</span>df<span class="op">$</span>n, <span class="dt">INDEX=</span>df<span class="op">$</span>comm, </span>
+<span id="cb461-8"><a href="diversity.html#cb461-8"></a>       <span class="dt">FUN =</span> shannon)</span></code></pre></div>
+<pre><code>##         X         Y 
+## 0.7589368 1.2396594</code></pre>
+<p>These numbers provide relative estimates of “variety”. They increase with increasing species richness and with increasing evenness of abundances. While there is no hypothetical upper limit, it ranges the minimum is zero for a single species, and five or six for hyper-diverse communities.</p>
+<p><strong>Simpson diversity</strong> indices are based on the <strong>Simpson dominance</strong> index. The dominance index is the probability that two randomly selected individuals belong to the same species,
+<span class="math display">\[D = \sum_{i=1}^S p_i^2\]</span>
+which varies between 1 for a single species and declines toward zero with increasing numbers of species and increasing number of species. If we were describing alleles, instead of trees, this value is the inbreeding coefficient, of genetic homozygosity <span class="citation">(Crow and Kimura <a href="#ref-Crow1970" role="doc-biblioref">1970</a>, @Nei1987)</span>. It is also referred to as the Gini coefficient, and was formulated to measure income inequality. This value is used in two ways in aid calculation of diversity. One Simpson’s diversity index is the arithmetic complement,
+<span class="math display">\[S_c = 1-D\]</span>,
+which is the probability that two randomly selected individuals belong to different species. It is also the initial slope of the expected individuals (<span class="math inline">\(x\)</span>) vs. species (<span class="math inline">\(y\)</span>) curve <span class="citation">(Lande, DeVries, and Walla <a href="#ref-Lande2000" role="doc-biblioref">2000</a>)</span>, and the variance of species composition <span class="citation">(Lande <a href="#ref-Lande1996" role="doc-biblioref">1996</a>)</span>.</p>
+<p>Here we show the equivalence of Simpson’s index and the variance of species composition. First, we reimagine community X as collections of individuals comprising different species identities. We we create a pretend community of six individuals (rows) and 3 species (columns). Somewhat oddly, we identify the degree to which each individual is comprised of each species; in this case, individuals can be only one species. Here we let two individuals be each species.</p>
+<div class="sourceCode" id="cb463"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb463-1"><a href="diversity.html#cb463-1"></a>X &lt;-<span class="st"> </span><span class="kw">matrix</span>(<span class="dv">0</span>, <span class="dt">nrow=</span><span class="dv">14</span>, <span class="dt">ncol=</span><span class="dv">3</span>, </span>
+<span id="cb463-2"><a href="diversity.html#cb463-2"></a>            <span class="dt">dimnames=</span><span class="kw">list</span>(<span class="ot">NULL</span>, <span class="kw">c</span>(<span class="st">&quot;A&quot;</span>, <span class="st">&quot;B&quot;</span>, <span class="st">&quot;C&quot;</span>)))</span>
+<span id="cb463-3"><a href="diversity.html#cb463-3"></a>X[<span class="dv">1</span><span class="op">:</span><span class="dv">10</span>,<span class="dv">1</span>] &lt;-<span class="st"> </span><span class="dv">1</span></span>
+<span id="cb463-4"><a href="diversity.html#cb463-4"></a>X[<span class="dv">11</span><span class="op">:</span><span class="dv">13</span>,<span class="dv">2</span>] &lt;-<span class="st"> </span><span class="dv">1</span></span>
+<span id="cb463-5"><a href="diversity.html#cb463-5"></a>X[<span class="dv">14</span>,<span class="dv">3</span>] &lt;-<span class="st"> </span><span class="dv">1</span></span>
+<span id="cb463-6"><a href="diversity.html#cb463-6"></a><span class="kw">t</span>(X)</span></code></pre></div>
+<pre><code>##   [,1] [,2] [,3] [,4] [,5] [,6] [,7] [,8] [,9] [,10] [,11] [,12] [,13] [,14]
+## A    1    1    1    1    1    1    1    1    1     1     0     0     0     0
+## B    0    0    0    0    0    0    0    0    0     0     1     1     1     0
+## C    0    0    0    0    0    0    0    0    0     0     0     0     0     1</code></pre>
+<p>We transposed the matrix, so that individuals are columns and species membership or identity is in rows. The first individual belongs to species A, etc. We can plot these individuals in community space, if we like (Fig. <a href="diversity.html#fig:Xvar">13.5</a>).</p>
+<div class="sourceCode" id="cb465"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb465-1"><a href="diversity.html#cb465-1"></a><span class="kw">library</span>(scatterplot3d)</span>
+<span id="cb465-2"><a href="diversity.html#cb465-2"></a>X3D &lt;-<span class="st"> </span><span class="kw">scatterplot3d</span>(<span class="kw">jitter</span>(X, <span class="fl">.1</span>), <span class="dt">type=</span><span class="st">&#39;h&#39;</span>, <span class="dt">angle=</span><span class="dv">60</span>, <span class="dt">pch=</span><span class="kw">rep</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">3</span>, <span class="kw">c</span>(<span class="dv">10</span>,<span class="dv">3</span>,<span class="dv">1</span>)) )</span>
+<span id="cb465-3"><a href="diversity.html#cb465-3"></a>X3D<span class="op">$</span><span class="kw">points3d</span>(<span class="dt">x=</span><span class="dv">10</span><span class="op">/</span><span class="dv">14</span>, <span class="dt">y=</span><span class="dv">3</span><span class="op">/</span><span class="dv">14</span>, <span class="dt">z=</span><span class="dv">1</span><span class="op">/</span><span class="dv">14</span>,  <span class="dt">type=</span><span class="st">&#39;h&#39;</span>, <span class="dt">pch=</span><span class="dv">19</span>, <span class="dt">cex=</span><span class="dv">2</span>)</span></code></pre></div>
+<div class="figure"><span id="fig:Xvar"></span>
+<img src="figs/Xvar-1.png" alt="*Each of 14 individuals in a three species community, plotted in 'compsition space'. The large black dot is the multivariate mean, or centroid, which is the center of gravity in this composition space. Simpson's diversity is the variance of species composition of individuals.*" width="90%" />
+<p class="caption">
+Figure 13.5: <em>Each of 14 individuals in a three species community, plotted in ‘compsition space’. The large black dot is the multivariate mean, or centroid, which is the center of gravity in this composition space. Simpson’s diversity is the variance of species composition of individuals.</em>
+</p>
+</div>
+<p>Next we can calculate the centroid, or multivariate mean. It is merely the vector of species means.</p>
+<div class="sourceCode" id="cb466"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb466-1"><a href="diversity.html#cb466-1"></a>(centroid1 &lt;-<span class="st"> </span><span class="kw">colMeans</span>(X))</span></code></pre></div>
+<pre><code>##          A          B          C 
+## 0.71428571 0.21428571 0.07142857</code></pre>
+<p>Given this centroid, we begin to calculate a variance by (i) subtracting each species vector (0s, 1s) from its mean, (ii) squaring each of these deviates, and (3) summing to get the sum of squares.</p>
+<div class="sourceCode" id="cb468"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb468-1"><a href="diversity.html#cb468-1"></a>(SS &lt;-<span class="st"> </span><span class="kw">sum</span>( <span class="kw">sapply</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">3</span>, <span class="cf">function</span>(j) (X[,j] <span class="op">-</span><span class="st"> </span>centroid1[j]))<span class="op">^</span><span class="dv">2</span>) )</span></code></pre></div>
+<pre><code>## [1] 6.142857</code></pre>
+<p>We then divide this sum by the number of individuals that were in the community (<span class="math inline">\(N\)</span>)</p>
+<div class="sourceCode" id="cb470"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb470-1"><a href="diversity.html#cb470-1"></a>SS<span class="op">/</span><span class="dv">14</span></span></code></pre></div>
+<pre><code>## [1] 0.4387755</code></pre>
+<p>When you compare this to the calculation of Simpson’s complement below, you will find that they are the same. Further, the finite sample size correction is the same for both.</p>
+<p>Simpson’s complement diversity index converges quickly with increasing sample size, making it the most reliable index for small sample sizes. It also has an unbiased estimator <span class="citation">(Lande <a href="#ref-Lande1996" role="doc-biblioref">1996</a>)</span>, which is
+<span class="math display">\[\hat{S_c} = \frac{N}{N-1}(1-D)\]</span></p>
+<p><strong>Simpson’s inverse diversity index</strong> is the inverse of dominance,
+<span class="math display">\[S_I = \frac{1}{D}\]</span>
+This value could be considered the ‘effective’ number of species, which discounts the rarest species <span class="citation">(Nee <a href="#ref-Nee2005" role="doc-biblioref">2005</a>)</span> and which is closely allied to population genetics theory as one definition for the ‘effective number of alleles’ <span class="citation">(Nee <a href="#ref-Nee2005" role="doc-biblioref">2005</a>; Crow and Kimura <a href="#ref-Crow1970" role="doc-biblioref">1970</a>)</span>.</p>
+<p>We can calculate these by defining our own functions. We then create a grouped data frame and calculate our summary statistics, using the <code>dplyr</code> package (part of <code>tidyverse</code>).</p>
+<div class="sourceCode" id="cb472"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb472-1"><a href="diversity.html#cb472-1"></a>Sc &lt;-<span class="st"> </span><span class="cf">function</span>(x) {</span>
+<span id="cb472-2"><a href="diversity.html#cb472-2"></a>  p &lt;-<span class="st"> </span>x<span class="op">/</span><span class="kw">sum</span>(x)</span>
+<span id="cb472-3"><a href="diversity.html#cb472-3"></a>  <span class="dv">1</span><span class="op">-</span><span class="kw">sum</span>(p<span class="op">^</span><span class="dv">2</span>)</span>
+<span id="cb472-4"><a href="diversity.html#cb472-4"></a>}</span>
+<span id="cb472-5"><a href="diversity.html#cb472-5"></a>Si &lt;-<span class="st"> </span><span class="cf">function</span>(x) {</span>
+<span id="cb472-6"><a href="diversity.html#cb472-6"></a>  p &lt;-<span class="st"> </span>x<span class="op">/</span><span class="kw">sum</span>(x)</span>
+<span id="cb472-7"><a href="diversity.html#cb472-7"></a>  <span class="dv">1</span><span class="op">/</span><span class="kw">sum</span>(p<span class="op">^</span><span class="dv">2</span>)</span>
+<span id="cb472-8"><a href="diversity.html#cb472-8"></a>}</span>
+<span id="cb472-9"><a href="diversity.html#cb472-9"></a></span>
+<span id="cb472-10"><a href="diversity.html#cb472-10"></a>dfg &lt;-<span class="st"> </span><span class="kw">group_by</span>(df, comm) <span class="co"># group by community</span></span>
+<span id="cb472-11"><a href="diversity.html#cb472-11"></a></span>
+<span id="cb472-12"><a href="diversity.html#cb472-12"></a><span class="co"># calculate indices for each community type.</span></span>
+<span id="cb472-13"><a href="diversity.html#cb472-13"></a><span class="kw">summarize</span>(dfg,</span>
+<span id="cb472-14"><a href="diversity.html#cb472-14"></a>          <span class="dt">richness =</span> <span class="kw">length</span>( n[n<span class="op">&gt;</span><span class="dv">0</span>]),</span>
+<span id="cb472-15"><a href="diversity.html#cb472-15"></a>          <span class="dt">H =</span> <span class="kw">shannon</span>(n),</span>
+<span id="cb472-16"><a href="diversity.html#cb472-16"></a>          <span class="dt">Sc =</span> <span class="kw">Sc</span>(n),</span>
+<span id="cb472-17"><a href="diversity.html#cb472-17"></a>          <span class="dt">Si =</span> <span class="kw">Si</span>(n)</span>
+<span id="cb472-18"><a href="diversity.html#cb472-18"></a>          )</span></code></pre></div>
+<pre><code>## # A tibble: 2 x 5
+##   comm  richness     H    Sc    Si
+##   &lt;chr&gt;    &lt;int&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
+## 1 X            3 0.759 0.439  1.78
+## 2 Y            4 1.24  0.684  3.16</code></pre>
+<p>In this case, all of these indices agree with each other, and our intuition: community Y is more ‘diverse’.</p>
+<p>These diversity indices are actually directly related to each other — they comprise estimates of <em>entropy</em>, the amount of disorder or the multiplicity of possible states of a system, that are directly related via a single constant <span class="citation">(Keylock <a href="#ref-Keylock:2005fy" role="doc-biblioref">2005</a>)</span>. However, an important consequence of their differences is that richness depends most heavily on rare species, Simpson’s complement depends most heavily on the relative abundance of common species, and Shannon-Wiener stands somewhere between the two.</p>
+</div>
+<div id="rarefaction-and-total-species-richness" class="section level2">
+<h2><span class="header-section-number">13.5</span> Rarefaction and total species richness</h2>
+<p>Rarefaction is the process of generating the relationship between the number of species <em>vs.</em> the number of individuals in a sample. It is typically determined by randomly resampling individuals <span class="citation">(N. J. Gotelli and Colwell <a href="#ref-Gotelli2001a" role="doc-biblioref">2001</a>)</span>. Rarefaction allows direct comparison of the richness of two samples, corrected for numbers of individuals. This is particularly important because richness depends so heavily on the number of individuals in a sample. Thus rarefaction finds the general relation between the number of species <em>vs.</em> the number of individuals, and is limited to less than or equal to the number of species you actually observed. A related curve is the species-accumulation curve or collector’s curve, but this is simply a useful but haphazard accumulation of new species (a cumulative sum) as the investigator samples new individuals.</p>
+<p>Another issue that ecologists face is trying to estimate the true number of species in an area, given the samples collected. This number of species would be larger than the number of species you observed, and is often referred to as <em>total species richness</em> or <em>asymptotic richness</em>. Samples almost always find only a subset of the species present in an area or region, but we might prefer to know how many species are really there, in the general area we sampled. There are many ways to do this, and while some are better than others, none is perfect. These methods estimate minimum numbers of species, and assume that the unsampled areas are homogeneous and similar to the sampled areas.</p>
+<p>Before using these methods seriously, the inquisitive reader should consult <span class="citation">(N. J. Gotelli and Colwell <a href="#ref-Gotelli2001a" role="doc-biblioref">2001</a>; Magurran <a href="#ref-Magurran2004" role="doc-biblioref">2004</a>)</span> and references at <a href="http://viceroy.eeb.uconn.edu/EstimateS" class="uri">http://viceroy.eeb.uconn.edu/EstimateS</a>. Below, we briefly explore an example in R.</p>
+<div id="an-example-of-rarefaction-and-total-species-richness" class="section level3">
+<h3><span class="header-section-number">13.5.1</span> An example of rarefaction and total species richness</h3>
+<p>Let us sample a seasonal tropical rainforest on Barro Colorado Island (BCI) Our goal will be to provide baseline data for later comparison to other such studies.</p>
+<p>We will use some of the data from a 50 ha plot that is included in the <code>vegan</code> package <span class="citation">(Condit et al. <a href="#ref-Condit2002" role="doc-biblioref">2002</a>; Oksanen et al. <a href="#ref-Oksanen:2019vg" role="doc-biblioref">2019</a>)</span>. We will pretend that we sampled every tree over 10 cm DBH,<a href="#fn70" class="footnote-ref" id="fnref70"><sup>70</sup></a> in each of 10 plots scattered throughout the 50 ha area. What could we say about the forest within which the plots were located? We have to consider the scale of the sampling. Both the experimental unit and the grain are the 1 ha plots. Imagine that the plots were scattered throughout the 50 ha plot, so that the extent of the sampling was a full 50 ha <span class="citation">(sensu Wiens <a href="#ref-Wiens1989" role="doc-biblioref">1989</a>)</span>.</p>
+<p>First, let’s pretend we have sampled 10 1 ha plots by extracting the samples out of the larger dataset.</p>
+<div class="sourceCode" id="cb474"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb474-1"><a href="diversity.html#cb474-1"></a><span class="kw">library</span>(vegan)</span>
+<span id="cb474-2"><a href="diversity.html#cb474-2"></a><span class="kw">data</span>(BCI);</span>
+<span id="cb474-3"><a href="diversity.html#cb474-3"></a>bci &lt;-<span class="st"> </span>BCI[<span class="kw">seq</span>(<span class="dv">5</span>,<span class="dv">50</span>, <span class="dt">by=</span><span class="dv">5</span>),]</span>
+<span id="cb474-4"><a href="diversity.html#cb474-4"></a>bci[<span class="dv">1</span><span class="op">:</span><span class="dv">5</span>, <span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">5</span>)]</span></code></pre></div>
+<pre><code>##    Abarema.macradenia Adelia.triloba
+## 5                   0              1
+## 10                  1              0
+## 15                  0              2
+## 20                  0              0
+## 25                  0              0</code></pre>
+<p>This data set has plots in rows and species names in columns; the data are numbers of individuals of each species (columns) in each plot (rows).</p>
+<p>Next, we total the numbers for each species, pooling all plots together. We sum the columns, and remove zeroes.</p>
+<div class="sourceCode" id="cb476"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb476-1"><a href="diversity.html#cb476-1"></a>N &lt;-<span class="st"> </span><span class="kw">colSums</span>(bci) </span>
+<span id="cb476-2"><a href="diversity.html#cb476-2"></a>N &lt;-<span class="st"> </span>N[N<span class="op">&gt;</span><span class="dv">0</span>]</span></code></pre></div>
+<p>Based on this sample, we find that the species richness in all our samples pooled is the tally of all non-zero species.</p>
+<div class="sourceCode" id="cb477"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb477-1"><a href="diversity.html#cb477-1"></a><span class="kw">sum</span>(N<span class="op">&gt;</span><span class="dv">0</span>)</span></code></pre></div>
+<pre><code>## [1] 179</code></pre>
+<p>Our goal is to estimate the number of species in the area. For that we need estimators of total species richness, if we can assume that the surrounding forest is homogeneous. First, we’ll use abundance-based coverage estimators, ACE and Chao 1, that appear to give reasonable estimates <span class="citation">(Magurran <a href="#ref-Magurran2004" role="doc-biblioref">2004</a>)</span>.</p>
+<div class="sourceCode" id="cb479"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb479-1"><a href="diversity.html#cb479-1"></a><span class="kw">estimateR</span>(N)</span></code></pre></div>
+<pre><code>##      S.obs    S.chao1   se.chao1      S.ACE     se.ACE 
+## 179.000000 202.000000  12.763215 190.638313   6.779286</code></pre>
+<p>Here we see the observed number of species and two estimators, with standard errors.</p>
+<p>Next we use a frequency-based estimator, Chao 2, where the data only need to be presence/absence, and for which we also need multiple sample plots. By using multiple plots, we get some idea of of how rare some species are and use that to estimate how many more rare species there might be which are unsampled.</p>
+<div class="sourceCode" id="cb481"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb481-1"><a href="diversity.html#cb481-1"></a>(chaoF &lt;-<span class="st"> </span><span class="kw">specpool</span>(bci))</span></code></pre></div>
+<pre><code>##     Species     chao  chao.se jack1 jack1.se    jack2     boot  boot.se  n
+## All     179 202.4321 11.99975 203.3 8.606393 214.9444 190.7196 5.146857 10</code></pre>
+<p>We also get a jackknifed estimate. All of these give some estimate as to the minimum true number of species in an area around our samples.</p>
+<p>Typically the use of these estimators is accompanied by some form of rarefaction. To perform rarefaction, we need to select numbers of individuals for which we want rarefied samples. We will use multiples of 500 and also the total number of individuals in the sample. We then use a built-in function to draw species at random for these numbers of individuals, that is, perform rarefaction.</p>
+<div class="sourceCode" id="cb483"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb483-1"><a href="diversity.html#cb483-1"></a>no.of.inds &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="kw">seq</span>(<span class="dv">500</span>, <span class="dv">4500</span>, <span class="dt">by=</span><span class="dv">500</span>), <span class="kw">sum</span>(N))</span>
+<span id="cb483-2"><a href="diversity.html#cb483-2"></a>rar3 &lt;-<span class="st"> </span><span class="kw">rarefy</span>(N, <span class="dt">sample=</span>no.of.inds, <span class="dt">se=</span>T, <span class="dt">MARG=</span><span class="dv">2</span>)</span></code></pre></div>
+<p>Next we want to graph it, with a few bells and whistles. We set up the graph of the 10 plot, individual-based rarefaction, and leave room to graph total richness estimators as well (Fig. <a href="diversity.html#fig:estS">13.6</a>).</p>
+<div class="sourceCode" id="cb484"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb484-1"><a href="diversity.html#cb484-1"></a><span class="kw">plot</span>(no.of.inds , rar3[<span class="dv">1</span>,],  <span class="dt">ylab=</span><span class="st">&quot;Species Richness&quot;</span>, <span class="dt">axes=</span><span class="ot">FALSE</span>,</span>
+<span id="cb484-2"><a href="diversity.html#cb484-2"></a>     <span class="dt">xlab=</span><span class="st">&quot;No. of Individuals&quot;</span>, <span class="dt">type=</span><span class="st">&#39;n&#39;</span>,  <span class="dt">ylim=</span><span class="kw">c</span>(<span class="dv">0</span>,<span class="dv">250</span>), </span>
+<span id="cb484-3"><a href="diversity.html#cb484-3"></a>     <span class="dt">xlim=</span><span class="kw">c</span>(<span class="dv">500</span>,<span class="dv">5900</span>) )</span>
+<span id="cb484-4"><a href="diversity.html#cb484-4"></a><span class="co"># estimate</span></span>
+<span id="cb484-5"><a href="diversity.html#cb484-5"></a><span class="kw">lines</span>(no.of.inds, rar3[<span class="dv">1</span>,], <span class="dt">type=</span><span class="st">&#39;b&#39;</span>)</span>
+<span id="cb484-6"><a href="diversity.html#cb484-6"></a><span class="co"># approximate confidence intervals</span></span>
+<span id="cb484-7"><a href="diversity.html#cb484-7"></a><span class="kw">lines</span>(no.of.inds, rar3[<span class="dv">1</span>,]<span class="op">+</span><span class="dv">2</span><span class="op">*</span>rar3[<span class="dv">2</span>,], <span class="dt">lty=</span><span class="dv">3</span>)</span>
+<span id="cb484-8"><a href="diversity.html#cb484-8"></a><span class="kw">lines</span>(no.of.inds, rar3[<span class="dv">1</span>,]<span class="op">-</span><span class="dv">2</span><span class="op">*</span>rar3[<span class="dv">2</span>,], <span class="dt">lty=</span><span class="dv">3</span>)</span>
+<span id="cb484-9"><a href="diversity.html#cb484-9"></a><span class="kw">axis</span>(<span class="dv">1</span>, <span class="dt">at=</span><span class="dv">1</span><span class="op">:</span><span class="dv">5</span><span class="op">*</span><span class="dv">1000</span>); <span class="kw">axis</span>(<span class="dv">2</span>); <span class="kw">box</span>(); </span>
+<span id="cb484-10"><a href="diversity.html#cb484-10"></a><span class="kw">text</span>(<span class="dv">2500</span>, <span class="dv">200</span>, <span class="st">&quot;Individual-based rarefaction (10 plots)&quot;</span>)</span>
+<span id="cb484-11"><a href="diversity.html#cb484-11"></a></span>
+<span id="cb484-12"><a href="diversity.html#cb484-12"></a><span class="co"># add the Chao 2 estimator</span></span>
+<span id="cb484-13"><a href="diversity.html#cb484-13"></a><span class="kw">segments</span>(<span class="dv">5500</span>, chaoF[<span class="dv">1</span>,<span class="st">&#39;chao&#39;</span>] <span class="op">-</span><span class="st"> </span><span class="dv">2</span><span class="op">*</span>chaoF[<span class="dv">1</span>,<span class="st">&#39;chao.se&#39;</span>], </span>
+<span id="cb484-14"><a href="diversity.html#cb484-14"></a>         <span class="dv">5500</span>, chaoF[<span class="dv">1</span>,<span class="st">&#39;chao&#39;</span>] <span class="op">+</span><span class="st"> </span><span class="dv">2</span><span class="op">*</span>chaoF[<span class="dv">1</span>,<span class="st">&#39;chao.se&#39;</span>], </span>
+<span id="cb484-15"><a href="diversity.html#cb484-15"></a>         <span class="dt">lwd=</span><span class="dv">3</span>, <span class="dt">col=</span><span class="st">&#39;darkgrey&#39;</span>)</span>
+<span id="cb484-16"><a href="diversity.html#cb484-16"></a><span class="kw">text</span>(<span class="dv">5500</span>, <span class="dv">150</span>, <span class="st">&quot;Chao 2 estimate&quot;</span>, <span class="dt">srt=</span><span class="dv">90</span>, <span class="dt">adj=</span><span class="kw">c</span>(<span class="dv">1</span>,.<span class="dv">5</span>) )</span>
+<span id="cb484-17"><a href="diversity.html#cb484-17"></a></span>
+<span id="cb484-18"><a href="diversity.html#cb484-18"></a><span class="kw">points</span>(<span class="dv">5800</span>, <span class="kw">dim</span>(BCI)[<span class="dv">2</span>], <span class="dt">pch=</span><span class="dv">19</span>, <span class="dt">cex=</span><span class="fl">1.2</span>)</span>
+<span id="cb484-19"><a href="diversity.html#cb484-19"></a><span class="kw">text</span>(<span class="dv">5800</span>, <span class="dv">150</span>, <span class="st">&quot;Obs. S in 50 ha&quot;</span>, <span class="dt">srt=</span><span class="dv">90</span>, <span class="dt">adj=</span><span class="kw">c</span>(<span class="dv">1</span>,.<span class="dv">5</span>) )</span></code></pre></div>
+<div class="figure"><span id="fig:estS"></span>
+<img src="figs/estS-1.png" alt="*Baseline tree species richness estimation based on ten 1 ha plots, using individual-based rarefaction. We also include the Chao 2 total richness estimators and the observed total tree richness in the 50 ha plot for comparison (black dot).*" width="90%" />
+<p class="caption">
+Figure 13.6: <em>Baseline tree species richness estimation based on ten 1 ha plots, using individual-based rarefaction. We also include the Chao 2 total richness estimators and the observed total tree richness in the 50 ha plot for comparison (black dot).</em>
+</p>
+</div>
+<p>This shows us that the total richness estimator did not overestimate the total number of species within the extent of this relatively homogenous sample area (Fig. <a href="diversity.html#fig:estS">13.6</a>). In that sense, these estimators are estimating the minimum total number of species and are thus conservative.</p>
+</div>
+</div>
+<div id="distributions" class="section level2">
+<h2><span class="header-section-number">13.6</span> Distributions</h2>
+<p>The above estimators for total species richness each assume that species abundances follow some sort of distribution where some species are common, and most are rare. Here we explore some particular types of distributions that have been used to quantify this aspect of community structure.</p>
+<p>Like any other vector of numbers, we can make a histogram of species abundances. As an example, here we make a histogram of bci tree densities, where each species has its own density (left, Fig. <a href="diversity.html#fig:bci">13.7</a>). This shows us what is patently true for nearly all ecological communities, that <em>most species are rare</em>.</p>
+<div class="figure"><span id="fig:bci"></span>
+<img src="figs/bci1.png" alt="*Three related types of distributions of tree species densities from Barro Colorado Island. Left, histogram of raw data; center, the species--abundance distribution, which is a histogram of log-transformed abundances, accompanied here by the normal probability density function; right, the rank--abundance distribution, as typically presented with the log-transformed data, with the complement of the cumulative probability density function (1-pdf). Normal distributions were applied using the mean and standard deviation from the log-transformed data, times the total number of species.*" width="33%" /><img src="figs/bci2.png" alt="*Three related types of distributions of tree species densities from Barro Colorado Island. Left, histogram of raw data; center, the species--abundance distribution, which is a histogram of log-transformed abundances, accompanied here by the normal probability density function; right, the rank--abundance distribution, as typically presented with the log-transformed data, with the complement of the cumulative probability density function (1-pdf). Normal distributions were applied using the mean and standard deviation from the log-transformed data, times the total number of species.*" width="33%" /><img src="figs/bci3.png" alt="*Three related types of distributions of tree species densities from Barro Colorado Island. Left, histogram of raw data; center, the species--abundance distribution, which is a histogram of log-transformed abundances, accompanied here by the normal probability density function; right, the rank--abundance distribution, as typically presented with the log-transformed data, with the complement of the cumulative probability density function (1-pdf). Normal distributions were applied using the mean and standard deviation from the log-transformed data, times the total number of species.*" width="33%" />
+<p class="caption">
+Figure 13.7: <em>Three related types of distributions of tree species densities from Barro Colorado Island. Left, histogram of raw data; center, the species–abundance distribution, which is a histogram of log-transformed abundances, accompanied here by the normal probability density function; right, the rank–abundance distribution, as typically presented with the log-transformed data, with the complement of the cumulative probability density function (1-pdf). Normal distributions were applied using the mean and standard deviation from the log-transformed data, times the total number of species.</em>
+</p>
+</div>
+<div id="log-normal-distribution" class="section level3">
+<h3><span class="header-section-number">13.6.1</span> Log-normal distribution</h3>
+<p>Given general empirical patterns, that most species are rare, Frank Preston <span class="citation">(Preston <a href="#ref-Preston1948" role="doc-biblioref">1948</a>, <a href="#ref-Preston1962" role="doc-biblioref">1962</a>)</span> proposed that we describe communities using the logarithms of species abundances (center, Fig. <a href="diversity.html#fig:bci">13.7</a>).<a href="#fn71" class="footnote-ref" id="fnref71"><sup>71</sup></a> This often reveals that a community can be described approximately with the normal distribution applied to the log-transformed data, or the <em>log-normal ditribution</em>. We can also display this as a <em>rank–abundance distribution</em> (right, Fig. <a href="diversity.html#fig:bci">13.7</a>). To do this, we assign the most abundant species as rank = 1, and the least abundant has rank = <span class="math inline">\(S\)</span>, in a sample of <span class="math inline">\(S\)</span> species, and plot log-abundance <em>vs.</em> rank.</p>
+<p><span class="citation">May (<a href="#ref-May1975" role="doc-biblioref">1975</a>)</span> described several ways in which common processes may drive log-normal distributions, and cause them to be common in data sets. Most commonly cited is to note that log-normal distributions arise when each observation (i.e., each random variable) results from the product of independent factors. That is, if each species’ density is determined by largely independent factors which act multiplicatively on each species, the resulting densities would be log-normally distributed. In the process known as <em>ecological drift</em>, pure demographic stochasticity where all species have equal fitness will drive a log-normal-like distribution (see later section on neutral theory).</p>
+<p>Well over a dozen other types of abundance distributions exist to describe abundance patterns, other than the log-normal <span class="citation">(Magurran <a href="#ref-Magurran2004" role="doc-biblioref">2004</a>)</span>. They can all be represented as <em>rank–abundance distributions</em>.</p>
+</div>
+<div id="other-distributions" class="section level3">
+<h3><span class="header-section-number">13.6.2</span> Other distributions</h3>
+<p>The geometric distribution, also known as the niche preemption distribution, reflects a simple idea, wherein each species pre-empts a constant fraction of the remaining niche space <span class="citation">(May <a href="#ref-May1975" role="doc-biblioref">1975</a>; Motomura <a href="#ref-Motomura1932" role="doc-biblioref">1932</a>)</span>. For instance, if the first species uses 20% of the niche space, the second species uses 20% of the remaining 80%, etc. The frequency of the <span class="math inline">\(i\)</span>th most abundant species is
+<span class="math display">\[N_i = \frac{N_T}{C}d\left(1-d\right)^{i-1}\]</span>
+where <span class="math inline">\(d\)</span> is the abundance of the most common species, and <span class="math inline">\(C\)</span> is just a constant to make <span class="math inline">\(\sum N_i = N_T\)</span>, where <span class="math inline">\(C=1-\left(1-d\right)^{S_T}\)</span>. Thus this describes the geometric rank–abundance distribution.</p>
+<p>The <em>log-series distribution</em> <span class="citation">(Fisher, Corbet, and Williams <a href="#ref-Fisher1943" role="doc-biblioref">1943</a>)</span> describes the expected frequency of species with <span class="math inline">\(n\)</span> individuals,
+<span class="math display">\[F\left(S_n\right) = \frac{\alpha x^n}{n}\]</span>
+where <span class="math inline">\(\alpha\)</span> is a constant that represents diversity (greater <span class="math inline">\(\alpha\)</span> means greater diversity); the <span class="math inline">\(\alpha\)</span> for a diverse rainforest might be 30–100. The constant <span class="math inline">\(x\)</span> is a fitted free parameter, and it is always true that <span class="math inline">\(0.9 &lt; x &lt; 1.0\)</span> and <span class="math inline">\(x\)</span> increases toward 0.99 as <span class="math inline">\(N/S \to 20\)</span> <span class="citation">(Magurran <a href="#ref-Magurran2004" role="doc-biblioref">2004</a>)</span>. <span class="math inline">\(x\)</span> can be estimated from <span class="math inline">\(S/N=[(1-x)/x] \cdot [-\ln(1-x)]\)</span>. Note that this is not described as a rank–abundance distribution, but species abundances and ranks can nonetheless be plotted in that manner <span class="citation">(May <a href="#ref-May1975" role="doc-biblioref">1975</a>)</span>.</p>
+<p>We can estimate Fisher’s alpha using <code>optimal.theta()</code> in the <code>untb</code> library.</p>
+<p>The log-series rank–abundance distribution is thus a bit of a pain, where we are relying on the standard exponential integral <span class="citation">(May <a href="#ref-May1975" role="doc-biblioref">1975</a>)</span>, <span class="math inline">\(E_1(s) = \int_s^\infty exp(-t)/t\,dt\)</span>. Given a range of <span class="math inline">\(N\)</span>, we calculate ranks as
+<span class="math display">\[F\left(N\right) = \alpha \int_s^\infty exp(-t)/t\,dt\]</span>
+where we can let <span class="math inline">\(t=1\)</span> and <span class="math inline">\(s = N \log \left(1 + \alpha/N_T\right)\)</span>. We code for this below.</p>
+<p>The log-series distribution has the interesting property that the total number of species in a sample of <span class="math inline">\(N\)</span> individuals would be <span class="math inline">\(S_T = \alpha \log(1+N/\alpha)\)</span>. The parameter <span class="math inline">\(\alpha\)</span> is sometimes used as a measure of diversity. If your data are log-series distributed, then <span class="math inline">\(\alpha\)</span> is approximately the number of species for which you expect 1 individual, because <span class="math inline">\(x\approx 1\)</span>. Two very general theories predict a log-series distribution, including neutral theory, and maximum entropy. Oddly, these two theories both predict a log-series distribution, but make opposite assumptions about niches and individuals (see next section).</p>
+<p>MacArthur’s <em>broken stick distribution</em> is a classic distribution that results in a very even distribution of species abundances <span class="citation">(MacArthur <a href="#ref-MacArthur1957" role="doc-biblioref">1957</a>)</span>. The expected number of individuals of each species <span class="math inline">\(i\)</span> is
+<span class="math display">\[N_i = \frac{N_T}{S_T}\sum_{n=i}^{S_T}\frac{1}{n}\]</span>
+where <span class="math inline">\(N_T\)</span> and <span class="math inline">\(S_T\)</span> are the total number of individuals and species in the sample, respectively. MacArthur described this as resulting from the simultaneous breakage of a stick at random points along the stick. The resulting size fragments are the <span class="math inline">\(N_i\)</span> above. MacArthur’s broken stick model is thus both a stochastic and a deterministic model. It has a simulation of stick breakage that is the direct analogue of the deterministic analytical expression.</p>
+<p>Other similarly tactile stick-breaking distributions create a host of different rank–abundance patterns <span class="citation">(Tokeshi <a href="#ref-Tokeshi:1999fv" role="doc-biblioref">1999</a>)</span>. In particular, the stick can be broken <em>sequentially</em>, first at one random point, then at a random point along one of two newly broken fragments, then at an additional point along any one of the <em>three</em> broken fragments, <em>etc.</em>, with <span class="math inline">\(S_T-1\)</span> breaks creating <span class="math inline">\(S_T\)</span> species. The critical difference between the models then becomes <em>how each subsequent fragment is selected</em>. If the probability of selecting each fragment is related directly to its size, then this becomes identical to MacArthur’s broken stick model. On the other hand, if each subsequent piece is selected randomly, regardless of its size, then this results in something very similar to the log-normal distribution <span class="citation">(Sugihara <a href="#ref-Sugihara1980" role="doc-biblioref">1980</a>; Tokeshi <a href="#ref-Tokeshi1990" role="doc-biblioref">1990</a>)</span>. Other variations on fragment selection generate other patterns <span class="citation">(Tokeshi <a href="#ref-Tokeshi:1999fv" role="doc-biblioref">1999</a>)</span>.</p>
+<p>Here we plot the empirical rank-abundance distribution of all of the BCI data from this census of the 50 ha plot, along with several fitted distributions. They are fit using the <code>radfit</code> function in the <code>vegan</code> package. We then add the log series distribution.</p>
+<div class="sourceCode" id="cb485"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb485-1"><a href="diversity.html#cb485-1"></a><span class="co"># fit the distributions</span></span>
+<span id="cb485-2"><a href="diversity.html#cb485-2"></a>N &lt;-<span class="st"> </span><span class="kw">rev</span>(<span class="kw">sort</span>(<span class="kw">colSums</span>(BCI)))</span>
+<span id="cb485-3"><a href="diversity.html#cb485-3"></a><span class="co"># get the expected ranks for the log series distribution</span></span>
+<span id="cb485-4"><a href="diversity.html#cb485-4"></a><span class="co"># standard exponential integral</span></span>
+<span id="cb485-5"><a href="diversity.html#cb485-5"></a>sei &lt;-<span class="st"> </span><span class="cf">function</span>(<span class="dt">t =</span> <span class="dv">1</span>) <span class="kw">exp</span>(<span class="op">-</span>t)<span class="op">/</span>t</span>
+<span id="cb485-6"><a href="diversity.html#cb485-6"></a>alpha &lt;-<span class="st"> </span><span class="kw">optimal.theta</span>(N)</span>
+<span id="cb485-7"><a href="diversity.html#cb485-7"></a>Nt &lt;-<span class="st"> </span><span class="kw">sum</span>(N)</span>
+<span id="cb485-8"><a href="diversity.html#cb485-8"></a>rank.logseries &lt;-<span class="st"> </span><span class="kw">sapply</span>(N, <span class="cf">function</span>(x) {</span>
+<span id="cb485-9"><a href="diversity.html#cb485-9"></a>  n &lt;-<span class="st"> </span>x <span class="op">*</span><span class="st"> </span><span class="kw">log</span>(<span class="dv">1</span> <span class="op">+</span><span class="st"> </span>alpha<span class="op">/</span>Nt )</span>
+<span id="cb485-10"><a href="diversity.html#cb485-10"></a>  f &lt;-<span class="st"> </span><span class="kw">integrate</span>(sei, n, <span class="ot">Inf</span>)</span>
+<span id="cb485-11"><a href="diversity.html#cb485-11"></a>  fv &lt;-<span class="st"> </span>f[[<span class="st">&quot;value&quot;</span>]]</span>
+<span id="cb485-12"><a href="diversity.html#cb485-12"></a>  alpha <span class="op">*</span><span class="st"> </span>fv } )</span>
+<span id="cb485-13"><a href="diversity.html#cb485-13"></a></span>
+<span id="cb485-14"><a href="diversity.html#cb485-14"></a>mod &lt;-<span class="st"> </span><span class="kw">radfit</span>(N)</span>
+<span id="cb485-15"><a href="diversity.html#cb485-15"></a><span class="kw">par</span>(<span class="dt">mar=</span><span class="kw">c</span>(<span class="dv">5</span>,<span class="dv">4</span>,<span class="dv">1</span>,<span class="dv">1</span>))</span>
+<span id="cb485-16"><a href="diversity.html#cb485-16"></a><span class="kw">plot</span>(mod) </span>
+<span id="cb485-17"><a href="diversity.html#cb485-17"></a><span class="kw">lines</span>(rank.logseries, N, <span class="dt">lty=</span><span class="dv">2</span>)</span></code></pre></div>
+<div class="figure"><span id="fig:bcifit"></span>
+<img src="figs/bcifit-1.png" alt="*Entire BCI rank abundance distribution with several fitted models. 'Null' is the broken stick distribution, and the dashed line is the log series.*" width="90%" />
+<p class="caption">
+Figure 13.8: <em>Entire BCI rank abundance distribution with several fitted models. ‘Null’ is the broken stick distribution, and the dashed line is the log series.</em>
+</p>
+</div>
+</div>
+<div id="pattern-vs.-process" class="section level3">
+<h3><span class="header-section-number">13.6.3</span> Pattern <em>vs.</em> process</h3>
+<p>Note the resemblance between stick-breaking and niche evolution — if we envision the whole stick as all of the available niche space, or energy, or limiting resources, then each fragment represents a portion of the total occupied by each species. Thus, various patterns of breakage act as models for niche partitioning and relative abundance patterns. Other biological and stochastic processes create specific distributions. For instance, completely random births, deaths, migration, and speciation will create the log-series distribution and the log-normal-like distributions (see  below). We noted above that independent, multiplicatively interacting factors can create the log-normal distribution.</p>
+<p>Although it is intriguing to ponder the processes that can generate particular patterns, we cannot infer definitively the underlying processes from the patterns we observe. That is because different processes can generate the same pattern. Nonetheless, particuar patterns can suggest certain hypotheses about the underlying processes. Many ecologists argue that describing patterns and predicting them are the most important goals of ecology <span class="citation">(Peters <a href="#ref-Peters1988" role="doc-biblioref">1988</a>)</span>, while others argue that understanding the mechanistic process is the only important goal. Regardless, both of these camps would agree that we can’t draw firm conclusions about processes based solely on patterns — nowhere in ecology has this fallacy been more prevalent than with abundance distributions <span class="citation">(Hairston Sr. <a href="#ref-Hairston:1991sf" role="doc-biblioref">1991</a>)</span>.</p>
+</div>
+</div>
+<div id="neutral-theory-of-biodiversity-and-biogeography" class="section level2">
+<h2><span class="header-section-number">13.7</span> Neutral Theory of Biodiversity and Biogeography</h2>
+<p>One model of abundance distributions is particularly important, and we elaborate on it here. It is referred to variously as the <em>unified neutral theory of biodiversity and biogeography</em> <span class="citation">(Hubbell <a href="#ref-Hubbell2001" role="doc-biblioref">2001</a>)</span> or often ‘neutral theory’ or ‘eccological drift’ for short. Neutral theory is important because it does much more than most other models of abundance distributions. It is a testable theory that makes quantitative predictions across several levels of organization, for both evolutionary and ecological processes.</p>
+<p>Just as evolutionary biology has neutral theories of gene and allele frequencies, ecology has neutral theories of population and community structure and dynamics <span class="citation">(Bell <a href="#ref-Bell2000" role="doc-biblioref">2000</a>; Caswell <a href="#ref-Caswell1976" role="doc-biblioref">1976</a>; Hubbell <a href="#ref-Hubbell2001" role="doc-biblioref">2001</a>)</span>. Neutral communities of species are computationally and mathematically related and often identical to models of genes and alleles <span class="citation">(Ewens <a href="#ref-Ewens:2004zp" role="doc-biblioref">2004</a>)</span> (Table <a href="#tab:jargon"><strong>??</strong></a>). Thus, lessons you have learned about genetic drift often apply to neutral models of communities. Indeed, neutral ecological dynamics at the local scale are often referred to as ecological drift, and populations change via demographic stochasticity.<a href="#fn72" class="footnote-ref" id="fnref72"><sup>72</sup></a></p>
+<p>Stephen Hubbell proposed his unified neutral theory of biodiversity and biogeography (hereafter NTBB, <span class="citation">(Hubbell <a href="#ref-Hubbell2001" role="doc-biblioref">2001</a>)</span>) as a null expectation of the dynamics of individuals, to help explain relative abundances of tropical trees. Hubbell describes it as a direct descendant of MacArthur and Wilson’s theory of island biogeography <span class="citation">(MacArthur and Wilson <a href="#ref-MacArthur1963" role="doc-biblioref">1963</a>, <a href="#ref-MacArthur1967" role="doc-biblioref">1967</a>)</span> (see below, species–area relations). Hubbell proposed it both as a null hypothesis and also — and this is the controversial part — as a model of community dynamics that closely approximates reality.</p>
+<div class="figure"><span id="fig:meta-1"></span>
+<img src="figs/meta-1.png" alt="* **Left:** A local community of forest canopy trees (small box) nested inside part of the metacommunity of a tropical forest. The true metaccommunity would extend far beyond the boundaries of this figure to include the true potential source of propagules. Shades of grey indicate different species. The local community is a sample of the larger community (such as the 50 ha forest dynamics plot on BCI) and receives migrants from the metacommunity. Mutation gives rise to new species in the metacommunity. For a particular local community, such as a 50 ha plot on an island in the Panama canal, the metacommunity will include not only the surrounding forest on the island, but also Panama, and perhaps much of the neotropics. **Right:** Neutral ecological drift. Ten species, each of 90 individuals, undergo random walks within a finite local community, with no immigration. Here, one generation is equal to nine deaths and nine births. Note the slow decline in unevenness --- after 1000 deaths, no species has become extinct." width="90%" />
+<p class="caption">
+Figure 13.9: * <strong>Left:</strong> A local community of forest canopy trees (small box) nested inside part of the metacommunity of a tropical forest. The true metaccommunity would extend far beyond the boundaries of this figure to include the true potential source of propagules. Shades of grey indicate different species. The local community is a sample of the larger community (such as the 50 ha forest dynamics plot on BCI) and receives migrants from the metacommunity. Mutation gives rise to new species in the metacommunity. For a particular local community, such as a 50 ha plot on an island in the Panama canal, the metacommunity will include not only the surrounding forest on the island, but also Panama, and perhaps much of the neotropics. <strong>Right:</strong> Neutral ecological drift. Ten species, each of 90 individuals, undergo random walks within a finite local community, with no immigration. Here, one generation is equal to nine deaths and nine births. Note the slow decline in unevenness — after 1000 deaths, no species has become extinct.
+</p>
+</div>
+<div class="figure"><span id="fig:meta-2"></span>
+<img src="figs/meta-2.png" alt="* **Left:** A local community of forest canopy trees (small box) nested inside part of the metacommunity of a tropical forest. The true metaccommunity would extend far beyond the boundaries of this figure to include the true potential source of propagules. Shades of grey indicate different species. The local community is a sample of the larger community (such as the 50 ha forest dynamics plot on BCI) and receives migrants from the metacommunity. Mutation gives rise to new species in the metacommunity. For a particular local community, such as a 50 ha plot on an island in the Panama canal, the metacommunity will include not only the surrounding forest on the island, but also Panama, and perhaps much of the neotropics. **Right:** Neutral ecological drift. Ten species, each of 90 individuals, undergo random walks within a finite local community, with no immigration. Here, one generation is equal to nine deaths and nine births. Note the slow decline in unevenness --- after 1000 deaths, no species has become extinct." width="90%" />
+<p class="caption">
+Figure 13.10: * <strong>Left:</strong> A local community of forest canopy trees (small box) nested inside part of the metacommunity of a tropical forest. The true metaccommunity would extend far beyond the boundaries of this figure to include the true potential source of propagules. Shades of grey indicate different species. The local community is a sample of the larger community (such as the 50 ha forest dynamics plot on BCI) and receives migrants from the metacommunity. Mutation gives rise to new species in the metacommunity. For a particular local community, such as a 50 ha plot on an island in the Panama canal, the metacommunity will include not only the surrounding forest on the island, but also Panama, and perhaps much of the neotropics. <strong>Right:</strong> Neutral ecological drift. Ten species, each of 90 individuals, undergo random walks within a finite local community, with no immigration. Here, one generation is equal to nine deaths and nine births. Note the slow decline in unevenness — after 1000 deaths, no species has become extinct.
+</p>
+</div>
+<p>The relevant world of the NTBB is a metacommunity (left, Fig. <a href="#fig:meta"><strong>??</strong></a>), that is, a collection of local communities connected by dispersal <span class="citation">(Leibold et al. <a href="#ref-Leibold:2004fe" role="doc-biblioref">2004</a>)</span>.<a href="#fn73" class="footnote-ref" id="fnref73"><sup>73</sup></a> The metacommunity is populated entirely by individuals that are functionally identical. The NTBB is a theory of the dynamics of individuals, modeling individual births, deaths, migration and mutation. It assumes that within a guild, such as late successional tropical trees, species are essentially neutral with respect to their fitness, that is, they exhibit <em>fitness equivalence</em>. This means that the probabilities of birth, death, mutation and migration are identical for all individuals. Therefore, changes in population sizes occur via random walks, that is, via stochastic increases and decreases with time step (right, Fig. <a href="#fig:meta"><strong>??</strong></a>). Random walks do not imply an absence of competition or other indirect enemy mediated negative density dependence. Rather, competition is thought to be diffuse, and equal among individuals. We discuss details of this in the context of simulation. Negative density dependence arises either through a specific constraint on the total number of individuals in a community <span class="citation">(Hubbell <a href="#ref-Hubbell2001" role="doc-biblioref">2001</a>)</span>, or as traits of individuals related to the probabilities of births, deaths, and speciation <span class="citation">(Volkov et al. <a href="#ref-Volkov:2005rt" role="doc-biblioref">2005</a>)</span>.</p>
+<p>A basic paradox of the NTBB, is that in the absence of migration or mutation, diversity gradually declines to zero, or monodominance. A random walk due to fitness equivalence will eventually result in the loss of all species except one. However, the loss of diversity in any single local community is predicted to be very, very slow, and is countered by immigration and speciation (we discuss more details below). Thus, species do not increase deterministically when rare — this makes the concept of coexistence different than the stable coexistance criteria discussed in previous chapters. Coexistance here  but rather only a stochastic event with a limited time horizon which is balanced by the emergence of new species.</p>
+<p>If all communities are thought to undergo random walks toward monodominance, how is diversity maintained in any particular region? Two factors maintain species in any local community. First, immigration into the local community from the metacommunity can bring in new species. Even though each local community is undergoing a random walk toward monodominance, each local community may become dominated by any one of the species in the pool because all species have equal fitness. Thus separate local communities are predicted to become dominated by different species, and these differences among local communities help maintain diversity in the metacommunity landscape.<a href="#fn74" class="footnote-ref" id="fnref74"><sup>74</sup></a> Second, at longer time scales and larger spatial scales, speciation (i.e., mutation and lineage-splitting) within the entire metacommunity maintains biodiversity. Mutation and the consequent speciation provide the ultimate source of variation. Random walks toward extinction in large communities are so lengthy that the extinctions are balanced by speciation.</p>
+<p>Introducing new symbols and jargon for ecological neutral theory, we state that the diversity of the metacommunity, <span class="math inline">\(\theta\)</span>, is a function of the number of individuals in the metacommunity, <span class="math inline">\(J_M\)</span>, and the per capita rate at which new species arise (via mutation) <span class="math inline">\(\nu\)</span> (<span class="math inline">\(\theta = 2J_M \nu\)</span>; Table <a href="#tab:jargon"><strong>??</strong></a>). A local community undergoes ecological drift; drift causes the slow loss of diversity, which is balanced by a per capita (<span class="math inline">\(J_L\)</span>) immigration rate <span class="math inline">\(m\)</span>.</p>
+<p>Species area immigration curves</p>
+<div class="sourceCode" id="cb486"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb486-1"><a href="diversity.html#cb486-1"></a>d &lt;-<span class="st"> </span><span class="fl">.4</span></span>
+<span id="cb486-2"><a href="diversity.html#cb486-2"></a>i &lt;-<span class="st"> </span><span class="dv">1</span><span class="op">:</span><span class="dv">26</span></span>
+<span id="cb486-3"><a href="diversity.html#cb486-3"></a>g &lt;-<span class="st"> </span>d<span class="op">*</span>(<span class="dv">1</span><span class="op">-</span>d)<span class="op">^</span>(i<span class="dv">-1</span>)</span>
+<span id="cb486-4"><a href="diversity.html#cb486-4"></a>geodist &lt;-<span class="st"> </span>g<span class="op">/</span><span class="kw">sum</span>(g)</span>
+<span id="cb486-5"><a href="diversity.html#cb486-5"></a>comm &lt;-<span class="st"> </span><span class="kw">sample</span>(letters, <span class="fl">1e4</span>, <span class="dt">replace=</span><span class="ot">TRUE</span>, <span class="dt">prob=</span>geodist)</span>
+<span id="cb486-6"><a href="diversity.html#cb486-6"></a><span class="kw">plot</span>( <span class="kw">table</span>(comm) )</span></code></pre></div>
+<p><img src="figs/unnamed-chunk-231-1.png" width="90%" /></p>
+<p>Gamma function</p>
+<div class="sourceCode" id="cb487"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb487-1"><a href="diversity.html#cb487-1"></a><span class="kw">gamma</span>(<span class="dv">3</span>) <span class="co"># 2*1</span></span></code></pre></div>
+<pre><code>## [1] 2</code></pre>
+<div class="sourceCode" id="cb489"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb489-1"><a href="diversity.html#cb489-1"></a><span class="kw">gamma</span>(<span class="dv">4</span>) <span class="co"># 3*2*1</span></span></code></pre></div>
+<pre><code>## [1] 6</code></pre>
+<div class="sourceCode" id="cb491"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb491-1"><a href="diversity.html#cb491-1"></a><span class="kw">gamma</span>(<span class="fl">3.5</span>) <span class="co"># something in between. :)</span></span></code></pre></div>
+<pre><code>## [1] 3.323351</code></pre>
+
+</div>
+</div>
+<h3> References</h3>
+<div id="refs" class="references">
+<div id="ref-Bell2000">
+<p>Bell, G. 2000. “The distribution of abundance in neutral communities.” <em>The American Naturalist</em> 155: 606–17.</p>
+</div>
+<div id="ref-Caswell1976">
+<p>Caswell, H. 1976. “Community structure: A neutral model analysis.” <em>Ecological Monographs</em> 46: 327–54.</p>
+</div>
+<div id="ref-Condit2002">
+<p>Condit, R, N Pitman, E G Leigh, J Chave, J Terborgh, R B Foster, P Nunez, et al. 2002. “Beta-diversity in tropical forest trees.” <em>Science</em> 295: 666–69.</p>
+</div>
+<div id="ref-Crow1970">
+<p>Crow, J F, and M Kimura. 1970. <em>An Introduction to Population Genetics Theory</em>. Harper &amp; Row, New York.</p>
+</div>
+<div id="ref-Ewens:2004zp">
+<p>Ewens, W J. 2004. <em>Mathematical Population Genetics, I. Theoretical Introduction</em>. Edited by S S Antman, J J Marsden, L Sirovich, and S Wiggins. 2nd ed. Vol. 27. Interdisciplinary Applied Mathematics. Springer, New York.</p>
+</div>
+<div id="ref-Fisher1943">
+<p>Fisher, R A, A S Corbet, and C B Williams. 1943. “The relation between the number of species and the number of individuals in a random sample of an animal population.” <em>Jounral of Animal Ecology</em> 12: 42–58.</p>
+</div>
+<div id="ref-Gotelli2001a">
+<p>Gotelli, N J, and R K Colwell. 2001. “Quantifying biodiversity: procedures and pitfalls in the measurement and comparison of species richness.” <em>Ecology Letters</em> 4: 379–91.</p>
+</div>
+<div id="ref-Hairston:1991sf">
+<p>Hairston Sr., N G. 1991. <em>Ecological Experiments: Purpose, Design, and Execution</em>. Cambridge Studies in Ecology. Cambridge, UK: Cambridge University Press.</p>
+</div>
+<div id="ref-Hubbell2001">
+<p>Hubbell, S P. 2001. <em>A {U}nified {T}heory of {B}iodiversity and {B}iogeography</em>. Monographs in Population Biology. Princeton, N.J.: Princeton University Press.</p>
+</div>
+<div id="ref-Keylock:2005fy">
+<p>Keylock, C J. 2005. “Simpson diversity and the Shannon-Wiener index as special cases of a generalized entropy.” <em>Oikos</em> 109: 203–7.</p>
+</div>
+<div id="ref-Lande1996">
+<p>Lande, R. 1996. “Statistics and partitioning of species diversity, and similarity among multiple communities.” <em>Oikos</em> 76: 5–13.</p>
+</div>
+<div id="ref-Lande2000">
+<p>Lande, R, P J DeVries, and T R Walla. 2000. “When species accumulation curves intersect: {I}mplications for ranking diversity using small samples.” <em>Oikos</em> 89: 601–5.</p>
+</div>
+<div id="ref-Leibold:2004fe">
+<p>Leibold, M A, M Holyoak, N Mouquet, P Amarasekare, J M Chase, M F Hoopes, R D Holt, et al. 2004. “The metacommunity concept: {A} framework for multi-scale community ecology.” <em>Ecology Letters</em> 7: 601–13.</p>
+</div>
+<div id="ref-MacArthur1957">
+<p>MacArthur, R H. 1957. “On the relative abundance of bird species.” <em>Proceedings of the National Academy of Sciences of the United States of America</em> 43: 293–95.</p>
+</div>
+<div id="ref-MacArthur1963">
+<p>MacArthur, R H, and E O Wilson. 1963. “An equilibrium theory of insular zoogeography.” <em>Evolution</em> 17: 373–87.</p>
+</div>
+<div id="ref-MacArthur1967">
+<p>MacArthur, R H, and E O Wilson. 1967. <em>The {T}heory of {I}sland {B}iogeography</em>. Monographs in Population Biology. Princeton: Princeton University Press.</p>
+</div>
+<div id="ref-Magurran2004">
+<p>Magurran, A E. 2004. <em>Measuring Biological Diversity</em>. Princeton University Press.</p>
+</div>
+<div id="ref-May1975">
+<p>May, R. M. 1975. “Patterns of Species Abundance.” In <em>Ecology and Evolution of Communities</em>, edited by M. L. Cody and J. M. Diamond, 81–120. Cambridge, MA: Harvard University Press.</p>
+</div>
+<div id="ref-Morlon:2008tx">
+<p>Morlon, H, G Chuyong, R Condit, S P Hubbell, D Kenfack, D Thomas, R Valencia, and J L Green. 2008. “A general framework for the distance-decay of similarity in ecological communities.” <em>Ecology Letters</em> 11: 904–17.</p>
+</div>
+<div id="ref-Motomura1932">
+<p>Motomura, I. 1932. “A statistical treatment of associations [in {J}apanese].” <em>Japanese Journal of Zoology</em> 44: 379–83.</p>
+</div>
+<div id="ref-Nee2005">
+<p>Nee, S. 2005. “The neutral theory of biodiversity: do the numbers add up?” <em>Functional Ecology</em> 19 (1): 173–76.</p>
+</div>
+<div id="ref-Oksanen:2019vg">
+<p>Oksanen, Jari, F. Guillaume Blanchet, Michael Friendly, Roeland Kindt, Pierre Legendre, Dan McGlinn, Peter R. Minchin, et al. 2019. <em>Vegan: Community Ecology Package</em>.</p>
+</div>
+<div id="ref-Peters1988">
+<p>Peters, R H. 1988. “Some general problems in ecology illustrated by food web theory.” <em>Ecology</em> 69: 1673–6.</p>
+</div>
+<div id="ref-Plotkin:2002eu">
+<p>Plotkin, J B, and H C Muller-Landau. 2002. “Sampling the species composition of a landscape.” <em>Ecology</em> 83: 3344–56.</p>
+</div>
+<div id="ref-Preston1948">
+<p>Preston, F W. 1948. “The commonness, and rarity, of species.” <em>Ecology</em> 29: 254–83.</p>
+</div>
+<div id="ref-Preston1962">
+<p>Preston, F W. 1962. “The canonical distribution of commonness and rarity: part {I}.” <em>Ecology</em> 43: 185–215.</p>
+</div>
+<div id="ref-Sugihara1980">
+<p>Sugihara, G. 1980. “Minimal community structure: an explanation of species abundance patterns.” <em>The American Naturalist</em> 116: 770–87.</p>
+</div>
+<div id="ref-Tokeshi:1999fv">
+<p>Tokeshi, M. 1999. <em>Species Coexistence: Ecological and Evolutionary Perspectives</em>. Oxford, UK: Blackwell Science, Ltd.</p>
+</div>
+<div id="ref-Tokeshi1990">
+<p>Tokeshi, Mutsunori. 1990. “Niche Apportionment or Random Assortment: Species Abundance Patterns Revisited.” <em>Journal of Animal Ecology</em> 59 (3): 1129–46.</p>
+</div>
+<div id="ref-Vellend2005a">
+<p>Vellend, M, and M A Geber. 2005. “Connections between species diversity and genetic diversity.” <em>Ecology Letters</em> 8: 767–81.</p>
+</div>
+<div id="ref-Volkov:2005rt">
+<p>Volkov, I, J R Banavar, F L He, S P Hubbell, and A Maritan. 2005. “Density dependence explains tree species abundance and diversity in tropical forests.” <em>Nature</em> 438: 658–61.</p>
+</div>
+<div id="ref-Wiens1989">
+<p>Wiens, J A. 1989. “Spatial scaling in ecology.” <em>Functional Ecology</em> 3: 385–97.</p>
+</div>
+</div>
+<div class="footnotes">
+<hr />
+<ol start="70">
+<li id="fn70"><p>DBH is diameter at 1.37 m above the ground.<a href="diversity.html#fnref70" class="footnote-back">↩︎</a></p></li>
+<li id="fn71"><p>Preston used base 2 logs to make his histogram bins, and his practice remains standard; we use the natural log.<a href="diversity.html#fnref71" class="footnote-back">↩︎</a></p></li>
+<li id="fn72"><p>Some have called neutral theory a null model, but others disagree <span class="citation">(Gotelli and McGill <a href="#ref-Gotelli:2006bv" role="doc-biblioref">2006</a>)</span>, describing distinctions between dynamical, process-based neutral models with fitted parameters, <em>vs.</em> static data-based null models <span class="citation">(Gotelli and Graves <a href="#ref-Gotelli1996" role="doc-biblioref">1996</a>)</span>. Both can be used as benchmarks against which to measure other phenomena.<a href="diversity.html#fnref72" class="footnote-back">↩︎</a></p></li>
+<li id="fn73"><p>The metacommunity concept is quite general, and a neutral metacommunity is but one caricature.<a href="diversity.html#fnref73" class="footnote-back">↩︎</a></p></li>
+<li id="fn74"><p>This is the same as how genetic drift operates across subpopulations connected by low rates of gene exchange.<a href="diversity.html#fnref74" class="footnote-back">↩︎</a></p></li>
+</ol>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="food-webs-and-other-networks.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="references.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": null,
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

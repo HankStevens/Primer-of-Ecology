@@ -1,0 +1,436 @@
+# Diversity
+
+## Background
+```{r BSsuc,fig=TRUE, echo=FALSE, results='hide', message=FALSE, fig.cap="*Empirical rank--abundance distributions of successional plant communities (old-fields) within the temperate deciduous forest biome of North America. 'Year' indicates the time since abandonment from agriculture.  Data from the Buell-Small succession study* (http://www.ecostudies.org/bss/)."}
+bsdiv <- read.csv('figs/C3rank.csv')
+bs <- pivot_longer(bsdiv, cols=-1, names_to="Year", 
+                   values_to="Percent_cover") 
+bs <- filter(bs, !is.na(Percent_cover) )
+ggplot(bs, aes(Rank, Percent_cover, linetype=Year, colour=Year)) + geom_line() + scale_y_log10()
+
+```
+
+It seems easy, or at least tractable, to compare the abundance of a single species in two samples. In this chapter, we introduce conceptsthat ecologists use to compare entire communities in two samples. We focus on two quantities: *species composition*, and *diversity*. We also discuss several issues related to this, including species--abundance distributions,  ecological neutral theory, diversity partitioning, and species--area relations. Several packages in R include functions for dealing specifically with these topics. 
+
+Please see the "Environmetrics" link within the "Task Views" link at any CRAN website for downloading R packages. Perhaps the most comprehensive (including both diversity and composition) is the `vegan` package, but many others include important features as well.
+
+## Species Composition
+Species composition is merely the set of species in a site or a sample. Typically this includes some measure of abundance at each site, but it may also simply be a list of species at each site, where "abundance" is either presence or absence. 
+
+Imagine we have four sites (A--D) from which we collect density data on two species, *Salix whompii* and *Fraxinus virga*. We can enter hypothetical data of the following abundances.
+```{r}
+dens <- data.frame(Salwho=c(1,1,2,3), Fravir=c(21,8,13,5))
+row.names(dens) <- LETTERS[1:4]
+dens
+```
+Next, we plot the abundances of both species; the plotted points then are the sites (Fig. \ref{fig:dens}).
+```{r dens, fig.cap="*Hypothetical species composition for four sites (A--D)*"}
+plot(dens, type='n'); text(dens, row.names(dens))
+```
+In Fig. \@ref(fig:dens), we see that the species composition in site A is most different from the composition of site D. That is, the distance between site A and D is greater than between any other sites. The next question, then, is *how* far apart are any two sites? Clearly, this depends on the scale of the measurement (e.g., the values on the axes), and also on how we measure distance through multivariate space. 
+
+### Measures of abundance
+Above we pretended that the abundances were absolute densities (i.e., 1 = one stem per sample). We could of course represent all the abundances differently. For instance, we could calculate relative density, where each species in a sample is represented by the proportion of the sample comprised of that species. For site A, we divide each species by the sum of all species.
+```{r}
+dens[1,]/sum(dens[1,])
+```
+We see that *Salix* makes up about 5% of the sample for Site A, and *Fraxinus* makes up about 95% of the sample. Once we calculate relative densities for each species at each site, this eliminates differences in total density at each site because all sites then total to 1. 
+
+We could also calculate relative measures for any type of data, such as biomass or percent cover. 
+
+ In most instances, *relative density* refers to the density of a species *relative* to the other species in a sample (above), but it can also be density in a sample relative to other samples. We would thus make each *species* total equal 1, and then its abundance at each site reflects the proportion of a species total abundance comprised by that site. For instance,  we can make all *Salix* densities relative to each other.
+```{r}
+dens[,1]/sum(dens[,1])
+``` 
+Here we see that sites A and B both have about 14% of all *Salix* stems, and site D has 43%.
+
+Whether our measures of abundance are absolute or relative, we would like to know how different samples (or sites) are from each other. Perhaps the simplest way to describe the difference among the sites is to calculate the *distances* between each pair of sites.
+
+### Distance
+There are many ways to calculate a *distance* between a pair of sites. One of the simplest, which we learned in primary school, is *Euclidean distance*. With two species, we have two dimensional space, which is Fig. \@ref(fig:dens). The Euclidean distance between two sites is merely the length of the vector connecting those sites. We calculate this as $\sqrt{x^2+y^2}$, where $x$ and $y$ are the $(x,y)$ distances between a pair of sites. The $x$ distance between sites B and C is the difference in *Salix* abundance between the two sites,
+```{r}
+x <- dens[2,1] - dens[3,1]
+```
+where `dens` is the data frame with sites in rows, and species in different columns. The $y$ distance between sites B and C is difference in *Fraxinus* abundance between the two sites.
+```{r}
+y <- dens[2,2] - dens[3,2]
+``` 
+The Euclidean distance between these is therefore
+```{r}
+sqrt(x^2 + y^2)
+```
+Distance is as simple as that. We calculate all pairwise Euclidean distances between sites A--D based on 2 species using built-in functions in R.
+```{r}
+(alldists <- dist(dens))
+```
+We can generalize this to include any number of species, but it becomes increasingly harder to visualize. We can add a third species, *Mandragora officinarum*, and recalculate pairwise distances between all sites, but now with three species.
+```{r}
+dens[["Manoff"]] <- c(11,3,7,5)
+(spp3 <- dist(dens))
+```
+We can plot species abundances as we did above, and `pairs(dens)` would give us all the pairwise plots given three species. However, what we really want for species is a 3-D plot. Here we load another package and create a 3-D scatterplot.
+```{r}
+library(scatterplot3d)
+sc1 <- scatterplot3d(dens,  type='h', pch="",
+      xlim=c(0,5), ylim=c(0, 25), zlim=c(0,15))
+text(sc1$xyz.convert(dens), labels=rownames(dens))
+```
+In three dimensions, Euclidean distances are calculated the same basic way, but we add a third species, and the calculation becomes $\sqrt{x^2 + y^2 +z^2}$. Note that we take the square root (as opposed to the cube root) because we originally squared each distance. We can generalize this for two sites for $S$ species as
+$$D_E = \sqrt{\sum_{i=1}^S\left( x_{ai} - x_{bi}\right)^2}$$
+
+Of course, it is difficult (impossible?) to visualize arrangements of sites with more than three axes (i.e., $>3$ species), but we can always *calculate* the distances between pairs of sites, regardless of how many species we have.
+
+There are many ways, in addition to Euclidean distances, to calculate distance. Among the most commonly used in ecology is
+*Bray--Curtis* distance, which goes by other names, including Sørenson distance. 
+$$D_{BC} = \frac{\sum_{i=1}^S\left| x_{ai} - x_{bi}\right|}{\sum_{i=1}^S (x_{ai} + x_{bi})}$$
+where $S$ is the number of species in all samples. Bray--Curtis distance is merely the total difference in species abundances between two sites, divided by the total abundances at each site. Bray--Curtis distance (and a couple others) tends to result in more intuitively pleasing distances in which both common and rare species have relatively similar weights, whereas Euclidean distance depends more strongly on the most abundant species. This happens because Euclidean distances are based on squared differences, whereas Bray--Curtis uses absolute differences. Squaring always amplifies the importance of larger values. Fig. \@ref(fig:mds) compares graphs based on Euclidean and Bray--Curtis distances of the same raw data.
+
+### Displaying multidimensional distances
+A simple way to display distances for three or more species is to create a plot in two dimensions that attempts to arrange all sites so that they are *approximately* the correct distances apart. In general this is impossible to achieve precisely, but distances can be approximately correct. One technique that tries to create an optimal (albiet approximate) arrangement is \emph{\index{non-metric multidimensional scaling}non-metric multidimensional scaling}. Here we add a fourth species (\emph{Aconitum lycoctonum}) to our data set before plotting the distances. 
+```{r}
+dens$Acolyc <- c(16, 0, 9,4)
+```
+The non-metric multidimensional scaling function is in the \texttt{vegan} package. It calculates distances for us using the original data. Here we display Euclidean distances among sites (Fig. \@ref(fig:mds)).
+
+```{r mds, fig.cap="*Nonmetric multidimensional (NMDS) plots showing approximate distances between sites. These two figures display the same raw data, but Euclidean distances tend to emphasize differences due to the more abundant species, whereas Bray-Curtis does not. Because NMDS provides iterative optimizations, it will find slightly different arrangements each time you run it.*", fig.height=3.5, fig.width=3.5, fig.show='hold', out.width="45%"}
+# ignore warnings for these toy examples
+mdsE <- metaMDS(dens, distance="euc", autotransform=FALSE, trace=0)
+plot(mdsE, display="sites", type="text")
+mdsB <- metaMDS(dens, distance="bray", autotransform=FALSE, trace=0)
+plot(mdsB, display="sites", type="text")
+```
+
+### Similarity
+Sometimes, we would like to know how similar two communities are. Here we describe two measures of similarity, percent similarity, and S{\o}rensen similarity [@Magurran2004].
+
+Percent similarity may be the simplest of these; it is simply the sum of the minimum percentages for each species in the community. Here we convert each species to its relative abundance; that is, its proportional abundance at each site. To do this, we treat each site (row) separately, and then divide the abundance of each species by the sum of the abundances at each site.
+```{r}
+(dens.RA <- t( apply(dens, 1, function(sp.abun) sp.abun/sum(sp.abun) )) )
+```
+Next, to compare two sites, we find the minimum relative abundance for each species. Comparing sites A and B, we have,
+```{r}
+(mins <- apply(dens.RA[1:2,], 2, min))
+```
+Finally, we sum these, and multiply by 100 to get percentages.
+```{r}
+sum(mins) *100
+```
+
+The second measure of similarity we investigate is S{\o}rensen's similarity,
+$$ (\#eq:ss)  S_s = \frac{2C}{A+B}$$
+where $C$ is the number of species two sites have in common, and $A$ and $B$ are the number of species at each site. This is equivalent to dividing the shared species by the average richness. 
+
+To calculate this for sites A and B, we could find the species which have non-zero abundances both sites.
+```{r}
+(shared <- apply(dens[1:2,], 2, function(abuns) all(abuns != 0) ) )
+```
+Next we find the richness of each.
+```{r}
+(Rs <- apply(dens[1:2,], 1, function(x) sum(x>0)) )
+```
+Finally, we divide the shared species by the summed richnesses and multiply by 2.
+```{r}
+2*sum(shared)/sum(Rs)
+```
+S{\o}rensen's index has also been used in the development of more sophisticated measures of similarity between sites [@Morlon:2008tx; @Plotkin:2002eu].
+
+## Diversity
+To my mind, there is no more urgent or interesting goal in ecology and evolutionary biology than understanding the determinants of biodiversity. Biodiversity is many things to many people, but we typically think of it as a measure of the variety of biological life present, perhaps taking into account the relative abundances. For ecologists, we most often think of *species diversity* as some quantitative measure of the variety or number of different species.  This has direct analogues to the genetic diversity within a population [@Crow1970; @Vellend2005a], and the connections between species and genetic diversity include both shared patterns and shared mechanisms. Here we confine ourselves entirely to a discussion of species diversity, the variety of different species present.
+
+## Species diversity
+Species diversity represents the variety of species in a community or a sample of a community. Fig. \@ref(fig:BSsuc) shows us at a glance the distributions of species abundances, and thus the diversities, of a plant community at different points in time as it undergoes secondary succession. In the figure we see the number of different species that are present (*x*-axis), and the relative abundances (*y*-axis). This image gives us an intuition about the variety of species we might encounter. It shows us whether we might expect to encounter many different species, or whether the community might be dominated by one or just a few species. The sense is what we try to capture in a single number that we call a "diversity index".
+
+Species diversity is closely allied with mechanisms of coexistence. When two areas differ in their diversity, we are likely to ask why this is so. The number and variety of species present will depend on how many species are available to colonize an area, and also on the mechanisms that allow them to coexist locally. @MacArthur1963 envisioned this in terms of ecology, where the number of species in an area is s function of rates of immigration and local extinction,
+$$S = \Delta I - \Delta E$$
+where mechanisms of coexistence govern $\Delta E$. This equation is the basis for the theory of island biogeography [@MacArthur1963; @MacArthur1967]. More on that later.
+
+There are many diversity indices that we could calculate; here, we will calculate four different measures: species richness, Shannon-Weiner diversity, Simpson's diversity, and Simpson's inverse diversity. These sometimes are referred to by slightly different names, so it is important to figure out exactly what someone has done.
+
+Let's start by creating two samples of two different communities.
+```{r comms, fig.cap="*Two toy communities.*", ou.width="70%"}
+comm <- rep(c("X","Y"), each=4)
+spp <- letters[c(1:4, 1:4)]
+abun <- c(10,3,1,0, 4,1,6,3)
+rank <- c(1,2,3,4, 2,4,1,3)
+df <- data.frame(comm=comm, spp=spp, n=abun, rank=rank)
+ggplot(df, aes(rank, n, colour=comm, linetype=comm)) + 
+  geom_line() + lims(y=c(1,10)) 
+```
+
+These two samples have different numbers of species, and different distributions. Community Y has a more even distribution of species abundances, whereas community X is dominated by a single species. Now we'll calculate our different measures of species diversity.
+
+**Species richness** is simply the number of different species in the sample. It is the value of the *x*-axis in the above figure. To calculate that from these data, we will determine the lengths of the vectors of nonzero abundances.
+```{r}
+tapply(X=df$n, INDEX=df$comm, 
+       FUN = function(x) {length(x[x>0])} )
+```
+Species richness increases as the number of individuals in the sample increases. Therefore, care should be taken in comparing the richness of two different samples to make sure that they are sufficiently comparable. 
+
+When most ecologists use the term 'species diversity' they are not referring to species richness, but rather some index that incorporates relative abundance as well. One of the most common of these is  **Shannon-Weiner diversity** or the Shannon index. This quantity has its roots in information theory and entropy. It measures the disorder in a data set. For instance, if nearly all of the individuals are a single species, then the data are highly predictable and ordered. In contrast, if there are many individuals of many different species, then it would be very difficult to describe in a simple way, and difficult to predict what a sample would look like--disorder, or entropy, would be high. The Shannon index is
+$$H=-\sum_{i-1}^Sp_i\log p_i$$
+where $p_i$ is the proportion of individuals belonging to species $i$. 
+```{r} 
+# a function that starts with abundances and calculates H
+shannon <- function(n) { 
+  n <- n[n>0] # remove zero values
+  p <- n/sum(n)
+  -1 * sum( p*log(p) )
+  }
+tapply(X=df$n, INDEX=df$comm, 
+       FUN = shannon)
+```   
+
+These numbers provide relative estimates of "variety". They increase with increasing species richness and with increasing evenness of abundances. While there is no hypothetical upper limit, it ranges the minimum is zero for a single species, and five or six for hyper-diverse communities.
+
+**Simpson diversity** indices are based on the **Simpson dominance** index. The dominance index is the probability that two randomly selected individuals belong to the same species,
+$$D = \sum_{i=1}^S p_i^2$$
+which varies between 1 for a single species and declines toward zero with increasing numbers of species and increasing number of species. If we were describing alleles, instead of trees, this value is the inbreeding coefficient, of genetic homozygosity [@Crow1970,@Nei1987]. It is also referred to as the Gini coefficient, and was formulated to measure income inequality. This value is used in two ways in aid calculation of diversity. One Simpson's diversity index is the arithmetic complement,
+$$S_c = 1-D$$,
+which is the probability that two randomly selected individuals belong to different species. It is also the initial slope of the expected individuals ($x$) vs. species ($y$) curve [@Lande2000], and the variance of species composition [@Lande1996]. 
+
+Here we show the equivalence of Simpson's index and the variance of species composition. First, we reimagine community X as collections of individuals comprising different species identities. We  we create a pretend community of six individuals (rows) and 3 species (columns). Somewhat oddly, we identify the degree to which each individual is comprised of each species; in this case, individuals can be only one species.\footnote{Imagine the case where the columns are traits, or genes. In that case, individuals could be characterized by affiliation with multiple columns, whether traits or genes.} Here we let two individuals be each species.
+```{r}
+X <- matrix(0, nrow=14, ncol=3, 
+            dimnames=list(NULL, c("A", "B", "C")))
+X[1:10,1] <- 1
+X[11:13,2] <- 1
+X[14,3] <- 1
+t(X)
+```
+We transposed the matrix, so that individuals are columns and species membership or identity is in rows. The first individual belongs to species A, etc. We can plot these individuals in community space, if we like (Fig. \@ref(fig:Xvar)).
+```{r Xvar, fig.cap="*Each of 14 individuals in a three species community, plotted in 'compsition space'. The large black dot is the multivariate mean, or centroid, which is the center of gravity in this composition space. Simpson's diversity is the variance of species composition of individuals.*"}
+library(scatterplot3d)
+X3D <- scatterplot3d(jitter(X, .1), type='h', angle=60, pch=rep(1:3, c(10,3,1)) )
+X3D$points3d(x=10/14, y=3/14, z=1/14,  type='h', pch=19, cex=2)
+```
+
+Next we can calculate the centroid, or multivariate mean. It is merely the vector of species means.
+```{r}
+(centroid1 <- colMeans(X))
+```
+Given this centroid, we begin to calculate a variance by (i) subtracting each species vector (0s, 1s) from its mean, (ii) squaring each of these deviates, and (3) summing to get the sum of squares.
+```{r}
+(SS <- sum( sapply(1:3, function(j) (X[,j] - centroid1[j]))^2) )
+```
+We then divide this sum by the number of individuals that were in the community ($N$) 
+```{r}
+SS/14
+```
+When you compare this to the calculation of Simpson's complement below, you will find that they are the same. Further, the finite sample size correction is the same for both.
+
+Simpson's complement diversity index converges quickly with increasing sample size, making it the most reliable index for small sample sizes. It also has an unbiased estimator [@Lande1996], which is
+$$\hat{S_c} = \frac{N}{N-1}(1-D)$$
+
+**Simpson's inverse diversity index** is the inverse of dominance,
+$$S_I = \frac{1}{D}$$
+This value could be considered the 'effective' number of species, which discounts the rarest species [@Nee2005] and which is closely allied to population genetics theory as one definition for the 'effective number of alleles' [@Nee2005; @Crow1970].
+
+We can calculate these by defining our own functions. We then create a grouped data frame and calculate our summary statistics, using the `dplyr` package (part of `tidyverse`).
+```{r}
+Sc <- function(x) {
+  p <- x/sum(x)
+  1-sum(p^2)
+}
+Si <- function(x) {
+  p <- x/sum(x)
+  1/sum(p^2)
+}
+
+dfg <- group_by(df, comm) # group by community
+
+# calculate indices for each community type.
+summarize(dfg,
+          richness = length( n[n>0]),
+          H = shannon(n),
+          Sc = Sc(n),
+          Si = Si(n)
+          )
+```
+In this case, all of these indices agree with each other, and our intuition: community Y is more 'diverse'. 
+
+These diversity indices are actually directly related to each other --- they comprise estimates of *entropy*, the amount of disorder or the multiplicity of possible states of a system, that are directly related via a single constant [@Keylock:2005fy]. However, an important consequence of their differences is that richness depends most heavily on rare species, Simpson's complement depends most heavily on the relative abundance of common species, and Shannon-Wiener stands somewhere between the two.
+
+## Rarefaction and total species richness
+Rarefaction is the process of generating the relationship between the number of species *vs.* the number of individuals in a sample. It is typically determined by randomly resampling individuals [@Gotelli2001a]. Rarefaction allows direct comparison of the richness of two samples, corrected for numbers of individuals. This is particularly important because richness depends so heavily on the number of individuals in a sample. Thus rarefaction finds the general relation between the number of species *vs.* the number of individuals, and is limited to less than or equal to the number of species you actually observed. A related curve is the species-accumulation curve or collector's curve, but this is simply a useful but haphazard accumulation of new species (a cumulative sum) as the investigator samples new individuals.
+
+Another issue that ecologists face is trying to estimate the true number of species in an area, given the samples collected. This number of species would be larger than the number of species you observed, and is often referred to as *total species richness* or *asymptotic richness*.  Samples almost always find only a subset of the species present in an area or region, but we might prefer to know how many species are really there, in the general area we sampled. There are many ways to do this, and while some are better than others, none is perfect. These methods estimate minimum numbers of species, and assume that the unsampled areas are homogeneous and similar to the sampled areas.
+
+Before using these methods seriously, the inquisitive reader should consult [@Gotelli2001a; @Magurran2004] and references at http://viceroy.eeb.uconn.edu/EstimateS. Below, we briefly explore an example in R.
+
+### An example of rarefaction and total species richness
+Let us sample a seasonal tropical rainforest on Barro Colorado Island (BCI) Our goal will be to provide baseline data for later comparison to other such studies. 
+
+We will use some of the data from a 50 ha plot that is included in the `vegan` package [@Condit2002; @Oksanen:2019vg]. We will pretend that we sampled every tree over 10 cm DBH,^[DBH is diameter at 1.37 m above the ground.] in each of 10 plots scattered throughout the 50 ha area. What could we say about the forest within which the plots were located? We have to consider the scale of the sampling. Both the experimental unit and the grain are the 1 ha plots. Imagine that the plots were scattered throughout the 50 ha plot, so that the extent of the sampling was a full 50 ha [sensu @Wiens1989].
+
+First, let's pretend we have sampled 10 1 ha plots by extracting the samples out of the larger dataset.
+```{r}
+library(vegan)
+data(BCI);
+bci <- BCI[seq(5,50, by=5),]
+bci[1:5, c(1,5)]
+``` 
+This data set has plots in rows and species names in columns; the data are numbers of individuals of each species (columns) in each plot (rows).
+
+Next, we total the numbers for each species, pooling all plots together. We sum the columns, and remove zeroes.
+```{r}
+N <- colSums(bci) 
+N <- N[N>0]
+```
+Based on this sample, we find that the species richness in all our samples pooled is the tally of all non-zero species.
+```{r}
+sum(N>0)
+```
+Our goal is to estimate the number of species in the area. For that we need estimators of total species richness, if we can assume that the surrounding forest is homogeneous. First, we'll use abundance-based coverage estimators, ACE and Chao 1, that appear to give reasonable estimates [@Magurran2004]. 
+```{r}
+estimateR(N)
+```
+Here we see the observed number of species and two estimators, with standard errors.
+
+Next we use a frequency-based estimator, Chao 2, where the data only need to be presence/absence, and for which we also need multiple sample plots. By using multiple plots, we get some idea of of how rare some species are and use that to estimate how many more rare species there might be which are unsampled.
+```{r}
+(chaoF <- specpool(bci))
+```
+We also get a jackknifed estimate. All of these give some estimate as to the minimum true number of species in an area around our samples.
+
+Typically the use of these estimators is accompanied by some form of rarefaction. To perform rarefaction, we need to select numbers of individuals for which we want rarefied samples. We will use multiples of 500 and also the total number of individuals in the sample. We then use a built-in function to draw species at random for these numbers of individuals, that is, perform rarefaction.
+```{r}
+no.of.inds <- c(seq(500, 4500, by=500), sum(N))
+rar3 <- rarefy(N, sample=no.of.inds, se=T, MARG=2)
+``` 
+Next we want to graph it, with a few bells and whistles. We set up the graph of the 10 plot, individual-based rarefaction, and leave room to graph total richness estimators as well (Fig. \@ref(fig:estS)). 
+```{r estS, fig.cap="*Baseline tree species richness estimation based on ten 1 ha plots, using individual-based rarefaction. We also include the Chao 2 total richness estimators and the observed total tree richness in the 50 ha plot for comparison (black dot).*"}
+plot(no.of.inds , rar3[1,],  ylab="Species Richness", axes=FALSE,
+     xlab="No. of Individuals", type='n',  ylim=c(0,250), 
+     xlim=c(500,5900) )
+# estimate
+lines(no.of.inds, rar3[1,], type='b')
+# approximate confidence intervals
+lines(no.of.inds, rar3[1,]+2*rar3[2,], lty=3)
+lines(no.of.inds, rar3[1,]-2*rar3[2,], lty=3)
+axis(1, at=1:5*1000); axis(2); box(); 
+text(2500, 200, "Individual-based rarefaction (10 plots)")
+
+# add the Chao 2 estimator
+segments(5500, chaoF[1,'chao'] - 2*chaoF[1,'chao.se'], 
+         5500, chaoF[1,'chao'] + 2*chaoF[1,'chao.se'], 
+         lwd=3, col='darkgrey')
+text(5500, 150, "Chao 2 estimate", srt=90, adj=c(1,.5) )
+
+points(5800, dim(BCI)[2], pch=19, cex=1.2)
+text(5800, 150, "Obs. S in 50 ha", srt=90, adj=c(1,.5) )
+``` 
+This shows us that the total richness estimator did not overestimate the total number of species within the extent of this relatively homogenous sample area (Fig. \@ref(fig:estS)). In that sense, these estimators are estimating the minimum total number of species and are thus conservative.
+
+
+## Distributions
+The above estimators for total species richness each assume that species abundances follow some sort of distribution where some species are common, and most are rare. Here we explore some particular types of distributions that have been used to quantify this aspect of community structure.
+
+Like any other vector of numbers, we can make a histogram of species abundances. As an example, here we make a histogram of bci tree densities, where each species has its own density (left, Fig. \@ref(fig:bci)). This shows us what is patently true for nearly all ecological communities, that *most species are rare*. 
+
+```{r bci, echo=FALSE, fig.cap="*Three related types of distributions of tree species densities from Barro Colorado Island. Left, histogram of raw data; center, the species--abundance distribution, which is a histogram of log-transformed abundances, accompanied here by the normal probability density function; right, the rank--abundance distribution, as typically presented with the log-transformed data, with the complement of the cumulative probability density function (1-pdf). Normal distributions were applied using the mean and standard deviation from the log-transformed data, times the total number of species.*", fig.show='hold', out.width="33%"}
+knitr::include_graphics(c("figs/bci1.png", "figs/bci2.png", "figs/bci3.png"))
+```
+
+### Log-normal distribution
+Given general empirical patterns, that most species are rare, Frank Preston [@Preston1948; @Preston1962] proposed that we describe communities using the logarithms of species abundances (center, Fig. \@ref(fig:bci)).^[Preston used base 2 logs to make his histogram bins, and his practice remains standard; we use the natural log.] This often reveals that a community can be described approximately with the normal distribution applied to the log-transformed data, or the *log-normal ditribution*.  We can also display this as a *rank--abundance distribution* (right, Fig. \@ref(fig:bci)). To do this, we assign the most abundant species as rank = 1, and the least abundant has rank = $S$, in a sample of $S$ species, and plot log-abundance *vs.* rank.
+
+@May1975 described several ways in which common processes may drive log-normal distributions, and cause them to be common in data sets. Most commonly cited is to note that log-normal distributions arise when each observation (i.e., each random variable) results from the product of independent factors. That is, if each species' density is determined by largely independent factors which act multiplicatively on each species, the resulting densities would be log-normally distributed. In the process known as *ecological drift*, pure demographic stochasticity where all species have equal fitness will drive a log-normal-like distribution (see later section on neutral theory).
+
+Well over a dozen other types of abundance distributions exist to describe abundance patterns, other than the log-normal [@Magurran2004]. They can all be represented as *rank--abundance distributions*. 
+
+
+### Other distributions
+
+The geometric distribution, also known as the niche preemption distribution, reflects a simple idea, wherein each species pre-empts a constant fraction of the remaining niche space [@May1975;@Motomura1932]. For instance, if the first species uses 20% of the niche space, the second species uses 20% of the remaining 80%, etc. The frequency of the $i$th most abundant species is 
+$$N_i = \frac{N_T}{C}d\left(1-d\right)^{i-1}$$
+where $d$ is the abundance of the most common species, and $C$ is just a constant to make $\sum N_i = N_T$, where $C=1-\left(1-d\right)^{S_T}$. Thus this describes the geometric rank--abundance distribution.
+
+The *log-series distribution* [@Fisher1943] describes the expected frequency of species with $n$ individuals,
+$$F\left(S_n\right) = \frac{\alpha x^n}{n}$$
+where $\alpha$ is a constant that represents diversity (greater $\alpha$ means greater diversity); the $\alpha$ for a diverse rainforest might be 30--100. The constant $x$ is a fitted free parameter, and it is always true that $0.9 < x < 1.0$ and $x$ increases toward 0.99 as  $N/S \to 20$ [@Magurran2004]. $x$ can be estimated from $S/N=[(1-x)/x] \cdot [-\ln(1-x)]$. Note that this is not described as a rank--abundance distribution, but species abundances and ranks can nonetheless be plotted in that manner [@May1975]. 
+
+We can estimate Fisher's alpha using `optimal.theta()` in the `untb` library.
+
+The log-series rank--abundance distribution is thus a bit of a pain, where we are  relying on the standard exponential integral [@May1975], $E_1(s) = \int_s^\infty exp(-t)/t\,dt$. Given a range of $N$, we calculate ranks as
+$$F\left(N\right) = \alpha \int_s^\infty exp(-t)/t\,dt$$
+where we can let $t=1$ and $s = N \log \left(1 + \alpha/N_T\right)$. We code for this below.
+
+The log-series distribution has the interesting property that the total number of species in a sample of $N$ individuals would be $S_T = \alpha \log(1+N/\alpha)$. The parameter $\alpha$ is sometimes used as a measure of diversity. If your data are log-series distributed, then $\alpha$ is approximately the number of species for which you expect 1 individual, because $x\approx 1$. Two very general theories predict a log-series distribution, including neutral theory, and maximum entropy. Oddly, these two theories both predict a log-series distribution, but make opposite assumptions about niches and individuals  (see next section).
+
+MacArthur's *broken stick  distribution* is a classic distribution that results in a very even distribution of species abundances [@MacArthur1957]. The expected number of individuals of each species $i$ is
+$$N_i = \frac{N_T}{S_T}\sum_{n=i}^{S_T}\frac{1}{n}$$
+where $N_T$ and $S_T$ are the total number of individuals and species in the sample, respectively. MacArthur described this as resulting from the simultaneous breakage of a stick at random points along the stick. The resulting size fragments are the $N_i$ above. MacArthur's broken stick model is thus both a stochastic and a deterministic model. It has a simulation of stick breakage that is the direct analogue of the deterministic analytical expression.
+
+Other similarly tactile stick-breaking distributions create a host of different rank--abundance patterns [@Tokeshi:1999fv]. In particular, the stick can be broken *sequentially*, first at one random point, then at a random point along one of two newly broken fragments, then at an additional point along any one of the *three* broken fragments, *etc.*, with $S_T-1$ breaks creating $S_T$ species. The critical difference between the models then becomes *how each subsequent fragment is selected*. If the probability of selecting each fragment is related directly to its size, then this becomes identical to MacArthur's broken stick model. On the other hand, if each subsequent piece is selected randomly, regardless of its size, then this results in something very similar to the log-normal distribution [@Sugihara1980;@Tokeshi1990]. Other variations on fragment selection generate other patterns [@Tokeshi:1999fv].
+
+
+Here we plot the empirical rank-abundance distribution of all of the BCI data from this census of the 50 ha plot, along with several fitted distributions. They are fit using the `radfit` function in the `vegan` package. We then add the log series distribution.
+```{r bcifit, fig.cap="*Entire BCI rank abundance distribution with several fitted models. 'Null' is the broken stick distribution, and the dashed line is the log series.*", fig.height=6, fig.width=6}
+# fit the distributions
+N <- rev(sort(colSums(BCI)))
+# get the expected ranks for the log series distribution
+# standard exponential integral
+sei <- function(t = 1) exp(-t)/t
+alpha <- optimal.theta(N)
+Nt <- sum(N)
+rank.logseries <- sapply(N, function(x) {
+  n <- x * log(1 + alpha/Nt )
+  f <- integrate(sei, n, Inf)
+  fv <- f[["value"]]
+  alpha * fv } )
+
+mod <- radfit(N)
+par(mar=c(5,4,1,1))
+plot(mod) 
+lines(rank.logseries, N, lty=2)
+```
+
+### Pattern *vs.* process
+Note the resemblance between stick-breaking and niche evolution --- if we envision the whole stick as all of the available niche space, or energy, or limiting resources, then each fragment represents a portion of the total occupied by each species. Thus, various patterns of breakage act as  models for niche partitioning and relative abundance patterns. Other biological and stochastic processes create specific distributions. For instance, completely random births, deaths, migration, and speciation will create the log-series distribution and the log-normal-like distributions (see \emph{neutral theory} below). We noted above that independent, multiplicatively interacting factors can create the log-normal distribution.
+
+Although it is intriguing to ponder the processes that can generate particular patterns, we cannot infer definitively the underlying processes from the patterns we observe. That is because different processes can generate the same pattern. Nonetheless, particuar patterns can suggest certain hypotheses about the underlying processes. Many ecologists argue that describing patterns and predicting them are the most important goals of ecology [@Peters1988], while others argue that understanding the mechanistic process is the only important goal. Regardless, both of these camps would agree that we can't draw firm conclusions about processes based solely on patterns --- nowhere in ecology has this fallacy been more prevalent than with abundance distributions [@Hairston:1991sf].
+
+
+## Neutral Theory of Biodiversity and Biogeography
+One model of abundance distributions is particularly important, and we elaborate on it here. It is referred to variously as the *unified neutral theory of biodiversity and biogeography* [@Hubbell2001] or often 'neutral theory' or 'eccological drift' for short. Neutral theory is important because it does much more than most other models of abundance distributions. It is a testable theory that makes quantitative predictions across several levels of organization, for both evolutionary and ecological processes.
+
+Just as evolutionary biology has neutral theories of gene and allele frequencies, ecology has neutral theories of population and community structure and dynamics [@Bell2000;@Caswell1976; @Hubbell2001].  Neutral communities of species are computationally and mathematically related and often identical to models of genes and alleles [@Ewens:2004zp] (Table \@ref(tab:jargon)). Thus, lessons you have learned about genetic drift often apply to neutral models of communities. Indeed, neutral ecological dynamics at the local scale are often referred to as ecological drift, and populations change via demographic stochasticity.^[Some have called neutral theory a null model, but others disagree [@Gotelli:2006bv], describing distinctions between dynamical, process-based neutral models with fitted parameters, *vs.* static data-based null models [@Gotelli1996]. Both can be used as benchmarks against which to measure other phenomena.]
+
+Stephen Hubbell proposed his unified neutral theory of biodiversity and biogeography (hereafter NTBB, [@Hubbell2001]) as a null expectation of the dynamics of individuals, to help explain relative abundances of tropical trees. Hubbell describes it as a direct descendant of MacArthur and Wilson's theory of island biogeography [@MacArthur1963;@MacArthur1967] (see below, species--area relations). Hubbell proposed it both as a null hypothesis and also --- and this is the controversial part --- as a model of community dynamics that closely approximates reality.
+
+```{r meta, echo=FALSE, fig.cap="* **Left:** A local community of forest canopy trees (small box) nested inside part of the metacommunity of a tropical forest. The true metaccommunity would extend far beyond the boundaries of this figure to include the true potential source of propagules. Shades of grey indicate different species. The local community is a sample of the larger community (such as the 50 ha forest dynamics plot on BCI) and receives migrants from the metacommunity. Mutation gives rise to new species in the metacommunity. For a particular local community, such as a 50 ha plot on an island in the Panama canal, the metacommunity will include not only the surrounding forest on the island, but also Panama, and perhaps much of the neotropics. **Right:** Neutral ecological drift. Ten species, each of 90 individuals, undergo random walks within a finite local community, with no immigration. Here, one generation is equal to nine deaths and nine births. Note the slow decline in unevenness --- after 1000 deaths, no species has become extinct.", fig.width=7, fig.height=7}
+library(untb)
+par(mar=c(1,1,1,1))
+display.untb(start=rep(10, 900), prob=0.1, gens=5000)
+#box()
+polygon(c(6.5,13.5,13.5,6.5), y=c(6.5,6.5,13.5,13.5), lwd=6)
+out <- untb(rep(1:10, 90), prob=0, gens=1000, D=9, keep=TRUE)
+matplot(1:1000,species.table(out), type='l', lwd=1.5,
+        ylab="Population Density", xlab="Generation")
+```
+
+The relevant world of the NTBB is a metacommunity (left, Fig. \@ref(fig:meta)), that is, a collection of local communities connected by dispersal [@Leibold:2004fe].^[The metacommunity concept is quite general, and a neutral metacommunity is but one caricature.] The metacommunity is populated entirely by individuals that are functionally identical. The NTBB is a theory of the dynamics of individuals, modeling individual births, deaths, migration and mutation. It assumes that within a guild, such as late successional tropical trees, species are essentially neutral with respect to their fitness, that is, they exhibit *fitness equivalence*. This means that the probabilities of birth, death, mutation and migration are identical for all individuals. Therefore, changes in population sizes occur via random walks, that is, via stochastic increases and decreases with time step (right, Fig. \@ref(fig:meta)). Random walks do not imply an absence of competition or other indirect enemy mediated negative density dependence. Rather, competition is thought to be diffuse, and equal among individuals. We discuss details of this in the context of simulation. Negative density dependence arises either through a specific constraint on the total number of individuals in a community [@Hubbell2001], or as traits of individuals related to the probabilities of births, deaths, and speciation [@Volkov:2005rt].
+
+A basic paradox of the NTBB, is that in the absence of migration or mutation, diversity gradually declines to zero, or monodominance. A random walk due to fitness equivalence will eventually  result in the loss of all species except one.\footnote{This is identical to allele frequency in \index{parallels with genetic drift!neutral theory}genetic drift.} However, the loss of diversity in any single local community is predicted to be very, very slow, and is countered by immigration and speciation (we discuss more details below). Thus, species do not increase deterministically when rare --- this makes the concept of coexistence different than the stable coexistance criteria discussed in previous chapters. Coexistance here \emph{is not stable} but rather only a stochastic event with a limited time horizon which is balanced by the emergence of new species.
+
+If all communities are thought to undergo random walks toward monodominance, how is diversity maintained in any particular region? Two factors maintain species in any local community. First, immigration into  the local community from the metacommunity can bring in new species. Even though each local community is undergoing a random walk toward monodominance, each local community may become dominated by any one of the species in the pool because all species have equal fitness. Thus separate local communities are predicted to become dominated by different species, and these differences among local communities help maintain diversity in the metacommunity landscape.^[This is the same as how genetic drift operates across subpopulations connected by low rates of gene exchange.] Second, at longer time scales and larger spatial scales, speciation (i.e., mutation and lineage-splitting) within the entire metacommunity maintains biodiversity. Mutation and the consequent speciation provide the ultimate source of variation. Random walks toward extinction in large communities are so lengthy that the extinctions are balanced by speciation.
+
+Introducing new symbols and jargon for ecological neutral theory, we state that the diversity of the metacommunity, $\theta$, is a function of the number of individuals in the metacommunity, $J_M$, and the per capita rate at which new species arise (via mutation) $\nu$ ($\theta = 2J_M \nu$; Table \@ref(tab:jargon)). A local community undergoes \index{drift|see{neutral theory}}ecological drift; drift causes the slow loss of diversity, which is balanced by a per capita ($J_L$) immigration rate $m$. 
+
+Species area immigration curves
+```{r}
+d <- .4
+i <- 1:26
+g <- d*(1-d)^(i-1)
+geodist <- g/sum(g)
+comm <- sample(letters, 1e4, replace=TRUE, prob=geodist)
+plot( table(comm) )
+```
+
+Gamma function
+```{r}
+
+gamma(3) # 2*1
+gamma(4) # 3*2*1
+gamma(3.5) # something in between. :)
+```
