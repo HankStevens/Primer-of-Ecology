@@ -15,7 +15,11 @@ It seems easy, or at least tractable, to compare the abundance of a single speci
 Please see the "Environmetrics" link within the "Task Views" link at any CRAN website for downloading R packages. Perhaps the most comprehensive (including both diversity and composition) is the `vegan` package, but many others include important features as well.
 
 ## Species Composition
+
+Differences in species composition among communities is a form of $\beta$-diversity. Understanding the patterns and processes by which communities change or differs in space and time is perhaps the principal goal of community ecology. Beta-diversity is the term we give to these differences. Understanding precisely what we mean it is essential for correctly addressing our questions, and @Anderson2011 have provided us with an excellent roadmap to help. All of the questions and their answers rely on a proper understanding of *multivariate distance.* And that requires us to start with species composition.
+
 Species composition is merely the set of species in a site or a sample. Typically this includes some measure of abundance at each site, but it may also simply be a list of species at each site, where "abundance" is either presence or absence. 
+
 
 Imagine we have four sites (A--D) from which we collect density data on two species, *Salix whompii* and *Fraxinus virga*. We can enter hypothetical data of the following abundances.
 ```{r}
@@ -47,6 +51,7 @@ Here we see that sites A and B both have about 14% of all *Salix* stems, and sit
 Whether our measures of abundance are absolute or relative, we would like to know how different samples (or sites) are from each other. Perhaps the simplest way to describe the difference among the sites is to calculate the *distances* between each pair of sites.
 
 ### Distance
+
 There are many ways to calculate a *distance* between a pair of sites. One of the simplest, which we learned in primary school, is *Euclidean distance*. With two species, we have two dimensional space, which is Fig. \@ref(fig:dens). The Euclidean distance between two sites is merely the length of the vector connecting those sites. We calculate this as $\sqrt{x^2+y^2}$, where $x$ and $y$ are the $(x,y)$ distances between a pair of sites. The $x$ distance between sites B and C is the difference in *Salix* abundance between the two sites,
 ```{r}
 x <- dens[2,1] - dens[3,1]
@@ -133,6 +138,7 @@ Finally, we divide the shared species by the summed richnesses and multiply by 2
 2*sum(shared)/sum(Rs)
 ```
 S{\o}rensen's index has also been used in the development of more sophisticated measures of similarity between sites [@Morlon:2008tx; @Plotkin:2002eu].
+
 
 ## Diversity
 To my mind, there is no more urgent or interesting goal in ecology and evolutionary biology than understanding the determinants of biodiversity. Biodiversity is many things to many people, but we typically think of it as a measure of the variety of biological life present, perhaps taking into account the relative abundances. For ecologists, we most often think of *species diversity* as some quantitative measure of the variety or number of different species.  This has direct analogues to the genetic diversity within a population [@Crow1970; @Vellend2005a], and the connections between species and genetic diversity include both shared patterns and shared mechanisms. Here we confine ourselves entirely to a discussion of species diversity, the variety of different species present.
@@ -643,11 +649,182 @@ An important aspect of neutral theory is the quantification of a *symmetric rare
 
 To sum up: it is safe to say that neutral theory has already made  our thinking about community structure and dynamics more sophisticated and subtle, by extending island biogeography to individuals. The theory is providing quantitative, pattern-generating models, that are analogous to null hypotheses. With the advent of specialized software, theory is now becoming more useful in our analysis of data [@Etienne2005; @Hankin:2007zm; @Jabot:2009mi].
 
+## Species--area relations
+The number of species we observe clearly depends on the number of individuals we sample, which in turn may depend on the size of the area in which we count individuals. For this reason alone, we may be interested in the relation between species and area. However, area is alos important because it is likely correlated with habitat heterogeneity, dispersal limitation, and even reproductive isolation. The study of species-area relations includes understanding how all these things fit together.
+
+The relation between the number of species found in samples of different area has a long tradition [@Arrhenius1921; @MacArthur1972; @MacArthur1963, MacArthur1967; @Preston:1960uq; @Rosenzweig1995], and is now an important part of the subdiscipline of *macroecology* [@Brown1995; @Harte:2008nq].
+
+Most generally, the species--area relation (SAR) is simply an empirical pattern of the number of species found in patches of different size, plotted as a function of the sizes of the respective patches (Fig. \@ref(fig:sars)). These patches may be isolated from each other, as islands in the South Pacific [@MacArthur1963], or mountaintops covered in coniferous forest surrounded by a sea of desert [@Brown1977], or calcareous grasslands in an agricultural landscape [@Hamback:2007yj]. On the other hand, these patches might be nested sets, where each larger patch contains all others [@Crawley2001a; @Plotkin:2000qe].
+
+Quantitatively, the relation is most often proposed as a simple power law,
+\begin{equation}
+  (\#eq:area1)
+  S = cA^z
+\end{equation}
+where $S$ is the number of species in a patch of size $A$, and $c$ and $z$ are fitted constants. This is most often plotted as a log--log relation, which makes it linear.
+\begin{equation}
+  (\#eq:area2)
+  \log\left(S\right) = b + z \log(A)
+\end{equation}
+where $b$ is the intercept (equal to $\log c$) and $z$ is the slope. Other forms have been used, and sometimes better capture the relation [@Scheiner:2003aa].
+
+Here we simply draw some species area curves.
+```{r}
+A <- 10^1:10; c <- 1.5; z <- 0.25
+curve(c*x^z, 10, 10^10, n=500, ylab="No. of Species", xlab="Area (ha)")
+curve(log(c,10) + z*x, 1, 10, ylab=quote(log[10]("No. of Species")), 
+      xlab=quote(log[10]("Area (ha)")) )
+```
+
+Here we fit a species--area curve to data, and examine the slope. We could fit a nonlinear power relation ($y=cA^z$); this would be appropriate, for instance, if the residual noise around the line were of the same magnitude for all patch areas. We could use reduced major axis regression, which is appropriate when there is equivalent uncertainty or error on both $x$ and $y$. Last (and most often), we could use a simple linear regression on the log-transformed data, which is appropriate when we know $x$ to a high degree of accuracy, but measure $y$ with some error, and the transformation causes the residual errors to be of similar magnitude at all areas. We start with the last (log-transformed). Here we plot the data, and fit a linear model to the common log-transformed data.
+```{r sarsfit, fig.cap="*Two different fits to the moth species-area data.*"}
+data(moths)
+mod.nonlin <- nls(spp ~ a*area^z, start=list(a=1, z=.2),data=moths)
+mod <- lm(log(spp,10) ~log(area,10), data=moths)
+plot(log(spp,10) ~ log(area,10), moths)
+abline(mod)
+curve(log(coef(mod.nonlin)[1],10) +  x*coef(mod.nonlin)[2], 
+      0, 3, add=TRUE, lty=2)
+```
+
+Note that in Figure \@ref(fig:sarsfit), the fits differ slightly between the two methods.  Let's compare the confidence intervals of the slopes --- we certainly expect them to be similar, given the picture we just drew.
+```{r}
+# linear fit to transformed data
+confint(mod)
+# nonlinear fit to raw data
+confint(mod.nonlin)
+```
+ We note that the estimates of the slopes are quite similar. In addition, $\log a$ is also similar to the intercept of the linear model. Determining the better of the two methods (or others) is beyond the scope of this book, but be aware that methods can matter. 
+
+
+The major impetus for the species--area relation came from (i) Preston's work on connections between the species--area relation and the log-normal species abundance distribution [@Preston:1960uq; @Preston1962], and (ii) MacArthur and Wilson's theory of island biogeography [@MacArthur1967]. 
+
+Preston posited that, given the log-normal species abundance distributions (see above), then increasingly large samples should accumulate species at particular rates. Direct extensions of this work, linking neutral theory and maximum entropy theory to species abundances and species--area relations continued [@Bell2001; @Harte:2008nq; @Hubbell2001].
+
+
+
+### Island biogeography
+MacArthur and Wilson proposed a simple theory wherein the number of species on an oceanic island was a function of the immigration rate of new species, and extinction rate of existing species (Fig. \@ref(fig:IE)). The number of species at any one time was \emph{a dynamic equilibrium}, resulting from both slow inevitable extinction and slow continual arrival of replacements. Thus species composition on the island was predicted to change over time, that is, to undergo turnover. Our appreciation of the ecological and evolution processes that govern the number and variety of species on islands continues to grow [@Whittaker:2017aa].
+
+Let us imagine immigration rate, $y$, as a function of the number of species already on an island, $x$ (Fig. \@ref(fig:IE)). This relation will have a negative slope, because as the number of species rises, that chance that a new individual actually represents a new species will decline. The immigration rate will be highest when there are no species on the island, $x=0$, and will fall to zero when every conceivable species is already there. In addition, the slope should be decelerating (concave up) because some species will be much more likely than others to immigrate. This means that the immigration rate drops steeply as the most likely immigrants arrive, and only the unlikely immigrants are missing. Immigrants may colonize quickly for two reasons. First, as Preston noted, some species are simply much more common than others. Second, some species are much better dispersers than others.
+
+Now let us imagine extinction rate, $y$, as a function of the number of species, $x$ (Fig. \@ref(fig:IE)). This relation will have a positive slope, such that the probability of extinction increases with the number of species. This is predicted to have an accelerating slope (concave-up), for essentially the same sorts of reasons governing the shape of the immigration curve: Some species are less common than others, and therefore more likely to become extinct due to demographic and environmental stochasticity, and second, some species will have lower fitness for any number of reasons. As the number of species accumulates, the more likely it will become that these extinction-prone species (rare and/or lower fitness) will be present, and therefore able to become extinct.
+
+The *rate of change* of the number of species on the island,
+$\Delta S$, will be the difference between immimigration, $I$, and extinction, $E$, or
+\begin{equation}
+  (\#eq:deltaS)
+   \Delta S = I - E.
+\end{equation}
+When $\Delta S = 0$, we have an equilibrium. If we knew the quantitative form of immigration and extinction, we could solve for the equilibrium. That equilibrium would be the point on the $x$ axis, $S$, where the two rates cross (Fig. \@ref(fig:IE)).
+
+In MacArthur and Wilson's theory of island biogeography, these rates could be driven by the *sizes* of the islands, where
+
+* larger islands had lower extinction rates because of larger average population sizes, and
+* larger islands had higher colonization rates because they were larger targets for dispersing species.
+    
+The distance between an island and sources of propagules was also predicted to influence these rates, where
+
+* islands closer to mainlands had higher colonization rates of new species because more propagules would be more likely to arrive there, and
+* the effect of area would be more important for islands far from mainlands than for islands close to mainlands.
+
+Like much good theory, these were simple ideas, but had profound
+effects on the way ecologists thought about communities. Now these
+ideas, of dispersal mediated coexistence and landscape structure,
+continue to influence community ecologists.
+
+
+
+**Drawing immigration and extinction curves**
+
+It would be fun to derive a model of immigration and extinction rates from first principles [@MacArthur1963], but here we can illustrate these relations with some simple phenomenological graphs. The code that follows recreates Fig. \@ref(fig:IE), and also estimates $S$.
+```{r IE, echo=FALSE, fig.cap="*Immigration and extinction curves for the theory of island biogeography. The declining curves represent immigration rates as functions of the number of species present on an island. The increasing curves represent extinction rates, also as functions of island richness. See text for discussion of the heights of these curves, i.e.,  controls on these rates. Here the dashed lines represent an island that is shrinking in size.*"}
+I0 <- log(1)
+b <- .1
+curve(exp(I0 - b*x),0, 50, 
+      xlab='No. of Species (R)', ylab="Rate (I or E)")
+d <- .01
+curve(exp(d*x)-1, 0, 50, add=TRUE)
+deltaR <- function(R) { (exp(I0-b*R) - (exp(d*R)-1))^2 }
+S1 <- optimize(f=deltaR, interval=c(1,50))$minimum
+I1 <- exp(I0-b*S1)
+segments(S1, -.1, S1, I1)
+
+I0 <- log(1/2)
+curve(exp(I0-b*x), 0,50, add=TRUE, lty=2)
+d <- .014
+curve(exp(d*x)-1, 0, 50, add=TRUE, lty=2)
+S2 <- optimize(f=deltaR, interval=c(1,50))$minimum
+I2 <- exp(I0-b*S2)
+segments(S2, -.1, S2, I2, lty=2)
+```
+
+We will assume that immigration rate, $I$, can be represented as a simple negative exponential function $\exp (I_0 - iS)$, where $I_0$ is the rate of immigration to an empty island, and $-i$ is the per species negative effect on immigration rate.
+
+```{r}
+I0 <- log(1)
+b <- .1
+curve(exp(I0 - b*x),0, 50, 
+      xlab='No. of Species (R)', ylab="Rate (I or E)")
+```
+Note that extinction rate, $E$, must be zero if there are no species present. Imagine that extinction rate is a function of density and that average density declines as the number of species increases, or $\bar{N} = 1/S$.^[Why would this make sense ecologically?]
+```{r}
+d <- .01
+curve(exp(d*x)-1, 0, 50) 
+# use add=TRUE to add the line to a previous graph
+```
+We subtract 1 merely to make sure that $E=0$ when $R=0$.
+
+The number of species, $R$, will result from $\Delta S = 0= I-E$,  the point at which the lines cross. 
+\begin{gather}
+  I = e^{I_0 - bS}\\
+  E = e^{dS}-1 \\
+\delta S = 0 = I-E
+\end{gather}
+Here we find this empirically by creating a function of $S$ to
+minimize --- we will minimize $(I-E)^2$; squaring the difference gives
+the quantity the convenient property that the minimum will be approached from either positive or negative values.
+```{r}
+deltaS <- function(S) { (exp(I0-b*S) - (exp(d*S)-1))^2 }
+```
+We feed this into an optimizer for one-parameter functions, and specify that we know the optimum will be achieved somewhere in the interval between 1 and 50.
+```{r}
+optimize(f=deltaS, interval=c(1,50))[["minimum"]]
+```
+The output tells us that the minimum was achieved when $S \approx 16.9$. 
+
+
+Now imagine that rising sea level causes island area to shrink. What is this predicted to do? It could
+
+1. reduce the base immigration rate because the island is a smaller target, 
+2. increase extinction rate because of reduced densities.
+
+Let us represent reduced immigration rate by reducing $I_0$.
+```{r}
+I0 <- log(1/2)
+curve(exp(I0 - b*x), 0,50, lty=2)
+# use add=TRUE to add to a previous plot
+```
+Next we increase extinction rate by increasing the per species rate.
+```{r}
+d <- .014
+curve(exp(d*x)-1, 0, 50, lty=2)
+```
+If we note where the rates cross, we find that the number of predicted species has declined. With these new immigration and extinciton rates the predicted number of species is
+```{r}
+optimize(f=deltaS, interval=c(1,50))[["minimum"]]
+```
+or 11 species, roughly a 35\% decline ($(17-11)/17 = 0.35$).
+
+
+The beauty of this theory is that it focuses our attention on *landscape level processes*, often outside the spatial and temporal limits of our sampling regimes. It specifies that any factor which helps determine the immigration rate or extinction rate, including island area or proximity to a source of propagules, is predicted to alter the equilibrium number of species at any point in time. We should further emphasize that the *identity* of species should change over time, that is, undergo turnover, because new species arrive and old species become extinct. The rate of turnover, however, is likely to be slow, because the species that are most likely to immigrate and least likely to become extinct will be the same species from year to year.
+
+
 ## Diversity Partitioning
 We frequently refer to biodiversity (i.e., richness, Simpson's, and Shannon-Wiener diversity) at different spatial scales as $\alpha$, $\beta$, and $\gamma$ diversity.
 
 * Alpha diversity, $\alpha$, is the diversity of a point location or of a single sample.
-* Beta diversity, $\beta$, is the diversity due to multiple localities; $\beta$ diversity is sometimes thought of as \emph{turnover} in species composition among sites, or alternatively as the number of species in a region that are \emph{not} observed in a sample. 
+* Beta diversity, $\beta$, is the diversity due to multiple localities. As we saw above, $\beta$ diversity is also used to describe differences in species composition among sites. 
 * Gamma diversity, $\gamma$, is the diversity of a region, or at least the diversity of all the species in a set of samples collected over a large area (with large extent relatve to a single sample).
 
 Diversity across spatial scales can be further be partitioned in one of two ways, either using additive ormultiplicative partitioning. 
@@ -791,181 +968,9 @@ Next we find additive $\beta$-diversity and multiplicative $\beta$-diversity.
 ```
 Now we interpret them. These plots are located in a relatively uniform tropical rainforest. Therefore, they each are samples drawn from a single community type. However, the samples are small. Therefore, each 1 ha plot ($10^4$ m$^2$ in size) misses more species than it finds, on average ($\beta_A > \bar{\alpha}$). In addition, $\beta_M=2.48$, indicating a great deal of turnover in species composition. We could mistakenly interpret this as indicating something like $\sim 2.5$ independent community types in our samples. Here, however, we have a single community type --- additive partitioning is a little simpler and transparent in its interpretation.
 
-For other meanings of $\beta$-diversity, linked to neutral theory, see [@Morlon:2008tx].
-
-## Species--area relations
-The relation between the number of species found in samples of
-different area has a long tradition [@Arrhenius1921; @MacArthur1972; @MacArthur1963, MacArthur1967; @Preston:1960uq; @Rosenzweig1995], and is now an important part of the subdiscipline of *macroecology* [@Brown1995; @Harte:2008nq].
-
-Most generally, the species--area relation (SAR) is simply an empirical pattern of the number of species found in patches of different size, plotted as a function of the sizes of the respective patches (Fig. \@ref(fig:sars)). These patches may be isolated from each other, as islands in the South Pacific [@MacArthur1963], or mountaintops covered in coniferous forest surrounded by a sea of desert [@Brown1977], or calcareous grasslands in an agricultural landscape [@Hamback:2007yj]. On the other hand, these patches might be nested sets, where each larger patch contains all others [@Crawley2001a; @Plotkin:2000qe].
-
-Quantitatively, the relation is most often proposed as a simple power law,
-\begin{equation}
-  (\#eq:area1)
-  S = cA^z
-\end{equation}
-where $S$ is the number of species in a patch of size $A$, and $c$ and $z$ are fitted constants. This is most often plotted as a log--log relation, which makes it linear.
-\begin{equation}
-  (\#eq:area2)
-  \log\left(S\right) = b + zA
-\end{equation}
-where $b$ is the intercept (equal to $\log c$) and $z$ is the slope. 
-
-Here we simply draw some species area curves.
-```{r}
-A <- 10^1:10; c <- 1.5; z <- 0.25
-curve(c*x^z, 10, 10^10, n=500, ylab="No. of Species", xlab="Area (ha)")
-curve(log(c,10) + z*x, 1, 10, ylab=quote(log[10]("No. of Species")), 
-      xlab=quote(log[10]("Area (ha)")) )
-```
-
-Here we fit a species--area curve to data, and examine the slope. We could fit a nonlinear power relation ($y=cA^z$); this would be appropriate, for instance, if the residual noise around the line were of the same magnitude for all patch areas. We could use reduced major axis regression, which is appropriate when there is equivalent uncertainty or error on both $x$ and $y$. Last (and most often), we could use a simple linear regression on the log-transformed data, which is appropriate when we know $x$ to a high degree of accuracy, but measure $y$ with some error, and the transformation causes the residual errors to be of similar magnitude at all areas. We start with the last (log-transformed). Here we plot the data, and fit a linear model to the common log-transformed data.
-```{r sarsfit, fig.cap="*Two different fits to the moth species-area data.*"}
-data(moths)
-mod.nonlin <- nls(spp ~ a*area^z, start=list(a=1, z=.2),data=moths)
-mod <- lm(log(spp,10) ~log(area,10), data=moths)
-plot(log(spp,10) ~ log(area,10), moths)
-abline(mod)
-curve(log(coef(mod.nonlin)[1],10) +  x*coef(mod.nonlin)[2], 
-      0, 3, add=TRUE, lty=2)
-```
-
-Note that in Figure \@ref(fig:sarsfit), the fits differ slightly between the two methods.  Let's compare the confidence intervals of the slopes --- we certainly expect them to be similar, given the picture we just drew.
-```{r}
-# linear fit to transformed data
-confint(mod)
-# nonlinear fit to raw data
-confint(mod.nonlin)
-```
- We note that the estimates of the slopes are quite similar. In addition, $\log a$ is also similar to the intercept of the linear model. Determining the better of the two methods (or others) is beyond the scope of this book, but be aware that methods can matter. 
-
-
-The major impetus for the species--area relation came from (i)
-Preston's work on connections between the species--area relation and the log-normal species abundance distribution [@Preston:1960uq; @Preston1962], and (ii) MacArthur and Wilson's theory of island biogeography [@MacArthur1967]. 
-
-Preston posited that, given the log-normal species abundance distributions (see above), then increasingly large samples should accumulate species at particular rates. Direct extensions of this work, linking neutral theory and maximum entropy theory to species abundances and species--area relations continued [@Bell2001; @Harte:2008nq; @Hubbell2001].
-
-
-
-### Island biogeography
-MacArthur and Wilson proposed a simple theory wherein the number of species on an oceanic island was a function of the immigration rate of new species, and extinction rate of existing species (Fig. \@ref(fig:IE)). The number of species at any one time was \emph{a dynamic equilibrium}, resulting from both slow inevitable extinction and slow continual arrival of replacements. Thus species composition on the island was predicted to change over time, that is, to undergo turnover. 
-
-Let us imagine immigration rate, $y$, as a function of the number of species already on an island, $x$ (Fig. \@ref(fig:IE)). This relation will have a negative slope, because as the number of species rises, that chance that a new individual actually represents a new species will decline. The immigration rate will be highest when there are no species on the island, $x=0$, and will fall to zero when every conceivable species is already there. In addition, the slope should be decelerating (concave up) because some species will be much more likely than others to immigrate. This means that the immigration rate drops steeply as the most likely immigrants arrive, and only the unlikely immigrants are missing. Immigrants may colonize quickly for two reasons. First, as Preston noted, some species are simply much more common than others. Second, some species are much better dispersers than others.
-
-Now let us imagine extinction rate, $y$, as a function of the number of species, $x$ (Fig. \@ref(fig:IE)). This relation will have a positive slope, such that the probability of extinction increases with the number of species. This is predicted to have an accelerating slope (concave-up), for essentially the same sorts of reasons governing the shape of the immigration curve: Some species are less common than others, and therefore more likely to become extinct due to demographic and environmental stochasticity, and second, some species will have lower fitness for any number of reasons. As the number of species accumulates, the more likely it will become that these extinction-prone species (rare and/or lower fitness) will be present, and therefore able to become extinct.
-
-The *rate of change* of the number of species on the island,
-$\Delta S$, will be the difference between immimigration, $I$, and extinction, $E$, or
-\begin{equation}
-  (\#eq:deltaS)
-   \Delta S = I - E.
-\end{equation}
-When $\Delta S = 0$, we have an equilibrium. If we knew the quantitative form of immigration and extinction, we could solve for the equilibrium. That equilibrium would be the point on the $x$ axis, $S$, where the two rates cross (Fig. \@ref(fig:IE)).
-
-
-In MacArthur and Wilson's theory of island biogeography, these rates could be driven by the *sizes* of the islands, where
-
-* larger islands had lower extinction rates because of larger average population sizes, and
-* larger islands had higher colonization rates because they were larger targets for dispersing species.
-    
-The distance between an island and sources of propagules was also predicted to influence these rates, where
-
-* islands closer to mainlands had higher colonization rates of new species because more propagules would be more likely to arrive there, and
-* the effect of area would be more important for islands far from mainlands than for islands close to mainlands.
-
-Like much good theory, these were simple ideas, but had profound
-effects on the way ecologists thought about communities. Now these
-ideas, of dispersal mediated coexistence and landscape structure,
-continue to influence community ecologists.
-
-
-
-**Drawing immigration and extinction curves**
-
-It would be fun to derive a model of immigration and extinction rates from first principles [@MacArthur1963], but here we can illustrate these relations with some simple phenomenological graphs. The code that follows recreates Fig. \@ref(fig:IE), and also estimates $S$.
-```{r IE, echo=FALSE, fig.cap="*Immigration and extinction curves for the theory of island biogeography. The declining curves represent immigration rates as functions of the number of species present on an island. The increasing curves represent extinction rates, also as functions of island richness. See text for discussion of the heights of these curves, i.e.,  controls on these rates. Here the dashed lines represent an island that is shrinking in size.*"}
-I0 <- log(1)
-b <- .1
-curve(exp(I0 - b*x),0, 50, 
-      xlab='No. of Species (R)', ylab="Rate (I or E)")
-d <- .01
-curve(exp(d*x)-1, 0, 50, add=TRUE)
-deltaR <- function(R) { (exp(I0-b*R) - (exp(d*R)-1))^2 }
-S1 <- optimize(f=deltaR, interval=c(1,50))$minimum
-I1 <- exp(I0-b*S1)
-segments(S1, -.1, S1, I1)
-
-I0 <- log(1/2)
-curve(exp(I0-b*x), 0,50, add=TRUE, lty=2)
-d <- .014
-curve(exp(d*x)-1, 0, 50, add=TRUE, lty=2)
-S2 <- optimize(f=deltaR, interval=c(1,50))$minimum
-I2 <- exp(I0-b*S2)
-segments(S2, -.1, S2, I2, lty=2)
-```
-
-We will assume that immigration rate, $I$, can be represented as a simple negative exponential function $\exp (I_0 - iS)$, where $I_0$ is the rate of immigration to an empty island, and $-i$ is the per species negative effect on immigration rate.
-
-```{r}
-I0 <- log(1)
-b <- .1
-curve(exp(I0 - b*x),0, 50, 
-      xlab='No. of Species (R)', ylab="Rate (I or E)")
-```
-Note that extinction rate, $E$, must be zero if there are no species present. Imagine that extinction rate is a function of density and that average density declines as the number of species increases, or $\bar{N} = 1/S$.^[Why would this make sense ecologically?]
-```{r}
-d <- .01
-curve(exp(d*x)-1, 0, 50) 
-# use add=TRUE to add the line to a previous graph
-```
-We subtract 1 merely to make sure that $E=0$ when $R=0$.
-
-The number of species, $R$, will result from $\Delta S = 0= I-E$,  the point at which the lines cross. 
-\begin{gather}
-  I = e^{I_0 - bS}\\
-  E = e^{dS}-1 \\
-\delta S = 0 = I-E
-\end{gather}
-Here we find this empirically by creating a function of $S$ to
-minimize --- we will minimize $(I-E)^2$; squaring the difference gives
-the quantity the convenient property that the minimum will be approached from either positive or negative values.
-```{r}
-deltaS <- function(S) { (exp(I0-b*S) - (exp(d*S)-1))^2 }
-```
-We feed this into an optimizer for one-parameter functions, and specify that we know the optimum will be achieved somewhere in the interval between 1 and 50.
-```{r}
-optimize(f=deltaS, interval=c(1,50))[["minimum"]]
-```
-The output tells us that the minimum was achieved when $S \approx 16.9$. 
-
-
-Now imagine that rising sea level causes island area to shrink. What is this predicted to do? It could
-
-1. reduce the base immigration rate because the island is a smaller target, 
-2. increase extinction rate because of reduced densities.
-
-Let us represent reduced immigration rate by reducing $I_0$.
-```{r}
-I0 <- log(1/2)
-curve(exp(I0 - b*x), 0,50, lty=2)
-# use add=TRUE to add to a previous plot
-```
-Next we increase extinction rate by increasing the per species rate.
-```{r}
-d <- .014
-curve(exp(d*x)-1, 0, 50, lty=2)
-```
-If we note where the rates cross, we find that the number of predicted species has declined. With these new immigration and extinciton rates the predicted number of species is
-```{r}
-optimize(f=deltaS, interval=c(1,50))[["minimum"]]
-```
-or 11 species, roughly a 35\% decline ($(17-11)/17 = 0.35$).
-
-
-The beauty of this theory is that it focuses our attention on *landscape level processes*, often outside the spatial and temporal limits of our sampling regimes. It specifies that any factor which helps determine the immigration rate or extinction rate, including island area or proximity to a source of propagules, is predicted to alter the equilibrium number of species at any point in time. We should further emphasize that the *identity* of species should change over time, that is, undergo turnover, because new species arrive and old species become extinct. The rate of turnover, however, is likely to be slow, because the species that are most likely to immigrate and least likely to become extinct will be the same species from year to year.
+For other meanings of $\beta$-diversity, linked to neutral theory, see [@Morlon:2008tx]. 
 
 **Partitioning species--area relations**
 
 You may already be wondering if there is a link between island biogeography and $\beta$-diversity. After all, as we move from island to island, and as we move from small islands to large islands, we typically encounter additional species, and that is what we mean by $\beta$-diversity. Sure enough, there are connections [@Crist:2006lr], and the older edition of this primer walks you through them.
-
 
