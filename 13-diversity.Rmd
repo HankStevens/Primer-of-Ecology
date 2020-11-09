@@ -16,14 +16,14 @@ Please see the "Environmetrics" link within the "Task Views" link at any CRAN we
 
 ## Species Composition
 
-Differences in species composition among communities is a form of $\beta$-diversity. Understanding the patterns and processes by which communities change or differs in space and time is perhaps the principal goal of community ecology. Beta-diversity is the term we give to these differences. Understanding precisely what we mean it is essential for correctly addressing our questions, and @Anderson2011 have provided us with an excellent roadmap to help. All of the questions and their answers rely on a proper understanding of *multivariate distance.* And that requires us to start with species composition.
+Differences in species composition among communities is a form of $\beta$--diversity. Understanding the patterns and processes by which communities change or differs in space and time is perhaps the principal goal of community ecology. Beta-diversity is the term we give to these differences. Understanding precisely what we mean it is essential for correctly addressing our questions, and @Anderson2011 have provided us with an excellent roadmap to help. All of the questions and their answers rely on a proper understanding of *multivariate distance.* And that requires us to start with species composition.
 
 Species composition is merely the set of species in a site or a sample. Typically this includes some measure of abundance at each site, but it may also simply be a list of species at each site, where "abundance" is either presence or absence. 
 
 
 Imagine we have four sites (A--D) from which we collect density data on two species, *Salix whompii* and *Fraxinus virga*. We can enter hypothetical data of the following abundances.
 ```{r}
-dens <- data.frame(Salwho=c(1,1,2,3), Fravir=c(21,8,13,5))
+dens <- data.frame(Salwho=c(1,0,2,3), Fravir=c(21,8,13,5))
 row.names(dens) <- LETTERS[1:4]
 dens
 ```
@@ -48,11 +48,25 @@ dens[,1]/sum(dens[,1])
 ``` 
 Here we see that sites A and B both have about 14% of all *Salix* stems, and site D has 43%.
 
-Whether our measures of abundance are absolute or relative, we would like to know how different samples (or sites) are from each other. Perhaps the simplest way to describe the difference among the sites is to calculate the *distances* between each pair of sites.
+Whether our measures of abundance are absolute or relative, we would like to know how different samples (or sites) are from each other. Perhaps the simplest way to describe the difference among the sites is to calculate the distances or dissimilarities between each pair of sites.
 
-### Distance
+### Dissimilarities and Distances
 
-There are many ways to calculate a *distance* between a pair of sites. One of the simplest, which we learned in primary school, is *Euclidean distance*. With two species, we have two dimensional space, which is Fig. \@ref(fig:dens). The Euclidean distance between two sites is merely the length of the vector connecting those sites. We calculate this as $\sqrt{x^2+y^2}$, where $x$ and $y$ are the $(x,y)$ distances between a pair of sites. The $x$ distance between sites B and C is the difference in *Salix* abundance between the two sites,
+When we have data on just the presence and absence of species, we can calculate a difference between sites using the *Jaccard index* of similarity,
+
+$$J_{AB} = \frac{A \cap B}{A \cup B}$$
+where the numerator is the number of species in the set of shared species (present at both sites) and the denominator is the number of species in the set present at either site. Among our sites, the Jaccard index between site B and site A is 
+$$J_{BA} = \frac{1}{2}$$
+and this is the same between site B and C and D as well. Jaccard dissimilarity is $1 - J$. This would be $0.5$ for site B and any other site, and zero for the other pairs. 
+
+There is a quantitative version of this, which is 
+$$J_{AB} = \frac{\sum_{i=1}^S \min (x_i)}{\sum_{i=1}^S \max (x_i)}$$
+where $x_i$ is the abundance of $i$. For sites A and B, this would be,
+
+$$J_{AB} = \frac{0+8}{1+21}=4/11 = 0.\overline{36}$$
+and so dissimilarity would again be $1-J_{AB}$.
+
+*Euclidean distance* is another important way to measure differences between sites. With two species, we have two dimensional space, which is Fig. \@ref(fig:dens). The Euclidean distance between two sites is merely the length of the vector connecting those sites. We calculate this as $\sqrt{x^2+y^2}$, where $x$ and $y$ are the $(x,y)$ distances between a pair of sites. The $x$ distance between sites B and C is the difference in *Salix* abundance between the two sites,
 ```{r}
 x <- dens[2,1] - dens[3,1]
 ```
@@ -64,7 +78,7 @@ The Euclidean distance between these is therefore
 ```{r}
 sqrt(x^2 + y^2)
 ```
-Distance is as simple as that. We calculate all pairwise Euclidean distances between sites A--D based on 2 species using built-in functions in R.
+We calculate all pairwise Euclidean distances between sites A--D based on 2 species using built-in functions in R.
 ```{r}
 (alldists <- dist(dens))
 ```
@@ -85,10 +99,12 @@ $$D_E = \sqrt{\sum_{i=1}^S\left( x_{ai} - x_{bi}\right)^2}$$
 
 Of course, it is difficult (impossible?) to visualize arrangements of sites with more than three axes (i.e., $>3$ species), but we can always *calculate* the distances between pairs of sites, regardless of how many species we have.
 
-There are many ways, in addition to Euclidean distances, to calculate distance. Among the most commonly used in ecology is
-*Bray--Curtis* distance, which goes by other names, including Sørenson distance. 
+There are many ways, in addition to Euclidean distances, to calculate differences. Among the most commonly used in ecology is
+*Bray--Curtis* dissimilarity, which goes by other names, including Sørenson dissimilarity 
 $$D_{BC} = \frac{\sum_{i=1}^S\left| x_{ai} - x_{bi}\right|}{\sum_{i=1}^S (x_{ai} + x_{bi})}$$
-where $S$ is the number of species in all samples. Bray--Curtis distance is merely the total difference in species abundances between two sites, divided by the total abundances at each site. Bray--Curtis distance (and a couple others) tends to result in more intuitively pleasing distances in which both common and rare species have relatively similar weights, whereas Euclidean distance depends more strongly on the most abundant species. This happens because Euclidean distances are based on squared differences, whereas Bray--Curtis uses absolute differences. Squaring always amplifies the importance of larger values. Fig. \@ref(fig:mds) compares graphs based on Euclidean and Bray--Curtis distances of the same raw data.
+where $S$ is the number of species in all samples. Bray--Curtis dissimilarity is merely the total difference in species abundances between two sites, divided by the total abundances at each site. Bray--Curtis dissimilarity (and a couple others) tends to result in more intuitively pleasing distances in which both common and rare species have relatively similar weights, whereas Euclidean distance depends more strongly on the most abundant species. This happens because Euclidean distances are based on squared differences, whereas Bray--Curtis uses absolute differences. Squaring always amplifies the importance of larger values. Fig. \@ref(fig:mds) compares graphs based on Euclidean and Bray--Curtis differences of the same raw data.
+
+[Add note on distance vs. dissimilarity, and the triangle inequality]
 
 ### Displaying multidimensional distances
 A simple way to display distances for three or more species is to create a plot in two dimensions that attempts to arrange all sites so that they are *approximately* the correct distances apart. In general this is impossible to achieve precisely, but distances can be approximately correct. One technique that tries to create an optimal (albiet approximate) arrangement is *non-metric multidimensional scaling*. Here we add a fourth species (*Aconitum lycoctonum*) to our data set before plotting the distances. 
@@ -104,41 +120,6 @@ plot(mdsE, display="sites", type="text")
 mdsB <- metaMDS(dens, distance="bray", autotransform=FALSE, trace=0)
 plot(mdsB, display="sites", type="text")
 ```
-
-### Similarity
-Sometimes, we would like to know how similar two communities are. Here we describe two measures of similarity, percent similarity, and S{\o}rensen similarity [@Magurran2004].
-
-Percent similarity may be the simplest of these; it is simply the sum of the minimum percentages for each species in the community. Here we convert each species to its relative abundance; that is, its proportional abundance at each site. To do this, we treat each site (row) separately, and then divide the abundance of each species by the sum of the abundances at each site.
-```{r}
-(dens.RA <- t( apply(dens, 1, function(sp.abun) sp.abun/sum(sp.abun) )) )
-```
-Next, to compare two sites, we find the minimum relative abundance for each species. Comparing sites A and B, we have,
-```{r}
-(mins <- apply(dens.RA[1:2,], 2, min))
-```
-Finally, we sum these, and multiply by 100 to get percentages.
-```{r}
-sum(mins) *100
-```
-
-The second measure of similarity we investigate is S{\o}rensen's similarity,
-$$ (\#eq:ss)  S_s = \frac{2C}{A+B}$$
-where $C$ is the number of species two sites have in common, and $A$ and $B$ are the number of species at each site. This is equivalent to dividing the shared species by the average richness. 
-
-To calculate this for sites A and B, we could find the species which have non-zero abundances both sites.
-```{r}
-(shared <- apply(dens[1:2,], 2, function(abuns) all(abuns != 0) ) )
-```
-Next we find the richness of each.
-```{r}
-(Rs <- apply(dens[1:2,], 1, function(x) sum(x>0)) )
-```
-Finally, we divide the shared species by the summed richnesses and multiply by 2.
-```{r}
-2*sum(shared)/sum(Rs)
-```
-S{\o}rensen's index has also been used in the development of more sophisticated measures of similarity between sites [@Morlon:2008tx; @Plotkin:2002eu].
-
 
 ## Diversity
 To my mind, there is no more urgent or interesting goal in ecology and evolutionary biology than understanding the determinants of biodiversity. Biodiversity is many things to many people, but we typically think of it as a measure of the variety of biological life present, perhaps taking into account the relative abundances. For ecologists, we most often think of *species diversity* as some quantitative measure of the variety or number of different species.  This has direct analogues to the genetic diversity within a population [@Crow1970; @Vellend2005a], and the connections between species and genetic diversity include both shared patterns and shared mechanisms. Here we confine ourselves entirely to a discussion of species diversity, the variety of different species present.
