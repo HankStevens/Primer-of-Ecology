@@ -308,6 +308,21 @@ text(5800, 150, "Obs. S in 50 ha", srt=90, adj=c(1,.5) )
 ``` 
 This shows us that the total richness estimator did not overestimate the total number of species within the extent of this relatively homogenous sample area (Fig. \@ref(fig:estS)). In that sense, these estimators are estimating the minimum total number of species and are thus conservative.
 
+Simpson's diversity provides an interesting description of a rarifcation curve. The expected number of species in a sample of $N$ individuals drawn from a community with total species richness $S$, is 
+$$\mathrm{E}[\hat{S}] = S-\sum_{i=1}^S (1-p_i)^N$$
+where $p_i$ is the frequency or relative abundance of species $i$. The initial slope of the rarifaction curve, is 
+$$\frac{\Delta \mathrm{E}[\hat{S}]}{\Delta N}$$
+where $\Delta N = 2-1=1$$. The numerator is is the difference between the expected number of species in a sample of two vs. one individual. We can work through this here, if only to remind ourselves of rules about working with sums, and that the sum of all $p_i$ is 1, by definition. Also, it helps to realize that when $N=1$, $E[\hat{S}] = 1$.
+
+\begin{align*}
+\Delta E[\hat{S}] &= S-\sum_{i=1}^S(1-p_i)^2 - \left( S-\sum_{i=1}^S(1-p_i) \right)\\
+  &= S - \sum_{i=1}^S(1-2p_i+p_i^2) - 1\\
+ &= S - \sum_{i=1}^S(1) + \sum_{i=1}^S (2p_i) - \sum_{i=1}^S(p_i^2) - 1\\
+ &= S - S + 2 - \sum_{i=1}^S(p_i^2) - 1\\
+ & = 1 - \sum_{i=1}^S(p_i^2)
+\end{align*}
+
+So, all else being equal, Simpson's diversity is an important part of the shape of the species accumulation curve. And that slope is the probability that two individuals drawn at random belong to two different species. :)
 
 ## Distributions
 The above estimators for total species richness each assume that species abundances follow some sort of distribution where some species are common, and most are rare. Here we explore some particular types of distributions that have been used to quantify this aspect of community structure.
@@ -317,6 +332,8 @@ Like any other vector of numbers, we can make a histogram of species abundances.
 ```{r bci, echo=FALSE, fig.cap="*Three related types of distributions of tree species densities from Barro Colorado Island. Left, histogram of raw data; center, the species--abundance distribution, which is a histogram of log-transformed abundances, accompanied here by the normal probability density function; right, the rank--abundance distribution, as typically presented with the log-transformed data, with the complement of the cumulative probability density function (1-pdf). Normal distributions were applied using the mean and standard deviation from the log-transformed data, times the total number of species.*", fig.show='hold', out.width="33%"}
 knitr::include_graphics(c("figs/bci1.png", "figs/bci2.png", "figs/bci3.png"))
 ```
+
+
 
 ### Log-normal distribution
 Given general empirical patterns, that most species are rare, Frank Preston [@Preston1948; @Preston1962] proposed that we describe communities using the logarithms of species abundances (center, Fig. \@ref(fig:bci)).^[Preston used base 2 logs to make his histogram bins, and his practice remains standard; we use the natural log.] This often reveals that a community can be described approximately with the normal distribution applied to the log-transformed data, or the *log-normal ditribution*.  We can also display this as a *rank--abundance distribution* (right, Fig. \@ref(fig:bci)). To do this, we assign the most abundant species as rank = 1, and the least abundant has rank = $S$, in a sample of $S$ species, and plot log-abundance *vs.* rank.
