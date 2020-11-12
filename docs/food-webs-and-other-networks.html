@@ -24,7 +24,7 @@
 <meta name="author" content="Hank Stevens" />
 
 
-<meta name="date" content="2020-11-10" />
+<meta name="date" content="2020-11-12" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -345,7 +345,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="13.8" data-path="diversity.html"><a href="diversity.html#speciesarea-relations"><i class="fa fa-check"></i><b>13.8</b> Species–area relations</a><ul>
 <li class="chapter" data-level="13.8.1" data-path="diversity.html"><a href="diversity.html#island-biogeography"><i class="fa fa-check"></i><b>13.8.1</b> Island biogeography</a></li>
 </ul></li>
-<li class="chapter" data-level="13.9" data-path="diversity.html"><a href="diversity.html#diversity-partitioning"><i class="fa fa-check"></i><b>13.9</b> Diversity Partitioning</a></li>
+<li class="chapter" data-level="13.9" data-path="diversity.html"><a href="diversity.html#diversity-partitioning"><i class="fa fa-check"></i><b>13.9</b> Diversity Partitioning</a><ul>
+<li class="chapter" data-level="13.9.1" data-path="diversity.html"><a href="diversity.html#partitioning-speciesarea-relations"><i class="fa fa-check"></i><b>13.9.1</b> Partitioning species–area relations</a></li>
+</ul></li>
+<li class="chapter" data-level="13.10" data-path="competition.html"><a href="competition.html#summary"><i class="fa fa-check"></i><b>13.10</b> Summary</a></li>
 </ul></li>
 <li class="chapter" data-level="14" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i><b>14</b> References</a></li>
 </ul>
@@ -536,7 +539,7 @@ of omnivory, but hold the number of species constant.</li>
 <p>We can do a quick check of this web using the <code>diagram</code> package.</p>
 <div class="sourceCode" id="cb357"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb357-1"><a href="food-webs-and-other-networks.html#cb357-1"></a><span class="kw">library</span>(diagram)</span>
 <span id="cb357-2"><a href="food-webs-and-other-networks.html#cb357-2"></a><span class="kw">plotmat</span>(Aq,<span class="dt">relsize=</span>.<span class="dv">8</span>)</span></code></pre></div>
-<p><img src="figs/unnamed-chunk-166-1.png" width="90%" /></p>
+<p><img src="figs/unnamed-chunk-169-1.png" width="90%" /></p>
 <p>Without any additional arguments, it shows us pretty much all we need to see.</p>
 <p>For subsequent calculations, it is convenient to to find out from the matrix itself how big the matrix is, that is, how many species, <span class="math inline">\(S\)</span>, are in the web.</p>
 <div class="sourceCode" id="cb358"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb358-1"><a href="food-webs-and-other-networks.html#cb358-1"></a>S &lt;-<span class="st"> </span><span class="kw">nrow</span>(Aq)</span></code></pre></div>
@@ -665,24 +668,17 @@ Figure 12.8: <em>One predator and three prey, each with negative density depende
 <span id="cb383-8"><a href="food-webs-and-other-networks.html#cb383-8"></a><span class="co"># recall we have to tell the function which links are omnivorous</span></span>
 <span id="cb383-9"><a href="food-webs-and-other-networks.html#cb383-9"></a>out.B &lt;-<span class="st">  </span><span class="kw">pimmlawton</span>(Bq, <span class="dt">N=</span><span class="dv">2000</span>, <span class="dt">omni.i=</span><span class="dv">2</span>, <span class="dt">omni.j=</span><span class="dv">4</span>)</span>
 <span id="cb383-10"><a href="food-webs-and-other-networks.html#cb383-10"></a><span class="kw">summary</span>(out.B)</span></code></pre></div>
-<pre><code>##      DomEig              Im             IntraDD               I        
-##  Min.   :-0.1879   Min.   :0.00000   Min.   :0.000291   Min.   :0.174  
-##  1st Qu.: 0.3012   1st Qu.:0.00000   1st Qu.:0.125840   1st Qu.:2.266  
-##  Median : 0.6625   Median :0.00000   Median :0.245659   Median :2.849  
-##  Mean   : 0.6889   Mean   :0.03929   Mean   :0.248152   Mean   :2.781  
-##  3rd Qu.: 1.0336   3rd Qu.:0.00000   3rd Qu.:0.371943   3rd Qu.:3.336  
-##  Max.   : 1.9895   Max.   :0.99803   Max.   :0.499965   Max.   :4.887  
-##      I.omni        
-##  Min.   :0.001468  
-##  1st Qu.:0.343668  
-##  Median :0.691801  
-##  Mean   :0.700981  
-##  3rd Qu.:1.048982  
-##  Max.   :1.412821</code></pre>
+<pre><code>##      DomEig              Im             IntraDD               I             I.omni        
+##  Min.   :-0.1879   Min.   :0.00000   Min.   :0.000291   Min.   :0.174   Min.   :0.001468  
+##  1st Qu.: 0.3012   1st Qu.:0.00000   1st Qu.:0.125840   1st Qu.:2.266   1st Qu.:0.343668  
+##  Median : 0.6625   Median :0.00000   Median :0.245659   Median :2.849   Median :0.691801  
+##  Mean   : 0.6889   Mean   :0.03929   Mean   :0.248152   Mean   :2.781   Mean   :0.700981  
+##  3rd Qu.: 1.0336   3rd Qu.:0.00000   3rd Qu.:0.371943   3rd Qu.:3.336   3rd Qu.:1.048982  
+##  Max.   : 1.9895   Max.   :0.99803   Max.   :0.499965   Max.   :4.887   Max.   :1.412821</code></pre>
 <p>With omnivory, we now see that most webs have <span class="math inline">\(\lambda_1&gt;0\)</span>, and thus are <em>unstable</em>. This was one of the main points made by Pimm and Lawton. Let’s look at the data for just the stable webs.</p>
 <div class="sourceCode" id="cb385"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb385-1"><a href="food-webs-and-other-networks.html#cb385-1"></a>out.B.stable &lt;-<span class="st"> </span>out.B[out.B[,<span class="st">&quot;DomEig&quot;</span>]<span class="op">&lt;</span><span class="dv">0</span>,]</span>
 <span id="cb385-2"><a href="food-webs-and-other-networks.html#cb385-2"></a><span class="kw">pairs</span>(out.B.stable)</span></code></pre></div>
-<p><img src="figs/unnamed-chunk-182-1.png" width="90%" /></p>
+<p><img src="figs/unnamed-chunk-185-1.png" width="90%" /></p>
 <p>It means that most of the randomly constructed webs were not stable point equilibria. To be complete, let’s graph what Pimm and Lawton did. They graphed the return times that were positive, and ignored those that were negative.</p>
 <div class="sourceCode" id="cb386"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb386-1"><a href="food-webs-and-other-networks.html#cb386-1"></a>RT.B &lt;-<span class="st"> </span><span class="dv">-1</span><span class="op">/</span>out.B[[<span class="st">&quot;DomEig&quot;</span>]]</span>
 <span id="cb386-2"><a href="food-webs-and-other-networks.html#cb386-2"></a>B.fast &lt;-<span class="st"> </span>RT.B[RT.B <span class="op">&lt;</span><span class="st"> </span><span class="dv">150</span> <span class="op">&amp;</span><span class="st"> </span>RT.B <span class="op">&gt;</span><span class="st"> </span><span class="dv">0</span> ]</span>
@@ -864,24 +860,24 @@ Figure 12.12: <em>Illustrations of a hypothetical plant-pollinator network. The 
 <span id="cb406-2"><a href="food-webs-and-other-networks.html#cb406-2"></a>b &lt;-<span class="st"> </span><span class="kw">bip_stability</span>(<span class="dt">Spp.a =</span> <span class="dv">16</span><span class="op">:</span><span class="dv">60</span>, <span class="dt">Spp.p =</span> <span class="dv">8</span><span class="op">:</span><span class="dv">30</span>, <span class="dt">C=</span><span class="kw">c</span>(.<span class="dv">05</span>, <span class="fl">0.5</span>), <span class="dt">reps=</span><span class="dv">5000</span>, <span class="dt">quant=</span><span class="ot">FALSE</span>)</span></code></pre></div>
 <p>We can get a summary of the output of the 1000 simulated webs here.</p>
 <div class="sourceCode" id="cb407"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb407-1"><a href="food-webs-and-other-networks.html#cb407-1"></a><span class="kw">summary</span>(b)</span></code></pre></div>
-<pre><code>##        S               C             modularity        nestedness    
-##  Min.   :13.00   Min.   :0.06491   Min.   :0.00000   Min.   : 0.000  
-##  1st Qu.:42.00   1st Qu.:0.17867   1st Qu.:0.00000   1st Qu.: 9.158  
-##  Median :54.00   Median :0.27190   Median :0.09162   Median :14.362  
-##  Mean   :54.56   Mean   :0.28361   Mean   :0.19515   Mean   :14.465  
-##  3rd Qu.:67.00   3rd Qu.:0.38816   3rd Qu.:0.37102   3rd Qu.:19.855  
-##  Max.   :90.00   Max.   :0.56818   Max.   :0.85802   Max.   :32.335  
-##   resilience.m       resilience.h     
-##  Min.   :0.003216   Min.   :0.001893  
-##  1st Qu.:0.019222   1st Qu.:0.013289  
-##  Median :0.026624   Median :0.019060  
-##  Mean   :0.027845   Mean   :0.020408  
-##  3rd Qu.:0.035156   3rd Qu.:0.026141  
-##  Max.   :0.069583   Max.   :0.057484</code></pre>
+<pre><code>##        S               C             modularity        nestedness      resilience.m     
+##  Min.   :13.00   Min.   :0.06491   Min.   :0.00000   Min.   : 0.000   Min.   :0.003216  
+##  1st Qu.:42.00   1st Qu.:0.17867   1st Qu.:0.00000   1st Qu.: 9.158   1st Qu.:0.019222  
+##  Median :54.00   Median :0.27190   Median :0.09162   Median :14.362   Median :0.026624  
+##  Mean   :54.56   Mean   :0.28361   Mean   :0.19515   Mean   :14.465   Mean   :0.027845  
+##  3rd Qu.:67.00   3rd Qu.:0.38816   3rd Qu.:0.37102   3rd Qu.:19.855   3rd Qu.:0.035156  
+##  Max.   :90.00   Max.   :0.56818   Max.   :0.85802   Max.   :32.335   Max.   :0.069583  
+##   resilience.h     
+##  Min.   :0.001893  
+##  1st Qu.:0.013289  
+##  Median :0.019060  
+##  Mean   :0.020408  
+##  3rd Qu.:0.026141  
+##  Max.   :0.057484</code></pre>
 <p>Are these webs stable? What are the means, medians and ranges of each of the web properties? What is the percent differences in the resiliences of the two interaction types?</p>
 <p>We can also graph the pairwise relations.</p>
 <div class="sourceCode" id="cb409"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb409-1"><a href="food-webs-and-other-networks.html#cb409-1"></a><span class="kw">pairs</span>(b)</span></code></pre></div>
-<p><img src="figs/unnamed-chunk-193-1.png" width="90%" /></p>
+<p><img src="figs/unnamed-chunk-196-1.png" width="90%" /></p>
 <p>If you have a copy of Thebault and Fontaine (2010), you might check whether the above relations are similar to theirs.</p>
 </div>
 <div id="path-analysis" class="section level3">
@@ -902,18 +898,14 @@ Figure 12.12: <em>Illustrations of a hypothetical plant-pollinator network. The 
 <span id="cb412-7"><a href="food-webs-and-other-networks.html#cb412-7"></a><span class="co"># Step 2: Estimate model of mutualism</span></span>
 <span id="cb412-8"><a href="food-webs-and-other-networks.html#cb412-8"></a>mod.m.fit &lt;-<span class="st"> </span><span class="kw">sem</span>(model.m, <span class="dt">data=</span>dat)</span>
 <span id="cb412-9"><a href="food-webs-and-other-networks.html#cb412-9"></a><span class="kw">coef</span>(mod.m.fit)</span></code></pre></div>
-<pre><code>##    resilience.m~nestedness    resilience.m~modularity 
-##                      0.095                      0.129 
-##             resilience.m~S             resilience.m~C 
-##                      0.621                      0.684 
-##               nestedness~S               nestedness~C 
-##                      0.062                      0.959 
-##               modularity~S               modularity~C 
-##                     -0.324                     -0.828 
-## resilience.m~~resilience.m     nestedness~~nestedness 
-##                      0.125                      0.064 
-##     modularity~~modularity 
-##                      0.152</code></pre>
+<pre><code>##    resilience.m~nestedness    resilience.m~modularity             resilience.m~S 
+##                      0.095                      0.129                      0.621 
+##             resilience.m~C               nestedness~S               nestedness~C 
+##                      0.684                      0.062                      0.959 
+##               modularity~S               modularity~C resilience.m~~resilience.m 
+##                     -0.324                     -0.828                      0.125 
+##     nestedness~~nestedness     modularity~~modularity 
+##                      0.064                      0.152</code></pre>
 <p>These are the estimates of the pairwise regressions. Those are the path coefficients that tell us the strengths of the relations among the network properties. Below we make a path diagram using these.</p>
 <p>Next, do the same thing for herbivory.</p>
 <div class="sourceCode" id="cb414"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb414-1"><a href="food-webs-and-other-networks.html#cb414-1"></a><span class="co"># Step 1: Specify model</span></span>
