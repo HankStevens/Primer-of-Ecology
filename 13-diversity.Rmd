@@ -175,7 +175,7 @@ which varies between 1 for a single species and declines toward zero with increa
 $$S_c = 1-D$$,
 which is the probability that two randomly selected individuals belong to different species. It is also the initial slope of the expected individuals ($x$) vs. species ($y$) curve [@Lande2000], and the variance of species composition [@Lande1996]. 
 
-Here we show the equivalence of Simpson's index and the variance of species composition. First, we reimagine community X as collections of individuals comprising different species identities. We  we create a pretend community of six individuals (rows) and 3 species (columns). Somewhat oddly, we identify the degree to which each individual is comprised of each species; in this case, individuals can be only one species.\footnote{Imagine the case where the columns are traits, or genes. In that case, individuals could be characterized by affiliation with multiple columns, whether traits or genes.} Here we let two individuals be each species.
+Here we show the equivalence of Simpson's index and the variance of species composition. First, we reimagine community X as collections of individuals comprising different species identities. We  we create a pretend community of six individuals (rows) and 3 species (columns). Somewhat oddly, we identify the degree to which each individual is comprised of each species; in this case, individuals can be only one species.^[Imagine the case where the columns are traits, or genes. In that case, individuals could be characterized by affiliation with multiple columns, whether traits or genes.] Here we let two individuals be each species.
 ```{r}
 X <- matrix(0, nrow=14, ncol=3, 
             dimnames=list(NULL, c("A", "B", "C")))
@@ -702,7 +702,7 @@ Preston posited that, given the log-normal species abundance distributions (see 
 
 
 ### Island biogeography
-MacArthur and Wilson proposed a simple theory wherein the number of species on an oceanic island was a function of the immigration rate of new species, and extinction rate of existing species (Fig. \@ref(fig:IE)). The number of species at any one time was \emph{a dynamic equilibrium}, resulting from both slow inevitable extinction and slow continual arrival of replacements. Thus species composition on the island was predicted to change over time, that is, to undergo turnover. Our appreciation of the ecological and evolution processes that govern the number and variety of species on islands continues to grow [@Whittaker:2017aa].
+MacArthur and Wilson proposed a simple theory wherein the number of species on an oceanic island was a function of the immigration rate of new species, and extinction rate of existing species (Fig. \@ref(fig:IE)). The number of species at any one time was a *dynamic equilibrium*, resulting from both slow inevitable extinction and slow continual arrival of replacements. Thus species composition on the island was predicted to change over time, that is, to undergo turnover. Our appreciation of the ecological and evolution processes that govern the number and variety of species on islands continues to grow [@Whittaker:2017aa].
 
 Let us imagine immigration rate, $y$, as a function of the number of species already on an island, $x$ (Fig. \@ref(fig:IE)). This relation will have a negative slope, because as the number of species rises, that chance that a new individual actually represents a new species will decline. The immigration rate will be highest when there are no species on the island, $x=0$, and will fall to zero when every conceivable species is already there. In addition, the slope should be decelerating (concave up) because some species will be much more likely than others to immigrate. This means that the immigration rate drops steeply as the most likely immigrants arrive, and only the unlikely immigrants are missing. Immigrants may colonize quickly for two reasons. First, as Preston noted, some species are simply much more common than others. Second, some species are much better dispersers than others.
 
@@ -989,7 +989,7 @@ numbers of individuals from different site, and richness depends strongly on the
 ```{r}
 a1 <- mean(moths[['spp']])
 ```
-Next we calculate average richness richness for the ecoregions. Because we had 12 sites in NCT, and only nine sites in WAP for what might be argued are landscape constraints, we will use the weighted average richness, adjusted for the number of sites.\footnote{The arithmetic mean is $\sum{a_i Y_i}$,  where all $a_i = 1/n$, and $n$ is the total number of observations. A weighted average is the case where the $a_i$ represent unequal \emph{weights}, often the fraction of $n$ on which each $Y_i$ is based. In both cases, $\sum{a}=1$.} We also create an object for $\gamma=230$.
+Next we calculate average richness richness for the ecoregions. Because we had 12 sites in NCT, and only nine sites in WAP for what might be argued are landscape constraints, we will use the weighted average richness, adjusted for the number of sites.^[The arithmetic mean is $\sum{a_i Y_i}$,  where all $a_i = 1/n$, and $n$ is the total number of observations. A weighted average is the case where the $a_i$ represent unequal *weights*, often the fraction of $n$ on which each $Y_i$ is based. In both cases, $\sum{a}=1$.] We also create an object for $\gamma=230$.
 ```{r}
 a2 <- sum(c(NCT=179, WAP=173) * c(12,9)/21)
 g <- 230
@@ -1019,14 +1019,14 @@ These calculations show us how simple  this additive partition can be, although 
 
 **Connecting to the species--area curve**
 
-The total number of moth species in all of the patches is, as before, $\gamma$.  The average richness of these patches is $\bar{\alpha}$, and also note that \emph{part of what determines that average is the area of the patch}. That is, when a species is missing from a patch, part of the reason might be that the patch is smaller than it could be. We will therefore partition $\beta$ into yet one more category: species missing due to patch size, $\beta_{area}$. This new quantity is the average difference between $\bar{\alpha}$ and the diversity \emph{predicted} for the largest patch (Fig. \@ref(fig:SARpart)). In general then, 
+The total number of moth species in all of the patches is, as before, $\gamma$.  The average richness of these patches is $\bar{\alpha}$, and also note that *part of what determines that average is the area of the patch*. That is, when a species is missing from a patch, part of the reason might be that the patch is smaller than it could be. We will therefore partition $\beta$ into yet one more category: species missing due to patch size, $\beta_{area}$. This new quantity is the average difference between $\bar{\alpha}$ and the diversity *predicted* for the largest patch (Fig. \@ref(fig:SARpart)). In general then, 
 \begin{equation}
   (\#eq:partSAR)
   \beta = \beta_{area} + \beta_{replace}
 \end{equation}
-where $\beta_{replace}$ is the average number of species missing that are \emph{not} explained by patch size. 
+where $\beta_{replace}$ is the average number of species missing that are not explained by patch size. 
 
-In the context of these data (Fig. \ref{fig:SARpart}), we now realize that $\beta_1 = \beta_{area} + \beta_{ecoregion}$, so the full partition becomes
+In the context of these data (Fig. \@ref(fig:SARpart)), we now realize that $\beta_1 = \beta_{area} + \beta_{ecoregion}$, so the full partition becomes
 \begin{equation}
   (\#eq:partfull)
 \gamma = \bar{\alpha}_1 + \beta_{area} + \beta_{ecoregion} + \beta_{geogr.region}
@@ -1079,7 +1079,7 @@ abline(h=a1, lty=3)
 
 Now we have further quantified how forest fragment area  explains moth species richness. Such understanding of the spatial distribution of biodiversity provides a way to better quantify patterns governed by both dispersal and habitat preference, and allows us to better describe and manage biodiversity in human-dominated landscapes.
 
-```{r SARpart, fig.cap="*Combining species--area relations with additive diversity partitioning. Forest fragment area explains relatively little of the diversity which accumulates in isolated patches distributed in space. However, it is likely that area associated with the collection of samples (i.e., the distances among fragments) contributes to $\beta_{eco}$ and $\beta_{geo}$.*", echo=FALSE, results='hide'}
+```{r SARpart, fig.cap="*Combining species--area relations with additive diversity partitioning. Forest fragment area explains relatively little of the diversity which accumulates in isolated patches distributed in space. However, it is likely that area associated with the collection of samples (i.e., the distances among fragments) contributes to beta[eco] and beta[geo].*", echo=FALSE, results='hide'}
 par(mar=c(5,4,1,3), las=1)
 plot(spp ~ area, data=moths, ylim=c(0,250), xlim=c(-15,300), #log='y',
      xlab="Area (ha)", ylab="No. of Species (R)")
