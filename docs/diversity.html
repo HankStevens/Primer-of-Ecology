@@ -24,7 +24,7 @@
 <meta name="author" content="Hank Stevens" />
 
 
-<meta name="date" content="2020-11-12" />
+<meta name="date" content="2020-11-14" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -454,7 +454,7 @@ and so dissimilarity would again be <span class="math inline">\(1-J_{AB}\)</span
 <span id="cb443-2"><a href="diversity.html#cb443-2"></a>sc1 &lt;-<span class="st"> </span><span class="kw">scatterplot3d</span>(dens,  <span class="dt">type=</span><span class="st">&#39;h&#39;</span>, <span class="dt">pch=</span><span class="st">&quot;&quot;</span>,</span>
 <span id="cb443-3"><a href="diversity.html#cb443-3"></a>      <span class="dt">xlim=</span><span class="kw">c</span>(<span class="dv">0</span>,<span class="dv">5</span>), <span class="dt">ylim=</span><span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">25</span>), <span class="dt">zlim=</span><span class="kw">c</span>(<span class="dv">0</span>,<span class="dv">15</span>))</span>
 <span id="cb443-4"><a href="diversity.html#cb443-4"></a><span class="kw">text</span>(sc1<span class="op">$</span><span class="kw">xyz.convert</span>(dens), <span class="dt">labels=</span><span class="kw">rownames</span>(dens))</span></code></pre></div>
-<p><img src="figs/unnamed-chunk-213-1.png" width="90%" />
+<p><img src="figs/unnamed-chunk-210-1.png" width="90%" />
 In three dimensions, Euclidean distances are calculated the same basic way, but we add a third species, and the calculation becomes <span class="math inline">\(\sqrt{x^2 + y^2 +z^2}\)</span>. Note that we take the square root (as opposed to the cube root) because we originally squared each distance. We can generalize this for two sites for <span class="math inline">\(S\)</span> species as
 <span class="math display">\[D_E = \sqrt{\sum_{i=1}^S\left( x_{ai} - x_{bi}\right)^2}\]</span></p>
 <p>Of course, it is difficult (impossible?) to visualize arrangements of sites with more than three axes (i.e., <span class="math inline">\(&gt;3\)</span> species), but we can always <em>calculate</em> the distances between pairs of sites, regardless of how many species we have.</p>
@@ -967,7 +967,7 @@ those 450 change through time, according to the rules laid out in
 <span id="cb478-5"><a href="diversity.html#cb478-5"></a><span class="kw">points</span>(<span class="kw">rep</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">20</span>,<span class="dv">25</span>), <span class="kw">rep</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">25</span>,<span class="dt">each=</span><span class="dv">20</span>), <span class="dt">pch=</span><span class="dv">19</span>, <span class="dt">cex=</span><span class="dv">2</span>, <span class="dt">col=</span>sppcolors[,j])</span>
 <span id="cb478-6"><a href="diversity.html#cb478-6"></a><span class="kw">title</span>(<span class="kw">paste</span>(<span class="st">&quot;Time = &quot;</span>, times[j], <span class="dt">sep=</span><span class="st">&quot;&quot;</span>))</span>
 <span id="cb478-7"><a href="diversity.html#cb478-7"></a>}</span></code></pre></div>
-<p><img src="figs/unnamed-chunk-231-1.png" width="90%" /></p>
+<p><img src="figs/unnamed-chunk-228-1.png" width="90%" /></p>
 <div class="sourceCode" id="cb479"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb479-1"><a href="diversity.html#cb479-1"></a><span class="kw">layout</span>(<span class="kw">matrix</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">9</span>, <span class="dt">nr=</span><span class="dv">3</span>, <span class="dt">byrow=</span><span class="ot">TRUE</span>))</span>
 <span id="cb479-2"><a href="diversity.html#cb479-2"></a><span class="kw">par</span>(<span class="dt">mar=</span><span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">3</span>,<span class="dv">1</span>))</span>
 <span id="cb479-3"><a href="diversity.html#cb479-3"></a><span class="cf">for</span>(j <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="dv">3</span>){</span>
@@ -1019,14 +1019,14 @@ The trajectories all start at the same abundance, but they need not have. The tr
 <span id="cb483-8"><a href="diversity.html#cb483-8"></a><span class="co">#popvar.among &lt;- apply(sppmat, 1, var)</span></span></code></pre></div>
 <p>Now plot the average <span class="math inline">\(CV\)</span> through time. The average observed <span class="math inline">\(CV\)</span> should increase (Fig. ).</p>
 <div class="sourceCode" id="cb484"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb484-1"><a href="diversity.html#cb484-1"></a><span class="kw">plot</span>( cvtimes, CV.within, <span class="dt">type=</span><span class="st">&#39;l&#39;</span> )</span></code></pre></div>
-<p><img src="figs/unnamed-chunk-233-1.png" width="90%" />
+<p><img src="figs/unnamed-chunk-230-1.png" width="90%" />
 This shows us that the populations never approach an equilibrium, but wander aimlessly.</p>
 <p><strong>Real data</strong></p>
 <p>Last, we examine the BCI data set <span class="citation">(Condit et al. <a href="#ref-Condit2002" role="doc-biblioref">2002</a>)</span>. We load the data (data from 50 1,ha plots <span class="math inline">\(\times\)</span> 225 species, from the <code>vegan</code> package), and sum species abundances to get each species total for the entire 50,h plot (Fig. <a href="#fig:bcipreston"><strong>??</strong></a>).</p>
 <div class="sourceCode" id="cb485"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb485-1"><a href="diversity.html#cb485-1"></a>n &lt;-<span class="st"> </span><span class="kw">colSums</span>(BCI)</span>
 <span id="cb485-2"><a href="diversity.html#cb485-2"></a><span class="kw">par</span>(<span class="dt">las=</span><span class="dv">2</span>, <span class="dt">mar=</span><span class="kw">c</span>(<span class="dv">7</span>,<span class="dv">4</span>,<span class="dv">1</span>,<span class="dv">1</span>))</span>
 <span id="cb485-3"><a href="diversity.html#cb485-3"></a>xs &lt;-<span class="st"> </span><span class="kw">plot</span>(<span class="kw">preston</span>(<span class="kw">rep</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">225</span>,n), <span class="dt">n=</span><span class="dv">12</span>, <span class="dt">original=</span><span class="ot">TRUE</span>))</span></code></pre></div>
-<p><img src="figs/unnamed-chunk-234-1.png" width="90%" />
+<p><img src="figs/unnamed-chunk-231-1.png" width="90%" />
 We would like to estimate <span class="math inline">\(\theta\)</span> and <span class="math inline">\(m\)</span> from these data, but that
 requires specialized software for any data set with a realistic number
 of individuals. Specialized software would provide maximum likelihood
@@ -1035,7 +1035,7 @@ estimates (in a reasonable amount of computing time) for <span class="math inlin
 <div class="sourceCode" id="cb486"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb486-1"><a href="diversity.html#cb486-1"></a>v1 &lt;-<span class="st"> </span><span class="kw">volkov</span>(<span class="kw">sum</span>(n), <span class="kw">c</span>(<span class="dv">48</span>, <span class="fl">0.1</span>), <span class="dt">bins=</span><span class="ot">TRUE</span>)</span>
 <span id="cb486-2"><a href="diversity.html#cb486-2"></a><span class="kw">plot</span>(<span class="kw">preston</span>(<span class="kw">rep</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">225</span>,n), <span class="dt">n=</span><span class="dv">12</span>, <span class="dt">original=</span><span class="ot">TRUE</span>))</span>
 <span id="cb486-3"><a href="diversity.html#cb486-3"></a><span class="kw">points</span>(xs, v1[<span class="dv">1</span><span class="op">:</span><span class="dv">12</span>], <span class="dt">type=</span><span class="st">&#39;b&#39;</span>)</span></code></pre></div>
-<p><img src="figs/unnamed-chunk-235-1.png" width="90%" />
+<p><img src="figs/unnamed-chunk-232-1.png" width="90%" />
 <span class="citation">Jabot and Chave (<a href="#ref-Jabot:2009mi" role="doc-biblioref">2009</a>)</span> arrived at estimates that differed from previous estimates by orders of magnitude. Their novel approach estimated <span class="math inline">\(\theta\)</span> and <span class="math inline">\(m\)</span> were derived from <em>both</em> species abundance data and from phylogenetic data (<span class="math inline">\(\theta \approx 571\)</span>, <span class="math inline">\(m \approx 0.002\)</span>). This is possible because neutral theory makes a rich array of predictions, based on both ecological and evolutionary processes. Their data were only a little bit different (due to a later census), but their analyses revealed radically different estimates, with a much greater diversity and larger metacommunity (greater <span class="math inline">\(\theta\)</span>), and much lower immigration rates (smaller <span class="math inline">\(m\)</span>).</p>
 <p>Here we derive expected species abundance distributions. The first is based solely on census data, and is similar to previous expections. However, when they also included phylogenetic data, they found very different expected species abundance distributions (Fig. <a href="diversity.html#fig:bciJabot">13.11</a>).</p>
 <div class="sourceCode" id="cb487"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb487-1"><a href="diversity.html#cb487-1"></a><span class="co"># Census data only</span></span>
@@ -1078,10 +1078,10 @@ where <span class="math inline">\(b\)</span> is the intercept (equal to <span cl
 <p>Here we simply draw some species area curves.</p>
 <div class="sourceCode" id="cb488"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb488-1"><a href="diversity.html#cb488-1"></a>A &lt;-<span class="st"> </span><span class="dv">10</span><span class="op">^</span><span class="dv">1</span><span class="op">:</span><span class="dv">10</span>; c &lt;-<span class="st"> </span><span class="fl">1.5</span>; z &lt;-<span class="st"> </span><span class="fl">0.25</span></span>
 <span id="cb488-2"><a href="diversity.html#cb488-2"></a><span class="kw">curve</span>(c<span class="op">*</span>x<span class="op">^</span>z, <span class="dv">10</span>, <span class="dv">10</span><span class="op">^</span><span class="dv">10</span>, <span class="dt">n=</span><span class="dv">500</span>, <span class="dt">ylab=</span><span class="st">&quot;No. of Species&quot;</span>, <span class="dt">xlab=</span><span class="st">&quot;Area (ha)&quot;</span>)</span></code></pre></div>
-<p><img src="figs/unnamed-chunk-236-1.png" width="90%" /></p>
+<p><img src="figs/unnamed-chunk-233-1.png" width="90%" /></p>
 <div class="sourceCode" id="cb489"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb489-1"><a href="diversity.html#cb489-1"></a><span class="kw">curve</span>(<span class="kw">log</span>(c,<span class="dv">10</span>) <span class="op">+</span><span class="st"> </span>z<span class="op">*</span>x, <span class="dv">1</span>, <span class="dv">10</span>, <span class="dt">ylab=</span><span class="kw">quote</span>(log[<span class="dv">10</span>](<span class="st">&quot;No. of Species&quot;</span>)), </span>
 <span id="cb489-2"><a href="diversity.html#cb489-2"></a>      <span class="dt">xlab=</span><span class="kw">quote</span>(log[<span class="dv">10</span>](<span class="st">&quot;Area (ha)&quot;</span>)) )</span></code></pre></div>
-<p><img src="figs/unnamed-chunk-236-2.png" width="90%" /></p>
+<p><img src="figs/unnamed-chunk-233-2.png" width="90%" /></p>
 <p>Here we fit a species–area curve to data, and examine the slope. We could fit a nonlinear power relation (<span class="math inline">\(y=cA^z\)</span>); this would be appropriate, for instance, if the residual noise around the line were of the same magnitude for all patch areas. We could use reduced major axis regression, which is appropriate when there is equivalent uncertainty or error on both <span class="math inline">\(x\)</span> and <span class="math inline">\(y\)</span>. Last (and most often), we could use a simple linear regression on the log-transformed data, which is appropriate when we know <span class="math inline">\(x\)</span> to a high degree of accuracy, but measure <span class="math inline">\(y\)</span> with some error, and the transformation causes the residual errors to be of similar magnitude at all areas. We start with the last (log-transformed). Here we plot the data, and fit a linear model to the common log-transformed data.</p>
 <div class="sourceCode" id="cb490"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb490-1"><a href="diversity.html#cb490-1"></a><span class="kw">data</span>(moths)</span>
 <span id="cb490-2"><a href="diversity.html#cb490-2"></a>mod.nonlin &lt;-<span class="st"> </span><span class="kw">nls</span>(spp <span class="op">~</span><span class="st"> </span>a<span class="op">*</span>area<span class="op">^</span>z, <span class="dt">start=</span><span class="kw">list</span>(<span class="dt">a=</span><span class="dv">1</span>, <span class="dt">z=</span>.<span class="dv">2</span>),<span class="dt">data=</span>moths)</span>
@@ -1149,11 +1149,11 @@ Figure 13.13: <em>Immigration and extinction curves for the theory of island bio
 <span id="cb495-2"><a href="diversity.html#cb495-2"></a>b &lt;-<span class="st"> </span><span class="fl">.1</span></span>
 <span id="cb495-3"><a href="diversity.html#cb495-3"></a><span class="kw">curve</span>(<span class="kw">exp</span>(I0 <span class="op">-</span><span class="st"> </span>b<span class="op">*</span>x),<span class="dv">0</span>, <span class="dv">50</span>, </span>
 <span id="cb495-4"><a href="diversity.html#cb495-4"></a>      <span class="dt">xlab=</span><span class="st">&#39;No. of Species (R)&#39;</span>, <span class="dt">ylab=</span><span class="st">&quot;Rate (I or E)&quot;</span>)</span></code></pre></div>
-<p><img src="figs/unnamed-chunk-238-1.png" width="90%" />
+<p><img src="figs/unnamed-chunk-235-1.png" width="90%" />
 Note that extinction rate, <span class="math inline">\(E\)</span>, must be zero if there are no species present. Imagine that extinction rate is a function of density and that average density declines as the number of species increases, or <span class="math inline">\(\bar{N} = 1/S\)</span>.<a href="#fn77" class="footnote-ref" id="fnref77"><sup>77</sup></a></p>
 <div class="sourceCode" id="cb496"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb496-1"><a href="diversity.html#cb496-1"></a>d &lt;-<span class="st"> </span><span class="fl">.01</span></span>
 <span id="cb496-2"><a href="diversity.html#cb496-2"></a><span class="kw">curve</span>(<span class="kw">exp</span>(d<span class="op">*</span>x)<span class="op">-</span><span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">50</span>) </span></code></pre></div>
-<p><img src="figs/unnamed-chunk-239-1.png" width="90%" /></p>
+<p><img src="figs/unnamed-chunk-236-1.png" width="90%" /></p>
 <div class="sourceCode" id="cb497"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb497-1"><a href="diversity.html#cb497-1"></a><span class="co"># use add=TRUE to add the line to a previous graph</span></span></code></pre></div>
 <p>We subtract 1 merely to make sure that <span class="math inline">\(E=0\)</span> when <span class="math inline">\(R=0\)</span>.</p>
 <p>The number of species, <span class="math inline">\(R\)</span>, will result from <span class="math inline">\(\Delta S = 0= I-E\)</span>, the point at which the lines cross.
@@ -1178,12 +1178,12 @@ the quantity the convenient property that the minimum will be approached from ei
 <p>Let us represent reduced immigration rate by reducing <span class="math inline">\(I_0\)</span>.</p>
 <div class="sourceCode" id="cb501"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb501-1"><a href="diversity.html#cb501-1"></a>I0 &lt;-<span class="st"> </span><span class="kw">log</span>(<span class="dv">1</span><span class="op">/</span><span class="dv">2</span>)</span>
 <span id="cb501-2"><a href="diversity.html#cb501-2"></a><span class="kw">curve</span>(<span class="kw">exp</span>(I0 <span class="op">-</span><span class="st"> </span>b<span class="op">*</span>x), <span class="dv">0</span>,<span class="dv">50</span>, <span class="dt">lty=</span><span class="dv">2</span>)</span></code></pre></div>
-<p><img src="figs/unnamed-chunk-242-1.png" width="90%" /></p>
+<p><img src="figs/unnamed-chunk-239-1.png" width="90%" /></p>
 <div class="sourceCode" id="cb502"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb502-1"><a href="diversity.html#cb502-1"></a><span class="co"># use add=TRUE to add to a previous plot</span></span></code></pre></div>
 <p>Next we increase extinction rate by increasing the per species rate.</p>
 <div class="sourceCode" id="cb503"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb503-1"><a href="diversity.html#cb503-1"></a>d &lt;-<span class="st"> </span><span class="fl">.014</span></span>
 <span id="cb503-2"><a href="diversity.html#cb503-2"></a><span class="kw">curve</span>(<span class="kw">exp</span>(d<span class="op">*</span>x)<span class="op">-</span><span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">50</span>, <span class="dt">lty=</span><span class="dv">2</span>)</span></code></pre></div>
-<p><img src="figs/unnamed-chunk-243-1.png" width="90%" />
+<p><img src="figs/unnamed-chunk-240-1.png" width="90%" />
 If we note where the rates cross, we find that the number of predicted species has declined. With these new immigration and extinciton rates the predicted number of species is</p>
 <div class="sourceCode" id="cb504"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb504-1"><a href="diversity.html#cb504-1"></a><span class="kw">optimize</span>(<span class="dt">f=</span>deltaS, <span class="dt">interval=</span><span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">50</span>))[[<span class="st">&quot;minimum&quot;</span>]]</span></code></pre></div>
 <pre><code>## [1] 10.99834</code></pre>
