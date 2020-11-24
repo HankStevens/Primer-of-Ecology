@@ -24,7 +24,7 @@
 <meta name="author" content="Hank Stevens" />
 
 
-<meta name="date" content="2020-11-21" />
+<meta name="date" content="2020-11-24" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -53,8 +53,6 @@
 <script src="libs/accessible-code-block-0.0.1/empty-anchor.js"></script>
 <script src="libs/kePrint-0.0.1/kePrint.js"></script>
 <link href="libs/lightable-0.0.1/lightable.css" rel="stylesheet" />
-<link href="libs/bsTable-3.3.7/bootstrapTable.min.css" rel="stylesheet" />
-<script src="libs/bsTable-3.3.7/bootstrapTable.js"></script>
 
 
 <style type="text/css">
@@ -134,9 +132,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
       <nav role="navigation">
 
 <ul class="summary">
-<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Preface</a><ul>
-<li class="chapter" data-level="0.1" data-path="index.html"><a href="index.html#acknowledgements"><i class="fa fa-check"></i><b>0.1</b> Acknowledgements</a></li>
-</ul></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Preface</a></li>
 <li class="chapter" data-level="1" data-path="theory.html"><a href="theory.html"><i class="fa fa-check"></i><b>1</b> Theory in Ecology</a><ul>
 <li class="chapter" data-level="1.1" data-path="theory.html"><a href="theory.html#examples-of-theories"><i class="fa fa-check"></i><b>1.1</b> Examples of theories</a><ul>
 <li class="chapter" data-level="1.1.1" data-path="theory.html"><a href="theory.html#hierarchy-theory"><i class="fa fa-check"></i><b>1.1.1</b> Hierarchy theory</a></li>
@@ -443,28 +439,28 @@ Putting this explicit treatment back into our model, we have
 <h3><span class="header-section-number">9.1.1</span> Dynamics of ratio dependent predation</h3>
 <p>The dynamics of ratio-dependent predation are very simple. There are no cycles or fluctuations. It assumes that predation rate is a function of predator abundance and the ratio of prey to predators, and it predicts that predator abundance is is a constant fraction of the prey. This qualitative prediction is often roughly consistent with data.</p>
 <p>Let’s make a quick model, where we continue to make the assumption of ratio-dependence as transparent as we can (<span class="math inline">\((N/P)P\)</span>), for clarity.</p>
-<div class="sourceCode" id="cb276"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb276-1"><a href="consumer-resource-interactions.html#cb276-1"></a>cr_ratio_dep_pred &lt;-<span class="st"> </span><span class="cf">function</span>(time, y, parameters){</span>
-<span id="cb276-2"><a href="consumer-resource-interactions.html#cb276-2"></a>  <span class="co"># the populations</span></span>
-<span id="cb276-3"><a href="consumer-resource-interactions.html#cb276-3"></a>  N &lt;-<span class="st"> </span>y[<span class="dv">1</span>]; P &lt;-<span class="st"> </span>y[<span class="dv">2</span>]</span>
-<span id="cb276-4"><a href="consumer-resource-interactions.html#cb276-4"></a>  <span class="kw">with</span>(<span class="kw">as.list</span>(parameters),{ </span>
-<span id="cb276-5"><a href="consumer-resource-interactions.html#cb276-5"></a>  </span>
-<span id="cb276-6"><a href="consumer-resource-interactions.html#cb276-6"></a>    <span class="co"># the equations</span></span>
-<span id="cb276-7"><a href="consumer-resource-interactions.html#cb276-7"></a>    dndt &lt;-<span class="st"> </span>r<span class="op">*</span>N <span class="op">-</span><span class="st"> </span>a<span class="op">*</span>N<span class="op">/</span>P<span class="op">*</span>P</span>
-<span id="cb276-8"><a href="consumer-resource-interactions.html#cb276-8"></a>    dpdt &lt;-<span class="st"> </span>e<span class="op">*</span>a<span class="op">*</span>N<span class="op">/</span>P<span class="op">*</span>P <span class="op">-</span><span class="st"> </span>m<span class="op">*</span>P</span>
-<span id="cb276-9"><a href="consumer-resource-interactions.html#cb276-9"></a>    </span>
-<span id="cb276-10"><a href="consumer-resource-interactions.html#cb276-10"></a>    <span class="co"># returning a list with one component that is </span></span>
-<span id="cb276-11"><a href="consumer-resource-interactions.html#cb276-11"></a>    <span class="co"># a two element vector, c(rate1, rate2)</span></span>
-<span id="cb276-12"><a href="consumer-resource-interactions.html#cb276-12"></a>    <span class="kw">return</span>(<span class="kw">list</span>(<span class="kw">c</span>(dndt, dpdt)))</span>
-<span id="cb276-13"><a href="consumer-resource-interactions.html#cb276-13"></a>  })</span>
-<span id="cb276-14"><a href="consumer-resource-interactions.html#cb276-14"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb277"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb277-1"><a href="consumer-resource-interactions.html#cb277-1"></a>cr_ratio_dep_pred &lt;-<span class="st"> </span><span class="cf">function</span>(time, y, parameters){</span>
+<span id="cb277-2"><a href="consumer-resource-interactions.html#cb277-2"></a>  <span class="co"># the populations</span></span>
+<span id="cb277-3"><a href="consumer-resource-interactions.html#cb277-3"></a>  N &lt;-<span class="st"> </span>y[<span class="dv">1</span>]; P &lt;-<span class="st"> </span>y[<span class="dv">2</span>]</span>
+<span id="cb277-4"><a href="consumer-resource-interactions.html#cb277-4"></a>  <span class="kw">with</span>(<span class="kw">as.list</span>(parameters),{ </span>
+<span id="cb277-5"><a href="consumer-resource-interactions.html#cb277-5"></a>  </span>
+<span id="cb277-6"><a href="consumer-resource-interactions.html#cb277-6"></a>    <span class="co"># the equations</span></span>
+<span id="cb277-7"><a href="consumer-resource-interactions.html#cb277-7"></a>    dndt &lt;-<span class="st"> </span>r<span class="op">*</span>N <span class="op">-</span><span class="st"> </span>a<span class="op">*</span>N<span class="op">/</span>P<span class="op">*</span>P</span>
+<span id="cb277-8"><a href="consumer-resource-interactions.html#cb277-8"></a>    dpdt &lt;-<span class="st"> </span>e<span class="op">*</span>a<span class="op">*</span>N<span class="op">/</span>P<span class="op">*</span>P <span class="op">-</span><span class="st"> </span>m<span class="op">*</span>P</span>
+<span id="cb277-9"><a href="consumer-resource-interactions.html#cb277-9"></a>    </span>
+<span id="cb277-10"><a href="consumer-resource-interactions.html#cb277-10"></a>    <span class="co"># returning a list with one component that is </span></span>
+<span id="cb277-11"><a href="consumer-resource-interactions.html#cb277-11"></a>    <span class="co"># a two element vector, c(rate1, rate2)</span></span>
+<span id="cb277-12"><a href="consumer-resource-interactions.html#cb277-12"></a>    <span class="kw">return</span>(<span class="kw">list</span>(<span class="kw">c</span>(dndt, dpdt)))</span>
+<span id="cb277-13"><a href="consumer-resource-interactions.html#cb277-13"></a>  })</span>
+<span id="cb277-14"><a href="consumer-resource-interactions.html#cb277-14"></a>}</span></code></pre></div>
 <p>Now we run it and plot the output.</p>
-<div class="sourceCode" id="cb277"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb277-1"><a href="consumer-resource-interactions.html#cb277-1"></a>t &lt;-<span class="st"> </span><span class="dv">0</span><span class="op">:</span><span class="dv">100</span></span>
-<span id="cb277-2"><a href="consumer-resource-interactions.html#cb277-2"></a>p &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="dt">r=</span><span class="fl">0.05</span>, <span class="dt">a=</span><span class="fl">0.01</span>, <span class="dt">e=</span><span class="fl">0.1</span>, <span class="dt">m=</span>.<span class="dv">1</span>)</span>
-<span id="cb277-3"><a href="consumer-resource-interactions.html#cb277-3"></a></span>
-<span id="cb277-4"><a href="consumer-resource-interactions.html#cb277-4"></a>y0 &lt;-<span class="kw">c</span>(<span class="dt">N=</span><span class="dv">100</span>, <span class="dt">P=</span><span class="dv">3</span>)</span>
-<span id="cb277-5"><a href="consumer-resource-interactions.html#cb277-5"></a>outdf &lt;-<span class="st"> </span><span class="kw">as.data.frame</span>(<span class="kw">ode</span>(y0, t, cr_ratio_dep_pred,  p))</span>
-<span id="cb277-6"><a href="consumer-resource-interactions.html#cb277-6"></a>outL &lt;-<span class="st"> </span><span class="kw">pivot_longer</span>(outdf, <span class="op">-</span>time, <span class="dt">names_to=</span><span class="st">&quot;State_vars&quot;</span>, <span class="dt">values_to=</span><span class="st">&quot;abun.&quot;</span>)</span>
-<span id="cb277-7"><a href="consumer-resource-interactions.html#cb277-7"></a><span class="kw">ggplot</span>(outL, <span class="kw">aes</span>(time, abun., <span class="dt">colour=</span>State_vars)) <span class="op">+</span><span class="st"> </span><span class="kw">geom_line</span>() <span class="op">+</span><span class="st"> </span><span class="kw">scale_y_log10</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb278"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb278-1"><a href="consumer-resource-interactions.html#cb278-1"></a>t &lt;-<span class="st"> </span><span class="dv">0</span><span class="op">:</span><span class="dv">100</span></span>
+<span id="cb278-2"><a href="consumer-resource-interactions.html#cb278-2"></a>p &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="dt">r=</span><span class="fl">0.05</span>, <span class="dt">a=</span><span class="fl">0.01</span>, <span class="dt">e=</span><span class="fl">0.1</span>, <span class="dt">m=</span>.<span class="dv">1</span>)</span>
+<span id="cb278-3"><a href="consumer-resource-interactions.html#cb278-3"></a></span>
+<span id="cb278-4"><a href="consumer-resource-interactions.html#cb278-4"></a>y0 &lt;-<span class="kw">c</span>(<span class="dt">N=</span><span class="dv">100</span>, <span class="dt">P=</span><span class="dv">3</span>)</span>
+<span id="cb278-5"><a href="consumer-resource-interactions.html#cb278-5"></a>outdf &lt;-<span class="st"> </span><span class="kw">as.data.frame</span>(<span class="kw">ode</span>(y0, t, cr_ratio_dep_pred,  p))</span>
+<span id="cb278-6"><a href="consumer-resource-interactions.html#cb278-6"></a>outL &lt;-<span class="st"> </span><span class="kw">pivot_longer</span>(outdf, <span class="op">-</span>time, <span class="dt">names_to=</span><span class="st">&quot;State_vars&quot;</span>, <span class="dt">values_to=</span><span class="st">&quot;abun.&quot;</span>)</span>
+<span id="cb278-7"><a href="consumer-resource-interactions.html#cb278-7"></a><span class="kw">ggplot</span>(outL, <span class="kw">aes</span>(time, abun., <span class="dt">colour=</span>State_vars)) <span class="op">+</span><span class="st"> </span><span class="kw">geom_line</span>() <span class="op">+</span><span class="st"> </span><span class="kw">scale_y_log10</span>()</span></code></pre></div>
 <div class="figure"><span id="fig:rdout"></span>
 <img src="figs/rdout-1.png" alt="*With the assumption of simple ratio-dependence, the predator population is a constant fraction of the prey population.*" width="90%" />
 <p class="caption">
@@ -497,35 +493,35 @@ Here the per predator capture rate is simply <span class="math inline">\(aN\)</s
 <div id="dyanmics-of-prey-dependent-predation" class="section level3">
 <h3><span class="header-section-number">9.2.1</span> Dyanmics of prey-dependent predation</h3>
 <p>Now let’s create a numerical model of prey-dependent, or Lotka-Volterra, predation.</p>
-<div class="sourceCode" id="cb278"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb278-1"><a href="consumer-resource-interactions.html#cb278-1"></a>cr_prey_dep_pred &lt;-<span class="st"> </span><span class="cf">function</span>(time, y, parameters){</span>
-<span id="cb278-2"><a href="consumer-resource-interactions.html#cb278-2"></a>  <span class="co"># the populations</span></span>
-<span id="cb278-3"><a href="consumer-resource-interactions.html#cb278-3"></a>  N &lt;-<span class="st"> </span>y[<span class="dv">1</span>]; P &lt;-<span class="st"> </span>y[<span class="dv">2</span>]</span>
-<span id="cb278-4"><a href="consumer-resource-interactions.html#cb278-4"></a>  <span class="kw">with</span>(<span class="kw">as.list</span>(parameters),{ </span>
-<span id="cb278-5"><a href="consumer-resource-interactions.html#cb278-5"></a>  </span>
-<span id="cb278-6"><a href="consumer-resource-interactions.html#cb278-6"></a>    <span class="co"># the equations</span></span>
-<span id="cb278-7"><a href="consumer-resource-interactions.html#cb278-7"></a>    dndt &lt;-<span class="st"> </span>r<span class="op">*</span>N <span class="op">-</span><span class="st"> </span>a<span class="op">*</span>N<span class="op">*</span>P</span>
-<span id="cb278-8"><a href="consumer-resource-interactions.html#cb278-8"></a>    dpdt &lt;-<span class="st"> </span>e<span class="op">*</span>a<span class="op">*</span>N<span class="op">*</span>P <span class="op">-</span><span class="st"> </span>m<span class="op">*</span>P</span>
-<span id="cb278-9"><a href="consumer-resource-interactions.html#cb278-9"></a>    </span>
-<span id="cb278-10"><a href="consumer-resource-interactions.html#cb278-10"></a>    <span class="co"># returning a list with one component that is </span></span>
-<span id="cb278-11"><a href="consumer-resource-interactions.html#cb278-11"></a>    <span class="co"># a two element vector, c(rate1, rate2)</span></span>
-<span id="cb278-12"><a href="consumer-resource-interactions.html#cb278-12"></a>    <span class="kw">return</span>(<span class="kw">list</span>(<span class="kw">c</span>(dndt, dpdt)))</span>
-<span id="cb278-13"><a href="consumer-resource-interactions.html#cb278-13"></a>  })</span>
-<span id="cb278-14"><a href="consumer-resource-interactions.html#cb278-14"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb279"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb279-1"><a href="consumer-resource-interactions.html#cb279-1"></a>cr_prey_dep_pred &lt;-<span class="st"> </span><span class="cf">function</span>(time, y, parameters){</span>
+<span id="cb279-2"><a href="consumer-resource-interactions.html#cb279-2"></a>  <span class="co"># the populations</span></span>
+<span id="cb279-3"><a href="consumer-resource-interactions.html#cb279-3"></a>  N &lt;-<span class="st"> </span>y[<span class="dv">1</span>]; P &lt;-<span class="st"> </span>y[<span class="dv">2</span>]</span>
+<span id="cb279-4"><a href="consumer-resource-interactions.html#cb279-4"></a>  <span class="kw">with</span>(<span class="kw">as.list</span>(parameters),{ </span>
+<span id="cb279-5"><a href="consumer-resource-interactions.html#cb279-5"></a>  </span>
+<span id="cb279-6"><a href="consumer-resource-interactions.html#cb279-6"></a>    <span class="co"># the equations</span></span>
+<span id="cb279-7"><a href="consumer-resource-interactions.html#cb279-7"></a>    dndt &lt;-<span class="st"> </span>r<span class="op">*</span>N <span class="op">-</span><span class="st"> </span>a<span class="op">*</span>N<span class="op">*</span>P</span>
+<span id="cb279-8"><a href="consumer-resource-interactions.html#cb279-8"></a>    dpdt &lt;-<span class="st"> </span>e<span class="op">*</span>a<span class="op">*</span>N<span class="op">*</span>P <span class="op">-</span><span class="st"> </span>m<span class="op">*</span>P</span>
+<span id="cb279-9"><a href="consumer-resource-interactions.html#cb279-9"></a>    </span>
+<span id="cb279-10"><a href="consumer-resource-interactions.html#cb279-10"></a>    <span class="co"># returning a list with one component that is </span></span>
+<span id="cb279-11"><a href="consumer-resource-interactions.html#cb279-11"></a>    <span class="co"># a two element vector, c(rate1, rate2)</span></span>
+<span id="cb279-12"><a href="consumer-resource-interactions.html#cb279-12"></a>    <span class="kw">return</span>(<span class="kw">list</span>(<span class="kw">c</span>(dndt, dpdt)))</span>
+<span id="cb279-13"><a href="consumer-resource-interactions.html#cb279-13"></a>  })</span>
+<span id="cb279-14"><a href="consumer-resource-interactions.html#cb279-14"></a>}</span></code></pre></div>
 <p>Now we run this model, using the same parameters as for ratio-dependent predation, and plot the output.</p>
-<div class="sourceCode" id="cb279"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb279-1"><a href="consumer-resource-interactions.html#cb279-1"></a>t &lt;-<span class="st"> </span><span class="dv">0</span><span class="op">:</span><span class="dv">200</span>; y0 &lt;-<span class="kw">c</span>(<span class="dt">N=</span><span class="dv">100</span>, <span class="dt">P=</span><span class="dv">3</span>)</span>
-<span id="cb279-2"><a href="consumer-resource-interactions.html#cb279-2"></a>p &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="dt">r=</span><span class="fl">0.05</span>, <span class="dt">a=</span><span class="fl">0.01</span>, <span class="dt">e=</span><span class="fl">0.1</span>, <span class="dt">m=</span>.<span class="dv">1</span>)</span>
-<span id="cb279-3"><a href="consumer-resource-interactions.html#cb279-3"></a></span>
-<span id="cb279-4"><a href="consumer-resource-interactions.html#cb279-4"></a>outdf &lt;-<span class="st"> </span><span class="kw">as.data.frame</span>( <span class="kw">ode</span>(y0, t, cr_prey_dep_pred,  p) )</span>
-<span id="cb279-5"><a href="consumer-resource-interactions.html#cb279-5"></a>outL &lt;-<span class="st"> </span><span class="kw">pivot_longer</span>(outdf, <span class="op">-</span>time, <span class="dt">names_to=</span><span class="st">&quot;State_vars&quot;</span>, <span class="dt">values_to=</span><span class="st">&quot;abun.&quot;</span>)</span>
-<span id="cb279-6"><a href="consumer-resource-interactions.html#cb279-6"></a><span class="kw">ggplot</span>(outL, <span class="kw">aes</span>(time, abun., <span class="dt">colour=</span>State_vars)) <span class="op">+</span><span class="st"> </span><span class="kw">geom_line</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb280"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb280-1"><a href="consumer-resource-interactions.html#cb280-1"></a>t &lt;-<span class="st"> </span><span class="dv">0</span><span class="op">:</span><span class="dv">200</span>; y0 &lt;-<span class="kw">c</span>(<span class="dt">N=</span><span class="dv">100</span>, <span class="dt">P=</span><span class="dv">3</span>)</span>
+<span id="cb280-2"><a href="consumer-resource-interactions.html#cb280-2"></a>p &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="dt">r=</span><span class="fl">0.05</span>, <span class="dt">a=</span><span class="fl">0.01</span>, <span class="dt">e=</span><span class="fl">0.1</span>, <span class="dt">m=</span>.<span class="dv">1</span>)</span>
+<span id="cb280-3"><a href="consumer-resource-interactions.html#cb280-3"></a></span>
+<span id="cb280-4"><a href="consumer-resource-interactions.html#cb280-4"></a>outdf &lt;-<span class="st"> </span><span class="kw">as.data.frame</span>( <span class="kw">ode</span>(y0, t, cr_prey_dep_pred,  p) )</span>
+<span id="cb280-5"><a href="consumer-resource-interactions.html#cb280-5"></a>outL &lt;-<span class="st"> </span><span class="kw">pivot_longer</span>(outdf, <span class="op">-</span>time, <span class="dt">names_to=</span><span class="st">&quot;State_vars&quot;</span>, <span class="dt">values_to=</span><span class="st">&quot;abun.&quot;</span>)</span>
+<span id="cb280-6"><a href="consumer-resource-interactions.html#cb280-6"></a><span class="kw">ggplot</span>(outL, <span class="kw">aes</span>(time, abun., <span class="dt">colour=</span>State_vars)) <span class="op">+</span><span class="st"> </span><span class="kw">geom_line</span>()</span></code></pre></div>
 <div class="figure"><span id="fig:pout"></span>
 <img src="figs/pout-1.png" alt="*Prey-dependent or Lotka-Volterra predation results in oscillations. Prey increase until predators are sufficiently abundant to control them, at which point they decline, leading to the decline of preadtors. The predator peaks lag behind the prey peaks.*" width="90%" />
 <p class="caption">
 Figure 9.4: <em>Prey-dependent or Lotka-Volterra predation results in oscillations. Prey increase until predators are sufficiently abundant to control them, at which point they decline, leading to the decline of preadtors. The predator peaks lag behind the prey peaks.</em>
 </p>
 </div>
-<div class="figure"><span id="fig:unnamed-chunk-114"></span>
-<img src="figs/unnamed-chunk-114-1.png" alt="*The prey and predator isoclines under prey dependence. Arrows indicate the direction of changing population sizes. The black lines are tractories based on two different initial abundances. The 'nullclines' are the zero net growth isoclines for the prey (x) and the predator (y). Based on the arrow heads, we can see that the trajectories oscillate in a counterclockwise direction.*" width="90%" />
+<div class="figure"><span id="fig:unnamed-chunk-113"></span>
+<img src="figs/unnamed-chunk-113-1.png" alt="*The prey and predator isoclines under prey dependence. Arrows indicate the direction of changing population sizes. The black lines are tractories based on two different initial abundances. The 'nullclines' are the zero net growth isoclines for the prey (x) and the predator (y). Based on the arrow heads, we can see that the trajectories oscillate in a counterclockwise direction.*" width="90%" />
 <p class="caption">
 Figure 9.5: <em>The prey and predator isoclines under prey dependence. Arrows indicate the direction of changing population sizes. The black lines are tractories based on two different initial abundances. The ‘nullclines’ are the zero net growth isoclines for the prey (x) and the predator (y). Based on the arrow heads, we can see that the trajectories oscillate in a counterclockwise direction.</em>
 </p>
@@ -551,28 +547,28 @@ where <span class="math inline">\(k\)</span> is the half-saturation constant, an
 <p>Sometimes predators don’t feed a lot until there are enough prey available. Sometimes this is due to predators <strong>switching</strong> from one prey type to another once the other becomes sufficiently common. A predator may develop a search image for a prey type, and ignore others. We’ve all known people like that. We represent this via an exponent (<span class="math inline">\(z&gt;1\)</span>) in our functional response,
 <span class="math display">\[\frac{aN^z}{1+ahN^z}\]</span>
 where <span class="math inline">\(z&gt;1\)</span> and we refer to this as a type III functional response.</p>
-<div class="sourceCode" id="cb280"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb280-1"><a href="consumer-resource-interactions.html#cb280-1"></a>{</span>
-<span id="cb280-2"><a href="consumer-resource-interactions.html#cb280-2"></a>  <span class="kw">par</span>(<span class="dt">mgp=</span><span class="kw">c</span>(<span class="dv">0</span>,<span class="dv">1</span>,<span class="dv">1</span>))</span>
-<span id="cb280-3"><a href="consumer-resource-interactions.html#cb280-3"></a>  <span class="kw">curve</span>(.<span class="dv">5</span><span class="op">*</span>x, <span class="dv">0</span>, <span class="fl">2.5</span>, <span class="dt">ylab=</span><span class="kw">bquote</span>(<span class="st">&quot;no. prey (or prey/predator) killed</span><span class="ch">\n</span><span class="st">per predator per time&quot;</span>),</span>
-<span id="cb280-4"><a href="consumer-resource-interactions.html#cb280-4"></a>       <span class="dt">xlab=</span><span class="st">&quot;N or N/P&quot;</span>, <span class="dt">axes=</span><span class="ot">FALSE</span>, <span class="dt">main=</span><span class="st">&quot;Functional Responses&quot;</span>)</span>
-<span id="cb280-5"><a href="consumer-resource-interactions.html#cb280-5"></a>  <span class="kw">box</span>()</span>
-<span id="cb280-6"><a href="consumer-resource-interactions.html#cb280-6"></a>  <span class="kw">curve</span>(x<span class="op">/</span>(<span class="dv">1</span><span class="op">+</span>x), <span class="dt">add=</span><span class="ot">TRUE</span>, <span class="dt">lty=</span><span class="dv">2</span> )</span>
-<span id="cb280-7"><a href="consumer-resource-interactions.html#cb280-7"></a>  <span class="kw">curve</span>(x<span class="op">^</span><span class="dv">3</span><span class="op">/</span>(<span class="dv">1</span><span class="op">+</span>x<span class="op">^</span><span class="dv">3</span>), <span class="dt">add=</span><span class="ot">TRUE</span>, <span class="dt">lty=</span><span class="dv">3</span> )</span>
-<span id="cb280-8"><a href="consumer-resource-interactions.html#cb280-8"></a>  <span class="kw">text</span>(<span class="dv">2</span>, <span class="fl">1.2</span>, <span class="st">&quot;Type I&quot;</span>)</span>
-<span id="cb280-9"><a href="consumer-resource-interactions.html#cb280-9"></a>  <span class="kw">text</span>(<span class="fl">2.5</span>, <span class="dv">1</span>, <span class="st">&quot;Type III&quot;</span>, <span class="dt">adj=</span><span class="dv">1</span>)</span>
-<span id="cb280-10"><a href="consumer-resource-interactions.html#cb280-10"></a>  <span class="kw">text</span>(<span class="fl">2.5</span>, <span class="fl">.6</span>, <span class="st">&quot;Type II&quot;</span>, <span class="dt">adj=</span><span class="dv">1</span>)</span>
-<span id="cb280-11"><a href="consumer-resource-interactions.html#cb280-11"></a>}</span>
-<span id="cb280-12"><a href="consumer-resource-interactions.html#cb280-12"></a>{</span>
-<span id="cb280-13"><a href="consumer-resource-interactions.html#cb280-13"></a>  <span class="kw">par</span>(<span class="dt">mgp=</span><span class="kw">c</span>(<span class="dv">0</span>,<span class="dv">1</span>,<span class="dv">1</span>))</span>
-<span id="cb280-14"><a href="consumer-resource-interactions.html#cb280-14"></a>  <span class="kw">curve</span>(.<span class="dv">5</span><span class="op">*</span>x<span class="op">/</span>x, <span class="dv">0</span>, <span class="fl">2.5</span>, <span class="dt">ylab=</span><span class="kw">bquote</span>(<span class="st">&quot;no. prey (or prey/predator) killed</span><span class="ch">\n</span><span class="st">per predator per time&quot;</span>), <span class="dt">ylim=</span><span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">1</span>),</span>
-<span id="cb280-15"><a href="consumer-resource-interactions.html#cb280-15"></a>       <span class="dt">xlab=</span><span class="st">&quot;N or N/P&quot;</span>, <span class="dt">axes=</span><span class="ot">FALSE</span>, <span class="dt">main=</span><span class="st">&quot;Functional Responses&quot;</span>)</span>
-<span id="cb280-16"><a href="consumer-resource-interactions.html#cb280-16"></a>  <span class="kw">box</span>()</span>
-<span id="cb280-17"><a href="consumer-resource-interactions.html#cb280-17"></a>  <span class="kw">curve</span>(x<span class="op">/</span>(<span class="dv">1</span><span class="op">+</span>x)<span class="op">/</span>x, <span class="dt">add=</span><span class="ot">TRUE</span>, <span class="dt">lty=</span><span class="dv">2</span> )</span>
-<span id="cb280-18"><a href="consumer-resource-interactions.html#cb280-18"></a>  <span class="kw">curve</span>(x<span class="op">^</span><span class="dv">3</span><span class="op">/</span>(<span class="dv">1</span><span class="op">+</span>x<span class="op">^</span><span class="dv">3</span>)<span class="op">/</span>x, <span class="dt">add=</span><span class="ot">TRUE</span>, <span class="dt">lty=</span><span class="dv">3</span> )</span>
-<span id="cb280-19"><a href="consumer-resource-interactions.html#cb280-19"></a>  <span class="kw">text</span>(<span class="dv">0</span>, <span class="fl">.55</span>, <span class="st">&quot;Type I&quot;</span>, <span class="dt">adj=</span><span class="dv">0</span>)</span>
-<span id="cb280-20"><a href="consumer-resource-interactions.html#cb280-20"></a>  <span class="kw">text</span>(<span class="dv">0</span>, <span class="fl">.1</span>, <span class="st">&quot;Type III&quot;</span>, <span class="dt">adj=</span><span class="dv">0</span>)</span>
-<span id="cb280-21"><a href="consumer-resource-interactions.html#cb280-21"></a>  <span class="kw">text</span>(<span class="dv">0</span>, <span class="dv">1</span>, <span class="st">&quot;Type II&quot;</span>, <span class="dt">adj=</span><span class="dv">0</span>)</span>
-<span id="cb280-22"><a href="consumer-resource-interactions.html#cb280-22"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb281"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb281-1"><a href="consumer-resource-interactions.html#cb281-1"></a>{</span>
+<span id="cb281-2"><a href="consumer-resource-interactions.html#cb281-2"></a>  <span class="kw">par</span>(<span class="dt">mgp=</span><span class="kw">c</span>(<span class="dv">0</span>,<span class="dv">1</span>,<span class="dv">1</span>))</span>
+<span id="cb281-3"><a href="consumer-resource-interactions.html#cb281-3"></a>  <span class="kw">curve</span>(.<span class="dv">5</span><span class="op">*</span>x, <span class="dv">0</span>, <span class="fl">2.5</span>, <span class="dt">ylab=</span><span class="kw">bquote</span>(<span class="st">&quot;no. prey (or prey/predator) killed</span><span class="ch">\n</span><span class="st">per predator per time&quot;</span>),</span>
+<span id="cb281-4"><a href="consumer-resource-interactions.html#cb281-4"></a>       <span class="dt">xlab=</span><span class="st">&quot;N or N/P&quot;</span>, <span class="dt">axes=</span><span class="ot">FALSE</span>, <span class="dt">main=</span><span class="st">&quot;Functional Responses&quot;</span>)</span>
+<span id="cb281-5"><a href="consumer-resource-interactions.html#cb281-5"></a>  <span class="kw">box</span>()</span>
+<span id="cb281-6"><a href="consumer-resource-interactions.html#cb281-6"></a>  <span class="kw">curve</span>(x<span class="op">/</span>(<span class="dv">1</span><span class="op">+</span>x), <span class="dt">add=</span><span class="ot">TRUE</span>, <span class="dt">lty=</span><span class="dv">2</span> )</span>
+<span id="cb281-7"><a href="consumer-resource-interactions.html#cb281-7"></a>  <span class="kw">curve</span>(x<span class="op">^</span><span class="dv">3</span><span class="op">/</span>(<span class="dv">1</span><span class="op">+</span>x<span class="op">^</span><span class="dv">3</span>), <span class="dt">add=</span><span class="ot">TRUE</span>, <span class="dt">lty=</span><span class="dv">3</span> )</span>
+<span id="cb281-8"><a href="consumer-resource-interactions.html#cb281-8"></a>  <span class="kw">text</span>(<span class="dv">2</span>, <span class="fl">1.2</span>, <span class="st">&quot;Type I&quot;</span>)</span>
+<span id="cb281-9"><a href="consumer-resource-interactions.html#cb281-9"></a>  <span class="kw">text</span>(<span class="fl">2.5</span>, <span class="dv">1</span>, <span class="st">&quot;Type III&quot;</span>, <span class="dt">adj=</span><span class="dv">1</span>)</span>
+<span id="cb281-10"><a href="consumer-resource-interactions.html#cb281-10"></a>  <span class="kw">text</span>(<span class="fl">2.5</span>, <span class="fl">.6</span>, <span class="st">&quot;Type II&quot;</span>, <span class="dt">adj=</span><span class="dv">1</span>)</span>
+<span id="cb281-11"><a href="consumer-resource-interactions.html#cb281-11"></a>}</span>
+<span id="cb281-12"><a href="consumer-resource-interactions.html#cb281-12"></a>{</span>
+<span id="cb281-13"><a href="consumer-resource-interactions.html#cb281-13"></a>  <span class="kw">par</span>(<span class="dt">mgp=</span><span class="kw">c</span>(<span class="dv">0</span>,<span class="dv">1</span>,<span class="dv">1</span>))</span>
+<span id="cb281-14"><a href="consumer-resource-interactions.html#cb281-14"></a>  <span class="kw">curve</span>(.<span class="dv">5</span><span class="op">*</span>x<span class="op">/</span>x, <span class="dv">0</span>, <span class="fl">2.5</span>, <span class="dt">ylab=</span><span class="kw">bquote</span>(<span class="st">&quot;no. prey (or prey/predator) killed</span><span class="ch">\n</span><span class="st">per predator per time&quot;</span>), <span class="dt">ylim=</span><span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">1</span>),</span>
+<span id="cb281-15"><a href="consumer-resource-interactions.html#cb281-15"></a>       <span class="dt">xlab=</span><span class="st">&quot;N or N/P&quot;</span>, <span class="dt">axes=</span><span class="ot">FALSE</span>, <span class="dt">main=</span><span class="st">&quot;Functional Responses&quot;</span>)</span>
+<span id="cb281-16"><a href="consumer-resource-interactions.html#cb281-16"></a>  <span class="kw">box</span>()</span>
+<span id="cb281-17"><a href="consumer-resource-interactions.html#cb281-17"></a>  <span class="kw">curve</span>(x<span class="op">/</span>(<span class="dv">1</span><span class="op">+</span>x)<span class="op">/</span>x, <span class="dt">add=</span><span class="ot">TRUE</span>, <span class="dt">lty=</span><span class="dv">2</span> )</span>
+<span id="cb281-18"><a href="consumer-resource-interactions.html#cb281-18"></a>  <span class="kw">curve</span>(x<span class="op">^</span><span class="dv">3</span><span class="op">/</span>(<span class="dv">1</span><span class="op">+</span>x<span class="op">^</span><span class="dv">3</span>)<span class="op">/</span>x, <span class="dt">add=</span><span class="ot">TRUE</span>, <span class="dt">lty=</span><span class="dv">3</span> )</span>
+<span id="cb281-19"><a href="consumer-resource-interactions.html#cb281-19"></a>  <span class="kw">text</span>(<span class="dv">0</span>, <span class="fl">.55</span>, <span class="st">&quot;Type I&quot;</span>, <span class="dt">adj=</span><span class="dv">0</span>)</span>
+<span id="cb281-20"><a href="consumer-resource-interactions.html#cb281-20"></a>  <span class="kw">text</span>(<span class="dv">0</span>, <span class="fl">.1</span>, <span class="st">&quot;Type III&quot;</span>, <span class="dt">adj=</span><span class="dv">0</span>)</span>
+<span id="cb281-21"><a href="consumer-resource-interactions.html#cb281-21"></a>  <span class="kw">text</span>(<span class="dv">0</span>, <span class="dv">1</span>, <span class="st">&quot;Type II&quot;</span>, <span class="dt">adj=</span><span class="dv">0</span>)</span>
+<span id="cb281-22"><a href="consumer-resource-interactions.html#cb281-22"></a>}</span></code></pre></div>
 <div class="figure"><span id="fig:funcresp"></span>
 <img src="figs/funcresp-1.png" alt="*Left: Functional responses for either prey-dependent or ratio-dependent predation; $z=3$. Right: Same functional responses on a per-prey basis.*" width="45%" /><img src="figs/funcresp-2.png" alt="*Left: Functional responses for either prey-dependent or ratio-dependent predation; $z=3$. Right: Same functional responses on a per-prey basis.*" width="45%" />
 <p class="caption">
@@ -641,9 +637,9 @@ We notice that in <a href="consumer-resource-interactions.html#eq:jacLV2">(9.2)<
 \end{equation}\]</span>
 In the predator–prey context, this suggests that the herbivore <em>declines</em> due to the predator (<span class="math inline">\(\mathbf{J_{12}}&lt;0\)</span>) and the predator <em>increases</em> due to the herbivore (<span class="math inline">\(\mathbf{J_{21}}&gt;0\)</span>). The signs of these elements make their product negative, and help make the above condition true. Note that because <span class="math inline">\(\mathbf{J_{11}} \mathbf{J_{22}} =0\)</span>, this condition reduces to <span class="math inline">\(-rm&gt;0\)</span>. Thus it seems that this will cannot be true as along as both <span class="math inline">\(r\)</span> and <span class="math inline">\(m\)</span> are positive (which we have defined as the case). Therefore, this dynamic will not have a <em>stable</em> equilibrium.</p>
 <p>We can perform eigenanalysis given the parameters above.</p>
-<div class="sourceCode" id="cb281"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb281-1"><a href="consumer-resource-interactions.html#cb281-1"></a><span class="co"># our parameters are inside the list called &#39;p&#39;, so we use &#39;with()&#39;</span></span>
-<span id="cb281-2"><a href="consumer-resource-interactions.html#cb281-2"></a>Jac &lt;-<span class="st"> </span><span class="kw">with</span>( p, <span class="kw">matrix</span>( <span class="kw">c</span>(<span class="dv">0</span>, <span class="op">-</span>m<span class="op">/</span>e, e<span class="op">*</span>r, <span class="dv">0</span>), <span class="dt">byrow=</span><span class="ot">TRUE</span>, <span class="dt">nr=</span><span class="dv">2</span>) )</span>
-<span id="cb281-3"><a href="consumer-resource-interactions.html#cb281-3"></a><span class="kw">eigen</span>(Jac)[[<span class="st">&quot;values&quot;</span>]]</span></code></pre></div>
+<div class="sourceCode" id="cb282"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb282-1"><a href="consumer-resource-interactions.html#cb282-1"></a><span class="co"># our parameters are inside the list called &#39;p&#39;, so we use &#39;with()&#39;</span></span>
+<span id="cb282-2"><a href="consumer-resource-interactions.html#cb282-2"></a>Jac &lt;-<span class="st"> </span><span class="kw">with</span>( p, <span class="kw">matrix</span>( <span class="kw">c</span>(<span class="dv">0</span>, <span class="op">-</span>m<span class="op">/</span>e, e<span class="op">*</span>r, <span class="dv">0</span>), <span class="dt">byrow=</span><span class="ot">TRUE</span>, <span class="dt">nr=</span><span class="dv">2</span>) )</span>
+<span id="cb282-3"><a href="consumer-resource-interactions.html#cb282-3"></a><span class="kw">eigen</span>(Jac)[[<span class="st">&quot;values&quot;</span>]]</span></code></pre></div>
 <pre><code>## [1] 0+0.07071068i 0-0.07071068i</code></pre>
 <p>We find that the eigenvalues are complex, and real real parts are not less than zero. Because they are complex, this means that the populations will oscillate or cycle, with period <span class="math inline">\(2\pi/\omega\)</span> (see Competition chapter). Because the real parts are zero, this means that the Lotka–Volterra predator–prey exhibits <em>neutral</em> stability. Recall that neutral stability is the “in-between” case where perturbations at the equilibrium neither grow nor decline over time. They merely change the abundances but cause no response.</p>
 <p><strong>Here we come to an important distinction:</strong> the simple ratio dependent predation model predicts no oscillations, whereas the simple prey-dependent predation model predictions that oscillations are inherent in predator-prey interactions. Which of these ideas provides a more useful base from which to understand predator-prey dynamics depends on the system, and on who you talk to.</p>
@@ -656,28 +652,28 @@ In the predator–prey context, this suggests that the herbivore <em>declines</e
 \frac{dP}{dt} &amp;= e\frac{aN}{1+ahN}P - mP
 \end{align*}\]</span></p>
 <p>To investigate its dynamics, we can create an ODE function of this consumer-resource model.</p>
-<div class="sourceCode" id="cb283"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb283-1"><a href="consumer-resource-interactions.html#cb283-1"></a>cr_RM_pred &lt;-<span class="st"> </span><span class="cf">function</span>(time, y, p){</span>
-<span id="cb283-2"><a href="consumer-resource-interactions.html#cb283-2"></a>  N &lt;-<span class="st"> </span>y[<span class="dv">1</span>]; P &lt;-<span class="st"> </span>y[<span class="dv">2</span>]</span>
-<span id="cb283-3"><a href="consumer-resource-interactions.html#cb283-3"></a>  <span class="kw">with</span>(<span class="kw">as.list</span>(p),{</span>
-<span id="cb283-4"><a href="consumer-resource-interactions.html#cb283-4"></a>    dN &lt;-<span class="st"> </span>r<span class="op">*</span>N<span class="op">*</span>(<span class="dv">1</span><span class="op">-</span>alpha<span class="op">*</span>N) <span class="op">-</span><span class="st"> </span>a<span class="op">*</span>N<span class="op">*</span>P<span class="op">/</span>(<span class="dv">1</span><span class="op">+</span>a<span class="op">*</span>h<span class="op">*</span>N)</span>
-<span id="cb283-5"><a href="consumer-resource-interactions.html#cb283-5"></a>    dP &lt;-<span class="st"> </span>e<span class="op">*</span>a<span class="op">*</span>N<span class="op">*</span>P<span class="op">/</span>(<span class="dv">1</span><span class="op">+</span>a<span class="op">*</span>h<span class="op">*</span>N) <span class="op">-</span><span class="st"> </span>m<span class="op">*</span>P</span>
-<span id="cb283-6"><a href="consumer-resource-interactions.html#cb283-6"></a>    <span class="kw">return</span>(<span class="kw">list</span>(<span class="kw">c</span>(dN, dP)))</span>
-<span id="cb283-7"><a href="consumer-resource-interactions.html#cb283-7"></a>  })</span>
-<span id="cb283-8"><a href="consumer-resource-interactions.html#cb283-8"></a>}</span></code></pre></div>
-<div class="sourceCode" id="cb284"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb284-1"><a href="consumer-resource-interactions.html#cb284-1"></a>t &lt;-<span class="st"> </span><span class="dv">0</span><span class="op">:</span><span class="dv">100</span>; y0 &lt;-<span class="kw">c</span>(<span class="dt">N=</span><span class="dv">100</span>, <span class="dt">P=</span><span class="dv">3</span>)</span>
-<span id="cb284-2"><a href="consumer-resource-interactions.html#cb284-2"></a>p &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="dt">r=</span><span class="fl">0.8</span>, <span class="dt">alpha=</span><span class="fl">0.001</span>, <span class="dt">a=</span>.<span class="dv">02</span>, <span class="dt">e=</span><span class="fl">0.04</span>, <span class="dt">m=</span>.<span class="dv">15</span>, <span class="dt">h=</span>.<span class="dv">1</span>)</span>
-<span id="cb284-3"><a href="consumer-resource-interactions.html#cb284-3"></a>outdf &lt;-<span class="st"> </span><span class="kw">as.data.frame</span>( <span class="kw">ode</span>(y0, t, cr_RM_pred,  p) )</span>
-<span id="cb284-4"><a href="consumer-resource-interactions.html#cb284-4"></a>outL &lt;-<span class="st"> </span><span class="kw">pivot_longer</span>(outdf, <span class="op">-</span>time, <span class="dt">names_to=</span><span class="st">&quot;State_vars&quot;</span>, <span class="dt">values_to=</span><span class="st">&quot;abun.&quot;</span>)</span>
-<span id="cb284-5"><a href="consumer-resource-interactions.html#cb284-5"></a><span class="kw">ggplot</span>(outL, <span class="kw">aes</span>(time, abun., <span class="dt">colour=</span>State_vars)) <span class="op">+</span><span class="st"> </span><span class="kw">geom_line</span>()</span></code></pre></div>
-<div class="figure"><span id="fig:unnamed-chunk-117"></span>
-<img src="figs/unnamed-chunk-117-1.png" alt="*Predator-prey dynamics with prey carrying capacity and type II predator functional response. With these parameter values, we see damped oscillations.*" width="67%" />
+<div class="sourceCode" id="cb284"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb284-1"><a href="consumer-resource-interactions.html#cb284-1"></a>cr_RM_pred &lt;-<span class="st"> </span><span class="cf">function</span>(time, y, p){</span>
+<span id="cb284-2"><a href="consumer-resource-interactions.html#cb284-2"></a>  N &lt;-<span class="st"> </span>y[<span class="dv">1</span>]; P &lt;-<span class="st"> </span>y[<span class="dv">2</span>]</span>
+<span id="cb284-3"><a href="consumer-resource-interactions.html#cb284-3"></a>  <span class="kw">with</span>(<span class="kw">as.list</span>(p),{</span>
+<span id="cb284-4"><a href="consumer-resource-interactions.html#cb284-4"></a>    dN &lt;-<span class="st"> </span>r<span class="op">*</span>N<span class="op">*</span>(<span class="dv">1</span><span class="op">-</span>alpha<span class="op">*</span>N) <span class="op">-</span><span class="st"> </span>a<span class="op">*</span>N<span class="op">*</span>P<span class="op">/</span>(<span class="dv">1</span><span class="op">+</span>a<span class="op">*</span>h<span class="op">*</span>N)</span>
+<span id="cb284-5"><a href="consumer-resource-interactions.html#cb284-5"></a>    dP &lt;-<span class="st"> </span>e<span class="op">*</span>a<span class="op">*</span>N<span class="op">*</span>P<span class="op">/</span>(<span class="dv">1</span><span class="op">+</span>a<span class="op">*</span>h<span class="op">*</span>N) <span class="op">-</span><span class="st"> </span>m<span class="op">*</span>P</span>
+<span id="cb284-6"><a href="consumer-resource-interactions.html#cb284-6"></a>    <span class="kw">return</span>(<span class="kw">list</span>(<span class="kw">c</span>(dN, dP)))</span>
+<span id="cb284-7"><a href="consumer-resource-interactions.html#cb284-7"></a>  })</span>
+<span id="cb284-8"><a href="consumer-resource-interactions.html#cb284-8"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb285"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb285-1"><a href="consumer-resource-interactions.html#cb285-1"></a>t &lt;-<span class="st"> </span><span class="dv">0</span><span class="op">:</span><span class="dv">100</span>; y0 &lt;-<span class="kw">c</span>(<span class="dt">N=</span><span class="dv">100</span>, <span class="dt">P=</span><span class="dv">3</span>)</span>
+<span id="cb285-2"><a href="consumer-resource-interactions.html#cb285-2"></a>p &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="dt">r=</span><span class="fl">0.8</span>, <span class="dt">alpha=</span><span class="fl">0.001</span>, <span class="dt">a=</span>.<span class="dv">02</span>, <span class="dt">e=</span><span class="fl">0.04</span>, <span class="dt">m=</span>.<span class="dv">15</span>, <span class="dt">h=</span>.<span class="dv">1</span>)</span>
+<span id="cb285-3"><a href="consumer-resource-interactions.html#cb285-3"></a>outdf &lt;-<span class="st"> </span><span class="kw">as.data.frame</span>( <span class="kw">ode</span>(y0, t, cr_RM_pred,  p) )</span>
+<span id="cb285-4"><a href="consumer-resource-interactions.html#cb285-4"></a>outL &lt;-<span class="st"> </span><span class="kw">pivot_longer</span>(outdf, <span class="op">-</span>time, <span class="dt">names_to=</span><span class="st">&quot;State_vars&quot;</span>, <span class="dt">values_to=</span><span class="st">&quot;abun.&quot;</span>)</span>
+<span id="cb285-5"><a href="consumer-resource-interactions.html#cb285-5"></a><span class="kw">ggplot</span>(outL, <span class="kw">aes</span>(time, abun., <span class="dt">colour=</span>State_vars)) <span class="op">+</span><span class="st"> </span><span class="kw">geom_line</span>()</span></code></pre></div>
+<div class="figure"><span id="fig:unnamed-chunk-116"></span>
+<img src="figs/unnamed-chunk-116-1.png" alt="*Predator-prey dynamics with prey carrying capacity and type II predator functional response. With these parameter values, we see damped oscillations.*" width="67%" />
 <p class="caption">
 Figure 9.7: <em>Predator-prey dynamics with prey carrying capacity and type II predator functional response. With these parameter values, we see damped oscillations.</em>
 </p>
 </div>
 <p>If we plot the isoclines, we can see the dynamical phase plane more clearly.</p>
-<div class="figure"><span id="fig:unnamed-chunk-119"></span>
-<img src="figs/unnamed-chunk-119-1.png" alt="*Damped oscillations can arise with prey negative density dependence, and a type II predator funcional response. Arrows indicate the direction of changing population sizes. The black lines are tractories based on two different initial abundances. The nullclines are the zero net growth isoclines for the prey (x) and the predator (y). Based on the arrow heads, we can see that the trajectories oscillate in a counterclockwise direction.*" width="90%" />
+<div class="figure"><span id="fig:unnamed-chunk-118"></span>
+<img src="figs/unnamed-chunk-118-1.png" alt="*Damped oscillations can arise with prey negative density dependence, and a type II predator funcional response. Arrows indicate the direction of changing population sizes. The black lines are tractories based on two different initial abundances. The nullclines are the zero net growth isoclines for the prey (x) and the predator (y). Based on the arrow heads, we can see that the trajectories oscillate in a counterclockwise direction.*" width="90%" />
 <p class="caption">
 Figure 9.8: <em>Damped oscillations can arise with prey negative density dependence, and a type II predator funcional response. Arrows indicate the direction of changing population sizes. The black lines are tractories based on two different initial abundances. The nullclines are the zero net growth isoclines for the prey (x) and the predator (y). Based on the arrow heads, we can see that the trajectories oscillate in a counterclockwise direction.</em>
 </p>
@@ -686,13 +682,13 @@ Figure 9.8: <em>Damped oscillations can arise with prey negative density depende
 <div id="paradox-of-enrichment" class="section level3">
 <h3><span class="header-section-number">9.5.1</span> Paradox of enrichment</h3>
 <p>Using a variety of models that assume a prey carrying capacity and a type II functional response, <span class="citation">Rosenzweig (<a href="#ref-Rosenzweig1971" role="doc-biblioref">1971</a>)</span> showed an unexpected phenomenon — that increasing a prey’s carry capacity could drive it to extinction. This can happen if the prey grow too quickly to high abundance and temporarily support a high abundance of predators which then drive the prey extinct. We can demonstrate that here by lowering <span class="math inline">\(\alpha\)</span> enough to increase oscillations so that abundances get infinitessimally close to zero.</p>
-<div class="sourceCode" id="cb285"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb285-1"><a href="consumer-resource-interactions.html#cb285-1"></a>t &lt;-<span class="st"> </span><span class="dv">0</span><span class="op">:</span><span class="dv">100</span>; y0 &lt;-<span class="kw">c</span>(<span class="dt">N=</span><span class="dv">100</span>, <span class="dt">P=</span><span class="dv">3</span>)</span>
-<span id="cb285-2"><a href="consumer-resource-interactions.html#cb285-2"></a>p &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="dt">r=</span><span class="fl">0.8</span>, <span class="dt">alpha=</span><span class="fl">0.0005</span>, <span class="dt">a=</span>.<span class="dv">02</span>, <span class="dt">e=</span><span class="fl">0.04</span>, <span class="dt">m=</span>.<span class="dv">15</span>, <span class="dt">h=</span>.<span class="dv">1</span>)</span>
-<span id="cb285-3"><a href="consumer-resource-interactions.html#cb285-3"></a>outdf &lt;-<span class="st"> </span><span class="kw">as.data.frame</span>( <span class="kw">ode</span>(y0, t, cr_RM_pred,  p) )</span>
-<span id="cb285-4"><a href="consumer-resource-interactions.html#cb285-4"></a>outL &lt;-<span class="st"> </span><span class="kw">pivot_longer</span>(outdf, <span class="op">-</span>time, <span class="dt">names_to=</span><span class="st">&quot;State_vars&quot;</span>, <span class="dt">values_to=</span><span class="st">&quot;abun.&quot;</span>)</span>
-<span id="cb285-5"><a href="consumer-resource-interactions.html#cb285-5"></a><span class="kw">ggplot</span>(outL, <span class="kw">aes</span>(time, abun., <span class="dt">colour=</span>State_vars)) <span class="op">+</span><span class="st"> </span><span class="kw">geom_line</span>()</span></code></pre></div>
-<div class="figure"><span id="fig:unnamed-chunk-120"></span>
-<img src="figs/unnamed-chunk-120-1.png" alt="*Predator-prey dynamics with prey carrying capacity and type II predator functional response. With these parameter values, we see damped oscillations.*" width="67%" />
+<div class="sourceCode" id="cb286"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb286-1"><a href="consumer-resource-interactions.html#cb286-1"></a>t &lt;-<span class="st"> </span><span class="dv">0</span><span class="op">:</span><span class="dv">100</span>; y0 &lt;-<span class="kw">c</span>(<span class="dt">N=</span><span class="dv">100</span>, <span class="dt">P=</span><span class="dv">3</span>)</span>
+<span id="cb286-2"><a href="consumer-resource-interactions.html#cb286-2"></a>p &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="dt">r=</span><span class="fl">0.8</span>, <span class="dt">alpha=</span><span class="fl">0.0005</span>, <span class="dt">a=</span>.<span class="dv">02</span>, <span class="dt">e=</span><span class="fl">0.04</span>, <span class="dt">m=</span>.<span class="dv">15</span>, <span class="dt">h=</span>.<span class="dv">1</span>)</span>
+<span id="cb286-3"><a href="consumer-resource-interactions.html#cb286-3"></a>outdf &lt;-<span class="st"> </span><span class="kw">as.data.frame</span>( <span class="kw">ode</span>(y0, t, cr_RM_pred,  p) )</span>
+<span id="cb286-4"><a href="consumer-resource-interactions.html#cb286-4"></a>outL &lt;-<span class="st"> </span><span class="kw">pivot_longer</span>(outdf, <span class="op">-</span>time, <span class="dt">names_to=</span><span class="st">&quot;State_vars&quot;</span>, <span class="dt">values_to=</span><span class="st">&quot;abun.&quot;</span>)</span>
+<span id="cb286-5"><a href="consumer-resource-interactions.html#cb286-5"></a><span class="kw">ggplot</span>(outL, <span class="kw">aes</span>(time, abun., <span class="dt">colour=</span>State_vars)) <span class="op">+</span><span class="st"> </span><span class="kw">geom_line</span>()</span></code></pre></div>
+<div class="figure"><span id="fig:unnamed-chunk-119"></span>
+<img src="figs/unnamed-chunk-119-1.png" alt="*Predator-prey dynamics with prey carrying capacity and type II predator functional response. With these parameter values, we see damped oscillations.*" width="67%" />
 <p class="caption">
 Figure 9.9: <em>Predator-prey dynamics with prey carrying capacity and type II predator functional response. With these parameter values, we see damped oscillations.</em>
 </p>
@@ -785,7 +781,7 @@ gitbook.start({
 "link": null,
 "text": null
 },
-"download": null,
+"download": ["_main.pdf"],
 "toc": {
 "collapse": "subsection"
 }

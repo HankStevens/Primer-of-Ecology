@@ -24,7 +24,7 @@
 <meta name="author" content="Hank Stevens" />
 
 
-<meta name="date" content="2020-11-21" />
+<meta name="date" content="2020-11-24" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -53,8 +53,6 @@
 <script src="libs/accessible-code-block-0.0.1/empty-anchor.js"></script>
 <script src="libs/kePrint-0.0.1/kePrint.js"></script>
 <link href="libs/lightable-0.0.1/lightable.css" rel="stylesheet" />
-<link href="libs/bsTable-3.3.7/bootstrapTable.min.css" rel="stylesheet" />
-<script src="libs/bsTable-3.3.7/bootstrapTable.js"></script>
 
 
 <style type="text/css">
@@ -134,9 +132,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
       <nav role="navigation">
 
 <ul class="summary">
-<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Preface</a><ul>
-<li class="chapter" data-level="0.1" data-path="index.html"><a href="index.html#acknowledgements"><i class="fa fa-check"></i><b>0.1</b> Acknowledgements</a></li>
-</ul></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Preface</a></li>
 <li class="chapter" data-level="1" data-path="theory.html"><a href="theory.html"><i class="fa fa-check"></i><b>1</b> Theory in Ecology</a><ul>
 <li class="chapter" data-level="1.1" data-path="theory.html"><a href="theory.html#examples-of-theories"><i class="fa fa-check"></i><b>1.1</b> Examples of theories</a><ul>
 <li class="chapter" data-level="1.1.1" data-path="theory.html"><a href="theory.html#hierarchy-theory"><i class="fa fa-check"></i><b>1.1.1</b> Hierarchy theory</a></li>
@@ -409,8 +405,8 @@ Figure 6.2: The simplest source-sink model, where m21 &gt; m12 so that net movem
 <p>Pulliam envisioned two linked bird populations where we track adult reproduction, adult and juvenile survival, and estimate <span class="math inline">\(\lambda_i\)</span> separately for each population. The size of the source population, at time <span class="math inline">\(t+1\)</span> is <span class="math inline">\(n_{1,t+1}\)</span> and is the result of survival and fecundity. Adult survival <span class="math inline">\(P_A\)</span> and fecundity results from reproduction, <span class="math inline">\(\beta_1 n_{1,t}\)</span>, times survival of the juveniles <span class="math inline">\(P_J\)</span>. The sink population was modeled the same way.
 <span class="math display" id="eq:ss1">\[\begin{align}
   \tag{6.1}
-  n_{1, t+1} = P_A n_{1,t} + P_J (\beta_1 n_{1,t}) = \lambda_1 n_1\\
-  n_{2, t+1} = P_A n_{2,t} + \beta_2 P_J n_{1,t} = \lambda_2 n_2
+  n_{1, t+1} &amp;= P_A n_{1,t} + P_J (\beta_1 n_{1,t}) = \lambda_1 n_1\\
+  n_{2, t+1} &amp;= P_A n_{2,t} + \beta_2 P_J n_{1,t} = \lambda_2 n_2
 \end{align}\]</span></p>
 <p>Pulliam then assumed that</p>
 <ul>
@@ -438,39 +434,39 @@ where the upper left element (row 1, column 1) reflects the within-patch growth 
 \end{array} \right)
 \end{equation}\]</span></p>
 <p>We first assign <span class="math inline">\(\lambda\)</span> for the source and sink populations, and create a matrix.</p>
-<div class="sourceCode" id="cb166"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb166-1"><a href="meta.html#cb166-1"></a>lambda1 &lt;-<span class="st"> </span><span class="fl">1.2</span>; lambda2 &lt;-<span class="st"> </span><span class="fl">.4</span></span>
-<span id="cb166-2"><a href="meta.html#cb166-2"></a>A &lt;-<span class="st"> </span><span class="kw">matrix</span>(<span class="kw">c</span>(<span class="dv">1</span>,    <span class="dv">0</span>, </span>
-<span id="cb166-3"><a href="meta.html#cb166-3"></a>              lambda1<span class="dv">-1</span>, lambda2), <span class="dt">nrow=</span><span class="dv">2</span>, <span class="dt">byrow=</span><span class="ot">TRUE</span>)</span>
-<span id="cb166-4"><a href="meta.html#cb166-4"></a>A</span></code></pre></div>
+<div class="sourceCode" id="cb167"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb167-1"><a href="meta.html#cb167-1"></a>lambda1 &lt;-<span class="st"> </span><span class="fl">1.2</span>; lambda2 &lt;-<span class="st"> </span><span class="fl">.4</span></span>
+<span id="cb167-2"><a href="meta.html#cb167-2"></a>A &lt;-<span class="st"> </span><span class="kw">matrix</span>(<span class="kw">c</span>(<span class="dv">1</span>,    <span class="dv">0</span>, </span>
+<span id="cb167-3"><a href="meta.html#cb167-3"></a>              lambda1<span class="dv">-1</span>, lambda2), <span class="dt">nrow=</span><span class="dv">2</span>, <span class="dt">byrow=</span><span class="ot">TRUE</span>)</span>
+<span id="cb167-4"><a href="meta.html#cb167-4"></a>A</span></code></pre></div>
 <pre><code>##      [,1] [,2]
 ## [1,]  1.0  0.0
 ## [2,]  0.2  0.4</code></pre>
 <p>We can then use eigenanalysis, as we did in Chapter 4 for stage structured populations. The dominant eigenvalue will provide the long term asymptotic total population growth. We can calculate the stable stage distribution, which in this case is the distribution of individuals between the two habitats.</p>
-<div class="sourceCode" id="cb168"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb168-1"><a href="meta.html#cb168-1"></a>eA &lt;-<span class="st"> </span><span class="kw">eigen</span>(A)</span>
-<span id="cb168-2"><a href="meta.html#cb168-2"></a>eA<span class="op">$</span>values</span></code></pre></div>
+<div class="sourceCode" id="cb169"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb169-1"><a href="meta.html#cb169-1"></a>eA &lt;-<span class="st"> </span><span class="kw">eigen</span>(A)</span>
+<span id="cb169-2"><a href="meta.html#cb169-2"></a>eA<span class="op">$</span>values</span></code></pre></div>
 <pre><code>## [1] 1.0 0.4</code></pre>
-<div class="sourceCode" id="cb170"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb170-1"><a href="meta.html#cb170-1"></a><span class="co"># calculate the stable stage distr.</span></span>
-<span id="cb170-2"><a href="meta.html#cb170-2"></a>(ssd &lt;-<span class="st"> </span>eA<span class="op">$</span>vectors[,<span class="dv">1</span>]<span class="op">/</span><span class="kw">sum</span>(eA<span class="op">$</span>vectors[,<span class="dv">1</span>]) )</span></code></pre></div>
+<div class="sourceCode" id="cb171"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb171-1"><a href="meta.html#cb171-1"></a><span class="co"># calculate the stable stage distr.</span></span>
+<span id="cb171-2"><a href="meta.html#cb171-2"></a>(ssd &lt;-<span class="st"> </span>eA<span class="op">$</span>vectors[,<span class="dv">1</span>]<span class="op">/</span><span class="kw">sum</span>(eA<span class="op">$</span>vectors[,<span class="dv">1</span>]) )</span></code></pre></div>
 <pre><code>## [1] 0.75 0.25</code></pre>
 <p>From the dominant eigenvalue, we see Pulliam’s working assumption that the total population growth (for the two popuations combined) is <span class="math inline">\(\lambda=1\)</span>. Upon calculating the stable distribution, we also see that the source population contains more individuals than the sink population.</p>
 <p>Pulliam explored the consequences of these assumptions for the relative abundances in the two populations. He varied <span class="math inline">\(\lambda_1\)</span> over a range of values and calculated the relative abundance of the source population. We let <code>p1</code> be the proportion of the total population in the source.</p>
-<div class="sourceCode" id="cb172"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb172-1"><a href="meta.html#cb172-1"></a><span class="co"># a range of lambdas</span></span>
-<span id="cb172-2"><a href="meta.html#cb172-2"></a>lambda1 &lt;-<span class="st"> </span><span class="kw">seq</span>(<span class="dv">1</span>, <span class="dv">3</span>, <span class="dt">by=</span><span class="fl">0.01</span>)</span>
-<span id="cb172-3"><a href="meta.html#cb172-3"></a></span>
-<span id="cb172-4"><a href="meta.html#cb172-4"></a><span class="co"># proportion of total N in the source habitat</span></span>
-<span id="cb172-5"><a href="meta.html#cb172-5"></a>p1 &lt;-<span class="st"> </span><span class="kw">sapply</span>(lambda1, <span class="cf">function</span>(l1) {</span>
-<span id="cb172-6"><a href="meta.html#cb172-6"></a>  <span class="co"># replace lambda1</span></span>
-<span id="cb172-7"><a href="meta.html#cb172-7"></a>  A[<span class="dv">2</span>,<span class="dv">1</span>] &lt;-<span class="st"> </span>l1<span class="dv">-1</span></span>
-<span id="cb172-8"><a href="meta.html#cb172-8"></a>  <span class="co"># extract the dominant eigenvalue</span></span>
-<span id="cb172-9"><a href="meta.html#cb172-9"></a>  dom.ev &lt;-<span class="st"> </span><span class="kw">eigen</span>(A)<span class="op">$</span>vectors[,<span class="dv">1</span>]</span>
-<span id="cb172-10"><a href="meta.html#cb172-10"></a>  <span class="co"># calculate the relative abundance of the first pop.</span></span>
-<span id="cb172-11"><a href="meta.html#cb172-11"></a>  dom.ev[<span class="dv">1</span>]<span class="op">/</span><span class="kw">sum</span>(dom.ev)</span>
-<span id="cb172-12"><a href="meta.html#cb172-12"></a>  })</span>
-<span id="cb172-13"><a href="meta.html#cb172-13"></a></span>
-<span id="cb172-14"><a href="meta.html#cb172-14"></a><span class="co"># plot the result</span></span>
-<span id="cb172-15"><a href="meta.html#cb172-15"></a><span class="kw">qplot</span>(<span class="dt">x=</span>lambda1, <span class="dt">y=</span>p1, <span class="dt">geom=</span><span class="st">&quot;line&quot;</span>, </span>
-<span id="cb172-16"><a href="meta.html#cb172-16"></a>      <span class="dt">ylab=</span><span class="st">&quot;Fraction of total population</span><span class="ch">\n</span><span class="st"> in the source population&quot;</span>,</span>
-<span id="cb172-17"><a href="meta.html#cb172-17"></a>      <span class="dt">xlab=</span><span class="kw">expression</span>(lambda[<span class="dv">1</span>]) ) </span></code></pre></div>
+<div class="sourceCode" id="cb173"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb173-1"><a href="meta.html#cb173-1"></a><span class="co"># a range of lambdas</span></span>
+<span id="cb173-2"><a href="meta.html#cb173-2"></a>lambda1 &lt;-<span class="st"> </span><span class="kw">seq</span>(<span class="dv">1</span>, <span class="dv">3</span>, <span class="dt">by=</span><span class="fl">0.01</span>)</span>
+<span id="cb173-3"><a href="meta.html#cb173-3"></a></span>
+<span id="cb173-4"><a href="meta.html#cb173-4"></a><span class="co"># proportion of total N in the source habitat</span></span>
+<span id="cb173-5"><a href="meta.html#cb173-5"></a>p1 &lt;-<span class="st"> </span><span class="kw">sapply</span>(lambda1, <span class="cf">function</span>(l1) {</span>
+<span id="cb173-6"><a href="meta.html#cb173-6"></a>  <span class="co"># replace lambda1</span></span>
+<span id="cb173-7"><a href="meta.html#cb173-7"></a>  A[<span class="dv">2</span>,<span class="dv">1</span>] &lt;-<span class="st"> </span>l1<span class="dv">-1</span></span>
+<span id="cb173-8"><a href="meta.html#cb173-8"></a>  <span class="co"># extract the dominant eigenvalue</span></span>
+<span id="cb173-9"><a href="meta.html#cb173-9"></a>  dom.ev &lt;-<span class="st"> </span><span class="kw">eigen</span>(A)<span class="op">$</span>vectors[,<span class="dv">1</span>]</span>
+<span id="cb173-10"><a href="meta.html#cb173-10"></a>  <span class="co"># calculate the relative abundance of the first pop.</span></span>
+<span id="cb173-11"><a href="meta.html#cb173-11"></a>  dom.ev[<span class="dv">1</span>]<span class="op">/</span><span class="kw">sum</span>(dom.ev)</span>
+<span id="cb173-12"><a href="meta.html#cb173-12"></a>  })</span>
+<span id="cb173-13"><a href="meta.html#cb173-13"></a></span>
+<span id="cb173-14"><a href="meta.html#cb173-14"></a><span class="co"># plot the result</span></span>
+<span id="cb173-15"><a href="meta.html#cb173-15"></a><span class="kw">qplot</span>(<span class="dt">x=</span>lambda1, <span class="dt">y=</span>p1, <span class="dt">geom=</span><span class="st">&quot;line&quot;</span>, </span>
+<span id="cb173-16"><a href="meta.html#cb173-16"></a>      <span class="dt">ylab=</span><span class="st">&quot;Fraction of total population</span><span class="ch">\n</span><span class="st"> in the source population&quot;</span>,</span>
+<span id="cb173-17"><a href="meta.html#cb173-17"></a>      <span class="dt">xlab=</span><span class="kw">expression</span>(lambda[<span class="dv">1</span>]) ) </span></code></pre></div>
 <div class="figure"><span id="fig:ssP"></span>
 <img src="figs/ssP-1.png" alt="The declining relative abundance in the high quality habitat in a source-sink model. The proportion of the total population ($n_1/(n_1+n_2)$) in the source population may decline with increasing habitat quality and growth rate." width="75%" />
 <p class="caption">
@@ -512,19 +508,19 @@ This equation describes the dynamics of the proportion, <span class="math inline
 <p>The parameters <span class="math inline">\(c_i\)</span> and <span class="math inline">\(e\)</span> are very similar to <span class="math inline">\(r\)</span> of continuous logistic growth, insofar as they are dimensionless instantaneous rates. However, they are sometimes thought of as probabilities. The parameter <span class="math inline">\(c_i\)</span> is approximately the proportion of open sites colonized per unit time. For instance, if we created or found 100 open sites, we could come back in a year and see how many became occupied over that time interval of one year, and that proportion would be a function of <span class="math inline">\(c_i\)</span>. The parameter <span class="math inline">\(e\)</span> is often thought of as the probability that a site becomes unoccupied per unit time. If we found 100 occupied sites in one year, we could revisit them a year later and see how many became *un}occupied over that time interval of one year.</p>
 <p>With internal colonization, we are modeling a closed spatial population of sites, whether “site” refers to an entire field (as above), or a small patch of ground occupied by an individual plant <span class="citation">(Tilman et al. <a href="#ref-Tilman1994b" role="doc-biblioref">1994</a>)</span>.</p>
 <p>The Levins metapopulation model: An R function for a differential equation requires arguments for time, a vector of the state variables (here we have one state variable, <span class="math inline">\(p\)</span>), and a vector of parameters.</p>
-<div class="sourceCode" id="cb173"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb173-1"><a href="meta.html#cb173-1"></a>levins &lt;-<span class="st"> </span><span class="cf">function</span>(t, y, parms) {</span>
-<span id="cb173-2"><a href="meta.html#cb173-2"></a>       p &lt;-<span class="st"> </span>y[<span class="dv">1</span>]</span>
-<span id="cb173-3"><a href="meta.html#cb173-3"></a>       <span class="kw">with</span>(<span class="kw">as.list</span>(parms), {</span>
-<span id="cb173-4"><a href="meta.html#cb173-4"></a>       dp &lt;-<span class="st"> </span>ci <span class="op">*</span><span class="st"> </span>p <span class="op">*</span><span class="st"> </span>(<span class="dv">1</span><span class="op">-</span>p) <span class="op">-</span><span class="st"> </span>e <span class="op">*</span><span class="st"> </span>p</span>
-<span id="cb173-5"><a href="meta.html#cb173-5"></a>       <span class="kw">return</span>(<span class="kw">list</span>(dp))</span>
-<span id="cb173-6"><a href="meta.html#cb173-6"></a>       }) }</span></code></pre></div>
+<div class="sourceCode" id="cb174"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb174-1"><a href="meta.html#cb174-1"></a>levins &lt;-<span class="st"> </span><span class="cf">function</span>(t, y, parms) {</span>
+<span id="cb174-2"><a href="meta.html#cb174-2"></a>       p &lt;-<span class="st"> </span>y[<span class="dv">1</span>]</span>
+<span id="cb174-3"><a href="meta.html#cb174-3"></a>       <span class="kw">with</span>(<span class="kw">as.list</span>(parms), {</span>
+<span id="cb174-4"><a href="meta.html#cb174-4"></a>       dp &lt;-<span class="st"> </span>ci <span class="op">*</span><span class="st"> </span>p <span class="op">*</span><span class="st"> </span>(<span class="dv">1</span><span class="op">-</span>p) <span class="op">-</span><span class="st"> </span>e <span class="op">*</span><span class="st"> </span>p</span>
+<span id="cb174-5"><a href="meta.html#cb174-5"></a>       <span class="kw">return</span>(<span class="kw">list</span>(dp))</span>
+<span id="cb174-6"><a href="meta.html#cb174-6"></a>       }) }</span></code></pre></div>
 <p>By using <code>with</code>, we can specify the parameters by their names, as long as <code>parms</code> includes names. The function <code>levins()</code> returns a list that contains a value for the derivative, evaluated at each time point, for each state variable (here merely <span class="math inline">\(dp /dt\)</span>). We then use <code>levins</code> in the numerical integration function <code>ode</code> in the <code>deSolve</code> package.</p>
-<div class="sourceCode" id="cb174"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb174-1"><a href="meta.html#cb174-1"></a>prms &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dt">ci=</span><span class="fl">0.15</span>, <span class="dt">e=</span><span class="fl">0.05</span>)</span>
-<span id="cb174-2"><a href="meta.html#cb174-2"></a>Initial.p &lt;-<span class="st"> </span><span class="fl">0.01</span></span>
-<span id="cb174-3"><a href="meta.html#cb174-3"></a>out.L &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="kw">ode</span>(<span class="dt">y=</span>Initial.p, <span class="dt">times=</span><span class="dv">1</span><span class="op">:</span><span class="dv">100</span>, <span class="dt">func=</span>levins, <span class="dt">parms=</span>prms ))</span></code></pre></div>
+<div class="sourceCode" id="cb175"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb175-1"><a href="meta.html#cb175-1"></a>prms &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dt">ci=</span><span class="fl">0.15</span>, <span class="dt">e=</span><span class="fl">0.05</span>)</span>
+<span id="cb175-2"><a href="meta.html#cb175-2"></a>Initial.p &lt;-<span class="st"> </span><span class="fl">0.01</span></span>
+<span id="cb175-3"><a href="meta.html#cb175-3"></a>out.L &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="kw">ode</span>(<span class="dt">y=</span>Initial.p, <span class="dt">times=</span><span class="dv">1</span><span class="op">:</span><span class="dv">100</span>, <span class="dt">func=</span>levins, <span class="dt">parms=</span>prms ))</span></code></pre></div>
 <p>We then plot the result (Fig. <a href="meta.html#fig:levins">6.5</a>).</p>
-<div class="sourceCode" id="cb175"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb175-1"><a href="meta.html#cb175-1"></a><span class="kw">qplot</span>(<span class="dt">x=</span>out.L[,<span class="dv">1</span>], <span class="dt">y=</span>out.L[,<span class="dv">2</span>], <span class="dt">geom=</span><span class="st">&quot;line&quot;</span>, <span class="dt">ylim=</span><span class="kw">c</span>(<span class="dv">0</span>,<span class="dv">1</span>), <span class="dt">ylab=</span><span class="st">&quot;p&quot;</span>, <span class="dt">xlab=</span><span class="st">&quot;time&quot;</span>)  <span class="op">+</span></span>
-<span id="cb175-2"><a href="meta.html#cb175-2"></a><span class="st">  </span><span class="kw">annotate</span>(<span class="st">&quot;text&quot;</span>, <span class="dv">25</span>, <span class="fl">.75</span>, <span class="dt">label=</span><span class="kw">bquote</span>(<span class="kw">over</span>(dp,dt)<span class="op">==</span><span class="kw">cp</span>(<span class="dv">1</span><span class="op">-</span>p)<span class="op">-</span>ep))</span></code></pre></div>
+<div class="sourceCode" id="cb176"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb176-1"><a href="meta.html#cb176-1"></a><span class="kw">qplot</span>(<span class="dt">x=</span>out.L[,<span class="dv">1</span>], <span class="dt">y=</span>out.L[,<span class="dv">2</span>], <span class="dt">geom=</span><span class="st">&quot;line&quot;</span>, <span class="dt">ylim=</span><span class="kw">c</span>(<span class="dv">0</span>,<span class="dv">1</span>), <span class="dt">ylab=</span><span class="st">&quot;p&quot;</span>, <span class="dt">xlab=</span><span class="st">&quot;time&quot;</span>)  <span class="op">+</span></span>
+<span id="cb176-2"><a href="meta.html#cb176-2"></a><span class="st">  </span><span class="kw">annotate</span>(<span class="st">&quot;text&quot;</span>, <span class="dv">25</span>, <span class="fl">.75</span>, <span class="dt">label=</span><span class="kw">bquote</span>(<span class="kw">over</span>(dp,dt)<span class="op">==</span><span class="kw">cp</span>(<span class="dv">1</span><span class="op">-</span>p)<span class="op">-</span>ep))</span></code></pre></div>
 <div class="figure"><span id="fig:levins"></span>
 <img src="figs/levins-1.png" alt="*Levins metapopulation model*" width="75%" />
 <p class="caption">
@@ -549,19 +545,19 @@ When we do this, we see that <span class="math inline">\(p^* &gt; 0\)</span> as 
 \end{equation}\]</span>
 where <span class="math inline">\(c_{e}\)</span> specifies the rate of colonization coming from the external source. <span class="citation">Gotelli (<a href="#ref-Gotelli1991" role="doc-biblioref">1991</a>)</span> refers to this model as a metapopulation model with propagule rain, or as the island–mainland model. He calls it this because it describes a constant influx of propagules which does not depend on the proportion, <span class="math inline">\(p\)</span>, of sites occupied for propagule production. Extinction here is mediated only by the proportion of sites occupied, and has a constant per site rate.</p>
 <p>The propagule rain metapopulation model: An R function for a differential equation requires arguments for time, a vector of the state variables (here we have one state variable, <span class="math inline">\(p\)</span>), and a vector of parameters.</p>
-<div class="sourceCode" id="cb176"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb176-1"><a href="meta.html#cb176-1"></a>gotelli &lt;-<span class="st"> </span><span class="cf">function</span>( t, y, parms) {</span>
-<span id="cb176-2"><a href="meta.html#cb176-2"></a>       p &lt;-<span class="st"> </span>y[<span class="dv">1</span>]</span>
-<span id="cb176-3"><a href="meta.html#cb176-3"></a>       <span class="kw">with</span>(<span class="kw">as.list</span>(parms), {</span>
-<span id="cb176-4"><a href="meta.html#cb176-4"></a>       dp &lt;-<span class="st"> </span>ce <span class="op">*</span><span class="st">  </span>(<span class="dv">1</span><span class="op">-</span>p) <span class="op">-</span><span class="st"> </span>e <span class="op">*</span><span class="st"> </span>p</span>
-<span id="cb176-5"><a href="meta.html#cb176-5"></a>       <span class="kw">return</span>(<span class="kw">list</span>(dp))</span>
-<span id="cb176-6"><a href="meta.html#cb176-6"></a>       })</span>
-<span id="cb176-7"><a href="meta.html#cb176-7"></a>       }</span>
-<span id="cb176-8"><a href="meta.html#cb176-8"></a>prms &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dt">ce=</span><span class="fl">0.15</span>, <span class="dt">e=</span><span class="fl">0.05</span>)</span>
-<span id="cb176-9"><a href="meta.html#cb176-9"></a>Initial.p &lt;-<span class="st"> </span><span class="fl">0.01</span></span>
-<span id="cb176-10"><a href="meta.html#cb176-10"></a>out.G &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="kw">ode</span>(<span class="dt">y=</span>Initial.p, <span class="dt">times=</span><span class="dv">1</span><span class="op">:</span><span class="dv">100</span>, <span class="dt">func=</span>gotelli, <span class="dt">parms=</span>prms ))</span></code></pre></div>
+<div class="sourceCode" id="cb177"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb177-1"><a href="meta.html#cb177-1"></a>gotelli &lt;-<span class="st"> </span><span class="cf">function</span>( t, y, parms) {</span>
+<span id="cb177-2"><a href="meta.html#cb177-2"></a>       p &lt;-<span class="st"> </span>y[<span class="dv">1</span>]</span>
+<span id="cb177-3"><a href="meta.html#cb177-3"></a>       <span class="kw">with</span>(<span class="kw">as.list</span>(parms), {</span>
+<span id="cb177-4"><a href="meta.html#cb177-4"></a>       dp &lt;-<span class="st"> </span>ce <span class="op">*</span><span class="st">  </span>(<span class="dv">1</span><span class="op">-</span>p) <span class="op">-</span><span class="st"> </span>e <span class="op">*</span><span class="st"> </span>p</span>
+<span id="cb177-5"><a href="meta.html#cb177-5"></a>       <span class="kw">return</span>(<span class="kw">list</span>(dp))</span>
+<span id="cb177-6"><a href="meta.html#cb177-6"></a>       })</span>
+<span id="cb177-7"><a href="meta.html#cb177-7"></a>       }</span>
+<span id="cb177-8"><a href="meta.html#cb177-8"></a>prms &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dt">ce=</span><span class="fl">0.15</span>, <span class="dt">e=</span><span class="fl">0.05</span>)</span>
+<span id="cb177-9"><a href="meta.html#cb177-9"></a>Initial.p &lt;-<span class="st"> </span><span class="fl">0.01</span></span>
+<span id="cb177-10"><a href="meta.html#cb177-10"></a>out.G &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="kw">ode</span>(<span class="dt">y=</span>Initial.p, <span class="dt">times=</span><span class="dv">1</span><span class="op">:</span><span class="dv">100</span>, <span class="dt">func=</span>gotelli, <span class="dt">parms=</span>prms ))</span></code></pre></div>
 <p>We then plot the result (Fig. <a href="meta.html#fig:gotelli">6.6</a>).</p>
-<div class="sourceCode" id="cb177"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb177-1"><a href="meta.html#cb177-1"></a><span class="kw">qplot</span>(<span class="dt">x=</span>out.G[,<span class="dv">1</span>], <span class="dt">y=</span>out.G[,<span class="dv">2</span>], <span class="dt">geom=</span><span class="st">&quot;line&quot;</span>, <span class="dt">ylim=</span><span class="kw">c</span>(<span class="dv">0</span>,<span class="dv">1</span>), <span class="dt">ylab=</span><span class="st">&quot;p&quot;</span>, <span class="dt">xlab=</span><span class="st">&quot;time&quot;</span>)  <span class="op">+</span></span>
-<span id="cb177-2"><a href="meta.html#cb177-2"></a><span class="st">  </span><span class="kw">annotate</span>(<span class="st">&quot;text&quot;</span>, <span class="dv">50</span>, <span class="fl">.25</span>, <span class="dt">label=</span><span class="kw">bquote</span>(<span class="kw">over</span>(dp,dt)<span class="op">==</span>c[e](<span class="dv">1</span><span class="op">-</span>p)<span class="op">-</span>ep))</span></code></pre></div>
+<div class="sourceCode" id="cb178"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb178-1"><a href="meta.html#cb178-1"></a><span class="kw">qplot</span>(<span class="dt">x=</span>out.G[,<span class="dv">1</span>], <span class="dt">y=</span>out.G[,<span class="dv">2</span>], <span class="dt">geom=</span><span class="st">&quot;line&quot;</span>, <span class="dt">ylim=</span><span class="kw">c</span>(<span class="dv">0</span>,<span class="dv">1</span>), <span class="dt">ylab=</span><span class="st">&quot;p&quot;</span>, <span class="dt">xlab=</span><span class="st">&quot;time&quot;</span>)  <span class="op">+</span></span>
+<span id="cb178-2"><a href="meta.html#cb178-2"></a><span class="st">  </span><span class="kw">annotate</span>(<span class="st">&quot;text&quot;</span>, <span class="dv">50</span>, <span class="fl">.25</span>, <span class="dt">label=</span><span class="kw">bquote</span>(<span class="kw">over</span>(dp,dt)<span class="op">==</span>c[e](<span class="dv">1</span><span class="op">-</span>p)<span class="op">-</span>ep))</span></code></pre></div>
 <div class="figure"><span id="fig:gotelli"></span>
 <img src="figs/gotelli-1.png" alt="*Propagule rain metapopulation model*" width="75%" />
 <p class="caption">
@@ -597,19 +593,19 @@ Note that as <span class="math inline">\(p \rightarrow 1\)</span>, the total ext
 \end{align}\]</span>
 This model was made famous by Illka Hanski <span class="citation">(Hanski <a href="#ref-Hanski1982" role="doc-biblioref">1982</a>)</span>. It is referred to as the <em>core-satellite</em> model because Hanski showed that it predicts precisely the pattern we saw in Fig. <a href="meta.html#fig:CandG">6.1</a> at the beginning of the chapter.</p>
 <p>The core-satellite metapopulation model: A function for a differential equation requires arguments for time, a vector of the state variables (here we have one state variable, <span class="math inline">\(p\)</span>), and a vector of parameters.</p>
-<div class="sourceCode" id="cb178"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb178-1"><a href="meta.html#cb178-1"></a>hanski &lt;-<span class="st"> </span><span class="cf">function</span>( t, y, parms) {</span>
-<span id="cb178-2"><a href="meta.html#cb178-2"></a>  p&lt;-<span class="st"> </span>y[<span class="dv">1</span>]</span>
-<span id="cb178-3"><a href="meta.html#cb178-3"></a>       <span class="kw">with</span>(<span class="kw">as.list</span>(parms), {</span>
-<span id="cb178-4"><a href="meta.html#cb178-4"></a>       dp &lt;-<span class="st"> </span>ci <span class="op">*</span><span class="st"> </span>p <span class="op">*</span><span class="st">  </span>(<span class="dv">1</span><span class="op">-</span>p) <span class="op">-</span><span class="st"> </span>e <span class="op">*</span><span class="st"> </span>p <span class="op">*</span>(<span class="dv">1</span><span class="op">-</span>p)</span>
-<span id="cb178-5"><a href="meta.html#cb178-5"></a>       <span class="kw">return</span>(<span class="kw">list</span>(dp))</span>
-<span id="cb178-6"><a href="meta.html#cb178-6"></a>       })</span>
-<span id="cb178-7"><a href="meta.html#cb178-7"></a>}</span>
-<span id="cb178-8"><a href="meta.html#cb178-8"></a>prms &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dt">ci=</span><span class="fl">0.15</span>, <span class="dt">e=</span><span class="fl">0.05</span>)</span>
-<span id="cb178-9"><a href="meta.html#cb178-9"></a>Initial.p &lt;-<span class="st"> </span><span class="fl">0.01</span></span>
-<span id="cb178-10"><a href="meta.html#cb178-10"></a>out.H &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="kw">ode</span>(<span class="dt">y=</span>Initial.p, <span class="dt">times=</span><span class="dv">1</span><span class="op">:</span><span class="dv">100</span>, <span class="dt">func=</span>hanski, <span class="dt">parms=</span>prms ))</span></code></pre></div>
+<div class="sourceCode" id="cb179"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb179-1"><a href="meta.html#cb179-1"></a>hanski &lt;-<span class="st"> </span><span class="cf">function</span>( t, y, parms) {</span>
+<span id="cb179-2"><a href="meta.html#cb179-2"></a>  p&lt;-<span class="st"> </span>y[<span class="dv">1</span>]</span>
+<span id="cb179-3"><a href="meta.html#cb179-3"></a>       <span class="kw">with</span>(<span class="kw">as.list</span>(parms), {</span>
+<span id="cb179-4"><a href="meta.html#cb179-4"></a>       dp &lt;-<span class="st"> </span>ci <span class="op">*</span><span class="st"> </span>p <span class="op">*</span><span class="st">  </span>(<span class="dv">1</span><span class="op">-</span>p) <span class="op">-</span><span class="st"> </span>e <span class="op">*</span><span class="st"> </span>p <span class="op">*</span>(<span class="dv">1</span><span class="op">-</span>p)</span>
+<span id="cb179-5"><a href="meta.html#cb179-5"></a>       <span class="kw">return</span>(<span class="kw">list</span>(dp))</span>
+<span id="cb179-6"><a href="meta.html#cb179-6"></a>       })</span>
+<span id="cb179-7"><a href="meta.html#cb179-7"></a>}</span>
+<span id="cb179-8"><a href="meta.html#cb179-8"></a>prms &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dt">ci=</span><span class="fl">0.15</span>, <span class="dt">e=</span><span class="fl">0.05</span>)</span>
+<span id="cb179-9"><a href="meta.html#cb179-9"></a>Initial.p &lt;-<span class="st"> </span><span class="fl">0.01</span></span>
+<span id="cb179-10"><a href="meta.html#cb179-10"></a>out.H &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="kw">ode</span>(<span class="dt">y=</span>Initial.p, <span class="dt">times=</span><span class="dv">1</span><span class="op">:</span><span class="dv">100</span>, <span class="dt">func=</span>hanski, <span class="dt">parms=</span>prms ))</span></code></pre></div>
 <p>We then plot the result (Fig. <a href="meta.html#fig:hanski">6.7</a>).</p>
-<div class="sourceCode" id="cb179"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb179-1"><a href="meta.html#cb179-1"></a><span class="kw">qplot</span>(<span class="dt">x=</span>out.H[,<span class="dv">1</span>], <span class="dt">y=</span>out.H[,<span class="dv">2</span>], <span class="dt">geom=</span><span class="st">&quot;line&quot;</span>, <span class="dt">ylim=</span><span class="kw">c</span>(<span class="dv">0</span>,<span class="dv">1</span>), <span class="dt">ylab=</span><span class="st">&quot;p&quot;</span>, <span class="dt">xlab=</span><span class="st">&quot;time&quot;</span>)  <span class="op">+</span><span class="st"> </span></span>
-<span id="cb179-2"><a href="meta.html#cb179-2"></a><span class="st">  </span><span class="kw">annotate</span>(<span class="st">&quot;text&quot;</span>, <span class="dv">50</span>, <span class="fl">.25</span>, <span class="dt">label=</span><span class="kw">bquote</span>(<span class="kw">over</span>(dp,dt)<span class="op">==</span>c[i]<span class="op">*</span><span class="kw">p</span>(<span class="dv">1</span><span class="op">-</span>p)<span class="op">-</span><span class="kw">ep</span>(<span class="dv">1</span><span class="op">-</span>p)))</span></code></pre></div>
+<div class="sourceCode" id="cb180"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb180-1"><a href="meta.html#cb180-1"></a><span class="kw">qplot</span>(<span class="dt">x=</span>out.H[,<span class="dv">1</span>], <span class="dt">y=</span>out.H[,<span class="dv">2</span>], <span class="dt">geom=</span><span class="st">&quot;line&quot;</span>, <span class="dt">ylim=</span><span class="kw">c</span>(<span class="dv">0</span>,<span class="dv">1</span>), <span class="dt">ylab=</span><span class="st">&quot;p&quot;</span>, <span class="dt">xlab=</span><span class="st">&quot;time&quot;</span>)  <span class="op">+</span><span class="st"> </span></span>
+<span id="cb180-2"><a href="meta.html#cb180-2"></a><span class="st">  </span><span class="kw">annotate</span>(<span class="st">&quot;text&quot;</span>, <span class="dv">50</span>, <span class="fl">.25</span>, <span class="dt">label=</span><span class="kw">bquote</span>(<span class="kw">over</span>(dp,dt)<span class="op">==</span>c[i]<span class="op">*</span><span class="kw">p</span>(<span class="dv">1</span><span class="op">-</span>p)<span class="op">-</span><span class="kw">ep</span>(<span class="dv">1</span><span class="op">-</span>p)))</span></code></pre></div>
 <div class="figure"><span id="fig:hanski"></span>
 <img src="figs/hanski-1.png" alt="*The core-satellite metapopulation model*" width="75%" />
 <p class="caption">
@@ -624,11 +620,11 @@ Figure 6.7: <em>The core-satellite metapopulation model</em>
 This shows us that for any value of <span class="math inline">\(p\)</span> between zero and one, the sign of the growth rate (positive or negative) is determined by <span class="math inline">\(c_i\)</span> and <span class="math inline">\(e\)</span>.</p>
 <p>If <span class="math inline">\(c_i&gt;e\)</span>, the rate of increase will always be positive, and because occupancy cannot exceed 1.0, the metapopulation will go to full occupancy (<span class="math inline">\(p^*=1\)</span>), and stay there. This equilibrium will be a <em>stable attractor</em> or stable equilibrium. What happens if for some reason the metapopulation becomes globally extinct, such that <span class="math inline">\(p=0\)</span>, even though <span class="math inline">\(c_i&gt;e\)</span>? If <span class="math inline">\(p=0\)</span>, then like logistic growth, the metapopulation stops changing and cannot increase. However, the slightest perturbation away from <span class="math inline">\(p=0\)</span> will lead to a positive growth rate, and increase toward the stable attractor, <span class="math inline">\(p^*=1\)</span>. In this case, we refer to <span class="math inline">\(p^*=0\)</span> as an unstable equilibrium and a <em>repellor</em>.</p>
 <p>Let’s explore the stability of these equilibria by plotting the metapopulation growth rate as a function of <span class="math inline">\(p\)</span> (Fig. <a href="meta.html#fig:hanskiP">6.8</a>). When we set <span class="math inline">\(c_i&gt;e\)</span>, and examine the slope of that line at <span class="math inline">\(p^*=1\)</span>, we see the slope is negative, indicating a stable equilibrium. At <span class="math inline">\(p^*=0\)</span> the slope is positive, indicating an unstable equilibrium.</p>
-<div class="sourceCode" id="cb180"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb180-1"><a href="meta.html#cb180-1"></a>dpdtCS &lt;-<span class="st"> </span><span class="kw">expression</span>((ci<span class="op">-</span>e)<span class="op">*</span>p<span class="op">*</span>(<span class="dv">1</span><span class="op">-</span>p))</span>
-<span id="cb180-2"><a href="meta.html#cb180-2"></a>ci &lt;-<span class="st"> </span><span class="fl">0.15</span>; e &lt;-<span class="st"> </span><span class="fl">0.05</span></span>
-<span id="cb180-3"><a href="meta.html#cb180-3"></a>p &lt;-<span class="st"> </span><span class="kw">seq</span>(<span class="dv">0</span>,<span class="dv">1</span>, <span class="dt">length=</span><span class="dv">50</span>)</span>
-<span id="cb180-4"><a href="meta.html#cb180-4"></a>dp.dt &lt;-<span class="st"> </span><span class="kw">eval</span>(dpdtCS)</span>
-<span id="cb180-5"><a href="meta.html#cb180-5"></a><span class="kw">qplot</span>(p, dp.dt, <span class="dt">geom=</span><span class="st">&quot;line&quot;</span>, <span class="dt">ylab=</span><span class="st">&quot;dp/dt&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb181"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb181-1"><a href="meta.html#cb181-1"></a>dpdtCS &lt;-<span class="st"> </span><span class="kw">expression</span>((ci<span class="op">-</span>e)<span class="op">*</span>p<span class="op">*</span>(<span class="dv">1</span><span class="op">-</span>p))</span>
+<span id="cb181-2"><a href="meta.html#cb181-2"></a>ci &lt;-<span class="st"> </span><span class="fl">0.15</span>; e &lt;-<span class="st"> </span><span class="fl">0.05</span></span>
+<span id="cb181-3"><a href="meta.html#cb181-3"></a>p &lt;-<span class="st"> </span><span class="kw">seq</span>(<span class="dv">0</span>,<span class="dv">1</span>, <span class="dt">length=</span><span class="dv">50</span>)</span>
+<span id="cb181-4"><a href="meta.html#cb181-4"></a>dp.dt &lt;-<span class="st"> </span><span class="kw">eval</span>(dpdtCS)</span>
+<span id="cb181-5"><a href="meta.html#cb181-5"></a><span class="kw">qplot</span>(p, dp.dt, <span class="dt">geom=</span><span class="st">&quot;line&quot;</span>, <span class="dt">ylab=</span><span class="st">&quot;dp/dt&quot;</span>)</span></code></pre></div>
 <div class="figure"><span id="fig:hanskiP"></span>
 <img src="figs/hanskiP-1.png" alt="*Metapopulation growth rate as a function of $p$, in the core-satellite model when $c_i &gt; e$. We see that growth rate falls to zero at full occupancy (i.e., at $p^*=1$). At that point, the slope is negative, indicating that this equilibrium is stable.*" width="90%" />
 <p class="caption">
@@ -719,18 +715,18 @@ so that we can derive either result for the two models. In the context of logist
 where <span class="math inline">\(D\)</span> is the amount of habitat destroyed, expressed as a fraction of the original total available habitat.</p>
 
 <p>To turn eq. <a href="meta.html#eq:D">(6.17)</a> into a function we can use with <code>ode</code>, we have,</p>
-<div class="sourceCode" id="cb181"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb181-1"><a href="meta.html#cb181-1"></a>lande &lt;-<span class="st"> </span><span class="cf">function</span>(t, y, parms) {</span>
-<span id="cb181-2"><a href="meta.html#cb181-2"></a>       <span class="kw">with</span>(<span class="kw">as.list</span>(<span class="kw">c</span>(y,parms)), {</span>
-<span id="cb181-3"><a href="meta.html#cb181-3"></a>       dp &lt;-<span class="st"> </span>ci <span class="op">*</span><span class="st"> </span>p <span class="op">*</span><span class="st"> </span>(<span class="dv">1</span><span class="op">-</span>D<span class="op">-</span>p) <span class="op">-</span><span class="st"> </span>e <span class="op">*</span><span class="st"> </span>p</span>
-<span id="cb181-4"><a href="meta.html#cb181-4"></a>       <span class="kw">return</span>(<span class="kw">list</span>(dp))</span>
-<span id="cb181-5"><a href="meta.html#cb181-5"></a>       }) }</span>
-<span id="cb181-6"><a href="meta.html#cb181-6"></a>prmsD &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dt">ci=</span><span class="fl">0.15</span>, <span class="dt">e=</span><span class="fl">0.05</span>, <span class="dt">D=</span>.<span class="dv">2</span>)</span>
-<span id="cb181-7"><a href="meta.html#cb181-7"></a>Initial.p &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dt">p=</span><span class="fl">0.1</span>)</span>
-<span id="cb181-8"><a href="meta.html#cb181-8"></a></span>
-<span id="cb181-9"><a href="meta.html#cb181-9"></a>out.D &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="kw">ode</span>(<span class="dt">y=</span>Initial.p, <span class="dt">times=</span><span class="dv">1</span><span class="op">:</span><span class="dv">100</span>, <span class="dt">func=</span>lande, <span class="dt">parms=</span>prmsD ))</span>
-<span id="cb181-10"><a href="meta.html#cb181-10"></a><span class="kw">qplot</span>(<span class="dt">x=</span>out.D[,<span class="dv">1</span>], <span class="dt">y=</span>out.D[,<span class="dv">2</span>], <span class="dt">geom=</span><span class="st">&quot;line&quot;</span>, <span class="dt">ylim=</span><span class="kw">c</span>(<span class="dv">0</span>,<span class="dv">1</span>), <span class="dt">ylab=</span><span class="st">&quot;p&quot;</span>, <span class="dt">xlab=</span><span class="st">&quot;time&quot;</span>)  <span class="op">+</span></span>
-<span id="cb181-11"><a href="meta.html#cb181-11"></a><span class="st">  </span><span class="kw">annotate</span>(<span class="st">&quot;text&quot;</span>, <span class="dv">25</span>, <span class="fl">.75</span>, </span>
-<span id="cb181-12"><a href="meta.html#cb181-12"></a>           <span class="dt">label=</span><span class="kw">bquote</span>( <span class="kw">over</span>(dp,dt)<span class="op">==</span>c[i]<span class="op">*</span><span class="kw">p</span>(<span class="dv">1</span><span class="op">-</span>D<span class="op">-</span>p)<span class="op">-</span>ep) )</span></code></pre></div>
+<div class="sourceCode" id="cb182"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb182-1"><a href="meta.html#cb182-1"></a>lande &lt;-<span class="st"> </span><span class="cf">function</span>(t, y, parms) {</span>
+<span id="cb182-2"><a href="meta.html#cb182-2"></a>       <span class="kw">with</span>(<span class="kw">as.list</span>(<span class="kw">c</span>(y,parms)), {</span>
+<span id="cb182-3"><a href="meta.html#cb182-3"></a>       dp &lt;-<span class="st"> </span>ci <span class="op">*</span><span class="st"> </span>p <span class="op">*</span><span class="st"> </span>(<span class="dv">1</span><span class="op">-</span>D<span class="op">-</span>p) <span class="op">-</span><span class="st"> </span>e <span class="op">*</span><span class="st"> </span>p</span>
+<span id="cb182-4"><a href="meta.html#cb182-4"></a>       <span class="kw">return</span>(<span class="kw">list</span>(dp))</span>
+<span id="cb182-5"><a href="meta.html#cb182-5"></a>       }) }</span>
+<span id="cb182-6"><a href="meta.html#cb182-6"></a>prmsD &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dt">ci=</span><span class="fl">0.15</span>, <span class="dt">e=</span><span class="fl">0.05</span>, <span class="dt">D=</span>.<span class="dv">2</span>)</span>
+<span id="cb182-7"><a href="meta.html#cb182-7"></a>Initial.p &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dt">p=</span><span class="fl">0.1</span>)</span>
+<span id="cb182-8"><a href="meta.html#cb182-8"></a></span>
+<span id="cb182-9"><a href="meta.html#cb182-9"></a>out.D &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="kw">ode</span>(<span class="dt">y=</span>Initial.p, <span class="dt">times=</span><span class="dv">1</span><span class="op">:</span><span class="dv">100</span>, <span class="dt">func=</span>lande, <span class="dt">parms=</span>prmsD ))</span>
+<span id="cb182-10"><a href="meta.html#cb182-10"></a><span class="kw">qplot</span>(<span class="dt">x=</span>out.D[,<span class="dv">1</span>], <span class="dt">y=</span>out.D[,<span class="dv">2</span>], <span class="dt">geom=</span><span class="st">&quot;line&quot;</span>, <span class="dt">ylim=</span><span class="kw">c</span>(<span class="dv">0</span>,<span class="dv">1</span>), <span class="dt">ylab=</span><span class="st">&quot;p&quot;</span>, <span class="dt">xlab=</span><span class="st">&quot;time&quot;</span>)  <span class="op">+</span></span>
+<span id="cb182-11"><a href="meta.html#cb182-11"></a><span class="st">  </span><span class="kw">annotate</span>(<span class="st">&quot;text&quot;</span>, <span class="dv">25</span>, <span class="fl">.75</span>, </span>
+<span id="cb182-12"><a href="meta.html#cb182-12"></a>           <span class="dt">label=</span><span class="kw">bquote</span>( <span class="kw">over</span>(dp,dt)<span class="op">==</span>c[i]<span class="op">*</span><span class="kw">p</span>(<span class="dv">1</span><span class="op">-</span>D<span class="op">-</span>p)<span class="op">-</span>ep) )</span></code></pre></div>
 <div class="figure"><span id="fig:lande"></span>
 <img src="figs/lande-1.png" alt="*Habitat destruction metapopulation model*" width="75%" />
 <p class="caption">
@@ -742,19 +738,19 @@ Figure 6.9: <em>Habitat destruction metapopulation model</em>
 <div id="illustrating-the-effects-of-habitat-destruction" class="section level3">
 <h3><span class="header-section-number">6.2.7</span> Illustrating the effects of habitat destruction</h3>
 <p>We can plot the dynamics for three levels of destruction, starting with none (<span class="math inline">\(D=0\)</span>). We first set all the parameters, and time.</p>
-<div class="sourceCode" id="cb182"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb182-1"><a href="meta.html#cb182-1"></a>t &lt;-<span class="st"> </span><span class="dv">1</span><span class="op">:</span><span class="dv">200</span></span>
-<span id="cb182-2"><a href="meta.html#cb182-2"></a>prmsD &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dt">ci=</span><span class="fl">0.15</span>, <span class="dt">e=</span><span class="fl">0.05</span>, <span class="dt">D=</span><span class="dv">0</span>)</span>
-<span id="cb182-3"><a href="meta.html#cb182-3"></a>Initial.p &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dt">p=</span><span class="fl">0.01</span>)</span>
-<span id="cb182-4"><a href="meta.html#cb182-4"></a>t &lt;-<span class="st"> </span><span class="dv">1</span><span class="op">:</span><span class="dv">200</span></span>
-<span id="cb182-5"><a href="meta.html#cb182-5"></a>D0 &lt;-<span class="st"> </span><span class="kw">ode</span>(<span class="dt">y=</span>Initial.p, <span class="dt">times=</span>t, <span class="dt">func=</span>lande, <span class="dt">parms=</span>prmsD )</span>
-<span id="cb182-6"><a href="meta.html#cb182-6"></a>prmsD[<span class="st">&quot;D&quot;</span>] &lt;-<span class="st"> </span><span class="fl">0.2</span></span>
-<span id="cb182-7"><a href="meta.html#cb182-7"></a>D<span class="fl">.2</span> &lt;-<span class="st"> </span><span class="kw">ode</span>(<span class="dt">y=</span>Initial.p, <span class="dt">times=</span>t, <span class="dt">func=</span>lande, <span class="dt">parms=</span>prmsD )</span>
-<span id="cb182-8"><a href="meta.html#cb182-8"></a>prmsD[<span class="st">&quot;D&quot;</span>] &lt;-<span class="st"> </span><span class="fl">0.5</span></span>
-<span id="cb182-9"><a href="meta.html#cb182-9"></a>D<span class="fl">.5</span> &lt;-<span class="st"> </span><span class="kw">ode</span>(<span class="dt">y=</span>Initial.p, <span class="dt">times=</span>t, <span class="dt">func=</span>lande, <span class="dt">parms=</span>prmsD )</span>
-<span id="cb182-10"><a href="meta.html#cb182-10"></a>ps &lt;-<span class="st"> </span><span class="kw">rbind.data.frame</span>(D0, D<span class="fl">.2</span>, D<span class="fl">.5</span>)</span>
-<span id="cb182-11"><a href="meta.html#cb182-11"></a>ps<span class="op">$</span>D &lt;-<span class="st"> </span><span class="kw">as.character</span>( <span class="kw">rep</span>(<span class="kw">c</span>(<span class="dv">0</span>, <span class="fl">.2</span>, <span class="fl">.5</span>), <span class="dt">each=</span><span class="kw">length</span>(t)) )</span></code></pre></div>
+<div class="sourceCode" id="cb183"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb183-1"><a href="meta.html#cb183-1"></a>t &lt;-<span class="st"> </span><span class="dv">1</span><span class="op">:</span><span class="dv">200</span></span>
+<span id="cb183-2"><a href="meta.html#cb183-2"></a>prmsD &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dt">ci=</span><span class="fl">0.15</span>, <span class="dt">e=</span><span class="fl">0.05</span>, <span class="dt">D=</span><span class="dv">0</span>)</span>
+<span id="cb183-3"><a href="meta.html#cb183-3"></a>Initial.p &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dt">p=</span><span class="fl">0.01</span>)</span>
+<span id="cb183-4"><a href="meta.html#cb183-4"></a>t &lt;-<span class="st"> </span><span class="dv">1</span><span class="op">:</span><span class="dv">200</span></span>
+<span id="cb183-5"><a href="meta.html#cb183-5"></a>D0 &lt;-<span class="st"> </span><span class="kw">ode</span>(<span class="dt">y=</span>Initial.p, <span class="dt">times=</span>t, <span class="dt">func=</span>lande, <span class="dt">parms=</span>prmsD )</span>
+<span id="cb183-6"><a href="meta.html#cb183-6"></a>prmsD[<span class="st">&quot;D&quot;</span>] &lt;-<span class="st"> </span><span class="fl">0.2</span></span>
+<span id="cb183-7"><a href="meta.html#cb183-7"></a>D<span class="fl">.2</span> &lt;-<span class="st"> </span><span class="kw">ode</span>(<span class="dt">y=</span>Initial.p, <span class="dt">times=</span>t, <span class="dt">func=</span>lande, <span class="dt">parms=</span>prmsD )</span>
+<span id="cb183-8"><a href="meta.html#cb183-8"></a>prmsD[<span class="st">&quot;D&quot;</span>] &lt;-<span class="st"> </span><span class="fl">0.5</span></span>
+<span id="cb183-9"><a href="meta.html#cb183-9"></a>D<span class="fl">.5</span> &lt;-<span class="st"> </span><span class="kw">ode</span>(<span class="dt">y=</span>Initial.p, <span class="dt">times=</span>t, <span class="dt">func=</span>lande, <span class="dt">parms=</span>prmsD )</span>
+<span id="cb183-10"><a href="meta.html#cb183-10"></a>ps &lt;-<span class="st"> </span><span class="kw">rbind.data.frame</span>(D0, D<span class="fl">.2</span>, D<span class="fl">.5</span>)</span>
+<span id="cb183-11"><a href="meta.html#cb183-11"></a>ps<span class="op">$</span>D &lt;-<span class="st"> </span><span class="kw">as.character</span>( <span class="kw">rep</span>(<span class="kw">c</span>(<span class="dv">0</span>, <span class="fl">.2</span>, <span class="fl">.5</span>), <span class="dt">each=</span><span class="kw">length</span>(t)) )</span></code></pre></div>
 <p>Last, we plot it and add some useful labels.</p>
-<div class="sourceCode" id="cb183"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb183-1"><a href="meta.html#cb183-1"></a><span class="kw">ggplot</span>(ps, <span class="kw">aes</span>(time, p, <span class="dt">linetype=</span>D)) <span class="op">+</span><span class="st"> </span><span class="kw">geom_line</span>() </span></code></pre></div>
+<div class="sourceCode" id="cb184"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb184-1"><a href="meta.html#cb184-1"></a><span class="kw">ggplot</span>(ps, <span class="kw">aes</span>(time, p, <span class="dt">linetype=</span>D)) <span class="op">+</span><span class="st"> </span><span class="kw">geom_line</span>() </span></code></pre></div>
 <div class="figure"><span id="fig:lande3"></span>
 <img src="figs/lande3-1.png" alt="*Three different levels of habitat destruction*" width="90%" />
 <p class="caption">
@@ -778,14 +774,14 @@ What will happen and how might it differ with and without the assumption of the 
 <p>When <span class="math inline">\(c_i &gt; e\)</span>, we see that <span class="math inline">\(p^*=1\)</span> is the stable attractor (Fig. <a href="meta.html#fig:hanski2">6.11</a>). If extinction rates rise so that <span class="math inline">\(c_i &lt; e\)</span>, we see the inevitable march toward extinction predicted by the core-satellite model (Fig. <a href="meta.html#fig:hanski2">6.11</a>). The decline starts slowly and remains slow, until it begins to gradually accelerate. Do all metapopulation models make the same predictions?</p>
 <p>If we try this experiment with the Levins model, we see something very different. The Levins model predicts very rapid decline once <span class="math inline">\(c_i &lt; e\)</span>. Both models predict extinction, but the rescue effect delays the appearance of that extinction. It appears that the rescue effect (which is the difference between the two models) may act a bit like the ``extinction debt’’ <span class="citation">(Tilman et al. <a href="#ref-Tilman1994b" role="doc-biblioref">1994</a>)</span> wherein deterministic extinction of a dominant species in a multi-species community is merely delayed, but not postponed indefinitely. Perhaps populations influenced by the rescue effect might be prone to unexpected collapse, if the only stable equilibria are 1 and 0. Thus simple theory can provide interesting insight, resulting in very different predictions for superficially similar processes.</p>
 <p>Here we show the unexpected collapse of core populations, starting at or near equilbrium. The first two use the Hanski model, while the third uses Levins. The second and third use <span class="math inline">\(c_i &lt; e\)</span>.</p>
-<div class="sourceCode" id="cb184"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb184-1"><a href="meta.html#cb184-1"></a>C1 &lt;-<span class="st"> </span><span class="kw">ode</span>(<span class="dt">y=</span><span class="kw">c</span>(<span class="dt">p=</span><span class="fl">0.999</span>), <span class="dt">times=</span>t, <span class="dt">func=</span>hanski, <span class="dt">parms=</span><span class="kw">c</span>(<span class="dt">ci=</span><span class="fl">0.2</span>, <span class="dt">e=</span><span class="fl">0.01</span>))</span>
-<span id="cb184-2"><a href="meta.html#cb184-2"></a>C2 &lt;-<span class="st"> </span><span class="kw">ode</span>(<span class="dt">y=</span><span class="kw">c</span>(<span class="dt">p=</span><span class="fl">0.999</span>), <span class="dt">times=</span>t, <span class="dt">func=</span>hanski, <span class="dt">parms=</span><span class="kw">c</span>(<span class="dt">ci=</span><span class="fl">0.2</span>, <span class="dt">e=</span><span class="fl">0.25</span>))</span>
-<span id="cb184-3"><a href="meta.html#cb184-3"></a>L2 &lt;-<span class="st"> </span><span class="kw">ode</span>(<span class="dt">y=</span><span class="kw">c</span>(<span class="dt">p=</span><span class="fl">0.999</span>), <span class="dt">times=</span>t, <span class="dt">func=</span>levins, <span class="dt">parms=</span><span class="kw">c</span>(<span class="dt">ci=</span><span class="fl">0.2</span>, <span class="dt">e=</span><span class="fl">0.25</span>))</span>
-<span id="cb184-4"><a href="meta.html#cb184-4"></a>coll &lt;-<span class="st"> </span><span class="kw">rbind.data.frame</span>(C1, C2, L2)</span>
-<span id="cb184-5"><a href="meta.html#cb184-5"></a>coll<span class="op">$</span>model &lt;-<span class="st"> </span><span class="kw">factor</span>(<span class="kw">rep</span>(<span class="kw">c</span>(<span class="st">&quot;c&gt;e&quot;</span>, <span class="st">&quot;c&lt;e&quot;</span>, <span class="st">&quot;c&lt;e (Levins)&quot;</span>), <span class="dt">each=</span><span class="kw">nrow</span>(L2)),</span>
-<span id="cb184-6"><a href="meta.html#cb184-6"></a>                     <span class="dt">levels=</span><span class="kw">c</span>(<span class="st">&quot;c&gt;e&quot;</span>, <span class="st">&quot;c&lt;e&quot;</span>, <span class="st">&quot;c&lt;e (Levins)&quot;</span>))</span>
-<span id="cb184-7"><a href="meta.html#cb184-7"></a></span>
-<span id="cb184-8"><a href="meta.html#cb184-8"></a><span class="kw">ggplot</span>(coll, <span class="kw">aes</span>(time, p, <span class="dt">linetype=</span>model)) <span class="op">+</span><span class="st"> </span><span class="kw">geom_line</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb185"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb185-1"><a href="meta.html#cb185-1"></a>C1 &lt;-<span class="st"> </span><span class="kw">ode</span>(<span class="dt">y=</span><span class="kw">c</span>(<span class="dt">p=</span><span class="fl">0.999</span>), <span class="dt">times=</span>t, <span class="dt">func=</span>hanski, <span class="dt">parms=</span><span class="kw">c</span>(<span class="dt">ci=</span><span class="fl">0.2</span>, <span class="dt">e=</span><span class="fl">0.01</span>))</span>
+<span id="cb185-2"><a href="meta.html#cb185-2"></a>C2 &lt;-<span class="st"> </span><span class="kw">ode</span>(<span class="dt">y=</span><span class="kw">c</span>(<span class="dt">p=</span><span class="fl">0.999</span>), <span class="dt">times=</span>t, <span class="dt">func=</span>hanski, <span class="dt">parms=</span><span class="kw">c</span>(<span class="dt">ci=</span><span class="fl">0.2</span>, <span class="dt">e=</span><span class="fl">0.25</span>))</span>
+<span id="cb185-3"><a href="meta.html#cb185-3"></a>L2 &lt;-<span class="st"> </span><span class="kw">ode</span>(<span class="dt">y=</span><span class="kw">c</span>(<span class="dt">p=</span><span class="fl">0.999</span>), <span class="dt">times=</span>t, <span class="dt">func=</span>levins, <span class="dt">parms=</span><span class="kw">c</span>(<span class="dt">ci=</span><span class="fl">0.2</span>, <span class="dt">e=</span><span class="fl">0.25</span>))</span>
+<span id="cb185-4"><a href="meta.html#cb185-4"></a>coll &lt;-<span class="st"> </span><span class="kw">rbind.data.frame</span>(C1, C2, L2)</span>
+<span id="cb185-5"><a href="meta.html#cb185-5"></a>coll<span class="op">$</span>model &lt;-<span class="st"> </span><span class="kw">factor</span>(<span class="kw">rep</span>(<span class="kw">c</span>(<span class="st">&quot;c&gt;e&quot;</span>, <span class="st">&quot;c&lt;e&quot;</span>, <span class="st">&quot;c&lt;e (Levins)&quot;</span>), <span class="dt">each=</span><span class="kw">nrow</span>(L2)),</span>
+<span id="cb185-6"><a href="meta.html#cb185-6"></a>                     <span class="dt">levels=</span><span class="kw">c</span>(<span class="st">&quot;c&gt;e&quot;</span>, <span class="st">&quot;c&lt;e&quot;</span>, <span class="st">&quot;c&lt;e (Levins)&quot;</span>))</span>
+<span id="cb185-7"><a href="meta.html#cb185-7"></a></span>
+<span id="cb185-8"><a href="meta.html#cb185-8"></a><span class="kw">ggplot</span>(coll, <span class="kw">aes</span>(time, p, <span class="dt">linetype=</span>model)) <span class="op">+</span><span class="st"> </span><span class="kw">geom_line</span>()</span></code></pre></div>
 <div class="figure"><span id="fig:hanski2"></span>
 <img src="figs/hanski2-1.png" alt="*Metapopulation dynamics, starting from near equilibrium for $c_i=0.20$ and $e=0.01$. If the environment changes, causing extinction rate to increase until it is greater than colonization rate, we may observe greatly delayed, but inevitable, extinction (e.g., $c_i=0.20, e=0.25$)*" width="90%" />
 <p class="caption">
@@ -799,28 +795,28 @@ Figure 6.11: <em>Metapopulation dynamics, starting from near equilibrium for <sp
 <p>The above models of metapopulation dynamics provide an outline for understanding metapopulation dynamics. However, they do not necessarily provide a direct means to interrogate data or use data illuminate our understanding. One of the main reasons for this is that they do not address two important ecological realities: that patches will be differ in area and thus differ in population sizes, and that they are different distances from each other. <span class="citation">MacArthur and Wilson (<a href="#ref-MacArthur1963" role="doc-biblioref">1963</a>)</span> argued persuasively that extinction risk should be related to area, and that distance from a source should influence the probability of colonization. <span class="citation">IIkka Hanski (<a href="#ref-Hanski1994" role="doc-biblioref">1994</a>)</span> provided an approach using <em>incidence functions</em>, which predict the probability of occurrence. They allow us to incorporate area and distance in our model, and uses easily acquired patch occupancy data (presence/absence data) to evaluate metapopulation characteristics.</p>
 <p>The <strong>incidence of occupancy</strong> is determined by colonization and extinction probabilities. We will assume that if a patch <span class="math inline">\(i\)</span> is empty in year <span class="math inline">\(t\)</span>, it will be recolonized in year <span class="math inline">\(t+1\)</span> with a probability <span class="math inline">\(C_i\)</span>. This also means it will remain empty with probability of <span class="math inline">\(1-C_i\)</span>. If a patch <span class="math inline">\(j\)</span> is occupied in year <span class="math inline">\(t\)</span>, it will become extinct in year <span class="math inline">\(t+1\)</span> with probability <span class="math inline">\(E_i\)</span>. This also means that it will persist with probability <span class="math inline">\(1-E_i\)</span>.</p>
 <p>The two states for one patch are illustrated with the code and figure below. Each column of the matrix is the probabilities for one state. Te first column comprises the probabilities of remaining empty or changing from empty to occupied. The second column comprises the probabilities that an occupied patch becomes empty or remains occupied.</p>
-<div class="sourceCode" id="cb185"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb185-1"><a href="meta.html#cb185-1"></a>C &lt;-<span class="st"> </span><span class="fl">.3</span>; E &lt;-<span class="st"> </span><span class="fl">.5</span></span>
-<span id="cb185-2"><a href="meta.html#cb185-2"></a>M &lt;-<span class="st"> </span><span class="kw">matrix</span>(<span class="kw">c</span>(<span class="dv">1</span><span class="op">-</span>C, E,</span>
-<span id="cb185-3"><a href="meta.html#cb185-3"></a>              C, <span class="dv">1</span><span class="op">-</span>E), <span class="dt">ncol=</span><span class="dv">2</span>, <span class="dt">byrow=</span><span class="ot">TRUE</span>)</span>
-<span id="cb185-4"><a href="meta.html#cb185-4"></a><span class="kw">colnames</span>(M) &lt;-<span class="st"> </span><span class="kw">rownames</span>(M) &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;empty&quot;</span>, <span class="st">&quot;occupied&quot;</span>)</span>
-<span id="cb185-5"><a href="meta.html#cb185-5"></a>M</span></code></pre></div>
+<div class="sourceCode" id="cb186"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb186-1"><a href="meta.html#cb186-1"></a>C &lt;-<span class="st"> </span><span class="fl">.3</span>; E &lt;-<span class="st"> </span><span class="fl">.5</span></span>
+<span id="cb186-2"><a href="meta.html#cb186-2"></a>M &lt;-<span class="st"> </span><span class="kw">matrix</span>(<span class="kw">c</span>(<span class="dv">1</span><span class="op">-</span>C, E,</span>
+<span id="cb186-3"><a href="meta.html#cb186-3"></a>              C, <span class="dv">1</span><span class="op">-</span>E), <span class="dt">ncol=</span><span class="dv">2</span>, <span class="dt">byrow=</span><span class="ot">TRUE</span>)</span>
+<span id="cb186-4"><a href="meta.html#cb186-4"></a><span class="kw">colnames</span>(M) &lt;-<span class="st"> </span><span class="kw">rownames</span>(M) &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;empty&quot;</span>, <span class="st">&quot;occupied&quot;</span>)</span>
+<span id="cb186-5"><a href="meta.html#cb186-5"></a>M</span></code></pre></div>
 <pre><code>##          empty occupied
 ## empty      0.7      0.5
 ## occupied   0.3      0.5</code></pre>
-<div class="sourceCode" id="cb187"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb187-1"><a href="meta.html#cb187-1"></a>{</span>
-<span id="cb187-2"><a href="meta.html#cb187-2"></a>  <span class="kw">plotmat</span>(M, <span class="dt">pos=</span><span class="dv">2</span>) <span class="co">#requires the diagram package</span></span>
-<span id="cb187-3"><a href="meta.html#cb187-3"></a>  <span class="kw">title</span>(<span class="st">&quot;The two states of one patch&quot;</span>)</span>
-<span id="cb187-4"><a href="meta.html#cb187-4"></a>}</span></code></pre></div>
-<p><img src="figs/unnamed-chunk-62-1.png" width="90%" /></p>
+<div class="sourceCode" id="cb188"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb188-1"><a href="meta.html#cb188-1"></a>{</span>
+<span id="cb188-2"><a href="meta.html#cb188-2"></a>  <span class="kw">plotmat</span>(M, <span class="dt">pos=</span><span class="dv">2</span>) <span class="co">#requires the diagram package</span></span>
+<span id="cb188-3"><a href="meta.html#cb188-3"></a>  <span class="kw">title</span>(<span class="st">&quot;The two states of one patch&quot;</span>)</span>
+<span id="cb188-4"><a href="meta.html#cb188-4"></a>}</span></code></pre></div>
+<p><img src="figs/unnamed-chunk-61-1.png" width="90%" /></p>
 <p>The probability, <span class="math inline">\(J_i\)</span>, that a patch is occupied at any given time is,
 <span class="math display">\[J_i = \frac{C_i}{C_i + E_i}.\]</span></p>
 <p>We can show this by calculating the stable distribution of these states using eigenanalysis in the way we did for demographic matrices.</p>
-<div class="sourceCode" id="cb188"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb188-1"><a href="meta.html#cb188-1"></a><span class="co"># J</span></span>
-<span id="cb188-2"><a href="meta.html#cb188-2"></a>(J &lt;-<span class="st"> </span>C<span class="op">/</span>(C<span class="op">+</span>E))</span></code></pre></div>
+<div class="sourceCode" id="cb189"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb189-1"><a href="meta.html#cb189-1"></a><span class="co"># J</span></span>
+<span id="cb189-2"><a href="meta.html#cb189-2"></a>(J &lt;-<span class="st"> </span>C<span class="op">/</span>(C<span class="op">+</span>E))</span></code></pre></div>
 <pre><code>## [1] 0.375</code></pre>
-<div class="sourceCode" id="cb190"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb190-1"><a href="meta.html#cb190-1"></a><span class="co"># The stationary distributions for the two states, empty and occupied</span></span>
-<span id="cb190-2"><a href="meta.html#cb190-2"></a>eM &lt;-<span class="st"> </span><span class="kw">eigen</span>(M)</span>
-<span id="cb190-3"><a href="meta.html#cb190-3"></a>eM<span class="op">$</span>vectors[,<span class="dv">1</span>]<span class="op">/</span><span class="kw">sum</span>(eM<span class="op">$</span>vectors[,<span class="dv">1</span>])</span></code></pre></div>
+<div class="sourceCode" id="cb191"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb191-1"><a href="meta.html#cb191-1"></a><span class="co"># The stationary distributions for the two states, empty and occupied</span></span>
+<span id="cb191-2"><a href="meta.html#cb191-2"></a>eM &lt;-<span class="st"> </span><span class="kw">eigen</span>(M)</span>
+<span id="cb191-3"><a href="meta.html#cb191-3"></a>eM<span class="op">$</span>vectors[,<span class="dv">1</span>]<span class="op">/</span><span class="kw">sum</span>(eM<span class="op">$</span>vectors[,<span class="dv">1</span>])</span></code></pre></div>
 <pre><code>## [1] 0.625 0.375</code></pre>
 <p>We see that <span class="math inline">\(J_i\)</span> is the stable state for being colonized.</p>
 <p><strong>Extinction probability</strong>, <span class="math inline">\(E\)</span>, is determined by patch area <span class="math inline">\(A_i\)</span> in our simple model. This is because we will assume that all patches have a similar quality and so support equal densities (individuals per unit area). Larger areas have more individuals and thus have lower risk of extinction. <span class="citation">IIkka Hanski (<a href="#ref-Hanski1994" role="doc-biblioref">1994</a>)</span> described this mathematically as
@@ -830,24 +826,24 @@ E_i = 1 \quad &amp;\mathrm{if} A_i \le e^{1/x}
 \end{align*}\]</span>
 where <span class="math inline">\(e\)</span> and <span class="math inline">\(x\)</span> are constants letting <span class="math inline">\(E_i\)</span> vary for different systems. Parameter <span class="math inline">\(x\)</span> controls the effect of area, where larger values <span class="math inline">\(x&gt;1\)</span> mean that large patches have very low extinction risk. Smaller values of <span class="math inline">\(x\)</span> (<span class="math inline">\(x&lt;1\)</span>) mean that patches have to become exceedingly larger to appreciably reduce extinction risk. The parameter <span class="math inline">\(e\)</span> is the area-independent measure of extinction risk, and so is related to intrinsic population dynamics and environmental stochasticity.</p>
 <p>We can illustrate extinction probability with toy code.</p>
-<div class="sourceCode" id="cb192"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb192-1"><a href="meta.html#cb192-1"></a><span class="co"># Extinction probability</span></span>
-<span id="cb192-2"><a href="meta.html#cb192-2"></a>E.p &lt;-<span class="st"> </span><span class="cf">function</span>(A, <span class="dt">e=</span><span class="fl">0.01</span>, <span class="dt">X=</span><span class="fl">1.009</span>){</span>
-<span id="cb192-3"><a href="meta.html#cb192-3"></a>  Ei &lt;-<span class="st"> </span><span class="kw">ifelse</span>(A <span class="op">&gt;</span><span class="st"> </span>e<span class="op">^</span>(<span class="dv">1</span><span class="op">/</span>X), e<span class="op">/</span>(A<span class="op">^</span>X), <span class="dv">1</span>)</span>
-<span id="cb192-4"><a href="meta.html#cb192-4"></a>  Ei }</span>
-<span id="cb192-5"><a href="meta.html#cb192-5"></a></span>
-<span id="cb192-6"><a href="meta.html#cb192-6"></a><span class="kw">curve</span>(<span class="kw">E.p</span>(x), <span class="dv">0</span>, <span class="fl">0.2</span>, <span class="dt">ylim=</span><span class="kw">c</span>(<span class="dv">0</span>,<span class="dv">1</span>))</span></code></pre></div>
+<div class="sourceCode" id="cb193"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb193-1"><a href="meta.html#cb193-1"></a><span class="co"># Extinction probability</span></span>
+<span id="cb193-2"><a href="meta.html#cb193-2"></a>E.p &lt;-<span class="st"> </span><span class="cf">function</span>(A, <span class="dt">e=</span><span class="fl">0.01</span>, <span class="dt">X=</span><span class="fl">1.009</span>){</span>
+<span id="cb193-3"><a href="meta.html#cb193-3"></a>  Ei &lt;-<span class="st"> </span><span class="kw">ifelse</span>(A <span class="op">&gt;</span><span class="st"> </span>e<span class="op">^</span>(<span class="dv">1</span><span class="op">/</span>X), e<span class="op">/</span>(A<span class="op">^</span>X), <span class="dv">1</span>)</span>
+<span id="cb193-4"><a href="meta.html#cb193-4"></a>  Ei }</span>
+<span id="cb193-5"><a href="meta.html#cb193-5"></a></span>
+<span id="cb193-6"><a href="meta.html#cb193-6"></a><span class="kw">curve</span>(<span class="kw">E.p</span>(x), <span class="dv">0</span>, <span class="fl">0.2</span>, <span class="dt">ylim=</span><span class="kw">c</span>(<span class="dv">0</span>,<span class="dv">1</span>))</span></code></pre></div>
 <div class="figure"><span id="fig:E"></span>
 <img src="figs/E-1.png" alt="*Extinction probabliity for a butterfly population (silver spotted skipper, Hanski 1994).*" width="75%" />
 <p class="caption">
 Figure 6.12: <em>Extinction probabliity for a butterfly population (silver spotted skipper, Hanski 1994).</em>
 </p>
 </div>
-<div class="sourceCode" id="cb193"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb193-1"><a href="meta.html#cb193-1"></a><span class="co">## The ggplot way</span></span>
-<span id="cb193-2"><a href="meta.html#cb193-2"></a><span class="co"># myData &lt;- data.frame( A=c(0, .2) ) # ggplot requires a data frame</span></span>
-<span id="cb193-3"><a href="meta.html#cb193-3"></a><span class="co"># ggplot(data=myData, aes(x=A)) + # set the basic properties of the plot</span></span>
-<span id="cb193-4"><a href="meta.html#cb193-4"></a><span class="co">#   # in the stat_function, we indicate the parameters in our equation.</span></span>
-<span id="cb193-5"><a href="meta.html#cb193-5"></a><span class="co">#   stat_function(fun=E.p, geom=&quot;line&quot;, </span></span>
-<span id="cb193-6"><a href="meta.html#cb193-6"></a><span class="co">#                 args=list(e = 0.01, X = 1.009)) </span></span></code></pre></div>
+<div class="sourceCode" id="cb194"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb194-1"><a href="meta.html#cb194-1"></a><span class="co">## The ggplot way</span></span>
+<span id="cb194-2"><a href="meta.html#cb194-2"></a><span class="co"># myData &lt;- data.frame( A=c(0, .2) ) # ggplot requires a data frame</span></span>
+<span id="cb194-3"><a href="meta.html#cb194-3"></a><span class="co"># ggplot(data=myData, aes(x=A)) + # set the basic properties of the plot</span></span>
+<span id="cb194-4"><a href="meta.html#cb194-4"></a><span class="co">#   # in the stat_function, we indicate the parameters in our equation.</span></span>
+<span id="cb194-5"><a href="meta.html#cb194-5"></a><span class="co">#   stat_function(fun=E.p, geom=&quot;line&quot;, </span></span>
+<span id="cb194-6"><a href="meta.html#cb194-6"></a><span class="co">#                 args=list(e = 0.01, X = 1.009)) </span></span></code></pre></div>
 <p>Note that <span class="math inline">\(A_0 = e^{1/x}\)</span> is the critical patch size where a population is not expected to persist a year.</p>
 <p><strong>Colonization probability</strong>, <span class="math inline">\(C_i\)</span>, is more complicated. It is a function of the number of arriving migrants, which are themselves a function of distances from other patches and the area (and thus population sizes) of those patches. It is
 <span class="math display">\[C_i = \frac{1}{1+\left(\frac{y^\prime}{S_i}\right)^2}\]</span>
@@ -855,18 +851,18 @@ where <span class="math inline">\(y^\prime\)</span> is colonizing ability of the
 <span class="math display">\[S_i = \sum_{j=1}^n\left(p_j \mathrm{exp}(-\alpha d_{ij}) A_j\right)\]</span>
 where there are a total <span class="math inline">\(n\)</span> other patches <span class="math inline">\(j\)</span> that are habitats, <span class="math inline">\(p_j\)</span> is an indicator of whether a patch is currently occupied (0,1), <span class="math inline">\(d_{ij}\)</span> is the distance from patch <span class="math inline">\(j\)</span> to patch <span class="math inline">\(i\)</span>, <span class="math inline">\(\alpha\)</span> is the effect of distance, and <span class="math inline">\(A_j\)</span> is the area of patch <span class="math inline">\(j\)</span> and thus an index of population size.</p>
 <p>We can illustrate extinction probability with toy code.</p>
-<div class="sourceCode" id="cb194"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb194-1"><a href="meta.html#cb194-1"></a><span class="co"># Colonization probability from one patch to another, as a function of distance</span></span>
-<span id="cb194-2"><a href="meta.html#cb194-2"></a>C.p &lt;-<span class="st"> </span><span class="cf">function</span>(d, yprime, alpha, area){</span>
-<span id="cb194-3"><a href="meta.html#cb194-3"></a>  Sij &lt;-<span class="st"> </span><span class="kw">exp</span>(<span class="op">-</span>alpha<span class="op">*</span>d ) <span class="op">*</span><span class="st"> </span>area</span>
-<span id="cb194-4"><a href="meta.html#cb194-4"></a>  Ci &lt;-<span class="st"> </span><span class="dv">1</span><span class="op">/</span>(<span class="dv">1</span> <span class="op">+</span><span class="st"> </span>(yprime<span class="op">/</span>Sij)<span class="op">^</span><span class="dv">2</span> )</span>
-<span id="cb194-5"><a href="meta.html#cb194-5"></a>  Ci</span>
-<span id="cb194-6"><a href="meta.html#cb194-6"></a>}</span>
-<span id="cb194-7"><a href="meta.html#cb194-7"></a></span>
-<span id="cb194-8"><a href="meta.html#cb194-8"></a><span class="co"># parameters</span></span>
-<span id="cb194-9"><a href="meta.html#cb194-9"></a>yprime &lt;-<span class="st"> </span><span class="fl">2.663</span>; ha &lt;-<span class="st"> </span><span class="fl">0.94</span>; alpha &lt;-<span class="st"> </span><span class="dv">2</span></span>
-<span id="cb194-10"><a href="meta.html#cb194-10"></a>km &lt;-<span class="st"> </span><span class="kw">seq</span>(<span class="dv">0</span>, <span class="fl">1.5</span>, <span class="dt">by=</span><span class="fl">0.01</span>)</span>
-<span id="cb194-11"><a href="meta.html#cb194-11"></a>C &lt;-<span class="st"> </span><span class="kw">sapply</span>(km, <span class="cf">function</span>(d) {<span class="kw">C.p</span>(<span class="dt">d=</span>d, <span class="dt">yprime=</span>yprime, <span class="dt">alpha=</span>alpha, <span class="dt">area=</span>ha)})</span>
-<span id="cb194-12"><a href="meta.html#cb194-12"></a><span class="kw">qplot</span>(km, C, <span class="dt">geom=</span><span class="st">&quot;line&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb195"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb195-1"><a href="meta.html#cb195-1"></a><span class="co"># Colonization probability from one patch to another, as a function of distance</span></span>
+<span id="cb195-2"><a href="meta.html#cb195-2"></a>C.p &lt;-<span class="st"> </span><span class="cf">function</span>(d, yprime, alpha, area){</span>
+<span id="cb195-3"><a href="meta.html#cb195-3"></a>  Sij &lt;-<span class="st"> </span><span class="kw">exp</span>(<span class="op">-</span>alpha<span class="op">*</span>d ) <span class="op">*</span><span class="st"> </span>area</span>
+<span id="cb195-4"><a href="meta.html#cb195-4"></a>  Ci &lt;-<span class="st"> </span><span class="dv">1</span><span class="op">/</span>(<span class="dv">1</span> <span class="op">+</span><span class="st"> </span>(yprime<span class="op">/</span>Sij)<span class="op">^</span><span class="dv">2</span> )</span>
+<span id="cb195-5"><a href="meta.html#cb195-5"></a>  Ci</span>
+<span id="cb195-6"><a href="meta.html#cb195-6"></a>}</span>
+<span id="cb195-7"><a href="meta.html#cb195-7"></a></span>
+<span id="cb195-8"><a href="meta.html#cb195-8"></a><span class="co"># parameters</span></span>
+<span id="cb195-9"><a href="meta.html#cb195-9"></a>yprime &lt;-<span class="st"> </span><span class="fl">2.663</span>; ha &lt;-<span class="st"> </span><span class="fl">0.94</span>; alpha &lt;-<span class="st"> </span><span class="dv">2</span></span>
+<span id="cb195-10"><a href="meta.html#cb195-10"></a>km &lt;-<span class="st"> </span><span class="kw">seq</span>(<span class="dv">0</span>, <span class="fl">1.5</span>, <span class="dt">by=</span><span class="fl">0.01</span>)</span>
+<span id="cb195-11"><a href="meta.html#cb195-11"></a>C &lt;-<span class="st"> </span><span class="kw">sapply</span>(km, <span class="cf">function</span>(d) {<span class="kw">C.p</span>(<span class="dt">d=</span>d, <span class="dt">yprime=</span>yprime, <span class="dt">alpha=</span>alpha, <span class="dt">area=</span>ha)})</span>
+<span id="cb195-12"><a href="meta.html#cb195-12"></a><span class="kw">qplot</span>(km, C, <span class="dt">geom=</span><span class="st">&quot;line&quot;</span>)</span></code></pre></div>
 <div class="figure"><span id="fig:C"></span>
 <img src="figs/C-1.png" alt="*Colonization probabliity for a butterfly population (silver spotted skipper, Hanski 1994).*" width="75%" />
 <p class="caption">
@@ -1016,7 +1012,7 @@ gitbook.start({
 "link": null,
 "text": null
 },
-"download": null,
+"download": ["_main.pdf"],
 "toc": {
 "collapse": "subsection"
 }

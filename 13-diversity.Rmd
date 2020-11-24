@@ -405,7 +405,7 @@ Just as evolutionary biology has neutral theories of gene and allele frequencies
 
 Stephen Hubbell proposed his unified neutral theory of biodiversity and biogeography (hereafter NTBB, [@Hubbell2001]) as a null expectation of the dynamics of individuals, to help explain relative abundances of tropical trees. Hubbell describes it as a direct descendant of MacArthur and Wilson's theory of island biogeography [@MacArthur1963;@MacArthur1967] (see below, species--area relations). Hubbell proposed it both as a null hypothesis and also --- and this is the controversial part --- as a model of community dynamics that closely approximates reality.
 
-```{r meta, echo=FALSE, fig.cap="* **Left:** A local community of forest canopy trees (small box) nested inside part of the metacommunity of a tropical forest. The true metaccommunity would extend far beyond the boundaries of this figure to include the true potential source of propagules. Shades of grey indicate different species. The local community is a sample of the larger community (such as the 50 ha forest dynamics plot on BCI) and receives migrants from the metacommunity. Mutation gives rise to new species in the metacommunity. For a particular local community, such as a 50 ha plot on an island in the Panama canal, the metacommunity will include not only the surrounding forest on the island, but also Panama, and perhaps much of the neotropics. **Right:** Neutral ecological drift. Ten species, each of 90 individuals, undergo random walks within a finite local community, with no immigration. Here, one generation is equal to nine deaths and nine births. Note the slow decline in unevenness --- after 1000 deaths, no species has become extinct.", fig.width=7, fig.height=7, fig.show='hold', out.width="50%"}
+```{r meta, echo=FALSE, fig.cap="***Left:** A local community of forest canopy trees (small box) nested inside part of the metacommunity of a tropical forest. The true metaccommunity would extend far beyond the boundaries of this figure to include the true potential source of propagules. Shades of grey indicate different species. The local community is a sample of the larger community (such as the 50 ha forest dynamics plot on BCI) and receives migrants from the metacommunity. Mutation gives rise to new species in the metacommunity. For a particular local community, such as a 50 ha plot on an island in the Panama canal, the metacommunity will include not only the surrounding forest on the island, but also Panama, and perhaps much of the neotropics. **Right:** Neutral ecological drift. Ten species, each of 90 individuals, undergo random walks within a finite local community, with no immigration. Here, one generation is equal to nine deaths and nine births. Note the slow decline in unevenness --- after 1000 deaths, no species has become extinct.", fig.width=7, fig.height=7, fig.show='hold', out.width="50%"}
 library(untb)
 par(mar=c(1,1,1,1))
 display.untb(start=rep(10, 900), prob=0.1, gens=5000)
@@ -430,9 +430,7 @@ eco <- c("Metacommunity ($J_M$)", "Local community ($J_L$)", "Individual organis
 evo <- c("Population ($N$)", "Subpop. or Deme ($N$)", "Individual gene", "Allele", "Genetic drift", "Mutation ($\\mu$)", "$\\theta \\approx 4N\\mu$", "$\\theta \\approx 4Nm$", "$\\frac{\\theta}{x}\\left(1-x\\right)^{\\theta - 1}$", "$\\frac{-N x}{1-x} \\log x$") 
 
 df <- data.frame(Property=labels, Ecology=eco, Evolution=evo)
-kable(df, caption="Comparison of properties and jargon used in ecological and population genetic neutral theory [@Alonso:2006pi]. Here $x$ is a continuous variable for relative abundance of a species or allele ($0 \\le x \\ge 1$, $ x = n/J$). Note this is potentially confused with Fisher's log-series $\\langle \\phi_n \\rangle = \\theta x^n /n$, which is a discrete species abundance distribution in terms of numbers of individuals, $n$ (not relative abundance), and where $x=b/d$.", 
-      booktabs = TRUE, align = c("l","c","c")) %>% 
-  kable_styling()
+kbl(df, caption="Comparison of properties and jargon used in ecological and population genetic neutral theory [@Alonso:2006pi]. Here $x$ is a continuous variable for relative abundance of a species or allele ($0 \\le x \\le 1$, $x = n/J$). Note this is potentially confused with Fisher's log-series $\\langle \\phi_n \\rangle = \\theta x^n /n$, which is a discrete species abundance distribution in terms of numbers of individuals, $n$ (not relative abundance), and where $x=b/d$.", align = c("l","c","c"), escape=FALSE) 
 ```
 
 
@@ -482,21 +480,21 @@ and average relative abundances in the local community. Given that each individu
   d_{n,k}&=(1-m)\frac{n}{J_L}\frac{J_L-n}{J_L-1} + m\left(1-\frac{\mu_k}{J_M}\right)\frac{n}{J_L} (\#eq:d)
 \end{align}
 These expressions are  the sum of two joint probabilities, each of which is comprised of several independent events. These events are immigration, and birth and death of individuals of different species. Here we describe these probabilities. For a population of size $n$ of species $k$, we can indicate per capita, per death probabilities including
-\begin{itemize}
-\item $m$, the probability that a replacement is immigrant from the metacommunity, and $1-m$, the probability that the replacement is from the local community.
-  \item $n/J_L$, the probability that an  individual  selected
+
+* $m$, the probability that a replacement is immigrant from the metacommunity, and $1-m$, the probability that the replacement is from the local community.
+* $n/J_L$, the probability that an  individual  selected
     randomly from the local community belongs to species $k$, and  $1
     - n/J_L$ or $(J-n)/(J_L)$, the probability that an  individual
     selected randomly from the local community belongs to any species other than $k$.
-    \item $(J-n)/(J_L-1)$, the conditional probability that, given
+* $(J-n)/(J_L-1)$, the conditional probability that, given
       that an individual of species $k$ has already been drawn from
       the population, an  individual  selected randomly from the local
       community belongs to any species other than to species $k$.
-  \item $\mu_k/J_M$, the probability that an  individual randomly
+* $\mu_k/J_M$, the probability that an  individual randomly
     selected from the metacommunity belongs to species $k$, and  $1 -
     n/J_M$, the probability that an  individual randomly selected from
     the metacommunity belongs to any species other than $k$.
-\end{itemize}
+
 Each of these probabilities is the probability of some unspecified event --- that event might be birth, death, or immigration.
 
 Before we translate \@ref(eq:b), \@ref(eq:d) literally, we note

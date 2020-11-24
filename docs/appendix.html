@@ -24,7 +24,7 @@
 <meta name="author" content="Hank Stevens" />
 
 
-<meta name="date" content="2020-11-21" />
+<meta name="date" content="2020-11-24" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -53,8 +53,6 @@
 <script src="libs/accessible-code-block-0.0.1/empty-anchor.js"></script>
 <script src="libs/kePrint-0.0.1/kePrint.js"></script>
 <link href="libs/lightable-0.0.1/lightable.css" rel="stylesheet" />
-<link href="libs/bsTable-3.3.7/bootstrapTable.min.css" rel="stylesheet" />
-<script src="libs/bsTable-3.3.7/bootstrapTable.js"></script>
 
 
 <style type="text/css">
@@ -134,9 +132,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
       <nav role="navigation">
 
 <ul class="summary">
-<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Preface</a><ul>
-<li class="chapter" data-level="0.1" data-path="index.html"><a href="index.html#acknowledgements"><i class="fa fa-check"></i><b>0.1</b> Acknowledgements</a></li>
-</ul></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Preface</a></li>
 <li class="chapter" data-level="1" data-path="theory.html"><a href="theory.html"><i class="fa fa-check"></i><b>1</b> Theory in Ecology</a><ul>
 <li class="chapter" data-level="1.1" data-path="theory.html"><a href="theory.html#examples-of-theories"><i class="fa fa-check"></i><b>1.1</b> Examples of theories</a><ul>
 <li class="chapter" data-level="1.1.1" data-path="theory.html"><a href="theory.html#hierarchy-theory"><i class="fa fa-check"></i><b>1.1.1</b> Hierarchy theory</a></li>
@@ -406,17 +402,17 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h2><span class="header-section-number">14.2</span> Writing your own functions</h2>
 <p>One very cool thing in R is that you can write your own functions. Indeed it is the extensibility of R that makes it the home of cutting edge working, because edge cutters (i.e., leading scientists) can write code that we all can use. People actually write entire <em>packages</em>, which are integrated collections of functions, and R has been extended with hundreds of such packages available for download at all the R mirrors.</p>
 <p>Let’s make our own function to calculate a mean. Let’s further pretend you work for an unethical boss who wants you to show that average sales are higher than they really are. Therefore your function should provide a mean plus 5%.</p>
-<div class="sourceCode" id="cb527"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb527-1"><a href="appendix.html#cb527-1"></a>MyBogusMean &lt;-<span class="st"> </span><span class="cf">function</span>(x, <span class="dt">cheat=</span><span class="fl">0.05</span>) { SumOfX &lt;-<span class="st"> </span><span class="kw">sum</span>(x)</span>
-<span id="cb527-2"><a href="appendix.html#cb527-2"></a>                             n &lt;-<span class="st"> </span><span class="kw">length</span>(x)</span>
-<span id="cb527-3"><a href="appendix.html#cb527-3"></a>                             trueMean &lt;-<span class="st"> </span>SumOfX<span class="op">/</span>n </span>
-<span id="cb527-4"><a href="appendix.html#cb527-4"></a>                           (<span class="dv">1</span> <span class="op">+</span><span class="st"> </span>cheat) <span class="op">*</span><span class="st"> </span>trueMean}</span>
-<span id="cb527-5"><a href="appendix.html#cb527-5"></a>RealSales &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">100</span>, <span class="dv">200</span>, <span class="dv">300</span>)</span>
-<span id="cb527-6"><a href="appendix.html#cb527-6"></a><span class="kw">MyBogusMean</span>(RealSales)</span></code></pre></div>
+<div class="sourceCode" id="cb528"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb528-1"><a href="appendix.html#cb528-1"></a>MyBogusMean &lt;-<span class="st"> </span><span class="cf">function</span>(x, <span class="dt">cheat=</span><span class="fl">0.05</span>) { SumOfX &lt;-<span class="st"> </span><span class="kw">sum</span>(x)</span>
+<span id="cb528-2"><a href="appendix.html#cb528-2"></a>                             n &lt;-<span class="st"> </span><span class="kw">length</span>(x)</span>
+<span id="cb528-3"><a href="appendix.html#cb528-3"></a>                             trueMean &lt;-<span class="st"> </span>SumOfX<span class="op">/</span>n </span>
+<span id="cb528-4"><a href="appendix.html#cb528-4"></a>                           (<span class="dv">1</span> <span class="op">+</span><span class="st"> </span>cheat) <span class="op">*</span><span class="st"> </span>trueMean}</span>
+<span id="cb528-5"><a href="appendix.html#cb528-5"></a>RealSales &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">100</span>, <span class="dv">200</span>, <span class="dv">300</span>)</span>
+<span id="cb528-6"><a href="appendix.html#cb528-6"></a><span class="kw">MyBogusMean</span>(RealSales)</span></code></pre></div>
 <pre><code>## [1] 210</code></pre>
 <p>Thus a function can take any input, do stuff, including produce graphics, or interact with the operating system, or manipulated numbers. You decide on the arguments of the function, in this case, <code>x</code> and <code>cheat</code>. Note that we supplied a number for <code>cheat</code>; this results in the <code>cheat</code> argument having a <em>default</em> value, and we do not have to supply it. If an argument does not have a default, we have to supply it. If there is a default value, we can change it. Now try these.</p>
-<div class="sourceCode" id="cb529"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb529-1"><a href="appendix.html#cb529-1"></a><span class="kw">MyBogusMean</span>(RealSales, <span class="dt">cheat=</span><span class="fl">0.1</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb530"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb530-1"><a href="appendix.html#cb530-1"></a><span class="kw">MyBogusMean</span>(RealSales, <span class="dt">cheat=</span><span class="fl">0.1</span>)</span></code></pre></div>
 <pre><code>## [1] 220</code></pre>
-<div class="sourceCode" id="cb531"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb531-1"><a href="appendix.html#cb531-1"></a><span class="kw">MyBogusMean</span>(RealSales, <span class="dt">cheat=</span><span class="dv">0</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb532"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb532-1"><a href="appendix.html#cb532-1"></a><span class="kw">MyBogusMean</span>(RealSales, <span class="dt">cheat=</span><span class="dv">0</span>)</span></code></pre></div>
 <pre><code>## [1] 200</code></pre>
 </div>
 <div id="iterated-actions-the-apply-family-and-loops" class="section level2">
@@ -425,32 +421,32 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="iterations-of-independent-actions" class="section level3">
 <h3><span class="header-section-number">14.3.1</span> Iterations of independent actions</h3>
 <p>Imagine that we have a matrix or data frame and we want to do the same thing to each column (or row). For this we use apply, to “apply” a function to each column (or row). We tell <code>apply</code> what data we want to use, we tell it the “margin” we want to focus on, and then we tell it the function. The <em>margin</em> is the <em>side</em> of the matrix. We describe matrices by their number of rows, then columns, as in “a 2 by 5 matrix,” so rows constitute the first margin, and columns constitute the second margin. Here we create a <span class="math inline">\(2 \times 5\)</span> matrix, and take the mean of rows, for the first margin. Then we sum the columns for the second margin.</p>
-<div class="sourceCode" id="cb533"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb533-1"><a href="appendix.html#cb533-1"></a>m &lt;-<span class="st"> </span><span class="kw">matrix</span>( <span class="dv">1</span><span class="op">:</span><span class="dv">10</span>, <span class="dt">nrow=</span><span class="dv">2</span>)</span>
-<span id="cb533-2"><a href="appendix.html#cb533-2"></a>m</span></code></pre></div>
+<div class="sourceCode" id="cb534"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb534-1"><a href="appendix.html#cb534-1"></a>m &lt;-<span class="st"> </span><span class="kw">matrix</span>( <span class="dv">1</span><span class="op">:</span><span class="dv">10</span>, <span class="dt">nrow=</span><span class="dv">2</span>)</span>
+<span id="cb534-2"><a href="appendix.html#cb534-2"></a>m</span></code></pre></div>
 <pre><code>##      [,1] [,2] [,3] [,4] [,5]
 ## [1,]    1    3    5    7    9
 ## [2,]    2    4    6    8   10</code></pre>
-<div class="sourceCode" id="cb535"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb535-1"><a href="appendix.html#cb535-1"></a><span class="kw">apply</span>(m, <span class="dt">MARGIN=</span><span class="dv">1</span>, mean)</span></code></pre></div>
+<div class="sourceCode" id="cb536"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb536-1"><a href="appendix.html#cb536-1"></a><span class="kw">apply</span>(m, <span class="dt">MARGIN=</span><span class="dv">1</span>, mean)</span></code></pre></div>
 <pre><code>## [1] 5 6</code></pre>
-<div class="sourceCode" id="cb537"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb537-1"><a href="appendix.html#cb537-1"></a><span class="kw">apply</span>(m, <span class="dt">MARGIN=</span><span class="dv">2</span>, sum)</span></code></pre></div>
+<div class="sourceCode" id="cb538"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb538-1"><a href="appendix.html#cb538-1"></a><span class="kw">apply</span>(m, <span class="dt">MARGIN=</span><span class="dv">2</span>, sum)</span></code></pre></div>
 <pre><code>## [1]  3  7 11 15 19</code></pre>
 <p>See <code>?rowMeans</code> for simple, and even faster, operations.</p>
 <p>Similarly, <code>lapply</code> will “apply” a function to each element of a list, or each column of a data frame, and always returns a list. The function <code>sapply</code> does something similar, but will simplify the result, to a less complex data structure if possible.</p>
 <p>Here we do an independent operation 10 times using <code>sapply</code>, defining a function on-the-fly to calculate the mean of a random draw of five observations from the standard normal distribution.</p>
-<div class="sourceCode" id="cb539"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb539-1"><a href="appendix.html#cb539-1"></a><span class="kw">sapply</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">10</span>, <span class="cf">function</span>(i) <span class="kw">mean</span>( <span class="kw">rnorm</span>(<span class="dv">5</span>) ) )</span></code></pre></div>
-<pre><code>##  [1]  0.5213739  0.3873709  0.1664762  0.2280835  0.1689191 -0.5540140
-##  [7]  0.2087952  0.4849436 -0.4930031 -0.2168586</code></pre>
+<div class="sourceCode" id="cb540"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb540-1"><a href="appendix.html#cb540-1"></a><span class="kw">sapply</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">10</span>, <span class="cf">function</span>(i) <span class="kw">mean</span>( <span class="kw">rnorm</span>(<span class="dv">5</span>) ) )</span></code></pre></div>
+<pre><code>##  [1]  0.5213739  0.3873709  0.1664762  0.2280835  0.1689191 -0.5540140  0.2087952
+##  [8]  0.4849436 -0.4930031 -0.2168586</code></pre>
 </div>
 <div id="dependent-iterations" class="section level3">
 <h3><span class="header-section-number">14.3.2</span> Dependent iterations</h3>
 <p>Often the repeated actions depend on previous outcomes, as with
 population growth. Here we provide a couple of examples where we accomplish this with <em>for loops</em>.</p>
 <p>One thing to keep in mind for <em>for loops</em> in R is that the computation of this is fastest if we first make a holder for the output. Here I simulate a random walk, where, for instance, we start with 25 individuals at time = 0, and increase or decrease by some amount that is drawn randomly from a normal distribution, with a mean of zero and a standard deviation 2. We will round the “amount” to the nearest integer (the zero-th decimal place). Your output will differ because it is a random process.</p>
-<div class="sourceCode" id="cb541"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb541-1"><a href="appendix.html#cb541-1"></a>gens &lt;-<span class="st"> </span><span class="dv">10</span></span>
-<span id="cb541-2"><a href="appendix.html#cb541-2"></a>output &lt;-<span class="st"> </span><span class="kw">numeric</span>(gens <span class="op">+</span><span class="st"> </span><span class="dv">1</span>)</span>
-<span id="cb541-3"><a href="appendix.html#cb541-3"></a>output[<span class="dv">1</span>] &lt;-<span class="st"> </span><span class="dv">25</span></span>
-<span id="cb541-4"><a href="appendix.html#cb541-4"></a><span class="cf">for</span>( t <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span>gens ) output[t <span class="op">+</span><span class="st"> </span><span class="dv">1</span>] &lt;-<span class="st"> </span>output[t] <span class="op">+</span><span class="st"> </span><span class="kw">round</span>( <span class="kw">rnorm</span>(<span class="dt">n=</span><span class="dv">1</span>, <span class="dt">mean=</span><span class="dv">0</span>, <span class="dt">sd=</span><span class="dv">2</span>), <span class="dv">0</span>)</span>
-<span id="cb541-5"><a href="appendix.html#cb541-5"></a>output</span></code></pre></div>
+<div class="sourceCode" id="cb542"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb542-1"><a href="appendix.html#cb542-1"></a>gens &lt;-<span class="st"> </span><span class="dv">10</span></span>
+<span id="cb542-2"><a href="appendix.html#cb542-2"></a>output &lt;-<span class="st"> </span><span class="kw">numeric</span>(gens <span class="op">+</span><span class="st"> </span><span class="dv">1</span>)</span>
+<span id="cb542-3"><a href="appendix.html#cb542-3"></a>output[<span class="dv">1</span>] &lt;-<span class="st"> </span><span class="dv">25</span></span>
+<span id="cb542-4"><a href="appendix.html#cb542-4"></a><span class="cf">for</span>( t <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span>gens ) output[t <span class="op">+</span><span class="st"> </span><span class="dv">1</span>] &lt;-<span class="st"> </span>output[t] <span class="op">+</span><span class="st"> </span><span class="kw">round</span>( <span class="kw">rnorm</span>(<span class="dt">n=</span><span class="dv">1</span>, <span class="dt">mean=</span><span class="dv">0</span>, <span class="dt">sd=</span><span class="dv">2</span>), <span class="dv">0</span>)</span>
+<span id="cb542-5"><a href="appendix.html#cb542-5"></a>output</span></code></pre></div>
 <pre><code>##  [1] 25 23 20 19 17 17 17 16 17 17 17</code></pre>
 </div>
 </div>
@@ -465,13 +461,13 @@ population growth. Here we provide a couple of examples where we accomplish this
 </ul>
 <p>For each of these, default parameter values return the standard normal distribution (<span class="math inline">\(\mu=0\)</span>, <span class="math inline">\(Sigma=1\)</span>), but these parameters can be changed.</p>
 <p>Here we have the 95% confidence intervals.</p>
-<div class="sourceCode" id="cb543"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb543-1"><a href="appendix.html#cb543-1"></a><span class="kw">qnorm</span>(<span class="dt">p=</span><span class="kw">c</span>(<span class="fl">0.025</span>,<span class="fl">0.975</span>))</span></code></pre></div>
+<div class="sourceCode" id="cb544"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb544-1"><a href="appendix.html#cb544-1"></a><span class="kw">qnorm</span>(<span class="dt">p=</span><span class="kw">c</span>(<span class="fl">0.025</span>,<span class="fl">0.975</span>))</span></code></pre></div>
 <pre><code>## [1] -1.959964  1.959964</code></pre>
 <p>Next we create a histogram using 20 random draws from a normal
 distribution with a mean of 11 and a standard deviation of 6; we overlay this with the probability density function (Fig. <a href="appendix.html#fig:myhist">14.1</a>).</p>
-<div class="sourceCode" id="cb545"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb545-1"><a href="appendix.html#cb545-1"></a>myplot &lt;-<span class="st"> </span><span class="kw">hist</span>(<span class="kw">rnorm</span>(<span class="dv">20</span>, <span class="dt">m=</span><span class="dv">11</span>, <span class="dt">sd=</span><span class="dv">6</span>), <span class="dt">probability=</span><span class="ot">TRUE</span>)</span>
-<span id="cb545-2"><a href="appendix.html#cb545-2"></a>myplot</span>
-<span id="cb545-3"><a href="appendix.html#cb545-3"></a><span class="kw">lines</span>(myplot<span class="op">$</span>mids, <span class="kw">dnorm</span>(myplot<span class="op">$</span>mids, <span class="dt">m=</span><span class="dv">11</span>, <span class="dt">sd=</span><span class="dv">6</span>) )</span></code></pre></div>
+<div class="sourceCode" id="cb546"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb546-1"><a href="appendix.html#cb546-1"></a>myplot &lt;-<span class="st"> </span><span class="kw">hist</span>(<span class="kw">rnorm</span>(<span class="dv">20</span>, <span class="dt">m=</span><span class="dv">11</span>, <span class="dt">sd=</span><span class="dv">6</span>), <span class="dt">probability=</span><span class="ot">TRUE</span>)</span>
+<span id="cb546-2"><a href="appendix.html#cb546-2"></a>myplot</span>
+<span id="cb546-3"><a href="appendix.html#cb546-3"></a><span class="kw">lines</span>(myplot<span class="op">$</span>mids, <span class="kw">dnorm</span>(myplot<span class="op">$</span>mids, <span class="dt">m=</span><span class="dv">11</span>, <span class="dt">sd=</span><span class="dv">6</span>) )</span></code></pre></div>
 <div class="figure"><span id="fig:myhist"></span>
 <img src="figs/myhist-1.png" alt="*Histogram of random numbers drawn from a normal distribution with $\mu=11$ and $\sigma=6$. The normal probability density function is drawn as well.*" width="90%" />
 <p class="caption">
@@ -484,101 +480,101 @@ Figure 14.1: <em>Histogram of random numbers drawn from a normal distribution wi
 <p>In order to study continuous population dynamics, we often would like to integrate complex nonlinear functions of population dynamics. To do this, we need to use numerical techniques that turn the infinitely small steps of calculus, <span class="math inline">\(\d x\)</span>, into very small, but finite steps, in order to approximate the change in <span class="math inline">\(y\)</span>, given the change in <span class="math inline">\(x\)</span>, or <span class="math inline">\(dy/dx\)</span>. Mathematicians and computer scientists have devised very clever ways of doing this very accurately and precisely. In R, the best package for this is <code>deSolve</code>, which contains several <em>solvers</em> for differential equations that perform numerical integration. We will access these solvers (i.e. numerical integraters) using the <code>ode</code> function in the <code>deSolve</code> package. This function, <code>ode</code>, is a “wrapper” for the underlying suite of functions that do the work. That is, it provides a simple way to use any one of the small suite of functions.</p>
 <p>When we have an ordinary differential equation (ODE) such as logistic growth, <span class="math inline">\(dN/dt = rN(1-\alpha N)\)</span>, we say that we “solve” the equation for a particular time interval given a set of parameters and initial conditions or initial population size. For instance, we say that we solve the logistic growth model for time at <span class="math inline">\(t=0,\, 1 \ldots \, 20\)</span>, with parameters <span class="math inline">\(r=1\)</span>, <span class="math inline">\(\alpha=0.001\)</span>, and <span class="math inline">\(N_0=10\)</span>.</p>
 <p>Let’s do an example with <code>ode</code>, using logistic growth. We first have to define a function in a particular way. The arguments for the function must be time, a vector of populations, and a vector or list of model parameters.</p>
-<div class="sourceCode" id="cb546"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb546-1"><a href="appendix.html#cb546-1"></a>logGrowth &lt;-<span class="st"> </span><span class="cf">function</span>(t, y, p){</span>
-<span id="cb546-2"><a href="appendix.html#cb546-2"></a>  N &lt;-<span class="st"> </span>y[<span class="dv">1</span>]</span>
-<span id="cb546-3"><a href="appendix.html#cb546-3"></a>  <span class="kw">with</span>(<span class="kw">as.list</span>(p), {</span>
-<span id="cb546-4"><a href="appendix.html#cb546-4"></a>    dN.dt &lt;-<span class="st"> </span>r <span class="op">*</span><span class="st"> </span>N <span class="op">*</span><span class="st"> </span>(<span class="dv">1</span> <span class="op">-</span><span class="st"> </span>a <span class="op">*</span><span class="st"> </span>N)</span>
-<span id="cb546-5"><a href="appendix.html#cb546-5"></a>    <span class="kw">return</span>( <span class="kw">list</span>( dN.dt ) )</span>
-<span id="cb546-6"><a href="appendix.html#cb546-6"></a>  } )</span>
-<span id="cb546-7"><a href="appendix.html#cb546-7"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb547"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb547-1"><a href="appendix.html#cb547-1"></a>logGrowth &lt;-<span class="st"> </span><span class="cf">function</span>(t, y, p){</span>
+<span id="cb547-2"><a href="appendix.html#cb547-2"></a>  N &lt;-<span class="st"> </span>y[<span class="dv">1</span>]</span>
+<span id="cb547-3"><a href="appendix.html#cb547-3"></a>  <span class="kw">with</span>(<span class="kw">as.list</span>(p), {</span>
+<span id="cb547-4"><a href="appendix.html#cb547-4"></a>    dN.dt &lt;-<span class="st"> </span>r <span class="op">*</span><span class="st"> </span>N <span class="op">*</span><span class="st"> </span>(<span class="dv">1</span> <span class="op">-</span><span class="st"> </span>a <span class="op">*</span><span class="st"> </span>N)</span>
+<span id="cb547-5"><a href="appendix.html#cb547-5"></a>    <span class="kw">return</span>( <span class="kw">list</span>( dN.dt ) )</span>
+<span id="cb547-6"><a href="appendix.html#cb547-6"></a>  } )</span>
+<span id="cb547-7"><a href="appendix.html#cb547-7"></a>}</span></code></pre></div>
 <p>Note that I like to convert <span class="math inline">\(y\)</span> into a readable or transparent state variable (<span class="math inline">\(N\)</span> in this case). I also like to use <code>with</code> which allows me to use the names of my parameters <span class="citation">(Petzoldt <a href="#ref-Petzoldt:2003dp" role="doc-biblioref">2003</a>)</span>; this works only is <code>p</code> is a vector with named paramters (see below). Finally, we return the derivative as a list of one component.</p>
 <p>The following is equivalent, but slightly less readable or transparent.</p>
-<div class="sourceCode" id="cb547"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb547-1"><a href="appendix.html#cb547-1"></a>  logGrowth &lt;-<span class="st"> </span><span class="cf">function</span>(t, y, p){</span>
-<span id="cb547-2"><a href="appendix.html#cb547-2"></a>    dN.dt &lt;-<span class="st"> </span>p[<span class="dv">1</span>] <span class="op">*</span><span class="st"> </span>y[<span class="dv">1</span>] <span class="op">*</span><span class="st"> </span>(<span class="dv">1</span> <span class="op">-</span><span class="st"> </span>p[<span class="dv">2</span>] <span class="op">*</span><span class="st"> </span>y[<span class="dv">1</span>])</span>
-<span id="cb547-3"><a href="appendix.html#cb547-3"></a>    <span class="kw">return</span>( <span class="kw">list</span>( dN.dt ) )</span>
-<span id="cb547-4"><a href="appendix.html#cb547-4"></a>  }</span></code></pre></div>
+<div class="sourceCode" id="cb548"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb548-1"><a href="appendix.html#cb548-1"></a>  logGrowth &lt;-<span class="st"> </span><span class="cf">function</span>(t, y, p){</span>
+<span id="cb548-2"><a href="appendix.html#cb548-2"></a>    dN.dt &lt;-<span class="st"> </span>p[<span class="dv">1</span>] <span class="op">*</span><span class="st"> </span>y[<span class="dv">1</span>] <span class="op">*</span><span class="st"> </span>(<span class="dv">1</span> <span class="op">-</span><span class="st"> </span>p[<span class="dv">2</span>] <span class="op">*</span><span class="st"> </span>y[<span class="dv">1</span>])</span>
+<span id="cb548-3"><a href="appendix.html#cb548-3"></a>    <span class="kw">return</span>( <span class="kw">list</span>( dN.dt ) )</span>
+<span id="cb548-4"><a href="appendix.html#cb548-4"></a>  }</span></code></pre></div>
 <p>This requires that the order of the parameters is expected, that <span class="math inline">\(r\)</span> is first and <span class="math inline">\(\alpha\)</span> is second.</p>
 <p>To solve the ODE, we will need to specify parameters, and initial conditions. Because we are using a vector of named parameters, we need to make sure we name them! We also need to supply the time steps we want.</p>
-<div class="sourceCode" id="cb548"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb548-1"><a href="appendix.html#cb548-1"></a>p &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dt">r=</span><span class="dv">1</span>, <span class="dt">a =</span> <span class="fl">0.001</span>)</span>
-<span id="cb548-2"><a href="appendix.html#cb548-2"></a>y0 &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dt">N=</span><span class="dv">10</span>)</span>
-<span id="cb548-3"><a href="appendix.html#cb548-3"></a>t &lt;-<span class="st"> </span><span class="dv">1</span><span class="op">:</span><span class="dv">20</span></span></code></pre></div>
+<div class="sourceCode" id="cb549"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb549-1"><a href="appendix.html#cb549-1"></a>p &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dt">r=</span><span class="dv">1</span>, <span class="dt">a =</span> <span class="fl">0.001</span>)</span>
+<span id="cb549-2"><a href="appendix.html#cb549-2"></a>y0 &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dt">N=</span><span class="dv">10</span>)</span>
+<span id="cb549-3"><a href="appendix.html#cb549-3"></a>t &lt;-<span class="st"> </span><span class="dv">1</span><span class="op">:</span><span class="dv">20</span></span></code></pre></div>
 <p>Now you put it all into <code>ode</code>, with the correct arguments. The output is a matrix, with the first column being the time steps, and the remaining being your state variables. First we load the <code>deSolve</code> package.</p>
-<div class="sourceCode" id="cb549"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb549-1"><a href="appendix.html#cb549-1"></a><span class="kw">library</span>(deSolve)</span>
-<span id="cb549-2"><a href="appendix.html#cb549-2"></a>out &lt;-<span class="st"> </span><span class="kw">ode</span>(<span class="dt">y=</span>y0, <span class="dt">times=</span>t, <span class="dt">func=</span>logGrowth, <span class="dt">parms=</span>p)</span>
-<span id="cb549-3"><a href="appendix.html#cb549-3"></a>out[<span class="dv">1</span><span class="op">:</span><span class="dv">5</span>,]</span></code></pre></div>
+<div class="sourceCode" id="cb550"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb550-1"><a href="appendix.html#cb550-1"></a><span class="kw">library</span>(deSolve)</span>
+<span id="cb550-2"><a href="appendix.html#cb550-2"></a>out &lt;-<span class="st"> </span><span class="kw">ode</span>(<span class="dt">y=</span>y0, <span class="dt">times=</span>t, <span class="dt">func=</span>logGrowth, <span class="dt">parms=</span>p)</span>
+<span id="cb550-3"><a href="appendix.html#cb550-3"></a>out[<span class="dv">1</span><span class="op">:</span><span class="dv">5</span>,]</span></code></pre></div>
 <pre><code>##      time         N
 ## [1,]    1  10.00000
 ## [2,]    2  26.72369
 ## [3,]    3  69.45310
 ## [4,]    4 168.66426
 ## [5,]    5 355.46079</code></pre>
-<div class="sourceCode" id="cb551"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb551-1"><a href="appendix.html#cb551-1"></a><span class="kw">plot</span>(out)</span></code></pre></div>
-<p><img src="figs/unnamed-chunk-260-1.png" width="90%" /></p>
+<div class="sourceCode" id="cb552"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb552-1"><a href="appendix.html#cb552-1"></a><span class="kw">plot</span>(out)</span></code></pre></div>
+<p><img src="figs/unnamed-chunk-259-1.png" width="90%" /></p>
 <p>If you are going to model more than two species, y becomes a vector of length 2. Here we create a function for Lotka-Volterra competition, where
 <span class="math display">\[\frac{d N_1}{d t} = r_1 N_1\left(1 - \alpha_{11} N_1 - \alpha_{12} N_2 \right)\]</span>
 <span class="math display">\[\frac{d N_2}{d t} = r_2N_2\left(1 - \alpha_{22}N_2 - \alpha_{21}N_1 \right)\]</span></p>
-<div class="sourceCode" id="cb552"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb552-1"><a href="appendix.html#cb552-1"></a>LVComp &lt;-<span class="st"> </span><span class="cf">function</span>(t, y, p){</span>
-<span id="cb552-2"><a href="appendix.html#cb552-2"></a>  N &lt;-<span class="st"> </span>y</span>
-<span id="cb552-3"><a href="appendix.html#cb552-3"></a>  <span class="kw">with</span>(<span class="kw">as.list</span>(p), {</span>
-<span id="cb552-4"><a href="appendix.html#cb552-4"></a>    dN1.dt &lt;-<span class="st"> </span>r[<span class="dv">1</span>] <span class="op">*</span><span class="st"> </span>N[<span class="dv">1</span>] <span class="op">*</span><span class="st"> </span>(<span class="dv">1</span> <span class="op">-</span><span class="st"> </span>a[<span class="dv">1</span>,<span class="dv">1</span>]<span class="op">*</span>N[<span class="dv">1</span>] <span class="op">-</span><span class="st"> </span>a[<span class="dv">1</span>,<span class="dv">2</span>]<span class="op">*</span>N[<span class="dv">2</span>])</span>
-<span id="cb552-5"><a href="appendix.html#cb552-5"></a>    dN2.dt &lt;-<span class="st"> </span>r[<span class="dv">2</span>] <span class="op">*</span><span class="st"> </span>N[<span class="dv">2</span>] <span class="op">*</span><span class="st"> </span>(<span class="dv">1</span> <span class="op">-</span><span class="st"> </span>a[<span class="dv">2</span>,<span class="dv">1</span>]<span class="op">*</span>N[<span class="dv">1</span>] <span class="op">-</span><span class="st"> </span>a[<span class="dv">2</span>,<span class="dv">2</span>]<span class="op">*</span>N[<span class="dv">2</span>])</span>
-<span id="cb552-6"><a href="appendix.html#cb552-6"></a>    <span class="kw">return</span>( <span class="kw">list</span>( <span class="kw">c</span>(dN1.dt, dN2.dt) ) )</span>
-<span id="cb552-7"><a href="appendix.html#cb552-7"></a>  } )</span>
-<span id="cb552-8"><a href="appendix.html#cb552-8"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb553"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb553-1"><a href="appendix.html#cb553-1"></a>LVComp &lt;-<span class="st"> </span><span class="cf">function</span>(t, y, p){</span>
+<span id="cb553-2"><a href="appendix.html#cb553-2"></a>  N &lt;-<span class="st"> </span>y</span>
+<span id="cb553-3"><a href="appendix.html#cb553-3"></a>  <span class="kw">with</span>(<span class="kw">as.list</span>(p), {</span>
+<span id="cb553-4"><a href="appendix.html#cb553-4"></a>    dN1.dt &lt;-<span class="st"> </span>r[<span class="dv">1</span>] <span class="op">*</span><span class="st"> </span>N[<span class="dv">1</span>] <span class="op">*</span><span class="st"> </span>(<span class="dv">1</span> <span class="op">-</span><span class="st"> </span>a[<span class="dv">1</span>,<span class="dv">1</span>]<span class="op">*</span>N[<span class="dv">1</span>] <span class="op">-</span><span class="st"> </span>a[<span class="dv">1</span>,<span class="dv">2</span>]<span class="op">*</span>N[<span class="dv">2</span>])</span>
+<span id="cb553-5"><a href="appendix.html#cb553-5"></a>    dN2.dt &lt;-<span class="st"> </span>r[<span class="dv">2</span>] <span class="op">*</span><span class="st"> </span>N[<span class="dv">2</span>] <span class="op">*</span><span class="st"> </span>(<span class="dv">1</span> <span class="op">-</span><span class="st"> </span>a[<span class="dv">2</span>,<span class="dv">1</span>]<span class="op">*</span>N[<span class="dv">1</span>] <span class="op">-</span><span class="st"> </span>a[<span class="dv">2</span>,<span class="dv">2</span>]<span class="op">*</span>N[<span class="dv">2</span>])</span>
+<span id="cb553-6"><a href="appendix.html#cb553-6"></a>    <span class="kw">return</span>( <span class="kw">list</span>( <span class="kw">c</span>(dN1.dt, dN2.dt) ) )</span>
+<span id="cb553-7"><a href="appendix.html#cb553-7"></a>  } )</span>
+<span id="cb553-8"><a href="appendix.html#cb553-8"></a>}</span></code></pre></div>
 <p>Note that <code>LVComp</code> assumes that <span class="math inline">\(N\)</span> and <span class="math inline">\(r\)</span> are vectors, and the competition coefficients are in a matrix. For instance, the function extracts the the first element of <code>r</code> for the first species (<code>r[1]</code>); for the intraspecific competition coefficient for species 1, it uses the element of <code>a</code> that is in the first column and first row (<code>a[1,1]</code>). The vector of population sizes, <span class="math inline">\(N\)</span>, contains one value for each population <em>at one time point</em>. Thus here, the vector contains only two elements (one for each of the two species); it holds only these values, but will do so repeatedly, at each time point. Only the output will contain all of the population sizxes through time.</p>
 <p>To integrate these populations, we need to specify new initial conditions, and new parameters for the two-species model.</p>
-<div class="sourceCode" id="cb553"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb553-1"><a href="appendix.html#cb553-1"></a>a &lt;-<span class="st"> </span><span class="kw">matrix</span>(<span class="kw">c</span>(<span class="fl">0.02</span>, <span class="fl">0.01</span>, <span class="fl">0.01</span>, <span class="fl">0.03</span>), <span class="dt">nrow=</span><span class="dv">2</span>)</span>
-<span id="cb553-2"><a href="appendix.html#cb553-2"></a>r &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">1</span>)</span>
-<span id="cb553-3"><a href="appendix.html#cb553-3"></a>p2 &lt;-<span class="st"> </span><span class="kw">list</span>(r, a)</span>
-<span id="cb553-4"><a href="appendix.html#cb553-4"></a>N0 &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">10</span>,<span class="dv">10</span>)</span>
-<span id="cb553-5"><a href="appendix.html#cb553-5"></a>t2 &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">5</span>,<span class="dv">10</span>,<span class="dv">20</span>)</span>
-<span id="cb553-6"><a href="appendix.html#cb553-6"></a>out &lt;-<span class="st"> </span><span class="kw">ode</span>(<span class="dt">y=</span>N0, <span class="dt">times=</span>t2, <span class="dt">func=</span>LVComp, <span class="dt">parms=</span>p2)</span>
-<span id="cb553-7"><a href="appendix.html#cb553-7"></a>out[<span class="dv">1</span><span class="op">:</span><span class="dv">4</span>,]</span></code></pre></div>
+<div class="sourceCode" id="cb554"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb554-1"><a href="appendix.html#cb554-1"></a>a &lt;-<span class="st"> </span><span class="kw">matrix</span>(<span class="kw">c</span>(<span class="fl">0.02</span>, <span class="fl">0.01</span>, <span class="fl">0.01</span>, <span class="fl">0.03</span>), <span class="dt">nrow=</span><span class="dv">2</span>)</span>
+<span id="cb554-2"><a href="appendix.html#cb554-2"></a>r &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">1</span>)</span>
+<span id="cb554-3"><a href="appendix.html#cb554-3"></a>p2 &lt;-<span class="st"> </span><span class="kw">list</span>(r, a)</span>
+<span id="cb554-4"><a href="appendix.html#cb554-4"></a>N0 &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">10</span>,<span class="dv">10</span>)</span>
+<span id="cb554-5"><a href="appendix.html#cb554-5"></a>t2 &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">5</span>,<span class="dv">10</span>,<span class="dv">20</span>)</span>
+<span id="cb554-6"><a href="appendix.html#cb554-6"></a>out &lt;-<span class="st"> </span><span class="kw">ode</span>(<span class="dt">y=</span>N0, <span class="dt">times=</span>t2, <span class="dt">func=</span>LVComp, <span class="dt">parms=</span>p2)</span>
+<span id="cb554-7"><a href="appendix.html#cb554-7"></a>out[<span class="dv">1</span><span class="op">:</span><span class="dv">4</span>,]</span></code></pre></div>
 <pre><code>##      time        1        2
 ## [1,]    1 10.00000 10.00000
 ## [2,]    5 35.53914 21.79929
 ## [3,]   10 39.61141 20.35672
 ## [4,]   20 39.99332 20.00667</code></pre>
-<div class="sourceCode" id="cb555"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb555-1"><a href="appendix.html#cb555-1"></a><span class="kw">plot</span>(out)</span></code></pre></div>
-<p><img src="figs/unnamed-chunk-262-1.png" width="90%" /></p>
+<div class="sourceCode" id="cb556"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb556-1"><a href="appendix.html#cb556-1"></a><span class="kw">plot</span>(out)</span></code></pre></div>
+<p><img src="figs/unnamed-chunk-261-1.png" width="90%" /></p>
 <p>The <code>ode</code> function is a wrapper for a variety of ODE solvers; the default <code>lsoda</code> is a well tested tool. In addition, it has several bells and whistles that we will not need to take advantage of here, although I will mention one,<code>hmax</code>. This tells <code>lsoda</code> the largest step it can take. Once in a great while, with a very <em>stiff</em> ODE (a very wiggly complex dynamic), ODE assumes it can take a bigger step than it should. Setting <code>hmax</code> to a smallish number will limit the size of the step to help ensure that the integration proceeds as it should.</p>
 <p>One of the other solvers in the <code>deSolve</code>, <code>lsodar</code>, will also return roots (or equilibria), for a system of ODEs, if they exist. Here we find the roots (i.e. the solutions, or equilibria) for a two species enemy-victim model.</p>
-<div class="sourceCode" id="cb556"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb556-1"><a href="appendix.html#cb556-1"></a>EV &lt;-<span class="st"> </span><span class="cf">function</span>(t, y, p){</span>
-<span id="cb556-2"><a href="appendix.html#cb556-2"></a>  <span class="kw">with</span>(<span class="kw">as.list</span>(p), {</span>
-<span id="cb556-3"><a href="appendix.html#cb556-3"></a>    dv.dt &lt;-<span class="st"> </span>b <span class="op">*</span><span class="st"> </span>y[<span class="dv">1</span>]<span class="op">*</span>(<span class="dv">1</span><span class="fl">-.005</span><span class="op">*</span>y[<span class="dv">1</span>]) <span class="op">-</span><span class="st"> </span>a<span class="op">*</span>y[<span class="dv">1</span>]<span class="op">*</span>y[<span class="dv">2</span>]</span>
-<span id="cb556-4"><a href="appendix.html#cb556-4"></a>    de.dt &lt;-a<span class="op">*</span>e<span class="op">*</span>y[<span class="dv">1</span>]<span class="op">*</span>y[<span class="dv">2</span>] <span class="op">-</span><span class="st"> </span>s<span class="op">*</span>y[<span class="dv">2</span>]</span>
-<span id="cb556-5"><a href="appendix.html#cb556-5"></a>    <span class="kw">return</span>( <span class="kw">list</span>( <span class="kw">c</span>(dv.dt, de.dt) ) )</span>
-<span id="cb556-6"><a href="appendix.html#cb556-6"></a>  } )</span>
-<span id="cb556-7"><a href="appendix.html#cb556-7"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb557"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb557-1"><a href="appendix.html#cb557-1"></a>EV &lt;-<span class="st"> </span><span class="cf">function</span>(t, y, p){</span>
+<span id="cb557-2"><a href="appendix.html#cb557-2"></a>  <span class="kw">with</span>(<span class="kw">as.list</span>(p), {</span>
+<span id="cb557-3"><a href="appendix.html#cb557-3"></a>    dv.dt &lt;-<span class="st"> </span>b <span class="op">*</span><span class="st"> </span>y[<span class="dv">1</span>]<span class="op">*</span>(<span class="dv">1</span><span class="fl">-.005</span><span class="op">*</span>y[<span class="dv">1</span>]) <span class="op">-</span><span class="st"> </span>a<span class="op">*</span>y[<span class="dv">1</span>]<span class="op">*</span>y[<span class="dv">2</span>]</span>
+<span id="cb557-4"><a href="appendix.html#cb557-4"></a>    de.dt &lt;-a<span class="op">*</span>e<span class="op">*</span>y[<span class="dv">1</span>]<span class="op">*</span>y[<span class="dv">2</span>] <span class="op">-</span><span class="st"> </span>s<span class="op">*</span>y[<span class="dv">2</span>]</span>
+<span id="cb557-5"><a href="appendix.html#cb557-5"></a>    <span class="kw">return</span>( <span class="kw">list</span>( <span class="kw">c</span>(dv.dt, de.dt) ) )</span>
+<span id="cb557-6"><a href="appendix.html#cb557-6"></a>  } )</span>
+<span id="cb557-7"><a href="appendix.html#cb557-7"></a>}</span></code></pre></div>
 <p>To use <code>lsodar</code> to find equilibria, we need to specify a root finding function whose inputs are are the sme of the ODE function, and which returns a scalar (a single number) that determines whether the rate of change (<span class="math inline">\(dy/dx\)</span>) is sufficiently close to zero that we can say that the system has stopped changed, that is, has reached a steady state or equilibrium. Here we sum the absolute rates of change of each species, and then subtract 10<span class="math inline">\(^{-10}\)</span>; if that difference is zero, we decide that, for all pratcial purposes, the system has stopped changing.</p>
-<div class="sourceCode" id="cb557"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb557-1"><a href="appendix.html#cb557-1"></a>rootfun &lt;-<span class="st"> </span><span class="cf">function</span> (t,y,p) { </span>
-<span id="cb557-2"><a href="appendix.html#cb557-2"></a>dstate &lt;-<span class="st"> </span><span class="kw">unlist</span>(<span class="kw">EV</span>(t,y,p)) <span class="co">#rate of change vector </span></span>
-<span id="cb557-3"><a href="appendix.html#cb557-3"></a><span class="kw">return</span>(<span class="kw">sum</span>(<span class="kw">abs</span>(dstate))<span class="op">-</span><span class="fl">1e-10</span>) </span>
-<span id="cb557-4"><a href="appendix.html#cb557-4"></a>} </span></code></pre></div>
+<div class="sourceCode" id="cb558"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb558-1"><a href="appendix.html#cb558-1"></a>rootfun &lt;-<span class="st"> </span><span class="cf">function</span> (t,y,p) { </span>
+<span id="cb558-2"><a href="appendix.html#cb558-2"></a>dstate &lt;-<span class="st"> </span><span class="kw">unlist</span>(<span class="kw">EV</span>(t,y,p)) <span class="co">#rate of change vector </span></span>
+<span id="cb558-3"><a href="appendix.html#cb558-3"></a><span class="kw">return</span>(<span class="kw">sum</span>(<span class="kw">abs</span>(dstate))<span class="op">-</span><span class="fl">1e-10</span>) </span>
+<span id="cb558-4"><a href="appendix.html#cb558-4"></a>} </span></code></pre></div>
 <p>Note that <code>unlist</code> changes the <code>list</code> returned by <code>EV</code> into a simple vector, which can then be summed.</p>
 <p>Next we specify parameters, and time. Here all we want is the root, so we specify that we want the value of <span class="math inline">\(y\)</span> after a really long time (<span class="math inline">\(t=10^{10}\)</span>). The <code>lsodar</code> function will stop sooner than that, and return the equilibrium it finds, and the time step at which it occurred.</p>
-<div class="sourceCode" id="cb558"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb558-1"><a href="appendix.html#cb558-1"></a>p &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dt">b =</span> <span class="fl">0.5</span>, <span class="dt">a =</span> <span class="fl">0.02</span>, <span class="dt">e=</span><span class="fl">0.1</span>, <span class="dt">s=</span><span class="fl">0.2</span>)</span>
-<span id="cb558-2"><a href="appendix.html#cb558-2"></a>t &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">0</span>,<span class="fl">1e10</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb559"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb559-1"><a href="appendix.html#cb559-1"></a>p &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dt">b =</span> <span class="fl">0.5</span>, <span class="dt">a =</span> <span class="fl">0.02</span>, <span class="dt">e=</span><span class="fl">0.1</span>, <span class="dt">s=</span><span class="fl">0.2</span>)</span>
+<span id="cb559-2"><a href="appendix.html#cb559-2"></a>t &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">0</span>,<span class="fl">1e10</span>)</span></code></pre></div>
 <p>Now we run the function.</p>
-<div class="sourceCode" id="cb559"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb559-1"><a href="appendix.html#cb559-1"></a>out &lt;-<span class="st"> </span><span class="kw">ode</span>(<span class="dt">y=</span><span class="kw">c</span>(<span class="dv">45</span>,<span class="dv">200</span>), t, EV, <span class="dt">parms=</span>p, <span class="dt">rootfun=</span>rootfun, <span class="dt">method=</span><span class="st">&quot;lsodar&quot;</span>)</span>
-<span id="cb559-2"><a href="appendix.html#cb559-2"></a>out[,]</span></code></pre></div>
+<div class="sourceCode" id="cb560"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb560-1"><a href="appendix.html#cb560-1"></a>out &lt;-<span class="st"> </span><span class="kw">ode</span>(<span class="dt">y=</span><span class="kw">c</span>(<span class="dv">45</span>,<span class="dv">200</span>), t, EV, <span class="dt">parms=</span>p, <span class="dt">rootfun=</span>rootfun, <span class="dt">method=</span><span class="st">&quot;lsodar&quot;</span>)</span>
+<span id="cb560-2"><a href="appendix.html#cb560-2"></a>out[,]</span></code></pre></div>
 <pre><code>##          time   1     2
 ## [1,]   0.0000  45 200.0
 ## [2,] 500.8094 100  12.5</code></pre>
 <p>Here we see that the steady state population sizes are <span class="math inline">\(V=100\)</span> and <span class="math inline">\(E=12.5\)</span>, and that given our starting point, this steady state was achieved at <span class="math inline">\(t=500.8\)</span>. Other information is available; see <code>?lsodar</code> after loading the <code>deSolve</code> package.</p>
 <p>We can also find the equilibrium or steady state using the <code>rootSolve</code> package.</p>
-<div class="sourceCode" id="cb561"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb561-1"><a href="appendix.html#cb561-1"></a><span class="kw">library</span>(rootSolve)</span>
-<span id="cb561-2"><a href="appendix.html#cb561-2"></a>equil &lt;-<span class="st"> </span><span class="kw">runsteady</span>(<span class="dt">y=</span><span class="kw">c</span>(<span class="dv">45</span>,<span class="dv">200</span>), <span class="dt">times=</span><span class="kw">c</span>(<span class="dv">0</span>,<span class="fl">1E5</span>), <span class="dt">func=</span>EV, <span class="dt">parms=</span>p)</span>
-<span id="cb561-3"><a href="appendix.html#cb561-3"></a><span class="kw">round</span>(equil<span class="op">$</span>y, <span class="dv">3</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb562"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb562-1"><a href="appendix.html#cb562-1"></a><span class="kw">library</span>(rootSolve)</span>
+<span id="cb562-2"><a href="appendix.html#cb562-2"></a>equil &lt;-<span class="st"> </span><span class="kw">runsteady</span>(<span class="dt">y=</span><span class="kw">c</span>(<span class="dv">45</span>,<span class="dv">200</span>), <span class="dt">times=</span><span class="kw">c</span>(<span class="dv">0</span>,<span class="fl">1E5</span>), <span class="dt">func=</span>EV, <span class="dt">parms=</span>p)</span>
+<span id="cb562-3"><a href="appendix.html#cb562-3"></a><span class="kw">round</span>(equil<span class="op">$</span>y, <span class="dv">3</span>)</span></code></pre></div>
 <pre><code>## [1] 100.0  12.5</code></pre>
 </div>
 <div id="eigenanalysis" class="section level2">
 <h2><span class="header-section-number">14.6</span> Eigenanalysis</h2>
 <p>Performing eigenanalysis in R is easy. We use the  function which returns a list with two components. The first named component is a vector of eigenvalues and the second named component is a matrix of corresponding eigenvectors. These will be numeric if possible, or complex, if any of the elements are complex numbers.</p>
 <p>Here we have a typical demographic stage matrix.</p>
-<div class="sourceCode" id="cb563"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb563-1"><a href="appendix.html#cb563-1"></a>A &lt;-<span class="st"> </span><span class="kw">matrix</span>(<span class="kw">c</span>(<span class="dv">0</span>, <span class="fl">.1</span>, <span class="dv">10</span>, <span class="fl">.5</span>), <span class="dt">nrow=</span><span class="dv">2</span>)</span>
-<span id="cb563-2"><a href="appendix.html#cb563-2"></a>eig.A &lt;-<span class="st"> </span><span class="kw">eigen</span>(A)</span>
-<span id="cb563-3"><a href="appendix.html#cb563-3"></a><span class="kw">str</span>(eig.A)</span></code></pre></div>
+<div class="sourceCode" id="cb564"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb564-1"><a href="appendix.html#cb564-1"></a>A &lt;-<span class="st"> </span><span class="kw">matrix</span>(<span class="kw">c</span>(<span class="dv">0</span>, <span class="fl">.1</span>, <span class="dv">10</span>, <span class="fl">.5</span>), <span class="dt">nrow=</span><span class="dv">2</span>)</span>
+<span id="cb564-2"><a href="appendix.html#cb564-2"></a>eig.A &lt;-<span class="st"> </span><span class="kw">eigen</span>(A)</span>
+<span id="cb564-3"><a href="appendix.html#cb564-3"></a><span class="kw">str</span>(eig.A)</span></code></pre></div>
 <pre><code>## List of 2
 ##  $ values : num [1:2] 1.281 -0.781
 ##  $ vectors: num [1:2, 1:2] -0.9919 -0.127 -0.997 0.0778
@@ -603,23 +599,23 @@ Aw - \lambda I w  &amp;=\mathbf{0} \\
 <p>By rules of determinants, it follows then that,
 <span class="math display">\[\mathrm{det} \left| A - \lambda I \right| =0\]</span></p>
 <p>And here is an empirical example.</p>
-<div class="sourceCode" id="cb565"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb565-1"><a href="appendix.html#cb565-1"></a>A &lt;-<span class="st"> </span><span class="kw">matrix</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">4</span>, <span class="dt">nrow=</span><span class="dv">2</span>)</span>
-<span id="cb565-2"><a href="appendix.html#cb565-2"></a>lambda &lt;-<span class="st"> </span><span class="kw">eigen</span>(A)<span class="op">$</span>values[<span class="dv">1</span>]</span>
-<span id="cb565-3"><a href="appendix.html#cb565-3"></a>w &lt;-<span class="st"> </span><span class="kw">eigen</span>(A)<span class="op">$</span>vectors[,<span class="dv">1</span>]</span>
-<span id="cb565-4"><a href="appendix.html#cb565-4"></a>I &lt;-<span class="st"> </span><span class="kw">diag</span>(<span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">1</span>))</span>
-<span id="cb565-5"><a href="appendix.html#cb565-5"></a><span class="kw">round</span>(lambda<span class="op">*</span>w <span class="op">-</span><span class="st"> </span>A<span class="op">%*%</span>w, <span class="dv">4</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb566"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb566-1"><a href="appendix.html#cb566-1"></a>A &lt;-<span class="st"> </span><span class="kw">matrix</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">4</span>, <span class="dt">nrow=</span><span class="dv">2</span>)</span>
+<span id="cb566-2"><a href="appendix.html#cb566-2"></a>lambda &lt;-<span class="st"> </span><span class="kw">eigen</span>(A)<span class="op">$</span>values[<span class="dv">1</span>]</span>
+<span id="cb566-3"><a href="appendix.html#cb566-3"></a>w &lt;-<span class="st"> </span><span class="kw">eigen</span>(A)<span class="op">$</span>vectors[,<span class="dv">1</span>]</span>
+<span id="cb566-4"><a href="appendix.html#cb566-4"></a>I &lt;-<span class="st"> </span><span class="kw">diag</span>(<span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">1</span>))</span>
+<span id="cb566-5"><a href="appendix.html#cb566-5"></a><span class="kw">round</span>(lambda<span class="op">*</span>w <span class="op">-</span><span class="st"> </span>A<span class="op">%*%</span>w, <span class="dv">4</span>)</span></code></pre></div>
 <pre><code>##      [,1]
 ## [1,]    0
 ## [2,]    0</code></pre>
-<div class="sourceCode" id="cb567"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb567-1"><a href="appendix.html#cb567-1"></a><span class="kw">round</span>(lambda<span class="op">*</span>I<span class="op">%*%</span>w <span class="op">-</span><span class="st"> </span>A<span class="op">%*%</span>w, <span class="dv">4</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb568"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb568-1"><a href="appendix.html#cb568-1"></a><span class="kw">round</span>(lambda<span class="op">*</span>I<span class="op">%*%</span>w <span class="op">-</span><span class="st"> </span>A<span class="op">%*%</span>w, <span class="dv">4</span>)</span></code></pre></div>
 <pre><code>##      [,1]
 ## [1,]    0
 ## [2,]    0</code></pre>
-<div class="sourceCode" id="cb569"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb569-1"><a href="appendix.html#cb569-1"></a><span class="kw">round</span>((lambda<span class="op">*</span>I <span class="op">-</span><span class="st"> </span>A)<span class="op">%*%</span>w, <span class="dv">4</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb570"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb570-1"><a href="appendix.html#cb570-1"></a><span class="kw">round</span>((lambda<span class="op">*</span>I <span class="op">-</span><span class="st"> </span>A)<span class="op">%*%</span>w, <span class="dv">4</span>)</span></code></pre></div>
 <pre><code>##      [,1]
 ## [1,]    0
 ## [2,]    0</code></pre>
-<div class="sourceCode" id="cb571"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb571-1"><a href="appendix.html#cb571-1"></a><span class="kw">det</span>( lambda<span class="op">*</span>I<span class="op">-</span>A )</span></code></pre></div>
+<div class="sourceCode" id="cb572"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb572-1"><a href="appendix.html#cb572-1"></a><span class="kw">det</span>( lambda<span class="op">*</span>I<span class="op">-</span>A )</span></code></pre></div>
 <pre><code>## [1] 0</code></pre>
 <p>Once we know that the determinant is zero, we can use that to create a simple quadratic equation in terms of <span class="math inline">\(\lambda\)</span>, and then solve. First, let’s remember what the above difference is:
 <span class="math display">\[\mathbf{A} - \lambda\mathbf{I} = \begin{pmatrix} 
@@ -639,159 +635,7 @@ And that is one way to find the two eigenvalues of a <span class="math inline">\
 <h2><span class="header-section-number">14.8</span> Symbols used in this book</h2>
 <p>I am convinced that one of the biggest hurdles to learning theoretical ecology — and the one that is easiest to overcome — is to be able to “read” and hear them in your head. This requires being able to pronounce Greek symbols. Few of us learned how to pronounce <span class="math inline">\(\alpha\)</span> in primary school. Therefore, I provide here an incomplete simplistic American English pronunciation guide for (some of) the rest of us, for symbols in this book. Only a few are tricky, and different people will pronounce them differently.</p>
 <p>Symbols and their pronunciation; occasional usage applies to lowercase, unless otherwise specified. A few symbols have common variants. Any symbol might be part of any equation; ecologists frequently ascribe other meanings which have to be defined each time they are used.</p>
-<table class="table" style="margin-left: auto; margin-right: auto;">
-<caption>
-<span id="tab:greek">Table 14.1: </span>Symbols and their pronunciation; occasional usage applies to lowercase, unless otherwise specified. A few symbols have common variants. Any symbol might be part of any equation; ecologists frequently ascribe other meanings which have to be defined each time they are used.
-</caption>
-<thead>
-<tr>
-<th style="text-align:left;">
-Greek Symbol
-</th>
-<th style="text-align:left;">
-Spelling and pronunciation
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:left;">
-A, <span class="math inline">\(\alpha\)</span>
-</td>
-<td style="text-align:left;">
-alpha; al’-fa; point or local diversity (or a parameter in the logseries abundance distribution)
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-B, <span class="math inline">\(\beta\)</span>
-</td>
-<td style="text-align:left;">
-beta; bay’-ta; turnover diversity
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-<span class="math inline">\(\mathrm{\Gamma}\)</span>, <span class="math inline">\(\gamma\)</span>
-</td>
-<td style="text-align:left;">
-gamma; gam’-ma; regional diversity
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-<span class="math inline">\(\mathrm{\Delta}\)</span>, <span class="math inline">\(\delta\)</span>, <span class="math inline">\(\partial\)</span>
-</td>
-<td style="text-align:left;">
-delta; del’-ta; change or difference
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-E, <span class="math inline">\(\epsilon\)</span>, <span class="math inline">\(\varepsilon\)</span>
-</td>
-<td style="text-align:left;">
-epsilon; ep’-si-lon; error
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-<span class="math inline">\(\mathrm{\Theta}\)</span>, <span class="math inline">\(\theta\)</span>
-</td>
-<td style="text-align:left;">
-theta; thay’-ta (‘th’ as in ‘thanks’); in neutral theory, biodiversity
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-<span class="math inline">\(\mathrm{\Lambda}\)</span>, <span class="math inline">\(\lambda\)</span>
-</td>
-<td style="text-align:left;">
-lambda; lam’-da; eigenvalues, and finite rate of increase
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-M, <span class="math inline">\(\mu\)</span>
-</td>
-<td style="text-align:left;">
-mu; meeoo, myou; mean
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-N, <span class="math inline">\(\nu\)</span>
-</td>
-<td style="text-align:left;">
-nu; noo, nou
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-<span class="math inline">\(\mathrm{\Pi}\)</span>, <span class="math inline">\(\pi\)</span>
-</td>
-<td style="text-align:left;">
-pi; pie; uppercase for product (of the elements of a vector)
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-P, <span class="math inline">\(\rho\)</span>
-</td>
-<td style="text-align:left;">
-rho; row (as in ‘a boat’); correlation
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-<span class="math inline">\(\mathrm{\Sigma}\)</span>, <span class="math inline">\(\sigma\)</span>, <span class="math inline">\(\varsigma\)</span>
-</td>
-<td style="text-align:left;">
-sigma; sig’-ma; standard deviation (uppercase is used for summation)
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-T, <span class="math inline">\(\tau\)</span>
-</td>
-<td style="text-align:left;">
-tau; (sounds like what you say when you stub your toe - ‘Ow!’ but with a ‘t’).
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-<span class="math inline">\(\Phi\)</span>, <span class="math inline">\(\phi\)</span>
-</td>
-<td style="text-align:left;">
-phi; fie, figh
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-X, <span class="math inline">\(\chi\)</span>
-</td>
-<td style="text-align:left;">
-chi; kie, kigh
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-<span class="math inline">\(\mathrm{\Psi}\)</span>, <span class="math inline">\(\psi\)</span>
-</td>
-<td style="text-align:left;">
-psi; sie, sigh
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-<span class="math inline">\(\mathrm{\Omega}\)</span>, <span class="math inline">\(\omega\)</span>
-</td>
-<td style="text-align:left;">
-omega; oh-may’-ga; degree of omnivory
-</td>
-</tr>
-</tbody>
-</table>
+
 
 </div>
 </div>
@@ -855,7 +699,7 @@ gitbook.start({
 "link": null,
 "text": null
 },
-"download": null,
+"download": ["_main.pdf"],
 "toc": {
 "collapse": "subsection"
 }

@@ -1,11 +1,6 @@
 # Density-dependent growth {#DDgrowth}
 Let's go back to our Song Sparrow (*Melospiza melodia*) data that we used to illustrate density-independent growth --- now we graph *all* the data.
 
-```{r echo=FALSE, message=FALSE}
-library(primer)
-library(ggplot2)
-```
-
 ```{r sparrowDD, echo=FALSE, out.width='50%', fig.cap='*Song Sparrow *Melospiza melodia* counts, $N$, from 1966--2003 and the relation between observed counts and annual growth rate determined from those counts, fit with ordinary least squares regression. See Chapter 3 for data source.*', fig.show='hold'}
 data(sparrows)
 sparrows$Rt <- with(sparrows, log(c(Count[-1]/Count[-length(Count)],NA) ))
@@ -61,7 +56,7 @@ where $\alpha=1/K$. In this manner, $\alpha$ represents the per capita effect of
 ## Dynamics around the equilibria --- stability
 The *stability* of a system^[A system might be nearly any set of interacting parts, such as a population, or an economy, or the internet.] is a measure of how much it tends to stay the same, in spite of external disturbances or changes in the state of the system. 
 
-The term *stability* has been given many more specific meanings, including resilience, resistant,  reactivity, and permanence. We won't go into these here, but one could consider them different facets of stability \cite{Chen2001}.^[Resistance refers to the tendency to resist change in the first place; resilience refers to the long term rate of return to an equilibrium; reactivity refers to the rate of change immediately following such a disturbance [@Neubert1997], and permanence is the degree to which a system does not simplify by entering one of its boundary equilibria.] We will focus on resilience, the tendency for a population to return an equilibrium, or be *attracted toward* an equilibrium, if it is perturbed from it.
+The term *stability* has been given many more specific meanings, including resilience, resistant,  reactivity, and permanence. We won't go into these here, but one could consider them different facets of stability [@Chen2001].^[Resistance refers to the tendency to resist change in the first place; resilience refers to the long term rate of return to an equilibrium; reactivity refers to the rate of change immediately following such a disturbance [@Neubert1997], and permanence is the degree to which a system does not simplify by entering one of its boundary equilibria.] We will focus on resilience, the tendency for a population to return an equilibrium, or be *attracted toward* an equilibrium, if it is perturbed from it.
 
 Consider the stability of a marble inside a wok. If the wok doesn't move, then the marble just sits in the lowest spot on the bottom. If the wok is bumped, the marble jiggles and rolls around a bit, but settles back down to the bottom. This is a stable system because there is a point at the bottom of the bowl (the attractor) toward which the marble rolls --- all points inside the wok allow the marble to find the lowest point (the attractor). For this reason, we call the collection of points on the inside surface of the wok the *basin of attraction*. The steeper the sides, the more quickly the marble moves toward the bottom. This rate is referred to as its *resilience*.
 
@@ -118,19 +113,19 @@ How do we quantify the rate of return at $N^*$ so that we can compare two or mor
 
 To find the partial derivative, let us denote the population growth rate as $\dot{N}=dN/dt$ ("N-dot"),
 \begin{equation}
-  \label{eq:dot}
+  (\#eq:dot)
   \dot{N} = rN\left(1-\alpha N\right).
 \end{equation}
 $\dot{N}$ is a common symbol for a time derivative such as a growth rate, and we use it here merely to simplify the notation.
 
 Given $\dot{N}$, its partial derivative with respect to $N$ is
 \begin{equation}
-  (#eq:pdlog)
+  (\#eq:pdlog)
   \frac{\partial \dot{N}}{\partial N} = r - 2r\alpha N.
 \end{equation}
 Further, we are interested in the equilibrium, where $N = 1/\alpha$. If we substitute this into eq. \ref{eq:pdlog} and simplify, this reduces to 
 \begin{equation}
-  \label{eq:pdlog2}
+  (\#eq:pdlog2)
   \frac{\partial \dot{N}}{\partial N} = -r \, .
 \end{equation}
 At $N^*=1/\alpha$, the slope is $-r$. *This negative slope at the equilibrium demonstrates the stability of this equilibrium.
@@ -138,19 +133,19 @@ At $N^*=1/\alpha$, the slope is $-r$. *This negative slope at the equilibrium de
 
 Near $N^*$, population growth rate is $-rx$.^[Because $\Delta y/\Delta x = - r$, i.e. the change in $y$ equals the change in $x$ times the slope.] That is, the rate of change of $x$ (Figs. \@ref(fig:stab2)) is 
 \begin{equation}
-  (#eq:9)
+  (\#eq:9)
   \frac{dx}{dt} = -rx
 \end{equation}
 This allows us to pretend that the perturbation will diminish exponentially, because the growth rate is constant. We say "pretend," because we realize that this rate applies only in the small region where we can assume the slope is a straight line. We can describe the size of $x$ at any time $t$ by integrating this well-known differential equation with respect to time as
 \begin{equation}
-  (#eq:8)
+  (\#eq:8)
   x_t = x_0e^{-r t}
 \end{equation}
 where $x_0$ is the size of the initial displacement relative to the equilibrium, and $x_t$ is the size of the displacement at time $t$ relative to the equilibrium.
 
 If we choose an $x_t$ carefully, and do so for any and all such analyses, we can determine the time required to reach $x_t$ and we call that time the *characteristic return time*. To determine the characteristic return time, we will let $x_t=x_0/e$, thus defining the characteristic return time as the amount of time required to reduce the perturbation by 63\% (i.e. $1/e$). We can solve for $t$ by dividing through by $x_0$ and taking the $\log$ of both sides,
 \begin{align}
-  (#eq:returntime)
+  (\#eq:returntime)
   \frac{x_0}{e} &= x_0e^{-r t}\\
   \log\left(e^{-1}\right) &= -r t\\
   t &= -\frac{1}{\left(-r\right)}.
@@ -361,7 +356,7 @@ where the numerator is the total direct negative effect of $N$ on birth and deat
 ### Theta-logistic growth
 Here we explore a simple extension of the logistic model, the \index{logistic growth!theta-logistic}*theta-logistic* model, which adds a parameter to increase flexibility and generality.
 \begin{equation}
-  (#eq:11)
+  (\#eq:11)
   \frac{dN}{dt} = rN\left(1 - \left(\alpha N\right)^\theta \right) 
 \end{equation}
 Here $\theta$ is strictly positive ($\theta>0$); $\theta=0$ means zero growth, and $\theta < 0$ would mean negative growth below $K$, and unbounded positive growth above $K$. Approximations of eq. \@ref(eq:11) that allow $\theta \leq 0$ are possible [@Sibly:2005ys], but the interpretation becomes strained.
@@ -380,7 +375,7 @@ thetalogistic  <- function(times, y, parms) {
 
 By varying $\theta$, we can change the linear density dependence of the simple logistic model to curvilinear density dependence (Fig. \ref{th1}). This curvilinearity arises because when $\alpha N < 1.0$ (i.e. $0 < N < K$),
 \begin{align*}
-  (#eq:12)
+  (\#eq:12)
    \left(\alpha N\right)^\theta &< \alpha N,\quad \theta > 1\\
    \left(\alpha N\right)^\theta &> \alpha N,\quad \theta < 1.
 \end{align*}
@@ -389,16 +384,8 @@ In contrast, when $\alpha N=1.0$, then $\left(\alpha N\right)^\theta < \alpha N$
 When $\theta > 1$, this weakens density dependence at low $N$, so the population grows faster than logistic, all else being equal. When $\theta < 1$, this strengthens density dependence at low $N$, causing the population to grow more slowly than logistic, all else being equal.
 
 The effects of $\theta$ on density dependence controls the shape of relation between growth rate $vs$. $N$ (a.k.a. the production function, Fig. \ref{th2}). First, note that for a given $r$, growth rate for $N<K$ increases with $\theta$. Second, note that the position of peak of the production function shifts to the right as $\theta$ increases. That is, as $\theta$ increases, the $N$ at which the maximum growth rate occurs also increases. If we wanted to shift the peak growth rate to a higher $N$ without also increasing the height of the peak, we could decrease $r$ simultaneously. 
- 
-\begin{figure}[ht]
-  \centering
-  \subfloat[Density Dependence]{\includegraphics[width=.32\linewidth]{thetaDD.pdf}\label{th1}}
-  \subfloat[Growth Rate]{\includegraphics[width=.32\linewidth]{thetaGR.pdf}\label{th2}}
-  \subfloat[$N$ Dynamics]{\includegraphics[width=.32\linewidth]{thetaN.pdf}\label{th3}}
-  \caption{Theta-logistic growth. In a review of population dynamics, Sibly et al. \cite{Sibly:2005ys} use theta-logistic density dependence, $1-(N/K)^{\theta}$, to show that populations most frequently have a concave-up $\theta < 1$ pattern. }
-\end{figure}
 
-We could speculate on biological meaning of $\theta$ and the shape of the denisty dependence. For instance, very high $\theta$ suggests a threshold, wherein the population exhibits little density dependence until very close to $K$. Perhaps this is related to territoriality, or a spatial refuge from predators. Alternatively, low $\theta$ might suggest resource preemption, wherein a small number of individuals can sequester large amounts of resources, but increasing $N$ results in reduced preemption. For organisms with very plastic body sizes (plants, fish), this could mean that at low $N$, average body size is large, but as $N\rightarrow K$, average body size decreases. While $\theta$, *per se*, is devoid of mechanism, discovering the magnitude of $\theta$ for different types of species \cite{Sibly:2005ys} could lead to the generation of new testable hypotheses about what controls populations. 
+We could speculate on biological meaning of $\theta$ and the shape of the denisty dependence. For instance, very high $\theta$ suggests a threshold, wherein the population exhibits little density dependence until very close to $K$. Perhaps this is related to territoriality, or a spatial refuge from predators. Alternatively, low $\theta$ might suggest resource preemption, wherein a small number of individuals can sequester large amounts of resources, but increasing $N$ results in reduced preemption. For organisms with very plastic body sizes (plants, fish), this could mean that at low $N$, average body size is large, but as $N\rightarrow K$, average body size decreases. While $\theta$, *per se*, is devoid of mechanism, discovering the magnitude of $\theta$ for different types of species [@Sibly:2005ys] could lead to the generation of new testable hypotheses about what controls populations. 
 
 
 ```{r ThetaDD, fig.cap="*Theta-logistic per capita rates, population growth rates, and dynamics for $\theta<1$, $\theta=1$, and $\theta>1$. In a review of population dynamics, Sibly et al. (2005) use theta-logistic density dependence to show that populations most frequently have a concave-up, $\theta < 1$, pattern.*", fig.show="hold", out.width="33%"}
@@ -686,7 +673,6 @@ h <- ggplot(data=myData2, aes(x=N)) + # set the basic properties of the plot
    ylim(c(-5, 15))
 h
 ```
-
 
 If harvesting occurs at a rate of $F<r/2$, the slope of the harvest line is shallower than in Fig. \@ref(fig:msy1), and we refer to this as *under-harvesting*. If the rate is $F>r/2$, then the slope is steeper than in Fig. \@ref(fig:msy1), and we refer to this as *over-harvesting*. @Roughgarden:1996fr show that under-harvesting is the most ecologically stable, whereas over-harvesting is frequently thought to be the economically optimal approach if we don't care about the long-term wellbeing of the fishing industry.
 
