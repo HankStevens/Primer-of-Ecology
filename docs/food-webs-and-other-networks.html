@@ -24,7 +24,7 @@
 <meta name="author" content="Hank Stevens" />
 
 
-<meta name="date" content="2020-11-24" />
+<meta name="date" content="2020-11-28" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -53,6 +53,8 @@
 <script src="libs/accessible-code-block-0.0.1/empty-anchor.js"></script>
 <script src="libs/kePrint-0.0.1/kePrint.js"></script>
 <link href="libs/lightable-0.0.1/lightable.css" rel="stylesheet" />
+<link href="libs/bsTable-3.3.7/bootstrapTable.min.css" rel="stylesheet" />
+<script src="libs/bsTable-3.3.7/bootstrapTable.js"></script>
 
 
 <style type="text/css">
@@ -918,14 +920,18 @@ Figure 12.12: <em>Illustrations of a hypothetical plant-pollinator network. The 
 <span id="cb413-7"><a href="food-webs-and-other-networks.html#cb413-7"></a><span class="co"># Step 2: Estimate model of mutualism</span></span>
 <span id="cb413-8"><a href="food-webs-and-other-networks.html#cb413-8"></a>mod.m.fit &lt;-<span class="st"> </span><span class="kw">sem</span>(model.m, <span class="dt">data=</span>dat)</span>
 <span id="cb413-9"><a href="food-webs-and-other-networks.html#cb413-9"></a><span class="kw">coef</span>(mod.m.fit)</span></code></pre></div>
-<pre><code>##    resilience.m~nestedness    resilience.m~modularity             resilience.m~S 
-##                      0.095                      0.129                      0.621 
-##             resilience.m~C               nestedness~S               nestedness~C 
-##                      0.684                      0.062                      0.959 
-##               modularity~S               modularity~C resilience.m~~resilience.m 
-##                     -0.324                     -0.828                      0.125 
-##     nestedness~~nestedness     modularity~~modularity 
-##                      0.064                      0.152</code></pre>
+<pre><code>##    resilience.m~nestedness    resilience.m~modularity 
+##                      0.095                      0.129 
+##             resilience.m~S             resilience.m~C 
+##                      0.621                      0.684 
+##               nestedness~S               nestedness~C 
+##                      0.062                      0.959 
+##               modularity~S               modularity~C 
+##                     -0.324                     -0.828 
+## resilience.m~~resilience.m     nestedness~~nestedness 
+##                      0.125                      0.064 
+##     modularity~~modularity 
+##                      0.152</code></pre>
 <p>These are the estimates of the pairwise regressions. Those are the path coefficients that tell us the strengths of the relations among the network properties. Below we make a path diagram using these.</p>
 <p>Next, do the same thing for herbivory.</p>
 <div class="sourceCode" id="cb415"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb415-1"><a href="food-webs-and-other-networks.html#cb415-1"></a><span class="co"># Step 1: Specify model</span></span>

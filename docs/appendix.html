@@ -24,7 +24,7 @@
 <meta name="author" content="Hank Stevens" />
 
 
-<meta name="date" content="2020-11-24" />
+<meta name="date" content="2020-11-28" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -53,6 +53,8 @@
 <script src="libs/accessible-code-block-0.0.1/empty-anchor.js"></script>
 <script src="libs/kePrint-0.0.1/kePrint.js"></script>
 <link href="libs/lightable-0.0.1/lightable.css" rel="stylesheet" />
+<link href="libs/bsTable-3.3.7/bootstrapTable.min.css" rel="stylesheet" />
+<script src="libs/bsTable-3.3.7/bootstrapTable.js"></script>
 
 
 <style type="text/css">
@@ -434,8 +436,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>Similarly, <code>lapply</code> will “apply” a function to each element of a list, or each column of a data frame, and always returns a list. The function <code>sapply</code> does something similar, but will simplify the result, to a less complex data structure if possible.</p>
 <p>Here we do an independent operation 10 times using <code>sapply</code>, defining a function on-the-fly to calculate the mean of a random draw of five observations from the standard normal distribution.</p>
 <div class="sourceCode" id="cb540"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb540-1"><a href="appendix.html#cb540-1"></a><span class="kw">sapply</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">10</span>, <span class="cf">function</span>(i) <span class="kw">mean</span>( <span class="kw">rnorm</span>(<span class="dv">5</span>) ) )</span></code></pre></div>
-<pre><code>##  [1]  0.5213739  0.3873709  0.1664762  0.2280835  0.1689191 -0.5540140  0.2087952
-##  [8]  0.4849436 -0.4930031 -0.2168586</code></pre>
+<pre><code>##  [1]  0.5213739  0.3873709  0.1664762  0.2280835  0.1689191 -0.5540140
+##  [7]  0.2087952  0.4849436 -0.4930031 -0.2168586</code></pre>
 </div>
 <div id="dependent-iterations" class="section level3">
 <h3><span class="header-section-number">14.3.2</span> Dependent iterations</h3>
@@ -635,7 +637,159 @@ And that is one way to find the two eigenvalues of a <span class="math inline">\
 <h2><span class="header-section-number">14.8</span> Symbols used in this book</h2>
 <p>I am convinced that one of the biggest hurdles to learning theoretical ecology — and the one that is easiest to overcome — is to be able to “read” and hear them in your head. This requires being able to pronounce Greek symbols. Few of us learned how to pronounce <span class="math inline">\(\alpha\)</span> in primary school. Therefore, I provide here an incomplete simplistic American English pronunciation guide for (some of) the rest of us, for symbols in this book. Only a few are tricky, and different people will pronounce them differently.</p>
 <p>Symbols and their pronunciation; occasional usage applies to lowercase, unless otherwise specified. A few symbols have common variants. Any symbol might be part of any equation; ecologists frequently ascribe other meanings which have to be defined each time they are used.</p>
-
+<table class="table" style="margin-left: auto; margin-right: auto;">
+<caption>
+<span id="tab:greek">Table 14.1: </span>Symbols and their pronunciation; occasional usage applies to lowercase, unless otherwise specified. A few symbols have common variants. Any symbol might be part of any equation; ecologists frequently ascribe other meanings which have to be defined each time they are used.
+</caption>
+<thead>
+<tr>
+<th style="text-align:left;">
+Greek Symbol
+</th>
+<th style="text-align:left;">
+Spelling and pronunciation
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+A, <span class="math inline">\(\alpha\)</span>
+</td>
+<td style="text-align:left;">
+alpha; al’-fa; point or local diversity (or a parameter in the logseries abundance distribution)
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+B, <span class="math inline">\(\beta\)</span>
+</td>
+<td style="text-align:left;">
+beta; bay’-ta; turnover diversity
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+<span class="math inline">\(\mathrm{\Gamma}\)</span>, <span class="math inline">\(\gamma\)</span>
+</td>
+<td style="text-align:left;">
+gamma; gam’-ma; regional diversity
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+<span class="math inline">\(\mathrm{\Delta}\)</span>, <span class="math inline">\(\delta\)</span>, <span class="math inline">\(\partial\)</span>
+</td>
+<td style="text-align:left;">
+delta; del’-ta; change or difference
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+E, <span class="math inline">\(\epsilon\)</span>, <span class="math inline">\(\varepsilon\)</span>
+</td>
+<td style="text-align:left;">
+epsilon; ep’-si-lon; error
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+<span class="math inline">\(\mathrm{\Theta}\)</span>, <span class="math inline">\(\theta\)</span>
+</td>
+<td style="text-align:left;">
+theta; thay’-ta (‘th’ as in ‘thanks’); in neutral theory, biodiversity
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+<span class="math inline">\(\mathrm{\Lambda}\)</span>, <span class="math inline">\(\lambda\)</span>
+</td>
+<td style="text-align:left;">
+lambda; lam’-da; eigenvalues, and finite rate of increase
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+M, <span class="math inline">\(\mu\)</span>
+</td>
+<td style="text-align:left;">
+mu; meeoo, myou; mean
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+N, <span class="math inline">\(\nu\)</span>
+</td>
+<td style="text-align:left;">
+nu; noo, nou
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+<span class="math inline">\(\mathrm{\Pi}\)</span>, <span class="math inline">\(\pi\)</span>
+</td>
+<td style="text-align:left;">
+pi; pie; uppercase for product (of the elements of a vector)
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+P, <span class="math inline">\(\rho\)</span>
+</td>
+<td style="text-align:left;">
+rho; row (as in ‘a boat’); correlation
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+<span class="math inline">\(\mathrm{\Sigma}\)</span>, <span class="math inline">\(\sigma\)</span>, <span class="math inline">\(\varsigma\)</span>
+</td>
+<td style="text-align:left;">
+sigma; sig’-ma; standard deviation (uppercase is used for summation)
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+T, <span class="math inline">\(\tau\)</span>
+</td>
+<td style="text-align:left;">
+tau; (sounds like what you say when you stub your toe - ‘Ow!’ but with a ‘t’).
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+<span class="math inline">\(\Phi\)</span>, <span class="math inline">\(\phi\)</span>
+</td>
+<td style="text-align:left;">
+phi; fie, figh
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+X, <span class="math inline">\(\chi\)</span>
+</td>
+<td style="text-align:left;">
+chi; kie, kigh
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+<span class="math inline">\(\mathrm{\Psi}\)</span>, <span class="math inline">\(\psi\)</span>
+</td>
+<td style="text-align:left;">
+psi; sie, sigh
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+<span class="math inline">\(\mathrm{\Omega}\)</span>, <span class="math inline">\(\omega\)</span>
+</td>
+<td style="text-align:left;">
+omega; oh-may’-ga; degree of omnivory
+</td>
+</tr>
+</tbody>
+</table>
 
 </div>
 </div>
