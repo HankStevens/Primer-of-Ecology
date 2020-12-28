@@ -1,34 +1,32 @@
 # Consumer-resource Interactions
 
-Consumption is unavoidably fundamental to life. Organisms are at a disequilibrium with their surroundings, requiring inputs of resources to maintain themselves, grow, and reproduce. We first considered organisms from this biophysical or energetic context when we discussed foraging. Optimal foraging theory seeks to understand individual behavior of diet choice as a solution to the problem of maximizing net resource gain per unit time. 
+Consumption is fundamental to life. Organisms are at a disequilibrium with their surroundings, requiring inputs of resources to maintain themselves, grow, and reproduce. We first considered organisms from this biophysical or energetic context when we discussed foraging. Optimal foraging theory seeks to understand individual behavior of diet choice as a solution to the problem of maximizing net resource gain per unit time. 
 
 We have also considered population growth from a demographic context beginning in chapter 3 and have continued, as we described with
 $$\Delta N = B+I-D-E$$.
 
-In consumer-resource theory, we combine biophysical and demographic approaches.
+In consumer-resource theory, we can combine biophysical and demographic approaches.
 
 ```{r LH, echo=FALSE, fig.cap="Lynx-snowshoe hare cycles."}
 include_graphics("figs/LH.png")
 ```
 
 One of the most famous examples of species interactions in all of
-ecology is the lynx--snowshoe hare cycle, based on data from the Hudson
-Bay Trading Co. trapping records (Fig. \@ref(fig:LH)).^[These data are
-actually collected from a number of different regions and embedded with a complex food web, so it probably doesn't make much sense to think of this as only one predator-prey pair of populations.] For decades, the lynx--hare cycle was used as a possible example of a predator-prey interaction, until a lot of hard work by a lot of people [@Stenseth1997;@Krebs1995] showed an asymmetric dynamic --- while the lynx depends quite heavily on the hare, and seems to track hare abundance, the hare cycles seem to be caused by more than just lynx. 
+ecology is the lynx--snowshoe hare cycle, based on data from the Hudson Bay Trading Co. trapping records (Fig. \@ref(fig:LH)).^[These data are actually collected from a number of different regions and embedded with a complex food web, so it probably doesn't make much sense to think of this as only one predator-prey pair of populations.] For decades, the lynx--hare cycle was used as a possible example of a predator-prey interaction, until a lot of hard work by a lot of people [@Stenseth1997;@Krebs1995] showed an asymmetric dynamic --- while the lynx depends quite heavily on the hare, and seems to track hare abundance, the hare cycles seem to be caused by more than just lynx. 
 
 In this chapter, we will do a few things. First, we will cover
-a few flavors of enemy-victim models of different levels of complexity, and style. Also known as enemy--victim relations, or exploitative interactions, we represent cases in which one species has a negative effect and one a positive effect on the other. In doing so, we will illustrate some fundamental concepts about consumer--resource dynamics, such as how predators respond to prey abundances in both a *numerical* and a *functional* manner. We will try to develop an understanding of the range of dynamics for both continuous and discrete time systems.
+a few flavors of consumer-resource models of different levels of complexity, and style. Consumers are always organisms: plants, microbes, or animals. Resources in this context may be biotic (prey) or abiotic  resources such as nitrate or phosphate that are taken up by fungi, plants, or algae. Also known as exploitative interactions, we represent cases in which one species has a negative effect and one a positive effect on the other. In doing so, we will illustrate some fundamental concepts about consumer--resource dynamics, such as how predators respond to prey abundances in both a *numerical* and a *functional* manner. We will try to develop an understanding of the range of dynamics for both continuous and discrete time systems.
 
-In this chapter, we discuss interactions between consumers and resources. In what we consider, the consumer is always an organism. However, we will consider cases in which the resource an inorganic substrate, such as nitrogen, and well as cases the resource is another organism. In general, we can conceptualize these as coupled equations,
+In general, we can conceptualize consumer-resource interactions as coupled equations,
 \begin{align*}
 \frac{1}{R}\frac{dR}{dt}&= f_R\left(R,C\right)\\
 \frac{1}{C}\frac{dC}{dt} &= f_C\left(C,R\right)
 \end{align*}
-in which per-unit change in the resource is a function, $f_R$, of the resource itself and the consumer. Likewise, per-unit change in the consumer is a function, $f_C$, of the consumer itself, and the resource. @Holt2011th identified five universal propositions including that the consumption of resource necessarily reduces the amount of the resource. Both of these depend on the environmental context, but we'll ignore that for now. 
+in which per-unit change in the resource is a function, $f_R$, of the resource itself and the consumer. Likewise, per-unit change in the consumer is a function, $f_C$, of the consumer itself, and the resource. @Holt2011th identified five universal propositions regarding predator-prey interactions, including that the consumption of resource necessarily reduces the amount of the resource, and that all of this depends on the environmental context, but we'll ignore that for now. 
 
 We start with a famous consumer-resource pairing, that of predator and prey, also known as enemy-victim interactions. 
 
-Let's go all the way back to the beginning of this book where we introduced exponential growth. Let's imagine that our exponentially growing population grows at rate
+Let's go way back toward the beginning of this book where we introduced exponential growth. Let's imagine that our exponentially growing population grows at rate
 $$\dot{N} = bN-dN$$
 We knew that this, like all models, was wrong, but have argued that it is very useful. Indeed, it is in some ways null model for biological systems because exponential growth is so fundamental to life. 
 
@@ -39,19 +37,19 @@ Let us stick with this simplicity, and link a predator $P$ to the prey. A very s
 \end{align*}
 where $e<1$ and is the relative efficiency with which predators turn captured prey into new predators. 
 
-This efficiency, $e$, shows us another general proposition about enemy-victim interactions; if we consider enemy and victim in the same units (e.g., grams), that the cost to the victim is always greater than the benefit to the enemy. This is simply the result of the second law of thermodynamics.
+Efficiency, $e$, shows us another general proposition about enemy-victim interactions; if we consider enemy and victim in the same units (e.g., grams), that the cost to the victim is always greater than the benefit to the enemy. This is simply the result of the second law of thermodynamics, and is a fundamental part of all predator-prey interactions [@Holt2011].
 
 With these two equations, we can make a simple prediction regarding the equilibrium, $P^*$, by setting $\dot{P} = 0$,
 $$P^* = \frac{ea}{m}N\quad ; \quad \frac{P}{N} = \frac{ea}{m}$$
 
-Thus, this simple theory predicts that the relative abundances of predator and prey will be constant. Because the prey only grow (or die) exponentially, this theory can make no prediction about $N^*$. However, it does predict that predator and prey will persist at a constant ratio, assuming the parameters are fixed.
+Thus, this simple theory predicts that at steady state, the relative abundances of predator and prey will be constant. Because the prey only grow (or die) exponentially, this theory can make no prediction about $N^*$, save when $b=d$. However, it does predict that predator and prey will persist at a constant ratio, assuming the parameters are fixed.
 
 ## Ratio dependence
 
-Let us posit that if prey grows exponentially, so will the predators. If this is true, then it makes sense that the prey get captured at a constant per capita rate: the predators will always be lurking about at the same relative abundance. And this leads us to another way to think about these relations and these equations.
+The above ideas posit that if prey grows exponentially, so will the predators. If this is true, then it makes sense that the prey get captured at a constant per capita rate: the predators will always be lurking about at the same relative abundance. And this leads us to another way to think about these relations and these equations.
 
-Now let's make individual predators an explicit part of the loss rate, so that the per capita capture rate of prey is $a$ while the total rate also depends on $P$. On average, the number of prey available to each predator is just $N/P$. Therefore, predators will capture their share of prey at rate 
-$$aP\frac{N}{P}$$
+Let's make individual predators an explicit part of the loss rate, so that the per capita capture rate of prey is $a$ while the total rate also depends on $P$. On average, the number of prey available to each predator is just $N/P$. Therefore, predators will capture their share of prey at rate 
+$$aP\frac{N}{P}$$.
 In this expression, we see that the capture rate of prey and growth rate of predators depends on the *ratio* of prey to predators. 
 Putting this explicit treatment back into our model, we have
 \begin{align*}
@@ -67,9 +65,9 @@ As a first model of predator-prey interactions, this is analogous to exponential
 * the populations are coupled by the simplest possible connection. 
 
 ### Dynamics of ratio dependent predation
-The dynamics of ratio-dependent predation are very simple. There are no cycles or fluctuations. It assumes that predation rate is a function of predator abundance and the ratio of prey to predators, and it predicts that predator abundance is is a constant fraction of the prey. This qualitative prediction is often roughly consistent with data.
+The dynamics of ratio-dependent predation are very simple. There are no cycles or fluctuations, just like in exponential growth of a single species. It assumes that predation rate is a function of predator abundance and the number of prey per predator. I predicts that predator abundance is a constant fraction of the prey. This qualitative prediction is often roughly consistent with data.
 
-Let's make a quick model, where we continue to make the assumption of ratio-dependence as transparent as we can ($(N/P)P$), for clarity.
+Let's code a quick function of this model, where we continue to make the assumption of ratio-dependence as transparent as we can ($(N/P)P$), for clarity.
 ```{r rd }
 cr_ratio_dep_pred <- function(time, y, parameters){
   # the populations
@@ -113,8 +111,7 @@ pp.nullclines <- nullclines(cr_ratio_dep_pred,
                             add.legend = FALSE)
 ```
 
-*Exercise* Calculate by hand the equilibrium abundance of predators in the above model.
-
+*Exercise* Calculate by hand the equilibrium abundance of predators in the above model. 
 
 ## Prey dependence
 A more widely used model of predator-prey dynamics is that championed independently by Alfred Lotka and Vito Volterra. In this formulation, the per predator capture rate depends only on the prey abundance, not on the ratio of prey to predators. We refer to this as "mass effects", where, as is often the case in chemical reactions, the rate of reaction depends merelyt on the concentration of the reactants. Molecules of each reactant do not interfere with each other. Organisms are not always so chill. Nonetheless, it is a widely used, and often reasonable, approximation of enemy victim interactions, especially at low densities of enemies.
@@ -135,7 +132,7 @@ We find equilibria, or more correctly, zero net growth isoclines, by setting $\f
 Each population's growth rate is zero when the other population is at a fixed value. More on this when we deal with dynamics next.
 
 ### Dyanmics of prey-dependent predation
-Now let's create a numerical model of prey-dependent, or Lotka-Volterra, predation.
+Now let's code a numerical model of prey-dependent, or Lotka-Volterra, predation.
 ```{r pd }
 cr_prey_dep_pred <- function(time, y, parameters){
   # the populations
@@ -164,7 +161,7 @@ ggplot(outL, aes(time, abun., colour=State_vars)) + geom_line()
 ```
 
 
-```{r, echo=FALSE, fig.cap="*The prey and predator isoclines under prey dependence. Arrows indicate the direction of changing population sizes. The black lines are tractories based on two different initial abundances. The 'nullclines' are the zero net growth isoclines for the prey (x) and the predator (y). Based on the arrow heads, we can see that the trajectories oscillate in a counterclockwise direction.*"}
+```{r, echo=FALSE, fig.cap="*The prey and predator isoclines under prey dependence. Arrows indicate the direction of changing population sizes. The black lines are tow different tractories based on two different initial abundances. The 'nullclines' are the zero net growth isoclines for the prey (x) and the predator (y). Based on the arrow heads, we can see that the trajectories oscillate in a counterclockwise direction.*"}
 
 ppp.flowfield <-  flowField(cr_prey_dep_pred, 
                             xlim = c(0.1, 400), 
@@ -317,6 +314,18 @@ We find that the eigenvalues are complex, and real real parts are not less than 
 
 **Here we come to an important distinction:** the simple ratio dependent predation model predicts no oscillations, whereas the simple prey-dependent predation model predictions that oscillations are inherent in predator-prey interactions. Which of these ideas provides a more useful base from which to understand predator-prey dynamics depends on the system, and on who you talk to.
 
+## Resource growth functions
+Up until now, we have assumed that the resource grows exponentially in the absence of a consumer. This is the essential starting point, and now we add two simple extensions, logistic growth, and saturating resource supply.
+
+When the resource is a biotic population, it is typical to represent their growth function with logistic growth, such as 
+$$\frac{dN}{dt}=rN\left(1-\alpha N)$$
+or to use $N/K$ in place of $\alpha N$.
+
+When the resource is an inorganic molecule, such as nitrate or phosphate in soil solution or in an aquatic habitat, we often assume a constant background supply rate $S$ [@Tilman1982] in the absence of consumption. We can imagine that this background supply rate results from microbial activities that are little affected by the growth of the single species we are describing. We further imagine that this is inhibited by the availability of the the resource $R$, so that, in the absence of consumption, the actual resource supply rate is
+$$\frac{dR}{dt} = a(S-R)$$
+where $a$ is not attack rate, but a system-specific constant. As the amount of $R$ increases, $dR/dt$ decreases.
+
+
 ## Prey carrying capacity and type II functional response
 More commonly used predator-prey models include a carrying capacity for the prey and a nonlinear type II functional response for the predator. These are both well established realistic complications of biology. This has commonly been attributed to @Rosenzweig:1963fk, and others soon began using similar approaches [@May1973ab]. Here is a common version, which I'll refer to as our Rosenzweig-MacArthur model:
 \begin{align*}
@@ -380,8 +389,7 @@ eq <- findEquilibrium(cr_RM_pred, y0=c(300,40), parameters=p)$ystar
 The stable equilibrium occurs at approximately ```r round(eq)   ```.
 
 ### Paradox of enrichment
-Using a variety of models that assume a prey carrying capacity and a type II functional response, @Rosenzweig1971 showed an unexpected phenomenon --- that increasing a prey's carry capacity could drive it to extinction. This can happen if the prey grow too quickly to high abundance and temporarily support a high abundance of predators which then drive the prey extinct. We can demonstrate that here by lowering $\alpha$ enough to increase oscillations so that abundances get infinitessimally close to zero.
-
+Using a variety of models that assume a prey carrying capacity and a type II functional response, @Rosenzweig1971 showed an unexpected phenomenon --- that increasing a prey's carry capacity could drive it to extinction. This can happen if the prey grow too quickly to high abundance and temporarily support a high abundance of predators which then drive the prey extinct. We can demonstrate that here by lowering $\alpha$ enough to increase oscillations so that abundances get infinitesimally close to zero.
 
 ```{r fig.cap="*Predator-prey dynamics with prey carrying capacity and type II predator functional response. With these parameter values, we see damped oscillations.*", out.width="67%"}
 t <- 0:100; y0 <-c(N=100, P=3)
@@ -390,3 +398,9 @@ outdf <- as.data.frame( ode(y0, t, cr_RM_pred,  p) )
 outL <- pivot_longer(outdf, -time, names_to="State_vars", values_to="abun.")
 ggplot(outL, aes(time, abun., colour=State_vars)) + geom_line()
 ```
+
+## In fine
+
+So that is what is involved with simple consumer-resource interactions. Resources renew, consumers consume and grow inefficiently, and the environment influences those processes. There are a variety of ways to represent resource renewal, and consumption. Consumption, as attack rate or feeding rate is the effect of the predator on the prey, and is illustrated with the functional response.
+
+In later chapters, we describe different types of enemy-victim relations (host-parasitoid, disease), and consequences of competition and mutualism that emerge when consumers interact via shared resources.
