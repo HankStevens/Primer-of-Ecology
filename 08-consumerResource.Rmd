@@ -1,21 +1,22 @@
-# Consumer-resource Interactions
+# Consumer-resource Interactions {#cr}
 
 Consumption is fundamental to life. Organisms are at a disequilibrium with their surroundings, requiring inputs of resources to maintain themselves, grow, and reproduce. We first considered organisms from this biophysical or energetic context when we discussed foraging. Optimal foraging theory seeks to understand individual behavior of diet choice as a solution to the problem of maximizing net resource gain per unit time. 
 
-We have also considered population growth from a demographic context beginning in chapter 3 and have continued, as we described with
-$$\Delta N = B+I-D-E$$.
+All organisms require carbon and inorganic materials such as nitrogen and phosphorus as basic building blocks of cells. When one or more of these limit growth, we refer to these as *limiting resources*, and when differential growth limitation among species occurs as a result of this short supply, we refer to this as *resource limitation* and consequently *resource competition*. When these resources are other organisms we often refer to them as prey, hosts, or simply victims. The consumers may be predators, pathogens, parasites, herbivores, or just enemies.
 
+We use simple examples of resource competition based loosely on examples by @MacArthur1972 and @Tilman1982. As with nearly all the models in this book, we represent the growth of resources and consumers as growth rate = gains - losses.
+
+We have considered population growth from a demographic context beginning in chapter 3 and have continued, as we described with
+$$\Delta N = B+I-D-E$$. 
 In consumer-resource theory, we can combine biophysical and demographic approaches.
 
 ```{r LH, echo=FALSE, fig.cap="Lynx-snowshoe hare cycles."}
 include_graphics("figs/LH.png")
 ```
 
-One of the most famous examples of species interactions in all of
-ecology is the lynx--snowshoe hare cycle, based on data from the Hudson Bay Trading Co. trapping records (Fig. \@ref(fig:LH)).^[These data are actually collected from a number of different regions and embedded with a complex food web, so it probably doesn't make much sense to think of this as only one predator-prey pair of populations.] For decades, the lynx--hare cycle was used as a possible example of a predator-prey interaction, until a lot of hard work by a lot of people [@Stenseth1997;@Krebs1995] showed an asymmetric dynamic --- while the lynx depends quite heavily on the hare, and seems to track hare abundance, the hare cycles seem to be caused by more than just lynx. 
+One of the most famous examples of species interactions in all of ecology is the lynx--snowshoe hare cycle, based on data from the Hudson Bay Trading Co. trapping records (Fig. \@ref(fig:LH)).^[These data are actually collected from a number of different regions and embedded with a complex food web, so it probably doesn't make much sense to think of this as only one predator-prey pair of populations.] For decades, the lynx--hare cycle was used as a possible example of a predator-prey interaction, until a lot of hard work by a lot of people [@Stenseth1997;@Krebs1995] showed an asymmetric dynamic --- while the lynx depends quite heavily on the hare, and seems to track hare abundance, the hare cycles seem to be caused by more than just lynx. 
 
-In this chapter, we will do a few things. First, we will cover
-a few flavors of consumer-resource models of different levels of complexity, and style. Consumers are always organisms: plants, microbes, or animals. Resources in this context may be biotic (prey) or abiotic  resources such as nitrate or phosphate that are taken up by fungi, plants, or algae. Also known as exploitative interactions, we represent cases in which one species has a negative effect and one a positive effect on the other. In doing so, we will illustrate some fundamental concepts about consumer--resource dynamics, such as how predators respond to prey abundances in both a *numerical* and a *functional* manner. We will try to develop an understanding of the range of dynamics for both continuous and discrete time systems.
+In this chapter, we will do a few things. First, we will cover a few flavors of consumer-resource models of different levels of complexity, and style. Consumers are always organisms: plants, microbes, or animals. Resources in this context may be biotic (prey) or abiotic  resources such as nitrate or phosphate that are taken up by fungi, plants, or algae. Also known as exploitative interactions, we represent cases in which one species has a negative effect and one a positive effect on the other. In doing so, we will illustrate some fundamental concepts about consumer--resource dynamics, such as how predators respond to prey abundances in both a *numerical* and a *functional* manner. We will try to develop an understanding of the range of dynamics for both continuous and discrete time systems.
 
 In general, we can conceptualize consumer-resource interactions as coupled equations,
 \begin{align*}
@@ -37,7 +38,17 @@ Let us stick with this simplicity, and link a predator $P$ to the prey. A very s
 \end{align*}
 where $e<1$ and is the relative efficiency with which predators turn captured prey into new predators. 
 
-Efficiency, $e$, shows us another general proposition about enemy-victim interactions; if we consider enemy and victim in the same units (e.g., grams), that the cost to the victim is always greater than the benefit to the enemy. This is simply the result of the second law of thermodynamics, and is a fundamental part of all predator-prey interactions [@Holt2011].
+The units of these differential equations are individuals per unit time. Therefore, the units of each term must also be individuals per unit time. The units of $b$ and $d$ are units of prey per unit of prey per unit time, 
+$$\mathrm{units}(b) = \frac{\mathrm{prey}}{\mathrm{prey}}\frac{1}{t} = t^{-1}$$
+or simply per unit time, where a unit could be an individual or a gram. Units of attack rate or consumption rate, $a$, are also $t^{-1}$. Units of efficiency are simply new predators per unit prey,
+$$\mathrm{units}(e) = \frac{\mathrm{predators}}{\mathrm{prey}}$$
+and units of $m$ are predators per predator per unit time, or $t^{-1}$.
+
+When we combine all the units for all the terms for $\dot{P}$ above, we get
+$$ \frac{\mathrm{predators}}{t} = \left(\frac{\mathrm{predators}}{\mathrm{prey}} \cdot \frac{1}{t} \cdot \mathrm{prey}|\right) - \left( \frac{1}{t}\cdot \mathrm{predators}\right)$$
+and prove to ourselves the units are consistent across each term in the equation. Write out the same sort of equation for the prey.
+
+The mere fact of efficiency, $e<1$, shows us another general proposition about enemy-victim interactions; if we consider enemy and victim in the same units (e.g., grams), then the cost to the victim is always greater than the benefit to the enemy. This is simply the result of the second law of thermodynamics, and is a fundamental part of all predator-prey interactions [@Holt2011].
 
 With these two equations, we can make a simple prediction regarding the equilibrium, $P^*$, by setting $\dot{P} = 0$,
 $$P^* = \frac{ea}{m}N\quad ; \quad \frac{P}{N} = \frac{ea}{m}$$
@@ -57,7 +68,9 @@ Putting this explicit treatment back into our model, we have
 \dot{P} &= eaP\frac{N}{P} - mP
 \end{align*}
 
-We refer to this simple predator prey model as *ratio-dependent* predation (Arditi and Ginzburg 1989). We have added biological and mathematical complexity, and what is the end result? If we simplify these expressions, and let the $P$'s cancel out, we wind up just where we were before. That is reassuring. Both of these pairs of equations are the same: they describe ratio-dependent predation.
+We refer to this simple predator prey model as *ratio-dependent* predation [@Arditi1989]. We have added biological and mathematical complexity, and what is the end result? If we simplify these expressions, and let the $P$'s cancel out, we wind up just where we were before. That is reassuring. Both of these pairs of equations are the same: they describe ratio-dependent predation.
+
+The units of $a$ remain the same as before, because the predator terms cancel out ($a(N/P)P = aN$).
 
 As a first model of predator-prey interactions, this is analogous to exponential growth of a single population, and thus has some very satisfying properties:
 
@@ -121,7 +134,9 @@ When capture rate is independent of the number of other predators in the populat
 \dot{N} &= bN-dN - aNP = rN - aNP\\
 \dot{P} &= eaNP - mP
 \end{align}
-Here the per predator capture rate is simply $aN$.
+Here the per predator capture rate is simply $aN$. Therefore, the units of $a$ differ from the ratio-dependent model. 
+
+Given that $aNP$ must have units of prey per unit time, what must the units of $a$ be? Can you express them in a biologically meaningful way?
 
 We find equilibria, or more correctly, zero net growth isoclines, by setting $\frac{P}{dt} = 0$ and $\frac{dN}{dt}=0$. When we do this we get curious results.
 
@@ -181,12 +196,12 @@ Think about these isoclines for a bit. Under what conditions does the prey incre
 The only time these populations are at rest is when both of these are true. 
 
 
-## Interlude: Functional response - what an individual predator does 
+## Interlude: Functional response - what an individual predator does (#fr)
 We refer to the per predator kill rate as the *functional response*. It is the response of a predator to different levels of $N$ and $P$. The functional response of the above ratio-dependent model is $aN/P$, where as for the prey-dependent model it is $aN$ (Fig. \@ref(fig:funcresp)). These are referred to as *type I* functional responses.
 
 Are these type I functional responses realistic? They both imply that a predator captures a constant fraction of all prey, *no matter how many prey there are.* It predicts that regardless whether there are two prey individuals or one gazillion prey, a single predator can nonetheless capture the same fraction. So, if prey reach high densities, then type I functional responses are not realistic. However, if prey never reach high densities, then type I is reasonable with the bounds of realized prey densities.
 
-What is typically thought to be more realistic is if the predator satiates, where the capture rate approaches a plateau as the density of prey increases. After all, a predator has to catch, subdue, and kill a prey item, swallow it, and then move on. Optimal foraging models (Chapter 2) typically account for this. Ecologists refer to this activity as "handling" and the time required to do that as *handling time*. Buzz Holling (1959) developed a mathematical form for a functional response with prey-dependent predation that includes handling time:
+What is typically thought to be more realistic is if the predator satiates, where the capture rate approaches a plateau as the density of prey increases. After all, a predator has to catch, subdue, and kill a prey item, swallow it, and then move on. Optimal foraging models (Chapter 2) typically account for this. Ecologists refer to this activity as "handling" and the time required to do that as *handling time*. Buzz @Holling1959 developed a mathematical form for a functional response with prey-dependent predation that includes handling time:
 $$\frac{aN}{1+ahN}$$
 where $a$ is attack rate, and $h$ ia handling time. We refer to this functional response as a type II functional response  (Fig. \@ref(fig:funcresp)). As $N$ gets really big, this fraction approaches $1/h$,
 $$\lim_{N \rightarrow \infty} \frac{aN}{1+ahN} = \frac{1}{h}$$
@@ -318,29 +333,87 @@ We find that the eigenvalues are complex, and real real parts are not less than 
 Up until now, we have assumed that the resource grows exponentially in the absence of a consumer. This is the essential starting point, and now we add two simple extensions, logistic growth, and saturating resource supply.
 
 When the resource is a biotic population, it is typical to represent their growth function with logistic growth, such as 
-$$\frac{dN}{dt}=rN\left(1-\alpha N)$$
+$$\frac{dN}{dt}=rN\left( 1-\alpha N \right)$$
 or to use $N/K$ in place of $\alpha N$.
 
 When the resource is an inorganic molecule, such as nitrate or phosphate in soil solution or in an aquatic habitat, we often assume a constant background supply rate $S$ [@Tilman1982] in the absence of consumption. We can imagine that this background supply rate results from microbial activities that are little affected by the growth of the single species we are describing. We further imagine that this is inhibited by the availability of the the resource $R$, so that, in the absence of consumption, the actual resource supply rate is
-$$\frac{dR}{dt} = a(S-R)$$
-where $a$ is not attack rate, but a system-specific constant. As the amount of $R$ increases, $dR/dt$ decreases.
+$$\frac{dR}{dt} = r(S-R)$$
+where $r$ is resource renewal rate (not intrinsic rate of increase). The units of $r$ here are $1/t$ or perhaps we can think of it as
+$$\frac{\mathrm{resource~produced}}{\mathrm{resource~present}} \cdot \frac{1}{t}=t^{-1}$$
+As the amount of $R$ increases, $dR/dt$ decreases. In a sense, it bears some resemblance to logistic growth, where $S=K$ and $R=N$. Next we explore this model in some detail. 
 
+### Consumption of a renewable resource
+Consider one of the simplest models of consumer-resource interactions,
+$$\frac{dR}{dt}= r\left(S-R\right) - aN R$$
+$$\frac{dN}{dt}= N\left(eaR - d\right)$$
 
-## Prey carrying capacity and type II functional response
-More commonly used predator-prey models include a carrying capacity for the prey and a nonlinear type II functional response for the predator. These are both well established realistic complications of biology. This has commonly been attributed to @Rosenzweig:1963fk, and others soon began using similar approaches [@May1973ab]. Here is a common version, which I'll refer to as our Rosenzweig-MacArthur model:
+where $a$ is the per capita feeding rate of a consumer on a resource, $e$ is the efficiency with which a consumer converts a unit of resource into new biomass, and $d$ is the per capita death rate of consumers. The fixed parameter $S$ is the background supply rate of a resource, and $r(S-R)$ is the turnover rate of resources that are part of the available $R$ pool. If the resource is nitrate, perhaps this is determined by nitrifying soil microbes at steady state. This rate declines as the amount of resource grows, or $r(S-R)$. This is likely to happen when a resource is washed out of the soil, or if a high amount of resource suppresses its production.
+
+Consumers can be measured in mass, such as grams, or per capita. Or perhaps our organisms each weigh one gram.
+
+Let's start by exploring what happens to the resource when there is consumer $N=0$. If we solve for $dR/dt=0=r(S-R)$, we get,
+$$R^* = S$$
+and we see that, at this equilibrium ($N=0$), the environment will contain $S$ amount of resource.
+
+As we described above, each unit of consumer reduces a unit of resource by $a$ units per unit time. We say that the per capita effect of the consumer on the resource is $a$. The effect of the resource on the consumer is moderated by the assimilation efficiency $e$, that is, how much the consumer can grow, given its consumption of $R$. Therefore, the effect of the resource on the consumer is $ef$.
+
+So the consumer consumes resource and grows, but it also dies. At equilibrium, growth = death, and when this is true, we can solve for per capita growth rate equal to zero.
+$$\frac{dN}{Ndt} = 0 = efR - d \implies R^* = \frac{d}{ef}$$ 
+
+**We refer to this equilibrium as "R-star", and it plays a central role in competition theory.** More on it in a moment.
+
+If we set $dR/dt=0$ and substitute $R^*$ in for $R$, we find that the the consumer population will be 
+$$N^* = \frac{r\left(S - d/(ea)\right)}{a(d/(ea)}=r\left(S\frac{e}{d}-\frac{1}{a} \right)$$
+
+From this we can say that the environment must supply the resource at a rate of at least $S>d/(ea)$ to allow species $N$ to persist.  In addition, the per capita effect of the consumer on the entire resource pool at equilibrium is $aR^* =d/e$.
+
+Here we make an R function of these populations.
+```{r}
+cr_plant <- function(t,y,p){
+  N <- y[1]; R <- y[2]
+  with(as.list(p),{
+    dN <- N*(e*a*R - d)
+    dR <- r*(S-R) - a*R*N
+    return(list(c(dN,dR)))
+  } )
+}
+```
+
+If we select parameter values, we can find $R^*$ and $N^*$.
+```{r}
+p <- c(e=.1, a=1, d=.1, r=2, S=2)
+ with(as.list(p),{
+   R.star = d/(e*a)
+   N.star = r*(S*e/d - 1/a)
+   return(c(R.star, N.star))
+ })
+```
+
+We can also plot the dynamics.
+```{r}
+t <- seq(0, 100, by=1)
+out <- ode(y=c(N=1.5, R=2), times=t, func=cr_plant, parms=p)
+
+outdf <- out %>% as.data.frame() %>% pivot_longer(cols=!time, names_to="population", values_to="value")
+qplot(time, value, col=population, data=outdf, geom="line")
+```
+
+### Prey carrying capacity and type II functional response
+The most commonly used predator-prey models include a carrying capacity for the prey, so the prey population grows logistically. The predator has a nonlinear type II functional response. These are both well-established realistic biological complications This has commonly been attributed to @Rosenzweig:1963fk, and others soon began using similar approaches [@May1973ab]. Here is a common version, which I'll refer to as our Rosenzweig-MacArthur model, for predator, $P$, and prey, $N$:
 \begin{align*}
-\frac{dN}{dt} &= rN(1-\alpha N) - \frac{aN}{1+ahN}P\\
+\frac{dN}{dt} &= r(1-\alpha N) - \frac{aN}{1+ahN}P\\
 \frac{dP}{dt} &= e\frac{aN}{1+ahN}P - mP
 \end{align*}
 
 To investigate its dynamics, we can create an ODE function of this consumer-resource model.
 ```{r}
 cr_RM_pred <- function(time, y, p){
+  # prey is first, predator is second.
   N <- y[1]; P <- y[2]
-  with(as.list(p),{
-    dN <- r*N*(1-alpha*N) - a*N*P/(1+a*h*N)
-    dP <- e*a*N*P/(1+a*h*N) - m*P
-    return(list(c(dN, dP)))
+  with(as.list(p), {
+    Ndot <- r*N*(1-alpha*N) - a*N*P/(1+a*h*N) # prey
+    Pdot <- e*a*N*P/(1+a*h*N) - m*P # predator
+    return(list(c(Ndot, Pdot)))
   })
 }
 ```
@@ -363,32 +436,38 @@ If we plot the isoclines, we can see the dynamical phase plane more clearly.
 }))
 
 with(p,{
-curve((r/a) * (1 + (a*h - alpha)*x - a*alpha*h*x^2), 0, 1000, ylim=c(0,50))
+curve((r/a) * (1 + (a*h - alpha)*x - a*alpha*h*x^2), 0, 1000, ylim=c(0,50), ylab="Predator", xlab="Prey")
 abline(v=P.iso)
 })
 
 ```
 
-```{r, echo=FALSE, fig.cap="*Damped oscillations can arise with prey negative density dependence, and a type II predator funcional response. Arrows indicate the direction of changing population sizes. The black lines are tractories based on two different initial abundances. The nullclines are the zero net growth isoclines for the prey (x) and the predator (y). Based on the arrow heads, we can see that the trajectories oscillate in a counterclockwise direction.*", results='hide', message=FALSE}
+```{r, echo=TRUE, fig.cap="*Damped oscillations can arise with prey negative density dependence, and a type II predator funcional response. Arrows indicate the direction of changing population sizes. The black lines are tractories based on two different initial abundances. The nullclines are the zero net growth isoclines for the prey (x) and the predator (y). Based on the arrow heads, we can see that the trajectories oscillate in a counterclockwise direction.*", results='hide', message=FALSE}
 
+## This use the phaseR package to plot phase planes 
+## for 1-D and 2-D systems
 ppp.flowfield <-  flowField(cr_RM_pred, xlim = c(0.1, 1000), 
                             ylim = c(0.1,80),
                             parameters = p, points = 11,
                             add=FALSE, ylab="P", xlab="N",
                             main="Rosenzweig-MacArthur")
+## ZNGIs
 ppp.nullclines <- nullclines(cr_RM_pred, xlim = c(.1,1000), 
                              ylim = c(.1,80),
                             parameters = p, add.legend = FALSE)
 y0  <- matrix(c(100, 25, 100, 10), nc=2, byrow = TRUE)
+
+## Dynamics
 prey_trajectory <- trajectory(cr_RM_pred,  y0 = y0,
                               parameters=p,
                               tlim = c(0, 200))
+
 eq <- findEquilibrium(cr_RM_pred, y0=c(300,40), parameters=p)$ystar
 ```
 
 The stable equilibrium occurs at approximately ```r round(eq)   ```.
 
-### Paradox of enrichment
+## Paradox of enrichment
 Using a variety of models that assume a prey carrying capacity and a type II functional response, @Rosenzweig1971 showed an unexpected phenomenon --- that increasing a prey's carry capacity could drive it to extinction. This can happen if the prey grow too quickly to high abundance and temporarily support a high abundance of predators which then drive the prey extinct. We can demonstrate that here by lowering $\alpha$ enough to increase oscillations so that abundances get infinitesimally close to zero.
 
 ```{r fig.cap="*Predator-prey dynamics with prey carrying capacity and type II predator functional response. With these parameter values, we see damped oscillations.*", out.width="67%"}
@@ -399,8 +478,121 @@ outL <- pivot_longer(outdf, -time, names_to="State_vars", values_to="abun.")
 ggplot(outL, aes(time, abun., colour=State_vars)) + geom_line()
 ```
 
+Try replicating the phase plane plot used above with these new parameters.
+
+## Consumption of two resources
+In this section, we work through an example of a species that depends on two resources. For simplicity, we will assume that the resources are *substitutable*, that is, a shortage of one can be made up for with an excess of another. 
+
+Consider a plant, $N$, that can consume two substitutable resources ammonium ($R_1=$NH$_4^+$) and nitrate ($R2=$NO$_3^-$). One could just as easily imagine tadpoles that feed on zooplankton and periphyton, fish that feed on macroinvertebrates and periphyton, or wolves that feed on lemmings and caribou. All parameters have the same meanings as above ($e$-efficiency, $a$-consumption, $d$-mortality, $r$-resource renewal, $S$-supply).
+
+$$\frac{dN}{dt}= N\left(e_{1} a_{1} R_1 + e_{2} a_{2} R_2 - d\right)$$
+$$\frac{dR_1}{dt}= r_1\left(S-R_1\right) - a_{1}N R_1$$
+$$\frac{dR_2}{dt}= r_2\left(S-R_2\right) - a_{2}NR_2$$
+The growth rate of our plant depends on the concentrations of both resources. 
+
+The ODE function we can write looks like this:
+```{r}
+cr_1substitutable <- function(t, y, parameters){
+  # consumption by 1 consumer of two substitutable resources
+  N <- y[1] ; R1 <- y[2]; R2 <- y[3]; 
+  with(as.list(parameters), {
+    N.dot <- N * ( e1*a1*R1 + e2*a2*R2  - d )
+    R1.dot <- r1 * (S1 - R1) - a1*N*R1 
+    R2.dot <- r2 * (S2 - R2) - a2*N*R2
+    return( list(c(N.dot,R1.dot, R2.dot)) )
+  } )
+}
+   
+```
+
+```{r}
+parameters <- list(
+                # the environment supplies resources at these rates
+                r1 = .5, r2=.5, S1=3, S2=3,
+                # consumption rates
+                a1=1, a2=0.5,
+                # assimilation efficiencies
+                e1=.1, e2=.1, 
+                # death rate
+                d=.1
+                )
+t <- seq(0, 50, by=.1)
+y.init <- c(N=.5, R1=.1, R2=2)
+out <- ode(y = y.init,  times=t, func=cr_1substitutable,
+             parms=parameters)
+outL <- out %>% as.data.frame() %>% 
+  pivot_longer(cols=-time, names_to="State.vars", values_to="Abun")
+ggplot(outL, aes(x=time, y=Abun, colour=State.vars)) + geom_line()
+```
+
+We can solve $dN/dt=0$, and get the combinations of resource concentrations to result at equilibrium when the plant rate of increase matchs the loss rate:
+$$R_2 = \frac{d}{e_2 a_2} -\frac{e_1 a_1}{e_2 a_2}R_1$$
+where it takes the form of a straight line 
+$$y = \mathrm{intercept} + \mathrm{slope}\cdot x$$
+with $R_2=y$ and $R_1=x$. We graph this below, and include the effect of the consumer on the resources (solid arrows, Fig. \@ref(fig:cr_vecs)). The total per capita consumption rate is the vector derived from the separate feeding rates $a_1$ and $a2$, times consumer abundance, $N$. We also show the effect of resource renewal (dashed arrows, Fig. \@ref(fig:cr_vecs)). This is what would happen to resources if the consumer were eliminated. We are most often interested in these vector at the equilibria, $N^*$, and they depend on the resource supply rates $S_1$, $S_2$.
+
+```{r, cr_vecs, echo=FALSE, fig.cap="*A consumer's zero net growth isocline (ZNGI, dN/dt=0, solid line) for two substitutable resources is determined by traits of the species. Solid arrows are consumption effects, dashed arrows are resource renewal vectors; the magnitudes of these are equal to $a_i$ and $r_i$, respectively. Dotted lines are resource dynamics, starting at supply rates with low consumer abundance (open points) and ending at their equilibrium (solidd dots). Parameters: $e_i=d_i=0.1$, $a_1=1$, $a_2=0.5$; $r_i=0.5$; $S_i$ are shown as open points.*"}
+
+parameters <- list(
+                # the environment supplies resources at these rates
+                r1 = .5, r2=.5, S1=3, S2=3,
+                # consumption rates
+                a1=1, a2=0.5,
+                # assimilation efficiencies
+                e1=.1, e2=.1, 
+                # death rate
+                d=.1
+                )
+
+
+with(parameters, {# must be a list
+  par(mar=c(4,4,1,1))
+  curve(d/(e2*a2) - e1*a1/(e2*a2)*x, 0, 1, xlim=c(0,3), ylim=c(0,3),
+        ylab=bquote(R[2]), xlab=bquote(R[1]))
+
+  ## add dynamics and consumption vectors for different supply rates
+  S <- matrix(c(1:3, 3:1), ncol=2)
+  p2 <- parameters
+  t <- seq(0, 100, by=.1)
+  for(i in 1:3){
+    p2$S1 <- S[i,1]
+    p2$S2 <- S[i,2]
+    points(p2$S1,p2$S2)
+    y.init <- c(N=.5, R1=p2$S1, R2=p2$S2)
+    out <- ode(y = y.init,  times=t, func=cr_1substitutable,
+             parms=p2)
+  lines(out[,"R1"], out[,"R2"], lty=3)
+  last <- nrow(out)
+  
+  # R*s
+  points(out[last,"R1"], out[last,"R2"], pch=19)
+  
+  # consumption vectors
+  arrows(x0=out[last,"R1"], y0 = out[last,"R2"], 
+         x1=out[last,"R1"]*(1-a1), y1= out[last,"R2"]*(1-a2),
+         length=.1)
+  
+  # renewal vectors
+  arrows(x0=out[last,"R1"], y0 = out[last,"R2"], 
+         x1=out[last,"R1"] + r1*(p2$S1-out[last,"R1"]), 
+         y1= out[last,"R2"] + r2*(p2$S2-out[last,"R2"]) ,
+         length=.2, lty=2)
+  }
+})
+```
+### Interpreting consumption and assimilation
+On one hand, a higher consumption rate, $a$, means that an organism consumes more of that resource. On the other hand however, it means that a reduction in that resource has a larger negative effect on the consumer. The same is true for assimilation efficiencies, $e$. Being more efficient at converting a resource to biomass also means that a reduction in that resource represents a greater reduction in growth rate.
+
+Evolution has often resulted in adaptations that allow organisms to consume relatively more of resources that they need more of. One reason that an organism needs more of one resource than another is because of its stoichiometric composition [@Sterner2002]. For instance, a plant species root, stem, and leaf tissue has a higher C:N ratio might have a relatively higher carbon or light requirement and a relatively lower nitrogen requirement than a species with a lower C:N ratio, such as an herbivore. A plant is likely to have adaptions that allow them to acquire relatively more carbon and survive on less nitrogen than the other species. 
+
+As a result of species' stoichiometric composition, we can hypothesize a that species with relatively higher tissue concentration of $R_1$ will have higher consumption rate, $a_1$, than a species with a relatively lower $R_1$ tissue concentration. 
+
+Our population, $N$, is consuming resources in the ratio $a_2 R_2 / a_1 R_1$, and developing new biomass and individuals in the ratio $e_2 a_2 R_2 / e_1 a_1 R_1$. This can be a useful approximation of reality. It would be logical, but far from guaranteed, that the organism's requirements for growth or metabolism are of a similar ratio. Otherwise, they must store or excrete what they do not use. Thus we can consider 
+$$\frac{e_2 a_2 R_2^*}{e_1 a_1 R_1^*}$$
+as a resource ratio requirement. 
+
 ## In fine
 
-So that is what is involved with simple consumer-resource interactions. Resources renew, consumers consume and grow inefficiently, and the environment influences those processes. There are a variety of ways to represent resource renewal, and consumption. Consumption, as attack rate or feeding rate is the effect of the predator on the prey, and is illustrated with the functional response.
+So that is what is involved with simple consumer-resource interactions. Resources renew, consumers consume and grow inefficiently, and the environment influences those processes. There are a variety of ways to represent resource renewal, and consumption. Consumption, as attack rate or feeding rate, is the effect of the consumer on the resource, and is illustrated with the functional response.
 
-In later chapters, we describe different types of enemy-victim relations (host-parasitoid, disease), and consequences of competition and mutualism that emerge when consumers interact via shared resources.
+In later chapters, we describe different types of enemy-victim relations including host-parasitoid and disease dynamics, and consequences of competition and mutualism that emerge when consumers interact via shared resources.
