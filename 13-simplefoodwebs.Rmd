@@ -580,7 +580,7 @@ Next we can make some pretty pictures of this web. To do this, you'll need to lo
 ```
 
 There are several good network packages in R. We will use `bipartite` and `igraph`. Here we will measure the nestedness and the modularity using functions from package `bipartite`. 
-```{r properties}
+```{r network_properties}
 # Nestedness:
 # quant. version of NODF  (Almeida-Neto et al. 2008, 2011)
 networklevel(bip.networkQ, index=c("weighted NODF"))
@@ -589,7 +589,7 @@ metaComputeModules(bip.networkQ, N=5, method="Beckett") @ likelihood
 This measure of nestedness (WNODF, @AlmeidaNeto2011) varies between 0 and 100 for completely nonnested and nested networks. This measure of modularity varies between 0 and 1 for completely non-modular and modular networks.
 
 To measure stability of this plant by animal matrix, we first convert it to a square matrix, add a little negative denisty dependence, and then use eigenanalysis to find the dominant eigenvalue.
-```{r}
+```{r network_stab}
 n <- matrix(0, nr=S, nc=S) 
 # upper triangular part
 n[1:Sp, (Sp+1):S] <- bip.networkQ
@@ -622,7 +622,7 @@ This function has several arguments which you can see described in the help file
 * `reps`: the number of random networks to create. 
 
 Here we use it to generate 1000 random webs. We will then use those to examine the relations between various emergent properties of the networks.
-```{r}
+```{r bip_stability}
 #library(primer)
 b <- bip_stability(Spp.a = 16:60, Spp.p = 8:30, C=c(.05, 0.5), reps=5000, quant=FALSE)
 ```
