@@ -1,484 +1,100 @@
 <!DOCTYPE html>
-<html lang="" xml:lang="">
+<html lang="en">
 <head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<title>1 Theory in Ecology | Primer of Ecology using R</title>
+<meta name="author" content="Hank Stevens">
+<meta name="generator" content="bookdown 0.23 with bs4_book()">
+<meta property="og:title" content="1 Theory in Ecology | Primer of Ecology using R">
+<meta property="og:type" content="book">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="1 Theory in Ecology | Primer of Ecology using R">
+<!-- JS --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://kit.fontawesome.com/6ecbd6c532.js" crossorigin="anonymous"></script><script src="libs/header-attrs-2.10/header-attrs.js"></script><script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<link href="libs/bootstrap-4.6.0/bootstrap.min.css" rel="stylesheet">
+<script src="libs/bootstrap-4.6.0/bootstrap.bundle.min.js"></script><script src="libs/bs3compat-0.2.5.1/tabs.js"></script><script src="libs/bs3compat-0.2.5.1/bs3compat.js"></script><link href="libs/bs4_book-1.0.0/bs4_book.css" rel="stylesheet">
+<script src="libs/bs4_book-1.0.0/bs4_book.js"></script><script src="libs/kePrint-0.0.1/kePrint.js"></script><link href="libs/lightable-0.0.1/lightable.css" rel="stylesheet">
+<!-- Global site tag (gtag.js) - Google Analytics --><script async src="https://www.googletagmanager.com/gtag/js?id=G-VCV8MES4YY"></script><script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
 
-  <meta charset="utf-8" />
-  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>1 Theory in Ecology | Primer of Ecology using R</title>
-  <meta name="description" content="1 Theory in Ecology | Primer of Ecology using R" />
-  <meta name="generator" content="bookdown 0.23 and GitBook 2.6.7" />
-
-  <meta property="og:title" content="1 Theory in Ecology | Primer of Ecology using R" />
-  <meta property="og:type" content="book" />
-  
-  
-  
-  <meta name="github-repo" content="HankStevens/Primer-of-Ecology" />
-
-  <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="1 Theory in Ecology | Primer of Ecology using R" />
-  
-  
-  
-
-<meta name="author" content="Hank Stevens" />
-
-
-<meta name="date" content="2021-08-20" />
-
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="apple-mobile-web-app-capable" content="yes" />
-  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
-  
-  
-<link rel="prev" href="index.html"/>
-<link rel="next" href="oft.html"/>
-<script src="libs/header-attrs-2.10/header-attrs.js"></script>
-<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
-<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
-<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
-<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
-<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
-<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
-<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
-<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
-
-
-
-
-
-
-
-
-
-<link href="libs/anchor-sections-1.0.1/anchor-sections.css" rel="stylesheet" />
-<script src="libs/anchor-sections-1.0.1/anchor-sections.js"></script>
-<script src="libs/kePrint-0.0.1/kePrint.js"></script>
-<link href="libs/lightable-0.0.1/lightable.css" rel="stylesheet" />
-<!-- Global site tag (gtag.js) - Google Analytics -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-VCV8MES4YY"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-VCV8MES4YY');
-</script>
-
-
-<style type="text/css">
-pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
-pre > code.sourceCode > span:empty { height: 1.2em; }
-.sourceCode { overflow: visible; }
-code.sourceCode > span { color: inherit; text-decoration: inherit; }
-pre.sourceCode { margin: 0; }
-@media screen {
-div.sourceCode { overflow: auto; }
-}
-@media print {
-pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
-}
-pre.numberSource code
-  { counter-reset: source-line 0; }
-pre.numberSource code > span
-  { position: relative; left: -4em; counter-increment: source-line; }
-pre.numberSource code > span > a:first-child::before
-  { content: counter(source-line);
-    position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; display: inline-block;
-    -webkit-touch-callout: none; -webkit-user-select: none;
-    -khtml-user-select: none; -moz-user-select: none;
-    -ms-user-select: none; user-select: none;
-    padding: 0 4px; width: 4em;
-    color: #aaaaaa;
-  }
-pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
-div.sourceCode
-  {   }
-@media screen {
-pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
-}
-code span.al { color: #ff0000; font-weight: bold; } /* Alert */
-code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
-code span.at { color: #7d9029; } /* Attribute */
-code span.bn { color: #40a070; } /* BaseN */
-code span.bu { } /* BuiltIn */
-code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
-code span.ch { color: #4070a0; } /* Char */
-code span.cn { color: #880000; } /* Constant */
-code span.co { color: #60a0b0; font-style: italic; } /* Comment */
-code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
-code span.do { color: #ba2121; font-style: italic; } /* Documentation */
-code span.dt { color: #902000; } /* DataType */
-code span.dv { color: #40a070; } /* DecVal */
-code span.er { color: #ff0000; font-weight: bold; } /* Error */
-code span.ex { } /* Extension */
-code span.fl { color: #40a070; } /* Float */
-code span.fu { color: #06287e; } /* Function */
-code span.im { } /* Import */
-code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
-code span.kw { color: #007020; font-weight: bold; } /* Keyword */
-code span.op { color: #666666; } /* Operator */
-code span.ot { color: #007020; } /* Other */
-code span.pp { color: #bc7a00; } /* Preprocessor */
-code span.sc { color: #4070a0; } /* SpecialChar */
-code span.ss { color: #bb6688; } /* SpecialString */
-code span.st { color: #4070a0; } /* String */
-code span.va { color: #19177c; } /* Variable */
-code span.vs { color: #4070a0; } /* VerbatimString */
-code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
-</style>
-
-<style type="text/css">
-/* Used with Pandoc 2.11+ new --citeproc when CSL is used */
-div.csl-bib-body { }
-div.csl-entry {
-  clear: both;
-}
-.hanging div.csl-entry {
-  margin-left:2em;
-  text-indent:-2em;
-}
-div.csl-left-margin {
-  min-width:2em;
-  float:left;
-}
-div.csl-right-inline {
-  margin-left:2em;
-  padding-left:1em;
-}
-div.csl-indent {
-  margin-left: 2em;
-}
-</style>
-
+      gtag('config', 'G-VCV8MES4YY');
+    </script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- CSS --><meta name="description" content="In this chapter, we introduce a perspective on ecological theory, and provide two examples of efficient theory, metabolic scaling and maximum entropy theory. Theory is really, really important....">
+<meta property="og:description" content="In this chapter, we introduce a perspective on ecological theory, and provide two examples of efficient theory, metabolic scaling and maximum entropy theory. Theory is really, really important....">
+<meta name="twitter:description" content="In this chapter, we introduce a perspective on ecological theory, and provide two examples of efficient theory, metabolic scaling and maximum entropy theory. Theory is really, really important....">
 </head>
+<body data-spy="scroll" data-target="#toc">
 
-<body>
+<div class="container-fluid">
+<div class="row">
+  <header class="col-sm-12 col-lg-3 sidebar sidebar-book"><a class="sr-only sr-only-focusable" href="#content">Skip to main content</a>
 
-
-
-  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
-
-    <div class="book-summary">
-      <nav role="navigation">
-
-<ul class="summary">
-<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Preface</a></li>
-<li class="chapter" data-level="1" data-path="theory.html"><a href="theory.html"><i class="fa fa-check"></i><b>1</b> Theory in Ecology</a>
-<ul>
-<li class="chapter" data-level="1.1" data-path="theory.html"><a href="theory.html#examples-of-theories"><i class="fa fa-check"></i><b>1.1</b> Examples of theories</a>
-<ul>
-<li class="chapter" data-level="1.1.1" data-path="theory.html"><a href="theory.html#hierarchy-theory"><i class="fa fa-check"></i><b>1.1.1</b> Hierarchy theory</a></li>
-<li class="chapter" data-level="1.1.2" data-path="theory.html"><a href="theory.html#a-general-theory-of-ecology"><i class="fa fa-check"></i><b>1.1.2</b> A general theory of ecology</a></li>
-<li class="chapter" data-level="1.1.3" data-path="theory.html"><a href="theory.html#efficient-theory"><i class="fa fa-check"></i><b>1.1.3</b> Efficient theory</a></li>
-</ul></li>
-<li class="chapter" data-level="1.2" data-path="theory.html"><a href="theory.html#metabolic_scaling"><i class="fa fa-check"></i><b>1.2</b> An example: Metabolic Theory of Ecology</a>
-<ul>
-<li class="chapter" data-level="1.2.1" data-path="theory.html"><a href="theory.html#body-size-dependence"><i class="fa fa-check"></i><b>1.2.1</b> Body-size dependence</a></li>
-<li class="chapter" data-level="1.2.2" data-path="theory.html"><a href="theory.html#temperature-dependence"><i class="fa fa-check"></i><b>1.2.2</b> Temperature dependence</a></li>
-</ul></li>
-<li class="chapter" data-level="1.3" data-path="theory.html"><a href="theory.html#power-law-scaling-implies-constant-relative-differences"><i class="fa fa-check"></i><b>1.3</b> Power law scaling implies constant relative differences</a></li>
-<li class="chapter" data-level="1.4" data-path="theory.html"><a href="theory.html#meet-mete-maximum-entropy-theory-of-ecology"><i class="fa fa-check"></i><b>1.4</b> Meet METE: Maximum Entropy Theory of Ecology</a></li>
-<li class="chapter" data-level="1.5" data-path="theory.html"><a href="theory.html#in-fine"><i class="fa fa-check"></i><b>1.5</b> <em>In fine</em></a></li>
-</ul></li>
-<li class="chapter" data-level="2" data-path="oft.html"><a href="oft.html"><i class="fa fa-check"></i><b>2</b> Optimal Foraging</a>
-<ul>
-<li class="chapter" data-level="2.1" data-path="oft.html"><a href="oft.html#a-prey-model"><i class="fa fa-check"></i><b>2.1</b> A prey model</a>
-<ul>
-<li class="chapter" data-level="2.1.1" data-path="oft.html"><a href="oft.html#our-intuition"><i class="fa fa-check"></i><b>2.1.1</b> Our intuition</a></li>
-<li class="chapter" data-level="2.1.2" data-path="oft.html"><a href="oft.html#mathematical-support"><i class="fa fa-check"></i><b>2.1.2</b> Mathematical support</a></li>
-</ul></li>
-<li class="chapter" data-level="2.2" data-path="oft.html"><a href="oft.html#the-patch-model"><i class="fa fa-check"></i><b>2.2</b> The patch model</a></li>
-<li class="chapter" data-level="2.3" data-path="oft.html"><a href="oft.html#a-simulation-of-a-prey-model"><i class="fa fa-check"></i><b>2.3</b> A simulation of a prey model</a>
-<ul>
-<li class="chapter" data-level="2.3.1" data-path="oft.html"><a href="oft.html#lab-exercise"><i class="fa fa-check"></i><b>2.3.1</b> Lab exercise</a></li>
-</ul></li>
-</ul></li>
-<li class="chapter" data-level="3" data-path="expo.html"><a href="expo.html"><i class="fa fa-check"></i><b>3</b> Simple density-independent growth</a>
-<ul>
-<li class="chapter" data-level="3.1" data-path="expo.html"><a href="expo.html#discrete-growth-rates-of-fruit-flies-in-my-kitchen"><i class="fa fa-check"></i><b>3.1</b> Discrete growth rates of fruit flies in my kitchen</a></li>
-<li class="chapter" data-level="3.2" data-path="expo.html"><a href="expo.html#fruit-flies-with-continuous-overlapping-generations"><i class="fa fa-check"></i><b>3.2</b> Fruit flies with continuous overlapping generations</a></li>
-<li class="chapter" data-level="3.3" data-path="expo.html"><a href="expo.html#properties-of-geometric-and-exponential-growth"><i class="fa fa-check"></i><b>3.3</b> Properties of geometric and exponential growth</a>
-<ul>
-<li class="chapter" data-level="3.3.1" data-path="expo.html"><a href="expo.html#average-growth-rate"><i class="fa fa-check"></i><b>3.3.1</b> Average growth rate</a></li>
-</ul></li>
-<li class="chapter" data-level="3.4" data-path="expo.html"><a href="expo.html#modeling-with-data-simulated-dynamics"><i class="fa fa-check"></i><b>3.4</b> Modeling with Data: Simulated Dynamics</a>
-<ul>
-<li class="chapter" data-level="3.4.1" data-path="expo.html"><a href="expo.html#data-based-approaches"><i class="fa fa-check"></i><b>3.4.1</b> Data-based approaches</a></li>
-<li class="chapter" data-level="3.4.2" data-path="expo.html"><a href="expo.html#creating-and-visualizing-the-data"><i class="fa fa-check"></i><b>3.4.2</b> Creating and visualizing the data</a></li>
-<li class="chapter" data-level="3.4.3" data-path="expo.html"><a href="expo.html#one-simulation"><i class="fa fa-check"></i><b>3.4.3</b> One simulation</a></li>
-<li class="chapter" data-level="3.4.4" data-path="expo.html"><a href="expo.html#multiple-simulations"><i class="fa fa-check"></i><b>3.4.4</b> Multiple simulations</a></li>
-<li class="chapter" data-level="3.4.5" data-path="expo.html"><a href="expo.html#a-distribution-of-possible-futures"><i class="fa fa-check"></i><b>3.4.5</b> A distribution of possible futures</a></li>
-<li class="chapter" data-level="3.4.6" data-path="expo.html"><a href="expo.html#analyzing-results"><i class="fa fa-check"></i><b>3.4.6</b> Analyzing results</a></li>
-<li class="chapter" data-level="3.4.7" data-path="expo.html"><a href="expo.html#inferring-processes-underlying-growth-rate"><i class="fa fa-check"></i><b>3.4.7</b> Inferring processes underlying growth rate</a></li>
-<li class="chapter" data-level="3.4.8" data-path="expo.html"><a href="expo.html#f-environmental-noise"><i class="fa fa-check"></i><b>3.4.8</b> 1/<span class="math inline">\(f\)</span> environmental noise</a></li>
-</ul></li>
-</ul></li>
-<li class="chapter" data-level="4" data-path="DID.html"><a href="DID.html"><i class="fa fa-check"></i><b>4</b> Density-independent Demography</a>
-<ul>
-<li class="chapter" data-level="4.1" data-path="DID.html"><a href="DID.html#a-two-stage-matrix-model"><i class="fa fa-check"></i><b>4.1</b> A two stage matrix model</a></li>
-<li class="chapter" data-level="4.2" data-path="DID.html"><a href="DID.html#a-brief-primer-on-matrices"><i class="fa fa-check"></i><b>4.2</b> A brief primer on matrices</a></li>
-<li class="chapter" data-level="4.3" data-path="DID.html"><a href="DID.html#decomposing-a"><i class="fa fa-check"></i><b>4.3</b> Decomposing <strong>A</strong></a></li>
-<li class="chapter" data-level="4.4" data-path="DID.html"><a href="DID.html#a-three-stage-model"><i class="fa fa-check"></i><b>4.4</b> A three stage model</a></li>
-<li class="chapter" data-level="4.5" data-path="DID.html"><a href="DID.html#projection"><i class="fa fa-check"></i><b>4.5</b> Projection</a></li>
-<li class="chapter" data-level="4.6" data-path="DID.html"><a href="DID.html#analyzing-the-transition-matrix"><i class="fa fa-check"></i><b>4.6</b> Analyzing the transition matrix</a>
-<ul>
-<li class="chapter" data-level="4.6.1" data-path="DID.html"><a href="DID.html#eigenanalysis"><i class="fa fa-check"></i><b>4.6.1</b> Eigenanalysis</a></li>
-<li class="chapter" data-level="4.6.2" data-path="DID.html"><a href="DID.html#finite-rate-of-increase"><i class="fa fa-check"></i><b>4.6.2</b> Finite rate of increase</a></li>
-<li class="chapter" data-level="4.6.3" data-path="DID.html"><a href="DID.html#stable-stage-distribution"><i class="fa fa-check"></i><b>4.6.3</b> Stable stage distribution</a></li>
-<li class="chapter" data-level="4.6.4" data-path="DID.html"><a href="DID.html#calculating-the-stable-stage-distribution"><i class="fa fa-check"></i><b>4.6.4</b> Calculating the stable stage distribution</a></li>
-<li class="chapter" data-level="4.6.5" data-path="DID.html"><a href="DID.html#reproductive-value"><i class="fa fa-check"></i><b>4.6.5</b> Reproductive value</a></li>
-<li class="chapter" data-level="4.6.6" data-path="DID.html"><a href="DID.html#sensitivity-and-elasticity"><i class="fa fa-check"></i><b>4.6.6</b> Sensitivity and elasticity</a></li>
-</ul></li>
-<li class="chapter" data-level="4.7" data-path="DID.html"><a href="DID.html#integral-projection"><i class="fa fa-check"></i><b>4.7</b> Integral projection</a>
-<ul>
-<li class="chapter" data-level="4.7.1" data-path="DID.html"><a href="DID.html#a-size-based-ipm-of-smooth-coneflower"><i class="fa fa-check"></i><b>4.7.1</b> A size-based IPM of smooth coneflower</a></li>
-<li class="chapter" data-level="4.7.2" data-path="DID.html"><a href="DID.html#population-summaries"><i class="fa fa-check"></i><b>4.7.2</b> Population summaries</a></li>
-</ul></li>
-<li class="chapter" data-level="4.8" data-path="DID.html"><a href="DID.html#r-packges-for-demography"><i class="fa fa-check"></i><b>4.8</b> R packges for demography</a></li>
-<li class="chapter" data-level="4.9" data-path="DID.html"><a href="DID.html#exploring-a-real-population"><i class="fa fa-check"></i><b>4.9</b> Exploring a real population</a></li>
-</ul></li>
-<li class="chapter" data-level="5" data-path="DDgrowth.html"><a href="DDgrowth.html"><i class="fa fa-check"></i><b>5</b> Density-dependent growth</a>
-<ul>
-<li class="chapter" data-level="5.1" data-path="DDgrowth.html"><a href="DDgrowth.html#continuous-logistic-growth"><i class="fa fa-check"></i><b>5.1</b> Continuous logistic growth</a></li>
-<li class="chapter" data-level="5.2" data-path="DDgrowth.html"><a href="DDgrowth.html#dynamics-around-the-equilibria-stability"><i class="fa fa-check"></i><b>5.2</b> Dynamics around the equilibria — stability</a>
-<ul>
-<li class="chapter" data-level="5.2.1" data-path="DDgrowth.html"><a href="DDgrowth.html#analytical-linear-stability-analysis"><i class="fa fa-check"></i><b>5.2.1</b> Analytical linear stability analysis</a></li>
-<li class="chapter" data-level="5.2.2" data-path="DDgrowth.html"><a href="DDgrowth.html#projection-with-numerical-integration"><i class="fa fa-check"></i><b>5.2.2</b> Projection with numerical integration</a></li>
-</ul></li>
-<li class="chapter" data-level="5.3" data-path="DDgrowth.html"><a href="DDgrowth.html#other-forms-of-density-dependent-growth"><i class="fa fa-check"></i><b>5.3</b> Other forms of density-dependent growth</a>
-<ul>
-<li class="chapter" data-level="5.3.1" data-path="DDgrowth.html"><a href="DDgrowth.html#effects-of-n-on-birth-and-death-rates"><i class="fa fa-check"></i><b>5.3.1</b> Effects of N on birth and death rates</a></li>
-<li class="chapter" data-level="5.3.2" data-path="DDgrowth.html"><a href="DDgrowth.html#theta-logistic-growth"><i class="fa fa-check"></i><b>5.3.2</b> Theta-logistic growth</a></li>
-<li class="chapter" data-level="5.3.3" data-path="DDgrowth.html"><a href="DDgrowth.html#allee-effect"><i class="fa fa-check"></i><b>5.3.3</b> Allee effect</a></li>
-<li class="chapter" data-level="5.3.4" data-path="DDgrowth.html"><a href="DDgrowth.html#the-integral-of-logistic-growth"><i class="fa fa-check"></i><b>5.3.4</b> The integral of logistic growth</a></li>
-</ul></li>
-<li class="chapter" data-level="5.4" data-path="DDgrowth.html"><a href="DDgrowth.html#discrete-density-dependent-growth"><i class="fa fa-check"></i><b>5.4</b> Discrete Density-dependent Growth</a>
-<ul>
-<li class="chapter" data-level="5.4.1" data-path="DDgrowth.html"><a href="DDgrowth.html#effects-of-r_d"><i class="fa fa-check"></i><b>5.4.1</b> Effects of <span class="math inline">\(r_d\)</span></a></li>
-<li class="chapter" data-level="5.4.2" data-path="DDgrowth.html"><a href="DDgrowth.html#bifurcations"><i class="fa fa-check"></i><b>5.4.2</b> Bifurcations</a></li>
-</ul></li>
-<li class="chapter" data-level="5.5" data-path="DDgrowth.html"><a href="DDgrowth.html#maximum-sustained-yield"><i class="fa fa-check"></i><b>5.5</b> Maximum Sustained Yield</a></li>
-</ul></li>
-<li class="chapter" data-level="6" data-path="meta.html"><a href="meta.html"><i class="fa fa-check"></i><b>6</b> Populations in Space</a>
-<ul>
-<li class="chapter" data-level="6.1" data-path="meta.html"><a href="meta.html#source-sink-dynamics"><i class="fa fa-check"></i><b>6.1</b> Source-sink Dynamics</a>
-<ul>
-<li class="chapter" data-level="6.1.1" data-path="meta.html"><a href="meta.html#complications-and-cases"><i class="fa fa-check"></i><b>6.1.1</b> Complications and cases</a></li>
-</ul></li>
-<li class="chapter" data-level="6.2" data-path="meta.html"><a href="meta.html#metapopulations"><i class="fa fa-check"></i><b>6.2</b> Metapopulations</a>
-<ul>
-<li class="chapter" data-level="6.2.1" data-path="meta.html"><a href="meta.html#the-classic-levins-model"><i class="fa fa-check"></i><b>6.2.1</b> The classic Levins model</a></li>
-<li class="chapter" data-level="6.2.2" data-path="meta.html"><a href="meta.html#propagule-rain"><i class="fa fa-check"></i><b>6.2.2</b> Propagule rain</a></li>
-<li class="chapter" data-level="6.2.3" data-path="meta.html"><a href="meta.html#the-rescue-effect-and-the-core-satellite-model"><i class="fa fa-check"></i><b>6.2.3</b> The rescue effect and the core-satellite model</a></li>
-<li class="chapter" data-level="6.2.4" data-path="meta.html"><a href="meta.html#parallels-with-logistic-growth"><i class="fa fa-check"></i><b>6.2.4</b> Parallels with Logistic Growth</a></li>
-<li class="chapter" data-level="6.2.5" data-path="meta.html"><a href="meta.html#levins-vs.-hanski"><i class="fa fa-check"></i><b>6.2.5</b> Levins <span class="math inline">\(vs\)</span>. Hanski</a></li>
-<li class="chapter" data-level="6.2.6" data-path="meta.html"><a href="meta.html#habitat-destruction"><i class="fa fa-check"></i><b>6.2.6</b> Habitat Destruction</a></li>
-<li class="chapter" data-level="6.2.7" data-path="meta.html"><a href="meta.html#illustrating-the-effects-of-habitat-destruction"><i class="fa fa-check"></i><b>6.2.7</b> Illustrating the effects of habitat destruction</a></li>
-<li class="chapter" data-level="6.2.8" data-path="meta.html"><a href="meta.html#different-assumptions-lead-to-different-predictions-about-rates-of-extinction"><i class="fa fa-check"></i><b>6.2.8</b> Different assumptions lead to different predictions about rates of extinction</a></li>
-</ul></li>
-<li class="chapter" data-level="6.3" data-path="meta.html"><a href="meta.html#hanskis-incidence-function"><i class="fa fa-check"></i><b>6.3</b> Hanski’s incidence function</a></li>
-</ul></li>
-<li class="chapter" data-level="7" data-path="direct-competition-and-mutualism.html"><a href="direct-competition-and-mutualism.html"><i class="fa fa-check"></i><b>7</b> Direct competition and mutualism</a>
-<ul>
-<li class="chapter" data-level="7.1" data-path="direct-competition-and-mutualism.html"><a href="direct-competition-and-mutualism.html#interspecific-competition"><i class="fa fa-check"></i><b>7.1</b> Interspecific competition</a>
-<ul>
-<li class="chapter" data-level="7.1.1" data-path="direct-competition-and-mutualism.html"><a href="direct-competition-and-mutualism.html#equilbria"><i class="fa fa-check"></i><b>7.1.1</b> Equilbria</a></li>
-<li class="chapter" data-level="7.1.2" data-path="direct-competition-and-mutualism.html"><a href="direct-competition-and-mutualism.html#dynamics-at-the-equilibria"><i class="fa fa-check"></i><b>7.1.2</b> Dynamics at the Equilibria</a></li>
-<li class="chapter" data-level="7.1.3" data-path="direct-competition-and-mutualism.html"><a href="direct-competition-and-mutualism.html#return-time-and-the-effect-of-r"><i class="fa fa-check"></i><b>7.1.3</b> Return Time and the Effect of <span class="math inline">\(r\)</span></a></li>
-</ul></li>
-<li class="chapter" data-level="7.2" data-path="direct-competition-and-mutualism.html"><a href="direct-competition-and-mutualism.html#interspecific-mutualism"><i class="fa fa-check"></i><b>7.2</b> Interspecific mutualism</a></li>
-<li class="chapter" data-level="7.3" data-path="direct-competition-and-mutualism.html"><a href="direct-competition-and-mutualism.html#generalized-lotka-volterra-models"><i class="fa fa-check"></i><b>7.3</b> Generalized Lotka-Volterra models</a></li>
-<li class="chapter" data-level="7.4" data-path="direct-competition-and-mutualism.html"><a href="direct-competition-and-mutualism.html#summary"><i class="fa fa-check"></i><b>7.4</b> Summary</a></li>
-</ul></li>
-<li class="chapter" data-level="8" data-path="cr.html"><a href="cr.html"><i class="fa fa-check"></i><b>8</b> Consumer-resource Interactions</a>
-<ul>
-<li class="chapter" data-level="8.1" data-path="cr.html"><a href="cr.html#ratio-dependence"><i class="fa fa-check"></i><b>8.1</b> Ratio dependence</a>
-<ul>
-<li class="chapter" data-level="8.1.1" data-path="cr.html"><a href="cr.html#dynamics-of-ratio-dependent-predation"><i class="fa fa-check"></i><b>8.1.1</b> Dynamics of ratio dependent predation</a></li>
-</ul></li>
-<li class="chapter" data-level="8.2" data-path="cr.html"><a href="cr.html#prey-dependence"><i class="fa fa-check"></i><b>8.2</b> Prey dependence</a>
-<ul>
-<li class="chapter" data-level="8.2.1" data-path="cr.html"><a href="cr.html#dyanmics-of-prey-dependent-predation"><i class="fa fa-check"></i><b>8.2.1</b> Dyanmics of prey-dependent predation</a></li>
-</ul></li>
-<li class="chapter" data-level="8.3" data-path="cr.html"><a href="cr.html#interlude-functional-response---what-an-individual-predator-does-fr"><i class="fa fa-check"></i><b>8.3</b> Interlude: Functional response - what an individual predator does (#fr)</a></li>
-<li class="chapter" data-level="8.4" data-path="cr.html"><a href="cr.html#stability-analysis-for-the-prey-dependent-lotkavolterra-model"><i class="fa fa-check"></i><b>8.4</b> Stability analysis for the prey-dependent Lotka–Volterra model</a></li>
-<li class="chapter" data-level="8.5" data-path="cr.html"><a href="cr.html#resource-growth-functions"><i class="fa fa-check"></i><b>8.5</b> Resource growth functions</a>
-<ul>
-<li class="chapter" data-level="8.5.1" data-path="cr.html"><a href="cr.html#consumption-of-a-renewable-resource"><i class="fa fa-check"></i><b>8.5.1</b> Consumption of a renewable resource</a></li>
-<li class="chapter" data-level="8.5.2" data-path="cr.html"><a href="cr.html#prey-carrying-capacity-and-type-ii-functional-response"><i class="fa fa-check"></i><b>8.5.2</b> Prey carrying capacity and type II functional response</a></li>
-</ul></li>
-<li class="chapter" data-level="8.6" data-path="cr.html"><a href="cr.html#paradox-of-enrichment"><i class="fa fa-check"></i><b>8.6</b> Paradox of enrichment</a></li>
-<li class="chapter" data-level="8.7" data-path="cr.html"><a href="cr.html#consumption-of-two-resources"><i class="fa fa-check"></i><b>8.7</b> Consumption of two resources</a>
-<ul>
-<li class="chapter" data-level="8.7.1" data-path="cr.html"><a href="cr.html#interpreting-consumption-and-assimilation"><i class="fa fa-check"></i><b>8.7.1</b> Interpreting consumption and assimilation</a></li>
-</ul></li>
-<li class="chapter" data-level="8.8" data-path="cr.html"><a href="cr.html#in-fine-1"><i class="fa fa-check"></i><b>8.8</b> In fine</a></li>
-</ul></li>
-<li class="chapter" data-level="9" data-path="host-parasitoid-relations.html"><a href="host-parasitoid-relations.html"><i class="fa fa-check"></i><b>9</b> Host-parasitoid relations</a>
-<ul>
-<li class="chapter" data-level="9.1" data-path="host-parasitoid-relations.html"><a href="host-parasitoid-relations.html#independent-and-random-attacks"><i class="fa fa-check"></i><b>9.1</b> Independent and random attacks</a>
-<ul>
-<li class="chapter" data-level="9.1.1" data-path="host-parasitoid-relations.html"><a href="host-parasitoid-relations.html#simulating-simple-host-parasitoid-dynamics"><i class="fa fa-check"></i><b>9.1.1</b> Simulating simple host-parasitoid dynamics</a></li>
-</ul></li>
-<li class="chapter" data-level="9.2" data-path="host-parasitoid-relations.html"><a href="host-parasitoid-relations.html#aggregation-leads-to-coexistence"><i class="fa fa-check"></i><b>9.2</b> Aggregation leads to coexistence</a>
-<ul>
-<li class="chapter" data-level="9.2.1" data-path="host-parasitoid-relations.html"><a href="host-parasitoid-relations.html#equilibria-for-a-discrete-time-model"><i class="fa fa-check"></i><b>9.2.1</b> Equilibria for a discrete-time model</a></li>
-</ul></li>
-<li class="chapter" data-level="9.3" data-path="host-parasitoid-relations.html"><a href="host-parasitoid-relations.html#stability-of-hostparasitoid-dynamics"><i class="fa fa-check"></i><b>9.3</b> Stability of host–parasitoid dynamics</a></li>
-<li class="chapter" data-level="9.4" data-path="host-parasitoid-relations.html"><a href="host-parasitoid-relations.html#in-fine-2"><i class="fa fa-check"></i><b>9.4</b> <em>In Fine</em></a></li>
-</ul></li>
-<li class="chapter" data-level="10" data-path="disease.html"><a href="disease.html"><i class="fa fa-check"></i><b>10</b> Disease</a>
-<ul>
-<li class="chapter" data-level="10.1" data-path="disease.html"><a href="disease.html#closed-epidemics"><i class="fa fa-check"></i><b>10.1</b> Closed epidemics</a>
-<ul>
-<li class="chapter" data-level="10.1.1" data-path="disease.html"><a href="disease.html#density-dependent-transmission"><i class="fa fa-check"></i><b>10.1.1</b> Density-dependent transmission</a></li>
-<li class="chapter" data-level="10.1.2" data-path="disease.html"><a href="disease.html#frequency-dependent-transmission"><i class="fa fa-check"></i><b>10.1.2</b> Frequency-dependent transmission</a></li>
-</ul></li>
-<li class="chapter" data-level="10.2" data-path="disease.html"><a href="disease.html#open-epidemics"><i class="fa fa-check"></i><b>10.2</b> Open epidemics</a></li>
-<li class="chapter" data-level="10.3" data-path="disease.html"><a href="disease.html#modeling-data-from-bombay"><i class="fa fa-check"></i><b>10.3</b> Modeling data from Bombay</a>
-<ul>
-<li class="chapter" data-level="10.3.1" data-path="disease.html"><a href="disease.html#optimization"><i class="fa fa-check"></i><b>10.3.1</b> Optimization</a></li>
-</ul></li>
-</ul></li>
-<li class="chapter" data-level="11" data-path="consumer-resource-competition-and-mutualisms.html"><a href="consumer-resource-competition-and-mutualisms.html"><i class="fa fa-check"></i><b>11</b> Consumer-resource Competition and Mutualisms</a>
-<ul>
-<li class="chapter" data-level="11.1" data-path="consumer-resource-competition-and-mutualisms.html"><a href="consumer-resource-competition-and-mutualisms.html#competition-for-one-resource"><i class="fa fa-check"></i><b>11.1</b> Competition for one resource</a></li>
-<li class="chapter" data-level="11.2" data-path="consumer-resource-competition-and-mutualisms.html"><a href="consumer-resource-competition-and-mutualisms.html#competition-for-substitutable-resources"><i class="fa fa-check"></i><b>11.2</b> Competition for Substitutable resources</a></li>
-<li class="chapter" data-level="11.3" data-path="consumer-resource-competition-and-mutualisms.html"><a href="consumer-resource-competition-and-mutualisms.html#tilmans-resource-ratio-with-essential-resources"><i class="fa fa-check"></i><b>11.3</b> Tilman’s resource ratio with essential resources</a></li>
-<li class="chapter" data-level="11.4" data-path="consumer-resource-competition-and-mutualisms.html"><a href="consumer-resource-competition-and-mutualisms.html#consumer-resource-mutualism"><i class="fa fa-check"></i><b>11.4</b> Consumer-resource mutualism</a>
-<ul>
-<li class="chapter" data-level="11.4.1" data-path="consumer-resource-competition-and-mutualisms.html"><a href="consumer-resource-competition-and-mutualisms.html#a-model-of-uni-directional-mutualism"><i class="fa fa-check"></i><b>11.4.1</b> A model of uni-directional mutualism</a></li>
-</ul></li>
-<li class="chapter" data-level="11.5" data-path="consumer-resource-competition-and-mutualisms.html"><a href="consumer-resource-competition-and-mutualisms.html#plant-soil-feedbacks"><i class="fa fa-check"></i><b>11.5</b> Plant-soil feedbacks</a></li>
-<li class="chapter" data-level="11.6" data-path="consumer-resource-competition-and-mutualisms.html"><a href="consumer-resource-competition-and-mutualisms.html#simulations-for-learning"><i class="fa fa-check"></i><b>11.6</b> Simulations for learning</a>
-<ul>
-<li class="chapter" data-level="11.6.1" data-path="consumer-resource-competition-and-mutualisms.html"><a href="consumer-resource-competition-and-mutualisms.html#lvg"><i class="fa fa-check"></i><b>11.6.1</b> <code>lvg()</code></a></li>
-<li class="chapter" data-level="11.6.2" data-path="consumer-resource-competition-and-mutualisms.html"><a href="consumer-resource-competition-and-mutualisms.html#systematic-simulations"><i class="fa fa-check"></i><b>11.6.2</b> Systematic simulations</a></li>
-<li class="chapter" data-level="11.6.3" data-path="consumer-resource-competition-and-mutualisms.html"><a href="consumer-resource-competition-and-mutualisms.html#checking-simulation-results"><i class="fa fa-check"></i><b>11.6.3</b> Checking simulation results</a></li>
-<li class="chapter" data-level="11.6.4" data-path="consumer-resource-competition-and-mutualisms.html"><a href="consumer-resource-competition-and-mutualisms.html#comparing-simulation-results-to-analytical-solutions"><i class="fa fa-check"></i><b>11.6.4</b> Comparing simulation results to analytical solutions</a></li>
-<li class="chapter" data-level="11.6.5" data-path="consumer-resource-competition-and-mutualisms.html"><a href="consumer-resource-competition-and-mutualisms.html#one-last-thing-using-the-jacobian-matrix"><i class="fa fa-check"></i><b>11.6.5</b> One last thing: using the Jacobian matrix</a></li>
-<li class="chapter" data-level="11.6.6" data-path="consumer-resource-competition-and-mutualisms.html"><a href="consumer-resource-competition-and-mutualisms.html#in-fine-3"><i class="fa fa-check"></i><b>11.6.6</b> <em>In Fine</em></a></li>
-</ul></li>
-</ul></li>
-<li class="chapter" data-level="12" data-path="food-webs-and-other-networks.html"><a href="food-webs-and-other-networks.html"><i class="fa fa-check"></i><b>12</b> Food webs and other networks</a>
-<ul>
-<li class="chapter" data-level="12.1" data-path="food-webs-and-other-networks.html"><a href="food-webs-and-other-networks.html#food-web-characteristics"><i class="fa fa-check"></i><b>12.1</b> Food Web Characteristics</a></li>
-<li class="chapter" data-level="12.2" data-path="food-webs-and-other-networks.html"><a href="food-webs-and-other-networks.html#does-omnivory-destablize-food-chains"><i class="fa fa-check"></i><b>12.2</b> Does omnivory destablize food chains?</a>
-<ul>
-<li class="chapter" data-level="12.2.1" data-path="food-webs-and-other-networks.html"><a href="food-webs-and-other-networks.html#multi-species-lotkavolterra-notation"><i class="fa fa-check"></i><b>12.2.1</b> Multi-species Lotka–Volterra notation</a></li>
-<li class="chapter" data-level="12.2.2" data-path="food-webs-and-other-networks.html"><a href="food-webs-and-other-networks.html#background"><i class="fa fa-check"></i><b>12.2.2</b> Background</a></li>
-<li class="chapter" data-level="12.2.3" data-path="food-webs-and-other-networks.html"><a href="food-webs-and-other-networks.html#implementing-pimm-and-lawtons-methods"><i class="fa fa-check"></i><b>12.2.3</b> Implementing Pimm and Lawton’s Methods</a></li>
-<li class="chapter" data-level="12.2.4" data-path="food-webs-and-other-networks.html"><a href="food-webs-and-other-networks.html#shortening-the-chain"><i class="fa fa-check"></i><b>12.2.4</b> Shortening the Chain</a></li>
-<li class="chapter" data-level="12.2.5" data-path="food-webs-and-other-networks.html"><a href="food-webs-and-other-networks.html#adding-omnivory"><i class="fa fa-check"></i><b>12.2.5</b> Adding Omnivory</a></li>
-<li class="chapter" data-level="12.2.6" data-path="food-webs-and-other-networks.html"><a href="food-webs-and-other-networks.html#comparing-chain-a-versus-b"><i class="fa fa-check"></i><b>12.2.6</b> Comparing Chain A versus B</a></li>
-<li class="chapter" data-level="12.2.7" data-path="food-webs-and-other-networks.html"><a href="food-webs-and-other-networks.html#re-evaluating-take-home-messages"><i class="fa fa-check"></i><b>12.2.7</b> Re-evaluating Take-Home Messages</a></li>
-</ul></li>
-<li class="chapter" data-level="12.3" data-path="food-webs-and-other-networks.html"><a href="food-webs-and-other-networks.html#perhaps-mutualism-stabilizes-bipartite-networks"><i class="fa fa-check"></i><b>12.3</b> Perhaps mutualism stabilizes bipartite networks</a>
-<ul>
-<li class="chapter" data-level="12.3.1" data-path="food-webs-and-other-networks.html"><a href="food-webs-and-other-networks.html#creating-bipartite-webs"><i class="fa fa-check"></i><b>12.3.1</b> Creating bipartite webs</a></li>
-<li class="chapter" data-level="12.3.2" data-path="food-webs-and-other-networks.html"><a href="food-webs-and-other-networks.html#testing-effects-of-nestedness-and-modularity-on-network-resilience."><i class="fa fa-check"></i><b>12.3.2</b> Testing effects of nestedness and modularity on network resilience.</a></li>
-<li class="chapter" data-level="12.3.3" data-path="food-webs-and-other-networks.html"><a href="food-webs-and-other-networks.html#path-analysis"><i class="fa fa-check"></i><b>12.3.3</b> Path Analysis</a></li>
-</ul></li>
-<li class="chapter" data-level="12.4" data-path="food-webs-and-other-networks.html"><a href="food-webs-and-other-networks.html#exploring-pandora-right-here-at-home"><i class="fa fa-check"></i><b>12.4</b> Exploring Pandora, right here at home</a>
-<ul>
-<li class="chapter" data-level="12.4.1" data-path="food-webs-and-other-networks.html"><a href="food-webs-and-other-networks.html#properties-assessed"><i class="fa fa-check"></i><b>12.4.1</b> Properties assessed</a></li>
-</ul></li>
-</ul></li>
-<li class="chapter" data-level="13" data-path="diversity.html"><a href="diversity.html"><i class="fa fa-check"></i><b>13</b> Diversity</a>
-<ul>
-<li class="chapter" data-level="13.1" data-path="diversity.html"><a href="diversity.html#background-1"><i class="fa fa-check"></i><b>13.1</b> Background</a></li>
-<li class="chapter" data-level="13.2" data-path="diversity.html"><a href="diversity.html#species-composition"><i class="fa fa-check"></i><b>13.2</b> Species Composition</a>
-<ul>
-<li class="chapter" data-level="13.2.1" data-path="diversity.html"><a href="diversity.html#measures-of-abundance"><i class="fa fa-check"></i><b>13.2.1</b> Measures of abundance</a></li>
-<li class="chapter" data-level="13.2.2" data-path="diversity.html"><a href="diversity.html#dissimilarities-and-distances"><i class="fa fa-check"></i><b>13.2.2</b> Dissimilarities and Distances</a></li>
-<li class="chapter" data-level="13.2.3" data-path="diversity.html"><a href="diversity.html#displaying-multidimensional-distances"><i class="fa fa-check"></i><b>13.2.3</b> Displaying multidimensional distances</a></li>
-</ul></li>
-<li class="chapter" data-level="13.3" data-path="diversity.html"><a href="diversity.html#diversity-1"><i class="fa fa-check"></i><b>13.3</b> Diversity</a></li>
-<li class="chapter" data-level="13.4" data-path="diversity.html"><a href="diversity.html#species-diversity"><i class="fa fa-check"></i><b>13.4</b> Species diversity</a></li>
-<li class="chapter" data-level="13.5" data-path="diversity.html"><a href="diversity.html#rarefaction-and-total-species-richness"><i class="fa fa-check"></i><b>13.5</b> Rarefaction and total species richness</a>
-<ul>
-<li class="chapter" data-level="13.5.1" data-path="diversity.html"><a href="diversity.html#an-example-of-rarefaction-and-total-species-richness"><i class="fa fa-check"></i><b>13.5.1</b> An example of rarefaction and total species richness</a></li>
-</ul></li>
-<li class="chapter" data-level="13.6" data-path="diversity.html"><a href="diversity.html#distributions"><i class="fa fa-check"></i><b>13.6</b> Distributions</a>
-<ul>
-<li class="chapter" data-level="13.6.1" data-path="diversity.html"><a href="diversity.html#log-normal-distribution"><i class="fa fa-check"></i><b>13.6.1</b> Log-normal distribution</a></li>
-<li class="chapter" data-level="13.6.2" data-path="diversity.html"><a href="diversity.html#other-distributions"><i class="fa fa-check"></i><b>13.6.2</b> Other distributions</a></li>
-<li class="chapter" data-level="13.6.3" data-path="diversity.html"><a href="diversity.html#pattern-vs.-process"><i class="fa fa-check"></i><b>13.6.3</b> Pattern <em>vs.</em> process</a></li>
-</ul></li>
-<li class="chapter" data-level="13.7" data-path="diversity.html"><a href="diversity.html#neutral-theory-of-biodiversity-and-biogeography"><i class="fa fa-check"></i><b>13.7</b> Neutral Theory of Biodiversity and Biogeography</a>
-<ul>
-<li class="chapter" data-level="13.7.1" data-path="diversity.html"><a href="diversity.html#different-flavors-of-neutral-communities"><i class="fa fa-check"></i><b>13.7.1</b> Different flavors of neutral communities</a></li>
-<li class="chapter" data-level="13.7.2" data-path="diversity.html"><a href="diversity.html#investigating-neutral-communities"><i class="fa fa-check"></i><b>13.7.2</b> Investigating neutral communities</a></li>
-</ul></li>
-<li class="chapter" data-level="13.8" data-path="diversity.html"><a href="diversity.html#speciesarea-relations"><i class="fa fa-check"></i><b>13.8</b> Species–area relations</a>
-<ul>
-<li class="chapter" data-level="13.8.1" data-path="diversity.html"><a href="diversity.html#island-biogeography"><i class="fa fa-check"></i><b>13.8.1</b> Island biogeography</a></li>
-</ul></li>
-<li class="chapter" data-level="13.9" data-path="diversity.html"><a href="diversity.html#diversity-partitioning"><i class="fa fa-check"></i><b>13.9</b> Diversity Partitioning</a>
-<ul>
-<li class="chapter" data-level="13.9.1" data-path="diversity.html"><a href="diversity.html#partitioning-speciesarea-relations"><i class="fa fa-check"></i><b>13.9.1</b> Partitioning species–area relations</a></li>
-</ul></li>
-<li class="chapter" data-level="13.10" data-path="diversity.html"><a href="diversity.html#summary-1"><i class="fa fa-check"></i><b>13.10</b> Summary</a></li>
-</ul></li>
-<li class="chapter" data-level="14" data-path="appendix.html"><a href="appendix.html"><i class="fa fa-check"></i><b>14</b> Appendix</a>
-<ul>
-<li class="chapter" data-level="14.1" data-path="appendix.html"><a href="appendix.html#very-introductory-materials"><i class="fa fa-check"></i><b>14.1</b> Very introductory materials</a></li>
-<li class="chapter" data-level="14.2" data-path="appendix.html"><a href="appendix.html#writing-your-own-functions"><i class="fa fa-check"></i><b>14.2</b> Writing your own functions</a></li>
-<li class="chapter" data-level="14.3" data-path="appendix.html"><a href="appendix.html#iterated-actions-the-apply-family-and-loops"><i class="fa fa-check"></i><b>14.3</b> Iterated Actions: the <code>apply</code> Family and Loops</a>
-<ul>
-<li class="chapter" data-level="14.3.1" data-path="appendix.html"><a href="appendix.html#iterations-of-independent-actions"><i class="fa fa-check"></i><b>14.3.1</b> Iterations of independent actions</a></li>
-<li class="chapter" data-level="14.3.2" data-path="appendix.html"><a href="appendix.html#dependent-iterations"><i class="fa fa-check"></i><b>14.3.2</b> Dependent iterations</a></li>
-</ul></li>
-<li class="chapter" data-level="14.4" data-path="appendix.html"><a href="appendix.html#probability-distributions-and-randomization"><i class="fa fa-check"></i><b>14.4</b> Probability Distributions and Randomization</a></li>
-<li class="chapter" data-level="14.5" data-path="appendix.html"><a href="appendix.html#numerical-integration-of-ordinary-differential-equations"><i class="fa fa-check"></i><b>14.5</b> Numerical integration of ordinary differential equations</a></li>
-<li class="chapter" data-level="14.6" data-path="appendix.html"><a href="appendix.html#eigenanalysis-1"><i class="fa fa-check"></i><b>14.6</b> Eigenanalysis</a>
-<ul>
-<li class="chapter" data-level="14.6.1" data-path="appendix.html"><a href="appendix.html#eigenanalysis-of-demographic-versus-jacobian-matrices"><i class="fa fa-check"></i><b>14.6.1</b> Eigenanalysis of demographic versus Jacobian matrices</a></li>
-</ul></li>
-<li class="chapter" data-level="14.7" data-path="appendix.html"><a href="appendix.html#derivation-of-the-right-eigenvalues"><i class="fa fa-check"></i><b>14.7</b> Derivation of the right eigenvalues</a></li>
-<li class="chapter" data-level="14.8" data-path="appendix.html"><a href="appendix.html#symbols-used-in-this-book"><i class="fa fa-check"></i><b>14.8</b> Symbols used in this book</a></li>
-</ul></li>
-<li class="chapter" data-level="15" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i><b>15</b> References</a></li>
-</ul>
-
-      </nav>
+    <div class="d-flex align-items-start justify-content-between">
+      <h1>
+        <a href="index.html" title="">Primer of Ecology using R</a>
+      </h1>
+      <button class="btn btn-outline-primary d-lg-none ml-2 mt-1" type="button" data-toggle="collapse" data-target="#main-nav" aria-expanded="true" aria-controls="main-nav"><i class="fas fa-bars"></i><span class="sr-only">Show table of contents</span></button>
     </div>
 
-    <div class="book-body">
-      <div class="body-inner">
-        <div class="book-header" role="navigation">
-          <h1>
-            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Primer of Ecology using R</a>
-          </h1>
+    <div id="main-nav" class="collapse-lg">
+      <form role="search">
+        <input id="search" class="form-control" type="search" placeholder="Search" aria-label="Search">
+</form>
+
+      <nav aria-label="Table of contents"><h2>Table of contents</h2>
+        <ul class="book-toc list-unstyled">
+<li><a class="" href="index.html">Preface</a></li>
+<li><a class="active" href="theory.html"><span class="header-section-number">1</span> Theory in Ecology</a></li>
+<li><a class="" href="oft.html"><span class="header-section-number">2</span> Optimal Foraging</a></li>
+<li><a class="" href="expo.html"><span class="header-section-number">3</span> Simple density-independent growth</a></li>
+<li><a class="" href="DID.html"><span class="header-section-number">4</span> Density-independent Demography</a></li>
+<li><a class="" href="DDgrowth.html"><span class="header-section-number">5</span> Density-dependent growth</a></li>
+<li><a class="" href="meta.html"><span class="header-section-number">6</span> Populations in Space</a></li>
+<li><a class="" href="direct-competition-and-mutualism.html"><span class="header-section-number">7</span> Direct competition and mutualism</a></li>
+<li><a class="" href="cr.html"><span class="header-section-number">8</span> Consumer-resource Interactions</a></li>
+<li><a class="" href="host-parasitoid-relations.html"><span class="header-section-number">9</span> Host-parasitoid relations</a></li>
+<li><a class="" href="disease.html"><span class="header-section-number">10</span> Disease</a></li>
+<li><a class="" href="consumer-resource-competition-and-mutualisms.html"><span class="header-section-number">11</span> Consumer-resource Competition and Mutualisms</a></li>
+<li><a class="" href="food-webs-and-other-networks.html"><span class="header-section-number">12</span> Food webs and other networks</a></li>
+<li><a class="" href="diversity.html"><span class="header-section-number">13</span> Diversity</a></li>
+<li><a class="" href="appendix.html"><span class="header-section-number">14</span> Appendix</a></li>
+<li><a class="" href="references.html"><span class="header-section-number">15</span> References</a></li>
+</ul>
+
+        <div class="book-extra">
+          
         </div>
-
-        <div class="page-wrapper" tabindex="-1" role="main">
-          <div class="page-inner">
-
-            <section class="normal" id="section-">
-<div id="theory" class="section level1" number="1">
-<h1><span class="header-section-number">1</span> Theory in Ecology</h1>
+      </nav>
+</div>
+  </header><main class="col-sm-12 col-md-9 col-lg-7" id="content"><div id="theory" class="section level1" number="1">
+<h1>
+<span class="header-section-number">1</span> Theory in Ecology<a class="anchor" aria-label="anchor" href="#theory"><i class="fas fa-link"></i></a>
+</h1>
 <p>In this chapter, we introduce a perspective on ecological theory, and provide two examples of efficient theory, metabolic scaling and maximum entropy theory.</p>
 <p>Theory is really, really important. Without theory of some sort to guide us, we are merely counting pebbles in a quarry. Good theory may be conceptual or mathematical, and helps us focus more clearly and in a less ambiguous manner on the systems we study. In this book, we explore mathematical models that provide special cases of theory.</p>
-<p><em>Scientific theory</em> is a body of knowledge that provides an organized and mechanistic view of how the world works <span class="citation">(<a href="#ref-Scheiner2010" role="doc-biblioref">Samuel M. Scheiner 2010</a>)</span>. Theories concerning gravity, general relativity, and evolution by natural selection provide structured ways of connecting observations, patterns, and processes that provide insight into why the world is the way it is. This stands in stark contrast to the colloquial use of <em>theory</em> that implies a lack of knowledge, as when someone says “oh, that’s just a theory,” referring to a guess without much evidence. Scientific theory is a set of explanations whose validity has been tested repeatedly by experiments and new data.</p>
+<p><em>Scientific theory</em> is a body of knowledge that provides an organized and mechanistic view of how the world works <span class="citation">(<a href="references.html#ref-Scheiner2010" role="doc-biblioref">Samuel M. Scheiner 2010</a>)</span>. Theories concerning gravity, general relativity, and evolution by natural selection provide structured ways of connecting observations, patterns, and processes that provide insight into why the world is the way it is. This stands in stark contrast to the colloquial use of <em>theory</em> that implies a lack of knowledge, as when someone says “oh, that’s just a theory,” referring to a guess without much evidence. Scientific theory is a set of explanations whose validity has been tested repeatedly by experiments and new data.</p>
 <div id="examples-of-theories" class="section level2" number="1.1">
-<h2><span class="header-section-number">1.1</span> Examples of theories</h2>
+<h2>
+<span class="header-section-number">1.1</span> Examples of theories<a class="anchor" aria-label="anchor" href="#examples-of-theories"><i class="fas fa-link"></i></a>
+</h2>
 <p>Ecology has lots of theories, of all different types. Below I discuss some which may be prevalent, important, useful, or some combination.</p>
 <div id="hierarchy-theory" class="section level3" number="1.1.1">
-<h3><span class="header-section-number">1.1.1</span> Hierarchy theory</h3>
-<p>An early and persistent organizing schema in ecology is based on <em>hierarchy theory</em> <span class="citation">(<a href="#ref-ONeill1986" role="doc-biblioref">O’Neill et al. 1986</a>; <a href="#ref-Rose2017" role="doc-biblioref">Rose et al. 2017</a>, and references therein)</span>. It posits that ecological systems are structured <em>hierachically</em>, such that each entity comprises subunits. For instance, an entity such as a population of big bluestem grass (<em>Andropogon gerardii</em>) is part of a larger ecology community of many species. The population of big bluestem comprises subpopulations separated in space, a subpopulation comprises separate individuals, that each individual comprises multiple ramets and a set of organ systems and tissues, which comprise different cell types. This theory posits that each entity gives rise to emergent properties to the hierarchical level above it, and influences processes within each smaller sub-entity in the hierachical level below it. As a disciplinary organizing principle, this approach structures nearly all of the ecology curriculum.</p>
+<h3>
+<span class="header-section-number">1.1.1</span> Hierarchy theory<a class="anchor" aria-label="anchor" href="#hierarchy-theory"><i class="fas fa-link"></i></a>
+</h3>
+<p>An early and persistent organizing schema in ecology is based on <em>hierarchy theory</em> <span class="citation">(<a href="references.html#ref-ONeill1986" role="doc-biblioref">O’Neill et al. 1986</a>; <a href="references.html#ref-Rose2017" role="doc-biblioref">Rose et al. 2017</a>, and references therein)</span>. It posits that ecological systems are structured <em>hierachically</em>, such that each entity comprises subunits. For instance, an entity such as a population of big bluestem grass (<em>Andropogon gerardii</em>) is part of a larger ecology community of many species. The population of big bluestem comprises subpopulations separated in space, a subpopulation comprises separate individuals, that each individual comprises multiple ramets and a set of organ systems and tissues, which comprise different cell types. This theory posits that each entity gives rise to emergent properties to the hierarchical level above it, and influences processes within each smaller sub-entity in the hierachical level below it. As a disciplinary organizing principle, this approach structures nearly all of the ecology curriculum.</p>
 <p>Hierarchy theory gets more complicated when the levels of a hierarchy start to include fundamentally different types of entities. The big bluestem hierarchy above included only biotic components–a individual is part of a population which is part of a community of individuals of multiple species, and is made up of organ systems and tissues. Ecology, however, includes both the biotic and the abiotic parts of environments. An ecosystem includes a community of species, but also the nutrients, water, light, and other abiotic components, along with the spatial arrangement of all of these things.</p>
 <p>Different hierarchies are useful for different questions. An individual organism can play very different roles in different hierarchies. Consider and individual bunch grass. To understand how a population evolves, we need to count individuals within a population, because evolutionary fitness is tracked by the number of independent reproductive units. In contrast, to understand competitive interactions, it may be much more important to weigh the biomass of groups of individuals in a population, because biomass is more closely related of resource uptake.</p>
 </div>
 <div id="a-general-theory-of-ecology" class="section level3" number="1.1.2">
-<h3><span class="header-section-number">1.1.2</span> A general theory of ecology</h3>
-<p>Good scientific theories exist within a hierarchy of disciplinary knowledge <span class="citation">(<a href="#ref-Scheiner2011" role="doc-biblioref">S. M. Scheiner and Willig 2011</a>)</span>. They explain phenomena within a <em>domain</em> of knowledge which is organized around <em>principles</em> and <em>assumptions</em>. Scheiner and Willig posit a theory of biology that explains phenomena relating to the “diversity and complexity of living systems.” One of the ten principles on which this theory depends is that “the cell is the fundamental unit of life.” Subsumed within their theory of biology is the theory of cells whose domain is “cells and the causes of their structure, function, and variation.” This theory in turn is based on principles and has theories to organize our understanding of cells and what cells do.</p>
+<h3>
+<span class="header-section-number">1.1.2</span> A general theory of ecology<a class="anchor" aria-label="anchor" href="#a-general-theory-of-ecology"><i class="fas fa-link"></i></a>
+</h3>
+<p>Good scientific theories exist within a hierarchy of disciplinary knowledge <span class="citation">(<a href="references.html#ref-Scheiner2011" role="doc-biblioref">S. M. Scheiner and Willig 2011</a>)</span>. They explain phenomena within a <em>domain</em> of knowledge which is organized around <em>principles</em> and <em>assumptions</em>. Scheiner and Willig posit a theory of biology that explains phenomena relating to the “diversity and complexity of living systems.” One of the ten principles on which this theory depends is that “the cell is the fundamental unit of life.” Subsumed within their theory of biology is the theory of cells whose domain is “cells and the causes of their structure, function, and variation.” This theory in turn is based on principles and has theories to organize our understanding of cells and what cells do.</p>
 <p><em>Models</em> are specific and explicit manifestations of more general theories. In this book, we focus on popular mathematical models that are specific manifestions of theories of ecology.</p>
-<p><span class="citation"><a href="#ref-Scheiner2011" role="doc-biblioref">S. M. Scheiner and Willig</a> (<a href="#ref-Scheiner2011" role="doc-biblioref">2011</a>)</span> propose a theory of ecology, some of which we cover in this book. Here is part of this theory:</p>
+<p><span class="citation"><a href="references.html#ref-Scheiner2011" role="doc-biblioref">S. M. Scheiner and Willig</a> (<a href="references.html#ref-Scheiner2011" role="doc-biblioref">2011</a>)</span> propose a theory of ecology, some of which we cover in this book. Here is part of this theory:</p>
 <p><strong>The General Theory of Ecology</strong></p>
 <p><strong>Domain:</strong> The spatial and temporal pattern of the distribution and abundance of organisms, including causes and consequences.</p>
 <p><strong>Principles:</strong></p>
@@ -494,10 +110,10 @@ div.csl-indent {
 </ol>
 <p>These principles constitute what we know is true about ecological systems. Some of these principles provide the focus for a single chapter while other principles apply broadly to many chapters in this book.</p>
 <p>Here is my own perspective on a general theory of ecology:</p>
-<p><em>Domain:</em> The house of life<a href="#fn2" class="footnote-ref" id="fnref2"><sup>2</sup></a>: its constituent entities, causes, and consequences.</p>
+<p><em>Domain:</em> The house of life<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;“ecology” derives from the Greek “oikos” which means the rules of the house&lt;/p&gt;"><sup>2</sup></a>: its constituent entities, causes, and consequences.</p>
 <p><em>Principles:</em></p>
 <ol style="list-style-type: decimal">
-<li>Entities<a href="#fn3" class="footnote-ref" id="fnref3"><sup>3</sup></a> are open systems with inputs and outputs.</li>
+<li>Entities<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;An entity may be an ecosystem, a community, a population, an individual, or some other system with operationally defined boundaries.&lt;/p&gt;"><sup>3</sup></a> are open systems with inputs and outputs.</li>
 <li>Entities have internal complexity.</li>
 <li>Entities include self-replicating components (living elements).</li>
 <li>Entities interact via inputs, outputs, and behavior.</li>
@@ -506,57 +122,65 @@ div.csl-indent {
 <p>You will see elements of these principles throughout this book as well.</p>
 </div>
 <div id="efficient-theory" class="section level3" number="1.1.3">
-<h3><span class="header-section-number">1.1.3</span> Efficient theory</h3>
-<p><span class="citation"><a href="#ref-Marquet2014" role="doc-biblioref">Marquet et al.</a> (<a href="#ref-Marquet2014" role="doc-biblioref">2014</a>)</span> argue that the best theories are those which are <em>efficient</em>. Such theories tend to be <em>based on first principles</em>, which are observations and laws that are fundamental assumptions in a scientific domain. In biology, such principles can include the laws of thermodynamics, and mathematical properties such as the central limit theorem. Theories built upon first principles are thus well-grounded in reality as we understand it and lead logically to refinements. Marquet and his colleagues also claim that efficient theory is <em>expressed in mathematics</em>. Mathematics is a universal language that is unamibiguous. It forces us to be as clear as possible about what we mean when we state a theory.<a href="#fn4" class="footnote-ref" id="fnref4"><sup>4</sup></a> Last, efficient theories are those that make a <em>large number of predictions using only a small number of free parameters</em>.<a href="#fn5" class="footnote-ref" id="fnref5"><sup>5</sup></a> Examples of efficient theories we cover in this book include metabolic scaling, exponential growth, density dependence, and ecological neutral theory.</p>
+<h3>
+<span class="header-section-number">1.1.3</span> Efficient theory<a class="anchor" aria-label="anchor" href="#efficient-theory"><i class="fas fa-link"></i></a>
+</h3>
+<p><span class="citation"><a href="references.html#ref-Marquet2014" role="doc-biblioref">Marquet et al.</a> (<a href="references.html#ref-Marquet2014" role="doc-biblioref">2014</a>)</span> argue that the best theories are those which are <em>efficient</em>. Such theories tend to be <em>based on first principles</em>, which are observations and laws that are fundamental assumptions in a scientific domain. In biology, such principles can include the laws of thermodynamics, and mathematical properties such as the central limit theorem. Theories built upon first principles are thus well-grounded in reality as we understand it and lead logically to refinements. Marquet and his colleagues also claim that efficient theory is <em>expressed in mathematics</em>. Mathematics is a universal language that is unamibiguous. It forces us to be as clear as possible about what we mean when we state a theory.<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content='&lt;p&gt;&lt;span class="math inline"&gt;\(E=mc^2\)&lt;/span&gt; - need I say more?&lt;/p&gt;'><sup>4</sup></a> Last, efficient theories are those that make a <em>large number of predictions using only a small number of free parameters</em>.<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;Variables are quantities we measure and which change through time (e.g., population size). &lt;em&gt;Parameters&lt;/em&gt; are (usually) fixed constants that govern the rates of change of variables (e.g., per capita birth rate).&lt;/p&gt;"><sup>5</sup></a> Examples of efficient theories we cover in this book include metabolic scaling, exponential growth, density dependence, and ecological neutral theory.</p>
 <p>Marquet et al. and Scheiner and Willig emphasize slightly different features of the definition of “theory.” Scheiner and Willig emphasize relatively broad ideas that are well-supported by experiments and repeated observation. Marquet and colleagues tend to mean something fairly specific and narrow, typically something that can be expressed mathematically. Scheiner and Willig might refer to such theory as constitutive theory or even simply a model.</p>
 <p>Next, I describe the Metabolic Theory of Ecology. This theory is based on first principles, and its central tenets are expressed mathematically. It’s core equation has a very small number of free parameters (fitted constants) and makes a very large number of testable predictions. Parts of this theory are supported by a very large number of observations. It fits everyone’s definition of theory.</p>
 </div>
 </div>
 <div id="metabolic_scaling" class="section level2" number="1.2">
-<h2><span class="header-section-number">1.2</span> An example: Metabolic Theory of Ecology</h2>
-<p>Metabolic rate is central to how rapidly individuals forage for, consume and use resources, reproduce and die. The <em>metabolic theory of ecology</em> <span class="citation">(<a href="#ref-Brown:2004wa" role="doc-biblioref">Brown et al. 2004</a>)</span> is a well-supported body of knowledge about the underlying mechanisms, and the resulting profound and wide-ranging consequences for populations and ecosystems.</p>
+<h2>
+<span class="header-section-number">1.2</span> An example: Metabolic Theory of Ecology<a class="anchor" aria-label="anchor" href="#metabolic_scaling"><i class="fas fa-link"></i></a>
+</h2>
+<p>Metabolic rate is central to how rapidly individuals forage for, consume and use resources, reproduce and die. The <em>metabolic theory of ecology</em> <span class="citation">(<a href="references.html#ref-Brown:2004wa" role="doc-biblioref">Brown et al. 2004</a>)</span> is a well-supported body of knowledge about the underlying mechanisms, and the resulting profound and wide-ranging consequences for populations and ecosystems.</p>
 <p>Body size and temperature are fundamental properties of organisms and the environment. The study of how body shape and body processes scale with body size is <em>allometry</em>. Because body size affects metabolic rate, body size indirectly helps determine population growth rates and how species interact with each other. Temperature affects how molecules vigorously molecules vibrate and move, and so increasing temperature tends to speed up chemical reactions. As metabolism is really just a complex network of biochemical reactions, temperature influences metabolic rate.</p>
 <p>The core of this theory is expressed in a simple mathematical equation that describes how body size and temperature govern metabolic rate.</p>
 <div id="body-size-dependence" class="section level3" number="1.2.1">
-<h3><span class="header-section-number">1.2.1</span> Body-size dependence</h3>
-<p>There is a profoundly simple and general rule describing the effect of interspecific variation in body size on metabolism.<a href="#fn6" class="footnote-ref" id="fnref6"><sup>6</sup></a> This biological law is referred to as the Kleiber law <span class="citation">(<a href="#ref-Kleiber1932" role="doc-biblioref">Kleiber 1932</a>)</span>, or <em>quarter power scaling</em> <span class="citation">(<a href="#ref-Brown:2004wa" role="doc-biblioref">Brown et al. 2004</a>)</span>. When we compare the basal (i.e. resting) metabolic rates of different species, across a wide range of body sizes spanning many orders of magnitude, we find that</p>
+<h3>
+<span class="header-section-number">1.2.1</span> Body-size dependence<a class="anchor" aria-label="anchor" href="#body-size-dependence"><i class="fas fa-link"></i></a>
+</h3>
+<p>There is a profoundly simple and general rule describing the effect of interspecific variation in body size on metabolism.<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content='&lt;p&gt;Metabolic rate may be measured by variables tied directly to metabolism, such as the rate of oxygen or energy consumption, or CO&lt;span class="math inline"&gt;\(_2\)&lt;/span&gt; production.&lt;/p&gt;'><sup>6</sup></a> This biological law is referred to as the Kleiber law <span class="citation">(<a href="references.html#ref-Kleiber1932" role="doc-biblioref">Kleiber 1932</a>)</span>, or <em>quarter power scaling</em> <span class="citation">(<a href="references.html#ref-Brown:2004wa" role="doc-biblioref">Brown et al. 2004</a>)</span>. When we compare the basal (i.e. resting) metabolic rates of different species, across a wide range of body sizes spanning many orders of magnitude, we find that</p>
 <p><em>whole-organism resting metabolic rate increases with organism mass raised to the three-quarter power</em>, or,</p>
 <p><span class="math display">\[
 B = aM^{z} \quad;\quad z = 3/4
 \]</span></p>
-<p>In this equation, <span class="math inline">\(B\)</span> is basal, or resting, metabolic rate, <span class="math inline">\(M\)</span> is body mass, <span class="math inline">\(a\)</span> is a proportionality constant, and <span class="math inline">\(z\)</span> is the <em>power law scaling coefficient</em>. The proportionality constant <span class="math inline">\(a\)</span> varies depending on the type of organism such as arthropods, fish, or mammals. Plants scale in the same manner <span class="citation">(<a href="#ref-Niklas2001" role="doc-biblioref">Niklas and Enquist 2001</a>)</span>, although size or mass is a little trickier to measure. The scaling coefficient, <span class="math inline">\(z\)</span>, is the seemingly magical constant that many have argued does not vary substantially among different types of organisms.</p>
+<p>In this equation, <span class="math inline">\(B\)</span> is basal, or resting, metabolic rate, <span class="math inline">\(M\)</span> is body mass, <span class="math inline">\(a\)</span> is a proportionality constant, and <span class="math inline">\(z\)</span> is the <em>power law scaling coefficient</em>. The proportionality constant <span class="math inline">\(a\)</span> varies depending on the type of organism such as arthropods, fish, or mammals. Plants scale in the same manner <span class="citation">(<a href="references.html#ref-Niklas2001" role="doc-biblioref">Niklas and Enquist 2001</a>)</span>, although size or mass is a little trickier to measure. The scaling coefficient, <span class="math inline">\(z\)</span>, is the seemingly magical constant that many have argued does not vary substantially among different types of organisms.</p>
 <p>Ecologists typically describe metabolism-mass relations and other power law behavior using logarithmic scales. When we do that, power law relations become linear. Using our rules for exponents and logarithms, metabolic scaling becomes
 <span class="math display">\[ \log B = \log a + z\log M\]</span>
 so that <span class="math inline">\(\log B\)</span> increases linearly with <span class="math inline">\(\log M\)</span> with a slope of <span class="math inline">\(3/4\)</span>. Our brains can process and compare linear relations much more easily than curvilinear ones.</p>
-<p>Here we plot the curvilinear relation in R using <code>curve()</code> in the <code>graphics</code> package of R that is included in the base installation as one of the core packages. The function <code>curve()</code> can plot any curve that be expressed as a function of <code>x</code>. Below, we draw a curve of a dotted 1:1 line for comparison, and then <em>add</em> the power function <span class="math inline">\(x^{3/4}\)</span>.</p>
-<div class="figure"><span style="display:block;" id="fig:MTE34"></span>
-<img src="figs/MTE34-1.png" alt="Metabolic rate increases predictably with species body sizes." width="75%" />
-<p class="caption">
+<p>Here we plot the curvilinear relation in R using <code><a href="https://rdrr.io/r/graphics/curve.html">curve()</a></code> in the <code>graphics</code> package of R that is included in the base installation as one of the core packages. The function <code><a href="https://rdrr.io/r/graphics/curve.html">curve()</a></code> can plot any curve that be expressed as a function of <code>x</code>. Below, we draw a curve of a dotted 1:1 line for comparison, and then <em>add</em> the power function <span class="math inline">\(x^{3/4}\)</span>.</p>
+<div class="figure">
+<span style="display:block;" id="fig:MTE34"></span>
+<img src="figs/MTE34-1.png" alt="Metabolic rate increases predictably with species body sizes." width="75%"><p class="caption">
 Figure 1.1: Metabolic rate increases predictably with species body sizes.
 </p>
 </div>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="theory.html#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="do">## using curve, let your variable be &#39;x&#39;.</span></span>
-<span id="cb2-2"><a href="theory.html#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">curve</span>(<span class="dv">1</span><span class="sc">*</span>x, <span class="at">from =</span> .<span class="dv">01</span>, <span class="at">to=</span><span class="dv">100</span>, <span class="at">ylab =</span> <span class="st">&quot;Metabolic rate (B)&quot;</span>,</span>
-<span id="cb2-3"><a href="theory.html#cb2-3" aria-hidden="true" tabindex="-1"></a>      <span class="at">xlab=</span><span class="st">&quot;Body mass (M)&quot;</span>, <span class="at">lty=</span><span class="dv">3</span>)</span>
-<span id="cb2-4"><a href="theory.html#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="fu">curve</span>(x<span class="sc">^</span>(<span class="dv">3</span><span class="sc">/</span><span class="dv">4</span>), <span class="at">from =</span> .<span class="dv">01</span>, <span class="at">to =</span> <span class="dv">100</span>, <span class="at">add=</span><span class="cn">TRUE</span>)</span></code></pre></div>
-<p>To help us grasp the implications of this, let’s consider <em>mass-specific</em> metabolic rates. “Mass-specific” means on a per-gram basis.<a href="#fn7" class="footnote-ref" id="fnref7"><sup>7</sup></a> Mass-specific metabolic rate is basal metabolic rate of an individual divided by its mass, or <span class="math inline">\(B/M\)</span>.</p>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co">## using curve, let your variable be 'x'.</span>
+<span class="fu"><a href="https://rdrr.io/r/graphics/curve.html">curve</a></span><span class="op">(</span><span class="fl">1</span><span class="op">*</span><span class="va">x</span>, from <span class="op">=</span> <span class="fl">.01</span>, to<span class="op">=</span><span class="fl">100</span>, ylab <span class="op">=</span> <span class="st">"Metabolic rate (B)"</span>,
+      xlab<span class="op">=</span><span class="st">"Body mass (M)"</span>, lty<span class="op">=</span><span class="fl">3</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/graphics/curve.html">curve</a></span><span class="op">(</span><span class="va">x</span><span class="op">^</span><span class="op">(</span><span class="fl">3</span><span class="op">/</span><span class="fl">4</span><span class="op">)</span>, from <span class="op">=</span> <span class="fl">.01</span>, to <span class="op">=</span> <span class="fl">100</span>, add<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
+<p>To help us grasp the implications of this, let’s consider <em>mass-specific</em> metabolic rates. “Mass-specific” means on a per-gram basis.<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;With plants, we often measure something called “specific leaf area,” SLA, which is the two dimensional area of a leaf divided by its mass.&lt;/p&gt;"><sup>7</sup></a> Mass-specific metabolic rate is basal metabolic rate of an individual divided by its mass, or <span class="math inline">\(B/M\)</span>.</p>
 <p>The mass-specific metabolic rate allows us to compare directly, for example, the metabolic rate of a cell in a shrew vs. a cell in an elephant. Which cell is burning fuel faster?</p>
 <p>We can estimate this from the above metabolic scaling principle and the using rules exponents
 <span class="math display">\[ \frac{B}{M} = a \frac{M^z}{M^1} = a M^{z-1} = aM^{-1/4}\]</span>
 From this, we now have the rule that</p>
 <p><em>mass-specific metabolic rate declines with organisms mass raised to the negative one quater power</em></p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="theory.html#cb3-1" aria-hidden="true" tabindex="-1"></a>eq1 <span class="ot">=</span> <span class="cf">function</span>(M, a){a<span class="sc">*</span>M<span class="sc">^-</span><span class="fl">0.25</span>} <span class="co"># create the function, F(M)</span></span>
-<span id="cb3-2"><a href="theory.html#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span><span class="fu">data.frame</span>(<span class="at">x=</span><span class="fu">c</span>(<span class="fl">0.1</span>, <span class="dv">100</span>)), <span class="fu">aes</span>(<span class="at">x=</span>x) ) <span class="sc">+</span> </span>
-<span id="cb3-3"><a href="theory.html#cb3-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_function</span>(<span class="at">fun=</span>eq1, <span class="at">geom=</span><span class="st">&quot;line&quot;</span>, <span class="at">args=</span><span class="fu">list</span>(<span class="at">a=</span><span class="dv">1</span>)) <span class="sc">+</span> </span>
-<span id="cb3-4"><a href="theory.html#cb3-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">&quot;Mass (M)&quot;</span>) <span class="sc">+</span> <span class="fu">ylab</span>(<span class="st">&quot;Mass-specific metabolic rate (B/M)&quot;</span>)</span></code></pre></div>
-<div class="figure"><span style="display:block;" id="fig:MTE-MS"></span>
-<img src="figs/MTE-MS-1.png" alt="Mass-specific metabolic rate declines predictably with species body sizes." width="75%" />
-<p class="caption">
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">eq1</span> <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">M</span>, <span class="va">a</span><span class="op">)</span><span class="op">{</span><span class="va">a</span><span class="op">*</span><span class="va">M</span><span class="op">^</span><span class="op">-</span><span class="fl">0.25</span><span class="op">}</span> <span class="co"># create the function, F(M)</span>
+<span class="fu">ggplot</span><span class="op">(</span>data<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span>x<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0.1</span>, <span class="fl">100</span><span class="op">)</span><span class="op">)</span>, <span class="fu">aes</span><span class="op">(</span>x<span class="op">=</span><span class="va">x</span><span class="op">)</span> <span class="op">)</span> <span class="op">+</span> 
+  <span class="fu">stat_function</span><span class="op">(</span>fun<span class="op">=</span><span class="va">eq1</span>, geom<span class="op">=</span><span class="st">"line"</span>, args<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>a<span class="op">=</span><span class="fl">1</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> 
+  <span class="fu">xlab</span><span class="op">(</span><span class="st">"Mass (M)"</span><span class="op">)</span> <span class="op">+</span> <span class="fu">ylab</span><span class="op">(</span><span class="st">"Mass-specific metabolic rate (B/M)"</span><span class="op">)</span></code></pre></div>
+<div class="figure">
+<span style="display:block;" id="fig:MTE-MS"></span>
+<img src="figs/MTE-MS-1.png" alt="Mass-specific metabolic rate declines predictably with species body sizes." width="75%"><p class="caption">
 Figure 1.2: Mass-specific metabolic rate declines predictably with species body sizes.
 </p>
 </div>
 <p>Over the years, there has been heated debate about (i) the precise value of the scaling coefficient <span class="math inline">\(z\)</span>, and (ii) the underlying mechanism. Early arguments suggested that <span class="math inline">\(z \approx 2/3\)</span> because the rate heat dissipation scales with the amount surface area. Why <span class="math inline">\(2/3\)</span>?</p>
-<p>Let’s envision the volume of an organism having three linear dimensions, so the volume scales to the cube of linear dimensions, while the surface area scales to the square of these linear dimensions,<a href="#fn8" class="footnote-ref" id="fnref8"><sup>8</sup></a>
+<p>Let’s envision the volume of an organism having three linear dimensions, so the volume scales to the cube of linear dimensions, while the surface area scales to the square of these linear dimensions,<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content='&lt;p&gt;A linear relation is one in which &lt;span class="math inline"&gt;\(y\)&lt;/span&gt; is proportional to &lt;span class="math inline"&gt;\(x\)&lt;/span&gt;, or &lt;span class="math inline"&gt;\(y \propto x\)&lt;/span&gt;.&lt;/p&gt;'><sup>8</sup></a>
 <span class="math display">\[V \propto L^3\]</span>
 <span class="math display">\[A \propto L^2\]</span>
 The early explanation was that metabolic rate, <span class="math inline">\(B\)</span>, scales linearly with area,
@@ -567,45 +191,49 @@ implying that the exponents <span class="math inline">\(2 = 3z\)</span> or <span
 <span class="math display">\[B=V^{2/3}\]</span>,
 and, for the most part, mass scales linearly with volume for mammals or any other such group.</p>
 <p>This early theory was because it started with first principles (heat dissipation and geometry) and resulted in the prediction of a single parameter. It could then be used to make predictions about how metabolic rate scales with body mass. Metabolic rate governs a huge amount of biology and ecology, including resource consumption rates, lifespan, and maximum population growth rates. Therefore, this theory and this model could be powerful tools for understanding the world and making testable predictions.</p>
-<p>The above model is good because it could be tested. That is what has been done, and scientists found that there was a consistent mismatch between observations and the theory. Investigators showed that the value of the exponent appeared closer to 3/4 raher than 2/3. In the 1990s, a group including Jim Brown and Geoffrey West <span class="citation">(<a href="#ref-West1997" role="doc-biblioref">West, Brown, and Enquist 1997</a>)</span> proposed an underlying mechanism that explained why it should be 3/4. They assumed that organisms must</p>
+<p>The above model is good because it could be tested. That is what has been done, and scientists found that there was a consistent mismatch between observations and the theory. Investigators showed that the value of the exponent appeared closer to 3/4 raher than 2/3. In the 1990s, a group including Jim Brown and Geoffrey West <span class="citation">(<a href="references.html#ref-West1997" role="doc-biblioref">West, Brown, and Enquist 1997</a>)</span> proposed an underlying mechanism that explained why it should be 3/4. They assumed that organisms must</p>
 <ul>
 <li>distribute resources from a single source through a branching, fractal-like, space-filling network to all parts of the body,</li>
 <li>the size of the smallest branch ( a capillary) was the same for organisms of all sizes.</li>
 <li>the energy required to distribute the resources must be minimized, that less energy-efficient designs would be lost through natural selection.</li>
 </ul>
 <p>The prediction that resulted from these assumptions was that the exponent would be 3/4. This theory and model begin with different first principles and makes a different prediction.</p>
-<p>Soon Jayanth Banavar and his colleagues offered an alternative <span class="citation">(<a href="#ref-Banavar1999" role="doc-biblioref">J. R. Banavar, Maritan, and Rinaldo 1999</a>; <a href="#ref-Banavar2002" role="doc-biblioref">Jayanth R. Banavar et al. 2002</a>)</span>, arguing that the assumption of the fractal-like network was not correct, and in any event, was not necessary and did not apply to all organisms. They proposed different theory with less restrictive assumptions and found nonetheless that the exponent was also predicted to be 3/4.</p>
+<p>Soon Jayanth Banavar and his colleagues offered an alternative <span class="citation">(<a href="references.html#ref-Banavar1999" role="doc-biblioref">J. R. Banavar, Maritan, and Rinaldo 1999</a>; <a href="references.html#ref-Banavar2002" role="doc-biblioref">Jayanth R. Banavar et al. 2002</a>)</span>, arguing that the assumption of the fractal-like network was not correct, and in any event, was not necessary and did not apply to all organisms. They proposed different theory with less restrictive assumptions and found nonetheless that the exponent was also predicted to be 3/4.</p>
 <p>At the base of all these arguments is the geometry of the resource distribution system. All organisms take in limiting resources and have to distribute those resources to each part of each cell in the body. The key point is that <em>the larger the organism, the greater the portion of the resources are in transit at any instant in time</em>. This leads to an increasingly inefficient system, in which the metabolism of larger organisms has to run more slowly per unit resource:</p>
 <p><em>Larger organisms can process more resources per unit time (<span class="math inline">\(B=aM^{3/4}\)</span>), but do so less and less efficiently (<span class="math inline">\(\frac{B}{M}=aM^{-1/4}\)</span>) due to resources in transport.</em></p>
-<p>Banavar, Brown and others eventually collaborated to address quarter power scaling in animals in particular which led to additional novel predictions <span class="citation">(<a href="#ref-Banavar2010" role="doc-biblioref">J. R. Banavar et al. 2010</a>)</span>.</p>
-<p>This theory remains a fertile and active area of research <span class="citation">(<a href="#ref-Glazier2018" role="doc-biblioref">Glazier 2018</a>)</span>. The interested reader should be careful to distinguish between patterns observed across many species of very different sizes, versus patterns observed in a single species with individuals of different sizes versus other types of patterns. Subtly different patterns may be driven be very different mechanisms.</p>
+<p>Banavar, Brown and others eventually collaborated to address quarter power scaling in animals in particular which led to additional novel predictions <span class="citation">(<a href="references.html#ref-Banavar2010" role="doc-biblioref">J. R. Banavar et al. 2010</a>)</span>.</p>
+<p>This theory remains a fertile and active area of research <span class="citation">(<a href="references.html#ref-Glazier2018" role="doc-biblioref">Glazier 2018</a>)</span>. The interested reader should be careful to distinguish between patterns observed across many species of very different sizes, versus patterns observed in a single species with individuals of different sizes versus other types of patterns. Subtly different patterns may be driven be very different mechanisms.</p>
 </div>
 <div id="temperature-dependence" class="section level3" number="1.2.2">
-<h3><span class="header-section-number">1.2.2</span> Temperature dependence</h3>
+<h3>
+<span class="header-section-number">1.2.2</span> Temperature dependence<a class="anchor" aria-label="anchor" href="#temperature-dependence"><i class="fas fa-link"></i></a>
+</h3>
 <p>In addition to body size, temperature plays the other key role in regulating metabolic rate. The Arrhenius equation connects the macroscopic property of temperature to the kinetic energy of molecules and the rates they govern. Metabolic rate is proportional to these rate determining processes,
 <span class="math display">\[B  = a e^{\frac{-E_a}{kT}}\]</span>
 where <span class="math inline">\(a\)</span> is just a constant, <span class="math inline">\(e\)</span> is the exponential, <span class="math inline">\(E_a\)</span> is the average activation energy of rate-limiting enzymes (units, eV), <span class="math inline">\(k\)</span> is Boltzmann’s constant (units eV<span class="math inline">\(\,\)</span>K<span class="math inline">\(^{-1}\)</span>), and <span class="math inline">\(T\)</span> (units deg K). Bolztmann’s constant (<span class="math inline">\(\backsim 8.6 \times 10^-5\)</span><span class="math inline">\(\,\)</span>eV<span class="math inline">\(\,\)</span>K<span class="math inline">\(^{-1}\)</span>) converts the macroscopic property of temperature to kinetic energy of molecules.</p>
-<p>Individual biochemical reactions combine to determine basal metabolic rate, so <span class="citation"><a href="#ref-Gillooly2000" role="doc-biblioref">Gillooly</a> (<a href="#ref-Gillooly2000" role="doc-biblioref">2000</a>)</span> have taken this as a foundation for the metabolic theory of ecology <span class="citation">(<a href="#ref-Brown:2004wa" role="doc-biblioref">Brown et al. 2004</a>)</span>. In 2000, they suggested that the average activation energy is approximately <span class="math inline">\(E_a = 0.23\,\)</span>eV . Subsequent work has described this as “temperature sensitivity,” where larger numbers imply that organisms respond more strongly to temperature variation.</p>
+<p>Individual biochemical reactions combine to determine basal metabolic rate, so <span class="citation"><a href="references.html#ref-Gillooly2000" role="doc-biblioref">Gillooly</a> (<a href="references.html#ref-Gillooly2000" role="doc-biblioref">2000</a>)</span> have taken this as a foundation for the metabolic theory of ecology <span class="citation">(<a href="references.html#ref-Brown:2004wa" role="doc-biblioref">Brown et al. 2004</a>)</span>. In 2000, they suggested that the average activation energy is approximately <span class="math inline">\(E_a = 0.23\,\)</span>eV . Subsequent work has described this as “temperature sensitivity,” where larger numbers imply that organisms respond more strongly to temperature variation.</p>
 <p>The Arrhenius equation is a little more complicated that a simple power law, but not too much. Over the range of biologically relevant temperatures, it is dominated by a largely exponential increase in metabolic rate with increasing temperature (Fig <a href="theory.html#fig:arrh">1.3</a>).</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="theory.html#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># with base R</span></span>
-<span id="cb4-2"><a href="theory.html#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="co"># base R: curve(10^4*exp(-0.23/(8.5 * 10^-5 *x)), 276, 316), ylab=&quot;B&quot;, xlab=&#39;T&#39;)</span></span>
-<span id="cb4-3"><a href="theory.html#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="co"># or ggplot2</span></span>
-<span id="cb4-4"><a href="theory.html#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="co"># the function, with default parameter values</span></span>
-<span id="cb4-5"><a href="theory.html#cb4-5" aria-hidden="true" tabindex="-1"></a>eq.t <span class="ot">&lt;-</span> <span class="cf">function</span>(t,<span class="at">a=</span><span class="dv">10</span><span class="sc">^</span><span class="dv">4</span>,<span class="at">E=</span><span class="fl">0.23</span>,<span class="at">k=</span><span class="fl">8.6</span> <span class="sc">*</span> <span class="dv">10</span><span class="sc">^-</span><span class="dv">5</span>){a<span class="sc">*</span><span class="fu">exp</span>(<span class="sc">-</span>E<span class="sc">/</span>(k<span class="sc">*</span>t))}</span>
-<span id="cb4-6"><a href="theory.html#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="co"># the data used in our function</span></span>
-<span id="cb4-7"><a href="theory.html#cb4-7" aria-hidden="true" tabindex="-1"></a>temps <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">t=</span><span class="dv">276</span><span class="sc">:</span><span class="dv">316</span>)</span>
-<span id="cb4-8"><a href="theory.html#cb4-8" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span>temps, <span class="fu">aes</span>(<span class="at">x=</span>t)) <span class="sc">+</span> </span>
-<span id="cb4-9"><a href="theory.html#cb4-9" aria-hidden="true" tabindex="-1"></a><span class="co"># set the basic properties of the plot</span></span>
-<span id="cb4-10"><a href="theory.html#cb4-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_function</span>(<span class="at">fun=</span>eq.t, <span class="at">geom=</span><span class="st">&quot;line&quot;</span>) <span class="sc">+</span> </span>
-<span id="cb4-11"><a href="theory.html#cb4-11" aria-hidden="true" tabindex="-1"></a><span class="co"># set the function to plot</span></span>
-<span id="cb4-12"><a href="theory.html#cb4-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">&quot;Temperature (K)&quot;</span>) <span class="sc">+</span> <span class="fu">ylab</span>(<span class="st">&quot;Metabolic rate (B)&quot;</span>)  </span></code></pre></div>
-<div class="figure"><span style="display:block;" id="fig:arrh"></span>
-<img src="figs/arrh-1.png" alt="The effect of body temperature on ectothermic metabolic rates can be approximated with the Arrhenius function, $B = a e^{-E_a/(kT)}$. Here $a = 10^4$, and $E_a = 0.23$. It is similar in shape to a power law with z &gt; 1, over the range of biologically relevant temperatures." width="75%" />
-<p class="caption">
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># with base R</span>
+<span class="co"># base R: curve(10^4*exp(-0.23/(8.5 * 10^-5 *x)), 276, 316), ylab="B", xlab='T')</span>
+<span class="co"># or ggplot2</span>
+<span class="co"># the function, with default parameter values</span>
+<span class="va">eq.t</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">t</span>,<span class="va">a</span><span class="op">=</span><span class="fl">10</span><span class="op">^</span><span class="fl">4</span>,<span class="va">E</span><span class="op">=</span><span class="fl">0.23</span>,<span class="va">k</span><span class="op">=</span><span class="fl">8.6</span> <span class="op">*</span> <span class="fl">10</span><span class="op">^</span><span class="op">-</span><span class="fl">5</span><span class="op">)</span><span class="op">{</span><span class="va">a</span><span class="op">*</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html">exp</a></span><span class="op">(</span><span class="op">-</span><span class="va">E</span><span class="op">/</span><span class="op">(</span><span class="va">k</span><span class="op">*</span><span class="va">t</span><span class="op">)</span><span class="op">)</span><span class="op">}</span>
+<span class="co"># the data used in our function</span>
+<span class="va">temps</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span>t<span class="op">=</span><span class="fl">276</span><span class="op">:</span><span class="fl">316</span><span class="op">)</span>
+<span class="fu">ggplot</span><span class="op">(</span>data<span class="op">=</span><span class="va">temps</span>, <span class="fu">aes</span><span class="op">(</span>x<span class="op">=</span><span class="va">t</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> 
+<span class="co"># set the basic properties of the plot</span>
+  <span class="fu">stat_function</span><span class="op">(</span>fun<span class="op">=</span><span class="va">eq.t</span>, geom<span class="op">=</span><span class="st">"line"</span><span class="op">)</span> <span class="op">+</span> 
+<span class="co"># set the function to plot</span>
+  <span class="fu">xlab</span><span class="op">(</span><span class="st">"Temperature (K)"</span><span class="op">)</span> <span class="op">+</span> <span class="fu">ylab</span><span class="op">(</span><span class="st">"Metabolic rate (B)"</span><span class="op">)</span>  </code></pre></div>
+<div class="figure">
+<span style="display:block;" id="fig:arrh"></span>
+<img src="figs/arrh-1.png" alt="The effect of body temperature on ectothermic metabolic rates can be approximated with the Arrhenius function, $B = a e^{-E_a/(kT)}$. Here $a = 10^4$, and $E_a = 0.23$. It is similar in shape to a power law with z &gt; 1, over the range of biologically relevant temperatures." width="75%"><p class="caption">
 Figure 1.3: The effect of body temperature on ectothermic metabolic rates can be approximated with the Arrhenius function, <span class="math inline">\(B = a e^{-E_a/(kT)}\)</span>. Here <span class="math inline">\(a = 10^4\)</span>, and <span class="math inline">\(E_a = 0.23\)</span>. It is similar in shape to a power law with z &gt; 1, over the range of biologically relevant temperatures.
 </p>
 </div>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="theory.html#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># add labels</span></span></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># add labels</span></code></pre></div>
 <p>When we linearize the relation between metabolic rate and temperature, we get
 <span class="math display">\[
 \begin{aligned}
@@ -616,7 +244,7 @@ B &amp;= a e^{\frac{-E_a}{kT}}\\
 where the dependent variable is <span class="math inline">\(1/(kT)\)</span>, <span class="math inline">\(-E_a\)</span> is the slope, and <span class="math inline">\(\log a\)</span> is the intercept. Thus, the negative slope of this relation describes theoretical prediction for the effect of temperature on metabolic rate.</p>
 <p><strong>So, there you have it.</strong> The metabolic theory ecology is the algebraic product of body size- and temperature-dependence:
 <span class="math display">\[B = a M^{3/4} e^{\frac{-E_a}{kT}}\]</span>
-This theory makes quantitative predictions regarding all kinds of ecology phenomena <span class="citation">(<a href="#ref-Brown:2004wa" role="doc-biblioref">Brown et al. 2004</a>)</span>, including</p>
+This theory makes quantitative predictions regarding all kinds of ecology phenomena <span class="citation">(<a href="references.html#ref-Brown:2004wa" role="doc-biblioref">Brown et al. 2004</a>)</span>, including</p>
 <ul>
 <li>home range size</li>
 <li>population growth</li>
@@ -625,26 +253,29 @@ This theory makes quantitative predictions regarding all kinds of ecology phenom
 <li>predation and other species interactions, and</li>
 <li>ecosystem cycling.</li>
 </ul>
-<p>Note that these relations are based on first principles of geometry and thermodynamics, and that they depend on only a small number of parameters (<span class="math inline">\(a\)</span>, <span class="math inline">\(-E_a\)</span>, and perhaps <span class="math inline">\(z=3/4\)</span>), and makes a tremendous number of predictions. Therefore, <span class="citation"><a href="#ref-Marquet2014" role="doc-biblioref">Marquet et al.</a> (<a href="#ref-Marquet2014" role="doc-biblioref">2014</a>)</span> propose that this is “good” theory, and very <em>efficient</em>.</p>
+<p>Note that these relations are based on first principles of geometry and thermodynamics, and that they depend on only a small number of parameters (<span class="math inline">\(a\)</span>, <span class="math inline">\(-E_a\)</span>, and perhaps <span class="math inline">\(z=3/4\)</span>), and makes a tremendous number of predictions. Therefore, <span class="citation"><a href="references.html#ref-Marquet2014" role="doc-biblioref">Marquet et al.</a> (<a href="references.html#ref-Marquet2014" role="doc-biblioref">2014</a>)</span> propose that this is “good” theory, and very <em>efficient</em>.</p>
 </div>
 </div>
 <div id="power-law-scaling-implies-constant-relative-differences" class="section level2" number="1.3">
-<h2><span class="header-section-number">1.3</span> Power law scaling implies constant relative differences</h2>
+<h2>
+<span class="header-section-number">1.3</span> Power law scaling implies constant relative differences<a class="anchor" aria-label="anchor" href="#power-law-scaling-implies-constant-relative-differences"><i class="fas fa-link"></i></a>
+</h2>
 <p>In power law scaling, relative change is constant. That is, a proportional change in one variable results in a proportional change in the other. For instance, when we compare a smaller species to a larger species with <span class="math inline">\(100 \times\)</span> the body mass, we can expect to see metabolic rate increase by <span class="math inline">\(31.6 \times\)</span>, <em>regardless of the mass of the smaller species.</em> For now, we will verify this numerically for some limited cases.</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="theory.html#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># define body mass and metabolic rate</span></span>
-<span id="cb6-2"><a href="theory.html#cb6-2" aria-hidden="true" tabindex="-1"></a>m <span class="ot">&lt;-</span> <span class="fu">c</span>(.<span class="dv">01</span>, <span class="dv">1</span>, <span class="dv">100</span>, <span class="dv">10000</span>)</span>
-<span id="cb6-3"><a href="theory.html#cb6-3" aria-hidden="true" tabindex="-1"></a>b <span class="ot">&lt;-</span> m<span class="sc">^</span>.<span class="dv">75</span></span></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># define body mass and metabolic rate</span>
+<span class="va">m</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">.01</span>, <span class="fl">1</span>, <span class="fl">100</span>, <span class="fl">10000</span><span class="op">)</span>
+<span class="va">b</span> <span class="op">&lt;-</span> <span class="va">m</span><span class="op">^</span><span class="fl">.75</span></code></pre></div>
 <p>Now we will divide each mass <span class="math inline">\(i\)</span> by the next smallest mass <span class="math inline">\(i-1\)</span>. We do that using a vector by dividing each mass except the first one, by each mass except the last one.</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="theory.html#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># round(x, digits=0) rounds number to zero decimal places</span></span>
-<span id="cb7-2"><a href="theory.html#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>( m[<span class="sc">-</span><span class="dv">1</span>]<span class="sc">/</span>m[<span class="sc">-</span><span class="fu">length</span>(m)], <span class="at">digits =</span> <span class="dv">0</span>)</span>
-<span id="cb7-3"><a href="theory.html#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>( b[<span class="sc">-</span><span class="dv">1</span>]<span class="sc">/</span>b[<span class="sc">-</span><span class="fu">length</span>(b)], <span class="at">digits =</span> <span class="dv">1</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># round(x, digits=0) rounds number to zero decimal places</span>
+<span class="fu"><a href="https://rdrr.io/r/base/Round.html">round</a></span><span class="op">(</span> <span class="va">m</span><span class="op">[</span><span class="op">-</span><span class="fl">1</span><span class="op">]</span><span class="op">/</span><span class="va">m</span><span class="op">[</span><span class="op">-</span><span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span><span class="op">(</span><span class="va">m</span><span class="op">)</span><span class="op">]</span>, digits <span class="op">=</span> <span class="fl">0</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/base/Round.html">round</a></span><span class="op">(</span> <span class="va">b</span><span class="op">[</span><span class="op">-</span><span class="fl">1</span><span class="op">]</span><span class="op">/</span><span class="va">b</span><span class="op">[</span><span class="op">-</span><span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span><span class="op">(</span><span class="va">b</span><span class="op">)</span><span class="op">]</span>, digits <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></code></pre></div>
 When we do these divisions, we see the constant relative change (Table <a href="theory.html#tab:relativemb">1.1</a>).
-<table>
+<div class="inline-table"><table class="table table-sm">
 <caption>
 <span id="tab:relativemb">Table 1.1: </span>As we increase mass by a constant multiplier (10x), power law scaling results in a constant proportional change in basal metabolc rate.
 </caption>
-<thead>
-<tr>
+<thead><tr>
 <th style="text-align:left;">
 </th>
 <th style="text-align:right;">
@@ -659,8 +290,7 @@ Big
 <th style="text-align:right;">
 Huge
 </th>
-</tr>
-</thead>
+</tr></thead>
 <tbody>
 <tr>
 <td style="text-align:left;">
@@ -731,7 +361,7 @@ NA
 </td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p>We can verify this generally using algebra, not just in the particular case above. We will show that if mass increases by a constant multiplier, metabolic rate will also, regardless of the particular masses involved.</p>
 <p>Let mass <span class="math inline">\(m_2\)</span> be greater than mass <span class="math inline">\(m_1\)</span> by a factor of <span class="math inline">\(c\)</span>, so that <span class="math inline">\(m_2 = c m_1\)</span>, and
 <span class="math display">\[\frac{m_2}{m_1} = c\]</span>.</p>
@@ -743,20 +373,23 @@ When we reduce this fraction, we a left with
 <span class="math display">\[\frac{b_2}{b_1} = c^{3/4}\]</span></p>
 <p>This shows that with power law scaling, increasing <span class="math inline">\(x\)</span> by a constant <em>multipier</em> (or proportion), <span class="math inline">\(y\)</span> increases by the same proportion raised to that power.</p>
 <p>Let’s represent this graphically in a couple of ways, reusing data we made up previously in this chapter. First, we just change the axes themselves, so that the units of the scales are multiples of 10 (often in scientific notation).</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="theory.html#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># using base R</span></span>
-<span id="cb8-2"><a href="theory.html#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mar=</span><span class="fu">c</span>(<span class="dv">5</span>,<span class="dv">4</span>,<span class="dv">0</span>,<span class="dv">0</span>), <span class="at">mgp=</span><span class="fu">c</span>(<span class="fl">1.5</span>,.<span class="dv">4</span>,<span class="dv">0</span>) )<span class="co"># set figure margins in &quot;lines&quot;</span></span>
-<span id="cb8-3"><a href="theory.html#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="fu">curve</span>(x<span class="sc">^</span>(<span class="dv">3</span><span class="sc">/</span><span class="dv">4</span>), <span class="at">from =</span> .<span class="dv">01</span>, <span class="at">to =</span> <span class="dv">100</span>, <span class="at">log=</span><span class="st">&quot;xy&quot;</span>, <span class="at">ylab=</span><span class="st">&quot;Basal metabolic rate&quot;</span>, <span class="at">xlab=</span><span class="st">&quot;Mass&quot;</span>)</span>
-<span id="cb8-4"><a href="theory.html#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="fu">text</span>(<span class="dv">10</span>, <span class="dv">80</span><span class="sc">^</span>.<span class="dv">7</span>, <span class="fu">expression</span>(M<span class="sc">^</span><span class="fl">0.75</span>))</span></code></pre></div>
-<div class="figure"><span style="display:block;" id="fig:logscale"></span>
-<img src="figs/logscale-1.png" alt="changing the scales of the axes to linearize power law relations. Note scales are logarithmic, using the original linear values." width="50%" />
-<p class="caption">
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># using base R</span>
+<span class="fu"><a href="https://rdrr.io/r/graphics/par.html">par</a></span><span class="op">(</span>mar<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">5</span>,<span class="fl">4</span>,<span class="fl">0</span>,<span class="fl">0</span><span class="op">)</span>, mgp<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1.5</span>,<span class="fl">.4</span>,<span class="fl">0</span><span class="op">)</span> <span class="op">)</span><span class="co"># set figure margins in "lines"</span>
+<span class="fu"><a href="https://rdrr.io/r/graphics/curve.html">curve</a></span><span class="op">(</span><span class="va">x</span><span class="op">^</span><span class="op">(</span><span class="fl">3</span><span class="op">/</span><span class="fl">4</span><span class="op">)</span>, from <span class="op">=</span> <span class="fl">.01</span>, to <span class="op">=</span> <span class="fl">100</span>, log<span class="op">=</span><span class="st">"xy"</span>, ylab<span class="op">=</span><span class="st">"Basal metabolic rate"</span>, xlab<span class="op">=</span><span class="st">"Mass"</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/graphics/text.html">text</a></span><span class="op">(</span><span class="fl">10</span>, <span class="fl">80</span><span class="op">^</span><span class="fl">.7</span>, <span class="fu"><a href="https://rdrr.io/r/base/expression.html">expression</a></span><span class="op">(</span><span class="va">M</span><span class="op">^</span><span class="fl">0.75</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<div class="figure">
+<span style="display:block;" id="fig:logscale"></span>
+<img src="figs/logscale-1.png" alt="changing the scales of the axes to linearize power law relations. Note scales are logarithmic, using the original linear values." width="50%"><p class="caption">
 Figure 1.4: changing the scales of the axes to linearize power law relations. Note scales are logarithmic, using the original linear values.
 </p>
 </div>
 </div>
 <div id="meet-mete-maximum-entropy-theory-of-ecology" class="section level2" number="1.4">
-<h2><span class="header-section-number">1.4</span> Meet METE: Maximum Entropy Theory of Ecology</h2>
-<p>The Maximum Entropy Theory of Ecology is best known for making predictions and elucidating patterns of species-area relations and species abundance distributions that emerge in relatively stable ecological communities and ecosystems <span class="citation">(<a href="#ref-Harte2014" role="doc-biblioref">John Harte and Newman 2014</a>)</span>. However, it is an active area of research and Harte and others are extending the ideas into non-equilibrium systems as well <span class="citation">(<a href="#ref-Harte2021" role="doc-biblioref"><strong>Harte2021?</strong></a>)</span>.</p>
+<h2>
+<span class="header-section-number">1.4</span> Meet METE: Maximum Entropy Theory of Ecology<a class="anchor" aria-label="anchor" href="#meet-mete-maximum-entropy-theory-of-ecology"><i class="fas fa-link"></i></a>
+</h2>
+<p>The Maximum Entropy Theory of Ecology is best known for making predictions and elucidating patterns of species-area relations and species abundance distributions that emerge in relatively stable ecological communities and ecosystems <span class="citation">(<a href="references.html#ref-Harte2014" role="doc-biblioref">John Harte and Newman 2014</a>)</span>. However, it is an active area of research and Harte and others are extending the ideas into non-equilibrium systems as well <span class="citation">(<a href="references.html#ref-Harte2021mete" role="doc-biblioref">John Harte, Umemura, and Brush 2021</a>)</span>.</p>
 <p>Entropy is, basically, disorder. Less entropy means more order or structure. Maximum entropy is maximum disorder. The universe tends toward maximum entropy, although in some places and times, like parts of our world right now, entropy can decrease. Physicists are the folks most responsible for our understanding of entropy, and Edwin Jaynes is arguably the one most responsible our understanding and appreciation of its role in information and probability.</p>
 <p>MaxEnt, or the principle of maximization of information entropy, or the principle of maximum entropy is that, given a set of constraints on a system, the least-biased probability distribution that describes data arising from that system will be the one with maximum entropy.</p>
 <p>The principle of maximum entropy has show that maximal uncertainty arising from the flattest distribution, given known constraints, provides the least biased description of a system. It can provide the least biased probability distributions for these situations with these constraints:</p>
@@ -766,193 +399,119 @@ Figure 1.4: changing the scales of the axes to linearize power law relations. No
 <li>Regarding this forest - what if you were told that the variance in height was two meters? What would be the least biased distribution of possible tree heights?</li>
 </ul>
 <p>The principle of maximum entropy could help us prove that, in the absence of other information, the least biased distributions for these sets of constraints would be the uniform, exponential, and Gaussian (or normal) probability distributions.</p>
-<p>The maximum entropy theory of ecology <span class="citation">(<a href="#ref-Harte2014" role="doc-biblioref">John Harte and Newman 2014</a>)</span> can tell us what to expect when we know very little, or <em>when very little is going on aside from random noise.</em></p>
+<p>The maximum entropy theory of ecology <span class="citation">(<a href="references.html#ref-Harte2014" role="doc-biblioref">John Harte and Newman 2014</a>)</span> can tell us what to expect when we know very little, or <em>when very little is going on aside from random noise.</em></p>
 <p>We will talk more about the METE in our chapter on diversity, but I mention it here to emphasize that patterns arise in ecology via random noise.</p>
 <p>The rank-abundance distribution is a famous ecological pattern. It is the log-abundance or relative abundance of species, arranged from the most abundant to the least abundant (Fig. <a href="theory.html#fig:mete1">1.5</a>).</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="theory.html#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(vegan)</span>
-<span id="cb9-2"><a href="theory.html#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(BCI)</span>
-<span id="cb9-3"><a href="theory.html#cb9-3" aria-hidden="true" tabindex="-1"></a>abun <span class="ot">&lt;-</span> <span class="fu">colSums</span>(BCI)</span>
-<span id="cb9-4"><a href="theory.html#cb9-4" aria-hidden="true" tabindex="-1"></a>mod <span class="ot">&lt;-</span> <span class="fu">rad.lognormal</span>(abun)</span>
-<span id="cb9-5"><a href="theory.html#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(mod, <span class="at">main=</span><span class="st">&quot;Rank-abundance distribution&quot;</span>)</span>
-<span id="cb9-6"><a href="theory.html#cb9-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-7"><a href="theory.html#cb9-7" aria-hidden="true" tabindex="-1"></a>mod.oct <span class="ot">&lt;-</span> <span class="fu">prestonfit</span>(<span class="fu">colSums</span>(BCI))</span>
-<span id="cb9-8"><a href="theory.html#cb9-8" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(mod.oct, <span class="at">main=</span><span class="st">&quot;Species abundance distribution&quot;</span>)  </span></code></pre></div>
-<div class="figure"><span style="display:block;" id="fig:mete1"></span>
-<img src="figs/mete1-1.png" alt="Rank abundance distribution of tree species in a 50 ha plot on Barro Colorado Island. Line is a best fit of the log-normal distribution." width="50%" /><img src="figs/mete1-2.png" alt="Rank abundance distribution of tree species in a 50 ha plot on Barro Colorado Island. Line is a best fit of the log-normal distribution." width="50%" />
-<p class="caption">
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://cran.r-project.org">vegan</a></span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="va">BCI</span><span class="op">)</span>
+<span class="va">abun</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/colSums.html">colSums</a></span><span class="op">(</span><span class="va">BCI</span><span class="op">)</span>
+<span class="va">mod</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/vegan/man/radfit.html">rad.lognormal</a></span><span class="op">(</span><span class="va">abun</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">mod</span>, main<span class="op">=</span><span class="st">"Rank-abundance distribution"</span><span class="op">)</span>
+
+<span class="va">mod.oct</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/vegan/man/fisherfit.html">prestonfit</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/colSums.html">colSums</a></span><span class="op">(</span><span class="va">BCI</span><span class="op">)</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">mod.oct</span>, main<span class="op">=</span><span class="st">"Species abundance distribution"</span><span class="op">)</span>  </code></pre></div>
+<div class="figure">
+<span style="display:block;" id="fig:mete1"></span>
+<img src="figs/mete1-1.png" alt="Rank abundance distribution of tree species in a 50 ha plot on Barro Colorado Island. Line is a best fit of the log-normal distribution." width="50%"><img src="figs/mete1-2.png" alt="Rank abundance distribution of tree species in a 50 ha plot on Barro Colorado Island. Line is a best fit of the log-normal distribution." width="50%"><p class="caption">
 Figure 1.5: Rank abundance distribution of tree species in a 50 ha plot on Barro Colorado Island. Line is a best fit of the log-normal distribution.
 </p>
 </div>
-<p>The curve formed by these data points (left, Fig. <a href="theory.html#fig:mete1">1.5</a>) is steep at first, among the most abundant species. The curve then flattens out a bit before getting a little bit steeper again. If we group species into logarithmic abundance categories, and make a histogram of abundances, we get the *species abundance distribution." <span class="citation"><a href="#ref-Preston1962" role="doc-biblioref">Preston</a> (<a href="#ref-Preston1962" role="doc-biblioref">1962</a>)</span> noted that the distributions were remarkabling similar to a normal (Gaussian) distribution, when abundances were log-transformed (resulting in a lognormal-like distribution). It turns out that this curve is quite common and for decades ecologists argued about how we might infer the underlying ecological processes on the basis of the shape of the curve. This discussion died out once ecologists admitted that it was impossible to determined the processes on the basis of the pattern.</p>
-<p>The discussion of the shape of the rank-abundance distribution was revived in the late nineties when Steve Hubbell showed that if you pretend all individuals are equally likely to live or die, <em>independent of their species identity</em>, then you should expect this pattern <span class="citation">(<a href="#ref-Hubbell2001" role="doc-biblioref">Hubbell 2001</a>)</span>. Later, John Harte showed that the principle of maximum entropy was a more general approach to this question and could be extended into other realms and patters.</p>
+<p>The curve formed by these data points (left, Fig. <a href="theory.html#fig:mete1">1.5</a>) is steep at first, among the most abundant species. The curve then flattens out a bit before getting a little bit steeper again. If we group species into logarithmic abundance categories, and make a histogram of abundances, we get the *species abundance distribution." <span class="citation"><a href="references.html#ref-Preston1962" role="doc-biblioref">Preston</a> (<a href="references.html#ref-Preston1962" role="doc-biblioref">1962</a>)</span> noted that the distributions were remarkabling similar to a normal (Gaussian) distribution, when abundances were log-transformed (resulting in a lognormal-like distribution). It turns out that this curve is quite common and for decades ecologists argued about how we might infer the underlying ecological processes on the basis of the shape of the curve. This discussion died out once ecologists admitted that it was impossible to determined the processes on the basis of the pattern.</p>
+<p>The discussion of the shape of the rank-abundance distribution was revived in the late nineties when Steve Hubbell showed that if you pretend all individuals are equally likely to live or die, <em>independent of their species identity</em>, then you should expect this pattern <span class="citation">(<a href="references.html#ref-Hubbell2001" role="doc-biblioref">Hubbell 2001</a>)</span>. Later, John Harte showed that the principle of maximum entropy was a more general approach to this question and could be extended into other realms and patters.</p>
 <p>As an example, consider a community of five individuals and three species. Those are our only constraints, <span class="math inline">\(N=5\)</span>, <span class="math inline">\(S=3\)</span>. How many different possible distributions of species abundances can we get if we assume maximum uncertainty, i.e., maximum entropy? Is there any way to know? Because we have so few, we can count them.</p>
 <p>Consider five individuals distributed among three species (rows) and list all possible community states (columns).</p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="theory.html#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># by default, R fills matrices by columns.</span></span>
-<span id="cb10-2"><a href="theory.html#cb10-2" aria-hidden="true" tabindex="-1"></a>states <span class="ot">&lt;-</span> <span class="fu">matrix</span>(</span>
-<span id="cb10-3"><a href="theory.html#cb10-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">c</span>(<span class="dv">3</span>,<span class="dv">1</span>,<span class="dv">1</span>, <span class="co"># column 1,</span></span>
-<span id="cb10-4"><a href="theory.html#cb10-4" aria-hidden="true" tabindex="-1"></a>    <span class="dv">1</span>,<span class="dv">3</span>,<span class="dv">1</span>, <span class="co"># column 2, etc.</span></span>
-<span id="cb10-5"><a href="theory.html#cb10-5" aria-hidden="true" tabindex="-1"></a>    <span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">3</span>,</span>
-<span id="cb10-6"><a href="theory.html#cb10-6" aria-hidden="true" tabindex="-1"></a>    <span class="dv">2</span>,<span class="dv">2</span>,<span class="dv">1</span>,</span>
-<span id="cb10-7"><a href="theory.html#cb10-7" aria-hidden="true" tabindex="-1"></a>    <span class="dv">2</span>,<span class="dv">1</span>,<span class="dv">2</span>,</span>
-<span id="cb10-8"><a href="theory.html#cb10-8" aria-hidden="true" tabindex="-1"></a>    <span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">2</span>),</span>
-<span id="cb10-9"><a href="theory.html#cb10-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">nrow =</span> <span class="dv">3</span> )</span>
-<span id="cb10-10"><a href="theory.html#cb10-10" aria-hidden="true" tabindex="-1"></a><span class="co"># label species</span></span>
-<span id="cb10-11"><a href="theory.html#cb10-11" aria-hidden="true" tabindex="-1"></a><span class="fu">rownames</span>(states) <span class="ot">&lt;-</span> LETTERS[<span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>]</span>
-<span id="cb10-12"><a href="theory.html#cb10-12" aria-hidden="true" tabindex="-1"></a>states <span class="co"># each column is a possible configuration.</span></span></code></pre></div>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># by default, R fills matrices by columns.</span>
+<span class="va">states</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html">matrix</a></span><span class="op">(</span>
+  <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">3</span>,<span class="fl">1</span>,<span class="fl">1</span>, <span class="co"># column 1,</span>
+    <span class="fl">1</span>,<span class="fl">3</span>,<span class="fl">1</span>, <span class="co"># column 2, etc.</span>
+    <span class="fl">1</span>,<span class="fl">1</span>,<span class="fl">3</span>,
+    <span class="fl">2</span>,<span class="fl">2</span>,<span class="fl">1</span>,
+    <span class="fl">2</span>,<span class="fl">1</span>,<span class="fl">2</span>,
+    <span class="fl">1</span>,<span class="fl">2</span>,<span class="fl">2</span><span class="op">)</span>,
+  nrow <span class="op">=</span> <span class="fl">3</span> <span class="op">)</span>
+<span class="co"># label species</span>
+<span class="fu"><a href="https://rdrr.io/r/base/colnames.html">rownames</a></span><span class="op">(</span><span class="va">states</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">LETTERS</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">3</span><span class="op">]</span>
+<span class="va">states</span> <span class="co"># each column is a possible configuration.</span></code></pre></div>
 <pre><code>##   [,1] [,2] [,3] [,4] [,5] [,6]
 ## A    3    1    1    2    2    1
 ## B    1    3    1    2    1    2
 ## C    1    1    3    1    2    2</code></pre>
 <p>A rank or species abundance distributions does care <em>which</em> species is most abundant, just that different species exist and can have different abundances. Maximum entropy would have us ask, “what is the average abundance of the most abundant species?” Let’s calculate that. We can see that the most abundant species has either 3 individuals or two individuals and each of these occurs three times. Therefore the average abundance of the most abundant species is calculated as</p>
-<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="theory.html#cb12-1" aria-hidden="true" tabindex="-1"></a>(<span class="dv">3</span><span class="sc">+</span><span class="dv">3</span><span class="sc">+</span><span class="dv">3</span><span class="sc">+</span><span class="dv">2</span><span class="sc">+</span><span class="dv">2</span><span class="sc">+</span><span class="dv">2</span>)<span class="sc">/</span><span class="dv">6</span></span></code></pre></div>
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="op">(</span><span class="fl">3</span><span class="op">+</span><span class="fl">3</span><span class="op">+</span><span class="fl">3</span><span class="op">+</span><span class="fl">2</span><span class="op">+</span><span class="fl">2</span><span class="op">+</span><span class="fl">2</span><span class="op">)</span><span class="op">/</span><span class="fl">6</span></code></pre></div>
 <pre><code>## [1] 2.5</code></pre>
 <p>or two and half individuals out of five individuals in the whole community.</p>
 <p>How about the least abundant species? The least abundant species always has only one individual. Therefore, the second most abundant species has, on average, 1.5 individuals.</p>
-<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="theory.html#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">qplot</span>(<span class="at">x=</span><span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>, <span class="at">y=</span><span class="fu">c</span>(<span class="fl">2.5</span>, <span class="fl">1.5</span>, <span class="dv">1</span>), <span class="at">geom=</span><span class="fu">c</span>(<span class="st">&quot;point&quot;</span>, <span class="st">&quot;line&quot;</span>)) <span class="sc">+</span> </span>
-<span id="cb14-2"><a href="theory.html#cb14-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">y=</span><span class="st">&quot;Expected abundance&quot;</span>)</span></code></pre></div>
-<div class="figure"><span style="display:block;" id="fig:mete2"></span>
-<img src="figs/mete2-1.png" alt="Expected rank abundance distribution, given five individuals and three species, under the maximum entropy theory of ecology." width="50%" />
-<p class="caption">
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu">qplot</span><span class="op">(</span>x<span class="op">=</span><span class="fl">1</span><span class="op">:</span><span class="fl">3</span>, y<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">2.5</span>, <span class="fl">1.5</span>, <span class="fl">1</span><span class="op">)</span>, geom<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"point"</span>, <span class="st">"line"</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> 
+  <span class="fu">labs</span><span class="op">(</span>y<span class="op">=</span><span class="st">"Expected abundance"</span><span class="op">)</span></code></pre></div>
+<div class="figure">
+<span style="display:block;" id="fig:mete2"></span>
+<img src="figs/mete2-1.png" alt="Expected rank abundance distribution, given five individuals and three species, under the maximum entropy theory of ecology." width="50%"><p class="caption">
 Figure 1.6: Expected rank abundance distribution, given five individuals and three species, under the maximum entropy theory of ecology.
 </p>
 </div>
 <p>This is one prediction of METE: given only the number of individuals and the number of species, it can predict a species abundance distribution.</p>
 </div>
 <div id="in-fine" class="section level2" number="1.5">
-<h2><span class="header-section-number">1.5</span> <em>In fine</em></h2>
+<h2>
+<span class="header-section-number">1.5</span> <em>In fine</em><a class="anchor" aria-label="anchor" href="#in-fine"><i class="fas fa-link"></i></a>
+</h2>
 <p>Useful theory helps us think more clearly and sometimes more imaginatively about how the world works. Good theory is usually <em>efficient</em> theory, making the greatest number of predictions with the fewest free parameters. It helps clarify our thinking and disentangle the myriad mechanisms at play in our ecological systems.</p>
 
 </div>
 </div>
-<h3> References</h3>
-<div id="refs" class="references csl-bib-body hanging-indent">
-<div id="ref-Banavar2010" class="csl-entry">
-Banavar, J. R., M. E. Moses, J. H. Brown, J. Damuth, A. Rinaldo, R. M. Sibly, and A. Maritan. 2010. <span>“<span class="nocase">A general basis for quarter-power scaling in animals</span>.”</span> <em>Proceedings of the National Academy of Sciences</em> 107 (36): 15816–20.
-</div>
-<div id="ref-Banavar1999" class="csl-entry">
-Banavar, J R, a Maritan, and a Rinaldo. 1999. <span>“<span class="nocase">Size and form in efficient transportation networks.</span>”</span> <em>Nature</em> 399 (6732): 130–32.
-</div>
-<div id="ref-Banavar2002" class="csl-entry">
-Banavar, Jayanth R, John Damuth, Amos Maritan, Andrea Rinaldo, Geoffrey B West, and Brian J. Enquist. 2002. <span>“<span class="nocase">Modelling universality and scaling - communications arising</span>.”</span> <em>Nature</em> 420 (December): 626–27.
-</div>
-<div id="ref-Brown:2004wa" class="csl-entry">
-Brown, J H, J F Gillooly, A P Allen, V M Savage, and G B West. 2004. <span>“<span class="nocase">Toward a metabolic theory of ecology</span>.”</span> <em>Ecology</em> 85 (7): 1771–89.
-</div>
-<div id="ref-Gillooly2000" class="csl-entry">
-Gillooly, J. F. 2000. <span>“<span class="nocase">Effect of body size and temperature on generation time in zooplankton</span>.”</span> <em>Journal of Plankton Research</em> 22 (2): 241–51.
-</div>
-<div id="ref-Glazier2018" class="csl-entry">
-Glazier, Douglas S. 2018. <span>“Rediscovering and Reviving Old Observations and Explanations of Metabolic Scaling in Living Systems.”</span> <em>Systems</em> 6 (4).
-</div>
-<div id="ref-Harte2014" class="csl-entry">
-Harte, John, and Erica A. Newman. 2014. <span>“<span class="nocase">Maximum information entropy: A foundation for ecological theory</span>.”</span> <em>Trends in Ecology and Evolution</em> 29 (7): 384–89. <a href="http://arxiv.org/abs/arXiv:1011.1669v3">http://arxiv.org/abs/arXiv:1011.1669v3</a>.
-</div>
-<div id="ref-Hubbell2001" class="csl-entry">
-Hubbell, S P. 2001. <em><span class="nocase">A <span>{</span>U<span>}</span>nified <span>{</span>T<span>}</span>heory of <span>{</span>B<span>}</span>iodiversity and <span>{</span>B<span>}</span>iogeography</span></em>. Monographs in Population Biology. Princeton, N.J.: Princeton University Press.
-</div>
-<div id="ref-Kleiber1932" class="csl-entry">
-Kleiber, M. 1932. <span>“Body Size and Metabolism.”</span> <em>Hilgardia</em>, 315–32.
-</div>
-<div id="ref-Marquet2014" class="csl-entry">
-Marquet, Pablo A., Andrew P. Allen, James H. Brown, Jennifer A. Dunne, Brian J. Enquist, James F. Gillooly, Patricia A. Gowaty, et al. 2014. <span>“<span class="nocase">On theory in ecology</span>.”</span> <em>BioScience</em> 64 (8): 701–10.
-</div>
-<div id="ref-Niklas2001" class="csl-entry">
-Niklas, Karl J., and Brian J. Enquist. 2001. <span>“<span class="nocase">Invariant scaling relationships for interspecific plant biomass production rates and body size</span>.”</span> <em>Proceedings of the National Academy of Sciences of the United States of America</em> 98 (5): 2922–27.
-</div>
-<div id="ref-ONeill1986" class="csl-entry">
-O’Neill, RV, DL De Angelis, JB Waide, and TFH Allen. 1986. <em>A Hierarchical Concept of Ecosystems.</em> Vol. 23. Monographs in Population Biology. Princeton University Press, Princeton, New Jersey, USA.
-</div>
-<div id="ref-Preston1962" class="csl-entry">
-———. 1962. <span>“<span class="nocase">The canonical distribution of commonness and rarity: part <span>{</span>I<span>}</span>.</span>”</span> <em>Ecology</em> 43: 185–215.
-</div>
-<div id="ref-Rose2017" class="csl-entry">
-Rose, Kevin C., Rose A. Graves, Winslow D. Hansen, Brian J. Harvey, Jiangxiao Qiu, Stephen A. Wood, Carly Ziter, and Monica G. Turner. 2017. <span>“<span class="nocase">Historical foundations and future directions in macrosystems ecology</span>.”</span> <em>Ecology Letters</em> 20 (2): 147–57.
-</div>
-<div id="ref-Scheiner2011" class="csl-entry">
-Scheiner, S M, and M. R. Willig. 2011. <em><span class="nocase">The Theory of Ecology</span></em>.
-</div>
-<div id="ref-Scheiner2010" class="csl-entry">
-Scheiner, Samuel M. 2010. <span>“<span class="nocase">Toward a conceptual framework for biology</span>.”</span> <em>Quarterly Review of Biology</em> 85 (3): 293–318.
-</div>
-<div id="ref-West1997" class="csl-entry">
-West, G B, J H Brown, and B J Enquist. 1997. <span>“<span class="nocase">A general model for the origin of allometric scaling laws in biology</span>.”</span> <em>Science</em> 276: 122–26.
-</div>
-</div>
-<div class="footnotes">
-<hr />
-<ol start="2">
-<li id="fn2"><p>“ecology” derives from the Greek “oikos” which means the rules of the house<a href="theory.html#fnref2" class="footnote-back">↩︎</a></p></li>
-<li id="fn3"><p>An entity may be an ecosystem, a community, a population, an individual, or some other system with operationally defined boundaries.<a href="theory.html#fnref3" class="footnote-back">↩︎</a></p></li>
-<li id="fn4"><p><span class="math inline">\(E=mc^2\)</span> - need I say more?<a href="theory.html#fnref4" class="footnote-back">↩︎</a></p></li>
-<li id="fn5"><p>Variables are quantities we measure and which change through time (e.g., population size). <em>Parameters</em> are (usually) fixed constants that govern the rates of change of variables (e.g., per capita birth rate).<a href="theory.html#fnref5" class="footnote-back">↩︎</a></p></li>
-<li id="fn6"><p>Metabolic rate may be measured by variables tied directly to metabolism, such as the rate of oxygen or energy consumption, or CO<span class="math inline">\(_2\)</span> production.<a href="theory.html#fnref6" class="footnote-back">↩︎</a></p></li>
-<li id="fn7"><p>With plants, we often measure something called “specific leaf area,” SLA, which is the two dimensional area of a leaf divided by its mass.<a href="theory.html#fnref7" class="footnote-back">↩︎</a></p></li>
-<li id="fn8"><p>A linear relation is one in which <span class="math inline">\(y\)</span> is proportional to <span class="math inline">\(x\)</span>, or <span class="math inline">\(y \propto x\)</span>.<a href="theory.html#fnref8" class="footnote-back">↩︎</a></p></li>
-</ol>
-</div>
-            </section>
 
-          </div>
-        </div>
-      </div>
-<a href="index.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="oft.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
-    </div>
+  <div class="chapter-nav">
+<div class="prev"><a href="index.html">Preface</a></div>
+<div class="next"><a href="oft.html"><span class="header-section-number">2</span> Optimal Foraging</a></div>
+</div></main><div class="col-md-3 col-lg-2 d-none d-md-block sidebar sidebar-chapter">
+    <nav id="toc" data-toggle="toc" aria-label="On this page"><h2>On this page</h2>
+      <ul class="nav navbar-nav">
+<li><a class="nav-link" href="#theory"><span class="header-section-number">1</span> Theory in Ecology</a></li>
+<li>
+<a class="nav-link" href="#examples-of-theories"><span class="header-section-number">1.1</span> Examples of theories</a><ul class="nav navbar-nav">
+<li><a class="nav-link" href="#hierarchy-theory"><span class="header-section-number">1.1.1</span> Hierarchy theory</a></li>
+<li><a class="nav-link" href="#a-general-theory-of-ecology"><span class="header-section-number">1.1.2</span> A general theory of ecology</a></li>
+<li><a class="nav-link" href="#efficient-theory"><span class="header-section-number">1.1.3</span> Efficient theory</a></li>
+</ul>
+</li>
+<li>
+<a class="nav-link" href="#metabolic_scaling"><span class="header-section-number">1.2</span> An example: Metabolic Theory of Ecology</a><ul class="nav navbar-nav">
+<li><a class="nav-link" href="#body-size-dependence"><span class="header-section-number">1.2.1</span> Body-size dependence</a></li>
+<li><a class="nav-link" href="#temperature-dependence"><span class="header-section-number">1.2.2</span> Temperature dependence</a></li>
+</ul>
+</li>
+<li><a class="nav-link" href="#power-law-scaling-implies-constant-relative-differences"><span class="header-section-number">1.3</span> Power law scaling implies constant relative differences</a></li>
+<li><a class="nav-link" href="#meet-mete-maximum-entropy-theory-of-ecology"><span class="header-section-number">1.4</span> Meet METE: Maximum Entropy Theory of Ecology</a></li>
+<li><a class="nav-link" href="#in-fine"><span class="header-section-number">1.5</span> In fine</a></li>
+</ul>
+
+      <div class="book-extra">
+        <ul class="list-unstyled">
+          
+        </ul>
+</div>
+    </nav>
+</div>
+
+</div>
+</div> <!-- .container -->
+
+<footer class="bg-primary text-light mt-5"><div class="container"><div class="row">
+
+  <div class="col-12 col-md-6 mt-3">
+    <p>"<strong>Primer of Ecology using R</strong>" was written by Hank Stevens. It was last built on 2021-08-20.</p>
   </div>
-<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
-<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
-<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
-<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
-<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
-<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
-<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
-<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
-<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
-<script>
-gitbook.require(["gitbook"], function(gitbook) {
-gitbook.start({
-"sharing": {
-"github": false,
-"facebook": true,
-"twitter": true,
-"linkedin": false,
-"weibo": false,
-"instapaper": false,
-"vk": false,
-"whatsapp": false,
-"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
-},
-"fontsettings": {
-"theme": "white",
-"family": "sans",
-"size": 2
-},
-"edit": {
-"link": null,
-"text": null
-},
-"history": {
-"link": null,
-"text": null
-},
-"view": {
-"link": null,
-"text": null
-},
-"download": ["_main.pdf"],
-"search": {
-"engine": "lunr",
-"options": null
-},
-"toc": {
-"collapse": "subsection"
-}
-});
-});
-</script>
 
-<!-- dynamically load mathjax for compatibility with self-contained -->
-<script>
+  <div class="col-12 col-md-6 mt-3">
+    <p>This book was built by the <a class="text-light" href="https://bookdown.org">bookdown</a> R package.</p>
+  </div>
+
+</div></div>
+</footer><!-- dynamically load mathjax for compatibility with self-contained --><script>
   (function () {
     var script = document.createElement("script");
     script.type = "text/javascript";
@@ -964,7 +523,22 @@ gitbook.start({
     script.src = src;
     document.getElementsByTagName("head")[0].appendChild(script);
   })();
+</script><script type="text/x-mathjax-config">const popovers = document.querySelectorAll('a.footnote-ref[data-toggle="popover"]');
+for (let popover of popovers) {
+  const div = document.createElement('div');
+  div.setAttribute('style', 'position: absolute; top: 0, left:0; width:0, height:0, overflow: hidden; visibility: hidden;');
+  div.innerHTML = popover.getAttribute('data-content');
+
+  var has_math = div.querySelector("span.math");
+  if (has_math) {
+    document.body.appendChild(div);
+    MathJax.Hub.Queue(["Typeset", MathJax.Hub, div]);
+    MathJax.Hub.Queue(function() {
+      popover.setAttribute('data-content', div.innerHTML);
+      document.body.removeChild(div);
+    })
+  }
+}
 </script>
 </body>
-
 </html>

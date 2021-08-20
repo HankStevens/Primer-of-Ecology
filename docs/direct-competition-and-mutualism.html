@@ -1,489 +1,101 @@
 <!DOCTYPE html>
-<html lang="" xml:lang="">
+<html lang="en">
 <head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<title>7 Direct competition and mutualism | Primer of Ecology using R</title>
+<meta name="author" content="Hank Stevens">
+<meta name="generator" content="bookdown 0.23 with bs4_book()">
+<meta property="og:title" content="7 Direct competition and mutualism | Primer of Ecology using R">
+<meta property="og:type" content="book">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="7 Direct competition and mutualism | Primer of Ecology using R">
+<!-- JS --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://kit.fontawesome.com/6ecbd6c532.js" crossorigin="anonymous"></script><script src="libs/header-attrs-2.10/header-attrs.js"></script><script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<link href="libs/bootstrap-4.6.0/bootstrap.min.css" rel="stylesheet">
+<script src="libs/bootstrap-4.6.0/bootstrap.bundle.min.js"></script><script src="libs/bs3compat-0.2.5.1/tabs.js"></script><script src="libs/bs3compat-0.2.5.1/bs3compat.js"></script><link href="libs/bs4_book-1.0.0/bs4_book.css" rel="stylesheet">
+<script src="libs/bs4_book-1.0.0/bs4_book.js"></script><script src="libs/kePrint-0.0.1/kePrint.js"></script><link href="libs/lightable-0.0.1/lightable.css" rel="stylesheet">
+<!-- Global site tag (gtag.js) - Google Analytics --><script async src="https://www.googletagmanager.com/gtag/js?id=G-VCV8MES4YY"></script><script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
 
-  <meta charset="utf-8" />
-  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>7 Direct competition and mutualism | Primer of Ecology using R</title>
-  <meta name="description" content="7 Direct competition and mutualism | Primer of Ecology using R" />
-  <meta name="generator" content="bookdown 0.23 and GitBook 2.6.7" />
-
-  <meta property="og:title" content="7 Direct competition and mutualism | Primer of Ecology using R" />
-  <meta property="og:type" content="book" />
-  
-  
-  
-  <meta name="github-repo" content="HankStevens/Primer-of-Ecology" />
-
-  <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="7 Direct competition and mutualism | Primer of Ecology using R" />
-  
-  
-  
-
-<meta name="author" content="Hank Stevens" />
-
-
-<meta name="date" content="2021-08-20" />
-
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="apple-mobile-web-app-capable" content="yes" />
-  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
-  
-  
-<link rel="prev" href="meta.html"/>
-<link rel="next" href="cr.html"/>
-<script src="libs/header-attrs-2.10/header-attrs.js"></script>
-<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
-<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
-<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
-<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
-<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
-<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
-<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
-<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
-
-
-
-
-
-
-
-
-
-<link href="libs/anchor-sections-1.0.1/anchor-sections.css" rel="stylesheet" />
-<script src="libs/anchor-sections-1.0.1/anchor-sections.js"></script>
-<script src="libs/kePrint-0.0.1/kePrint.js"></script>
-<link href="libs/lightable-0.0.1/lightable.css" rel="stylesheet" />
-<!-- Global site tag (gtag.js) - Google Analytics -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-VCV8MES4YY"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-VCV8MES4YY');
-</script>
-
-
-<style type="text/css">
-pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
-pre > code.sourceCode > span:empty { height: 1.2em; }
-.sourceCode { overflow: visible; }
-code.sourceCode > span { color: inherit; text-decoration: inherit; }
-pre.sourceCode { margin: 0; }
-@media screen {
-div.sourceCode { overflow: auto; }
-}
-@media print {
-pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
-}
-pre.numberSource code
-  { counter-reset: source-line 0; }
-pre.numberSource code > span
-  { position: relative; left: -4em; counter-increment: source-line; }
-pre.numberSource code > span > a:first-child::before
-  { content: counter(source-line);
-    position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; display: inline-block;
-    -webkit-touch-callout: none; -webkit-user-select: none;
-    -khtml-user-select: none; -moz-user-select: none;
-    -ms-user-select: none; user-select: none;
-    padding: 0 4px; width: 4em;
-    color: #aaaaaa;
-  }
-pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
-div.sourceCode
-  {   }
-@media screen {
-pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
-}
-code span.al { color: #ff0000; font-weight: bold; } /* Alert */
-code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
-code span.at { color: #7d9029; } /* Attribute */
-code span.bn { color: #40a070; } /* BaseN */
-code span.bu { } /* BuiltIn */
-code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
-code span.ch { color: #4070a0; } /* Char */
-code span.cn { color: #880000; } /* Constant */
-code span.co { color: #60a0b0; font-style: italic; } /* Comment */
-code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
-code span.do { color: #ba2121; font-style: italic; } /* Documentation */
-code span.dt { color: #902000; } /* DataType */
-code span.dv { color: #40a070; } /* DecVal */
-code span.er { color: #ff0000; font-weight: bold; } /* Error */
-code span.ex { } /* Extension */
-code span.fl { color: #40a070; } /* Float */
-code span.fu { color: #06287e; } /* Function */
-code span.im { } /* Import */
-code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
-code span.kw { color: #007020; font-weight: bold; } /* Keyword */
-code span.op { color: #666666; } /* Operator */
-code span.ot { color: #007020; } /* Other */
-code span.pp { color: #bc7a00; } /* Preprocessor */
-code span.sc { color: #4070a0; } /* SpecialChar */
-code span.ss { color: #bb6688; } /* SpecialString */
-code span.st { color: #4070a0; } /* String */
-code span.va { color: #19177c; } /* Variable */
-code span.vs { color: #4070a0; } /* VerbatimString */
-code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
-</style>
-
-<style type="text/css">
-/* Used with Pandoc 2.11+ new --citeproc when CSL is used */
-div.csl-bib-body { }
-div.csl-entry {
-  clear: both;
-}
-.hanging div.csl-entry {
-  margin-left:2em;
-  text-indent:-2em;
-}
-div.csl-left-margin {
-  min-width:2em;
-  float:left;
-}
-div.csl-right-inline {
-  margin-left:2em;
-  padding-left:1em;
-}
-div.csl-indent {
-  margin-left: 2em;
-}
-</style>
-
+      gtag('config', 'G-VCV8MES4YY');
+    </script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- CSS --><meta name="description" content="Different species frequently compete for limiting resources, and as a result have negative impacts on each other. For example, change in species composition during secondary succession (Fig. 7.1)...">
+<meta property="og:description" content="Different species frequently compete for limiting resources, and as a result have negative impacts on each other. For example, change in species composition during secondary succession (Fig. 7.1)...">
+<meta name="twitter:description" content="Different species frequently compete for limiting resources, and as a result have negative impacts on each other. For example, change in species composition during secondary succession (Fig. 7.1)...">
 </head>
+<body data-spy="scroll" data-target="#toc">
 
-<body>
+<div class="container-fluid">
+<div class="row">
+  <header class="col-sm-12 col-lg-3 sidebar sidebar-book"><a class="sr-only sr-only-focusable" href="#content">Skip to main content</a>
 
-
-
-  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
-
-    <div class="book-summary">
-      <nav role="navigation">
-
-<ul class="summary">
-<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Preface</a></li>
-<li class="chapter" data-level="1" data-path="theory.html"><a href="theory.html"><i class="fa fa-check"></i><b>1</b> Theory in Ecology</a>
-<ul>
-<li class="chapter" data-level="1.1" data-path="theory.html"><a href="theory.html#examples-of-theories"><i class="fa fa-check"></i><b>1.1</b> Examples of theories</a>
-<ul>
-<li class="chapter" data-level="1.1.1" data-path="theory.html"><a href="theory.html#hierarchy-theory"><i class="fa fa-check"></i><b>1.1.1</b> Hierarchy theory</a></li>
-<li class="chapter" data-level="1.1.2" data-path="theory.html"><a href="theory.html#a-general-theory-of-ecology"><i class="fa fa-check"></i><b>1.1.2</b> A general theory of ecology</a></li>
-<li class="chapter" data-level="1.1.3" data-path="theory.html"><a href="theory.html#efficient-theory"><i class="fa fa-check"></i><b>1.1.3</b> Efficient theory</a></li>
-</ul></li>
-<li class="chapter" data-level="1.2" data-path="theory.html"><a href="theory.html#metabolic_scaling"><i class="fa fa-check"></i><b>1.2</b> An example: Metabolic Theory of Ecology</a>
-<ul>
-<li class="chapter" data-level="1.2.1" data-path="theory.html"><a href="theory.html#body-size-dependence"><i class="fa fa-check"></i><b>1.2.1</b> Body-size dependence</a></li>
-<li class="chapter" data-level="1.2.2" data-path="theory.html"><a href="theory.html#temperature-dependence"><i class="fa fa-check"></i><b>1.2.2</b> Temperature dependence</a></li>
-</ul></li>
-<li class="chapter" data-level="1.3" data-path="theory.html"><a href="theory.html#power-law-scaling-implies-constant-relative-differences"><i class="fa fa-check"></i><b>1.3</b> Power law scaling implies constant relative differences</a></li>
-<li class="chapter" data-level="1.4" data-path="theory.html"><a href="theory.html#meet-mete-maximum-entropy-theory-of-ecology"><i class="fa fa-check"></i><b>1.4</b> Meet METE: Maximum Entropy Theory of Ecology</a></li>
-<li class="chapter" data-level="1.5" data-path="theory.html"><a href="theory.html#in-fine"><i class="fa fa-check"></i><b>1.5</b> <em>In fine</em></a></li>
-</ul></li>
-<li class="chapter" data-level="2" data-path="oft.html"><a href="oft.html"><i class="fa fa-check"></i><b>2</b> Optimal Foraging</a>
-<ul>
-<li class="chapter" data-level="2.1" data-path="oft.html"><a href="oft.html#a-prey-model"><i class="fa fa-check"></i><b>2.1</b> A prey model</a>
-<ul>
-<li class="chapter" data-level="2.1.1" data-path="oft.html"><a href="oft.html#our-intuition"><i class="fa fa-check"></i><b>2.1.1</b> Our intuition</a></li>
-<li class="chapter" data-level="2.1.2" data-path="oft.html"><a href="oft.html#mathematical-support"><i class="fa fa-check"></i><b>2.1.2</b> Mathematical support</a></li>
-</ul></li>
-<li class="chapter" data-level="2.2" data-path="oft.html"><a href="oft.html#the-patch-model"><i class="fa fa-check"></i><b>2.2</b> The patch model</a></li>
-<li class="chapter" data-level="2.3" data-path="oft.html"><a href="oft.html#a-simulation-of-a-prey-model"><i class="fa fa-check"></i><b>2.3</b> A simulation of a prey model</a>
-<ul>
-<li class="chapter" data-level="2.3.1" data-path="oft.html"><a href="oft.html#lab-exercise"><i class="fa fa-check"></i><b>2.3.1</b> Lab exercise</a></li>
-</ul></li>
-</ul></li>
-<li class="chapter" data-level="3" data-path="expo.html"><a href="expo.html"><i class="fa fa-check"></i><b>3</b> Simple density-independent growth</a>
-<ul>
-<li class="chapter" data-level="3.1" data-path="expo.html"><a href="expo.html#discrete-growth-rates-of-fruit-flies-in-my-kitchen"><i class="fa fa-check"></i><b>3.1</b> Discrete growth rates of fruit flies in my kitchen</a></li>
-<li class="chapter" data-level="3.2" data-path="expo.html"><a href="expo.html#fruit-flies-with-continuous-overlapping-generations"><i class="fa fa-check"></i><b>3.2</b> Fruit flies with continuous overlapping generations</a></li>
-<li class="chapter" data-level="3.3" data-path="expo.html"><a href="expo.html#properties-of-geometric-and-exponential-growth"><i class="fa fa-check"></i><b>3.3</b> Properties of geometric and exponential growth</a>
-<ul>
-<li class="chapter" data-level="3.3.1" data-path="expo.html"><a href="expo.html#average-growth-rate"><i class="fa fa-check"></i><b>3.3.1</b> Average growth rate</a></li>
-</ul></li>
-<li class="chapter" data-level="3.4" data-path="expo.html"><a href="expo.html#modeling-with-data-simulated-dynamics"><i class="fa fa-check"></i><b>3.4</b> Modeling with Data: Simulated Dynamics</a>
-<ul>
-<li class="chapter" data-level="3.4.1" data-path="expo.html"><a href="expo.html#data-based-approaches"><i class="fa fa-check"></i><b>3.4.1</b> Data-based approaches</a></li>
-<li class="chapter" data-level="3.4.2" data-path="expo.html"><a href="expo.html#creating-and-visualizing-the-data"><i class="fa fa-check"></i><b>3.4.2</b> Creating and visualizing the data</a></li>
-<li class="chapter" data-level="3.4.3" data-path="expo.html"><a href="expo.html#one-simulation"><i class="fa fa-check"></i><b>3.4.3</b> One simulation</a></li>
-<li class="chapter" data-level="3.4.4" data-path="expo.html"><a href="expo.html#multiple-simulations"><i class="fa fa-check"></i><b>3.4.4</b> Multiple simulations</a></li>
-<li class="chapter" data-level="3.4.5" data-path="expo.html"><a href="expo.html#a-distribution-of-possible-futures"><i class="fa fa-check"></i><b>3.4.5</b> A distribution of possible futures</a></li>
-<li class="chapter" data-level="3.4.6" data-path="expo.html"><a href="expo.html#analyzing-results"><i class="fa fa-check"></i><b>3.4.6</b> Analyzing results</a></li>
-<li class="chapter" data-level="3.4.7" data-path="expo.html"><a href="expo.html#inferring-processes-underlying-growth-rate"><i class="fa fa-check"></i><b>3.4.7</b> Inferring processes underlying growth rate</a></li>
-<li class="chapter" data-level="3.4.8" data-path="expo.html"><a href="expo.html#f-environmental-noise"><i class="fa fa-check"></i><b>3.4.8</b> 1/<span class="math inline">\(f\)</span> environmental noise</a></li>
-</ul></li>
-</ul></li>
-<li class="chapter" data-level="4" data-path="DID.html"><a href="DID.html"><i class="fa fa-check"></i><b>4</b> Density-independent Demography</a>
-<ul>
-<li class="chapter" data-level="4.1" data-path="DID.html"><a href="DID.html#a-two-stage-matrix-model"><i class="fa fa-check"></i><b>4.1</b> A two stage matrix model</a></li>
-<li class="chapter" data-level="4.2" data-path="DID.html"><a href="DID.html#a-brief-primer-on-matrices"><i class="fa fa-check"></i><b>4.2</b> A brief primer on matrices</a></li>
-<li class="chapter" data-level="4.3" data-path="DID.html"><a href="DID.html#decomposing-a"><i class="fa fa-check"></i><b>4.3</b> Decomposing <strong>A</strong></a></li>
-<li class="chapter" data-level="4.4" data-path="DID.html"><a href="DID.html#a-three-stage-model"><i class="fa fa-check"></i><b>4.4</b> A three stage model</a></li>
-<li class="chapter" data-level="4.5" data-path="DID.html"><a href="DID.html#projection"><i class="fa fa-check"></i><b>4.5</b> Projection</a></li>
-<li class="chapter" data-level="4.6" data-path="DID.html"><a href="DID.html#analyzing-the-transition-matrix"><i class="fa fa-check"></i><b>4.6</b> Analyzing the transition matrix</a>
-<ul>
-<li class="chapter" data-level="4.6.1" data-path="DID.html"><a href="DID.html#eigenanalysis"><i class="fa fa-check"></i><b>4.6.1</b> Eigenanalysis</a></li>
-<li class="chapter" data-level="4.6.2" data-path="DID.html"><a href="DID.html#finite-rate-of-increase"><i class="fa fa-check"></i><b>4.6.2</b> Finite rate of increase</a></li>
-<li class="chapter" data-level="4.6.3" data-path="DID.html"><a href="DID.html#stable-stage-distribution"><i class="fa fa-check"></i><b>4.6.3</b> Stable stage distribution</a></li>
-<li class="chapter" data-level="4.6.4" data-path="DID.html"><a href="DID.html#calculating-the-stable-stage-distribution"><i class="fa fa-check"></i><b>4.6.4</b> Calculating the stable stage distribution</a></li>
-<li class="chapter" data-level="4.6.5" data-path="DID.html"><a href="DID.html#reproductive-value"><i class="fa fa-check"></i><b>4.6.5</b> Reproductive value</a></li>
-<li class="chapter" data-level="4.6.6" data-path="DID.html"><a href="DID.html#sensitivity-and-elasticity"><i class="fa fa-check"></i><b>4.6.6</b> Sensitivity and elasticity</a></li>
-</ul></li>
-<li class="chapter" data-level="4.7" data-path="DID.html"><a href="DID.html#integral-projection"><i class="fa fa-check"></i><b>4.7</b> Integral projection</a>
-<ul>
-<li class="chapter" data-level="4.7.1" data-path="DID.html"><a href="DID.html#a-size-based-ipm-of-smooth-coneflower"><i class="fa fa-check"></i><b>4.7.1</b> A size-based IPM of smooth coneflower</a></li>
-<li class="chapter" data-level="4.7.2" data-path="DID.html"><a href="DID.html#population-summaries"><i class="fa fa-check"></i><b>4.7.2</b> Population summaries</a></li>
-</ul></li>
-<li class="chapter" data-level="4.8" data-path="DID.html"><a href="DID.html#r-packges-for-demography"><i class="fa fa-check"></i><b>4.8</b> R packges for demography</a></li>
-<li class="chapter" data-level="4.9" data-path="DID.html"><a href="DID.html#exploring-a-real-population"><i class="fa fa-check"></i><b>4.9</b> Exploring a real population</a></li>
-</ul></li>
-<li class="chapter" data-level="5" data-path="DDgrowth.html"><a href="DDgrowth.html"><i class="fa fa-check"></i><b>5</b> Density-dependent growth</a>
-<ul>
-<li class="chapter" data-level="5.1" data-path="DDgrowth.html"><a href="DDgrowth.html#continuous-logistic-growth"><i class="fa fa-check"></i><b>5.1</b> Continuous logistic growth</a></li>
-<li class="chapter" data-level="5.2" data-path="DDgrowth.html"><a href="DDgrowth.html#dynamics-around-the-equilibria-stability"><i class="fa fa-check"></i><b>5.2</b> Dynamics around the equilibria — stability</a>
-<ul>
-<li class="chapter" data-level="5.2.1" data-path="DDgrowth.html"><a href="DDgrowth.html#analytical-linear-stability-analysis"><i class="fa fa-check"></i><b>5.2.1</b> Analytical linear stability analysis</a></li>
-<li class="chapter" data-level="5.2.2" data-path="DDgrowth.html"><a href="DDgrowth.html#projection-with-numerical-integration"><i class="fa fa-check"></i><b>5.2.2</b> Projection with numerical integration</a></li>
-</ul></li>
-<li class="chapter" data-level="5.3" data-path="DDgrowth.html"><a href="DDgrowth.html#other-forms-of-density-dependent-growth"><i class="fa fa-check"></i><b>5.3</b> Other forms of density-dependent growth</a>
-<ul>
-<li class="chapter" data-level="5.3.1" data-path="DDgrowth.html"><a href="DDgrowth.html#effects-of-n-on-birth-and-death-rates"><i class="fa fa-check"></i><b>5.3.1</b> Effects of N on birth and death rates</a></li>
-<li class="chapter" data-level="5.3.2" data-path="DDgrowth.html"><a href="DDgrowth.html#theta-logistic-growth"><i class="fa fa-check"></i><b>5.3.2</b> Theta-logistic growth</a></li>
-<li class="chapter" data-level="5.3.3" data-path="DDgrowth.html"><a href="DDgrowth.html#allee-effect"><i class="fa fa-check"></i><b>5.3.3</b> Allee effect</a></li>
-<li class="chapter" data-level="5.3.4" data-path="DDgrowth.html"><a href="DDgrowth.html#the-integral-of-logistic-growth"><i class="fa fa-check"></i><b>5.3.4</b> The integral of logistic growth</a></li>
-</ul></li>
-<li class="chapter" data-level="5.4" data-path="DDgrowth.html"><a href="DDgrowth.html#discrete-density-dependent-growth"><i class="fa fa-check"></i><b>5.4</b> Discrete Density-dependent Growth</a>
-<ul>
-<li class="chapter" data-level="5.4.1" data-path="DDgrowth.html"><a href="DDgrowth.html#effects-of-r_d"><i class="fa fa-check"></i><b>5.4.1</b> Effects of <span class="math inline">\(r_d\)</span></a></li>
-<li class="chapter" data-level="5.4.2" data-path="DDgrowth.html"><a href="DDgrowth.html#bifurcations"><i class="fa fa-check"></i><b>5.4.2</b> Bifurcations</a></li>
-</ul></li>
-<li class="chapter" data-level="5.5" data-path="DDgrowth.html"><a href="DDgrowth.html#maximum-sustained-yield"><i class="fa fa-check"></i><b>5.5</b> Maximum Sustained Yield</a></li>
-</ul></li>
-<li class="chapter" data-level="6" data-path="meta.html"><a href="meta.html"><i class="fa fa-check"></i><b>6</b> Populations in Space</a>
-<ul>
-<li class="chapter" data-level="6.1" data-path="meta.html"><a href="meta.html#source-sink-dynamics"><i class="fa fa-check"></i><b>6.1</b> Source-sink Dynamics</a>
-<ul>
-<li class="chapter" data-level="6.1.1" data-path="meta.html"><a href="meta.html#complications-and-cases"><i class="fa fa-check"></i><b>6.1.1</b> Complications and cases</a></li>
-</ul></li>
-<li class="chapter" data-level="6.2" data-path="meta.html"><a href="meta.html#metapopulations"><i class="fa fa-check"></i><b>6.2</b> Metapopulations</a>
-<ul>
-<li class="chapter" data-level="6.2.1" data-path="meta.html"><a href="meta.html#the-classic-levins-model"><i class="fa fa-check"></i><b>6.2.1</b> The classic Levins model</a></li>
-<li class="chapter" data-level="6.2.2" data-path="meta.html"><a href="meta.html#propagule-rain"><i class="fa fa-check"></i><b>6.2.2</b> Propagule rain</a></li>
-<li class="chapter" data-level="6.2.3" data-path="meta.html"><a href="meta.html#the-rescue-effect-and-the-core-satellite-model"><i class="fa fa-check"></i><b>6.2.3</b> The rescue effect and the core-satellite model</a></li>
-<li class="chapter" data-level="6.2.4" data-path="meta.html"><a href="meta.html#parallels-with-logistic-growth"><i class="fa fa-check"></i><b>6.2.4</b> Parallels with Logistic Growth</a></li>
-<li class="chapter" data-level="6.2.5" data-path="meta.html"><a href="meta.html#levins-vs.-hanski"><i class="fa fa-check"></i><b>6.2.5</b> Levins <span class="math inline">\(vs\)</span>. Hanski</a></li>
-<li class="chapter" data-level="6.2.6" data-path="meta.html"><a href="meta.html#habitat-destruction"><i class="fa fa-check"></i><b>6.2.6</b> Habitat Destruction</a></li>
-<li class="chapter" data-level="6.2.7" data-path="meta.html"><a href="meta.html#illustrating-the-effects-of-habitat-destruction"><i class="fa fa-check"></i><b>6.2.7</b> Illustrating the effects of habitat destruction</a></li>
-<li class="chapter" data-level="6.2.8" data-path="meta.html"><a href="meta.html#different-assumptions-lead-to-different-predictions-about-rates-of-extinction"><i class="fa fa-check"></i><b>6.2.8</b> Different assumptions lead to different predictions about rates of extinction</a></li>
-</ul></li>
-<li class="chapter" data-level="6.3" data-path="meta.html"><a href="meta.html#hanskis-incidence-function"><i class="fa fa-check"></i><b>6.3</b> Hanski’s incidence function</a></li>
-</ul></li>
-<li class="chapter" data-level="7" data-path="direct-competition-and-mutualism.html"><a href="direct-competition-and-mutualism.html"><i class="fa fa-check"></i><b>7</b> Direct competition and mutualism</a>
-<ul>
-<li class="chapter" data-level="7.1" data-path="direct-competition-and-mutualism.html"><a href="direct-competition-and-mutualism.html#interspecific-competition"><i class="fa fa-check"></i><b>7.1</b> Interspecific competition</a>
-<ul>
-<li class="chapter" data-level="7.1.1" data-path="direct-competition-and-mutualism.html"><a href="direct-competition-and-mutualism.html#equilbria"><i class="fa fa-check"></i><b>7.1.1</b> Equilbria</a></li>
-<li class="chapter" data-level="7.1.2" data-path="direct-competition-and-mutualism.html"><a href="direct-competition-and-mutualism.html#dynamics-at-the-equilibria"><i class="fa fa-check"></i><b>7.1.2</b> Dynamics at the Equilibria</a></li>
-<li class="chapter" data-level="7.1.3" data-path="direct-competition-and-mutualism.html"><a href="direct-competition-and-mutualism.html#return-time-and-the-effect-of-r"><i class="fa fa-check"></i><b>7.1.3</b> Return Time and the Effect of <span class="math inline">\(r\)</span></a></li>
-</ul></li>
-<li class="chapter" data-level="7.2" data-path="direct-competition-and-mutualism.html"><a href="direct-competition-and-mutualism.html#interspecific-mutualism"><i class="fa fa-check"></i><b>7.2</b> Interspecific mutualism</a></li>
-<li class="chapter" data-level="7.3" data-path="direct-competition-and-mutualism.html"><a href="direct-competition-and-mutualism.html#generalized-lotka-volterra-models"><i class="fa fa-check"></i><b>7.3</b> Generalized Lotka-Volterra models</a></li>
-<li class="chapter" data-level="7.4" data-path="direct-competition-and-mutualism.html"><a href="direct-competition-and-mutualism.html#summary"><i class="fa fa-check"></i><b>7.4</b> Summary</a></li>
-</ul></li>
-<li class="chapter" data-level="8" data-path="cr.html"><a href="cr.html"><i class="fa fa-check"></i><b>8</b> Consumer-resource Interactions</a>
-<ul>
-<li class="chapter" data-level="8.1" data-path="cr.html"><a href="cr.html#ratio-dependence"><i class="fa fa-check"></i><b>8.1</b> Ratio dependence</a>
-<ul>
-<li class="chapter" data-level="8.1.1" data-path="cr.html"><a href="cr.html#dynamics-of-ratio-dependent-predation"><i class="fa fa-check"></i><b>8.1.1</b> Dynamics of ratio dependent predation</a></li>
-</ul></li>
-<li class="chapter" data-level="8.2" data-path="cr.html"><a href="cr.html#prey-dependence"><i class="fa fa-check"></i><b>8.2</b> Prey dependence</a>
-<ul>
-<li class="chapter" data-level="8.2.1" data-path="cr.html"><a href="cr.html#dyanmics-of-prey-dependent-predation"><i class="fa fa-check"></i><b>8.2.1</b> Dyanmics of prey-dependent predation</a></li>
-</ul></li>
-<li class="chapter" data-level="8.3" data-path="cr.html"><a href="cr.html#interlude-functional-response---what-an-individual-predator-does-fr"><i class="fa fa-check"></i><b>8.3</b> Interlude: Functional response - what an individual predator does (#fr)</a></li>
-<li class="chapter" data-level="8.4" data-path="cr.html"><a href="cr.html#stability-analysis-for-the-prey-dependent-lotkavolterra-model"><i class="fa fa-check"></i><b>8.4</b> Stability analysis for the prey-dependent Lotka–Volterra model</a></li>
-<li class="chapter" data-level="8.5" data-path="cr.html"><a href="cr.html#resource-growth-functions"><i class="fa fa-check"></i><b>8.5</b> Resource growth functions</a>
-<ul>
-<li class="chapter" data-level="8.5.1" data-path="cr.html"><a href="cr.html#consumption-of-a-renewable-resource"><i class="fa fa-check"></i><b>8.5.1</b> Consumption of a renewable resource</a></li>
-<li class="chapter" data-level="8.5.2" data-path="cr.html"><a href="cr.html#prey-carrying-capacity-and-type-ii-functional-response"><i class="fa fa-check"></i><b>8.5.2</b> Prey carrying capacity and type II functional response</a></li>
-</ul></li>
-<li class="chapter" data-level="8.6" data-path="cr.html"><a href="cr.html#paradox-of-enrichment"><i class="fa fa-check"></i><b>8.6</b> Paradox of enrichment</a></li>
-<li class="chapter" data-level="8.7" data-path="cr.html"><a href="cr.html#consumption-of-two-resources"><i class="fa fa-check"></i><b>8.7</b> Consumption of two resources</a>
-<ul>
-<li class="chapter" data-level="8.7.1" data-path="cr.html"><a href="cr.html#interpreting-consumption-and-assimilation"><i class="fa fa-check"></i><b>8.7.1</b> Interpreting consumption and assimilation</a></li>
-</ul></li>
-<li class="chapter" data-level="8.8" data-path="cr.html"><a href="cr.html#in-fine-1"><i class="fa fa-check"></i><b>8.8</b> In fine</a></li>
-</ul></li>
-<li class="chapter" data-level="9" data-path="host-parasitoid-relations.html"><a href="host-parasitoid-relations.html"><i class="fa fa-check"></i><b>9</b> Host-parasitoid relations</a>
-<ul>
-<li class="chapter" data-level="9.1" data-path="host-parasitoid-relations.html"><a href="host-parasitoid-relations.html#independent-and-random-attacks"><i class="fa fa-check"></i><b>9.1</b> Independent and random attacks</a>
-<ul>
-<li class="chapter" data-level="9.1.1" data-path="host-parasitoid-relations.html"><a href="host-parasitoid-relations.html#simulating-simple-host-parasitoid-dynamics"><i class="fa fa-check"></i><b>9.1.1</b> Simulating simple host-parasitoid dynamics</a></li>
-</ul></li>
-<li class="chapter" data-level="9.2" data-path="host-parasitoid-relations.html"><a href="host-parasitoid-relations.html#aggregation-leads-to-coexistence"><i class="fa fa-check"></i><b>9.2</b> Aggregation leads to coexistence</a>
-<ul>
-<li class="chapter" data-level="9.2.1" data-path="host-parasitoid-relations.html"><a href="host-parasitoid-relations.html#equilibria-for-a-discrete-time-model"><i class="fa fa-check"></i><b>9.2.1</b> Equilibria for a discrete-time model</a></li>
-</ul></li>
-<li class="chapter" data-level="9.3" data-path="host-parasitoid-relations.html"><a href="host-parasitoid-relations.html#stability-of-hostparasitoid-dynamics"><i class="fa fa-check"></i><b>9.3</b> Stability of host–parasitoid dynamics</a></li>
-<li class="chapter" data-level="9.4" data-path="host-parasitoid-relations.html"><a href="host-parasitoid-relations.html#in-fine-2"><i class="fa fa-check"></i><b>9.4</b> <em>In Fine</em></a></li>
-</ul></li>
-<li class="chapter" data-level="10" data-path="disease.html"><a href="disease.html"><i class="fa fa-check"></i><b>10</b> Disease</a>
-<ul>
-<li class="chapter" data-level="10.1" data-path="disease.html"><a href="disease.html#closed-epidemics"><i class="fa fa-check"></i><b>10.1</b> Closed epidemics</a>
-<ul>
-<li class="chapter" data-level="10.1.1" data-path="disease.html"><a href="disease.html#density-dependent-transmission"><i class="fa fa-check"></i><b>10.1.1</b> Density-dependent transmission</a></li>
-<li class="chapter" data-level="10.1.2" data-path="disease.html"><a href="disease.html#frequency-dependent-transmission"><i class="fa fa-check"></i><b>10.1.2</b> Frequency-dependent transmission</a></li>
-</ul></li>
-<li class="chapter" data-level="10.2" data-path="disease.html"><a href="disease.html#open-epidemics"><i class="fa fa-check"></i><b>10.2</b> Open epidemics</a></li>
-<li class="chapter" data-level="10.3" data-path="disease.html"><a href="disease.html#modeling-data-from-bombay"><i class="fa fa-check"></i><b>10.3</b> Modeling data from Bombay</a>
-<ul>
-<li class="chapter" data-level="10.3.1" data-path="disease.html"><a href="disease.html#optimization"><i class="fa fa-check"></i><b>10.3.1</b> Optimization</a></li>
-</ul></li>
-</ul></li>
-<li class="chapter" data-level="11" data-path="consumer-resource-competition-and-mutualisms.html"><a href="consumer-resource-competition-and-mutualisms.html"><i class="fa fa-check"></i><b>11</b> Consumer-resource Competition and Mutualisms</a>
-<ul>
-<li class="chapter" data-level="11.1" data-path="consumer-resource-competition-and-mutualisms.html"><a href="consumer-resource-competition-and-mutualisms.html#competition-for-one-resource"><i class="fa fa-check"></i><b>11.1</b> Competition for one resource</a></li>
-<li class="chapter" data-level="11.2" data-path="consumer-resource-competition-and-mutualisms.html"><a href="consumer-resource-competition-and-mutualisms.html#competition-for-substitutable-resources"><i class="fa fa-check"></i><b>11.2</b> Competition for Substitutable resources</a></li>
-<li class="chapter" data-level="11.3" data-path="consumer-resource-competition-and-mutualisms.html"><a href="consumer-resource-competition-and-mutualisms.html#tilmans-resource-ratio-with-essential-resources"><i class="fa fa-check"></i><b>11.3</b> Tilman’s resource ratio with essential resources</a></li>
-<li class="chapter" data-level="11.4" data-path="consumer-resource-competition-and-mutualisms.html"><a href="consumer-resource-competition-and-mutualisms.html#consumer-resource-mutualism"><i class="fa fa-check"></i><b>11.4</b> Consumer-resource mutualism</a>
-<ul>
-<li class="chapter" data-level="11.4.1" data-path="consumer-resource-competition-and-mutualisms.html"><a href="consumer-resource-competition-and-mutualisms.html#a-model-of-uni-directional-mutualism"><i class="fa fa-check"></i><b>11.4.1</b> A model of uni-directional mutualism</a></li>
-</ul></li>
-<li class="chapter" data-level="11.5" data-path="consumer-resource-competition-and-mutualisms.html"><a href="consumer-resource-competition-and-mutualisms.html#plant-soil-feedbacks"><i class="fa fa-check"></i><b>11.5</b> Plant-soil feedbacks</a></li>
-<li class="chapter" data-level="11.6" data-path="consumer-resource-competition-and-mutualisms.html"><a href="consumer-resource-competition-and-mutualisms.html#simulations-for-learning"><i class="fa fa-check"></i><b>11.6</b> Simulations for learning</a>
-<ul>
-<li class="chapter" data-level="11.6.1" data-path="consumer-resource-competition-and-mutualisms.html"><a href="consumer-resource-competition-and-mutualisms.html#lvg"><i class="fa fa-check"></i><b>11.6.1</b> <code>lvg()</code></a></li>
-<li class="chapter" data-level="11.6.2" data-path="consumer-resource-competition-and-mutualisms.html"><a href="consumer-resource-competition-and-mutualisms.html#systematic-simulations"><i class="fa fa-check"></i><b>11.6.2</b> Systematic simulations</a></li>
-<li class="chapter" data-level="11.6.3" data-path="consumer-resource-competition-and-mutualisms.html"><a href="consumer-resource-competition-and-mutualisms.html#checking-simulation-results"><i class="fa fa-check"></i><b>11.6.3</b> Checking simulation results</a></li>
-<li class="chapter" data-level="11.6.4" data-path="consumer-resource-competition-and-mutualisms.html"><a href="consumer-resource-competition-and-mutualisms.html#comparing-simulation-results-to-analytical-solutions"><i class="fa fa-check"></i><b>11.6.4</b> Comparing simulation results to analytical solutions</a></li>
-<li class="chapter" data-level="11.6.5" data-path="consumer-resource-competition-and-mutualisms.html"><a href="consumer-resource-competition-and-mutualisms.html#one-last-thing-using-the-jacobian-matrix"><i class="fa fa-check"></i><b>11.6.5</b> One last thing: using the Jacobian matrix</a></li>
-<li class="chapter" data-level="11.6.6" data-path="consumer-resource-competition-and-mutualisms.html"><a href="consumer-resource-competition-and-mutualisms.html#in-fine-3"><i class="fa fa-check"></i><b>11.6.6</b> <em>In Fine</em></a></li>
-</ul></li>
-</ul></li>
-<li class="chapter" data-level="12" data-path="food-webs-and-other-networks.html"><a href="food-webs-and-other-networks.html"><i class="fa fa-check"></i><b>12</b> Food webs and other networks</a>
-<ul>
-<li class="chapter" data-level="12.1" data-path="food-webs-and-other-networks.html"><a href="food-webs-and-other-networks.html#food-web-characteristics"><i class="fa fa-check"></i><b>12.1</b> Food Web Characteristics</a></li>
-<li class="chapter" data-level="12.2" data-path="food-webs-and-other-networks.html"><a href="food-webs-and-other-networks.html#does-omnivory-destablize-food-chains"><i class="fa fa-check"></i><b>12.2</b> Does omnivory destablize food chains?</a>
-<ul>
-<li class="chapter" data-level="12.2.1" data-path="food-webs-and-other-networks.html"><a href="food-webs-and-other-networks.html#multi-species-lotkavolterra-notation"><i class="fa fa-check"></i><b>12.2.1</b> Multi-species Lotka–Volterra notation</a></li>
-<li class="chapter" data-level="12.2.2" data-path="food-webs-and-other-networks.html"><a href="food-webs-and-other-networks.html#background"><i class="fa fa-check"></i><b>12.2.2</b> Background</a></li>
-<li class="chapter" data-level="12.2.3" data-path="food-webs-and-other-networks.html"><a href="food-webs-and-other-networks.html#implementing-pimm-and-lawtons-methods"><i class="fa fa-check"></i><b>12.2.3</b> Implementing Pimm and Lawton’s Methods</a></li>
-<li class="chapter" data-level="12.2.4" data-path="food-webs-and-other-networks.html"><a href="food-webs-and-other-networks.html#shortening-the-chain"><i class="fa fa-check"></i><b>12.2.4</b> Shortening the Chain</a></li>
-<li class="chapter" data-level="12.2.5" data-path="food-webs-and-other-networks.html"><a href="food-webs-and-other-networks.html#adding-omnivory"><i class="fa fa-check"></i><b>12.2.5</b> Adding Omnivory</a></li>
-<li class="chapter" data-level="12.2.6" data-path="food-webs-and-other-networks.html"><a href="food-webs-and-other-networks.html#comparing-chain-a-versus-b"><i class="fa fa-check"></i><b>12.2.6</b> Comparing Chain A versus B</a></li>
-<li class="chapter" data-level="12.2.7" data-path="food-webs-and-other-networks.html"><a href="food-webs-and-other-networks.html#re-evaluating-take-home-messages"><i class="fa fa-check"></i><b>12.2.7</b> Re-evaluating Take-Home Messages</a></li>
-</ul></li>
-<li class="chapter" data-level="12.3" data-path="food-webs-and-other-networks.html"><a href="food-webs-and-other-networks.html#perhaps-mutualism-stabilizes-bipartite-networks"><i class="fa fa-check"></i><b>12.3</b> Perhaps mutualism stabilizes bipartite networks</a>
-<ul>
-<li class="chapter" data-level="12.3.1" data-path="food-webs-and-other-networks.html"><a href="food-webs-and-other-networks.html#creating-bipartite-webs"><i class="fa fa-check"></i><b>12.3.1</b> Creating bipartite webs</a></li>
-<li class="chapter" data-level="12.3.2" data-path="food-webs-and-other-networks.html"><a href="food-webs-and-other-networks.html#testing-effects-of-nestedness-and-modularity-on-network-resilience."><i class="fa fa-check"></i><b>12.3.2</b> Testing effects of nestedness and modularity on network resilience.</a></li>
-<li class="chapter" data-level="12.3.3" data-path="food-webs-and-other-networks.html"><a href="food-webs-and-other-networks.html#path-analysis"><i class="fa fa-check"></i><b>12.3.3</b> Path Analysis</a></li>
-</ul></li>
-<li class="chapter" data-level="12.4" data-path="food-webs-and-other-networks.html"><a href="food-webs-and-other-networks.html#exploring-pandora-right-here-at-home"><i class="fa fa-check"></i><b>12.4</b> Exploring Pandora, right here at home</a>
-<ul>
-<li class="chapter" data-level="12.4.1" data-path="food-webs-and-other-networks.html"><a href="food-webs-and-other-networks.html#properties-assessed"><i class="fa fa-check"></i><b>12.4.1</b> Properties assessed</a></li>
-</ul></li>
-</ul></li>
-<li class="chapter" data-level="13" data-path="diversity.html"><a href="diversity.html"><i class="fa fa-check"></i><b>13</b> Diversity</a>
-<ul>
-<li class="chapter" data-level="13.1" data-path="diversity.html"><a href="diversity.html#background-1"><i class="fa fa-check"></i><b>13.1</b> Background</a></li>
-<li class="chapter" data-level="13.2" data-path="diversity.html"><a href="diversity.html#species-composition"><i class="fa fa-check"></i><b>13.2</b> Species Composition</a>
-<ul>
-<li class="chapter" data-level="13.2.1" data-path="diversity.html"><a href="diversity.html#measures-of-abundance"><i class="fa fa-check"></i><b>13.2.1</b> Measures of abundance</a></li>
-<li class="chapter" data-level="13.2.2" data-path="diversity.html"><a href="diversity.html#dissimilarities-and-distances"><i class="fa fa-check"></i><b>13.2.2</b> Dissimilarities and Distances</a></li>
-<li class="chapter" data-level="13.2.3" data-path="diversity.html"><a href="diversity.html#displaying-multidimensional-distances"><i class="fa fa-check"></i><b>13.2.3</b> Displaying multidimensional distances</a></li>
-</ul></li>
-<li class="chapter" data-level="13.3" data-path="diversity.html"><a href="diversity.html#diversity-1"><i class="fa fa-check"></i><b>13.3</b> Diversity</a></li>
-<li class="chapter" data-level="13.4" data-path="diversity.html"><a href="diversity.html#species-diversity"><i class="fa fa-check"></i><b>13.4</b> Species diversity</a></li>
-<li class="chapter" data-level="13.5" data-path="diversity.html"><a href="diversity.html#rarefaction-and-total-species-richness"><i class="fa fa-check"></i><b>13.5</b> Rarefaction and total species richness</a>
-<ul>
-<li class="chapter" data-level="13.5.1" data-path="diversity.html"><a href="diversity.html#an-example-of-rarefaction-and-total-species-richness"><i class="fa fa-check"></i><b>13.5.1</b> An example of rarefaction and total species richness</a></li>
-</ul></li>
-<li class="chapter" data-level="13.6" data-path="diversity.html"><a href="diversity.html#distributions"><i class="fa fa-check"></i><b>13.6</b> Distributions</a>
-<ul>
-<li class="chapter" data-level="13.6.1" data-path="diversity.html"><a href="diversity.html#log-normal-distribution"><i class="fa fa-check"></i><b>13.6.1</b> Log-normal distribution</a></li>
-<li class="chapter" data-level="13.6.2" data-path="diversity.html"><a href="diversity.html#other-distributions"><i class="fa fa-check"></i><b>13.6.2</b> Other distributions</a></li>
-<li class="chapter" data-level="13.6.3" data-path="diversity.html"><a href="diversity.html#pattern-vs.-process"><i class="fa fa-check"></i><b>13.6.3</b> Pattern <em>vs.</em> process</a></li>
-</ul></li>
-<li class="chapter" data-level="13.7" data-path="diversity.html"><a href="diversity.html#neutral-theory-of-biodiversity-and-biogeography"><i class="fa fa-check"></i><b>13.7</b> Neutral Theory of Biodiversity and Biogeography</a>
-<ul>
-<li class="chapter" data-level="13.7.1" data-path="diversity.html"><a href="diversity.html#different-flavors-of-neutral-communities"><i class="fa fa-check"></i><b>13.7.1</b> Different flavors of neutral communities</a></li>
-<li class="chapter" data-level="13.7.2" data-path="diversity.html"><a href="diversity.html#investigating-neutral-communities"><i class="fa fa-check"></i><b>13.7.2</b> Investigating neutral communities</a></li>
-</ul></li>
-<li class="chapter" data-level="13.8" data-path="diversity.html"><a href="diversity.html#speciesarea-relations"><i class="fa fa-check"></i><b>13.8</b> Species–area relations</a>
-<ul>
-<li class="chapter" data-level="13.8.1" data-path="diversity.html"><a href="diversity.html#island-biogeography"><i class="fa fa-check"></i><b>13.8.1</b> Island biogeography</a></li>
-</ul></li>
-<li class="chapter" data-level="13.9" data-path="diversity.html"><a href="diversity.html#diversity-partitioning"><i class="fa fa-check"></i><b>13.9</b> Diversity Partitioning</a>
-<ul>
-<li class="chapter" data-level="13.9.1" data-path="diversity.html"><a href="diversity.html#partitioning-speciesarea-relations"><i class="fa fa-check"></i><b>13.9.1</b> Partitioning species–area relations</a></li>
-</ul></li>
-<li class="chapter" data-level="13.10" data-path="diversity.html"><a href="diversity.html#summary-1"><i class="fa fa-check"></i><b>13.10</b> Summary</a></li>
-</ul></li>
-<li class="chapter" data-level="14" data-path="appendix.html"><a href="appendix.html"><i class="fa fa-check"></i><b>14</b> Appendix</a>
-<ul>
-<li class="chapter" data-level="14.1" data-path="appendix.html"><a href="appendix.html#very-introductory-materials"><i class="fa fa-check"></i><b>14.1</b> Very introductory materials</a></li>
-<li class="chapter" data-level="14.2" data-path="appendix.html"><a href="appendix.html#writing-your-own-functions"><i class="fa fa-check"></i><b>14.2</b> Writing your own functions</a></li>
-<li class="chapter" data-level="14.3" data-path="appendix.html"><a href="appendix.html#iterated-actions-the-apply-family-and-loops"><i class="fa fa-check"></i><b>14.3</b> Iterated Actions: the <code>apply</code> Family and Loops</a>
-<ul>
-<li class="chapter" data-level="14.3.1" data-path="appendix.html"><a href="appendix.html#iterations-of-independent-actions"><i class="fa fa-check"></i><b>14.3.1</b> Iterations of independent actions</a></li>
-<li class="chapter" data-level="14.3.2" data-path="appendix.html"><a href="appendix.html#dependent-iterations"><i class="fa fa-check"></i><b>14.3.2</b> Dependent iterations</a></li>
-</ul></li>
-<li class="chapter" data-level="14.4" data-path="appendix.html"><a href="appendix.html#probability-distributions-and-randomization"><i class="fa fa-check"></i><b>14.4</b> Probability Distributions and Randomization</a></li>
-<li class="chapter" data-level="14.5" data-path="appendix.html"><a href="appendix.html#numerical-integration-of-ordinary-differential-equations"><i class="fa fa-check"></i><b>14.5</b> Numerical integration of ordinary differential equations</a></li>
-<li class="chapter" data-level="14.6" data-path="appendix.html"><a href="appendix.html#eigenanalysis-1"><i class="fa fa-check"></i><b>14.6</b> Eigenanalysis</a>
-<ul>
-<li class="chapter" data-level="14.6.1" data-path="appendix.html"><a href="appendix.html#eigenanalysis-of-demographic-versus-jacobian-matrices"><i class="fa fa-check"></i><b>14.6.1</b> Eigenanalysis of demographic versus Jacobian matrices</a></li>
-</ul></li>
-<li class="chapter" data-level="14.7" data-path="appendix.html"><a href="appendix.html#derivation-of-the-right-eigenvalues"><i class="fa fa-check"></i><b>14.7</b> Derivation of the right eigenvalues</a></li>
-<li class="chapter" data-level="14.8" data-path="appendix.html"><a href="appendix.html#symbols-used-in-this-book"><i class="fa fa-check"></i><b>14.8</b> Symbols used in this book</a></li>
-</ul></li>
-<li class="chapter" data-level="15" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i><b>15</b> References</a></li>
-</ul>
-
-      </nav>
+    <div class="d-flex align-items-start justify-content-between">
+      <h1>
+        <a href="index.html" title="">Primer of Ecology using R</a>
+      </h1>
+      <button class="btn btn-outline-primary d-lg-none ml-2 mt-1" type="button" data-toggle="collapse" data-target="#main-nav" aria-expanded="true" aria-controls="main-nav"><i class="fas fa-bars"></i><span class="sr-only">Show table of contents</span></button>
     </div>
 
-    <div class="book-body">
-      <div class="body-inner">
-        <div class="book-header" role="navigation">
-          <h1>
-            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Primer of Ecology using R</a>
-          </h1>
+    <div id="main-nav" class="collapse-lg">
+      <form role="search">
+        <input id="search" class="form-control" type="search" placeholder="Search" aria-label="Search">
+</form>
+
+      <nav aria-label="Table of contents"><h2>Table of contents</h2>
+        <ul class="book-toc list-unstyled">
+<li><a class="" href="index.html">Preface</a></li>
+<li><a class="" href="theory.html"><span class="header-section-number">1</span> Theory in Ecology</a></li>
+<li><a class="" href="oft.html"><span class="header-section-number">2</span> Optimal Foraging</a></li>
+<li><a class="" href="expo.html"><span class="header-section-number">3</span> Simple density-independent growth</a></li>
+<li><a class="" href="DID.html"><span class="header-section-number">4</span> Density-independent Demography</a></li>
+<li><a class="" href="DDgrowth.html"><span class="header-section-number">5</span> Density-dependent growth</a></li>
+<li><a class="" href="meta.html"><span class="header-section-number">6</span> Populations in Space</a></li>
+<li><a class="active" href="direct-competition-and-mutualism.html"><span class="header-section-number">7</span> Direct competition and mutualism</a></li>
+<li><a class="" href="cr.html"><span class="header-section-number">8</span> Consumer-resource Interactions</a></li>
+<li><a class="" href="host-parasitoid-relations.html"><span class="header-section-number">9</span> Host-parasitoid relations</a></li>
+<li><a class="" href="disease.html"><span class="header-section-number">10</span> Disease</a></li>
+<li><a class="" href="consumer-resource-competition-and-mutualisms.html"><span class="header-section-number">11</span> Consumer-resource Competition and Mutualisms</a></li>
+<li><a class="" href="food-webs-and-other-networks.html"><span class="header-section-number">12</span> Food webs and other networks</a></li>
+<li><a class="" href="diversity.html"><span class="header-section-number">13</span> Diversity</a></li>
+<li><a class="" href="appendix.html"><span class="header-section-number">14</span> Appendix</a></li>
+<li><a class="" href="references.html"><span class="header-section-number">15</span> References</a></li>
+</ul>
+
+        <div class="book-extra">
+          
         </div>
-
-        <div class="page-wrapper" tabindex="-1" role="main">
-          <div class="page-inner">
-
-            <section class="normal" id="section-">
-<div id="direct-competition-and-mutualism" class="section level1" number="7">
-<h1><span class="header-section-number">7</span> Direct competition and mutualism</h1>
+      </nav>
+</div>
+  </header><main class="col-sm-12 col-md-9 col-lg-7" id="content"><div id="direct-competition-and-mutualism" class="section level1" number="7">
+<h1>
+<span class="header-section-number">7</span> Direct competition and mutualism<a class="anchor" aria-label="anchor" href="#direct-competition-and-mutualism"><i class="fas fa-link"></i></a>
+</h1>
 <p>Different species frequently compete for limiting resources, and as a result have negative impacts on each other. For example, change in species composition during secondary succession (Fig. <a href="direct-competition-and-mutualism.html#fig:weeds">7.1</a>) appears mediated by, among other things, a species’ ability to intercept light, grow, and cast shade over other species. This chapter addresses very simple ways to represent such interactions between species. Unless I specify otherwise, “competition” in this chapter will refer to competition between species, or <em>inter</em>specific competition.</p>
-<div class="figure"><span style="display:block;" id="fig:weeds"></span>
-<img src="figs/weeds-1.png" alt="*Changes in abundances of six species of asters during early secondary succession. This turnover of perennial weeds appears mediated by competition for light, among other factors (data from the long-term Buell-Small Succession study [http://www.ecostudies.org/bss/]).*" width="75%" />
-<p class="caption">
+<div class="figure">
+<span style="display:block;" id="fig:weeds"></span>
+<img src="figs/weeds-1.png" alt="*Changes in abundances of six species of asters during early secondary succession. This turnover of perennial weeds appears mediated by competition for light, among other factors (data from the long-term Buell-Small Succession study [http://www.ecostudies.org/bss/]).*" width="75%"><p class="caption">
 Figure 7.1: <em>Changes in abundances of six species of asters during early secondary succession. This turnover of perennial weeds appears mediated by competition for light, among other factors (data from the long-term Buell-Small Succession study [<a href="http://www.ecostudies.org/bss/" class="uri">http://www.ecostudies.org/bss/</a>]).</em>
 </p>
 </div>
 <p>In this chapter we introduce <em>direct</em> interspecific competition and mutualism (Fig. <a href="direct-competition-and-mutualism.html#fig:DandID">7.2</a>). Direct competition is an interaction in which individuals experience a direct negative effect of another individual through aggressive interaction via contact or signaling. Indirect competition are negative interactions mediated by another factor, such as a limiting resource. When grass species compete for nitrate and ammonium, it is the shortage of those nutrients that causes the negative effects, and that shortage results from their consumption by competing species. However, regardless of the biological complexity of indirect competition, we can learn a lot by modeling it as a simplified direct interaction.</p>
 <p>Direct mutualisms are described mathematically in a manner that is identical to direct competition, but with signs reversed. Many pairwise mutualisms are direct insofar as they do not involve a third species or element. Think bumblebees and partridge peas, or mycorrhizae, or <em>Rhizobium</em> and legumes.</p>
 In a later chapter, we add more mechanistic, and messier, biological complexity when we describe indirect competition for one and two resources, and when we model more explicitly the costs and benefits of of mutualism between two or four species. This will be a consumer-resource approach to competition and mutualism.
-<div class="figure"><span style="display:block;" id="fig:DandID"></span>
-<img src="figs/DandID-1.png" alt="*We can model competition as direct negative effects, or as indirect interactions mediated through a resource.*" width="40%" /><img src="figs/DandID-2.png" alt="*We can model competition as direct negative effects, or as indirect interactions mediated through a resource.*" width="40%" />
-<p class="caption">
+<div class="figure">
+<span style="display:block;" id="fig:DandID"></span>
+<img src="figs/DandID-1.png" alt="*We can model competition as direct negative effects, or as indirect interactions mediated through a resource.*" width="40%"><img src="figs/DandID-2.png" alt="*We can model competition as direct negative effects, or as indirect interactions mediated through a resource.*" width="40%"><p class="caption">
 Figure 7.2: <em>We can model competition as direct negative effects, or as indirect interactions mediated through a resource.</em>
 </p>
 </div>
 <p>In this chapter model direct interactions using the Lotka-Volterra framework.</p>
 <div id="interspecific-competition" class="section level2" number="7.1">
-<h2><span class="header-section-number">7.1</span> Interspecific competition</h2>
+<h2>
+<span class="header-section-number">7.1</span> Interspecific competition<a class="anchor" aria-label="anchor" href="#interspecific-competition"><i class="fas fa-link"></i></a>
+</h2>
 <p>Our models of density-dependent growth were built upon the assumption that individuals within a single population had negative effects on each other, which we refered to as intraspecific competition. Here we assume that individuals of different species also have negative effects on each other.</p>
-<p>The classic model of competitive interactions is the continuous Lotka-Volterra model of interspecific competition <span class="citation">(<a href="#ref-Kingsland:1985kx" role="doc-biblioref">Kingsland 1985</a>)</span>. We build directly on the logistic growth model by adding an additional term for negative density dependence, this time, with the competing species. Now we have to label our populations and all of our parameters using subscripts. These subscripts identify the species to which the parameter relates. For instance, <span class="math inline">\(r_1\)</span> is the intrinsic rate of increase for species 1, and <span class="math inline">\(\alpha_{12}\)</span> is the per capita effect of species 2 on 1.
-<span class="math display" id="eq:N2b" id="eq:N2a">\[\begin{align}
+<p>The classic model of competitive interactions is the continuous Lotka-Volterra model of interspecific competition <span class="citation">(<a href="references.html#ref-Kingsland:1985kx" role="doc-biblioref">Kingsland 1985</a>)</span>. We build directly on the logistic growth model by adding an additional term for negative density dependence, this time, with the competing species. Now we have to label our populations and all of our parameters using subscripts. These subscripts identify the species to which the parameter relates. For instance, <span class="math inline">\(r_1\)</span> is the intrinsic rate of increase for species 1, and <span class="math inline">\(\alpha_{12}\)</span> is the per capita effect of species 2 on 1.
+<span class="math display" id="eq:N2b">\[\begin{align}
   \frac{d N_1}{d t}&amp;=r_1N_1\left(1-\alpha_{11}N_1-\alpha_{12}N_2\right)\tag{7.1}\\
   \frac{d N_2}{d t}&amp;=r_2N_2\left(1-\alpha_{21}N_1-\alpha_{22}N_2\right) \tag{7.2}
 \end{align}\]</span>
@@ -502,20 +114,18 @@ You will notice in <a href="direct-competition-and-mutualism.html#eq:N2a">(7.1)<
 \end{equation}\]</span>
 The subscripts on the <span class="math inline">\(\alpha\)</span>s represent the row and column of the
 coefficient; <span class="math inline">\(\alpha_{12}\)</span> is in the first row, second column. This merely reflects how mathematicians describe matrix elements and dimensions — row <span class="math inline">\(\times\)</span> column. When we use matrix multiplication, <span class="math inline">\(\alpha_{12}\)</span> becomes the effect of species 2 (column) on species 1 (row). In this case, <span class="math inline">\(\alpha_{11}=\alpha_{22}=0.01\)</span>, <span class="math inline">\(\alpha_{21}=0.008\)</span>, and <span class="math inline">\(\alpha_{12}=0.005\)</span>. Thus, both species have greater effects on themselves than on each other. Remember, the larger the <span class="math inline">\(\alpha\)</span>, the larger the effect.</p>
-<table>
+<div class="inline-table"><table class="table table-sm">
 <caption>
 <span id="tab:cc">Table 7.1: </span>Parameters of the continuous 2 species Lotka-Volterra competition model. The rest of the chapter explains the meaning and motivation.
 </caption>
-<thead>
-<tr>
+<thead><tr>
 <th style="text-align:left;">
 Parameter
 </th>
 <th style="text-align:left;">
 Description
 </th>
-</tr>
-</thead>
+</tr></thead>
 <tbody>
 <tr>
 <td style="text-align:left;">
@@ -566,23 +176,27 @@ Interspecific density dependence; interspecific competition coefficient; the eff
 </td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p>These equations are also commonly represented using carrying capacity, <span class="math inline">\(K_i\)</span>, to summarize intraspecific effects on abundance, and coefficients to modify the intraspecific effects quantified with <span class="math inline">\(K_i=1/\alpha_{ii}\)</span>. This representation looks like
-<span class="math display" id="eq:K2" id="eq:K1">\[\begin{align}
-  \frac{d N_1}{d t}&amp;=r_1N_1\left(\frac{K_1-N_1-\alpha&#39;_{12}N_2}{K_1}\right) \tag{7.4}\\
-  \frac{d N_2}{d t}&amp;=r_2N_2\left(\frac{K_2-N_2-\alpha&#39;_{21}N_1}{K_2}\right). \tag{7.5}
+<span class="math display" id="eq:K2">\[\begin{align}
+  \frac{d N_1}{d t}&amp;=r_1N_1\left(\frac{K_1-N_1-\alpha'_{12}N_2}{K_1}\right) \tag{7.4}\\
+  \frac{d N_2}{d t}&amp;=r_2N_2\left(\frac{K_2-N_2-\alpha'_{21}N_1}{K_2}\right). \tag{7.5}
 \end{align}\]</span>
-In this version, <span class="math inline">\(K_1=1/\alpha_{11}\)</span>, and <em>note that <span class="math inline">\(\alpha&#39;_{12}\)</span> differs from <span class="math inline">\(\alpha_{12}\)</span></em>. The <span class="math inline">\(\alpha&#39;_{12}\)</span> in eq. <a href="direct-competition-and-mutualism.html#eq:K1">(7.4)</a> merely modifies the effect of <span class="math inline">\(1/K_1\)</span>. It turns out the <span class="math inline">\(\alpha&#39;_{1,2}\)</span> is equal to the <em>ratio</em> of the interspecific and intraspecific per capita effects, or
+In this version, <span class="math inline">\(K_1=1/\alpha_{11}\)</span>, and <em>note that <span class="math inline">\(\alpha'_{12}\)</span> differs from <span class="math inline">\(\alpha_{12}\)</span></em>. The <span class="math inline">\(\alpha'_{12}\)</span> in eq. <a href="direct-competition-and-mutualism.html#eq:K1">(7.4)</a> merely modifies the effect of <span class="math inline">\(1/K_1\)</span>. It turns out the <span class="math inline">\(\alpha'_{1,2}\)</span> is equal to the <em>ratio</em> of the interspecific and intraspecific per capita effects, or
 <span class="math display">\[\begin{align}
-  \alpha_{12}&amp;=\frac{\alpha&#39;_{12}}{K_1}\notag\\
-\alpha&#39;_{12}&amp;=\frac{\alpha_{12}}{\alpha_{11}}.
+  \alpha_{12}&amp;=\frac{\alpha'_{12}}{K_1}\notag\\
+\alpha'_{12}&amp;=\frac{\alpha_{12}}{\alpha_{11}}.
 \end{align}\]</span>
 Another useful measure of the relative importance of interspecific competition is <span class="math inline">\(\beta_{ij}=\alpha_{ij}/\alpha_{jj}\)</span> (see <em>Invasion criteria</em>, below).</p>
 <div id="equilbria" class="section level3" number="7.1.1">
-<h3><span class="header-section-number">7.1.1</span> Equilbria</h3>
+<h3>
+<span class="header-section-number">7.1.1</span> Equilbria<a class="anchor" aria-label="anchor" href="#equilbria"><i class="fas fa-link"></i></a>
+</h3>
 <p>In this section, we describe how we find equilibria in a simple multispecies model, by solving the growth equations for zero, much the way we did in Chapters 3 and 4. We begin with <em>isoclines</em>, and move on to <em>boundary and internal equilibria</em> and <em>invasion criteria</em>.</p>
 <div id="isoclines" class="section level4" number="7.1.1.1">
-<h4><span class="header-section-number">7.1.1.1</span> Isoclines</h4>
+<h4>
+<span class="header-section-number">7.1.1.1</span> Isoclines<a class="anchor" aria-label="anchor" href="#isoclines"><i class="fas fa-link"></i></a>
+</h4>
 <p>An isocline is, in general, a line connecting points on a graph or map that have equal value. For instance, a topographic map has elevation isoclines, connecting points of equal elevation. Here, our isoclines will connect points in state space at which the growth rate for species <span class="math inline">\(i\)</span> equals zero — every point on that line will represent <span class="math inline">\(\dot{N}_i=0\)</span>. We call these <em>zero net growth isoclines</em> (ZNGI), sometimes called “zingees” by people who prefer an economy of words.</p>
 <p>A zero net growth isocline is the set of all points for which the growth of a population is zero, <em>when the population size of a competing species is held constant</em>. A two-species equilibrium is a point at which the growth rates of both populations are zero. We saw previously that the carrying capacity of a single species logistic population is an equilibrium. With two species, it gets a tad trickier.</p>
 <p>We find the isocline of a species by setting its growth rate equal to zero and solving the equation for that species in terms of the other species. As an example, find the zero net growth isocline for <span class="math inline">\(N_2\)</span>. We find below that there is a straight line that describes all points for which <span class="math inline">\(d N_2/dt=0\)</span>, if <span class="math inline">\(N_1\)</span> were held constant.</p>
@@ -600,26 +214,29 @@ expression for <span class="math inline">\(N_2\)</span> in <a href="direct-compe
 <p>The isocline (Fig. <a href="direct-competition-and-mutualism.html#fig:Niso1">7.3</a>) shows that as the competitor’s population size, <span class="math inline">\(N_1\)</span>, becomes larger, <span class="math inline">\(N_2\)</span> declines by <span class="math inline">\(\alpha_{21}/\alpha_{22}\)</span> for each additional individual of the competing species 1, until finally <span class="math inline">\(N_2=0\)</span> when <span class="math inline">\(N_1=1/\alpha_{21}\)</span>.</p>
 <p><strong>Graphing an isocline</strong> isn’t too hard, so let’s graph something similar to Fig. <a href="direct-competition-and-mutualism.html#fig:Niso1">7.3</a>. First, we define a new matrix of competition coefficients, where
 <span class="math inline">\(\alpha_{11}=\alpha_{22} &gt; \alpha_{12}=\alpha_{21}\)</span>.</p>
-<div class="sourceCode" id="cb206"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb206-1"><a href="direct-competition-and-mutualism.html#cb206-1" aria-hidden="true" tabindex="-1"></a>a <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">c</span>(  <span class="fl">0.01</span>, <span class="fl">0.005</span>,</span>
-<span id="cb206-2"><a href="direct-competition-and-mutualism.html#cb206-2" aria-hidden="true" tabindex="-1"></a>                  <span class="fl">0.005</span>, <span class="fl">0.01</span>), <span class="at">ncol=</span><span class="dv">2</span>, <span class="at">byrow=</span><span class="cn">TRUE</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb206"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">a</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html">matrix</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span>  <span class="fl">0.01</span>, <span class="fl">0.005</span>,
+                  <span class="fl">0.005</span>, <span class="fl">0.01</span><span class="op">)</span>, ncol<span class="op">=</span><span class="fl">2</span>, byrow<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
 <p>We create an expression to plot the <span class="math inline">\(N_2\)</span> isocline, as a function of
 possible values of <span class="math inline">\(N_1\)</span>.</p>
-<div class="sourceCode" id="cb207"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb207-1"><a href="direct-competition-and-mutualism.html#cb207-1" aria-hidden="true" tabindex="-1"></a>N2iso <span class="ot">&lt;-</span> <span class="fu">expression</span>(<span class="dv">1</span><span class="sc">/</span>a[<span class="dv">2</span>,<span class="dv">2</span>] <span class="sc">-</span> (a[<span class="dv">2</span>,<span class="dv">1</span>]<span class="sc">/</span>a[<span class="dv">2</span>,<span class="dv">2</span>])<span class="sc">*</span>N1)</span></code></pre></div>
+<div class="sourceCode" id="cb207"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">N2iso</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/expression.html">expression</a></span><span class="op">(</span><span class="fl">1</span><span class="op">/</span><span class="va">a</span><span class="op">[</span><span class="fl">2</span>,<span class="fl">2</span><span class="op">]</span> <span class="op">-</span> <span class="op">(</span><span class="va">a</span><span class="op">[</span><span class="fl">2</span>,<span class="fl">1</span><span class="op">]</span><span class="op">/</span><span class="va">a</span><span class="op">[</span><span class="fl">2</span>,<span class="fl">2</span><span class="op">]</span><span class="op">)</span><span class="op">*</span><span class="va">N1</span><span class="op">)</span></code></pre></div>
 <p>We then specify <span class="math inline">\(N_1\)</span>, and then evaluate and plot <span class="math inline">\(N_2\)</span>. We add arrows to remind us of what happens if <span class="math inline">\(N_2\)</span> is above or below the value on the isocline.</p>
-<div class="sourceCode" id="cb208"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb208-1"><a href="direct-competition-and-mutualism.html#cb208-1" aria-hidden="true" tabindex="-1"></a>N1 <span class="ot">&lt;-</span> <span class="dv">0</span><span class="sc">:</span><span class="dv">200</span></span>
-<span id="cb208-2"><a href="direct-competition-and-mutualism.html#cb208-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(N1, <span class="fu">eval</span>(N2iso), <span class="at">type=</span><span class="st">&#39;l&#39;</span>,</span>
-<span id="cb208-3"><a href="direct-competition-and-mutualism.html#cb208-3" aria-hidden="true" tabindex="-1"></a>      <span class="at">ylim=</span><span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">200</span>), <span class="at">xlim=</span><span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">200</span>),</span>
-<span id="cb208-4"><a href="direct-competition-and-mutualism.html#cb208-4" aria-hidden="true" tabindex="-1"></a>      <span class="at">ylab=</span><span class="fu">expression</span>(<span class="st">&quot;N&quot;</span>[<span class="dv">2</span>]))</span>
-<span id="cb208-5"><a href="direct-competition-and-mutualism.html#cb208-5" aria-hidden="true" tabindex="-1"></a><span class="fu">arrows</span>(<span class="at">x0=</span><span class="dv">90</span>, <span class="at">y0=</span><span class="dv">150</span>, <span class="at">x1=</span><span class="dv">90</span>, <span class="at">y1=</span><span class="dv">80</span>, <span class="at">length=</span><span class="fl">0.1</span>)</span>
-<span id="cb208-6"><a href="direct-competition-and-mutualism.html#cb208-6" aria-hidden="true" tabindex="-1"></a><span class="fu">arrows</span>(<span class="at">x0=</span><span class="dv">75</span>, <span class="at">y0=</span><span class="dv">0</span>, <span class="at">x1=</span><span class="dv">75</span>, <span class="at">y1=</span><span class="dv">50</span>, <span class="at">length=</span><span class="fl">0.1</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb208"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">N1</span> <span class="op">&lt;-</span> <span class="fl">0</span><span class="op">:</span><span class="fl">200</span>
+<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">N1</span>, <span class="fu"><a href="https://rdrr.io/r/base/eval.html">eval</a></span><span class="op">(</span><span class="va">N2iso</span><span class="op">)</span>, type<span class="op">=</span><span class="st">'l'</span>,
+      ylim<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">200</span><span class="op">)</span>, xlim<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">200</span><span class="op">)</span>,
+      ylab<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/expression.html">expression</a></span><span class="op">(</span><span class="st">"N"</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span><span class="op">)</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/graphics/arrows.html">arrows</a></span><span class="op">(</span>x0<span class="op">=</span><span class="fl">90</span>, y0<span class="op">=</span><span class="fl">150</span>, x1<span class="op">=</span><span class="fl">90</span>, y1<span class="op">=</span><span class="fl">80</span>, length<span class="op">=</span><span class="fl">0.1</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/graphics/arrows.html">arrows</a></span><span class="op">(</span>x0<span class="op">=</span><span class="fl">75</span>, y0<span class="op">=</span><span class="fl">0</span>, x1<span class="op">=</span><span class="fl">75</span>, y1<span class="op">=</span><span class="fl">50</span>, length<span class="op">=</span><span class="fl">0.1</span><span class="op">)</span></code></pre></div>
 <p>The isocline for <span class="math inline">\(N_2\)</span> (Fig. <a href="direct-competition-and-mutualism.html#fig:Niso1">7.3</a>) is the line at which
 <span class="math inline">\(d N_2/d t =0\)</span> <em>for a fixed value of <span class="math inline">\(N_1\)</span></em>. Just as in the
 single species logistic growth model, if <span class="math inline">\(N_2\)</span> exceeds its
 equilibrium, it declines, and if <span class="math inline">\(N_2\)</span> is less than its equilibrium,
 it grows. The isocline (Fig. <a href="direct-competition-and-mutualism.html#fig:Niso1">7.3</a> is the set of balance points between positive and negative growth. This is reflected in the arrows in Fig. <a href="direct-competition-and-mutualism.html#fig:Niso1">7.3</a> — if the <span class="math inline">\(N_2\)</span> is ever above this isocline, it declines and if it is ever below this isocline, it rises. This isocline shows that whether <span class="math inline">\(N_2\)</span> increases or decreases depends on <span class="math inline">\(N_1\)</span>.</p>
-<div class="figure"><span style="display:block;" id="fig:Niso1"></span>
-<img src="figs/Niso1-1.png" alt="*Phase plane plots of each of the two competing species, with Lotka-Volterra zero growth isoclines. Arrows indicate population trajectories. Recall $K = 1/alpha$.*" width="40%" /><img src="figs/Niso1-2.png" alt="*Phase plane plots of each of the two competing species, with Lotka-Volterra zero growth isoclines. Arrows indicate population trajectories. Recall $K = 1/alpha$.*" width="40%" />
-<p class="caption">
+<div class="figure">
+<span style="display:block;" id="fig:Niso1"></span>
+<img src="figs/Niso1-1.png" alt="*Phase plane plots of each of the two competing species, with Lotka-Volterra zero growth isoclines. Arrows indicate population trajectories. Recall $K = 1/alpha$.*" width="40%"><img src="figs/Niso1-2.png" alt="*Phase plane plots of each of the two competing species, with Lotka-Volterra zero growth isoclines. Arrows indicate population trajectories. Recall $K = 1/alpha$.*" width="40%"><p class="caption">
 Figure 7.3: <em>Phase plane plots of each of the two competing species, with Lotka-Volterra zero growth isoclines. Arrows indicate population trajectories. Recall <span class="math inline">\(K = 1/alpha\)</span>.</em>
 </p>
 </div>
@@ -630,7 +247,9 @@ Figure 7.3: <em>Phase plane plots of each of the two competing species, with Lot
 <p>Note that these isoclines are merely equations for straight lines, and it is easy to do nonsensical things, such as specify coefficients that result in negative population sizes. Therefore, let us proceed with some thoughtfulness and care.</p>
 </div>
 <div id="finding-equilibria" class="section level4" number="7.1.1.2">
-<h4><span class="header-section-number">7.1.1.2</span> Finding equilibria</h4>
+<h4>
+<span class="header-section-number">7.1.1.2</span> Finding equilibria<a class="anchor" aria-label="anchor" href="#finding-equilibria"><i class="fas fa-link"></i></a>
+</h4>
 <p>By themselves, the isoclines tell us that if species 2 becomes extinct (<span class="math inline">\(N_2=0\)</span>), then species 1 reaches its carrying capacity (<span class="math inline">\(N_1=1/\alpha_{11}\)</span>) (Fig. <a href="direct-competition-and-mutualism.html#fig:Niso1">7.3</a>). Similarly, if <span class="math inline">\(N_1=0\)</span>, then <span class="math inline">\(N_2=1/\alpha_{22}\)</span>. These are important equilibria, because they verify the internal consistency of our logical, and they provide end-points on our isoclines.</p>
 <p><em>If the species coexist (<span class="math inline">\(N_1,\,N_2 &gt;0\)</span>) it means that they must share one or more points on their isoclines</em> — such an equilibrium is the point
 where the lines cross. We find these equilibria by solving the isoclines simultaneously. A simple way to do this is to substitute the right hand side of the <span class="math inline">\(N_2\)</span> isocline <a href="direct-competition-and-mutualism.html#eq:N2iso">(7.6)</a> in for <span class="math inline">\(N_2\)</span> in the <span class="math inline">\(N_1\)</span> isocline <a href="direct-competition-and-mutualism.html#eq:N1iso">(7.7)</a>. That is, we substitute an isocline of one species in for that species’ abundance in another species’ isocline. Combining eqs. <a href="direct-competition-and-mutualism.html#eq:N2iso">(7.6)</a> and <a href="direct-competition-and-mutualism.html#eq:N1iso">(7.7)</a>, we get
@@ -667,9 +286,11 @@ the competitor.</p>
 <p>Summarizing, we see that in the absence of interspecific competition, species are attracted toward their carrying capacities. Second, if interspecific competition is intense, then a species’ carrying capacity becomes less important, and its abundance is increasingly determined by its ability to suppress its competitor.</p>
 </div>
 <div id="coexistence-the-invasion-criterion" class="section level4" number="7.1.1.3">
-<h4><span class="header-section-number">7.1.1.3</span> Coexistence — the invasion criterion</h4>
+<h4>
+<span class="header-section-number">7.1.1.3</span> Coexistence — the invasion criterion<a class="anchor" aria-label="anchor" href="#coexistence-the-invasion-criterion"><i class="fas fa-link"></i></a>
+</h4>
 <p>Based on the numerators in eqs. <a href="direct-competition-and-mutualism.html#eq:lvn1eq">(7.8)</a> and <a href="direct-competition-and-mutualism.html#eq:lvn2eq">(7.9)</a>, it seems that <span class="math inline">\(N_1^*\)</span> and <span class="math inline">\(N_2^*\)</span> may both be greater than zero whenever <span class="math inline">\(\alpha_{ii}-\alpha_{ji} &gt;0\)</span>. This is, indeed, the case. Below we step through the analysis of what we refer to as the “invasion criterion,” which specifies the conditions for <span class="math inline">\(N_i^* &gt; 0\)</span>.</p>
-<p>In general, the details of any model and its dynamics may be quite complicated, but as long as we know whether a species will always <em>increase when it is rare</em>, or <em>invade</em>,<a href="#fn43" class="footnote-ref" id="fnref43"><sup>43</sup></a> then we know whether it can persist in the face of complex interactions. Thus we don’t need to find its equilibrium, but merely its behavior near zero.</p>
+<p>In general, the details of any model and its dynamics may be quite complicated, but as long as we know whether a species will always <em>increase when it is rare</em>, or <em>invade</em>,<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;Ecologists who study invasion of exotic species may use the word “invade” to mean the successful dispersal to, establishment and spread at a site. This incorporates a tremendous amount of species- or system-specific biology. Here we mean “invasion” in only a much more strict or narrow sense — to increase when rare.&lt;/p&gt;"><sup>43</sup></a> then we know whether it can persist in the face of complex interactions. Thus we don’t need to find its equilibrium, but merely its behavior near zero.</p>
 <p>How do we determine whether a species can increase when rare? Let’s explore that with the Lotka-Volterra competition model. We can start letting species 1’s growth equation <a href="direct-competition-and-mutualism.html#eq:N2a">(7.1)</a> be greater than zero.
 <span class="math display" id="eq:coex1">\[\begin{equation*}
   \tag{7.10}
@@ -697,7 +318,9 @@ What is this saying? It is saying that as long as <span class="math inline">\(\a
 <p>Simply put, <em>for species to coexist stably, their effects on themselves must be greater than their effects on each other</em> (Fig. <a href="direct-competition-and-mutualism.html#fig:LVIsoclines">7.4</a>, upper left).</p>
 </div>
 <div id="other-equilibria" class="section level4" number="7.1.1.4">
-<h4><span class="header-section-number">7.1.1.4</span> Other equilibria</h4>
+<h4>
+<span class="header-section-number">7.1.1.4</span> Other equilibria<a class="anchor" aria-label="anchor" href="#other-equilibria"><i class="fas fa-link"></i></a>
+</h4>
 <p>Given our isoclines and equilibria above, what other logical combinations might we see, other than coexistence? Here we list others, and provide graphical interpretations (Fig. <a href="direct-competition-and-mutualism.html#fig:LVIsoclines">7.4</a>).</p>
 <p><strong>Species 1 can invade when rare, but species 2 cannot (Fig. <a href="direct-competition-and-mutualism.html#fig:LVIsoclines">7.4</a>, lower left)</strong>
 <span class="math display">\[\begin{equation*}
@@ -713,19 +336,21 @@ This leads to competitive exclusion by species 2 — species 2 wins. This is the
 <p><span class="math display">\[\begin{equation*}
 \alpha_{12} &gt; \alpha_{22} \quad,\quad \alpha_{21} &gt; \alpha_{11}
 \end{equation*}\]</span></p>
-<p>This creates an unstable internal equilibrium—exclusion will occur, but either species could win. This condition is sometimes referred to as <em>founder control</em> <span class="citation">(<a href="#ref-Bolker2003a" role="doc-biblioref">Bolker, Pacala, and Neuhauser 2003</a>)</span> because the identity of the winner depends in part on the starting abundances. It creates a <em>saddle</em> in state space. What the heck is a saddle? More on that below. It suffices to say that from some directions, an saddle attracts the trajectories of the populations, while from other directions, it repels the trajectories.<a href="#fn44" class="footnote-ref" id="fnref44"><sup>44</sup></a></p>
-<div class="figure"><span style="display:block;" id="fig:LVIsoclines"></span>
-<img src="figs/LVIsoclines-1.png" alt="*Phase plane diagrams of Lotka-Volterra competitors under different invasion conditions. Horizontal and vertical arrows indicate directions of attraction and repulsion for each population (solid and dased arrows); diagonal arrows indicate combined trajectory. Circles indicate equilibria; additional boundary equilibria can occur whenever one species is zero. Left to right: stable eq., $a_{ji} &lt; a_{ii}$; $N_2$ wins, $a_{12} &gt; a_{22}$; $N_1$ wins, $a_{21} &gt; a_{11}; saddle attractor-repellor, $a_{ji} &gt; a_{ii}$.*" width="40%" /><img src="figs/LVIsoclines-2.png" alt="*Phase plane diagrams of Lotka-Volterra competitors under different invasion conditions. Horizontal and vertical arrows indicate directions of attraction and repulsion for each population (solid and dased arrows); diagonal arrows indicate combined trajectory. Circles indicate equilibria; additional boundary equilibria can occur whenever one species is zero. Left to right: stable eq., $a_{ji} &lt; a_{ii}$; $N_2$ wins, $a_{12} &gt; a_{22}$; $N_1$ wins, $a_{21} &gt; a_{11}; saddle attractor-repellor, $a_{ji} &gt; a_{ii}$.*" width="40%" /><img src="figs/LVIsoclines-3.png" alt="*Phase plane diagrams of Lotka-Volterra competitors under different invasion conditions. Horizontal and vertical arrows indicate directions of attraction and repulsion for each population (solid and dased arrows); diagonal arrows indicate combined trajectory. Circles indicate equilibria; additional boundary equilibria can occur whenever one species is zero. Left to right: stable eq., $a_{ji} &lt; a_{ii}$; $N_2$ wins, $a_{12} &gt; a_{22}$; $N_1$ wins, $a_{21} &gt; a_{11}; saddle attractor-repellor, $a_{ji} &gt; a_{ii}$.*" width="40%" /><img src="figs/LVIsoclines-4.png" alt="*Phase plane diagrams of Lotka-Volterra competitors under different invasion conditions. Horizontal and vertical arrows indicate directions of attraction and repulsion for each population (solid and dased arrows); diagonal arrows indicate combined trajectory. Circles indicate equilibria; additional boundary equilibria can occur whenever one species is zero. Left to right: stable eq., $a_{ji} &lt; a_{ii}$; $N_2$ wins, $a_{12} &gt; a_{22}$; $N_1$ wins, $a_{21} &gt; a_{11}; saddle attractor-repellor, $a_{ji} &gt; a_{ii}$.*" width="40%" />
-<p class="caption">
+<p>This creates an unstable internal equilibrium—exclusion will occur, but either species could win. This condition is sometimes referred to as <em>founder control</em> <span class="citation">(<a href="references.html#ref-Bolker2003a" role="doc-biblioref">Bolker, Pacala, and Neuhauser 2003</a>)</span> because the identity of the winner depends in part on the starting abundances. It creates a <em>saddle</em> in state space. What the heck is a saddle? More on that below. It suffices to say that from some directions, an saddle attracts the trajectories of the populations, while from other directions, it repels the trajectories.<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content='&lt;p&gt;The topography of mountain ranges can include saddles, which are precisely the context in which we use “saddle” here. Search the web for Saddleback Mountain, New York, USA, Lat/Long: 44&lt;span class="math inline"&gt;\(^\circ\)&lt;/span&gt; 8’ N; 73&lt;span class="math inline"&gt;\(^\circ\)&lt;/span&gt; 53’ W. See also pictures of horse saddles — same shape.&lt;/p&gt;'><sup>44</sup></a></p>
+<div class="figure">
+<span style="display:block;" id="fig:LVIsoclines"></span>
+<img src="figs/LVIsoclines-1.png" alt="*Phase plane diagrams of Lotka-Volterra competitors under different invasion conditions. Horizontal and vertical arrows indicate directions of attraction and repulsion for each population (solid and dased arrows); diagonal arrows indicate combined trajectory. Circles indicate equilibria; additional boundary equilibria can occur whenever one species is zero. Left to right: stable eq., $a_{ji} &lt; a_{ii}$; $N_2$ wins, $a_{12} &gt; a_{22}$; $N_1$ wins, $a_{21} &gt; a_{11}; saddle attractor-repellor, $a_{ji} &gt; a_{ii}$.*" width="40%"><img src="figs/LVIsoclines-2.png" alt="*Phase plane diagrams of Lotka-Volterra competitors under different invasion conditions. Horizontal and vertical arrows indicate directions of attraction and repulsion for each population (solid and dased arrows); diagonal arrows indicate combined trajectory. Circles indicate equilibria; additional boundary equilibria can occur whenever one species is zero. Left to right: stable eq., $a_{ji} &lt; a_{ii}$; $N_2$ wins, $a_{12} &gt; a_{22}$; $N_1$ wins, $a_{21} &gt; a_{11}; saddle attractor-repellor, $a_{ji} &gt; a_{ii}$.*" width="40%"><img src="figs/LVIsoclines-3.png" alt="*Phase plane diagrams of Lotka-Volterra competitors under different invasion conditions. Horizontal and vertical arrows indicate directions of attraction and repulsion for each population (solid and dased arrows); diagonal arrows indicate combined trajectory. Circles indicate equilibria; additional boundary equilibria can occur whenever one species is zero. Left to right: stable eq., $a_{ji} &lt; a_{ii}$; $N_2$ wins, $a_{12} &gt; a_{22}$; $N_1$ wins, $a_{21} &gt; a_{11}; saddle attractor-repellor, $a_{ji} &gt; a_{ii}$.*" width="40%"><img src="figs/LVIsoclines-4.png" alt="*Phase plane diagrams of Lotka-Volterra competitors under different invasion conditions. Horizontal and vertical arrows indicate directions of attraction and repulsion for each population (solid and dased arrows); diagonal arrows indicate combined trajectory. Circles indicate equilibria; additional boundary equilibria can occur whenever one species is zero. Left to right: stable eq., $a_{ji} &lt; a_{ii}$; $N_2$ wins, $a_{12} &gt; a_{22}$; $N_1$ wins, $a_{21} &gt; a_{11}; saddle attractor-repellor, $a_{ji} &gt; a_{ii}$.*" width="40%"><p class="caption">
 Figure 7.4: <em>Phase plane diagrams of Lotka-Volterra competitors under different invasion conditions. Horizontal and vertical arrows indicate directions of attraction and repulsion for each population (solid and dased arrows); diagonal arrows indicate combined trajectory. Circles indicate equilibria; additional boundary equilibria can occur whenever one species is zero. Left to right: stable eq., <span class="math inline">\(a_{ji} &lt; a_{ii}\)</span>; <span class="math inline">\(N_2\)</span> wins, <span class="math inline">\(a_{12} &gt; a_{22}\)</span>; <span class="math inline">\(N_1\)</span> wins, $a_{21} &gt; a_{11}; saddle attractor-repellor, <span class="math inline">\(a_{ji} &gt; a_{ii}\)</span>.</em>
 </p>
 </div>
 </div>
 </div>
 <div id="dynamics-at-the-equilibria" class="section level3" number="7.1.2">
-<h3><span class="header-section-number">7.1.2</span> Dynamics at the Equilibria</h3>
+<h3>
+<span class="header-section-number">7.1.2</span> Dynamics at the Equilibria<a class="anchor" aria-label="anchor" href="#dynamics-at-the-equilibria"><i class="fas fa-link"></i></a>
+</h3>
 <p>Here we use eigenanalysis to analyze the properties of the equilibrium, whether they are attractors, repellers, or both, and whether the system oscillates around these equilibria.</p>
-<p>For logistic growth, we assessed stability with the partial derivative of the growth rate, with respect to population size. If it was negative the population was stable, and the more negative the value, the shorter the return time. Here we build on this, and present a general recipe for stability analysis <span class="citation">(<a href="#ref-Morin1999a" role="doc-biblioref">Morin 1999</a>)</span>:</p>
+<p>For logistic growth, we assessed stability with the partial derivative of the growth rate, with respect to population size. If it was negative the population was stable, and the more negative the value, the shorter the return time. Here we build on this, and present a general recipe for stability analysis <span class="citation">(<a href="references.html#ref-Morin1999a" role="doc-biblioref">Morin 1999</a>)</span>:</p>
 <ol style="list-style-type: decimal">
 <li>Determine the equilibrium abundances of each species by setting its growth equation to zero, and solving for <span class="math inline">\(N\)</span>.</li>
 <li>Create the Jacobian matrix. This matrix represents the response of each species to changes in its own population and to changes in each other’s populations. The matrix elements are the partial derivatives of each species’ growth rate with respect to each population.</li>
@@ -733,26 +358,32 @@ Figure 7.4: <em>Phase plane diagrams of Lotka-Volterra competitors under differe
 <li>Use the Jacobian matrix to find the behavior of the system near the equilibria. The trace, determinant, and eigenvalues of the Jacobian can tell us how stable or unstable the system is, and whether and how it cycles.</li>
 </ol>
 <div id="determine-the-equilibria" class="section level4" number="7.1.2.1">
-<h4><span class="header-section-number">7.1.2.1</span> Determine the equilibria</h4>
+<h4>
+<span class="header-section-number">7.1.2.1</span> Determine the equilibria<a class="anchor" aria-label="anchor" href="#determine-the-equilibria"><i class="fas fa-link"></i></a>
+</h4>
 <p>We just did this above. Given <a href="direct-competition-and-mutualism.html#eq:lvn1eq">(7.8)</a> and <a href="direct-competition-and-mutualism.html#eq:lvn2eq">(7.9)</a>, we see that the <strong><span class="math inline">\(\alpha\)</span></strong> determine completely <span class="math inline">\(N_1^*\)</span> and <span class="math inline">\(N_2^*\)</span>. This is not true for Lotka-Volterra systems with more than two species; such systems also depend on <span class="math inline">\(r_i\)</span>.</p>
-<p><strong>Finding equilibria in R</strong> can be done using <em>expressions</em> for the equilibria, <span class="math inline">\(N_1^*\)</span> and <span class="math inline">\(N_2^*\)</span>. An R expression is a symbolic representation of an equation. These will be symbolic representations that we later evaluate using <code>eval()</code>.</p>
-<div class="sourceCode" id="cb209"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb209-1"><a href="direct-competition-and-mutualism.html#cb209-1" aria-hidden="true" tabindex="-1"></a>N1Star <span class="ot">&lt;-</span> <span class="fu">expression</span>( (a22<span class="sc">-</span>a12)<span class="sc">/</span>(a22<span class="sc">*</span>a11 <span class="sc">-</span> a12<span class="sc">*</span>a21) )</span>
-<span id="cb209-2"><a href="direct-competition-and-mutualism.html#cb209-2" aria-hidden="true" tabindex="-1"></a>N2Star <span class="ot">&lt;-</span> <span class="fu">expression</span>( (a11<span class="sc">-</span>a21)<span class="sc">/</span>(a22<span class="sc">*</span>a11 <span class="sc">-</span> a12<span class="sc">*</span>a21) )</span></code></pre></div>
+<p><strong>Finding equilibria in R</strong> can be done using <em>expressions</em> for the equilibria, <span class="math inline">\(N_1^*\)</span> and <span class="math inline">\(N_2^*\)</span>. An R expression is a symbolic representation of an equation. These will be symbolic representations that we later evaluate using <code><a href="https://rdrr.io/r/base/eval.html">eval()</a></code>.</p>
+<div class="sourceCode" id="cb209"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">N1Star</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/expression.html">expression</a></span><span class="op">(</span> <span class="op">(</span><span class="va">a22</span><span class="op">-</span><span class="va">a12</span><span class="op">)</span><span class="op">/</span><span class="op">(</span><span class="va">a22</span><span class="op">*</span><span class="va">a11</span> <span class="op">-</span> <span class="va">a12</span><span class="op">*</span><span class="va">a21</span><span class="op">)</span> <span class="op">)</span>
+<span class="va">N2Star</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/expression.html">expression</a></span><span class="op">(</span> <span class="op">(</span><span class="va">a11</span><span class="op">-</span><span class="va">a21</span><span class="op">)</span><span class="op">/</span><span class="op">(</span><span class="va">a22</span><span class="op">*</span><span class="va">a11</span> <span class="op">-</span> <span class="va">a12</span><span class="op">*</span><span class="va">a21</span><span class="op">)</span> <span class="op">)</span></code></pre></div>
 <p>Next we create the <span class="math inline">\(\mathbf{\alpha}\)</span> and evaluate our expressions.</p>
-<div class="sourceCode" id="cb210"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb210-1"><a href="direct-competition-and-mutualism.html#cb210-1" aria-hidden="true" tabindex="-1"></a>a11 <span class="ot">&lt;-</span> a22 <span class="ot">&lt;-</span> <span class="fl">0.01</span>;  a12 <span class="ot">&lt;-</span> <span class="fl">0.001</span>; a21 <span class="ot">&lt;-</span> <span class="fl">0.001</span></span>
-<span id="cb210-2"><a href="direct-competition-and-mutualism.html#cb210-2" aria-hidden="true" tabindex="-1"></a>N1 <span class="ot">&lt;-</span> <span class="fu">eval</span>(N1Star); N2 <span class="ot">&lt;-</span> <span class="fu">eval</span>(N2Star)</span>
-<span id="cb210-3"><a href="direct-competition-and-mutualism.html#cb210-3" aria-hidden="true" tabindex="-1"></a>N1</span></code></pre></div>
+<div class="sourceCode" id="cb210"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">a11</span> <span class="op">&lt;-</span> <span class="va">a22</span> <span class="op">&lt;-</span> <span class="fl">0.01</span>;  <span class="va">a12</span> <span class="op">&lt;-</span> <span class="fl">0.001</span>; <span class="va">a21</span> <span class="op">&lt;-</span> <span class="fl">0.001</span>
+<span class="va">N1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/eval.html">eval</a></span><span class="op">(</span><span class="va">N1Star</span><span class="op">)</span>; <span class="va">N2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/eval.html">eval</a></span><span class="op">(</span><span class="va">N2Star</span><span class="op">)</span>
+<span class="va">N1</span></code></pre></div>
 <pre><code>## [1] 90.90909</code></pre>
 </div>
 <div id="create-the-jacobian-matrix" class="section level4" number="7.1.2.2">
-<h4><span class="header-section-number">7.1.2.2</span> Create the Jacobian matrix</h4>
+<h4>
+<span class="header-section-number">7.1.2.2</span> Create the Jacobian matrix<a class="anchor" aria-label="anchor" href="#create-the-jacobian-matrix"><i class="fas fa-link"></i></a>
+</h4>
 <p>The next step is to find each partial derivative. The partial derivatives describe how the growth rate of each species changes with respect to the abundance of each other species and with respect to its own abundance. Thus a positive value indicates that a growth rate increases as another population increases. This might be the case with predator growth rate and its prey population. A negative value indicates a growth rate decreases as another population increases. This is likely to be true for competitors or prey growth rate and its predator population.</p>
 <p>Here, we work through an example, deriving the partial derivative of species 1’s growth rate with respect to itself.</p>
-<p>First let’s expand the growth rate of species 1 <a href="direct-competition-and-mutualism.html#eq:N2a">(7.1)</a><a href="#fn45" class="footnote-ref" id="fnref45"><sup>45</sup></a>
+<p>First let’s expand the growth rate of species 1 <a href="direct-competition-and-mutualism.html#eq:N2a">(7.1)</a><a class="footnote-ref" tabindex="0" data-toggle="popover" data-content='&lt;p&gt;Recall that the time derivative, &lt;span class="math inline"&gt;\(d N / d t\)&lt;/span&gt;, can be symbolized with &lt;span class="math inline"&gt;\(\dot{N}\)&lt;/span&gt; (“n-dot”).&lt;/p&gt;'><sup>45</sup></a>
 <span class="math display">\[\begin{align}
   \frac{d N_1}{d t}&amp;=\dot{N_1} =r_1N_1 - r_1\alpha_{11}N_1^2 - r_1\alpha_{12}N_2N_1.
 \end{align}\]</span></p>
-<p>Now we derive the partial differential equation (PDE)<a href="#fn46" class="footnote-ref" id="fnref46"><sup>46</sup></a> with respect to <span class="math inline">\(N_1\)</span>, treating <span class="math inline">\(N_2\)</span> as a constant.
+<p>Now we derive the partial differential equation (PDE)<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content='&lt;p&gt;PDEs are typically written using a fancy symbol, delta, as in &lt;span class="math inline"&gt;\(\partial F/\partial N\)&lt;/span&gt;. It helps alert us to the fact that we are differentiating one variable with respect to another state variables. When taking a derivative with respect to &lt;span class="math inline"&gt;\(X\)&lt;/span&gt;, we treat all other variables as constants.&lt;/p&gt;'><sup>46</sup></a> with respect to <span class="math inline">\(N_1\)</span>, treating <span class="math inline">\(N_2\)</span> as a constant.
 <span class="math display">\[\begin{equation}
   \frac{\partial \dot{N_1} }{\partial N_1}=r_1 - 2r_1\alpha_{11}N_1 - r_1\alpha_{12}N_2
 \end{equation}\]</span>
@@ -780,23 +411,29 @@ r_1 - 2r_1\alpha_{11}N_1 - r_1\alpha_{12}N_2&amp; - r_1\alpha_{12}N_1\\
 \end{align}\]</span></p>
 <p>This matrix of PDEs is the Jacobian matrix, or simply the “Jacobian.” As differential equations, they describe the slopes of curves (i.e. the slopes of tangents of curves) at a particular point. That is, they describe the straight line interpretations as that point. As <em>partial</em> differential equations, they describe how the growth rates change as population sizes change.</p>
 <p><strong>Finding partial differential equations and the Jacobian matrix in R</strong> can be done using expressions. Here we create equations or <em>expressions</em> for the for the growth rates, <span class="math inline">\(\dot{N_1}\)</span> and <span class="math inline">\(\dot{N_2}\)</span>, and use these to find the partial derivatives. First, expressions for the growth rates:</p>
-<div class="sourceCode" id="cb212"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb212-1"><a href="direct-competition-and-mutualism.html#cb212-1" aria-hidden="true" tabindex="-1"></a>dN1dt <span class="ot">&lt;-</span> <span class="fu">expression</span>( r1 <span class="sc">*</span> N1 <span class="sc">-</span> r1 <span class="sc">*</span> a11 <span class="sc">*</span> N1<span class="sc">^</span><span class="dv">2</span> <span class="sc">-</span> r1 <span class="sc">*</span> a12 <span class="sc">*</span> N1 <span class="sc">*</span> N2 )</span>
-<span id="cb212-2"><a href="direct-competition-and-mutualism.html#cb212-2" aria-hidden="true" tabindex="-1"></a>dN2dt <span class="ot">&lt;-</span> <span class="fu">expression</span>(r2<span class="sc">*</span>N2 <span class="sc">-</span> r2<span class="sc">*</span>a22<span class="sc">*</span>N2<span class="sc">^</span><span class="dv">2</span> <span class="sc">-</span> r2<span class="sc">*</span>a21<span class="sc">*</span>N1<span class="sc">*</span>N2)</span></code></pre></div>
-<p>Next, we use each expression for <span class="math inline">\(\dot{N}\)</span> to get each the partial derivatives with respect to each population size. Here we use the R function <code>D()</code> (see also <code>?deriv</code>). We reveal here the result for the first one only, the partial derivative of <span class="math inline">\(\dot{N_1}\)</span> with respect to itself, and then get the others.</p>
-<div class="sourceCode" id="cb213"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb213-1"><a href="direct-competition-and-mutualism.html#cb213-1" aria-hidden="true" tabindex="-1"></a>ddN1dN1 <span class="ot">&lt;-</span><span class="fu">D</span>(dN1dt, <span class="st">&quot;N1&quot;</span>)</span>
-<span id="cb213-2"><a href="direct-competition-and-mutualism.html#cb213-2" aria-hidden="true" tabindex="-1"></a>ddN1dN1</span></code></pre></div>
+<div class="sourceCode" id="cb212"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">dN1dt</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/expression.html">expression</a></span><span class="op">(</span> <span class="va">r1</span> <span class="op">*</span> <span class="va">N1</span> <span class="op">-</span> <span class="va">r1</span> <span class="op">*</span> <span class="va">a11</span> <span class="op">*</span> <span class="va">N1</span><span class="op">^</span><span class="fl">2</span> <span class="op">-</span> <span class="va">r1</span> <span class="op">*</span> <span class="va">a12</span> <span class="op">*</span> <span class="va">N1</span> <span class="op">*</span> <span class="va">N2</span> <span class="op">)</span>
+<span class="va">dN2dt</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/expression.html">expression</a></span><span class="op">(</span><span class="va">r2</span><span class="op">*</span><span class="va">N2</span> <span class="op">-</span> <span class="va">r2</span><span class="op">*</span><span class="va">a22</span><span class="op">*</span><span class="va">N2</span><span class="op">^</span><span class="fl">2</span> <span class="op">-</span> <span class="va">r2</span><span class="op">*</span><span class="va">a21</span><span class="op">*</span><span class="va">N1</span><span class="op">*</span><span class="va">N2</span><span class="op">)</span></code></pre></div>
+<p>Next, we use each expression for <span class="math inline">\(\dot{N}\)</span> to get each the partial derivatives with respect to each population size. Here we use the R function <code><a href="https://rdrr.io/r/stats/deriv.html">D()</a></code> (see also <code><a href="https://rdrr.io/r/stats/deriv.html">?deriv</a></code>). We reveal here the result for the first one only, the partial derivative of <span class="math inline">\(\dot{N_1}\)</span> with respect to itself, and then get the others.</p>
+<div class="sourceCode" id="cb213"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">ddN1dN1</span> <span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/stats/deriv.html">D</a></span><span class="op">(</span><span class="va">dN1dt</span>, <span class="st">"N1"</span><span class="op">)</span>
+<span class="va">ddN1dN1</span></code></pre></div>
 <pre><code>## r1 - r1 * a11 * (2 * N1) - r1 * a12 * N2</code></pre>
 <p>Here we find the remaining PDEs.</p>
-<div class="sourceCode" id="cb215"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb215-1"><a href="direct-competition-and-mutualism.html#cb215-1" aria-hidden="true" tabindex="-1"></a>ddN1dN2 <span class="ot">&lt;-</span> <span class="fu">D</span>(dN1dt, <span class="st">&quot;N2&quot;</span>)</span>
-<span id="cb215-2"><a href="direct-competition-and-mutualism.html#cb215-2" aria-hidden="true" tabindex="-1"></a>ddN2dN1 <span class="ot">&lt;-</span> <span class="fu">D</span>(dN2dt, <span class="st">&quot;N1&quot;</span>)</span>
-<span id="cb215-3"><a href="direct-competition-and-mutualism.html#cb215-3" aria-hidden="true" tabindex="-1"></a>ddN2dN2 <span class="ot">&lt;-</span> <span class="fu">D</span>(dN2dt, <span class="st">&quot;N2&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb215"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">ddN1dN2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/deriv.html">D</a></span><span class="op">(</span><span class="va">dN1dt</span>, <span class="st">"N2"</span><span class="op">)</span>
+<span class="va">ddN2dN1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/deriv.html">D</a></span><span class="op">(</span><span class="va">dN2dt</span>, <span class="st">"N1"</span><span class="op">)</span>
+<span class="va">ddN2dN2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/deriv.html">D</a></span><span class="op">(</span><span class="va">dN2dt</span>, <span class="st">"N2"</span><span class="op">)</span></code></pre></div>
 <p>Last we put these together to create the Jacobian matrix, which is itself an expression that we can evaluate again and again.</p>
-<div class="sourceCode" id="cb216"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb216-1"><a href="direct-competition-and-mutualism.html#cb216-1" aria-hidden="true" tabindex="-1"></a>J <span class="ot">&lt;-</span> <span class="fu">expression</span>( <span class="fu">matrix</span>(<span class="fu">c</span>(<span class="fu">eval</span>(ddN1dN1), <span class="fu">eval</span>(ddN1dN2),</span>
-<span id="cb216-2"><a href="direct-competition-and-mutualism.html#cb216-2" aria-hidden="true" tabindex="-1"></a>                     <span class="fu">eval</span>(ddN2dN1), <span class="fu">eval</span>(ddN2dN2)),</span>
-<span id="cb216-3"><a href="direct-competition-and-mutualism.html#cb216-3" aria-hidden="true" tabindex="-1"></a>                   <span class="at">nrow=</span><span class="dv">2</span>, <span class="at">byrow=</span><span class="cn">TRUE</span>) )</span></code></pre></div>
+<div class="sourceCode" id="cb216"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">J</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/expression.html">expression</a></span><span class="op">(</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html">matrix</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/eval.html">eval</a></span><span class="op">(</span><span class="va">ddN1dN1</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/eval.html">eval</a></span><span class="op">(</span><span class="va">ddN1dN2</span><span class="op">)</span>,
+                     <span class="fu"><a href="https://rdrr.io/r/base/eval.html">eval</a></span><span class="op">(</span><span class="va">ddN2dN1</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/eval.html">eval</a></span><span class="op">(</span><span class="va">ddN2dN2</span><span class="op">)</span><span class="op">)</span>,
+                   nrow<span class="op">=</span><span class="fl">2</span>, byrow<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span> <span class="op">)</span></code></pre></div>
 </div>
 <div id="solve-the-jacobian-at-an-equilibrium" class="section level4" number="7.1.2.3">
-<h4><span class="header-section-number">7.1.2.3</span> Solve the Jacobian at an equilibrium</h4>
+<h4>
+<span class="header-section-number">7.1.2.3</span> Solve the Jacobian at an equilibrium<a class="anchor" aria-label="anchor" href="#solve-the-jacobian-at-an-equilibrium"><i class="fas fa-link"></i></a>
+</h4>
 <p>To solve the Jacobian at an equilibrium, we substitute <span class="math inline">\(N_1^*\)</span> <a href="direct-competition-and-mutualism.html#eq:lvn1eq">(7.8)</a> and <span class="math inline">\(N_2^*\)</span> <a href="direct-competition-and-mutualism.html#eq:lvn2eq">(7.9)</a> into the Jacobian matrix <a href="direct-competition-and-mutualism.html#eq:Jac5">(7.13)</a>. Refer to those equations now. What is the value of <span class="math inline">\(N_1\)</span> in terms of <span class="math inline">\(\alpha_{ii}\)</span> and <span class="math inline">\(\alpha_{ij}\)</span>? Take that value and stick it in each element of the Jacobian <a href="direct-competition-and-mutualism.html#eq:jac">(7.14)</a>. Repeat for <span class="math inline">\(N_2\)</span>. When we do this, and rearrange, we get,
 <span class="math display" id="eq:jac">\[\begin{align}
   \mathbf{J}=
@@ -811,37 +448,38 @@ r_1 - 2r_1\alpha_{11}N_1 - r_1\alpha_{12}N_2&amp; - r_1\alpha_{12}N_1\\
 <p>Yikes <span class="math inline">\(\ldots\)</span> seems a little intimidating for such a small number of species. However, it is remarkable how each element can be expressed as a product of <span class="math inline">\(-r_i\alpha_{ij}N_i^*\)</span>, where <span class="math inline">\(i\)</span> refers to row, and <span class="math inline">\(j\)</span> refers to column.</p>
 <p><strong>Evaluating the Jacobian matrix in R</strong> is the easy part, if we defined it as above.
 Assuming that above we selected particular <span class="math inline">\(\mathbf{\alpha}\)</span>, used these to determine <span class="math inline">\(N_1^*\)</span> and <span class="math inline">\(N_2^*\)</span>, found the PDEs and created an expression for the Jacobian matrix, and labeled everything appropriately, we can then evaluate the Jacobian at an equilibrium. For <span class="math inline">\(\alpha_{ii}=0.01\)</span> and <span class="math inline">\(\alpha_{ij}=0.001\)</span> (see above) we find</p>
-<div class="sourceCode" id="cb217"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb217-1"><a href="direct-competition-and-mutualism.html#cb217-1" aria-hidden="true" tabindex="-1"></a>r1 <span class="ot">&lt;-</span> r2 <span class="ot">&lt;-</span> <span class="dv">1</span></span>
-<span id="cb217-2"><a href="direct-competition-and-mutualism.html#cb217-2" aria-hidden="true" tabindex="-1"></a>J1 <span class="ot">&lt;-</span> <span class="fu">eval</span>(J)</span>
-<span id="cb217-3"><a href="direct-competition-and-mutualism.html#cb217-3" aria-hidden="true" tabindex="-1"></a>J1</span></code></pre></div>
+<div class="sourceCode" id="cb217"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">r1</span> <span class="op">&lt;-</span> <span class="va">r2</span> <span class="op">&lt;-</span> <span class="fl">1</span>
+<span class="va">J1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/eval.html">eval</a></span><span class="op">(</span><span class="va">J</span><span class="op">)</span>
+<span class="va">J1</span></code></pre></div>
 <pre><code>##             [,1]        [,2]
 ## [1,] -0.90909091 -0.09090909
 ## [2,] -0.09090909 -0.90909091</code></pre>
 <p>Note that all of these PDEs are negative for this equilibrium. This indicates a stable equilibrium, because it means that each population’s growth rate slows in response to an increase in any other.</p>
 </div>
 <div id="use-the-jacobian-matrix" class="section level4" number="7.1.2.4">
-<h4><span class="header-section-number">7.1.2.4</span> Use the Jacobian matrix</h4>
-<p>Just the way we used eigenanalysis to understand long term asymptotic behavior of demographic matrices, we can use eigenanalysis of the Jacobian to assess the long-term asymptotic behavior of these competing Lotka-Volterra populations. We can again focus on its dominant, or leading, eigenvalue (<span class="math inline">\(\lambda_1\)</span>). The dominant eigenvalue will be the eigenvalue with the greatest real part, and not necessarily the eigenvalue with the greatest magnitude.<a href="#fn47" class="footnote-ref" id="fnref47"><sup>47</sup></a> In particular, the dominant eigenvalue, <span class="math inline">\(\lambda_1\)</span>, may have a real part for which the magnitude<a href="#fn48" class="footnote-ref" id="fnref48"><sup>48</sup></a> is smaller, but which is less negative or more positive (e.g., <span class="math inline">\(\lambda_1=-.01\)</span>, <span class="math inline">\(\lambda_2=-1.0\)</span>). For continuous models, the dominant eigenvalue, <span class="math inline">\(\lambda_1\)</span>, is approximately the rate of change of a perturbation, <span class="math inline">\(x\)</span>, from an equilibrium,
+<h4>
+<span class="header-section-number">7.1.2.4</span> Use the Jacobian matrix<a class="anchor" aria-label="anchor" href="#use-the-jacobian-matrix"><i class="fas fa-link"></i></a>
+</h4>
+<p>Just the way we used eigenanalysis to understand long term asymptotic behavior of demographic matrices, we can use eigenanalysis of the Jacobian to assess the long-term asymptotic behavior of these competing Lotka-Volterra populations. We can again focus on its dominant, or leading, eigenvalue (<span class="math inline">\(\lambda_1\)</span>). The dominant eigenvalue will be the eigenvalue with the greatest real part, and not necessarily the eigenvalue with the greatest magnitude.<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;This criterion is different than for demographic, discrete time projection matrices.&lt;/p&gt;"><sup>47</sup></a> In particular, the dominant eigenvalue, <span class="math inline">\(\lambda_1\)</span>, may have a real part for which the magnitude<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content='&lt;p&gt;The magnitude or absolute value of a complex number &lt;span class="math inline"&gt;\(|a+bi|\)&lt;/span&gt; = &lt;span class="math inline"&gt;\(\sqrt{a^2 + b^2}\)&lt;/span&gt;.&lt;/p&gt;'><sup>48</sup></a> is smaller, but which is less negative or more positive (e.g., <span class="math inline">\(\lambda_1=-.01\)</span>, <span class="math inline">\(\lambda_2=-1.0\)</span>). For continuous models, the dominant eigenvalue, <span class="math inline">\(\lambda_1\)</span>, is approximately the rate of change of a perturbation, <span class="math inline">\(x\)</span>, from an equilibrium,
 <span class="math display" id="eq:2x">\[\begin{equation}
   \tag{7.15}
   x_t=x_0e^{\lambda_{1}t}.
 \end{equation}\]</span>
 Thus, the more negative the value, the faster the exponential decline back toward the equilibrium (i.e., toward <span class="math inline">\(x=0\)</span>). As we did for logistic growth, we should think of the dominant eigenvalue as a “perturbation growth rate”: negative values mean a decline of the perturbation, and positive values indicate an increase in the perturbation, causing the system to diverge or be repelled away from the equilibrium.</p>
-<p>In addition to the dominant eigenvalue, we need to consider the other eigenvalues. Table <a href="direct-competition-and-mutualism.html#tab:eiginterpret">7.2</a> provides a summary for interpreting eigenvalues with respect to the dynamics of the system. The eigenvalues depend upon elements of the Jacobian, and values calculated from the elements, notably the determinant, the trace, and the discriminant; a similar set of rules of system behavior can be based upon these values <span class="citation">(<a href="#ref-Roughgarden1998" role="doc-biblioref">Roughgarden 1998</a>)</span>. For instance, the <em>Routh-Hurwitz criterion</em> for stability tells us that a two-species equilibrium will be locally stable, only if <span class="math inline">\(\mathbf{J_{11}} + \mathbf{J_{22}} &lt; 0\)</span> and if <span class="math inline">\(\mathbf{J_{11}}\mathbf{J_{22}-\mathbf{J_{12}}\mathbf{J_{21}}} &gt; 0\)</span>. The biological interpretation of this criterion will be posed as a problem at the end of the chapter. For now, Table <a href="direct-competition-and-mutualism.html#tab:eiginterpret">7.2</a> will suffice.</p>
-<table class=" lightable-classic" style="font-family: &quot;Arial Narrow&quot;, &quot;Source Sans Pro&quot;, sans-serif; width: auto !important; margin-left: auto; margin-right: auto;">
+<p>In addition to the dominant eigenvalue, we need to consider the other eigenvalues. Table <a href="direct-competition-and-mutualism.html#tab:eiginterpret">7.2</a> provides a summary for interpreting eigenvalues with respect to the dynamics of the system. The eigenvalues depend upon elements of the Jacobian, and values calculated from the elements, notably the determinant, the trace, and the discriminant; a similar set of rules of system behavior can be based upon these values <span class="citation">(<a href="references.html#ref-Roughgarden1998" role="doc-biblioref">Roughgarden 1998</a>)</span>. For instance, the <em>Routh-Hurwitz criterion</em> for stability tells us that a two-species equilibrium will be locally stable, only if <span class="math inline">\(\mathbf{J_{11}} + \mathbf{J_{22}} &lt; 0\)</span> and if <span class="math inline">\(\mathbf{J_{11}}\mathbf{J_{22}-\mathbf{J_{12}}\mathbf{J_{21}}} &gt; 0\)</span>. The biological interpretation of this criterion will be posed as a problem at the end of the chapter. For now, Table <a href="direct-competition-and-mutualism.html#tab:eiginterpret">7.2</a> will suffice.</p>
+<div class="inline-table"><table class=" lightable-classic" style='font-family: "Arial Narrow", "Source Sans Pro", sans-serif; width: auto !important; margin-left: auto; margin-right: auto;'>
 <caption>
 <span id="tab:eiginterpret">Table 7.2: </span>Interpreting eigenvalues of a Jacobian matrix.
 </caption>
-<thead>
-<tr>
+<thead><tr>
 <th style="text-align:left;">
 Eigenvalues
 </th>
 <th style="text-align:left;">
 Interpretation
 </th>
-</tr>
-</thead>
+</tr></thead>
 <tbody>
 <tr>
 <td style="text-align:left;">
@@ -892,14 +530,17 @@ Oscillations with period <span class="math inline">\(2\pi/\omega\)</span>
 </td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p><strong>Eigenanalysis of the Jacobian matrix in R</strong> is easy once we evaluated the Jacobian matrix at its equilibrium (above). We simply perform eigenanalysis on the matrix (from previous boxes: <span class="math inline">\(\alpha_{11}=\alpha_{22}=0.01,\,\alpha_{12}=\alpha_{21}=0.001,\, r=1\)</span>).</p>
-<div class="sourceCode" id="cb219"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb219-1"><a href="direct-competition-and-mutualism.html#cb219-1" aria-hidden="true" tabindex="-1"></a>eigStable <span class="ot">&lt;-</span> <span class="fu">eigen</span>(J1); eigStable[[<span class="st">&quot;values&quot;</span>]]</span></code></pre></div>
+<div class="sourceCode" id="cb219"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">eigStable</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/eigen.html">eigen</a></span><span class="op">(</span><span class="va">J1</span><span class="op">)</span>; <span class="va">eigStable</span><span class="op">[[</span><span class="st">"values"</span><span class="op">]</span><span class="op">]</span></code></pre></div>
 <pre><code>## [1] -0.8181818 -1.0000000</code></pre>
 <p>The dominant eigenvalue is negative (the larger of the two: <span class="math inline">\(\lambda_1\)</span> = <code>-0.818</code>) indicating a globally stable equilibrium (Table <a href="direct-competition-and-mutualism.html#tab:eiginterpret">7.2</a>. Both eigenvalues are real, not complex, indicating that there would be no oscillations (Table <a href="direct-competition-and-mutualism.html#tab:eiginterpret">7.2</a>).</p>
 </div>
 <div id="three-interesting-equilbria" class="section level4" number="7.1.2.5">
-<h4><span class="header-section-number">7.1.2.5</span> Three interesting equilbria</h4>
+<h4>
+<span class="header-section-number">7.1.2.5</span> Three interesting equilbria<a class="anchor" aria-label="anchor" href="#three-interesting-equilbria"><i class="fas fa-link"></i></a>
+</h4>
 <p>Here we examine the dynamical properties of three particularly interesting internal equilibria that are, respectively, stable, unstable, and neutral. In each case, our examples use <span class="math inline">\(\alpha_{11}=\alpha_{22}=0.01\)</span> and <span class="math inline">\(r_1=r_2=1\)</span>. What is most important, however, is not the particular eigenvalues, but rather their sign, and how they vary with <span class="math inline">\(\alpha_{12}\)</span> and <span class="math inline">\(\alpha_{21}\)</span>, and the resulting stability properties and trajectories.</p>
 <p>Given our stability criteria above, let us next examine the dominant eigenvalue of the Jacobian for each equilibrium but which values of <span class="math inline">\(\alpha_{ij},\,\alpha_{ji}\)</span> should we choose? We can describe our invasion criterion for species <span class="math inline">\(i\)</span> as
 <span class="math display" id="eq:8">\[\begin{equation}
@@ -909,28 +550,29 @@ Oscillations with period <span class="math inline">\(2\pi/\omega\)</span>
 where, if <span class="math inline">\(\beta_{ij}&lt;1\)</span>, species <span class="math inline">\(i\)</span> can invade. This ratio is the relative strength of inter- <em>vs.</em> intraspecific competitive effect. It turns out to be useful to calculate <span class="math inline">\(\lambda_1\)</span> (``perturbation growth rate’’) for combinations of <span class="math inline">\(\beta_{ij},\,\beta_{ji}\)</span>.</p>
 <p><strong>Stable equilibrium – <span class="math inline">\(\beta_{ij},\, \beta_{ji} &lt;1\)</span></strong>: These criteria correspond to <span class="math inline">\(\alpha_{12}&lt;\alpha_{22}\, , \, \alpha_{21}&lt;\alpha_{11}\)</span>. As the relative strength of interspecific effects increases toward 1.0, <span class="math inline">\(\lambda_1\)</span> approaches zero, at which point the system would no longer have a single global point attractor.</p>
 <p>When <span class="math inline">\(\beta_{ij},\, \beta_{ji} &lt;1\)</span>, then both species can invade each other. We find that all of the eigenvalues of the Jacobian are negative and real (Fig. <a href="direct-competition-and-mutualism.html#fig:LVeig">7.5</a>, demonstrating that these populations will reach a stable equilibrium (Table <a href="direct-competition-and-mutualism.html#tab:eiginterpret">7.2</a>. When we plot these eigenvalues for these combinations of <span class="math inline">\(\beta\)</span>, we see that the dominant eigenvalue increases from negative values toward zero as either <span class="math inline">\(\beta_{12}\)</span> or <span class="math inline">\(\beta_{21}\)</span> approaches 1 (Fig. <a href="direct-competition-and-mutualism.html#fig:LVeig">7.5</a>).</p>
-<div class="figure"><span style="display:block;" id="fig:LVeig"></span>
-<img src="figs/LVeig-1.png" alt="Stable equilibria: as the relative strength of interspecific competition increases (B(ij) increases toward 1), instability increases (lambda(1) increases toward 0). Solid dots represent initial abundances." width="50%" /><img src="figs/LVeig-2.png" alt="Stable equilibria: as the relative strength of interspecific competition increases (B(ij) increases toward 1), instability increases (lambda(1) increases toward 0). Solid dots represent initial abundances." width="50%" />
-<p class="caption">
+<div class="figure">
+<span style="display:block;" id="fig:LVeig"></span>
+<img src="figs/LVeig-1.png" alt="Stable equilibria: as the relative strength of interspecific competition increases (B(ij) increases toward 1), instability increases (lambda(1) increases toward 0). Solid dots represent initial abundances." width="50%"><img src="figs/LVeig-2.png" alt="Stable equilibria: as the relative strength of interspecific competition increases (B(ij) increases toward 1), instability increases (lambda(1) increases toward 0). Solid dots represent initial abundances." width="50%"><p class="caption">
 Figure 7.5: Stable equilibria: as the relative strength of interspecific competition increases (B(ij) increases toward 1), instability increases (lambda(1) increases toward 0). Solid dots represent initial abundances.
 </p>
 </div>
 <p><strong>Unstable equilibria – <span class="math inline">\(\beta_{ij}, \, \beta_{ji} &gt; 1\)</span></strong></p>
 <p>These criteria correspond to <span class="math inline">\(\alpha_{12}&gt;\alpha_{22} ,\, \alpha_{21}&gt;\alpha_{11}\)</span> (Fig. <a href="direct-competition-and-mutualism.html#fig:LVeigU">7.6</a>).
-As we saw above, the Lotka-Volterra competition model has not only stable equilibria, but also unstable equilibria, when both populations are greater than zero. Although an unstable equilibrium cannot persist, <span class="math inline">\(\beta_{ij}, \, \beta_{ji} &gt; 1\)</span> creates interesting and probably important dynamics<span class="citation">(<a href="#ref-Hastings2004a" role="doc-biblioref">A. Hastings 2004</a>)</span>. One of the results is referred to as <em>founder control</em>, where either species can colonize a patch, and whichever species gets there first (i.e. the founder) can resist any invader <span class="citation">(<a href="#ref-Bolker2003a" role="doc-biblioref">Bolker, Pacala, and Neuhauser 2003</a>)</span>.</p>
+As we saw above, the Lotka-Volterra competition model has not only stable equilibria, but also unstable equilibria, when both populations are greater than zero. Although an unstable equilibrium cannot persist, <span class="math inline">\(\beta_{ij}, \, \beta_{ji} &gt; 1\)</span> creates interesting and probably important dynamics<span class="citation">(<a href="references.html#ref-Hastings2004a" role="doc-biblioref">A. Hastings 2004</a>)</span>. One of the results is referred to as <em>founder control</em>, where either species can colonize a patch, and whichever species gets there first (i.e. the founder) can resist any invader <span class="citation">(<a href="references.html#ref-Bolker2003a" role="doc-biblioref">Bolker, Pacala, and Neuhauser 2003</a>)</span>.</p>
 <p>Another interesting phenomenon is the <em>saddle</em> itself; this unstable equilibrium is an <em>attractor-repeller</em>, that is, it attracts from some directions and repels from others (Fig. <a href="direct-competition-and-mutualism.html#fig:LVeigU">7.6</a>). This implies that the final outcome of dynamics may be difficult to predict from initial trajectories.</p>
-<div class="figure"><span style="display:block;" id="fig:LVeigU"></span>
-<img src="figs/LVeigU-1.png" alt="Unstable equilibria: as the relative strength of interspecific competition increases (B(ij) &gt; 1), instability increases (lambda(1) &gt; 0). The unstable equilibrium may attract trajectories from some initial states, but repel from others (solid dots represent initial abundances)." width="40%" /><img src="figs/LVeigU-2.png" alt="Unstable equilibria: as the relative strength of interspecific competition increases (B(ij) &gt; 1), instability increases (lambda(1) &gt; 0). The unstable equilibrium may attract trajectories from some initial states, but repel from others (solid dots represent initial abundances)." width="40%" />
-<p class="caption">
+<div class="figure">
+<span style="display:block;" id="fig:LVeigU"></span>
+<img src="figs/LVeigU-1.png" alt="Unstable equilibria: as the relative strength of interspecific competition increases (B(ij) &gt; 1), instability increases (lambda(1) &gt; 0). The unstable equilibrium may attract trajectories from some initial states, but repel from others (solid dots represent initial abundances)." width="40%"><img src="figs/LVeigU-2.png" alt="Unstable equilibria: as the relative strength of interspecific competition increases (B(ij) &gt; 1), instability increases (lambda(1) &gt; 0). The unstable equilibrium may attract trajectories from some initial states, but repel from others (solid dots represent initial abundances)." width="40%"><p class="caption">
 Figure 7.6: Unstable equilibria: as the relative strength of interspecific competition increases (B(ij) &gt; 1), instability increases (lambda(1) &gt; 0). The unstable equilibrium may attract trajectories from some initial states, but repel from others (solid dots represent initial abundances).
 </p>
 </div>
 <p>Recall the geometric interpretation of this unstable equilibrium — a saddle. The trajectory of a ball rolling across a saddle can depend to a very large degree on where the ball starts. Place it on the crown of the saddle, and it will tend to roll in a very deterministic fashion directly toward the unstable equilibrium, even if it eventually rolls off the side.</p>
 <p><strong>Eigenanalysis in R of the Jacobian where <span class="math inline">\(\beta_{ij}, \, \beta_{ji} &gt; 1\)</span></strong>: Here we create values for <span class="math inline">\(\mathbf{\alpha}\)</span> that create an unstable equilbrium.</p>
-<div class="sourceCode" id="cb221"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb221-1"><a href="direct-competition-and-mutualism.html#cb221-1" aria-hidden="true" tabindex="-1"></a>a11 <span class="ot">&lt;-</span> a22 <span class="ot">&lt;-</span> <span class="fl">0.01</span></span>
-<span id="cb221-2"><a href="direct-competition-and-mutualism.html#cb221-2" aria-hidden="true" tabindex="-1"></a>a12 <span class="ot">&lt;-</span> a21 <span class="ot">&lt;-</span> <span class="fl">0.011</span></span>
-<span id="cb221-3"><a href="direct-competition-and-mutualism.html#cb221-3" aria-hidden="true" tabindex="-1"></a>N1 <span class="ot">&lt;-</span> <span class="fu">eval</span>(N1Star); N2 <span class="ot">&lt;-</span> <span class="fu">eval</span>(N2Star)</span>
-<span id="cb221-4"><a href="direct-competition-and-mutualism.html#cb221-4" aria-hidden="true" tabindex="-1"></a><span class="fu">eigen</span>( <span class="fu">eval</span>(J) )[[<span class="st">&quot;values&quot;</span>]]</span></code></pre></div>
+<div class="sourceCode" id="cb221"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">a11</span> <span class="op">&lt;-</span> <span class="va">a22</span> <span class="op">&lt;-</span> <span class="fl">0.01</span>
+<span class="va">a12</span> <span class="op">&lt;-</span> <span class="va">a21</span> <span class="op">&lt;-</span> <span class="fl">0.011</span>
+<span class="va">N1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/eval.html">eval</a></span><span class="op">(</span><span class="va">N1Star</span><span class="op">)</span>; <span class="va">N2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/eval.html">eval</a></span><span class="op">(</span><span class="va">N2Star</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/base/eigen.html">eigen</a></span><span class="op">(</span> <span class="fu"><a href="https://rdrr.io/r/base/eval.html">eval</a></span><span class="op">(</span><span class="va">J</span><span class="op">)</span> <span class="op">)</span><span class="op">[[</span><span class="st">"values"</span><span class="op">]</span><span class="op">]</span></code></pre></div>
 <pre><code>## [1]  0.04761905 -1.00000000</code></pre>
 <p>The dominant eigenvalue is now positive, while the other is negative, indicating a saddle (Table <a href="direct-competition-and-mutualism.html#tab:eiginterpret">7.2</a>.</p>
 <p><strong>Neutral equilibria — <span class="math inline">\(\beta_{ij} = \beta_{ji} = 1\)</span></strong>: What happens when the inter- and intraspecific effects of each species are equal? This puts the populations on a knife’s edge, between an unstable saddle and a stable attractor. Let’s think first about a geometric interpretation, where we shift between a bowl, representing a stable attractor, and a saddle, representing what we call a <em>neutral saddle</em>.</p>
@@ -942,21 +584,24 @@ Figure 7.6: Unstable equilibria: as the relative strength of interspecific compe
 \end{align}\]</span>
 Thus, <span class="math inline">\(N_1^* = 1/(\alpha_{11}+\alpha_{22})\)</span>, assuming <span class="math inline">\(\alpha_{12} = \alpha_{22}\)</span> and <span class="math inline">\(\alpha_{21}=\alpha_{11}\)</span>. Therefore, the equilibrium population size is simply the inverse of the sum of these coefficients.</p>
 <p><strong>Eigenanalysis in R of the Jacobian where <span class="math inline">\(\beta_{ij} = \beta_{ji} = 1\)</span></strong>: Here we create values for <span class="math inline">\(\mathbf{\alpha}\)</span> that create a neutral equilbrium.</p>
-<div class="sourceCode" id="cb223"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb223-1"><a href="direct-competition-and-mutualism.html#cb223-1" aria-hidden="true" tabindex="-1"></a>a11 <span class="ot">&lt;-</span> a21 <span class="ot">&lt;-</span> <span class="fl">0.01</span>; a22 <span class="ot">&lt;-</span> a12 <span class="ot">&lt;-</span> <span class="fl">0.015</span></span></code></pre></div>
+<div class="sourceCode" id="cb223"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">a11</span> <span class="op">&lt;-</span> <span class="va">a21</span> <span class="op">&lt;-</span> <span class="fl">0.01</span>; <span class="va">a22</span> <span class="op">&lt;-</span> <span class="va">a12</span> <span class="op">&lt;-</span> <span class="fl">0.015</span></code></pre></div>
 <p>We determine <span class="math inline">\(N^*\)</span> using <a href="direct-competition-and-mutualism.html#eq:lim">(7.16)</a> because the usual expression, <a href="direct-competition-and-mutualism.html#eq:lvn2eq">(7.9)</a>, fails because the denominator equals 0.</p>
-<div class="sourceCode" id="cb224"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb224-1"><a href="direct-competition-and-mutualism.html#cb224-1" aria-hidden="true" tabindex="-1"></a>N1 <span class="ot">&lt;-</span> N2 <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">/</span>(a11<span class="sc">+</span>a22)</span>
-<span id="cb224-2"><a href="direct-competition-and-mutualism.html#cb224-2" aria-hidden="true" tabindex="-1"></a><span class="fu">eigen</span>( <span class="fu">eval</span>(J) )[[<span class="st">&quot;values&quot;</span>]]</span></code></pre></div>
+<div class="sourceCode" id="cb224"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">N1</span> <span class="op">&lt;-</span> <span class="va">N2</span> <span class="op">&lt;-</span> <span class="fl">1</span><span class="op">/</span><span class="op">(</span><span class="va">a11</span><span class="op">+</span><span class="va">a22</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/base/eigen.html">eigen</a></span><span class="op">(</span> <span class="fu"><a href="https://rdrr.io/r/base/eval.html">eval</a></span><span class="op">(</span><span class="va">J</span><span class="op">)</span> <span class="op">)</span><span class="op">[[</span><span class="st">"values"</span><span class="op">]</span><span class="op">]</span></code></pre></div>
 <pre><code>## [1] -1  0</code></pre>
 <p>The dominant eigenvalue is now zero, indicating a neutral equilibrium (Table <a href="direct-competition-and-mutualism.html#tab:eiginterpret">7.2</a>. The neutral nature of this equilibrium results in more than one equilibrium. Let’s try a different one, also on the isocline.</p>
-<div class="sourceCode" id="cb226"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb226-1"><a href="direct-competition-and-mutualism.html#cb226-1" aria-hidden="true" tabindex="-1"></a>N1 <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">/</span>(a11); N2<span class="ot">&lt;-</span><span class="dv">0</span></span>
-<span id="cb226-2"><a href="direct-competition-and-mutualism.html#cb226-2" aria-hidden="true" tabindex="-1"></a><span class="fu">eigen</span>( <span class="fu">eval</span>(J) )[[<span class="st">&quot;values&quot;</span>]]</span></code></pre></div>
+<div class="sourceCode" id="cb226"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">N1</span> <span class="op">&lt;-</span> <span class="fl">1</span><span class="op">/</span><span class="op">(</span><span class="va">a11</span><span class="op">)</span>; <span class="va">N2</span><span class="op">&lt;-</span><span class="fl">0</span>
+<span class="fu"><a href="https://rdrr.io/r/base/eigen.html">eigen</a></span><span class="op">(</span> <span class="fu"><a href="https://rdrr.io/r/base/eval.html">eval</a></span><span class="op">(</span><span class="va">J</span><span class="op">)</span> <span class="op">)</span><span class="op">[[</span><span class="st">"values"</span><span class="op">]</span><span class="op">]</span></code></pre></div>
 <pre><code>## [1] -1  0</code></pre>
 <p>Again <span class="math inline">\(\lambda_1=0\)</span> so this equilibrium is also neutral.</p>
 <p>When we perform eigenanalysis, we find that the largest of the two eigenvalues is zero, while the other is negative. This reveals that we have neither a bowl nor an unstable saddle, but rather, a taco shell, with a level bottom — a neutral saddle.</p>
-<div class="figure"><span style="display:block;" id="fig:lvstabneut"></span>
-<img src="figs/lvstabneut-1.png" alt="*Trajectories of N(1),N(2) for $eta_{12} = eta_{21} = 1$. The entire isocline is an attractor, a neutral saddle, and the final abundances depend on the initial abundances and the ratio of $lpha_{11}/lpha_{22}$. The circle represents our one derived equilibrium.*" width="40%" />
-<p class="caption">
-Figure 7.7: <em>Trajectories of N(1),N(2) for <span class="math inline">\(eta_{12} = eta_{21} = 1\)</span>. The entire isocline is an attractor, a neutral saddle, and the final abundances depend on the initial abundances and the ratio of <span class="math inline">\(lpha_{11}/lpha_{22}\)</span>. The circle represents our one derived equilibrium.</em>
+<div class="figure">
+<span style="display:block;" id="fig:lvstabneut"></span>
+<img src="figs/lvstabneut-1.png" alt="*Trajectories of N(1),N(2) for $eta_{12} = eta_{21} = 1$. The entire isocline is an attractor, a neutral saddle, and the final abundances depend on the initial abundances and the ratio of $lpha_{11}/lpha_{22}$. The circle represents our one derived equilibrium.*" width="40%"><p class="caption">
+Figure 7.7: <em>Trajectories of N(1),N(2) for <span class="math inline">\(eta_{12} = eta_{21} = 1\)</span>. The entire isocline is an attractor, a neutral saddle, and the final abundances depend on the initial abundances and the ratio of <span class="math inline">\(lpha_{11}/lpha_{22}\)</span>. The circle represents our one derived equilibrium.</em>
 </p>
 </div>
 <p>For example, if the populations start at low abundances, both populations will tend to increase at constant rates until they run into the isocline. Thus, both populations can increase when rare, but the relative abundances will never change, regardless of initial abundances.</p>
@@ -968,39 +613,43 @@ and the initial abundances determine the trajectory and the equilibrium (Fig. <a
 </div>
 </div>
 <div id="return-time-and-the-effect-of-r" class="section level3" number="7.1.3">
-<h3><span class="header-section-number">7.1.3</span> Return Time and the Effect of <span class="math inline">\(r\)</span></h3>
+<h3>
+<span class="header-section-number">7.1.3</span> Return Time and the Effect of <span class="math inline">\(r\)</span><a class="anchor" aria-label="anchor" href="#return-time-and-the-effect-of-r"><i class="fas fa-link"></i></a>
+</h3>
 <p>Above, we referred to <span class="math inline">\(\lambda_1\)</span> as the perturbation growth rate. More commonly, people refer to another quantity known as <em>characteristic return time</em>. Return time is commonly calculated as the negative inverse of the largest real part of the eigenvalues,
 <span class="math display" id="eq:rt4">\[\begin{equation}
   \tag{7.17}
   RT = -\frac{1}{\lambda_1}.
 \end{equation}\]</span>
-It is the time required to return a fraction of the distance<a href="#fn49" class="footnote-ref" id="fnref49"><sup>49</sup></a> back toward an equilibrium. Negative return times (<span class="math inline">\(\lambda_1&gt;0\)</span>) refer to “backward time,” or time into the past when this population would have been this far away (Fig. <a href="direct-competition-and-mutualism.html#fig:RT">7.8</a>.</p>
+It is the time required to return a fraction of the distance<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content='&lt;p&gt;This fraction is about 63% or &lt;span class="math inline"&gt;\(1/e\)&lt;/span&gt;; thus the hypothetical initial perturbation &lt;span class="math inline"&gt;\(x_0\)&lt;/span&gt; shrinks to &lt;span class="math inline"&gt;\(0.37x_0\)&lt;/span&gt;.&lt;/p&gt;'><sup>49</sup></a> back toward an equilibrium. Negative return times (<span class="math inline">\(\lambda_1&gt;0\)</span>) refer to “backward time,” or time into the past when this population would have been this far away (Fig. <a href="direct-competition-and-mutualism.html#fig:RT">7.8</a>.</p>
 If we envision the populations sitting at an equilibrium, we can then envision a small perturbation that shifts them away from that point in state space. Let’s call this displacement <span class="math inline">\(x_0\)</span>. The rate of change of in <span class="math inline">\(x\)</span> is approximately the exponential rate,
 <span class="math display" id="eq:3">\[\begin{equation}
   \tag{6.5}
   \frac{d x}{d t} \approx c\lambda_1 t.
 \end{equation}\]</span>
 where <span class="math inline">\(c\)</span> is a constant, so the distance traveled, <span class="math inline">\(x\)</span>, is given by <a href="direct-competition-and-mutualism.html#eq:2x">(7.15)</a>. Therefore, a negative <span class="math inline">\(\lambda_1\)</span> indicates an exponential decline in the disturbance, back toward the equilibrium (Fig. <a href="direct-competition-and-mutualism.html#fig:RT">7.8</a>. The units of return time are the same as for <span class="math inline">\(r\)</span>. Recall that all of this depends on the linearization of the curved surface around an equilibrium; it therefore applies exactly to only an infinitesimally small region around the equilibrium. It also usually provides the average, regardless of whether the perturbation is a population decline or a population increase.
-<div class="figure"><span style="display:block;" id="fig:RT"></span>
-<img src="figs/RT-1.png" alt="*For $eta_{ij} &lt; 1$, return time is positive because some time will lapse before the system returns toward to its equilibrium.  For $eta_{ij}&gt;1$, return time is negative, because the system was closer to the (unstable) equilibrium in the past.*" width="75%" />
-<p class="caption">
-Figure 7.8: <em>For <span class="math inline">\(eta_{ij} &lt; 1\)</span>, return time is positive because some time will lapse before the system returns toward to its equilibrium. For <span class="math inline">\(eta_{ij}&gt;1\)</span>, return time is negative, because the system was closer to the (unstable) equilibrium in the past.</em>
+<div class="figure">
+<span style="display:block;" id="fig:RT"></span>
+<img src="figs/RT-1.png" alt="*For $eta_{ij} &lt; 1$, return time is positive because some time will lapse before the system returns toward to its equilibrium.  For $eta_{ij}&gt;1$, return time is negative, because the system was closer to the (unstable) equilibrium in the past.*" width="75%"><p class="caption">
+Figure 7.8: <em>For <span class="math inline">\(eta_{ij} &lt; 1\)</span>, return time is positive because some time will lapse before the system returns toward to its equilibrium. For <span class="math inline">\(eta_{ij}&gt;1\)</span>, return time is negative, because the system was closer to the (unstable) equilibrium in the past.</em>
 </p>
 </div>
 <p><strong>Effect of <span class="math inline">\(r\)</span> on stability and return time</strong></p>
 <p>Consider the Jacobian matrix <a href="direct-competition-and-mutualism.html#eq:jac">(7.14)</a>, and note that <span class="math inline">\(-r_i\)</span> appears in each Jacobian element. Therefore, the larger the <span class="math inline">\(r\)</span>, the greater the magnitude of the Jacobian elements. This causes <span class="math inline">\(\lambda_1\)</span> to increase in magnitude, reflecting greater responsiveness to perturbation at the equilibrium (Fig. <a href="direct-competition-and-mutualism.html#fig:LVeigR">7.9</a>.</p>
 <p>If we consider return time for continuous models where <span class="math inline">\(\beta_{12},\,\beta_{21} &lt; 1\)</span>, greater <span class="math inline">\(r\)</span> shortens return time, increasing stability (Fig. <a href="direct-competition-and-mutualism.html#fig:LVeigR">7.9</a>. For continuous models where <span class="math inline">\(\beta_{12},\,\beta_{21} &gt; 1\)</span>, greater <span class="math inline">\(r\)</span> increases perturbation growth rate, decreasing stability (Fig. <a href="direct-competition-and-mutualism.html#fig:LVeigR">7.9</a>. For discrete models, which we have not discussed in this context, recall that increasing <span class="math inline">\(r_d\)</span> of discrete logistic growth can destabilize the population because of the built-in lag. The same is true for discrete competition models — increasing <span class="math inline">\(r_d\)</span> too much destabilizes the interaction.</p>
-<div class="figure"><span style="display:block;" id="fig:LVeigR"></span>
-<img src="figs/LVeigR-1.png" alt="*The dominant eigenvalue of the Jacobian matrix varies with r as well as with $eta$ --- higher r causes greater responsiveness to perturbations around an internal equilibrium for r = 1 and r = 0.5.*" width="40%" /><img src="figs/LVeigR-2.png" alt="*The dominant eigenvalue of the Jacobian matrix varies with r as well as with $eta$ --- higher r causes greater responsiveness to perturbations around an internal equilibrium for r = 1 and r = 0.5.*" width="40%" />
-<p class="caption">
-Figure 7.9: <em>The dominant eigenvalue of the Jacobian matrix varies with r as well as with <span class="math inline">\(eta\)</span> — higher r causes greater responsiveness to perturbations around an internal equilibrium for r = 1 and r = 0.5.</em>
+<div class="figure">
+<span style="display:block;" id="fig:LVeigR"></span>
+<img src="figs/LVeigR-1.png" alt="*The dominant eigenvalue of the Jacobian matrix varies with r as well as with $eta$ --- higher r causes greater responsiveness to perturbations around an internal equilibrium for r = 1 and r = 0.5.*" width="40%"><img src="figs/LVeigR-2.png" alt="*The dominant eigenvalue of the Jacobian matrix varies with r as well as with $eta$ --- higher r causes greater responsiveness to perturbations around an internal equilibrium for r = 1 and r = 0.5.*" width="40%"><p class="caption">
+Figure 7.9: <em>The dominant eigenvalue of the Jacobian matrix varies with r as well as with <span class="math inline">\(eta\)</span> — higher r causes greater responsiveness to perturbations around an internal equilibrium for r = 1 and r = 0.5.</em>
 </p>
 </div>
 </div>
 </div>
 <div id="interspecific-mutualism" class="section level2" number="7.2">
-<h2><span class="header-section-number">7.2</span> Interspecific mutualism</h2>
-<p>Mutualisms occur in a wide variety of different species. Mutualisms form the foundations of ecosystems including coral reefs (coral and zooxanthellae), grasslands, and forests (plants and mycorrhizal fungi, pollinators, and dispersers). The natural history of mutualisms are wildly diverse and complex, and and <span class="citation"><a href="#ref-Boucher1982" role="doc-biblioref">Boucher, James, and Keeler</a> (<a href="#ref-Boucher1982" role="doc-biblioref">1982</a>)</span> list types of mutualisms:</p>
+<h2>
+<span class="header-section-number">7.2</span> Interspecific mutualism<a class="anchor" aria-label="anchor" href="#interspecific-mutualism"><i class="fas fa-link"></i></a>
+</h2>
+<p>Mutualisms occur in a wide variety of different species. Mutualisms form the foundations of ecosystems including coral reefs (coral and zooxanthellae), grasslands, and forests (plants and mycorrhizal fungi, pollinators, and dispersers). The natural history of mutualisms are wildly diverse and complex, and and <span class="citation"><a href="references.html#ref-Boucher1982" role="doc-biblioref">Boucher, James, and Keeler</a> (<a href="references.html#ref-Boucher1982" role="doc-biblioref">1982</a>)</span> list types of mutualisms:</p>
 <ul>
 <li>Energetic</li>
 <li>Nutritional</li>
@@ -1015,7 +664,7 @@ Figure 7.9: <em>The dominant eigenvalue of the Jacobian matrix varies with r as 
 case where “the enemy of my enemy is my friend.” For instance,
 consider a three plant species that all compete for the same limiting
 resource. When species A suppresses species B, it is indirectly
-helping species C <span class="citation">(<a href="#ref-Miller1994" role="doc-biblioref">Miller 1994</a>)</span>.</p>
+helping species C <span class="citation">(<a href="references.html#ref-Miller1994" role="doc-biblioref">Miller 1994</a>)</span>.</p>
 <p>We will focus on <em>direct mutualisms</em>, and in this chapter, we’ll explore this using Lotka-Volterra models</p>
 <p>Lotka-Volterra mutualism is very straightforward, following the same template as competition. All that we have to do is change the sign associated with the other species. As usual, <span class="math inline">\(\alpha_{ij}\)</span> is the per capita effect of species <span class="math inline">\(j\)</span> on species <span class="math inline">\(i\)</span>.</p>
 <p><span class="math display">\[\begin{align*}
@@ -1037,34 +686,40 @@ N_2 &amp;=\frac{\alpha_{11}}{\alpha_{12}}N_1 - 1/\alpha_{12}
 Note this assumes that both <span class="math inline">\(\alpha_{jj}\)</span> and <span class="math inline">\(\alpha_{ji}\)</span>, per se, are greater than zero, because our equation assumed it was so.</p>
 <p>Let’s use this to describe a facultative mutualism, that is, one in which neither species needs the other to persist, but in which they each do better. What we mean by that is that let <span class="math inline">\(r&gt;0\)</span>. For now, we will also assume that the mutualism provides only a modest benefit, where species benefits to each is smaller than the negative effects on themselves (<span class="math inline">\(\alpha_{ii} &gt; \alpha_{ij}\)</span>). The dynamics are stable (Fig. <a href="direct-competition-and-mutualism.html#fig:LVmut">7.10</a>)</p>
 <p>To illustrate the dynamics of this population, we will parameterize an ODE model. Our parameters meet our assumptions stated above.</p>
-<div class="sourceCode" id="cb228"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb228-1"><a href="direct-competition-and-mutualism.html#cb228-1" aria-hidden="true" tabindex="-1"></a>parameters <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="at">alpha11 =</span> .<span class="dv">2</span>, <span class="at">alpha22 =</span> .<span class="dv">2</span>, <span class="at">alpha12 =</span> .<span class="dv">1</span>, <span class="at">alpha21=</span>.<span class="dv">1</span>,</span>
-<span id="cb228-2"><a href="direct-competition-and-mutualism.html#cb228-2" aria-hidden="true" tabindex="-1"></a>                <span class="at">r1=</span>.<span class="dv">01</span>, <span class="at">r2=</span>.<span class="dv">01</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb228"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">parameters</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span>alpha11 <span class="op">=</span> <span class="fl">.2</span>, alpha22 <span class="op">=</span> <span class="fl">.2</span>, alpha12 <span class="op">=</span> <span class="fl">.1</span>, alpha21<span class="op">=</span><span class="fl">.1</span>,
+                r1<span class="op">=</span><span class="fl">.01</span>, r2<span class="op">=</span><span class="fl">.01</span><span class="op">)</span></code></pre></div>
 <p>Here we write an ODE model to help anaylze dynamics.</p>
-<div class="sourceCode" id="cb229"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb229-1"><a href="direct-competition-and-mutualism.html#cb229-1" aria-hidden="true" tabindex="-1"></a>mutualism.LV <span class="ot">&lt;-</span> <span class="cf">function</span>(t, y, params){</span>
-<span id="cb229-2"><a href="direct-competition-and-mutualism.html#cb229-2" aria-hidden="true" tabindex="-1"></a>  n1 <span class="ot">&lt;-</span> y[<span class="dv">1</span>]; n2 <span class="ot">&lt;-</span> y[<span class="dv">2</span>]</span>
-<span id="cb229-3"><a href="direct-competition-and-mutualism.html#cb229-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">with</span>(<span class="fu">as.list</span>(params), {</span>
-<span id="cb229-4"><a href="direct-competition-and-mutualism.html#cb229-4" aria-hidden="true" tabindex="-1"></a>    dn1.dt <span class="ot">=</span> r1<span class="sc">*</span>n1<span class="sc">*</span>(<span class="dv">1</span> <span class="sc">-</span> alpha11<span class="sc">*</span>n1 <span class="sc">+</span> alpha12<span class="sc">*</span>n2)</span>
-<span id="cb229-5"><a href="direct-competition-and-mutualism.html#cb229-5" aria-hidden="true" tabindex="-1"></a>    dn2.dt <span class="ot">=</span> r2<span class="sc">*</span>n2<span class="sc">*</span>(<span class="dv">1</span> <span class="sc">+</span> alpha21<span class="sc">*</span>n1 <span class="sc">-</span> alpha22<span class="sc">*</span>n2)</span>
-<span id="cb229-6"><a href="direct-competition-and-mutualism.html#cb229-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">return</span>(<span class="fu">list</span>( <span class="fu">c</span>(dn1.dt, dn2.dt) ) )</span>
-<span id="cb229-7"><a href="direct-competition-and-mutualism.html#cb229-7" aria-hidden="true" tabindex="-1"></a>  })</span>
-<span id="cb229-8"><a href="direct-competition-and-mutualism.html#cb229-8" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb229"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">mutualism.LV</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">t</span>, <span class="va">y</span>, <span class="va">params</span><span class="op">)</span><span class="op">{</span>
+  <span class="va">n1</span> <span class="op">&lt;-</span> <span class="va">y</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>; <span class="va">n2</span> <span class="op">&lt;-</span> <span class="va">y</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span>
+  <span class="fu"><a href="https://rdrr.io/r/base/with.html">with</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html">as.list</a></span><span class="op">(</span><span class="va">params</span><span class="op">)</span>, <span class="op">{</span>
+    <span class="va">dn1.dt</span> <span class="op">=</span> <span class="va">r1</span><span class="op">*</span><span class="va">n1</span><span class="op">*</span><span class="op">(</span><span class="fl">1</span> <span class="op">-</span> <span class="va">alpha11</span><span class="op">*</span><span class="va">n1</span> <span class="op">+</span> <span class="va">alpha12</span><span class="op">*</span><span class="va">n2</span><span class="op">)</span>
+    <span class="va">dn2.dt</span> <span class="op">=</span> <span class="va">r2</span><span class="op">*</span><span class="va">n2</span><span class="op">*</span><span class="op">(</span><span class="fl">1</span> <span class="op">+</span> <span class="va">alpha21</span><span class="op">*</span><span class="va">n1</span> <span class="op">-</span> <span class="va">alpha22</span><span class="op">*</span><span class="va">n2</span><span class="op">)</span>
+    <span class="kw"><a href="https://rdrr.io/r/base/function.html">return</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">dn1.dt</span>, <span class="va">dn2.dt</span><span class="op">)</span> <span class="op">)</span> <span class="op">)</span>
+  <span class="op">}</span><span class="op">)</span>
+<span class="op">}</span></code></pre></div>
 <p>The Lotka-Volterra approach predicts exclusion of one species in two realistic scenarios, obligate mutualisms and mutualisms with large effects. An obligate mutualism is one in which growth rate is negative in the absence of the mutualism. The way to describe that in Lotka-Volterra models is to set <span class="math inline">\(r &lt; 0\)</span>. This results in an unstable equilibrium which is a global repellor which results in the loss of one species. Second, if the benefit is greater than the negative intraspecific effect, we get an uncontrolled positive feedback loop leading to infinite population sizes. In this sense, it is like exponential growth: a potentially very useful idea, but it must be moderated somehow in order to reflect long term trajectories.</p>
-<div class="figure"><span style="display:block;" id="fig:LVmut"></span>
-<img src="figs/LVmut-1.png" alt="Only weak facultative mutualisms are stable." width="33%" /><img src="figs/LVmut-2.png" alt="Only weak facultative mutualisms are stable." width="33%" /><img src="figs/LVmut-3.png" alt="Only weak facultative mutualisms are stable." width="33%" />
-<p class="caption">
+<div class="figure">
+<span style="display:block;" id="fig:LVmut"></span>
+<img src="figs/LVmut-1.png" alt="Only weak facultative mutualisms are stable." width="33%"><img src="figs/LVmut-2.png" alt="Only weak facultative mutualisms are stable." width="33%"><img src="figs/LVmut-3.png" alt="Only weak facultative mutualisms are stable." width="33%"><p class="caption">
 Figure 7.10: Only weak facultative mutualisms are stable.
 </p>
 </div>
 </div>
 <div id="generalized-lotka-volterra-models" class="section level2" number="7.3">
-<h2><span class="header-section-number">7.3</span> Generalized Lotka-Volterra models</h2>
+<h2>
+<span class="header-section-number">7.3</span> Generalized Lotka-Volterra models<a class="anchor" aria-label="anchor" href="#generalized-lotka-volterra-models"><i class="fas fa-link"></i></a>
+</h2>
 <p>Up to this point, we have used the sign (<span class="math inline">\(\pm\)</span>) of each term in our equations to illustrate as clearly as possible the types interactions that we are exploring. If instead, we let the sign of the coefficient determine the type of interaction, we let <span class="math inline">\(\alpha\)</span> be less than or greater than zero, we can describe the growth rate of any species <span class="math inline">\(i\)</span> as a function of all species <span class="math inline">\(j\)</span>, with
 <span class="math display">\[\frac{dN_i}{dt} = r_i N_i\left(1+ \sum_{j=1}^S \alpha_{ij}N_j\right)\]</span>
 where <span class="math inline">\(\alpha_{ij}, \alpha_{ji} &lt; 0\)</span> describes competitive interactions, and <span class="math inline">\(\alpha_{ij}, \alpha_{ji} &gt; 0\)</span> describes mutualisms, and <span class="math inline">\(\alpha_{ij} &lt; 0,\, \alpha_{ji}&gt;0\)</span> can be predation by <span class="math inline">\(j\)</span> of <span class="math inline">\(i\)</span>, and where <span class="math inline">\(j=i\)</span> represents the effect of species <span class="math inline">\(i\)</span> on itself. In a later chapter, we will use this description to investigate how, in contrast to two-species interactions, <span class="math inline">\(r_i\)</span> helps shape multiple basins of attraction and alternative stable states.</p>
 <div style="page-break-after: always;"></div>
 </div>
 <div id="summary" class="section level2" number="7.4">
-<h2><span class="header-section-number">7.4</span> Summary</h2>
+<h2>
+<span class="header-section-number">7.4</span> Summary<a class="anchor" aria-label="anchor" href="#summary"><i class="fas fa-link"></i></a>
+</h2>
 <p>This chapter has provided several useful results.</p>
 <ul>
 <li>We can represent species effects on each other in precisely the same way we represented their effects on themselves.</li>
@@ -1074,108 +729,51 @@ where <span class="math inline">\(\alpha_{ij}, \alpha_{ji} &lt; 0\)</span> descr
 <li>Perturbation growth rate decreases as <span class="math inline">\(\beta_{ij},\, \beta_{ji}\)</span> decrease, and are either both less than one or both greater than 1 (<span class="math inline">\(\beta_{ij} = \alpha_{ij}/\alpha_{jj}\)</span>).</li>
 <li>The magnitude of perturbation growth rate increases with <span class="math inline">\(r\)</span>.</li>
 </ul>
+</div>
+</div>
+
+  <div class="chapter-nav">
+<div class="prev"><a href="meta.html"><span class="header-section-number">6</span> Populations in Space</a></div>
+<div class="next"><a href="cr.html"><span class="header-section-number">8</span> Consumer-resource Interactions</a></div>
+</div></main><div class="col-md-3 col-lg-2 d-none d-md-block sidebar sidebar-chapter">
+    <nav id="toc" data-toggle="toc" aria-label="On this page"><h2>On this page</h2>
+      <ul class="nav navbar-nav">
+<li><a class="nav-link" href="#direct-competition-and-mutualism"><span class="header-section-number">7</span> Direct competition and mutualism</a></li>
+<li>
+<a class="nav-link" href="#interspecific-competition"><span class="header-section-number">7.1</span> Interspecific competition</a><ul class="nav navbar-nav">
+<li><a class="nav-link" href="#equilbria"><span class="header-section-number">7.1.1</span> Equilbria</a></li>
+<li><a class="nav-link" href="#dynamics-at-the-equilibria"><span class="header-section-number">7.1.2</span> Dynamics at the Equilibria</a></li>
+<li><a class="nav-link" href="#return-time-and-the-effect-of-r"><span class="header-section-number">7.1.3</span> Return Time and the Effect of \(r\)</a></li>
+</ul>
+</li>
+<li><a class="nav-link" href="#interspecific-mutualism"><span class="header-section-number">7.2</span> Interspecific mutualism</a></li>
+<li><a class="nav-link" href="#generalized-lotka-volterra-models"><span class="header-section-number">7.3</span> Generalized Lotka-Volterra models</a></li>
+<li><a class="nav-link" href="#summary"><span class="header-section-number">7.4</span> Summary</a></li>
+</ul>
+
+      <div class="book-extra">
+        <ul class="list-unstyled">
+          
+        </ul>
+</div>
+    </nav>
+</div>
 
 </div>
-</div>
-<h3> References</h3>
-<div id="refs" class="references csl-bib-body hanging-indent">
-<div id="ref-Bolker2003a" class="csl-entry">
-Bolker, B M, S W Pacala, and C Neuhauser. 2003. <span>“<span class="nocase">Spatial dynamics in model plant communities: <span>{</span>W<span>}</span>hat do we really know?</span>”</span> <em>American Naturalist</em> 162: 135–48.
-</div>
-<div id="ref-Boucher1982" class="csl-entry">
-Boucher, D. H., S. James, and K. H. Keeler. 1982. <span>“<span class="nocase">The ecology of mutualism</span>.”</span> <em>Annual Review of Ecology and Systematics</em> 13: 315–47.
-</div>
-<div id="ref-Hastings2004a" class="csl-entry">
-Hastings, A. 2004. <span>“<span class="nocase">Transients: the key to long-term ecological understanding?</span>”</span> <em>Trends in Ecology and Evolution</em> 19: 39–45.
-</div>
-<div id="ref-Kingsland:1985kx" class="csl-entry">
-Kingsland, S E. 1985. <em><span>Modeling Nature</span></em>. Chicago: University of Chicago Press.
-</div>
-<div id="ref-Miller1994" class="csl-entry">
-Miller, D. 1994. <span>“<span class="nocase">Miller<span>_</span>1994.pdf</span>.”</span> <a href="http://arxiv.org/abs/0022-1597">http://arxiv.org/abs/0022-1597</a>.
-</div>
-<div id="ref-Morin1999a" class="csl-entry">
-Morin, P J. 1999. <em><span class="nocase">Community <span>{</span>E<span>}</span>cology</span></em>. Malden, MA: Blackwell Science, Inc.
-</div>
-<div id="ref-Roughgarden1998" class="csl-entry">
-Roughgarden, J. 1998. <em><span class="nocase">Primer of <span>{</span>E<span>}</span>cological <span>{</span>T<span>}</span>heory</span></em>. Upper Saddle River, NJ, USA: Prentice-Hall, Inc.
-</div>
-</div>
-<div class="footnotes">
-<hr />
-<ol start="43">
-<li id="fn43"><p>Ecologists who study invasion of exotic species may use the word “invade” to mean the successful dispersal to, establishment and spread at a site. This incorporates a tremendous amount of species- or system-specific biology. Here we mean “invasion” in only a much more strict or narrow sense — to increase when rare.<a href="direct-competition-and-mutualism.html#fnref43" class="footnote-back">↩︎</a></p></li>
-<li id="fn44"><p>The topography of mountain ranges can include saddles, which are precisely the context in which we use “saddle” here. Search the web for Saddleback Mountain, New York, USA, Lat/Long: 44<span class="math inline">\(^\circ\)</span> 8’ N; 73<span class="math inline">\(^\circ\)</span> 53’ W. See also pictures of horse saddles — same shape.<a href="direct-competition-and-mutualism.html#fnref44" class="footnote-back">↩︎</a></p></li>
-<li id="fn45"><p>Recall that the time derivative, <span class="math inline">\(d N / d t\)</span>, can be symbolized with <span class="math inline">\(\dot{N}\)</span> (“n-dot”).<a href="direct-competition-and-mutualism.html#fnref45" class="footnote-back">↩︎</a></p></li>
-<li id="fn46"><p>PDEs are typically written using a fancy symbol, delta, as in <span class="math inline">\(\partial F/\partial N\)</span>. It helps alert us to the fact that we are differentiating one variable with respect to another state variables. When taking a derivative with respect to <span class="math inline">\(X\)</span>, we treat all other variables as constants.<a href="direct-competition-and-mutualism.html#fnref46" class="footnote-back">↩︎</a></p></li>
-<li id="fn47"><p>This criterion is different than for demographic, discrete time projection matrices.<a href="direct-competition-and-mutualism.html#fnref47" class="footnote-back">↩︎</a></p></li>
-<li id="fn48"><p>The magnitude or absolute value of a complex number <span class="math inline">\(|a+bi|\)</span> = <span class="math inline">\(\sqrt{a^2 + b^2}\)</span>.<a href="direct-competition-and-mutualism.html#fnref48" class="footnote-back">↩︎</a></p></li>
-<li id="fn49"><p>This fraction is about 63% or <span class="math inline">\(1/e\)</span>; thus the hypothetical initial perturbation <span class="math inline">\(x_0\)</span> shrinks to <span class="math inline">\(0.37x_0\)</span>.<a href="direct-competition-and-mutualism.html#fnref49" class="footnote-back">↩︎</a></p></li>
-</ol>
-</div>
-            </section>
+</div> <!-- .container -->
 
-          </div>
-        </div>
-      </div>
-<a href="meta.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="cr.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
-    </div>
+<footer class="bg-primary text-light mt-5"><div class="container"><div class="row">
+
+  <div class="col-12 col-md-6 mt-3">
+    <p>"<strong>Primer of Ecology using R</strong>" was written by Hank Stevens. It was last built on 2021-08-20.</p>
   </div>
-<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
-<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
-<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
-<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
-<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
-<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
-<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
-<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
-<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
-<script>
-gitbook.require(["gitbook"], function(gitbook) {
-gitbook.start({
-"sharing": {
-"github": false,
-"facebook": true,
-"twitter": true,
-"linkedin": false,
-"weibo": false,
-"instapaper": false,
-"vk": false,
-"whatsapp": false,
-"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
-},
-"fontsettings": {
-"theme": "white",
-"family": "sans",
-"size": 2
-},
-"edit": {
-"link": null,
-"text": null
-},
-"history": {
-"link": null,
-"text": null
-},
-"view": {
-"link": null,
-"text": null
-},
-"download": ["_main.pdf"],
-"search": {
-"engine": "lunr",
-"options": null
-},
-"toc": {
-"collapse": "subsection"
-}
-});
-});
-</script>
 
-<!-- dynamically load mathjax for compatibility with self-contained -->
-<script>
+  <div class="col-12 col-md-6 mt-3">
+    <p>This book was built by the <a class="text-light" href="https://bookdown.org">bookdown</a> R package.</p>
+  </div>
+
+</div></div>
+</footer><!-- dynamically load mathjax for compatibility with self-contained --><script>
   (function () {
     var script = document.createElement("script");
     script.type = "text/javascript";
@@ -1187,7 +785,22 @@ gitbook.start({
     script.src = src;
     document.getElementsByTagName("head")[0].appendChild(script);
   })();
+</script><script type="text/x-mathjax-config">const popovers = document.querySelectorAll('a.footnote-ref[data-toggle="popover"]');
+for (let popover of popovers) {
+  const div = document.createElement('div');
+  div.setAttribute('style', 'position: absolute; top: 0, left:0; width:0, height:0, overflow: hidden; visibility: hidden;');
+  div.innerHTML = popover.getAttribute('data-content');
+
+  var has_math = div.querySelector("span.math");
+  if (has_math) {
+    document.body.appendChild(div);
+    MathJax.Hub.Queue(["Typeset", MathJax.Hub, div]);
+    MathJax.Hub.Queue(function() {
+      popover.setAttribute('data-content', div.innerHTML);
+      document.body.removeChild(div);
+    })
+  }
+}
 </script>
 </body>
-
 </html>
