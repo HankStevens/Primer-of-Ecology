@@ -1,9 +1,10 @@
 # Theory in Ecology {#theory}
 
-In this chapter, we introduce a perspective on ecological theory, and provide an example of an efficient theory, metabolic scaling. 
+In this chapter, we introduce a perspective on ecological theory, and provide two examples of efficient theory, metabolic scaling and maximum entropy theory.
+
+Theory is really, really important. Without theory of some sort to guide us, we are merely counting pebbles in a quarry. Good theory may be conceptual or mathematical, and helps us focus more clearly and in a less ambiguous manner on the systems we study. In this book, we explore mathematical models that provide special cases of theory.
 
 *Scientific theory* is a body of knowledge that provides an organized and mechanistic view of how the world works [@Scheiner2010]. Theories concerning gravity, general relativity, and evolution by natural selection provide structured ways of connecting observations, patterns, and processes that  provide insight into why the world is the way it is. This stands in stark contrast to the colloquial use of *theory* that implies a lack of knowledge, as when someone says "oh, that's just a theory", referring to a guess without much evidence. Scientific theory is a set of explanations whose validity has been tested repeatedly by experiments and new data.
-
 
 ## Examples of theories
 
@@ -11,7 +12,7 @@ Ecology has lots of theories, of all different types. Below I discuss some which
 
 ### Hierarchy theory
 
-An early and persistent organizing theory in ecology is based on *hierarchy theory* [@ONeill1986; @Rose2017, and references therein]. It posits that ecological systems are structured *hierachically*, such that each entity comprises subunits. For instance, an entity such as a population of big bluestem grass (*Andropogon gerardii*) is part of a larger ecology community of many species. The population of big bluestem comprises subpopulations separated in space, a subpopulation comprises separate individuals, that each individual comprises multiple ramets and a set of organ systems and tissues, which comprise different cell types. This theory posits that each entity gives rise to emergent properties to the hierarchical level above it, and influences processes within each smaller sub-entity in the hierachical level below it. As a disciplinary organizing principle, this approach structures nearly all of the ecology curriculum.
+An early and persistent organizing schema in ecology is based on *hierarchy theory* [@ONeill1986; @Rose2017, and references therein]. It posits that ecological systems are structured *hierachically*, such that each entity comprises subunits. For instance, an entity such as a population of big bluestem grass (*Andropogon gerardii*) is part of a larger ecology community of many species. The population of big bluestem comprises subpopulations separated in space, a subpopulation comprises separate individuals, that each individual comprises multiple ramets and a set of organ systems and tissues, which comprise different cell types. This theory posits that each entity gives rise to emergent properties to the hierarchical level above it, and influences processes within each smaller sub-entity in the hierachical level below it. As a disciplinary organizing principle, this approach structures nearly all of the ecology curriculum.
 
 Hierarchy theory gets more complicated when the levels of a hierarchy start to include fundamentally different types of entities. The big bluestem hierarchy above included only biotic components--a individual is part of a population which is part of a community of individuals of multiple species, and is made up of organ systems and tissues. Ecology, however, includes both the biotic and the abiotic parts of environments. An ecosystem includes a community of species, but also the nutrients, water, light, and other abiotic components, along with the spatial arrangement of all of these things. 
 
@@ -251,3 +252,80 @@ par(mar=c(5,4,0,0), mgp=c(1.5,.4,0) )# set figure margins in "lines"
 curve(x^(3/4), from = .01, to = 100, log="xy", ylab="Basal metabolic rate", xlab="Mass")
 text(10, 80^.7, expression(M^0.75))
 ```
+
+## Meet METE: Maximum Entropy Theory of Ecology
+
+The Maximum Entropy Theory of Ecology is best known for making predictions and elucidating patterns of species-area relations and species abundance distributions that emerge in relatively stable ecological communities and ecosystems [@Harte2014]. However, it is an active area of research and Harte and others are extending the ideas into non-equilibrium systems as well [@Harte2021]. 
+
+Entropy is, basically, disorder. Less entropy means more order or structure. Maximum entropy is maximum disorder. The universe tends toward maximum entropy, although in some places and times, like parts of our world right now, entropy can decrease. Physicists are the folks most responsible for our understanding of entropy, and Edwin Jaynes is arguably the one most responsible our understanding and appreciation of its role in information and probability.
+
+MaxEnt, or the principle of maximization of information entropy, or the principle of maximum entropy is that, given a set of constraints on a system, the least-biased probability distribution that describes data arising from that system will be the one with maximum entropy. 
+
+The principle of maximum entropy has show that maximal uncertainty arising from the flattest distribution, given known constraints, provides the least biased description of a system. It can provide the least biased probability distributions for these situations with these constraints:
+
+* Consider a jar contains jelly beans, and contains at least one and no more than 1000. What is the least biased distribution of possible counts of jelly beans? 
+* Imagine a hectare of land that contains trees of different heights, and that the mean height is three meters. What is the least biased distribution of possible tree heights?
+* Regarding this forest - what if you were told that the variance in height was two meters? What would be the least biased distribution of possible tree heights?
+
+The principle of maximum entropy could help us prove that, in the absence of other information, the least biased distributions for these sets of constraints would be the uniform, exponential, and Gaussian (or normal) probability distributions. 
+
+The maximum entropy theory of ecology [@Harte2014] can tell us what to expect when we know very little, or *when very little is going on aside from random noise.* 
+
+We will talk more about the METE in our chapter on diversity, but I mention it here to emphasize that patterns arise in ecology via random noise. 
+
+The rank-abundance distribution is a famous ecological pattern. It is the log-abundance or relative abundance of species, arranged from the most abundant to the least abundant (Fig. \@ref(fig:mete1)).
+```{r mete1, fig.cap="Rank abundance distribution of tree species in a 50 ha plot on Barro Colorado Island. Line is a best fit of the log-normal distribution.", out.width="50%", fig.show="hold"}
+library(vegan)
+data(BCI)
+abun <- colSums(BCI)
+mod <- rad.lognormal(abun)
+plot(mod, main="Rank-abundance distribution")
+
+mod.oct <- prestonfit(colSums(BCI))
+plot(mod.oct, main="Species abundance distribution")  
+```
+
+The curve formed by these data points (left, Fig. \@ref(fig:mete1)) is steep at first, among the most abundant species. The curve then flattens out a bit before getting a little bit steeper again. If we group species into logarithmic abundance categories, and make a histogram of abundances, we get the *species abundance distribution." @Preston1962 noted that the distributions were remarkabling similar to a normal (Gaussian) distribution, when abundances were log-transformed (resulting in a lognormal-like distribution). It turns out that this curve is quite common and for decades ecologists argued about how we might infer the underlying ecological processes on the basis of the shape of the curve. This discussion died out once ecologists admitted that it was impossible to determined the processes on the basis of the pattern.
+
+The discussion of the shape of the rank-abundance distribution was revived in the late nineties when Steve Hubbell showed that if you pretend all individuals are equally likely to live or die, *independent of their species identity*, then you should expect this pattern [@Hubbell2001]. Later, John Harte showed that the principle of maximum entropy was a more general approach to this question and could be extended into other realms and patters.
+
+As an example, consider a community of five individuals and three species. Those are our only constraints, $N=5$, $S=3$. How many different possible distributions of species abundances can we get if we assume maximum uncertainty, i.e., maximum entropy? Is there any way to know? Because we have so few, we can count them. 
+
+Consider five individuals distributed among three species (rows) and list all possible community states (columns).
+```{r}
+# by default, R fills matrices by columns.
+states <- matrix(
+  c(3,1,1, # column 1,
+    1,3,1, # column 2, etc.
+    1,1,3,
+    2,2,1,
+    2,1,2,
+    1,2,2),
+  nrow = 3 )
+# label species
+rownames(states) <- LETTERS[1:3]
+states # each column is a possible configuration.
+```
+
+A rank or species abundance distributions does care *which* species is most abundant, just that different species exist and can have different abundances. Maximum entropy would have us ask, "what is the average abundance of the most abundant species?" Let's calculate that. We can see that the most abundant species has either 3 individuals or two individuals and each of these occurs three times. Therefore the average abundance of the most abundant species is calculated as
+```{r}
+(3+3+3+2+2+2)/6
+```
+
+or two and half individuals out of five individuals in the whole community.
+
+How about the least abundant species? The least abundant species always has only one individual. Therefore, the second most abundant species has, on average, 1.5 individuals.
+
+```{r mete2, fig.cap="Expected rank abundance distribution, given five individuals and three species, under the maximum entropy theory of ecology.", out.width="50%"}
+qplot(x=1:3, y=c(2.5, 1.5, 1), geom=c("point", "line")) + 
+  labs(y="Expected abundance")
+```
+
+This is one prediction of METE: given only the number of individuals and the number of species, it can predict a species abundance distribution.
+
+
+## *In fine*
+
+Useful theory helps us think more clearly and sometimes more imaginatively about how the world works. Good theory is usually *efficient* theory, making the greatest number of predictions with the fewest free parameters. It helps clarify our thinking and disentangle the myriad mechanisms at play in our ecological systems.
+
+

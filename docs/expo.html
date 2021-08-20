@@ -1,20 +1,12 @@
 <!DOCTYPE html>
 <html lang="" xml:lang="">
 <head>
-<!-- Global site tag (gtag.js) - Google Analytics -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-BCHJP0D3GE"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
 
-  gtag('config', 'G-BCHJP0D3GE');
-</script>
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>3 Simple density-independent growth | Primer of Ecology using R</title>
   <meta name="description" content="3 Simple density-independent growth | Primer of Ecology using R" />
-  <meta name="generator" content="bookdown 0.20 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.23 and GitBook 2.6.7" />
 
   <meta property="og:title" content="3 Simple density-independent growth | Primer of Ecology using R" />
   <meta property="og:type" content="book" />
@@ -32,7 +24,7 @@
 <meta name="author" content="Hank Stevens" />
 
 
-<meta name="date" content="2020-12-02" />
+<meta name="date" content="2021-08-20" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -41,7 +33,8 @@
   
 <link rel="prev" href="oft.html"/>
 <link rel="next" href="DID.html"/>
-<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<script src="libs/header-attrs-2.10/header-attrs.js"></script>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
@@ -58,7 +51,8 @@
 
 
 
-<script src="libs/accessible-code-block-0.0.1/empty-anchor.js"></script>
+<link href="libs/anchor-sections-1.0.1/anchor-sections.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.0.1/anchor-sections.js"></script>
 <script src="libs/kePrint-0.0.1/kePrint.js"></script>
 <link href="libs/lightable-0.0.1/lightable.css" rel="stylesheet" />
 <!-- Global site tag (gtag.js) - Google Analytics -->
@@ -73,18 +67,18 @@
 
 
 <style type="text/css">
-code.sourceCode > span { display: inline-block; line-height: 1.25; }
-code.sourceCode > span { color: inherit; text-decoration: inherit; }
-code.sourceCode > span:empty { height: 1.2em; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
-code.sourceCode { white-space: pre; position: relative; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
 pre.sourceCode { margin: 0; }
 @media screen {
 div.sourceCode { overflow: auto; }
 }
 @media print {
-code.sourceCode { white-space: pre-wrap; }
-code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
 }
 pre.numberSource code
   { counter-reset: source-line 0; }
@@ -104,7 +98,7 @@ pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-le
 div.sourceCode
   {   }
 @media screen {
-code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 code span.al { color: #ff0000; font-weight: bold; } /* Alert */
 code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
@@ -137,6 +131,29 @@ code span.vs { color: #4070a0; } /* VerbatimString */
 code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
 </style>
 
+<style type="text/css">
+/* Used with Pandoc 2.11+ new --citeproc when CSL is used */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
+</style>
+
 </head>
 
 <body>
@@ -150,35 +167,46 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 <ul class="summary">
 <li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Preface</a></li>
-<li class="chapter" data-level="1" data-path="theory.html"><a href="theory.html"><i class="fa fa-check"></i><b>1</b> Theory in Ecology</a><ul>
-<li class="chapter" data-level="1.1" data-path="theory.html"><a href="theory.html#examples-of-theories"><i class="fa fa-check"></i><b>1.1</b> Examples of theories</a><ul>
+<li class="chapter" data-level="1" data-path="theory.html"><a href="theory.html"><i class="fa fa-check"></i><b>1</b> Theory in Ecology</a>
+<ul>
+<li class="chapter" data-level="1.1" data-path="theory.html"><a href="theory.html#examples-of-theories"><i class="fa fa-check"></i><b>1.1</b> Examples of theories</a>
+<ul>
 <li class="chapter" data-level="1.1.1" data-path="theory.html"><a href="theory.html#hierarchy-theory"><i class="fa fa-check"></i><b>1.1.1</b> Hierarchy theory</a></li>
 <li class="chapter" data-level="1.1.2" data-path="theory.html"><a href="theory.html#a-general-theory-of-ecology"><i class="fa fa-check"></i><b>1.1.2</b> A general theory of ecology</a></li>
 <li class="chapter" data-level="1.1.3" data-path="theory.html"><a href="theory.html#efficient-theory"><i class="fa fa-check"></i><b>1.1.3</b> Efficient theory</a></li>
 </ul></li>
-<li class="chapter" data-level="1.2" data-path="theory.html"><a href="theory.html#metabolic_scaling"><i class="fa fa-check"></i><b>1.2</b> An example: Metabolic Theory of Ecology</a><ul>
+<li class="chapter" data-level="1.2" data-path="theory.html"><a href="theory.html#metabolic_scaling"><i class="fa fa-check"></i><b>1.2</b> An example: Metabolic Theory of Ecology</a>
+<ul>
 <li class="chapter" data-level="1.2.1" data-path="theory.html"><a href="theory.html#body-size-dependence"><i class="fa fa-check"></i><b>1.2.1</b> Body-size dependence</a></li>
 <li class="chapter" data-level="1.2.2" data-path="theory.html"><a href="theory.html#temperature-dependence"><i class="fa fa-check"></i><b>1.2.2</b> Temperature dependence</a></li>
 </ul></li>
 <li class="chapter" data-level="1.3" data-path="theory.html"><a href="theory.html#power-law-scaling-implies-constant-relative-differences"><i class="fa fa-check"></i><b>1.3</b> Power law scaling implies constant relative differences</a></li>
+<li class="chapter" data-level="1.4" data-path="theory.html"><a href="theory.html#meet-mete-maximum-entropy-theory-of-ecology"><i class="fa fa-check"></i><b>1.4</b> Meet METE: Maximum Entropy Theory of Ecology</a></li>
+<li class="chapter" data-level="1.5" data-path="theory.html"><a href="theory.html#in-fine"><i class="fa fa-check"></i><b>1.5</b> <em>In fine</em></a></li>
 </ul></li>
-<li class="chapter" data-level="2" data-path="oft.html"><a href="oft.html"><i class="fa fa-check"></i><b>2</b> Optimal Foraging</a><ul>
-<li class="chapter" data-level="2.1" data-path="oft.html"><a href="oft.html#a-prey-model"><i class="fa fa-check"></i><b>2.1</b> A prey model</a><ul>
+<li class="chapter" data-level="2" data-path="oft.html"><a href="oft.html"><i class="fa fa-check"></i><b>2</b> Optimal Foraging</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="oft.html"><a href="oft.html#a-prey-model"><i class="fa fa-check"></i><b>2.1</b> A prey model</a>
+<ul>
 <li class="chapter" data-level="2.1.1" data-path="oft.html"><a href="oft.html#our-intuition"><i class="fa fa-check"></i><b>2.1.1</b> Our intuition</a></li>
 <li class="chapter" data-level="2.1.2" data-path="oft.html"><a href="oft.html#mathematical-support"><i class="fa fa-check"></i><b>2.1.2</b> Mathematical support</a></li>
 </ul></li>
 <li class="chapter" data-level="2.2" data-path="oft.html"><a href="oft.html#the-patch-model"><i class="fa fa-check"></i><b>2.2</b> The patch model</a></li>
-<li class="chapter" data-level="2.3" data-path="oft.html"><a href="oft.html#a-simulation-of-a-prey-model"><i class="fa fa-check"></i><b>2.3</b> A simulation of a prey model</a><ul>
+<li class="chapter" data-level="2.3" data-path="oft.html"><a href="oft.html#a-simulation-of-a-prey-model"><i class="fa fa-check"></i><b>2.3</b> A simulation of a prey model</a>
+<ul>
 <li class="chapter" data-level="2.3.1" data-path="oft.html"><a href="oft.html#lab-exercise"><i class="fa fa-check"></i><b>2.3.1</b> Lab exercise</a></li>
 </ul></li>
 </ul></li>
-<li class="chapter" data-level="3" data-path="expo.html"><a href="expo.html"><i class="fa fa-check"></i><b>3</b> Simple density-independent growth</a><ul>
+<li class="chapter" data-level="3" data-path="expo.html"><a href="expo.html"><i class="fa fa-check"></i><b>3</b> Simple density-independent growth</a>
+<ul>
 <li class="chapter" data-level="3.1" data-path="expo.html"><a href="expo.html#discrete-growth-rates-of-fruit-flies-in-my-kitchen"><i class="fa fa-check"></i><b>3.1</b> Discrete growth rates of fruit flies in my kitchen</a></li>
 <li class="chapter" data-level="3.2" data-path="expo.html"><a href="expo.html#fruit-flies-with-continuous-overlapping-generations"><i class="fa fa-check"></i><b>3.2</b> Fruit flies with continuous overlapping generations</a></li>
-<li class="chapter" data-level="3.3" data-path="expo.html"><a href="expo.html#properties-of-geometric-and-exponential-growth"><i class="fa fa-check"></i><b>3.3</b> Properties of geometric and exponential growth</a><ul>
+<li class="chapter" data-level="3.3" data-path="expo.html"><a href="expo.html#properties-of-geometric-and-exponential-growth"><i class="fa fa-check"></i><b>3.3</b> Properties of geometric and exponential growth</a>
+<ul>
 <li class="chapter" data-level="3.3.1" data-path="expo.html"><a href="expo.html#average-growth-rate"><i class="fa fa-check"></i><b>3.3.1</b> Average growth rate</a></li>
 </ul></li>
-<li class="chapter" data-level="3.4" data-path="expo.html"><a href="expo.html#modeling-with-data-simulated-dynamics"><i class="fa fa-check"></i><b>3.4</b> Modeling with Data: Simulated Dynamics</a><ul>
+<li class="chapter" data-level="3.4" data-path="expo.html"><a href="expo.html#modeling-with-data-simulated-dynamics"><i class="fa fa-check"></i><b>3.4</b> Modeling with Data: Simulated Dynamics</a>
+<ul>
 <li class="chapter" data-level="3.4.1" data-path="expo.html"><a href="expo.html#data-based-approaches"><i class="fa fa-check"></i><b>3.4.1</b> Data-based approaches</a></li>
 <li class="chapter" data-level="3.4.2" data-path="expo.html"><a href="expo.html#creating-and-visualizing-the-data"><i class="fa fa-check"></i><b>3.4.2</b> Creating and visualizing the data</a></li>
 <li class="chapter" data-level="3.4.3" data-path="expo.html"><a href="expo.html#one-simulation"><i class="fa fa-check"></i><b>3.4.3</b> One simulation</a></li>
@@ -189,13 +217,15 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="3.4.8" data-path="expo.html"><a href="expo.html#f-environmental-noise"><i class="fa fa-check"></i><b>3.4.8</b> 1/<span class="math inline">\(f\)</span> environmental noise</a></li>
 </ul></li>
 </ul></li>
-<li class="chapter" data-level="4" data-path="DID.html"><a href="DID.html"><i class="fa fa-check"></i><b>4</b> Density-independent Demography</a><ul>
+<li class="chapter" data-level="4" data-path="DID.html"><a href="DID.html"><i class="fa fa-check"></i><b>4</b> Density-independent Demography</a>
+<ul>
 <li class="chapter" data-level="4.1" data-path="DID.html"><a href="DID.html#a-two-stage-matrix-model"><i class="fa fa-check"></i><b>4.1</b> A two stage matrix model</a></li>
 <li class="chapter" data-level="4.2" data-path="DID.html"><a href="DID.html#a-brief-primer-on-matrices"><i class="fa fa-check"></i><b>4.2</b> A brief primer on matrices</a></li>
 <li class="chapter" data-level="4.3" data-path="DID.html"><a href="DID.html#decomposing-a"><i class="fa fa-check"></i><b>4.3</b> Decomposing <strong>A</strong></a></li>
 <li class="chapter" data-level="4.4" data-path="DID.html"><a href="DID.html#a-three-stage-model"><i class="fa fa-check"></i><b>4.4</b> A three stage model</a></li>
 <li class="chapter" data-level="4.5" data-path="DID.html"><a href="DID.html#projection"><i class="fa fa-check"></i><b>4.5</b> Projection</a></li>
-<li class="chapter" data-level="4.6" data-path="DID.html"><a href="DID.html#analyzing-the-transition-matrix"><i class="fa fa-check"></i><b>4.6</b> Analyzing the transition matrix</a><ul>
+<li class="chapter" data-level="4.6" data-path="DID.html"><a href="DID.html#analyzing-the-transition-matrix"><i class="fa fa-check"></i><b>4.6</b> Analyzing the transition matrix</a>
+<ul>
 <li class="chapter" data-level="4.6.1" data-path="DID.html"><a href="DID.html#eigenanalysis"><i class="fa fa-check"></i><b>4.6.1</b> Eigenanalysis</a></li>
 <li class="chapter" data-level="4.6.2" data-path="DID.html"><a href="DID.html#finite-rate-of-increase"><i class="fa fa-check"></i><b>4.6.2</b> Finite rate of increase</a></li>
 <li class="chapter" data-level="4.6.3" data-path="DID.html"><a href="DID.html#stable-stage-distribution"><i class="fa fa-check"></i><b>4.6.3</b> Stable stage distribution</a></li>
@@ -203,36 +233,44 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="4.6.5" data-path="DID.html"><a href="DID.html#reproductive-value"><i class="fa fa-check"></i><b>4.6.5</b> Reproductive value</a></li>
 <li class="chapter" data-level="4.6.6" data-path="DID.html"><a href="DID.html#sensitivity-and-elasticity"><i class="fa fa-check"></i><b>4.6.6</b> Sensitivity and elasticity</a></li>
 </ul></li>
-<li class="chapter" data-level="4.7" data-path="DID.html"><a href="DID.html#integral-projection"><i class="fa fa-check"></i><b>4.7</b> Integral projection</a><ul>
+<li class="chapter" data-level="4.7" data-path="DID.html"><a href="DID.html#integral-projection"><i class="fa fa-check"></i><b>4.7</b> Integral projection</a>
+<ul>
 <li class="chapter" data-level="4.7.1" data-path="DID.html"><a href="DID.html#a-size-based-ipm-of-smooth-coneflower"><i class="fa fa-check"></i><b>4.7.1</b> A size-based IPM of smooth coneflower</a></li>
 <li class="chapter" data-level="4.7.2" data-path="DID.html"><a href="DID.html#population-summaries"><i class="fa fa-check"></i><b>4.7.2</b> Population summaries</a></li>
 </ul></li>
 <li class="chapter" data-level="4.8" data-path="DID.html"><a href="DID.html#r-packges-for-demography"><i class="fa fa-check"></i><b>4.8</b> R packges for demography</a></li>
 <li class="chapter" data-level="4.9" data-path="DID.html"><a href="DID.html#exploring-a-real-population"><i class="fa fa-check"></i><b>4.9</b> Exploring a real population</a></li>
 </ul></li>
-<li class="chapter" data-level="5" data-path="DDgrowth.html"><a href="DDgrowth.html"><i class="fa fa-check"></i><b>5</b> Density-dependent growth</a><ul>
+<li class="chapter" data-level="5" data-path="DDgrowth.html"><a href="DDgrowth.html"><i class="fa fa-check"></i><b>5</b> Density-dependent growth</a>
+<ul>
 <li class="chapter" data-level="5.1" data-path="DDgrowth.html"><a href="DDgrowth.html#continuous-logistic-growth"><i class="fa fa-check"></i><b>5.1</b> Continuous logistic growth</a></li>
-<li class="chapter" data-level="5.2" data-path="DDgrowth.html"><a href="DDgrowth.html#dynamics-around-the-equilibria-stability"><i class="fa fa-check"></i><b>5.2</b> Dynamics around the equilibria — stability</a><ul>
+<li class="chapter" data-level="5.2" data-path="DDgrowth.html"><a href="DDgrowth.html#dynamics-around-the-equilibria-stability"><i class="fa fa-check"></i><b>5.2</b> Dynamics around the equilibria — stability</a>
+<ul>
 <li class="chapter" data-level="5.2.1" data-path="DDgrowth.html"><a href="DDgrowth.html#analytical-linear-stability-analysis"><i class="fa fa-check"></i><b>5.2.1</b> Analytical linear stability analysis</a></li>
 <li class="chapter" data-level="5.2.2" data-path="DDgrowth.html"><a href="DDgrowth.html#projection-with-numerical-integration"><i class="fa fa-check"></i><b>5.2.2</b> Projection with numerical integration</a></li>
 </ul></li>
-<li class="chapter" data-level="5.3" data-path="DDgrowth.html"><a href="DDgrowth.html#other-forms-of-density-dependent-growth"><i class="fa fa-check"></i><b>5.3</b> Other forms of density-dependent growth</a><ul>
+<li class="chapter" data-level="5.3" data-path="DDgrowth.html"><a href="DDgrowth.html#other-forms-of-density-dependent-growth"><i class="fa fa-check"></i><b>5.3</b> Other forms of density-dependent growth</a>
+<ul>
 <li class="chapter" data-level="5.3.1" data-path="DDgrowth.html"><a href="DDgrowth.html#effects-of-n-on-birth-and-death-rates"><i class="fa fa-check"></i><b>5.3.1</b> Effects of N on birth and death rates</a></li>
 <li class="chapter" data-level="5.3.2" data-path="DDgrowth.html"><a href="DDgrowth.html#theta-logistic-growth"><i class="fa fa-check"></i><b>5.3.2</b> Theta-logistic growth</a></li>
 <li class="chapter" data-level="5.3.3" data-path="DDgrowth.html"><a href="DDgrowth.html#allee-effect"><i class="fa fa-check"></i><b>5.3.3</b> Allee effect</a></li>
 <li class="chapter" data-level="5.3.4" data-path="DDgrowth.html"><a href="DDgrowth.html#the-integral-of-logistic-growth"><i class="fa fa-check"></i><b>5.3.4</b> The integral of logistic growth</a></li>
 </ul></li>
-<li class="chapter" data-level="5.4" data-path="DDgrowth.html"><a href="DDgrowth.html#discrete-density-dependent-growth"><i class="fa fa-check"></i><b>5.4</b> Discrete Density-dependent Growth</a><ul>
+<li class="chapter" data-level="5.4" data-path="DDgrowth.html"><a href="DDgrowth.html#discrete-density-dependent-growth"><i class="fa fa-check"></i><b>5.4</b> Discrete Density-dependent Growth</a>
+<ul>
 <li class="chapter" data-level="5.4.1" data-path="DDgrowth.html"><a href="DDgrowth.html#effects-of-r_d"><i class="fa fa-check"></i><b>5.4.1</b> Effects of <span class="math inline">\(r_d\)</span></a></li>
 <li class="chapter" data-level="5.4.2" data-path="DDgrowth.html"><a href="DDgrowth.html#bifurcations"><i class="fa fa-check"></i><b>5.4.2</b> Bifurcations</a></li>
 </ul></li>
 <li class="chapter" data-level="5.5" data-path="DDgrowth.html"><a href="DDgrowth.html#maximum-sustained-yield"><i class="fa fa-check"></i><b>5.5</b> Maximum Sustained Yield</a></li>
 </ul></li>
-<li class="chapter" data-level="6" data-path="meta.html"><a href="meta.html"><i class="fa fa-check"></i><b>6</b> Populations in Space</a><ul>
-<li class="chapter" data-level="6.1" data-path="meta.html"><a href="meta.html#source-sink-dynamics"><i class="fa fa-check"></i><b>6.1</b> Source-sink Dynamics</a><ul>
+<li class="chapter" data-level="6" data-path="meta.html"><a href="meta.html"><i class="fa fa-check"></i><b>6</b> Populations in Space</a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="meta.html"><a href="meta.html#source-sink-dynamics"><i class="fa fa-check"></i><b>6.1</b> Source-sink Dynamics</a>
+<ul>
 <li class="chapter" data-level="6.1.1" data-path="meta.html"><a href="meta.html#complications-and-cases"><i class="fa fa-check"></i><b>6.1.1</b> Complications and cases</a></li>
 </ul></li>
-<li class="chapter" data-level="6.2" data-path="meta.html"><a href="meta.html#metapopulations"><i class="fa fa-check"></i><b>6.2</b> Metapopulations</a><ul>
+<li class="chapter" data-level="6.2" data-path="meta.html"><a href="meta.html#metapopulations"><i class="fa fa-check"></i><b>6.2</b> Metapopulations</a>
+<ul>
 <li class="chapter" data-level="6.2.1" data-path="meta.html"><a href="meta.html#the-classic-levins-model"><i class="fa fa-check"></i><b>6.2.1</b> The classic Levins model</a></li>
 <li class="chapter" data-level="6.2.2" data-path="meta.html"><a href="meta.html#propagule-rain"><i class="fa fa-check"></i><b>6.2.2</b> Propagule rain</a></li>
 <li class="chapter" data-level="6.2.3" data-path="meta.html"><a href="meta.html#the-rescue-effect-and-the-core-satellite-model"><i class="fa fa-check"></i><b>6.2.3</b> The rescue effect and the core-satellite model</a></li>
@@ -244,137 +282,161 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 <li class="chapter" data-level="6.3" data-path="meta.html"><a href="meta.html#hanskis-incidence-function"><i class="fa fa-check"></i><b>6.3</b> Hanski’s incidence function</a></li>
 </ul></li>
-<li class="chapter" data-level="7" data-path="competition.html"><a href="competition.html"><i class="fa fa-check"></i><b>7</b> Competition</a><ul>
-<li class="chapter" data-level="7.1" data-path="competition.html"><a href="competition.html#lotka-volterra-interspecific-competition"><i class="fa fa-check"></i><b>7.1</b> Lotka-Volterra Interspecific Competition</a></li>
-<li class="chapter" data-level="7.2" data-path="competition.html"><a href="competition.html#equilbria"><i class="fa fa-check"></i><b>7.2</b> Equilbria</a><ul>
-<li class="chapter" data-level="7.2.1" data-path="competition.html"><a href="competition.html#isoclines"><i class="fa fa-check"></i><b>7.2.1</b> Isoclines</a></li>
-<li class="chapter" data-level="7.2.2" data-path="competition.html"><a href="competition.html#finding-equilibria"><i class="fa fa-check"></i><b>7.2.2</b> Finding equilibria</a></li>
-<li class="chapter" data-level="7.2.3" data-path="competition.html"><a href="competition.html#coexistence-the-invasion-criterion"><i class="fa fa-check"></i><b>7.2.3</b> Coexistence — the invasion criterion</a></li>
-<li class="chapter" data-level="7.2.4" data-path="competition.html"><a href="competition.html#other-equilibria"><i class="fa fa-check"></i><b>7.2.4</b> Other equilibria</a></li>
+<li class="chapter" data-level="7" data-path="direct-competition-and-mutualism.html"><a href="direct-competition-and-mutualism.html"><i class="fa fa-check"></i><b>7</b> Direct competition and mutualism</a>
+<ul>
+<li class="chapter" data-level="7.1" data-path="direct-competition-and-mutualism.html"><a href="direct-competition-and-mutualism.html#interspecific-competition"><i class="fa fa-check"></i><b>7.1</b> Interspecific competition</a>
+<ul>
+<li class="chapter" data-level="7.1.1" data-path="direct-competition-and-mutualism.html"><a href="direct-competition-and-mutualism.html#equilbria"><i class="fa fa-check"></i><b>7.1.1</b> Equilbria</a></li>
+<li class="chapter" data-level="7.1.2" data-path="direct-competition-and-mutualism.html"><a href="direct-competition-and-mutualism.html#dynamics-at-the-equilibria"><i class="fa fa-check"></i><b>7.1.2</b> Dynamics at the Equilibria</a></li>
+<li class="chapter" data-level="7.1.3" data-path="direct-competition-and-mutualism.html"><a href="direct-competition-and-mutualism.html#return-time-and-the-effect-of-r"><i class="fa fa-check"></i><b>7.1.3</b> Return Time and the Effect of <span class="math inline">\(r\)</span></a></li>
 </ul></li>
-<li class="chapter" data-level="7.3" data-path="competition.html"><a href="competition.html#dynamics-at-the-equilibria"><i class="fa fa-check"></i><b>7.3</b> Dynamics at the Equilibria</a><ul>
-<li class="chapter" data-level="7.3.1" data-path="competition.html"><a href="competition.html#determine-the-equilibria"><i class="fa fa-check"></i><b>7.3.1</b> Determine the equilibria</a></li>
-<li class="chapter" data-level="7.3.2" data-path="competition.html"><a href="competition.html#create-the-jacobian-matrix"><i class="fa fa-check"></i><b>7.3.2</b> Create the Jacobian matrix</a></li>
-<li class="chapter" data-level="7.3.3" data-path="competition.html"><a href="competition.html#solve-the-jacobian-at-an-equilibrium"><i class="fa fa-check"></i><b>7.3.3</b> Solve the Jacobian at an equilibrium</a></li>
-<li class="chapter" data-level="7.3.4" data-path="competition.html"><a href="competition.html#use-the-jacobian-matrix"><i class="fa fa-check"></i><b>7.3.4</b> Use the Jacobian matrix</a></li>
-<li class="chapter" data-level="7.3.5" data-path="competition.html"><a href="competition.html#three-interesting-equilbria"><i class="fa fa-check"></i><b>7.3.5</b> Three interesting equilbria</a></li>
+<li class="chapter" data-level="7.2" data-path="direct-competition-and-mutualism.html"><a href="direct-competition-and-mutualism.html#interspecific-mutualism"><i class="fa fa-check"></i><b>7.2</b> Interspecific mutualism</a></li>
+<li class="chapter" data-level="7.3" data-path="direct-competition-and-mutualism.html"><a href="direct-competition-and-mutualism.html#generalized-lotka-volterra-models"><i class="fa fa-check"></i><b>7.3</b> Generalized Lotka-Volterra models</a></li>
+<li class="chapter" data-level="7.4" data-path="direct-competition-and-mutualism.html"><a href="direct-competition-and-mutualism.html#summary"><i class="fa fa-check"></i><b>7.4</b> Summary</a></li>
 </ul></li>
-<li class="chapter" data-level="7.4" data-path="competition.html"><a href="competition.html#return-time-and-the-effect-of-r"><i class="fa fa-check"></i><b>7.4</b> Return Time and the Effect of <span class="math inline">\(r\)</span></a></li>
-<li class="chapter" data-level="7.5" data-path="competition.html"><a href="competition.html#indirect-competition-for-resources"><i class="fa fa-check"></i><b>7.5</b> Indirect competition for resources</a><ul>
-<li class="chapter" data-level="7.5.1" data-path="competition.html"><a href="competition.html#linear-and-nonlinear-responses"><i class="fa fa-check"></i><b>7.5.1</b> Linear and nonlinear responses</a></li>
-<li class="chapter" data-level="7.5.2" data-path="competition.html"><a href="competition.html#relative-nonlinearity"><i class="fa fa-check"></i><b>7.5.2</b> Relative nonlinearity</a></li>
-<li class="chapter" data-level="7.5.3" data-path="competition.html"><a href="competition.html#competition-for-two-resources-the-resource-ratio-model"><i class="fa fa-check"></i><b>7.5.3</b> Competition for two resources: the resource ratio model</a></li>
+<li class="chapter" data-level="8" data-path="cr.html"><a href="cr.html"><i class="fa fa-check"></i><b>8</b> Consumer-resource Interactions</a>
+<ul>
+<li class="chapter" data-level="8.1" data-path="cr.html"><a href="cr.html#ratio-dependence"><i class="fa fa-check"></i><b>8.1</b> Ratio dependence</a>
+<ul>
+<li class="chapter" data-level="8.1.1" data-path="cr.html"><a href="cr.html#dynamics-of-ratio-dependent-predation"><i class="fa fa-check"></i><b>8.1.1</b> Dynamics of ratio dependent predation</a></li>
 </ul></li>
-<li class="chapter" data-level="7.6" data-path="competition.html"><a href="competition.html#summary"><i class="fa fa-check"></i><b>7.6</b> Summary</a></li>
+<li class="chapter" data-level="8.2" data-path="cr.html"><a href="cr.html#prey-dependence"><i class="fa fa-check"></i><b>8.2</b> Prey dependence</a>
+<ul>
+<li class="chapter" data-level="8.2.1" data-path="cr.html"><a href="cr.html#dyanmics-of-prey-dependent-predation"><i class="fa fa-check"></i><b>8.2.1</b> Dyanmics of prey-dependent predation</a></li>
 </ul></li>
-<li class="chapter" data-level="8" data-path="mutualisms.html"><a href="mutualisms.html"><i class="fa fa-check"></i><b>8</b> Mutualisms</a><ul>
-<li class="chapter" data-level="8.1" data-path="mutualisms.html"><a href="mutualisms.html#background"><i class="fa fa-check"></i><b>8.1</b> Background</a></li>
-<li class="chapter" data-level="8.2" data-path="mutualisms.html"><a href="mutualisms.html#lotka-volterra-mutualism"><i class="fa fa-check"></i><b>8.2</b> Lotka-Volterra mutualism</a></li>
-<li class="chapter" data-level="8.3" data-path="mutualisms.html"><a href="mutualisms.html#consumer-resource-mutualism"><i class="fa fa-check"></i><b>8.3</b> Consumer-resource mutualism</a><ul>
-<li class="chapter" data-level="8.3.1" data-path="mutualisms.html"><a href="mutualisms.html#a-model-of-uni-directional-mutualism"><i class="fa fa-check"></i><b>8.3.1</b> A model of uni-directional mutualism</a></li>
+<li class="chapter" data-level="8.3" data-path="cr.html"><a href="cr.html#interlude-functional-response---what-an-individual-predator-does-fr"><i class="fa fa-check"></i><b>8.3</b> Interlude: Functional response - what an individual predator does (#fr)</a></li>
+<li class="chapter" data-level="8.4" data-path="cr.html"><a href="cr.html#stability-analysis-for-the-prey-dependent-lotkavolterra-model"><i class="fa fa-check"></i><b>8.4</b> Stability analysis for the prey-dependent Lotka–Volterra model</a></li>
+<li class="chapter" data-level="8.5" data-path="cr.html"><a href="cr.html#resource-growth-functions"><i class="fa fa-check"></i><b>8.5</b> Resource growth functions</a>
+<ul>
+<li class="chapter" data-level="8.5.1" data-path="cr.html"><a href="cr.html#consumption-of-a-renewable-resource"><i class="fa fa-check"></i><b>8.5.1</b> Consumption of a renewable resource</a></li>
+<li class="chapter" data-level="8.5.2" data-path="cr.html"><a href="cr.html#prey-carrying-capacity-and-type-ii-functional-response"><i class="fa fa-check"></i><b>8.5.2</b> Prey carrying capacity and type II functional response</a></li>
 </ul></li>
-<li class="chapter" data-level="8.4" data-path="mutualisms.html"><a href="mutualisms.html#plant-soil-feedbacks"><i class="fa fa-check"></i><b>8.4</b> Plant-soil feedbacks</a></li>
-<li class="chapter" data-level="8.5" data-path="mutualisms.html"><a href="mutualisms.html#simulations-for-learning"><i class="fa fa-check"></i><b>8.5</b> Simulations for learning</a><ul>
-<li class="chapter" data-level="8.5.1" data-path="mutualisms.html"><a href="mutualisms.html#lvg"><i class="fa fa-check"></i><b>8.5.1</b> <code>lvg()</code></a></li>
-<li class="chapter" data-level="8.5.2" data-path="mutualisms.html"><a href="mutualisms.html#systematic-simulations"><i class="fa fa-check"></i><b>8.5.2</b> Systematic simulations</a></li>
-<li class="chapter" data-level="8.5.3" data-path="mutualisms.html"><a href="mutualisms.html#checking-simulation-results"><i class="fa fa-check"></i><b>8.5.3</b> Checking simulation results</a></li>
-<li class="chapter" data-level="8.5.4" data-path="mutualisms.html"><a href="mutualisms.html#comparing-simulation-results-to-analytical-solutions"><i class="fa fa-check"></i><b>8.5.4</b> Comparing simulation results to analytical solutions</a></li>
-<li class="chapter" data-level="8.5.5" data-path="mutualisms.html"><a href="mutualisms.html#one-last-thing-using-the-jacobian-matrix"><i class="fa fa-check"></i><b>8.5.5</b> One last thing: using the Jacobian matrix</a></li>
-<li class="chapter" data-level="8.5.6" data-path="mutualisms.html"><a href="mutualisms.html#in-fine"><i class="fa fa-check"></i><b>8.5.6</b> <em>In Fine</em></a></li>
+<li class="chapter" data-level="8.6" data-path="cr.html"><a href="cr.html#paradox-of-enrichment"><i class="fa fa-check"></i><b>8.6</b> Paradox of enrichment</a></li>
+<li class="chapter" data-level="8.7" data-path="cr.html"><a href="cr.html#consumption-of-two-resources"><i class="fa fa-check"></i><b>8.7</b> Consumption of two resources</a>
+<ul>
+<li class="chapter" data-level="8.7.1" data-path="cr.html"><a href="cr.html#interpreting-consumption-and-assimilation"><i class="fa fa-check"></i><b>8.7.1</b> Interpreting consumption and assimilation</a></li>
 </ul></li>
+<li class="chapter" data-level="8.8" data-path="cr.html"><a href="cr.html#in-fine-1"><i class="fa fa-check"></i><b>8.8</b> In fine</a></li>
 </ul></li>
-<li class="chapter" data-level="9" data-path="consumer-resource-interactions.html"><a href="consumer-resource-interactions.html"><i class="fa fa-check"></i><b>9</b> Consumer-resource Interactions</a><ul>
-<li class="chapter" data-level="9.1" data-path="consumer-resource-interactions.html"><a href="consumer-resource-interactions.html#ratio-dependence"><i class="fa fa-check"></i><b>9.1</b> Ratio dependence</a><ul>
-<li class="chapter" data-level="9.1.1" data-path="consumer-resource-interactions.html"><a href="consumer-resource-interactions.html#dynamics-of-ratio-dependent-predation"><i class="fa fa-check"></i><b>9.1.1</b> Dynamics of ratio dependent predation</a></li>
+<li class="chapter" data-level="9" data-path="host-parasitoid-relations.html"><a href="host-parasitoid-relations.html"><i class="fa fa-check"></i><b>9</b> Host-parasitoid relations</a>
+<ul>
+<li class="chapter" data-level="9.1" data-path="host-parasitoid-relations.html"><a href="host-parasitoid-relations.html#independent-and-random-attacks"><i class="fa fa-check"></i><b>9.1</b> Independent and random attacks</a>
+<ul>
+<li class="chapter" data-level="9.1.1" data-path="host-parasitoid-relations.html"><a href="host-parasitoid-relations.html#simulating-simple-host-parasitoid-dynamics"><i class="fa fa-check"></i><b>9.1.1</b> Simulating simple host-parasitoid dynamics</a></li>
 </ul></li>
-<li class="chapter" data-level="9.2" data-path="consumer-resource-interactions.html"><a href="consumer-resource-interactions.html#prey-dependence"><i class="fa fa-check"></i><b>9.2</b> Prey dependence</a><ul>
-<li class="chapter" data-level="9.2.1" data-path="consumer-resource-interactions.html"><a href="consumer-resource-interactions.html#dyanmics-of-prey-dependent-predation"><i class="fa fa-check"></i><b>9.2.1</b> Dyanmics of prey-dependent predation</a></li>
+<li class="chapter" data-level="9.2" data-path="host-parasitoid-relations.html"><a href="host-parasitoid-relations.html#aggregation-leads-to-coexistence"><i class="fa fa-check"></i><b>9.2</b> Aggregation leads to coexistence</a>
+<ul>
+<li class="chapter" data-level="9.2.1" data-path="host-parasitoid-relations.html"><a href="host-parasitoid-relations.html#equilibria-for-a-discrete-time-model"><i class="fa fa-check"></i><b>9.2.1</b> Equilibria for a discrete-time model</a></li>
 </ul></li>
-<li class="chapter" data-level="9.3" data-path="consumer-resource-interactions.html"><a href="consumer-resource-interactions.html#interlude-functional-response---what-an-individual-predator-does"><i class="fa fa-check"></i><b>9.3</b> Interlude: Functional response - what an individual predator does</a></li>
-<li class="chapter" data-level="9.4" data-path="consumer-resource-interactions.html"><a href="consumer-resource-interactions.html#stability-analysis-for-the-prey-dependent-lotkavolterra-model"><i class="fa fa-check"></i><b>9.4</b> Stability analysis for the prey-dependent Lotka–Volterra model</a></li>
-<li class="chapter" data-level="9.5" data-path="consumer-resource-interactions.html"><a href="consumer-resource-interactions.html#prey-carrying-capacity-and-type-ii-functional-response"><i class="fa fa-check"></i><b>9.5</b> Prey carrying capacity and type II functional response</a><ul>
-<li class="chapter" data-level="9.5.1" data-path="consumer-resource-interactions.html"><a href="consumer-resource-interactions.html#paradox-of-enrichment"><i class="fa fa-check"></i><b>9.5.1</b> Paradox of enrichment</a></li>
+<li class="chapter" data-level="9.3" data-path="host-parasitoid-relations.html"><a href="host-parasitoid-relations.html#stability-of-hostparasitoid-dynamics"><i class="fa fa-check"></i><b>9.3</b> Stability of host–parasitoid dynamics</a></li>
+<li class="chapter" data-level="9.4" data-path="host-parasitoid-relations.html"><a href="host-parasitoid-relations.html#in-fine-2"><i class="fa fa-check"></i><b>9.4</b> <em>In Fine</em></a></li>
 </ul></li>
+<li class="chapter" data-level="10" data-path="disease.html"><a href="disease.html"><i class="fa fa-check"></i><b>10</b> Disease</a>
+<ul>
+<li class="chapter" data-level="10.1" data-path="disease.html"><a href="disease.html#closed-epidemics"><i class="fa fa-check"></i><b>10.1</b> Closed epidemics</a>
+<ul>
+<li class="chapter" data-level="10.1.1" data-path="disease.html"><a href="disease.html#density-dependent-transmission"><i class="fa fa-check"></i><b>10.1.1</b> Density-dependent transmission</a></li>
+<li class="chapter" data-level="10.1.2" data-path="disease.html"><a href="disease.html#frequency-dependent-transmission"><i class="fa fa-check"></i><b>10.1.2</b> Frequency-dependent transmission</a></li>
 </ul></li>
-<li class="chapter" data-level="10" data-path="host-parasitoid-relations.html"><a href="host-parasitoid-relations.html"><i class="fa fa-check"></i><b>10</b> Host-parasitoid relations</a><ul>
-<li class="chapter" data-level="10.1" data-path="host-parasitoid-relations.html"><a href="host-parasitoid-relations.html#independent-and-random-attacks"><i class="fa fa-check"></i><b>10.1</b> Independent and random attacks</a><ul>
-<li class="chapter" data-level="10.1.1" data-path="host-parasitoid-relations.html"><a href="host-parasitoid-relations.html#simulating-simple-host-parasitoid-dynamics"><i class="fa fa-check"></i><b>10.1.1</b> Simulating simple host-parasitoid dynamics</a></li>
-</ul></li>
-<li class="chapter" data-level="10.2" data-path="host-parasitoid-relations.html"><a href="host-parasitoid-relations.html#aggregation-leads-to-coexistence"><i class="fa fa-check"></i><b>10.2</b> Aggregation leads to coexistence</a><ul>
-<li class="chapter" data-level="10.2.1" data-path="host-parasitoid-relations.html"><a href="host-parasitoid-relations.html#equilibria-for-a-discrete-time-model"><i class="fa fa-check"></i><b>10.2.1</b> Equilibria for a discrete-time model</a></li>
-</ul></li>
-<li class="chapter" data-level="10.3" data-path="host-parasitoid-relations.html"><a href="host-parasitoid-relations.html#stability-of-hostparasitoid-dynamics"><i class="fa fa-check"></i><b>10.3</b> Stability of host–parasitoid dynamics</a></li>
-<li class="chapter" data-level="10.4" data-path="mutualisms.html"><a href="mutualisms.html#in-fine"><i class="fa fa-check"></i><b>10.4</b> <em>In Fine</em></a></li>
-</ul></li>
-<li class="chapter" data-level="11" data-path="disease.html"><a href="disease.html"><i class="fa fa-check"></i><b>11</b> Disease</a><ul>
-<li class="chapter" data-level="11.1" data-path="disease.html"><a href="disease.html#closed-epidemics"><i class="fa fa-check"></i><b>11.1</b> Closed epidemics</a><ul>
-<li class="chapter" data-level="11.1.1" data-path="disease.html"><a href="disease.html#density-dependent-transmission"><i class="fa fa-check"></i><b>11.1.1</b> Density-dependent transmission</a></li>
-<li class="chapter" data-level="11.1.2" data-path="disease.html"><a href="disease.html#frequency-dependent-transmission"><i class="fa fa-check"></i><b>11.1.2</b> Frequency-dependent transmission</a></li>
-</ul></li>
-<li class="chapter" data-level="11.2" data-path="disease.html"><a href="disease.html#open-epidemics"><i class="fa fa-check"></i><b>11.2</b> Open epidemics</a></li>
-<li class="chapter" data-level="11.3" data-path="disease.html"><a href="disease.html#modeling-data-from-bombay"><i class="fa fa-check"></i><b>11.3</b> Modeling data from Bombay</a><ul>
-<li class="chapter" data-level="11.3.1" data-path="disease.html"><a href="disease.html#optimization"><i class="fa fa-check"></i><b>11.3.1</b> Optimization</a></li>
+<li class="chapter" data-level="10.2" data-path="disease.html"><a href="disease.html#open-epidemics"><i class="fa fa-check"></i><b>10.2</b> Open epidemics</a></li>
+<li class="chapter" data-level="10.3" data-path="disease.html"><a href="disease.html#modeling-data-from-bombay"><i class="fa fa-check"></i><b>10.3</b> Modeling data from Bombay</a>
+<ul>
+<li class="chapter" data-level="10.3.1" data-path="disease.html"><a href="disease.html#optimization"><i class="fa fa-check"></i><b>10.3.1</b> Optimization</a></li>
 </ul></li>
 </ul></li>
-<li class="chapter" data-level="12" data-path="food-webs-and-other-networks.html"><a href="food-webs-and-other-networks.html"><i class="fa fa-check"></i><b>12</b> Food webs and other networks</a><ul>
+<li class="chapter" data-level="11" data-path="consumer-resource-competition-and-mutualisms.html"><a href="consumer-resource-competition-and-mutualisms.html"><i class="fa fa-check"></i><b>11</b> Consumer-resource Competition and Mutualisms</a>
+<ul>
+<li class="chapter" data-level="11.1" data-path="consumer-resource-competition-and-mutualisms.html"><a href="consumer-resource-competition-and-mutualisms.html#competition-for-one-resource"><i class="fa fa-check"></i><b>11.1</b> Competition for one resource</a></li>
+<li class="chapter" data-level="11.2" data-path="consumer-resource-competition-and-mutualisms.html"><a href="consumer-resource-competition-and-mutualisms.html#competition-for-substitutable-resources"><i class="fa fa-check"></i><b>11.2</b> Competition for Substitutable resources</a></li>
+<li class="chapter" data-level="11.3" data-path="consumer-resource-competition-and-mutualisms.html"><a href="consumer-resource-competition-and-mutualisms.html#tilmans-resource-ratio-with-essential-resources"><i class="fa fa-check"></i><b>11.3</b> Tilman’s resource ratio with essential resources</a></li>
+<li class="chapter" data-level="11.4" data-path="consumer-resource-competition-and-mutualisms.html"><a href="consumer-resource-competition-and-mutualisms.html#consumer-resource-mutualism"><i class="fa fa-check"></i><b>11.4</b> Consumer-resource mutualism</a>
+<ul>
+<li class="chapter" data-level="11.4.1" data-path="consumer-resource-competition-and-mutualisms.html"><a href="consumer-resource-competition-and-mutualisms.html#a-model-of-uni-directional-mutualism"><i class="fa fa-check"></i><b>11.4.1</b> A model of uni-directional mutualism</a></li>
+</ul></li>
+<li class="chapter" data-level="11.5" data-path="consumer-resource-competition-and-mutualisms.html"><a href="consumer-resource-competition-and-mutualisms.html#plant-soil-feedbacks"><i class="fa fa-check"></i><b>11.5</b> Plant-soil feedbacks</a></li>
+<li class="chapter" data-level="11.6" data-path="consumer-resource-competition-and-mutualisms.html"><a href="consumer-resource-competition-and-mutualisms.html#simulations-for-learning"><i class="fa fa-check"></i><b>11.6</b> Simulations for learning</a>
+<ul>
+<li class="chapter" data-level="11.6.1" data-path="consumer-resource-competition-and-mutualisms.html"><a href="consumer-resource-competition-and-mutualisms.html#lvg"><i class="fa fa-check"></i><b>11.6.1</b> <code>lvg()</code></a></li>
+<li class="chapter" data-level="11.6.2" data-path="consumer-resource-competition-and-mutualisms.html"><a href="consumer-resource-competition-and-mutualisms.html#systematic-simulations"><i class="fa fa-check"></i><b>11.6.2</b> Systematic simulations</a></li>
+<li class="chapter" data-level="11.6.3" data-path="consumer-resource-competition-and-mutualisms.html"><a href="consumer-resource-competition-and-mutualisms.html#checking-simulation-results"><i class="fa fa-check"></i><b>11.6.3</b> Checking simulation results</a></li>
+<li class="chapter" data-level="11.6.4" data-path="consumer-resource-competition-and-mutualisms.html"><a href="consumer-resource-competition-and-mutualisms.html#comparing-simulation-results-to-analytical-solutions"><i class="fa fa-check"></i><b>11.6.4</b> Comparing simulation results to analytical solutions</a></li>
+<li class="chapter" data-level="11.6.5" data-path="consumer-resource-competition-and-mutualisms.html"><a href="consumer-resource-competition-and-mutualisms.html#one-last-thing-using-the-jacobian-matrix"><i class="fa fa-check"></i><b>11.6.5</b> One last thing: using the Jacobian matrix</a></li>
+<li class="chapter" data-level="11.6.6" data-path="consumer-resource-competition-and-mutualisms.html"><a href="consumer-resource-competition-and-mutualisms.html#in-fine-3"><i class="fa fa-check"></i><b>11.6.6</b> <em>In Fine</em></a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="12" data-path="food-webs-and-other-networks.html"><a href="food-webs-and-other-networks.html"><i class="fa fa-check"></i><b>12</b> Food webs and other networks</a>
+<ul>
 <li class="chapter" data-level="12.1" data-path="food-webs-and-other-networks.html"><a href="food-webs-and-other-networks.html#food-web-characteristics"><i class="fa fa-check"></i><b>12.1</b> Food Web Characteristics</a></li>
-<li class="chapter" data-level="12.2" data-path="food-webs-and-other-networks.html"><a href="food-webs-and-other-networks.html#does-omnivory-destablize-food-chains"><i class="fa fa-check"></i><b>12.2</b> Does omnivory destablize food chains?</a><ul>
+<li class="chapter" data-level="12.2" data-path="food-webs-and-other-networks.html"><a href="food-webs-and-other-networks.html#does-omnivory-destablize-food-chains"><i class="fa fa-check"></i><b>12.2</b> Does omnivory destablize food chains?</a>
+<ul>
 <li class="chapter" data-level="12.2.1" data-path="food-webs-and-other-networks.html"><a href="food-webs-and-other-networks.html#multi-species-lotkavolterra-notation"><i class="fa fa-check"></i><b>12.2.1</b> Multi-species Lotka–Volterra notation</a></li>
-<li class="chapter" data-level="12.2.2" data-path="mutualisms.html"><a href="mutualisms.html#background"><i class="fa fa-check"></i><b>12.2.2</b> Background</a></li>
+<li class="chapter" data-level="12.2.2" data-path="food-webs-and-other-networks.html"><a href="food-webs-and-other-networks.html#background"><i class="fa fa-check"></i><b>12.2.2</b> Background</a></li>
 <li class="chapter" data-level="12.2.3" data-path="food-webs-and-other-networks.html"><a href="food-webs-and-other-networks.html#implementing-pimm-and-lawtons-methods"><i class="fa fa-check"></i><b>12.2.3</b> Implementing Pimm and Lawton’s Methods</a></li>
 <li class="chapter" data-level="12.2.4" data-path="food-webs-and-other-networks.html"><a href="food-webs-and-other-networks.html#shortening-the-chain"><i class="fa fa-check"></i><b>12.2.4</b> Shortening the Chain</a></li>
 <li class="chapter" data-level="12.2.5" data-path="food-webs-and-other-networks.html"><a href="food-webs-and-other-networks.html#adding-omnivory"><i class="fa fa-check"></i><b>12.2.5</b> Adding Omnivory</a></li>
 <li class="chapter" data-level="12.2.6" data-path="food-webs-and-other-networks.html"><a href="food-webs-and-other-networks.html#comparing-chain-a-versus-b"><i class="fa fa-check"></i><b>12.2.6</b> Comparing Chain A versus B</a></li>
 <li class="chapter" data-level="12.2.7" data-path="food-webs-and-other-networks.html"><a href="food-webs-and-other-networks.html#re-evaluating-take-home-messages"><i class="fa fa-check"></i><b>12.2.7</b> Re-evaluating Take-Home Messages</a></li>
 </ul></li>
-<li class="chapter" data-level="12.3" data-path="food-webs-and-other-networks.html"><a href="food-webs-and-other-networks.html#perhaps-mutualism-stabilizes-bipartite-networks"><i class="fa fa-check"></i><b>12.3</b> Perhaps mutualism stabilizes bipartite networks</a><ul>
+<li class="chapter" data-level="12.3" data-path="food-webs-and-other-networks.html"><a href="food-webs-and-other-networks.html#perhaps-mutualism-stabilizes-bipartite-networks"><i class="fa fa-check"></i><b>12.3</b> Perhaps mutualism stabilizes bipartite networks</a>
+<ul>
 <li class="chapter" data-level="12.3.1" data-path="food-webs-and-other-networks.html"><a href="food-webs-and-other-networks.html#creating-bipartite-webs"><i class="fa fa-check"></i><b>12.3.1</b> Creating bipartite webs</a></li>
 <li class="chapter" data-level="12.3.2" data-path="food-webs-and-other-networks.html"><a href="food-webs-and-other-networks.html#testing-effects-of-nestedness-and-modularity-on-network-resilience."><i class="fa fa-check"></i><b>12.3.2</b> Testing effects of nestedness and modularity on network resilience.</a></li>
 <li class="chapter" data-level="12.3.3" data-path="food-webs-and-other-networks.html"><a href="food-webs-and-other-networks.html#path-analysis"><i class="fa fa-check"></i><b>12.3.3</b> Path Analysis</a></li>
 </ul></li>
-<li class="chapter" data-level="12.4" data-path="food-webs-and-other-networks.html"><a href="food-webs-and-other-networks.html#exploring-pandora-right-here-at-home"><i class="fa fa-check"></i><b>12.4</b> Exploring Pandora, right here at home</a><ul>
+<li class="chapter" data-level="12.4" data-path="food-webs-and-other-networks.html"><a href="food-webs-and-other-networks.html#exploring-pandora-right-here-at-home"><i class="fa fa-check"></i><b>12.4</b> Exploring Pandora, right here at home</a>
+<ul>
 <li class="chapter" data-level="12.4.1" data-path="food-webs-and-other-networks.html"><a href="food-webs-and-other-networks.html#properties-assessed"><i class="fa fa-check"></i><b>12.4.1</b> Properties assessed</a></li>
 </ul></li>
 </ul></li>
-<li class="chapter" data-level="13" data-path="diversity.html"><a href="diversity.html"><i class="fa fa-check"></i><b>13</b> Diversity</a><ul>
-<li class="chapter" data-level="13.1" data-path="mutualisms.html"><a href="mutualisms.html#background"><i class="fa fa-check"></i><b>13.1</b> Background</a></li>
-<li class="chapter" data-level="13.2" data-path="diversity.html"><a href="diversity.html#species-composition"><i class="fa fa-check"></i><b>13.2</b> Species Composition</a><ul>
+<li class="chapter" data-level="13" data-path="diversity.html"><a href="diversity.html"><i class="fa fa-check"></i><b>13</b> Diversity</a>
+<ul>
+<li class="chapter" data-level="13.1" data-path="diversity.html"><a href="diversity.html#background-1"><i class="fa fa-check"></i><b>13.1</b> Background</a></li>
+<li class="chapter" data-level="13.2" data-path="diversity.html"><a href="diversity.html#species-composition"><i class="fa fa-check"></i><b>13.2</b> Species Composition</a>
+<ul>
 <li class="chapter" data-level="13.2.1" data-path="diversity.html"><a href="diversity.html#measures-of-abundance"><i class="fa fa-check"></i><b>13.2.1</b> Measures of abundance</a></li>
 <li class="chapter" data-level="13.2.2" data-path="diversity.html"><a href="diversity.html#dissimilarities-and-distances"><i class="fa fa-check"></i><b>13.2.2</b> Dissimilarities and Distances</a></li>
 <li class="chapter" data-level="13.2.3" data-path="diversity.html"><a href="diversity.html#displaying-multidimensional-distances"><i class="fa fa-check"></i><b>13.2.3</b> Displaying multidimensional distances</a></li>
 </ul></li>
 <li class="chapter" data-level="13.3" data-path="diversity.html"><a href="diversity.html#diversity-1"><i class="fa fa-check"></i><b>13.3</b> Diversity</a></li>
 <li class="chapter" data-level="13.4" data-path="diversity.html"><a href="diversity.html#species-diversity"><i class="fa fa-check"></i><b>13.4</b> Species diversity</a></li>
-<li class="chapter" data-level="13.5" data-path="diversity.html"><a href="diversity.html#rarefaction-and-total-species-richness"><i class="fa fa-check"></i><b>13.5</b> Rarefaction and total species richness</a><ul>
+<li class="chapter" data-level="13.5" data-path="diversity.html"><a href="diversity.html#rarefaction-and-total-species-richness"><i class="fa fa-check"></i><b>13.5</b> Rarefaction and total species richness</a>
+<ul>
 <li class="chapter" data-level="13.5.1" data-path="diversity.html"><a href="diversity.html#an-example-of-rarefaction-and-total-species-richness"><i class="fa fa-check"></i><b>13.5.1</b> An example of rarefaction and total species richness</a></li>
 </ul></li>
-<li class="chapter" data-level="13.6" data-path="diversity.html"><a href="diversity.html#distributions"><i class="fa fa-check"></i><b>13.6</b> Distributions</a><ul>
+<li class="chapter" data-level="13.6" data-path="diversity.html"><a href="diversity.html#distributions"><i class="fa fa-check"></i><b>13.6</b> Distributions</a>
+<ul>
 <li class="chapter" data-level="13.6.1" data-path="diversity.html"><a href="diversity.html#log-normal-distribution"><i class="fa fa-check"></i><b>13.6.1</b> Log-normal distribution</a></li>
 <li class="chapter" data-level="13.6.2" data-path="diversity.html"><a href="diversity.html#other-distributions"><i class="fa fa-check"></i><b>13.6.2</b> Other distributions</a></li>
 <li class="chapter" data-level="13.6.3" data-path="diversity.html"><a href="diversity.html#pattern-vs.-process"><i class="fa fa-check"></i><b>13.6.3</b> Pattern <em>vs.</em> process</a></li>
 </ul></li>
-<li class="chapter" data-level="13.7" data-path="diversity.html"><a href="diversity.html#neutral-theory-of-biodiversity-and-biogeography"><i class="fa fa-check"></i><b>13.7</b> Neutral Theory of Biodiversity and Biogeography</a><ul>
+<li class="chapter" data-level="13.7" data-path="diversity.html"><a href="diversity.html#neutral-theory-of-biodiversity-and-biogeography"><i class="fa fa-check"></i><b>13.7</b> Neutral Theory of Biodiversity and Biogeography</a>
+<ul>
 <li class="chapter" data-level="13.7.1" data-path="diversity.html"><a href="diversity.html#different-flavors-of-neutral-communities"><i class="fa fa-check"></i><b>13.7.1</b> Different flavors of neutral communities</a></li>
 <li class="chapter" data-level="13.7.2" data-path="diversity.html"><a href="diversity.html#investigating-neutral-communities"><i class="fa fa-check"></i><b>13.7.2</b> Investigating neutral communities</a></li>
 </ul></li>
-<li class="chapter" data-level="13.8" data-path="diversity.html"><a href="diversity.html#speciesarea-relations"><i class="fa fa-check"></i><b>13.8</b> Species–area relations</a><ul>
+<li class="chapter" data-level="13.8" data-path="diversity.html"><a href="diversity.html#speciesarea-relations"><i class="fa fa-check"></i><b>13.8</b> Species–area relations</a>
+<ul>
 <li class="chapter" data-level="13.8.1" data-path="diversity.html"><a href="diversity.html#island-biogeography"><i class="fa fa-check"></i><b>13.8.1</b> Island biogeography</a></li>
 </ul></li>
-<li class="chapter" data-level="13.9" data-path="diversity.html"><a href="diversity.html#diversity-partitioning"><i class="fa fa-check"></i><b>13.9</b> Diversity Partitioning</a><ul>
+<li class="chapter" data-level="13.9" data-path="diversity.html"><a href="diversity.html#diversity-partitioning"><i class="fa fa-check"></i><b>13.9</b> Diversity Partitioning</a>
+<ul>
 <li class="chapter" data-level="13.9.1" data-path="diversity.html"><a href="diversity.html#partitioning-speciesarea-relations"><i class="fa fa-check"></i><b>13.9.1</b> Partitioning species–area relations</a></li>
 </ul></li>
-<li class="chapter" data-level="13.10" data-path="competition.html"><a href="competition.html#summary"><i class="fa fa-check"></i><b>13.10</b> Summary</a></li>
+<li class="chapter" data-level="13.10" data-path="diversity.html"><a href="diversity.html#summary-1"><i class="fa fa-check"></i><b>13.10</b> Summary</a></li>
 </ul></li>
-<li class="chapter" data-level="14" data-path="appendix.html"><a href="appendix.html"><i class="fa fa-check"></i><b>14</b> Appendix</a><ul>
+<li class="chapter" data-level="14" data-path="appendix.html"><a href="appendix.html"><i class="fa fa-check"></i><b>14</b> Appendix</a>
+<ul>
 <li class="chapter" data-level="14.1" data-path="appendix.html"><a href="appendix.html#very-introductory-materials"><i class="fa fa-check"></i><b>14.1</b> Very introductory materials</a></li>
 <li class="chapter" data-level="14.2" data-path="appendix.html"><a href="appendix.html#writing-your-own-functions"><i class="fa fa-check"></i><b>14.2</b> Writing your own functions</a></li>
-<li class="chapter" data-level="14.3" data-path="appendix.html"><a href="appendix.html#iterated-actions-the-apply-family-and-loops"><i class="fa fa-check"></i><b>14.3</b> Iterated Actions: the <code>apply</code> Family and Loops</a><ul>
+<li class="chapter" data-level="14.3" data-path="appendix.html"><a href="appendix.html#iterated-actions-the-apply-family-and-loops"><i class="fa fa-check"></i><b>14.3</b> Iterated Actions: the <code>apply</code> Family and Loops</a>
+<ul>
 <li class="chapter" data-level="14.3.1" data-path="appendix.html"><a href="appendix.html#iterations-of-independent-actions"><i class="fa fa-check"></i><b>14.3.1</b> Iterations of independent actions</a></li>
 <li class="chapter" data-level="14.3.2" data-path="appendix.html"><a href="appendix.html#dependent-iterations"><i class="fa fa-check"></i><b>14.3.2</b> Dependent iterations</a></li>
 </ul></li>
 <li class="chapter" data-level="14.4" data-path="appendix.html"><a href="appendix.html#probability-distributions-and-randomization"><i class="fa fa-check"></i><b>14.4</b> Probability Distributions and Randomization</a></li>
 <li class="chapter" data-level="14.5" data-path="appendix.html"><a href="appendix.html#numerical-integration-of-ordinary-differential-equations"><i class="fa fa-check"></i><b>14.5</b> Numerical integration of ordinary differential equations</a></li>
-<li class="chapter" data-level="14.6" data-path="DID.html"><a href="DID.html#eigenanalysis"><i class="fa fa-check"></i><b>14.6</b> Eigenanalysis</a><ul>
+<li class="chapter" data-level="14.6" data-path="appendix.html"><a href="appendix.html#eigenanalysis-1"><i class="fa fa-check"></i><b>14.6</b> Eigenanalysis</a>
+<ul>
 <li class="chapter" data-level="14.6.1" data-path="appendix.html"><a href="appendix.html#eigenanalysis-of-demographic-versus-jacobian-matrices"><i class="fa fa-check"></i><b>14.6.1</b> Eigenanalysis of demographic versus Jacobian matrices</a></li>
 </ul></li>
 <li class="chapter" data-level="14.7" data-path="appendix.html"><a href="appendix.html#derivation-of-the-right-eigenvalues"><i class="fa fa-check"></i><b>14.7</b> Derivation of the right eigenvalues</a></li>
@@ -398,15 +460,15 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="expo" class="section level1">
+<div id="expo" class="section level1" number="3">
 <h1><span class="header-section-number">3</span> Simple density-independent growth</h1>
-<div class="figure"><span id="fig:Melospiza1"></span>
+<div class="figure"><span style="display:block;" id="fig:Melospiza1"></span>
 <img src="figs/Melospiza1-1.png" alt="Song Sparrow (Melospiza melodia) counts in Darrtown, OH, USA. From  Sauer, J. R., J.E. Hines, and  J. Fallon. 2005. The North American Breeding Bird Survey, Results and Analysis 1966--2004. Version 2005.2. USGS Patuxent Wildlife Research Center, Laurel, MD." width="70%" />
 <p class="caption">
 Figure 3.1: Song Sparrow (Melospiza melodia) counts in Darrtown, OH, USA. From Sauer, J. R., J.E. Hines, and J. Fallon. 2005. The North American Breeding Bird Survey, Results and Analysis 1966–2004. Version 2005.2. USGS Patuxent Wildlife Research Center, Laurel, MD.
 </p>
 </div>
-<div class="figure"><span id="fig:Melospiza2"></span>
+<div class="figure"><span style="display:block;" id="fig:Melospiza2"></span>
 <img src="figs/Melospiza2-1.png" alt="Song Sparrow (Melospiza melodia) annual changes in population size as a function of population size." width="70%" />
 <p class="caption">
 Figure 3.2: Song Sparrow (Melospiza melodia) annual changes in population size as a function of population size.
@@ -415,7 +477,7 @@ Figure 3.2: Song Sparrow (Melospiza melodia) annual changes in population size a
 <p>Between 1966 and 1971, Song Sparrow (<em>Melospiza melodia</em>) abundance in Darrtown, OH, USA, seemed to increase very quickly, perhaps unimpeded by any particular factor (Fig. <a href="expo.html#fig:Melospiza1">3.1</a>, <a href="expo.html#fig:Melospiza2">3.2</a>). In an effort to manage this population, we may want to predict its future population size. We may also want to describe its growth rate and population size in terms of mechanisms that could influence its growth rate. We may want to compare its growth and relevant mechanisms to those of other Song Sparrow populations or to other passerine populations. To do this, we start with the simplest of all population phenomena, geometric and exponential growth.</p>
 <p>Geometric and exponential growth are examples of <em>density-independent growth</em>. This captures the fundamental process of reproduction (e.g., making seeds or babies) results in a <em>geometric series</em>.<a href="#fn13" class="footnote-ref" id="fnref13"><sup>13</sup></a> For instance, one cell divides to make two, those two cells each divide to make four, and so on, where reproduction for each cell results in two cells, <em>regardless of how many other cells are in the population</em>—that is what we mean by <em>density-independent</em>. This myopically observed event of reproduction, whether one cell into two, or one plant producing many seeds, is the genesis of a geometric series. Therefore, most models of populations include this
 fundamental process of geometric increase. Second, populations can grow in a density-independent fashion when resources are plentiful. It behooves us to start with this simple model because most, more complex population models include this process.</p>
-<p><span class="citation">Hastings (<a href="#ref-Hastings2011" role="doc-biblioref">2011</a>)</span> proposes that we can approach single species poulation growth from either a microscopic or macroscopic point of view. The microscopic approach begins with two propositions. The first is that if we know the location, timing, and traits of all individuals, we can predict perfectly population dynamics; the second is that we can never predict dynamics perfectly because births and deaths are fundamentally random and can be described only with probabilities.<a href="#fn14" class="footnote-ref" id="fnref14"><sup>14</sup></a> With this microscopic approach, we would seek a very detailed description of individuals and build a complex model to understand the consequences of the characteristics of all these interacting individuals, including the growth of the population.</p>
+<p><span class="citation"><a href="#ref-Hastings2011" role="doc-biblioref">A. Hastings</a> (<a href="#ref-Hastings2011" role="doc-biblioref">2011</a>)</span> proposes that we can approach single species poulation growth from either a microscopic or macroscopic point of view. The microscopic approach begins with two propositions. The first is that if we know the location, timing, and traits of all individuals, we can predict perfectly population dynamics; the second is that we can never predict dynamics perfectly because births and deaths are fundamentally random and can be described only with probabilities.<a href="#fn14" class="footnote-ref" id="fnref14"><sup>14</sup></a> With this microscopic approach, we would seek a very detailed description of individuals and build a complex model to understand the consequences of the characteristics of all these interacting individuals, including the growth of the population.</p>
 <p>In this chapter, I choose to start with Hastings’ macroscopic approach. These propositions appear simpler.</p>
 <ol style="list-style-type: decimal">
 <li>A population grows exponentially in the absence of other forces.</li>
@@ -429,17 +491,17 @@ fundamental process of geometric increase. Second, populations can grow in a den
 <li>the number of offspring per individual (or the per capita birth and death rates) are constant through time, and (ii) independent of the number of individuals in the population.</li>
 </ol></li>
 </ol>
-<p>Deviations from these assumptions lead to all of the most interesting parts of single species population dynamics <span class="citation">(Hastings <a href="#ref-Hastings2011" role="doc-biblioref">2011</a>)</span>. The only deviation we play with in this chapter concerns assumption c; we model stochastic variation in population growth rate to investigate extinction risk. It is also worth mentioning that, although propositions 1 and 2 follow from assumptions a-d, they are not strictly necessary <span class="citation">(Hastings <a href="#ref-Hastings2011" role="doc-biblioref">2011</a>)</span>. For instance, individuals need not be identical, and we deal with a big exception in the next chapter where we introduce structured population growth. Also, migration is admissable, provided immigration = emigration and it does not alter growth rates. Nonetheless, other deviations from a. and b. can have very important consequences for single species population dynamics.</p>
+<p>Deviations from these assumptions lead to all of the most interesting parts of single species population dynamics <span class="citation">(<a href="#ref-Hastings2011" role="doc-biblioref">A. Hastings 2011</a>)</span>. The only deviation we play with in this chapter concerns assumption c; we model stochastic variation in population growth rate to investigate extinction risk. It is also worth mentioning that, although propositions 1 and 2 follow from assumptions a-d, they are not strictly necessary <span class="citation">(<a href="#ref-Hastings2011" role="doc-biblioref">A. Hastings 2011</a>)</span>. For instance, individuals need not be identical, and we deal with a big exception in the next chapter where we introduce structured population growth. Also, migration is admissable, provided immigration = emigration and it does not alter growth rates. Nonetheless, other deviations from a. and b. can have very important consequences for single species population dynamics.</p>
 <p>Here we define Density-independence in a real population as a lack of a statistical relation between the density of a population, and its <em>per capita</em> growth rate<a href="#fn15" class="footnote-ref" id="fnref15"><sup>15</sup></a>. The power to detect a significant relation between any two continuous variables depends on those factors which govern statistical power, such as the number of observations, the range of the predictor variable, and the strength of the underlying relation. Therefore, our conclusion, that a particular population exhibits density-independent growth, may be trivial if our sample size is small, with few generations sampled, or if we sampled the population over a very narrow range of densities. Nonetheless, it behooves us to come back to this definition if, or when, we get caught up in the biology of a particular organism.</p>
 <p>In this chapter, we’ll introduce density-independent population <em>projection</em>, <em>growth</em>, and <em>per capita growth</em>, for populations with synchronous reproduction (discrete models), and continuous reproduction (continuous models).</p>
-<div id="discrete-growth-rates-of-fruit-flies-in-my-kitchen" class="section level2">
+<div id="discrete-growth-rates-of-fruit-flies-in-my-kitchen" class="section level2" number="3.1">
 <h2><span class="header-section-number">3.1</span> Discrete growth rates of fruit flies in my kitchen</h2>
 <p>Summertime, and the living is easy. Fruit flies in my kitchen, and their number’s quite high. Flies love my ripe fruit, and my red wine. They drown in the wine–I am not sure if that is good or bad.</p>
 <p>For now, we’ll treat fruit flies as if they grow in discrete generations. This is very common for populatilons that live in seasonal habitats - their reproduction is timed to the season, and they breed altogether in one bout.<a href="#fn16" class="footnote-ref" id="fnref16"><sup>16</sup></a></p>
 <p>I count the number of flies every week, and I find these numbers:</p>
-<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="expo.html#cb16-1"></a>t &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>)</span>
-<span id="cb16-2"><a href="expo.html#cb16-2"></a>N &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">2</span>, <span class="dv">4</span>, <span class="dv">8</span>, <span class="dv">16</span>)</span>
-<span id="cb16-3"><a href="expo.html#cb16-3"></a><span class="kw">qplot</span>(<span class="dt">x=</span>t, <span class="dt">y=</span>N, <span class="dt">geom=</span><span class="kw">c</span>(<span class="st">&quot;line&quot;</span>, <span class="st">&quot;point&quot;</span>) )</span></code></pre></div>
+<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb22-1"><a href="expo.html#cb22-1" aria-hidden="true" tabindex="-1"></a>t <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>)</span>
+<span id="cb22-2"><a href="expo.html#cb22-2" aria-hidden="true" tabindex="-1"></a>N <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">4</span>, <span class="dv">8</span>, <span class="dv">16</span>)</span>
+<span id="cb22-3"><a href="expo.html#cb22-3" aria-hidden="true" tabindex="-1"></a><span class="fu">qplot</span>(<span class="at">x=</span>t, <span class="at">y=</span>N, <span class="at">geom=</span><span class="fu">c</span>(<span class="st">&quot;line&quot;</span>, <span class="st">&quot;point&quot;</span>) )</span></code></pre></div>
 <p><img src="figs/flies-1.png" width="60%" /></p>
 <p>There are several ways we can describe fruit fly population growth. We begin by thinking about the proximate causes of change to population size per unit time: births, immigration, death and emigration (Fig. <a href="expo.html#fig:fliesi">3.3</a>). Those are the only options, and we state it thus:
 <span class="math display">\[\frac{\Delta N}{\Delta t} = \frac{B + I - D - E}{\Delta t}\]</span>
@@ -447,7 +509,7 @@ that is, the pop growthe rate<a href="#fn17" class="footnote-ref" id="fnref17"><
 <p>Over the past month, I suspect the fruit flies are increasing primarily through reproduction in my kitchen. Clearly, at some point in the past, a fly or two (or three) must have immigrated into my kitchen, either as adults or as eggs or larvae in fruit I brought home (<span class="math inline">\(I&gt;0\)</span>). For now, I will assume fruit fly population dynamics in my kitchen are governed by only births and deaths (<span class="math inline">\(I=E=0\)</span>), so, we have
 <span class="math display">\[ \frac{N_{t+1} - N_t}{(t+1) - t}=\frac{\Delta N}{\Delta t}=\frac{B+D}{\Delta t}\]</span>
 In this equation, <span class="math inline">\(t\)</span> has a particular time unit, one week, so <span class="math inline">\(t+1\)</span> is one additional week. We refer to a population like this as <em>closed</em>, because it is closed to migration in or out.</p>
-<div class="figure"><span id="fig:fliesi"></span>
+<div class="figure"><span style="display:block;" id="fig:fliesi"></span>
 <img src="figs/fliesi-1.png" alt="The number of fruit flies in my kitchen depends on immigration and emigration, and births and deaths. In the text, we assume that immigration and emigration are zero. All rates are individuals per unit time." width="100%" />
 <p class="caption">
 Figure 3.3: The number of fruit flies in my kitchen depends on immigration and emigration, and births and deaths. In the text, we assume that immigration and emigration are zero. All rates are individuals per unit time.
@@ -502,7 +564,7 @@ or simply,
 <span class="math display">\[\frac{\Delta N}{N\Delta t} = r_d\]</span></p>
 <p>At last, we see how this is a model of density-independent growth: per capita growth rate does not include <span class="math inline">\(N\)</span>.</p>
 </div>
-<div id="fruit-flies-with-continuous-overlapping-generations" class="section level2">
+<div id="fruit-flies-with-continuous-overlapping-generations" class="section level2" number="3.2">
 <h2><span class="header-section-number">3.2</span> Fruit flies with continuous overlapping generations</h2>
 <p>In the reality that is my kitchen, individual fruit flies are having sex and reproducing on their own schedules. As a population, they breed continuously, so the cohorts re not synchronous. For populations like that, we need to describe instantaneous growth rates, where <span class="math inline">\(\Delta t\)</span> is no longer a fixed period of time, but is an instant, or infinity small.</p>
 <p>We return to our example above (Fig. <a href="expo.html#fig:fliesi">3.3</a>), which we summarize in <a href="expo.html#eq:bddb">(3.1)</a>. Please take a look at that equation; here we make time explicit so that it appears in the equation. We begin by remembering that <span class="math inline">\(b\)</span> and <span class="math inline">\(d\)</span> have time units.</p>
@@ -532,7 +594,7 @@ We now exponentiate (<span class="math inline">\(e^x\)</span>) both sides to arr
 <span class="math display">\[\frac{dN}{Ndt} = r\]</span>
 Once again, we see why we refer to exponential growth as density-independent: the per capita growth rate does not depend on <span class="math inline">\(N\)</span>.</p>
 </div>
-<div id="properties-of-geometric-and-exponential-growth" class="section level2">
+<div id="properties-of-geometric-and-exponential-growth" class="section level2" number="3.3">
 <h2><span class="header-section-number">3.3</span> Properties of geometric and exponential growth</h2>
 <p>Compare the projection equations for geometric and exponential growth. We find that
 <span class="math display">\[\lambda = e^{r} \quad ; \quad \ln \lambda = r\]</span>
@@ -542,22 +604,22 @@ This gives us a few useful rules of thumb.</p>
 <li>Growing population: <span class="math inline">\(r &gt; 0 \quad;\quad \lambda &gt; 1\)</span></li>
 <li>Shrinking population: <span class="math inline">\(r &lt; 0 \quad;\quad \lambda &lt; 1\)</span></li>
 </ul>
-<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="expo.html#cb17-1"></a><span class="co"># Let r take on three values</span></span>
-<span id="cb17-2"><a href="expo.html#cb17-2"></a>r &lt;-<span class="st"> </span><span class="kw">c</span>( <span class="dv">-1</span>, <span class="dv">0</span>, <span class="dv">1</span>)</span>
-<span id="cb17-3"><a href="expo.html#cb17-3"></a><span class="co"># Convert to lambda</span></span>
-<span id="cb17-4"><a href="expo.html#cb17-4"></a><span class="kw">exp</span>(r)</span></code></pre></div>
+<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="expo.html#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Let r take on three values</span></span>
+<span id="cb23-2"><a href="expo.html#cb23-2" aria-hidden="true" tabindex="-1"></a>r <span class="ot">&lt;-</span> <span class="fu">c</span>( <span class="sc">-</span><span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">1</span>)</span>
+<span id="cb23-3"><a href="expo.html#cb23-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Convert to lambda</span></span>
+<span id="cb23-4"><a href="expo.html#cb23-4" aria-hidden="true" tabindex="-1"></a><span class="fu">exp</span>(r)</span></code></pre></div>
 <pre><code>## [1] 0.3678794 1.0000000 2.7182818</code></pre>
 <p><em>Time scaling</em> This is a useful property if we ever want to change time units in a discrete model. We must first <span class="math inline">\(\lambda\)</span> to <span class="math inline">\(r\)</span>, change units in <span class="math inline">\(r\)</span> and convert back to <span class="math inline">\(\lambda\)</span>. For instance, if we find that the annual finite rate of increase for a population of crickets is <span class="math inline">\(\lambda = 1.2\)</span>, we cannot convert that to a monthly rate of <span class="math inline">\(1.2/12 = 0.1\)</span>. Instead we convert to <span class="math inline">\(r\)</span> and back to <span class="math inline">\(\lambda\)</span>.</p>
-<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="expo.html#cb19-1"></a>lambda &lt;-<span class="st"> </span><span class="fl">1.2</span></span>
-<span id="cb19-2"><a href="expo.html#cb19-2"></a></span>
-<span id="cb19-3"><a href="expo.html#cb19-3"></a><span class="co"># Convert lambda to r </span></span>
-<span id="cb19-4"><a href="expo.html#cb19-4"></a>r &lt;-<span class="st"> </span><span class="kw">log</span>(lambda); r</span></code></pre></div>
+<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb25-1"><a href="expo.html#cb25-1" aria-hidden="true" tabindex="-1"></a>lambda <span class="ot">&lt;-</span> <span class="fl">1.2</span></span>
+<span id="cb25-2"><a href="expo.html#cb25-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-3"><a href="expo.html#cb25-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Convert lambda to r </span></span>
+<span id="cb25-4"><a href="expo.html#cb25-4" aria-hidden="true" tabindex="-1"></a>r <span class="ot">&lt;-</span> <span class="fu">log</span>(lambda); r</span></code></pre></div>
 <pre><code>## [1] 0.1823216</code></pre>
-<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb21-1"><a href="expo.html#cb21-1"></a><span class="co"># Scale r from year to month</span></span>
-<span id="cb21-2"><a href="expo.html#cb21-2"></a>r2 &lt;-<span class="st"> </span>r<span class="op">/</span><span class="dv">12</span>; r2</span></code></pre></div>
+<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb27-1"><a href="expo.html#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Scale r from year to month</span></span>
+<span id="cb27-2"><a href="expo.html#cb27-2" aria-hidden="true" tabindex="-1"></a>r2 <span class="ot">&lt;-</span> r<span class="sc">/</span><span class="dv">12</span>; r2</span></code></pre></div>
 <pre><code>## [1] 0.01519346</code></pre>
-<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="expo.html#cb23-1"></a><span class="co"># Convert back to lambda (per month)</span></span>
-<span id="cb23-2"><a href="expo.html#cb23-2"></a>lambda2 &lt;-<span class="st"> </span><span class="kw">exp</span>(r2); lambda2</span></code></pre></div>
+<div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb29-1"><a href="expo.html#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Convert back to lambda (per month)</span></span>
+<span id="cb29-2"><a href="expo.html#cb29-2" aria-hidden="true" tabindex="-1"></a>lambda2 <span class="ot">&lt;-</span> <span class="fu">exp</span>(r2); lambda2</span></code></pre></div>
 <pre><code>## [1] 1.015309</code></pre>
 <p>This is very, very different than <span class="math inline">\(\lambda/12\)</span>.</p>
 <p><em>Doubling time</em> Sometimes we gain a more intuitive grasp of an idea when we convert to a different form of the same relationship. Exponential growth is one of those ideas that can be hard to grasp. A more intuitive way to compare or express exponential grwoth rate is through <em>doubling time</em>, the time required for the population to double in size. For instance, a per capita growth rate of <span class="math inline">\(r = 0.14\,\mathrm{inds}\cdot \mathrm{ind}^{-1} \mathrm{y}^{-1}\)</span> means that the population will double in less than 5 years.</p>
@@ -565,36 +627,36 @@ This gives us a few useful rules of thumb.</p>
 <span class="math display">\[2N_0 = N_0 e^{rt}\]</span>
 <span class="math display">\[\ln 2 = rt\]</span>
 <span class="math display">\[t =\frac{\ln 2}{r}\]</span></p>
-<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb25-1"><a href="expo.html#cb25-1"></a><span class="co"># let r be a sequence from </span></span>
-<span id="cb25-2"><a href="expo.html#cb25-2"></a>r &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="fl">0.01</span>, <span class="fl">0.05</span>, <span class="fl">0.1</span>, <span class="fl">0.5</span>)</span>
-<span id="cb25-3"><a href="expo.html#cb25-3"></a><span class="co">#doubling time will be</span></span>
-<span id="cb25-4"><a href="expo.html#cb25-4"></a><span class="kw">log</span>(<span class="dv">2</span>)<span class="op">/</span>r</span></code></pre></div>
+<div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb31-1"><a href="expo.html#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="co"># let r be a sequence from </span></span>
+<span id="cb31-2"><a href="expo.html#cb31-2" aria-hidden="true" tabindex="-1"></a>r <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fl">0.01</span>, <span class="fl">0.05</span>, <span class="fl">0.1</span>, <span class="fl">0.5</span>)</span>
+<span id="cb31-3"><a href="expo.html#cb31-3" aria-hidden="true" tabindex="-1"></a><span class="co">#doubling time will be</span></span>
+<span id="cb31-4"><a href="expo.html#cb31-4" aria-hidden="true" tabindex="-1"></a><span class="fu">log</span>(<span class="dv">2</span>)<span class="sc">/</span>r</span></code></pre></div>
 <pre><code>## [1] 69.314718 13.862944  6.931472  1.386294</code></pre>
-<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb27-1"><a href="expo.html#cb27-1"></a><span class="co"># and a picture</span></span>
-<span id="cb27-2"><a href="expo.html#cb27-2"></a><span class="kw">par</span>(<span class="dt">mgp=</span><span class="kw">c</span>(<span class="fl">1.2</span>, <span class="fl">.2</span>, <span class="dv">0</span>), <span class="dt">mar=</span><span class="kw">c</span>(<span class="dv">2</span>, <span class="dv">2</span>, <span class="dv">1</span>, <span class="dv">1</span>), <span class="dt">tcl=</span><span class="op">-</span>.<span class="dv">2</span>)</span>
-<span id="cb27-3"><a href="expo.html#cb27-3"></a><span class="kw">curve</span>( <span class="kw">log</span>(<span class="dv">2</span>)<span class="op">/</span>x, <span class="dt">xlab=</span><span class="st">&quot;r&quot;</span>, <span class="dt">ylab=</span><span class="st">&quot;Doubling time&quot;</span>)</span></code></pre></div>
-<div class="figure"><span id="fig:doubling"></span>
+<div class="sourceCode" id="cb33"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb33-1"><a href="expo.html#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="co"># and a picture</span></span>
+<span id="cb33-2"><a href="expo.html#cb33-2" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mgp=</span><span class="fu">c</span>(<span class="fl">1.2</span>, .<span class="dv">2</span>, <span class="dv">0</span>), <span class="at">mar=</span><span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">2</span>, <span class="dv">1</span>, <span class="dv">1</span>), <span class="at">tcl=</span><span class="sc">-</span>.<span class="dv">2</span>)</span>
+<span id="cb33-3"><a href="expo.html#cb33-3" aria-hidden="true" tabindex="-1"></a><span class="fu">curve</span>( <span class="fu">log</span>(<span class="dv">2</span>)<span class="sc">/</span>x, <span class="at">xlab=</span><span class="st">&quot;r&quot;</span>, <span class="at">ylab=</span><span class="st">&quot;Doubling time&quot;</span>)</span></code></pre></div>
+<div class="figure"><span style="display:block;" id="fig:doubling"></span>
 <img src="figs/doubling-1.png" alt="Doubling time is inversely related to the intrinsic rate of increase, r." width="60%" />
 <p class="caption">
 Figure 3.4: Doubling time is inversely related to the intrinsic rate of increase, r.
 </p>
 </div>
-<div id="average-growth-rate" class="section level3">
+<div id="average-growth-rate" class="section level3" number="3.3.1">
 <h3><span class="header-section-number">3.3.1</span> Average growth rate</h3>
 <p>In any real data set, such as from a real population of fruit flies or Song Sparrows, <span class="math inline">\(N_{t+1}/N_t\)</span> will vary from year to year. How do we calculate an average growth rate for a fluctuating population?</p>
 <p>Let’s consider the case where a population increases and then decreases. For each year, we will calculate the annual rate of increase <span class="math inline">\(R = N_{t+1}/N_t\)</span>, and take the arithmetic average of those rates to see if it makes sense.</p>
-<div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb28-1"><a href="expo.html#cb28-1"></a>N &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">20</span>, <span class="dv">30</span>, <span class="dv">15</span>, <span class="dv">15</span>)</span>
-<span id="cb28-2"><a href="expo.html#cb28-2"></a>R &lt;-<span class="st"> </span>N[<span class="dv">2</span><span class="op">:</span><span class="dv">4</span>]<span class="op">/</span>N[<span class="dv">1</span><span class="op">:</span><span class="dv">3</span>]; R</span></code></pre></div>
+<div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb34-1"><a href="expo.html#cb34-1" aria-hidden="true" tabindex="-1"></a>N <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">20</span>, <span class="dv">30</span>, <span class="dv">15</span>, <span class="dv">15</span>)</span>
+<span id="cb34-2"><a href="expo.html#cb34-2" aria-hidden="true" tabindex="-1"></a>R <span class="ot">&lt;-</span> N[<span class="dv">2</span><span class="sc">:</span><span class="dv">4</span>]<span class="sc">/</span>N[<span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>]; R</span></code></pre></div>
 <pre><code>## [1] 1.5 0.5 1.0</code></pre>
 <p>The arithmetic average of those rates is <span class="math inline">\((1.5 + 0.5 + 1.0)/3=1.0\)</span>. If <span class="math inline">\(R=1.0\)</span>, then, on average, the population should stay the same, but it decreased. Why is that?</p>
 <p>Let us do the annual time steps explicitly to see what is going on.
 <span class="math display">\[N_3 = (N_0 R_0) R_1 R_2\]</span></p>
-<div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb30-1"><a href="expo.html#cb30-1"></a><span class="co"># Remember that we call the first time t=0 and N0, but</span></span>
-<span id="cb30-2"><a href="expo.html#cb30-2"></a><span class="co"># when coding, these values are the first in a series, so </span></span>
-<span id="cb30-3"><a href="expo.html#cb30-3"></a><span class="co"># N0 is N[1]</span></span>
-<span id="cb30-4"><a href="expo.html#cb30-4"></a></span>
-<span id="cb30-5"><a href="expo.html#cb30-5"></a><span class="co"># Now we do the annual changes which should equal N3</span></span>
-<span id="cb30-6"><a href="expo.html#cb30-6"></a>N[<span class="dv">1</span>]<span class="op">*</span>R[<span class="dv">1</span>]<span class="op">*</span>R[<span class="dv">2</span>]<span class="op">*</span>R[<span class="dv">3</span>]</span></code></pre></div>
+<div class="sourceCode" id="cb36"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb36-1"><a href="expo.html#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Remember that we call the first time t=0 and N0, but</span></span>
+<span id="cb36-2"><a href="expo.html#cb36-2" aria-hidden="true" tabindex="-1"></a><span class="co"># when coding, these values are the first in a series, so </span></span>
+<span id="cb36-3"><a href="expo.html#cb36-3" aria-hidden="true" tabindex="-1"></a><span class="co"># N0 is N[1]</span></span>
+<span id="cb36-4"><a href="expo.html#cb36-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-5"><a href="expo.html#cb36-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Now we do the annual changes which should equal N3</span></span>
+<span id="cb36-6"><a href="expo.html#cb36-6" aria-hidden="true" tabindex="-1"></a>N[<span class="dv">1</span>]<span class="sc">*</span>R[<span class="dv">1</span>]<span class="sc">*</span>R[<span class="dv">2</span>]<span class="sc">*</span>R[<span class="dv">3</span>]</span></code></pre></div>
 <pre><code>## [1] 15</code></pre>
 <p>From this calculation, we see that when we start with <span class="math inline">\(N_0=20\)</span> and do the annaul steps, we wind up with a smaller population, even though the arithmetic average is <span class="math inline">\(R_{\mathrm{ave}} = 1\)</span>. How do we calculate an average of numbers that we multiply together?</p>
 <p>We want a number <span class="math inline">\(\bar{R}\)</span> such that
@@ -603,46 +665,46 @@ Figure 3.4: Doubling time is inversely related to the intrinsic rate of increase
 <span class="math display">\[(\bar{R}^t)^{1/t} =\bar{R} = \left(R_1R_2\ldots R_t\right)^{1/t}\]</span>
 We take the <span class="math inline">\(t\)</span>-th root of the product of all the <span class="math inline">\(R\)</span>. This is called the <em>geometric average.</em> Another way of writing this would be to use the product symbol, as in
 <span class="math display">\[\bar{R} = \left(\prod_{i=1}^t R_i\right)^{1/t}\]</span></p>
-<div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb32-1"><a href="expo.html#cb32-1"></a>R</span></code></pre></div>
+<div class="sourceCode" id="cb38"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb38-1"><a href="expo.html#cb38-1" aria-hidden="true" tabindex="-1"></a>R</span></code></pre></div>
 <pre><code>## [1] 1.5 0.5 1.0</code></pre>
-<div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb34-1"><a href="expo.html#cb34-1"></a><span class="co">#arithmetic average</span></span>
-<span id="cb34-2"><a href="expo.html#cb34-2"></a><span class="kw">mean</span>(R)</span></code></pre></div>
+<div class="sourceCode" id="cb40"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb40-1"><a href="expo.html#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="co">#arithmetic average</span></span>
+<span id="cb40-2"><a href="expo.html#cb40-2" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(R)</span></code></pre></div>
 <pre><code>## [1] 1</code></pre>
-<div class="sourceCode" id="cb36"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb36-1"><a href="expo.html#cb36-1"></a><span class="co"># geometric average</span></span>
-<span id="cb36-2"><a href="expo.html#cb36-2"></a>t &lt;-<span class="st"> </span><span class="kw">length</span>(R); t</span></code></pre></div>
+<div class="sourceCode" id="cb42"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb42-1"><a href="expo.html#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="co"># geometric average</span></span>
+<span id="cb42-2"><a href="expo.html#cb42-2" aria-hidden="true" tabindex="-1"></a>t <span class="ot">&lt;-</span> <span class="fu">length</span>(R); t</span></code></pre></div>
 <pre><code>## [1] 3</code></pre>
-<div class="sourceCode" id="cb38"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb38-1"><a href="expo.html#cb38-1"></a><span class="kw">prod</span>(R)<span class="op">^</span>(<span class="dv">1</span><span class="op">/</span>t)</span></code></pre></div>
+<div class="sourceCode" id="cb44"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb44-1"><a href="expo.html#cb44-1" aria-hidden="true" tabindex="-1"></a><span class="fu">prod</span>(R)<span class="sc">^</span>(<span class="dv">1</span><span class="sc">/</span>t)</span></code></pre></div>
 <pre><code>## [1] 0.9085603</code></pre>
-<div class="sourceCode" id="cb40"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb40-1"><a href="expo.html#cb40-1"></a><span class="co"># shows the population should decline</span></span></code></pre></div>
+<div class="sourceCode" id="cb46"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb46-1"><a href="expo.html#cb46-1" aria-hidden="true" tabindex="-1"></a><span class="co"># shows the population should decline</span></span></code></pre></div>
 <p>Another way to do the same thing is to take the arithmethic mean of the log-growth rates, and back-transform,</p>
-<div class="sourceCode" id="cb41"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb41-1"><a href="expo.html#cb41-1"></a><span class="kw">exp</span>( <span class="kw">mean</span>( <span class="kw">log</span>(R) ) )</span></code></pre></div>
+<div class="sourceCode" id="cb47"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb47-1"><a href="expo.html#cb47-1" aria-hidden="true" tabindex="-1"></a><span class="fu">exp</span>( <span class="fu">mean</span>( <span class="fu">log</span>(R) ) )</span></code></pre></div>
 <pre><code>## [1] 0.9085603</code></pre>
 <p>Now we see the effect of calculating the average growth rate correctly. This leads to a useful rule of thumb: <em>random variation in growth rate suppresses population growth.</em> Here we illustrate that. We start with a growing population.</p>
-<div class="sourceCode" id="cb43"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb43-1"><a href="expo.html#cb43-1"></a>lambda &lt;-<span class="st"> </span><span class="fl">1.01</span> <span class="co"># positive growth rate</span></span>
-<span id="cb43-2"><a href="expo.html#cb43-2"></a>N0 &lt;-<span class="st"> </span><span class="dv">100</span> <span class="co"># starting N</span></span>
-<span id="cb43-3"><a href="expo.html#cb43-3"></a>t &lt;-<span class="st"> </span><span class="dv">20</span> <span class="co"># 20 years</span></span>
-<span id="cb43-4"><a href="expo.html#cb43-4"></a>Nt1 &lt;-<span class="st"> </span>N0<span class="op">*</span>lambda<span class="op">^</span>t; Nt1</span></code></pre></div>
+<div class="sourceCode" id="cb49"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb49-1"><a href="expo.html#cb49-1" aria-hidden="true" tabindex="-1"></a>lambda <span class="ot">&lt;-</span> <span class="fl">1.01</span> <span class="co"># positive growth rate</span></span>
+<span id="cb49-2"><a href="expo.html#cb49-2" aria-hidden="true" tabindex="-1"></a>N0 <span class="ot">&lt;-</span> <span class="dv">100</span> <span class="co"># starting N</span></span>
+<span id="cb49-3"><a href="expo.html#cb49-3" aria-hidden="true" tabindex="-1"></a>t <span class="ot">&lt;-</span> <span class="dv">20</span> <span class="co"># 20 years</span></span>
+<span id="cb49-4"><a href="expo.html#cb49-4" aria-hidden="true" tabindex="-1"></a>Nt1 <span class="ot">&lt;-</span> N0<span class="sc">*</span>lambda<span class="sc">^</span>t; Nt1</span></code></pre></div>
 <pre><code>## [1] 122.019</code></pre>
 <p>Here <span class="math inline">\(\lambda &gt; 1\)</span>, so the population grows.</p>
 <p>Now we do a simulation in which we let <span class="math inline">\(\lambda\)</span> have a mean of 1.01 but allow it to vary randomly.</p>
-<div class="sourceCode" id="cb45"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb45-1"><a href="expo.html#cb45-1"></a><span class="co"># create a vector to hold all N</span></span>
-<span id="cb45-2"><a href="expo.html#cb45-2"></a>N &lt;-<span class="st"> </span><span class="kw">rep</span>(<span class="dv">0</span>, t); N[<span class="dv">1</span>] &lt;-<span class="st"> </span>N0</span>
-<span id="cb45-3"><a href="expo.html#cb45-3"></a></span>
-<span id="cb45-4"><a href="expo.html#cb45-4"></a><span class="co"># create t-1 random lambdas with a mean of 1.01 </span></span>
-<span id="cb45-5"><a href="expo.html#cb45-5"></a><span class="co"># ranging from 0.41 to 1.61</span></span>
-<span id="cb45-6"><a href="expo.html#cb45-6"></a><span class="kw">set.seed</span>(<span class="dv">3</span>) <span class="co"># makes the radnom sequence repeatable</span></span>
-<span id="cb45-7"><a href="expo.html#cb45-7"></a>random.lambda &lt;-<span class="st"> </span><span class="kw">runif</span>(<span class="dt">n=</span>(t<span class="dv">-1</span>), <span class="dt">min=</span><span class="fl">0.41</span>, <span class="dt">max=</span><span class="fl">1.61</span>)</span>
-<span id="cb45-8"><a href="expo.html#cb45-8"></a></span>
-<span id="cb45-9"><a href="expo.html#cb45-9"></a><span class="co"># the geometric mean</span></span>
-<span id="cb45-10"><a href="expo.html#cb45-10"></a><span class="kw">prod</span>(random.lambda)<span class="op">^</span>(<span class="dv">1</span><span class="op">/</span><span class="kw">length</span>(random.lambda))</span></code></pre></div>
+<div class="sourceCode" id="cb51"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb51-1"><a href="expo.html#cb51-1" aria-hidden="true" tabindex="-1"></a><span class="co"># create a vector to hold all N</span></span>
+<span id="cb51-2"><a href="expo.html#cb51-2" aria-hidden="true" tabindex="-1"></a>N <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="dv">0</span>, t); N[<span class="dv">1</span>] <span class="ot">&lt;-</span> N0</span>
+<span id="cb51-3"><a href="expo.html#cb51-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb51-4"><a href="expo.html#cb51-4" aria-hidden="true" tabindex="-1"></a><span class="co"># create t-1 random lambdas with a mean of 1.01 </span></span>
+<span id="cb51-5"><a href="expo.html#cb51-5" aria-hidden="true" tabindex="-1"></a><span class="co"># ranging from 0.41 to 1.61</span></span>
+<span id="cb51-6"><a href="expo.html#cb51-6" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">3</span>) <span class="co"># makes the radnom sequence repeatable</span></span>
+<span id="cb51-7"><a href="expo.html#cb51-7" aria-hidden="true" tabindex="-1"></a>random.lambda <span class="ot">&lt;-</span> <span class="fu">runif</span>(<span class="at">n=</span>(t<span class="dv">-1</span>), <span class="at">min=</span><span class="fl">0.41</span>, <span class="at">max=</span><span class="fl">1.61</span>)</span>
+<span id="cb51-8"><a href="expo.html#cb51-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb51-9"><a href="expo.html#cb51-9" aria-hidden="true" tabindex="-1"></a><span class="co"># the geometric mean</span></span>
+<span id="cb51-10"><a href="expo.html#cb51-10" aria-hidden="true" tabindex="-1"></a><span class="fu">prod</span>(random.lambda)<span class="sc">^</span>(<span class="dv">1</span><span class="sc">/</span><span class="fu">length</span>(random.lambda))</span></code></pre></div>
 <pre><code>## [1] 1.00105</code></pre>
-<div class="sourceCode" id="cb47"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb47-1"><a href="expo.html#cb47-1"></a><span class="co"># actual simulated projection</span></span>
-<span id="cb47-2"><a href="expo.html#cb47-2"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span>(t<span class="dv">-1</span>)) { </span>
-<span id="cb47-3"><a href="expo.html#cb47-3"></a>  N[i<span class="op">+</span><span class="dv">1</span>] &lt;-<span class="st"> </span>N[i] <span class="op">*</span><span class="st"> </span>random.lambda[i]</span>
-<span id="cb47-4"><a href="expo.html#cb47-4"></a>}</span>
-<span id="cb47-5"><a href="expo.html#cb47-5"></a></span>
-<span id="cb47-6"><a href="expo.html#cb47-6"></a><span class="kw">qplot</span>(<span class="dt">x=</span><span class="dv">0</span><span class="op">:</span>(t<span class="dv">-1</span>), N, <span class="dt">geom=</span><span class="kw">c</span>(<span class="st">&quot;line&quot;</span>, <span class="st">&quot;point&quot;</span>), <span class="dt">xlab=</span><span class="st">&quot;Time (y)&quot;</span>)</span></code></pre></div>
-<div class="figure"><span id="fig:randomLambda"></span>
+<div class="sourceCode" id="cb53"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb53-1"><a href="expo.html#cb53-1" aria-hidden="true" tabindex="-1"></a><span class="co"># actual simulated projection</span></span>
+<span id="cb53-2"><a href="expo.html#cb53-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>(t<span class="dv">-1</span>)) { </span>
+<span id="cb53-3"><a href="expo.html#cb53-3" aria-hidden="true" tabindex="-1"></a>  N[i<span class="sc">+</span><span class="dv">1</span>] <span class="ot">&lt;-</span> N[i] <span class="sc">*</span> random.lambda[i]</span>
+<span id="cb53-4"><a href="expo.html#cb53-4" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb53-5"><a href="expo.html#cb53-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb53-6"><a href="expo.html#cb53-6" aria-hidden="true" tabindex="-1"></a><span class="fu">qplot</span>(<span class="at">x=</span><span class="dv">0</span><span class="sc">:</span>(t<span class="dv">-1</span>), N, <span class="at">geom=</span><span class="fu">c</span>(<span class="st">&quot;line&quot;</span>, <span class="st">&quot;point&quot;</span>), <span class="at">xlab=</span><span class="st">&quot;Time (y)&quot;</span>)</span></code></pre></div>
+<div class="figure"><span style="display:block;" id="fig:randomLambda"></span>
 <img src="figs/randomLambda-1.png" alt="Random variation in growth rate alters the long term average growth rate." width="90%" />
 <p class="caption">
 Figure 3.5: Random variation in growth rate alters the long term average growth rate.
@@ -651,19 +713,19 @@ Figure 3.5: Random variation in growth rate alters the long term average growth 
 <p>Sometimes the arithmetic average is close to the correct average, but it is never the correct approach.</p>
 </div>
 </div>
-<div id="modeling-with-data-simulated-dynamics" class="section level2">
+<div id="modeling-with-data-simulated-dynamics" class="section level2" number="3.4">
 <h2><span class="header-section-number">3.4</span> Modeling with Data: Simulated Dynamics</h2>
 <p>Science strives to make predictions about about the behavior of systems.
 Ecologists and conservation biologists frequently strive to predict the fate of populations. This is referred to as <em>population viability analysis</em> (PVA) and is a large field of endeavor that is vital to managing threatened populations. Here we put into practice ideas about population biology to make informed predictions about the fate of the Song Sparrow population in Darrtown, OH. We also illustrate simple computational methods for doing so.</p>
 <p>The preceding sections (the bulk of the chapter) emphasized understanding the deterministic underpinnings of simple forms of density independent growth: geometric and exponential growth. This section explores the stochastic simulation of density independent growth. Our simulation makes most of the same assumptions we made at the beginning of the chapter. In addition, we assume that the observed annual growth rates (<span class="math inline">\(N_{t+1}/N_t\)</span>) are representative of future growth rates, and that the growth rate in one year is entirely independent of any other year.</p>
 <p>To make meaning full projections of future population size, we should quantify the uncertainty with our guess. Simulation is one way we can project populations and quantify the uncertainty. The way one often does that is to use the original data and sample it randomly to calculate model parameters. This way, the simulations are random, but based on our best available knowldge, i.e., the real data. The re-use of observed data occurs in many guises, and it is known often as bootstrapping or resampling.</p>
-<p>In a highly influential paper on miminmum population sizes in conservation, <span class="citation">Shaffer (<a href="#ref-Shaffer1981" role="doc-biblioref">1981</a>)</span> identifies four different types of noise or stochasticity that are important in driving variability in populations. The first of these is <em>demographic stochasticity</em>. This is the random or more correctly stochastic nature of individual births and deaths. Due to this element of random chance, individuals may live or die, produce offspring or not. As a result, population size will fluctuation randomly. This is very important in small populations, and becomes increasingly unimportant in larger and larger populations. This is the same process that underlies genetic drift in small populations.</p>
-<p>Another source of variation <span class="citation">Shaffer (<a href="#ref-Shaffer1981" role="doc-biblioref">1981</a>)</span> identifies is <em>environmental stochasticity</em>. This is temporal variation in birth or death rates that affects all individuals to a similar degree, due to variation in the population’s biotic or abiotic environment.</p>
+<p>In a highly influential paper on miminmum population sizes in conservation, <span class="citation"><a href="#ref-Shaffer1981" role="doc-biblioref">Shaffer</a> (<a href="#ref-Shaffer1981" role="doc-biblioref">1981</a>)</span> identifies four different types of noise or stochasticity that are important in driving variability in populations. The first of these is <em>demographic stochasticity</em>. This is the random or more correctly stochastic nature of individual births and deaths. Due to this element of random chance, individuals may live or die, produce offspring or not. As a result, population size will fluctuation randomly. This is very important in small populations, and becomes increasingly unimportant in larger and larger populations. This is the same process that underlies genetic drift in small populations.</p>
+<p>Another source of variation <span class="citation"><a href="#ref-Shaffer1981" role="doc-biblioref">Shaffer</a> (<a href="#ref-Shaffer1981" role="doc-biblioref">1981</a>)</span> identifies is <em>environmental stochasticity</em>. This is temporal variation in birth or death rates that affects all individuals to a similar degree, due to variation in the population’s biotic or abiotic environment.</p>
 <p>The last sources of variation are <em>genetic stochasticity</em> and <em>natural catastrophes</em>. Perhaps the latter of these is the most difficult to deal with, because catastrophes are, by definition, enormously consequential and unpredictable.</p>
-<p>Given these sources of uncertainty, <span class="citation">Shaffer (<a href="#ref-Shaffer1981" role="doc-biblioref">1981</a>)</span> defines <em>minimum population size</em> (MVP) thus,</p>
+<p>Given these sources of uncertainty, <span class="citation"><a href="#ref-Shaffer1981" role="doc-biblioref">Shaffer</a> (<a href="#ref-Shaffer1981" role="doc-biblioref">1981</a>)</span> defines <em>minimum population size</em> (MVP) thus,</p>
 <p>“<em>A minimum viable population for any given species in any given habitat is the smallest isolated population having a 99% chance of remaining extant for 1000 y despite foreseeable effects of demographic, environmental and genetic stochasticity, and natural catastrophes.</em>”</p>
-<p>In our simulations, we take one approach to simulating a population of Song Sparrows. The computational approaches includes a variety of tricks that you could use in a more serious approach to population projection and determining probabilities of extinction. In their supplemental documentation, <span class="citation">Chaudhary and Oli (<a href="#ref-Chaudhary_2019" role="doc-biblioref">2019</a>)</span> provide an excellent list of criteria to evaluate your own or someone else’s approach to PVA.</p>
-<div id="data-based-approaches" class="section level3">
+<p>In our simulations, we take one approach to simulating a population of Song Sparrows. The computational approaches includes a variety of tricks that you could use in a more serious approach to population projection and determining probabilities of extinction. In their supplemental documentation, <span class="citation"><a href="#ref-Chaudhary_2019" role="doc-biblioref">Chaudhary and Oli</a> (<a href="#ref-Chaudhary_2019" role="doc-biblioref">2019</a>)</span> provide an excellent list of criteria to evaluate your own or someone else’s approach to PVA.</p>
+<div id="data-based-approaches" class="section level3" number="3.4.1">
 <h3><span class="header-section-number">3.4.1</span> Data-based approaches</h3>
 <p>We could use the observed <em>changes</em> in population counts <span class="math inline">\(R_t=N_{t+1}/N_t\)</span> as our data. We would then draw an <span class="math inline">\(R_t\)</span> at random from among the many observed values, and project the population one year forward. We then repeat this into the future, say, for ten years. Each simulation of a ten year period will result in a different ten year trajectory because we draw <span class="math inline">\(R_t\)</span> at random from among the observed <span class="math inline">\(R_t\)</span>. However, if we do many such simulations, we will have a <em>distribution</em> of outcomes that we can describe with simple statistics (e.g., median, mean, quantiles).</p>
 <p>A different approach would be to estimate the individual probabilities of births and deaths in the entire Darrtown population, and use those probabilities and birth rates to simulate the entire population into the future. In such an <em>individual-based simulation</em>, we would simulate the fates of individuals, keeping track of all individual births and deaths.</p>
@@ -677,17 +739,17 @@ Ecologists and conservation biologists frequently strive to predict the fate of 
 <li>analyze the output.</li>
 </ol>
 </div>
-<div id="creating-and-visualizing-the-data" class="section level3">
+<div id="creating-and-visualizing-the-data" class="section level3" number="3.4.2">
 <h3><span class="header-section-number">3.4.2</span> Creating and visualizing the data</h3>
 <p>Let’s start by graphing the data<a href="#fn18" class="footnote-ref" id="fnref18"><sup>18</sup></a>. <em>Graphing the data is always a good idea — it is a principle of working with data</em>. We first load the data from the <code>primer</code> R package, and look at the names of the data frame. We then choose to <code>attach</code> the data frame, because it makes the code easier to read.<a href="#fn19" class="footnote-ref" id="fnref19"><sup>19</sup></a></p>
-<div class="sourceCode" id="cb48"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb48-1"><a href="expo.html#cb48-1"></a><span class="kw">library</span>(primer)</span>
-<span id="cb48-2"><a href="expo.html#cb48-2"></a><span class="kw">data</span>(sparrows)</span>
-<span id="cb48-3"><a href="expo.html#cb48-3"></a><span class="kw">names</span>(sparrows)</span></code></pre></div>
+<div class="sourceCode" id="cb54"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb54-1"><a href="expo.html#cb54-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(primer)</span>
+<span id="cb54-2"><a href="expo.html#cb54-2" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(sparrows)</span>
+<span id="cb54-3"><a href="expo.html#cb54-3" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(sparrows)</span></code></pre></div>
 <pre><code>## [1] &quot;Year&quot;           &quot;Count&quot;          &quot;ObserverNumber&quot;</code></pre>
-<div class="sourceCode" id="cb50"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb50-1"><a href="expo.html#cb50-1"></a><span class="kw">attach</span>(sparrows)</span></code></pre></div>
+<div class="sourceCode" id="cb56"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb56-1"><a href="expo.html#cb56-1" aria-hidden="true" tabindex="-1"></a><span class="fu">attach</span>(sparrows)</span></code></pre></div>
 <p>Now we plot these counts through time (Fig. <a href="expo.html#fig:cts">3.6</a>).</p>
-<div class="sourceCode" id="cb51"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb51-1"><a href="expo.html#cb51-1"></a><span class="kw">ggplot</span>(<span class="dt">data=</span>sparrows, <span class="kw">aes</span>(<span class="dt">x=</span>Year, <span class="dt">y=</span>Count)) <span class="op">+</span><span class="st"> </span><span class="kw">geom_line</span>() <span class="op">+</span><span class="st"> </span><span class="kw">geom_point</span>(<span class="dt">pch=</span><span class="dv">1</span>)</span></code></pre></div>
-<div class="figure"><span id="fig:cts"></span>
+<div class="sourceCode" id="cb57"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb57-1"><a href="expo.html#cb57-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span>sparrows, <span class="fu">aes</span>(<span class="at">x=</span>Year, <span class="at">y=</span>Count)) <span class="sc">+</span> <span class="fu">geom_line</span>() <span class="sc">+</span> <span class="fu">geom_point</span>(<span class="at">pch=</span><span class="dv">1</span>)</span></code></pre></div>
+<div class="figure"><span style="display:block;" id="fig:cts"></span>
 <img src="figs/cts-1.png" alt="Observations of Song Sparrows in Darrtown, OH (http://www.mbr-pwrc.usgs.gov/bbs/)." width="75%" />
 <p class="caption">
 Figure 3.6: Observations of Song Sparrows in Darrtown, OH (<a href="http://www.mbr-pwrc.usgs.gov/bbs/" class="uri">http://www.mbr-pwrc.usgs.gov/bbs/</a>).
@@ -695,13 +757,13 @@ Figure 3.6: Observations of Song Sparrows in Darrtown, OH (<a href="http://www.m
 </div>
 <p>We see that Song Sparrow counts at this site (the DARRTOWN transect, OH, USA) fluctuated a fair bit between 1966 and 2003. They never were completely absent and never exceeded <span class="math inline">\(\sim 120\)</span> individuals.</p>
 <p>Next we calculate annual <span class="math inline">\(R_t=N_{t+1}/N_t\)</span>, that is, the observed growth rate for each year <span class="math inline">\(t\)</span>.</p>
-<div class="sourceCode" id="cb52"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb52-1"><a href="expo.html#cb52-1"></a><span class="co"># the use of [-1[ in the index tells R to exclude the first element.</span></span>
-<span id="cb52-2"><a href="expo.html#cb52-2"></a><span class="co"># length() is the length of a vector, so [-length(X)] means exclude the last</span></span>
-<span id="cb52-3"><a href="expo.html#cb52-3"></a>obs.R &lt;-<span class="st"> </span>Count[<span class="op">-</span><span class="dv">1</span>]<span class="op">/</span>Count[<span class="op">-</span><span class="kw">length</span>(Count)]</span></code></pre></div>
+<div class="sourceCode" id="cb58"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb58-1"><a href="expo.html#cb58-1" aria-hidden="true" tabindex="-1"></a><span class="co"># the use of [-1[ in the index tells R to exclude the first element.</span></span>
+<span id="cb58-2"><a href="expo.html#cb58-2" aria-hidden="true" tabindex="-1"></a><span class="co"># length() is the length of a vector, so [-length(X)] means exclude the last</span></span>
+<span id="cb58-3"><a href="expo.html#cb58-3" aria-hidden="true" tabindex="-1"></a>obs.R <span class="ot">&lt;-</span> Count[<span class="sc">-</span><span class="dv">1</span>]<span class="sc">/</span>Count[<span class="sc">-</span><span class="fu">length</span>(Count)]</span></code></pre></div>
 <p>Thus our <em>data</em> are the observed <span class="math inline">\(R_t\)</span>, not the counts <em>per se</em>. These <span class="math inline">\(R\)</span> form the basis of everything else we do. Because they are so important, let’s plot these as well. Let’s also indicate <span class="math inline">\(R=1\)</span> with a horizontal dotted line as a visual cue for zero population growth. Note that we exclude the last year because each <span class="math inline">\(R_t\)</span> is associated with <span class="math inline">\(N_t\)</span> rather than <span class="math inline">\(N_{t+1}\)</span>.</p>
-<div class="sourceCode" id="cb53"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb53-1"><a href="expo.html#cb53-1"></a><span class="kw">qplot</span>(<span class="dt">x=</span>Year[<span class="op">-</span><span class="kw">length</span>(Count)], <span class="dt">y=</span>obs.R, <span class="dt">geom=</span><span class="st">&quot;point&quot;</span>) <span class="op">+</span><span class="st"> </span><span class="kw">geom_hline</span>(<span class="dt">yintercept=</span><span class="dv">1</span>, <span class="dt">lty=</span><span class="dv">3</span>) <span class="op">+</span><span class="st"> </span></span>
-<span id="cb53-2"><a href="expo.html#cb53-2"></a><span class="st">  </span><span class="kw">labs</span>(<span class="dt">y=</span><span class="kw">bquote</span>(N[t<span class="op">+</span><span class="dv">1</span>]<span class="op">/</span>N[t]), <span class="dt">x=</span><span class="st">&quot;Year (t)&quot;</span>)</span></code></pre></div>
-<div class="figure"><span id="fig:Rrates"></span>
+<div class="sourceCode" id="cb59"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb59-1"><a href="expo.html#cb59-1" aria-hidden="true" tabindex="-1"></a><span class="fu">qplot</span>(<span class="at">x=</span>Year[<span class="sc">-</span><span class="fu">length</span>(Count)], <span class="at">y=</span>obs.R, <span class="at">geom=</span><span class="st">&quot;point&quot;</span>) <span class="sc">+</span> <span class="fu">geom_hline</span>(<span class="at">yintercept=</span><span class="dv">1</span>, <span class="at">lty=</span><span class="dv">3</span>) <span class="sc">+</span> </span>
+<span id="cb59-2"><a href="expo.html#cb59-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">y=</span><span class="fu">bquote</span>(N[t<span class="sc">+</span><span class="dv">1</span>]<span class="sc">/</span>N[t]), <span class="at">x=</span><span class="st">&quot;Year (t)&quot;</span>)</span></code></pre></div>
+<div class="figure"><span style="display:block;" id="fig:Rrates"></span>
 <img src="figs/Rrates-1.png" alt="Annual growth rates (R=N[t+1]/N[t]) for Song Sparrows" width="75%" />
 <p class="caption">
 Figure 3.7: Annual growth rates (R=N[t+1]/N[t]) for Song Sparrows
@@ -709,7 +771,7 @@ Figure 3.7: Annual growth rates (R=N[t+1]/N[t]) for Song Sparrows
 </div>
 <p>One thing that emerges in our graphic data display (Fig. <a href="expo.html#fig:Rrates">3.7</a>) is we have an unusually high growth rate in the early 1990’s, with the rest of the data clustered around 0.5–1.5. We may want to remember that.</p>
 </div>
-<div id="one-simulation" class="section level3">
+<div id="one-simulation" class="section level3" number="3.4.3">
 <h3><span class="header-section-number">3.4.3</span> One simulation</h3>
 <p>Our simulation will,</p>
 <ol style="list-style-type: decimal">
@@ -721,28 +783,28 @@ Figure 3.7: Annual growth rates (R=N[t+1]/N[t]) for Song Sparrows
 <li>repeat step 5 for each year to simulate each <code>N[t+1]</code> from <code>R[t]</code> and <code>N[t]</code>.</li>
 </ol>
 <p>First, we decide how many years we want to simulate growth, and create an empty vector that will hold our data.</p>
-<div class="sourceCode" id="cb54"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb54-1"><a href="expo.html#cb54-1"></a>years &lt;-<span class="st"> </span><span class="dv">10</span></span>
-<span id="cb54-2"><a href="expo.html#cb54-2"></a>N &lt;-<span class="kw">numeric</span>(years<span class="op">+</span><span class="dv">1</span>) <span class="co"># rep(0,years+1) would do the same thing.</span></span></code></pre></div>
+<div class="sourceCode" id="cb60"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb60-1"><a href="expo.html#cb60-1" aria-hidden="true" tabindex="-1"></a>years <span class="ot">&lt;-</span> <span class="dv">10</span></span>
+<span id="cb60-2"><a href="expo.html#cb60-2" aria-hidden="true" tabindex="-1"></a>N <span class="ot">&lt;-</span><span class="fu">numeric</span>(years<span class="sc">+</span><span class="dv">1</span>) <span class="co"># rep(0,years+1) would do the same thing.</span></span></code></pre></div>
 <p>Our vector of <span class="math inline">\(N\)</span> has to be one longer than the number of <span class="math inline">\(R\)</span> we use. This is because each <span class="math inline">\(R\)</span> is sthe change <em>from one year to the next</em> and there will always be one more <em>next</em> than there is <span class="math inline">\(R\)</span>.</p>
 <p>Next we draw 10 <span class="math inline">\(R\)</span> at random with replacement. This is just like having all 35 observed <span class="math inline">\(R\)</span> written down on slips of paper and dropped into a paper bag. We then draw one slip of paper out of the bag, write the number down, and put the slip of paper back in the bag, and then repeat this 9 more times. This is <em>resampling with replacement</em>. In that case, we would be assuming that all of these <span class="math inline">\(R_t\)</span> are important and will occur at some point, but we just don’t know when—they constitute the entire universe of possiblities. The R function <em>sample</em> will do this.
 [A random process occurs only in our imagination, or perhaps at the quantum level.<a href="#fn20" class="footnote-ref" id="fnref20"><sup>20</sup></a> A stochastic process is one which we treat operationally as random while acknowledging that there are complex underlying deterministic drivers. A pseudorandom process is a completely deterministic and hidden process used by computers and their programmers to generate numbers that cannot be distinguished from random; we can repeat a pseudorandom process by stipulating a key hidden starting point.]</p>
 <p>We can use <code>set.seed()</code> to make your pseudorandom process the same as mine, i.e., repeatable.</p>
-<div class="sourceCode" id="cb55"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb55-1"><a href="expo.html#cb55-1"></a><span class="kw">set.seed</span>(<span class="dv">3</span>)</span>
-<span id="cb55-2"><a href="expo.html#cb55-2"></a><span class="co"># Draw a sample of our observed R with replacement, &quot;years&quot; times.</span></span>
-<span id="cb55-3"><a href="expo.html#cb55-3"></a>(rRs &lt;-<span class="st"> </span><span class="kw">sample</span>(<span class="dt">x=</span>obs.R, <span class="dt">size=</span>years, <span class="dt">replace =</span> <span class="ot">TRUE</span>))</span></code></pre></div>
-<pre><code>##  [1] 1.4489796 0.8125000 1.0714286 1.2857143 0.7727273 0.4805195 1.2857143 1.0500000
-##  [9] 0.7204301 1.4489796</code></pre>
+<div class="sourceCode" id="cb61"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb61-1"><a href="expo.html#cb61-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">3</span>)</span>
+<span id="cb61-2"><a href="expo.html#cb61-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Draw a sample of our observed R with replacement, &quot;years&quot; times.</span></span>
+<span id="cb61-3"><a href="expo.html#cb61-3" aria-hidden="true" tabindex="-1"></a>(rRs <span class="ot">&lt;-</span> <span class="fu">sample</span>(<span class="at">x=</span>obs.R, <span class="at">size=</span>years, <span class="at">replace =</span> <span class="cn">TRUE</span>))</span></code></pre></div>
+<pre><code>##  [1] 1.4489796 0.8125000 1.0714286 1.2857143 0.7727273 0.4805195 1.2857143
+##  [8] 1.0500000 0.7204301 1.4489796</code></pre>
 <p>Now that we have these 10 <span class="math inline">\(R\)</span>, all we have to do is use them to generate the population sizes through time. For this, we need to use what programmers call a <em>for-loop</em>. In brief, a for-loop repeats a series of steps for a predetermined number of times.</p>
 <p>Let’s start our simulated N with the sparrow count we had in the last year.</p>
-<div class="sourceCode" id="cb57"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb57-1"><a href="expo.html#cb57-1"></a>N[<span class="dv">1</span>] &lt;-<span class="st"> </span>Count[<span class="kw">length</span>(Count)]</span></code></pre></div>
+<div class="sourceCode" id="cb63"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb63-1"><a href="expo.html#cb63-1" aria-hidden="true" tabindex="-1"></a>N[<span class="dv">1</span>] <span class="ot">&lt;-</span> Count[<span class="fu">length</span>(Count)]</span></code></pre></div>
 <p>Now we are ready to use the for-loop to project the population. For each year <span class="math inline">\(t\)</span>, we multiply <span class="math inline">\(N_t\)</span> by the randomly selected <span class="math inline">\(R_t\)</span> to get <span class="math inline">\(N_{t+1}\)</span> and put it into the <span class="math inline">\(t +1\)</span> element of <code>N</code>.</p>
-<div class="sourceCode" id="cb58"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb58-1"><a href="expo.html#cb58-1"></a><span class="cf">for</span>( t <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span>years) { </span>
-<span id="cb58-2"><a href="expo.html#cb58-2"></a><span class="co"># starting with year = 1, and for each subsequent year, do... </span></span>
-<span id="cb58-3"><a href="expo.html#cb58-3"></a>N[t<span class="op">+</span><span class="dv">1</span>] &lt;-<span class="st"> </span>N[t] <span class="op">*</span><span class="st"> </span>rRs[t]</span>
-<span id="cb58-4"><a href="expo.html#cb58-4"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb64"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb64-1"><a href="expo.html#cb64-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>( t <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>years) { </span>
+<span id="cb64-2"><a href="expo.html#cb64-2" aria-hidden="true" tabindex="-1"></a><span class="co"># starting with year = 1, and for each subsequent year, do... </span></span>
+<span id="cb64-3"><a href="expo.html#cb64-3" aria-hidden="true" tabindex="-1"></a>N[t<span class="sc">+</span><span class="dv">1</span>] <span class="ot">&lt;-</span> N[t] <span class="sc">*</span> rRs[t]</span>
+<span id="cb64-4"><a href="expo.html#cb64-4" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
 <p>Let’s graph the result.</p>
-<div class="sourceCode" id="cb59"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb59-1"><a href="expo.html#cb59-1"></a><span class="kw">qplot</span>(<span class="dv">0</span><span class="op">:</span>years, N, <span class="dt">geom=</span><span class="kw">c</span>(<span class="st">&quot;point&quot;</span>,<span class="st">&quot;line&quot;</span>))</span></code></pre></div>
-<div class="figure"><span id="fig:simten"></span>
+<div class="sourceCode" id="cb65"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb65-1"><a href="expo.html#cb65-1" aria-hidden="true" tabindex="-1"></a><span class="fu">qplot</span>(<span class="dv">0</span><span class="sc">:</span>years, N, <span class="at">geom=</span><span class="fu">c</span>(<span class="st">&quot;point&quot;</span>,<span class="st">&quot;line&quot;</span>))</span></code></pre></div>
+<div class="figure"><span style="display:block;" id="fig:simten"></span>
 <img src="figs/simten-1.png" alt="A single simulated population projection." width="90%" />
 <p class="caption">
 Figure 3.8: A single simulated population projection.
@@ -757,7 +819,7 @@ Figure 3.8: A single simulated population projection.
 <p>So what does Fig. <a href="expo.html#fig:simten">3.8</a> represent? It represents one possible outcome of a trajectory, if we assume that <span class="math inline">\(R\)</span> has an equal probability of being any of the observed <span class="math inline">\(R_t\)</span>. This <em>particular</em> trajectory is very unlikely, because it would require one particular sequence of randomly selected <span class="math inline">\(R\)</span>s. However, it is <em>no less likely</em> than any other particular trajectory.</p>
 <p>As only one realization of a set of randomly selected <span class="math inline">\(R\)</span>, Fig. <a href="expo.html#fig:simten">3.8</a> tells us very little. What we need to do now is to replicate this process a very large number of times, and examine the <em>distribution</em> of outcomes, including moments of the distribution such as the mean, median, and confidence interval of eventual outcomes.</p>
 </div>
-<div id="multiple-simulations" class="section level3">
+<div id="multiple-simulations" class="section level3" number="3.4.4">
 <h3><span class="header-section-number">3.4.4</span> Multiple simulations</h3>
 <p>Now we create a way to perform the above simulation several times. There are a couple tricks we use to do this. We still want to start small so we can figure out the steps as we go. Here is what we would do next.</p>
 <ol style="list-style-type: decimal">
@@ -765,120 +827,120 @@ Figure 3.8: A single simulated population projection.
 <li>We then do replicate independent simulations, using <code>replicate()</code>.</li>
 </ol>
 <p>Here we write a function to combine several steps.</p>
-<div class="sourceCode" id="cb60"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb60-1"><a href="expo.html#cb60-1"></a>myForLoop &lt;-<span class="st"> </span><span class="cf">function</span>(obs.R, years, initial.N) {</span>
-<span id="cb60-2"><a href="expo.html#cb60-2"></a>  <span class="co"># select all R at random</span></span>
-<span id="cb60-3"><a href="expo.html#cb60-3"></a>  rR &lt;-<span class="st"> </span><span class="kw">sample</span>(obs.R, <span class="dt">size=</span>years, <span class="dt">replace=</span><span class="ot">TRUE</span>)</span>
-<span id="cb60-4"><a href="expo.html#cb60-4"></a>  <span class="co"># create a vector to hold N</span></span>
-<span id="cb60-5"><a href="expo.html#cb60-5"></a>  N &lt;-<span class="st"> </span><span class="kw">numeric</span>(years<span class="op">+</span><span class="dv">1</span>)</span>
-<span id="cb60-6"><a href="expo.html#cb60-6"></a>  <span class="co"># give it an initial population size</span></span>
-<span id="cb60-7"><a href="expo.html#cb60-7"></a>  N[<span class="dv">1</span>] &lt;-<span class="st"> </span>initial.N</span>
-<span id="cb60-8"><a href="expo.html#cb60-8"></a>  <span class="co"># Do the for-loop</span></span>
-<span id="cb60-9"><a href="expo.html#cb60-9"></a>  <span class="cf">for</span>( t <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span>years ) {</span>
-<span id="cb60-10"><a href="expo.html#cb60-10"></a>    <span class="co"># project the population one time step</span></span>
-<span id="cb60-11"><a href="expo.html#cb60-11"></a>      N[t<span class="op">+</span><span class="dv">1</span>] &lt;-<span class="st">  </span>N[t] <span class="op">*</span><span class="st"> </span>rR[t]</span>
-<span id="cb60-12"><a href="expo.html#cb60-12"></a>  }</span>
-<span id="cb60-13"><a href="expo.html#cb60-13"></a>  <span class="co"># return the vector of N</span></span>
-<span id="cb60-14"><a href="expo.html#cb60-14"></a>  N</span>
-<span id="cb60-15"><a href="expo.html#cb60-15"></a>} </span>
-<span id="cb60-16"><a href="expo.html#cb60-16"></a><span class="co"># try it out with different hypothetical R</span></span>
-<span id="cb60-17"><a href="expo.html#cb60-17"></a><span class="kw">myForLoop</span>(<span class="dt">obs.R=</span><span class="dv">0</span><span class="op">:</span><span class="dv">3</span>, <span class="dt">years=</span><span class="dv">5</span>, <span class="dt">initial.N=</span><span class="dv">43</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb66"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb66-1"><a href="expo.html#cb66-1" aria-hidden="true" tabindex="-1"></a>myForLoop <span class="ot">&lt;-</span> <span class="cf">function</span>(obs.R, years, initial.N) {</span>
+<span id="cb66-2"><a href="expo.html#cb66-2" aria-hidden="true" tabindex="-1"></a>  <span class="co"># select all R at random</span></span>
+<span id="cb66-3"><a href="expo.html#cb66-3" aria-hidden="true" tabindex="-1"></a>  rR <span class="ot">&lt;-</span> <span class="fu">sample</span>(obs.R, <span class="at">size=</span>years, <span class="at">replace=</span><span class="cn">TRUE</span>)</span>
+<span id="cb66-4"><a href="expo.html#cb66-4" aria-hidden="true" tabindex="-1"></a>  <span class="co"># create a vector to hold N</span></span>
+<span id="cb66-5"><a href="expo.html#cb66-5" aria-hidden="true" tabindex="-1"></a>  N <span class="ot">&lt;-</span> <span class="fu">numeric</span>(years<span class="sc">+</span><span class="dv">1</span>)</span>
+<span id="cb66-6"><a href="expo.html#cb66-6" aria-hidden="true" tabindex="-1"></a>  <span class="co"># give it an initial population size</span></span>
+<span id="cb66-7"><a href="expo.html#cb66-7" aria-hidden="true" tabindex="-1"></a>  N[<span class="dv">1</span>] <span class="ot">&lt;-</span> initial.N</span>
+<span id="cb66-8"><a href="expo.html#cb66-8" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Do the for-loop</span></span>
+<span id="cb66-9"><a href="expo.html#cb66-9" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span>( t <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>years ) {</span>
+<span id="cb66-10"><a href="expo.html#cb66-10" aria-hidden="true" tabindex="-1"></a>    <span class="co"># project the population one time step</span></span>
+<span id="cb66-11"><a href="expo.html#cb66-11" aria-hidden="true" tabindex="-1"></a>      N[t<span class="sc">+</span><span class="dv">1</span>] <span class="ot">&lt;-</span>  N[t] <span class="sc">*</span> rR[t]</span>
+<span id="cb66-12"><a href="expo.html#cb66-12" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb66-13"><a href="expo.html#cb66-13" aria-hidden="true" tabindex="-1"></a>  <span class="co"># return the vector of N</span></span>
+<span id="cb66-14"><a href="expo.html#cb66-14" aria-hidden="true" tabindex="-1"></a>  N</span>
+<span id="cb66-15"><a href="expo.html#cb66-15" aria-hidden="true" tabindex="-1"></a>} </span>
+<span id="cb66-16"><a href="expo.html#cb66-16" aria-hidden="true" tabindex="-1"></a><span class="co"># try it out with different hypothetical R</span></span>
+<span id="cb66-17"><a href="expo.html#cb66-17" aria-hidden="true" tabindex="-1"></a><span class="fu">myForLoop</span>(<span class="at">obs.R=</span><span class="dv">0</span><span class="sc">:</span><span class="dv">3</span>, <span class="at">years=</span><span class="dv">5</span>, <span class="at">initial.N=</span><span class="dv">43</span>)</span></code></pre></div>
 <pre><code>## [1]  43 129   0   0   0   0</code></pre>
 <p>Our function seems to work. Next we do ten such projection simulations, each for 50 time steps, using the sparrow data.</p>
-<div class="sourceCode" id="cb62"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb62-1"><a href="expo.html#cb62-1"></a><span class="co"># specify the number of simulations and for how long</span></span>
-<span id="cb62-2"><a href="expo.html#cb62-2"></a>sims=<span class="dv">10</span>; years=<span class="dv">50</span></span>
-<span id="cb62-3"><a href="expo.html#cb62-3"></a><span class="kw">set.seed</span>(<span class="dv">3</span>)</span>
-<span id="cb62-4"><a href="expo.html#cb62-4"></a>outmat &lt;-<span class="st"> </span><span class="kw">replicate</span>(sims,   </span>
-<span id="cb62-5"><a href="expo.html#cb62-5"></a>                    <span class="dt">expr=</span><span class="kw">myForLoop</span>(<span class="dt">obs.R=</span>obs.R, <span class="dt">years=</span>years, <span class="dt">initial.N=</span><span class="dv">43</span>)</span>
-<span id="cb62-6"><a href="expo.html#cb62-6"></a>                    )</span></code></pre></div>
+<div class="sourceCode" id="cb68"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb68-1"><a href="expo.html#cb68-1" aria-hidden="true" tabindex="-1"></a><span class="co"># specify the number of simulations and for how long</span></span>
+<span id="cb68-2"><a href="expo.html#cb68-2" aria-hidden="true" tabindex="-1"></a>sims<span class="ot">=</span><span class="dv">10</span>; years<span class="ot">=</span><span class="dv">50</span></span>
+<span id="cb68-3"><a href="expo.html#cb68-3" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">3</span>)</span>
+<span id="cb68-4"><a href="expo.html#cb68-4" aria-hidden="true" tabindex="-1"></a>outmat <span class="ot">&lt;-</span> <span class="fu">replicate</span>(sims,   </span>
+<span id="cb68-5"><a href="expo.html#cb68-5" aria-hidden="true" tabindex="-1"></a>                    <span class="at">expr=</span><span class="fu">myForLoop</span>(<span class="at">obs.R=</span>obs.R, <span class="at">years=</span>years, <span class="at">initial.N=</span><span class="dv">43</span>)</span>
+<span id="cb68-6"><a href="expo.html#cb68-6" aria-hidden="true" tabindex="-1"></a>                    )</span></code></pre></div>
 <p>Now let’s peek at the results (Fig. <a href="expo.html#fig:tensimfig">3.9</a>). It is fun to graph our output, but also helps us make sure we are not making a heinous mistake in our code. Note we use log scale to help us see the small populations.</p>
-<div class="sourceCode" id="cb63"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb63-1"><a href="expo.html#cb63-1"></a><span class="kw">matplot</span>(<span class="dv">0</span><span class="op">:</span>years, outmat, <span class="dt">type=</span><span class="st">&quot;l&quot;</span>, <span class="dt">log=</span><span class="st">&quot;y&quot;</span>)</span></code></pre></div>
-<div class="figure"><span id="fig:tensimfig"></span>
+<div class="sourceCode" id="cb69"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb69-1"><a href="expo.html#cb69-1" aria-hidden="true" tabindex="-1"></a><span class="fu">matplot</span>(<span class="dv">0</span><span class="sc">:</span>years, outmat, <span class="at">type=</span><span class="st">&quot;l&quot;</span>, <span class="at">log=</span><span class="st">&quot;y&quot;</span>)</span></code></pre></div>
+<div class="figure"><span style="display:block;" id="fig:tensimfig"></span>
 <img src="figs/tensimfig-1.png" alt="Using matplot() to plot a matrix vs. a single variable. Our simulated populations sometimes increase and sometimes decrease." width="75%" />
 <p class="caption">
 Figure 3.9: Using matplot() to plot a matrix vs. a single variable. Our simulated populations sometimes increase and sometimes decrease.
 </p>
 </div>
-<div class="sourceCode" id="cb64"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb64-1"><a href="expo.html#cb64-1"></a><span class="co"># combine columns years, and our output</span></span>
-<span id="cb64-2"><a href="expo.html#cb64-2"></a>junk &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">years =</span> <span class="dv">1</span><span class="op">:</span>(years<span class="op">+</span><span class="dv">1</span>), outmat)</span>
-<span id="cb64-3"><a href="expo.html#cb64-3"></a><span class="kw">names</span>(junk)</span></code></pre></div>
-<pre><code>##  [1] &quot;years&quot; &quot;X1&quot;    &quot;X2&quot;    &quot;X3&quot;    &quot;X4&quot;    &quot;X5&quot;    &quot;X6&quot;    &quot;X7&quot;    &quot;X8&quot;    &quot;X9&quot;   
-## [11] &quot;X10&quot;</code></pre>
-<div class="sourceCode" id="cb66"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb66-1"><a href="expo.html#cb66-1"></a><span class="co"># make sure to load &#39;tidyr&#39; if you did not already load it or tidyverse</span></span>
-<span id="cb66-2"><a href="expo.html#cb66-2"></a><span class="co"># library(tidyr)</span></span>
-<span id="cb66-3"><a href="expo.html#cb66-3"></a><span class="co"># Take the wide data frame with many columns and turn it into </span></span>
-<span id="cb66-4"><a href="expo.html#cb66-4"></a><span class="co"># a long data frame with one column to ID each simulation, and one to hold values.</span></span>
-<span id="cb66-5"><a href="expo.html#cb66-5"></a>out.long &lt;-<span class="st"> </span><span class="kw">pivot_longer</span>(junk, <span class="dt">cols=</span>X1<span class="op">:</span>X10, <span class="dt">names_to=</span><span class="st">&quot;Run&quot;</span>, <span class="dt">values_to=</span><span class="st">&quot;N&quot;</span>)</span>
-<span id="cb66-6"><a href="expo.html#cb66-6"></a><span class="kw">ggplot</span>(<span class="dt">data=</span>out.long, <span class="kw">aes</span>(<span class="dt">x=</span>years, <span class="dt">y=</span>N, <span class="dt">group=</span>Run)) <span class="op">+</span><span class="st"> </span><span class="kw">geom_line</span>() <span class="op">+</span><span class="st">  </span></span>
-<span id="cb66-7"><a href="expo.html#cb66-7"></a><span class="st">  </span><span class="kw">scale_y_log10</span>() </span></code></pre></div>
-<div class="figure"><span id="fig:tensimfig2"></span>
+<div class="sourceCode" id="cb70"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb70-1"><a href="expo.html#cb70-1" aria-hidden="true" tabindex="-1"></a><span class="co"># combine columns years, and our output</span></span>
+<span id="cb70-2"><a href="expo.html#cb70-2" aria-hidden="true" tabindex="-1"></a>junk <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">years =</span> <span class="dv">1</span><span class="sc">:</span>(years<span class="sc">+</span><span class="dv">1</span>), outmat)</span>
+<span id="cb70-3"><a href="expo.html#cb70-3" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(junk)</span></code></pre></div>
+<pre><code>##  [1] &quot;years&quot; &quot;X1&quot;    &quot;X2&quot;    &quot;X3&quot;    &quot;X4&quot;    &quot;X5&quot;    &quot;X6&quot;    &quot;X7&quot;    &quot;X8&quot;   
+## [10] &quot;X9&quot;    &quot;X10&quot;</code></pre>
+<div class="sourceCode" id="cb72"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb72-1"><a href="expo.html#cb72-1" aria-hidden="true" tabindex="-1"></a><span class="co"># make sure to load &#39;tidyr&#39; if you did not already load it or tidyverse</span></span>
+<span id="cb72-2"><a href="expo.html#cb72-2" aria-hidden="true" tabindex="-1"></a><span class="co"># library(tidyr)</span></span>
+<span id="cb72-3"><a href="expo.html#cb72-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Take the wide data frame with many columns and turn it into </span></span>
+<span id="cb72-4"><a href="expo.html#cb72-4" aria-hidden="true" tabindex="-1"></a><span class="co"># a long data frame with one column to ID each simulation, and one to hold values.</span></span>
+<span id="cb72-5"><a href="expo.html#cb72-5" aria-hidden="true" tabindex="-1"></a>out.long <span class="ot">&lt;-</span> <span class="fu">pivot_longer</span>(junk, <span class="at">cols=</span>X1<span class="sc">:</span>X10, <span class="at">names_to=</span><span class="st">&quot;Run&quot;</span>, <span class="at">values_to=</span><span class="st">&quot;N&quot;</span>)</span>
+<span id="cb72-6"><a href="expo.html#cb72-6" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span>out.long, <span class="fu">aes</span>(<span class="at">x=</span>years, <span class="at">y=</span>N, <span class="at">group=</span>Run)) <span class="sc">+</span> <span class="fu">geom_line</span>() <span class="sc">+</span>  </span>
+<span id="cb72-7"><a href="expo.html#cb72-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_log10</span>() </span></code></pre></div>
+<div class="figure"><span style="display:block;" id="fig:tensimfig2"></span>
 <img src="figs/tensimfig2-1.png" alt="Using ggplot() to plot one variable against vs. a single variable, organized by a grouping variable. Our simulated populations sometimes increase and sometimes decrease." width="75%" />
 <p class="caption">
 Figure 3.10: Using ggplot() to plot one variable against vs. a single variable, organized by a grouping variable. Our simulated populations sometimes increase and sometimes decrease.
 </p>
 </div>
-<div class="sourceCode" id="cb67"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb67-1"><a href="expo.html#cb67-1"></a><span class="co"># Or for colorful lines</span></span>
-<span id="cb67-2"><a href="expo.html#cb67-2"></a><span class="co"># ggplot(data=out.long, aes(x=years, y=N,  linetype=Run, colour=Run)) + </span></span>
-<span id="cb67-3"><a href="expo.html#cb67-3"></a><span class="co">#    geom_line(show.legend=FALSE) + scale_y_log10() </span></span></code></pre></div>
+<div class="sourceCode" id="cb73"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb73-1"><a href="expo.html#cb73-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Or for colorful lines</span></span>
+<span id="cb73-2"><a href="expo.html#cb73-2" aria-hidden="true" tabindex="-1"></a><span class="co"># ggplot(data=out.long, aes(x=years, y=N,  linetype=Run, colour=Run)) + </span></span>
+<span id="cb73-3"><a href="expo.html#cb73-3" aria-hidden="true" tabindex="-1"></a><span class="co">#    geom_line(show.legend=FALSE) + scale_y_log10() </span></span></code></pre></div>
 <p>What does it mean that the simulation has an approximately even distribution of final population sizes  (Fig. )? If we plotted it on a linear scale, what would it look like?^[Plotting it on the log scale reveals that the relative change is independent of population size; this is true because the rate of change is geometric. If we plotted it on a linear scale, we would see that many trajectories result in small counts, and only a few get really big. That is, the median size is pretty small, but a few populations get huge.}</p>
 <p>Rerunning this simulation, with new <span class="math inline">\(R\)</span> each time, will show different dynamics every time, and that is the point of simulations. Simulations are a way to make a few key assumptions, and then leave the rest to chance. In that sense it is a null model of population dynamics.</p>
 </div>
-<div id="a-distribution-of-possible-futures" class="section level3">
+<div id="a-distribution-of-possible-futures" class="section level3" number="3.4.5">
 <h3><span class="header-section-number">3.4.5</span> A distribution of possible futures</h3>
 <p>Now we are in a position to make an informed prediction, given our assumptions. We will predict the range of possible outcomes and the most likely outcomes, given our set of assumptions.</p>
 <p>We will simulate the population for 50 years 10,000 times and describe the distribution of final populatin sizes. We use <code>system.time</code> to tell me how long it takes on my computer.</p>
-<div class="sourceCode" id="cb68"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb68-1"><a href="expo.html#cb68-1"></a>sims=<span class="fl">1e4</span>; years=<span class="dv">50</span></span>
-<span id="cb68-2"><a href="expo.html#cb68-2"></a><span class="kw">set.seed</span>(<span class="dv">3</span>)</span>
-<span id="cb68-3"><a href="expo.html#cb68-3"></a><span class="co">## system.time keeps track of how long processes take.</span></span>
-<span id="cb68-4"><a href="expo.html#cb68-4"></a><span class="kw">system.time</span>(</span>
-<span id="cb68-5"><a href="expo.html#cb68-5"></a>outmat &lt;-<span class="st"> </span><span class="kw">replicate</span>(sims,   </span>
-<span id="cb68-6"><a href="expo.html#cb68-6"></a>                    <span class="dt">expr=</span><span class="kw">myForLoop</span>(<span class="dt">obs.R=</span>obs.R, <span class="dt">years=</span>years, <span class="dt">initial.N=</span><span class="dv">43</span>)</span>
-<span id="cb68-7"><a href="expo.html#cb68-7"></a>                    )</span>
-<span id="cb68-8"><a href="expo.html#cb68-8"></a>            )</span></code></pre></div>
+<div class="sourceCode" id="cb74"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb74-1"><a href="expo.html#cb74-1" aria-hidden="true" tabindex="-1"></a>sims<span class="ot">=</span><span class="fl">1e4</span>; years<span class="ot">=</span><span class="dv">50</span></span>
+<span id="cb74-2"><a href="expo.html#cb74-2" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">3</span>)</span>
+<span id="cb74-3"><a href="expo.html#cb74-3" aria-hidden="true" tabindex="-1"></a><span class="do">## system.time keeps track of how long processes take.</span></span>
+<span id="cb74-4"><a href="expo.html#cb74-4" aria-hidden="true" tabindex="-1"></a><span class="fu">system.time</span>(</span>
+<span id="cb74-5"><a href="expo.html#cb74-5" aria-hidden="true" tabindex="-1"></a>outmat <span class="ot">&lt;-</span> <span class="fu">replicate</span>(sims,   </span>
+<span id="cb74-6"><a href="expo.html#cb74-6" aria-hidden="true" tabindex="-1"></a>                    <span class="at">expr=</span><span class="fu">myForLoop</span>(<span class="at">obs.R=</span>obs.R, <span class="at">years=</span>years, <span class="at">initial.N=</span><span class="dv">43</span>)</span>
+<span id="cb74-7"><a href="expo.html#cb74-7" aria-hidden="true" tabindex="-1"></a>                    )</span>
+<span id="cb74-8"><a href="expo.html#cb74-8" aria-hidden="true" tabindex="-1"></a>            )</span></code></pre></div>
 <pre><code>##    user  system elapsed 
-##   0.137   0.009   0.139</code></pre>
+##   0.146   0.011   0.158</code></pre>
 <p>This tells me how long it took to complete 10,000 simulations. We also check the dimensions of the output, and they make sense.</p>
-<div class="sourceCode" id="cb70"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb70-1"><a href="expo.html#cb70-1"></a><span class="kw">dim</span>(outmat)</span></code></pre></div>
+<div class="sourceCode" id="cb76"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb76-1"><a href="expo.html#cb76-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dim</span>(outmat)</span></code></pre></div>
 <pre><code>## [1]    51 10000</code></pre>
 <p>We see that we have an object that is the size we think it should be. We shall assume that everything worked way we think it should.</p>
 </div>
-<div id="analyzing-results" class="section level3">
+<div id="analyzing-results" class="section level3" number="3.4.6">
 <h3><span class="header-section-number">3.4.6</span> Analyzing results</h3>
 <p>We extract the last year of the simulations (last row), and summarize it with quartiles (0%, 25%, 50%, 75%, 100%, and also the mean).</p>
-<div class="sourceCode" id="cb72"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb72-1"><a href="expo.html#cb72-1"></a>N<span class="fl">.2053</span> &lt;-<span class="st"> </span>outmat[<span class="dv">51</span>,]</span>
-<span id="cb72-2"><a href="expo.html#cb72-2"></a><span class="kw">summary</span>(N<span class="fl">.2053</span>, <span class="dt">digits=</span><span class="dv">6</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb78"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb78-1"><a href="expo.html#cb78-1" aria-hidden="true" tabindex="-1"></a>N<span class="fl">.2053</span> <span class="ot">&lt;-</span> outmat[<span class="dv">51</span>,]</span>
+<span id="cb78-2"><a href="expo.html#cb78-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(N<span class="fl">.2053</span>, <span class="at">digits=</span><span class="dv">6</span>)</span></code></pre></div>
 <pre><code>##      Min.   1st Qu.    Median      Mean   3rd Qu.      Max. 
 ##       0.0      12.1      60.7    1306.3     297.7 2299420.0</code></pre>
-<div class="sourceCode" id="cb74"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb74-1"><a href="expo.html#cb74-1"></a><span class="kw">hist</span>(<span class="kw">log10</span>(N<span class="fl">.2053</span>))</span></code></pre></div>
-<div class="figure"><span id="fig:unnamed-chunk-20"></span>
-<img src="figs/unnamed-chunk-20-1.png" alt="Distribution of the 10000 final base-10 log population sizes. Note the approximately Normal distribution." width="75%" />
+<div class="sourceCode" id="cb80"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb80-1"><a href="expo.html#cb80-1" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(<span class="fu">log10</span>(N<span class="fl">.2053</span>))</span></code></pre></div>
+<div class="figure"><span style="display:block;" id="fig:unnamed-chunk-22"></span>
+<img src="figs/unnamed-chunk-22-1.png" alt="Distribution of the 10000 final base-10 log population sizes. Note the approximately Normal distribution." width="75%" />
 <p class="caption">
 Figure 3.11: Distribution of the 10000 final base-10 log population sizes. Note the approximately Normal distribution.
 </p>
 </div>
 <p>The <code>quantile()</code> function allows us to find a form of empirical confidence interval, including, approximately, the central 90% of the observations.<a href="#fn21" class="footnote-ref" id="fnref21"><sup>21</sup></a></p>
-<div class="sourceCode" id="cb75"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb75-1"><a href="expo.html#cb75-1"></a><span class="kw">quantile</span>(N<span class="fl">.2053</span>, <span class="dt">prob=</span><span class="kw">c</span>(<span class="fl">0.05</span>, <span class="fl">.95</span>) )</span></code></pre></div>
+<div class="sourceCode" id="cb81"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb81-1"><a href="expo.html#cb81-1" aria-hidden="true" tabindex="-1"></a><span class="fu">quantile</span>(N<span class="fl">.2053</span>, <span class="at">prob=</span><span class="fu">c</span>(<span class="fl">0.05</span>, .<span class="dv">95</span>) )</span></code></pre></div>
 <pre><code>##          5%         95% 
 ##    1.331579 2862.940808</code></pre>
 <p>These quantiles provide an estimate of the most likely range of possible populatin sizes, given our assumptions.</p>
 </div>
-<div id="inferring-processes-underlying-growth-rate" class="section level3">
+<div id="inferring-processes-underlying-growth-rate" class="section level3" number="3.4.7">
 <h3><span class="header-section-number">3.4.7</span> Inferring processes underlying growth rate</h3>
 <p>The above approach relies only on the observed data. That means that the growth rates, while representative, can never be different than what was observed. A different approaach would be to assume that the growth rates can be different than observed, <em>but drawn from the same underlying process</em> that caused the observed rates.</p>
 <p>The observed rates are simply a visible manifestation of unseen processes. We might summarize these by asserting that the observed growth rates were samples from a continuous distribution distribution, whose prperties we can infer from the sample. For instance, it may be that these processes cause annual rates to follow a Normal, or perhaps log-normal distribution.</p>
 <p>We can fit a Normal distribution to the logarithms of our observed <span class="math inline">\(R\)</span>, and we see that it doesn’t do too bad a job (Fig. <a href="expo.html#fig:fitln">3.12</a>).</p>
-<div class="sourceCode" id="cb77"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb77-1"><a href="expo.html#cb77-1"></a>mu &lt;-<span class="st"> </span><span class="kw">mean</span>( <span class="kw">log</span>(obs.R) )</span>
-<span id="cb77-2"><a href="expo.html#cb77-2"></a>sigma &lt;-<span class="st"> </span><span class="kw">sd</span>( <span class="kw">log</span>(obs.R) )</span>
-<span id="cb77-3"><a href="expo.html#cb77-3"></a></span>
-<span id="cb77-4"><a href="expo.html#cb77-4"></a><span class="co"># a regular sequence for log-R</span></span>
-<span id="cb77-5"><a href="expo.html#cb77-5"></a>lR &lt;-<span class="st"> </span><span class="kw">seq</span>(<span class="op">-</span><span class="dv">1</span>, <span class="fl">1.1</span>, <span class="dt">by=</span><span class="fl">0.01</span>)</span>
-<span id="cb77-6"><a href="expo.html#cb77-6"></a><span class="co"># the probability densities for the log-R</span></span>
-<span id="cb77-7"><a href="expo.html#cb77-7"></a>dR &lt;-<span class="st"> </span><span class="kw">dnorm</span>(lR, <span class="dt">m=</span>mu, <span class="dt">sd=</span>sigma)</span>
-<span id="cb77-8"><a href="expo.html#cb77-8"></a><span class="co"># rescale the probability density to visible height to graph</span></span>
-<span id="cb77-9"><a href="expo.html#cb77-9"></a>rdR &lt;-<span class="st"> </span>dR<span class="op">*</span><span class="dv">10</span></span>
-<span id="cb77-10"><a href="expo.html#cb77-10"></a></span>
-<span id="cb77-11"><a href="expo.html#cb77-11"></a><span class="kw">hist</span>(<span class="kw">log</span>(obs.R), <span class="dt">breaks=</span><span class="dv">10</span>, <span class="dt">ylab=</span><span class="st">&quot;Frequency&quot;</span>)</span>
-<span id="cb77-12"><a href="expo.html#cb77-12"></a><span class="kw">lines</span>(lR, rdR)</span></code></pre></div>
-<div class="figure"><span id="fig:fitln"></span>
+<div class="sourceCode" id="cb83"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb83-1"><a href="expo.html#cb83-1" aria-hidden="true" tabindex="-1"></a>mu <span class="ot">&lt;-</span> <span class="fu">mean</span>( <span class="fu">log</span>(obs.R) )</span>
+<span id="cb83-2"><a href="expo.html#cb83-2" aria-hidden="true" tabindex="-1"></a>sigma <span class="ot">&lt;-</span> <span class="fu">sd</span>( <span class="fu">log</span>(obs.R) )</span>
+<span id="cb83-3"><a href="expo.html#cb83-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb83-4"><a href="expo.html#cb83-4" aria-hidden="true" tabindex="-1"></a><span class="co"># a regular sequence for log-R</span></span>
+<span id="cb83-5"><a href="expo.html#cb83-5" aria-hidden="true" tabindex="-1"></a>lR <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="sc">-</span><span class="dv">1</span>, <span class="fl">1.1</span>, <span class="at">by=</span><span class="fl">0.01</span>)</span>
+<span id="cb83-6"><a href="expo.html#cb83-6" aria-hidden="true" tabindex="-1"></a><span class="co"># the probability densities for the log-R</span></span>
+<span id="cb83-7"><a href="expo.html#cb83-7" aria-hidden="true" tabindex="-1"></a>dR <span class="ot">&lt;-</span> <span class="fu">dnorm</span>(lR, <span class="at">m=</span>mu, <span class="at">sd=</span>sigma)</span>
+<span id="cb83-8"><a href="expo.html#cb83-8" aria-hidden="true" tabindex="-1"></a><span class="co"># rescale the probability density to visible height to graph</span></span>
+<span id="cb83-9"><a href="expo.html#cb83-9" aria-hidden="true" tabindex="-1"></a>rdR <span class="ot">&lt;-</span> dR<span class="sc">*</span><span class="dv">10</span></span>
+<span id="cb83-10"><a href="expo.html#cb83-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb83-11"><a href="expo.html#cb83-11" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(<span class="fu">log</span>(obs.R), <span class="at">breaks=</span><span class="dv">10</span>, <span class="at">ylab=</span><span class="st">&quot;Frequency&quot;</span>)</span>
+<span id="cb83-12"><a href="expo.html#cb83-12" aria-hidden="true" tabindex="-1"></a><span class="fu">lines</span>(lR, rdR)</span></code></pre></div>
+<div class="figure"><span style="display:block;" id="fig:fitln"></span>
 <img src="figs/fitln-1.png" alt="The logarithms of the observed R seem reasonably approximated by a Normal distribution whose mean and standard deviation are derived from the log-transformed data. The probability distribution has been rescaled to be visible on this graph." width="75%" />
 <p class="caption">
 Figure 3.12: The logarithms of the observed R seem reasonably approximated by a Normal distribution whose mean and standard deviation are derived from the log-transformed data. The probability distribution has been rescaled to be visible on this graph.
@@ -886,33 +948,33 @@ Figure 3.12: The logarithms of the observed R seem reasonably approximated by a 
 </div>
 <p>Now we will simulate populations just like before, but instead of random draws from the observed data, we do random draws from the inferred distribution.</p>
 <p>Our new function.</p>
-<div class="sourceCode" id="cb78"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb78-1"><a href="expo.html#cb78-1"></a>myForLoop2 &lt;-<span class="st"> </span><span class="cf">function</span>(mu, sigma, years, initial.N) {</span>
-<span id="cb78-2"><a href="expo.html#cb78-2"></a>  <span class="co"># select all R at random from </span></span>
-<span id="cb78-3"><a href="expo.html#cb78-3"></a>  lrR &lt;-<span class="st"> </span><span class="kw">rnorm</span>(years, <span class="dt">m=</span>mu, <span class="dt">sd=</span>sigma)</span>
-<span id="cb78-4"><a href="expo.html#cb78-4"></a>  rR &lt;-<span class="st"> </span><span class="kw">exp</span>(lrR)</span>
-<span id="cb78-5"><a href="expo.html#cb78-5"></a>  <span class="co"># create a vector to hold N</span></span>
-<span id="cb78-6"><a href="expo.html#cb78-6"></a>  N &lt;-<span class="st"> </span><span class="kw">numeric</span>(years<span class="op">+</span><span class="dv">1</span>)</span>
-<span id="cb78-7"><a href="expo.html#cb78-7"></a>  <span class="co"># give it an initial population size</span></span>
-<span id="cb78-8"><a href="expo.html#cb78-8"></a>  N[<span class="dv">1</span>] &lt;-<span class="st"> </span>initial.N</span>
-<span id="cb78-9"><a href="expo.html#cb78-9"></a>  <span class="co"># Do the for-loop</span></span>
-<span id="cb78-10"><a href="expo.html#cb78-10"></a>  <span class="cf">for</span>( t <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span>years ) {</span>
-<span id="cb78-11"><a href="expo.html#cb78-11"></a>    <span class="co"># project the population one time step</span></span>
-<span id="cb78-12"><a href="expo.html#cb78-12"></a>      N[t<span class="op">+</span><span class="dv">1</span>] &lt;-<span class="st">  </span>N[t] <span class="op">*</span><span class="st"> </span>rR[t]</span>
-<span id="cb78-13"><a href="expo.html#cb78-13"></a>  }</span>
-<span id="cb78-14"><a href="expo.html#cb78-14"></a>  <span class="co"># return the vector of N</span></span>
-<span id="cb78-15"><a href="expo.html#cb78-15"></a>  N</span>
-<span id="cb78-16"><a href="expo.html#cb78-16"></a>} </span></code></pre></div>
+<div class="sourceCode" id="cb84"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb84-1"><a href="expo.html#cb84-1" aria-hidden="true" tabindex="-1"></a>myForLoop2 <span class="ot">&lt;-</span> <span class="cf">function</span>(mu, sigma, years, initial.N) {</span>
+<span id="cb84-2"><a href="expo.html#cb84-2" aria-hidden="true" tabindex="-1"></a>  <span class="co"># select all R at random from </span></span>
+<span id="cb84-3"><a href="expo.html#cb84-3" aria-hidden="true" tabindex="-1"></a>  lrR <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(years, <span class="at">m=</span>mu, <span class="at">sd=</span>sigma)</span>
+<span id="cb84-4"><a href="expo.html#cb84-4" aria-hidden="true" tabindex="-1"></a>  rR <span class="ot">&lt;-</span> <span class="fu">exp</span>(lrR)</span>
+<span id="cb84-5"><a href="expo.html#cb84-5" aria-hidden="true" tabindex="-1"></a>  <span class="co"># create a vector to hold N</span></span>
+<span id="cb84-6"><a href="expo.html#cb84-6" aria-hidden="true" tabindex="-1"></a>  N <span class="ot">&lt;-</span> <span class="fu">numeric</span>(years<span class="sc">+</span><span class="dv">1</span>)</span>
+<span id="cb84-7"><a href="expo.html#cb84-7" aria-hidden="true" tabindex="-1"></a>  <span class="co"># give it an initial population size</span></span>
+<span id="cb84-8"><a href="expo.html#cb84-8" aria-hidden="true" tabindex="-1"></a>  N[<span class="dv">1</span>] <span class="ot">&lt;-</span> initial.N</span>
+<span id="cb84-9"><a href="expo.html#cb84-9" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Do the for-loop</span></span>
+<span id="cb84-10"><a href="expo.html#cb84-10" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span>( t <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>years ) {</span>
+<span id="cb84-11"><a href="expo.html#cb84-11" aria-hidden="true" tabindex="-1"></a>    <span class="co"># project the population one time step</span></span>
+<span id="cb84-12"><a href="expo.html#cb84-12" aria-hidden="true" tabindex="-1"></a>      N[t<span class="sc">+</span><span class="dv">1</span>] <span class="ot">&lt;-</span>  N[t] <span class="sc">*</span> rR[t]</span>
+<span id="cb84-13"><a href="expo.html#cb84-13" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb84-14"><a href="expo.html#cb84-14" aria-hidden="true" tabindex="-1"></a>  <span class="co"># return the vector of N</span></span>
+<span id="cb84-15"><a href="expo.html#cb84-15" aria-hidden="true" tabindex="-1"></a>  N</span>
+<span id="cb84-16"><a href="expo.html#cb84-16" aria-hidden="true" tabindex="-1"></a>} </span></code></pre></div>
 <p>Our new simulations.</p>
-<div class="sourceCode" id="cb79"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb79-1"><a href="expo.html#cb79-1"></a>sims=<span class="fl">1e4</span>; years=<span class="dv">50</span></span>
-<span id="cb79-2"><a href="expo.html#cb79-2"></a><span class="kw">set.seed</span>(<span class="dv">3</span>)</span>
-<span id="cb79-3"><a href="expo.html#cb79-3"></a>outmat2 &lt;-<span class="st"> </span><span class="kw">replicate</span>(sims,   </span>
-<span id="cb79-4"><a href="expo.html#cb79-4"></a>                    <span class="dt">expr=</span><span class="kw">myForLoop2</span>(<span class="dt">mu=</span>mu, <span class="dt">sigma=</span>sigma, <span class="dt">years=</span>years, <span class="dt">initial.N=</span><span class="dv">43</span>)</span>
-<span id="cb79-5"><a href="expo.html#cb79-5"></a>                    )</span>
-<span id="cb79-6"><a href="expo.html#cb79-6"></a>N2<span class="fl">.2053</span> &lt;-<span class="st"> </span>outmat2[<span class="dv">51</span>,]</span>
-<span id="cb79-7"><a href="expo.html#cb79-7"></a><span class="kw">quantile</span>(N2<span class="fl">.2053</span>, <span class="dt">prob=</span><span class="kw">c</span>(<span class="fl">0.05</span>, <span class="fl">.95</span>) )</span></code></pre></div>
+<div class="sourceCode" id="cb85"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb85-1"><a href="expo.html#cb85-1" aria-hidden="true" tabindex="-1"></a>sims<span class="ot">=</span><span class="fl">1e4</span>; years<span class="ot">=</span><span class="dv">50</span></span>
+<span id="cb85-2"><a href="expo.html#cb85-2" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">3</span>)</span>
+<span id="cb85-3"><a href="expo.html#cb85-3" aria-hidden="true" tabindex="-1"></a>outmat2 <span class="ot">&lt;-</span> <span class="fu">replicate</span>(sims,   </span>
+<span id="cb85-4"><a href="expo.html#cb85-4" aria-hidden="true" tabindex="-1"></a>                    <span class="at">expr=</span><span class="fu">myForLoop2</span>(<span class="at">mu=</span>mu, <span class="at">sigma=</span>sigma, <span class="at">years=</span>years, <span class="at">initial.N=</span><span class="dv">43</span>)</span>
+<span id="cb85-5"><a href="expo.html#cb85-5" aria-hidden="true" tabindex="-1"></a>                    )</span>
+<span id="cb85-6"><a href="expo.html#cb85-6" aria-hidden="true" tabindex="-1"></a>N2<span class="fl">.2053</span> <span class="ot">&lt;-</span> outmat2[<span class="dv">51</span>,]</span>
+<span id="cb85-7"><a href="expo.html#cb85-7" aria-hidden="true" tabindex="-1"></a><span class="fu">quantile</span>(N2<span class="fl">.2053</span>, <span class="at">prob=</span><span class="fu">c</span>(<span class="fl">0.05</span>, .<span class="dv">95</span>) )</span></code></pre></div>
 <pre><code>##          5%         95% 
 ##    1.205509 3089.819907</code></pre>
-<div class="sourceCode" id="cb81"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb81-1"><a href="expo.html#cb81-1"></a><span class="kw">quantile</span>(N<span class="fl">.2053</span>, <span class="dt">prob=</span><span class="kw">c</span>(<span class="fl">0.05</span>, <span class="fl">.95</span>) )</span></code></pre></div>
+<div class="sourceCode" id="cb87"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb87-1"><a href="expo.html#cb87-1" aria-hidden="true" tabindex="-1"></a><span class="fu">quantile</span>(N<span class="fl">.2053</span>, <span class="at">prob=</span><span class="fu">c</span>(<span class="fl">0.05</span>, .<span class="dv">95</span>) )</span></code></pre></div>
 <pre><code>##          5%         95% 
 ##    1.331579 2862.940808</code></pre>
 <p>The results are very similar to those based on only the observed <span class="math inline">\(R\)</span>. If they were markedly different, we might ask whether our choice of distribution was appropriate.</p>
@@ -923,29 +985,77 @@ Figure 3.12: The logarithms of the observed R seem reasonably approximated by a 
 <li>what would you like to add next to make the model a better approximation?</li>
 </ul>
 </div>
-<div id="f-environmental-noise" class="section level3">
+<div id="f-environmental-noise" class="section level3" number="3.4.8">
 <h3><span class="header-section-number">3.4.8</span> 1/<span class="math inline">\(f\)</span> environmental noise</h3>
-<p>Perhaps we might explain some of the variation in annual growth rates to weather patterns in the breeding range (Darrtown, Ohio). If so, we might separate demographic effects vs. environmental effects. That would give us an even better model we could use for explanation and prediction.</p>
-<p>An important consideration in modeling more realistic time series the temporal autocorrelation that often appears in environmental data. Patterns of autocorrelation are often best characterized by “one over f-noise” (<span class="math inline">\(1/f\)</span>), that is, random variation where the temporal autocorrelation follows a color spectrum. Uncorrelated noise is referred to as white noise because the correlations actually occur at all wavelengths. Red noise emphasized strong correlation at short wavelengths and low correlation at long wavelengths. As a result, red noise is more random at longer wavelengths but less random at short wavelengths . Environmental variables typically have a reddened color that we typically refer to as pink noise <span class="citation">(Halley <a href="#ref-Halley1996" role="doc-biblioref">1996</a>)</span>.</p>
-
+<p>Perhaps we might explain some of the variation in annual growth rates to weather patterns in the breeding range (Darrtown, Ohio). If so, we might separate demographic effects <em>vs.</em> environmental effects. That would give us an even better model we could use for explanation and prediction.</p>
+<p>When we model or simulate more realistic time series, we often find it essential to account for the <em>temporal autocorrelation</em> that often appears in environmental data. Patterns of autocorrelation are often best characterized by “one over f-noise” (<span class="math inline">\(1/f\)</span>), that is, random variation where the temporal autocorrelation follows a color spectrum. Uncorrelated noise is referred to as white noise because the correlations actually occur at all wavelengths. Red noise emphasized strong positive correlation at short wavelengths and low correlation at long wavelengths. As a result, red noise is more random at longer wavelengths but less random at short wavelengths . Environmental variables typically have a reddened color that we typically refer to as pink noise <span class="citation">(<a href="#ref-Halley1996" role="doc-biblioref">Halley 1996</a>)</span>.</p>
+<p>A good example of reddened noise is average daily air temperature. Daily temperature tends to be positively correlated from one day to the next, but tends more and more weakly correlated between two days that are separated more and more in time. Daily water temperature is even more strongly correlated in adjacent days because of the high specific heat of water.</p>
+<div class="sourceCode" id="cb89"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb89-1"><a href="expo.html#cb89-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1</span>)</span>
+<span id="cb89-2"><a href="expo.html#cb89-2" aria-hidden="true" tabindex="-1"></a>time.series <span class="ot">&lt;-</span> <span class="fu">one_over_f</span>(<span class="at">gamma=</span><span class="dv">2</span>, <span class="at">N=</span><span class="dv">50</span>)</span>
+<span id="cb89-3"><a href="expo.html#cb89-3" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">50</span>, time.series, <span class="at">type=</span><span class="st">&#39;l&#39;</span>, <span class="at">main=</span><span class="st">&quot;Reddened noise&quot;</span>)</span></code></pre></div>
+<p><img src="figs/unnamed-chunk-26-1.png" width="90%" /></p>
+<div class="sourceCode" id="cb90"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb90-1"><a href="expo.html#cb90-1" aria-hidden="true" tabindex="-1"></a>time.series <span class="ot">&lt;-</span> <span class="fu">one_over_f</span>(<span class="at">gamma=</span><span class="dv">0</span>, <span class="at">N=</span><span class="dv">50</span>)</span>
+<span id="cb90-2"><a href="expo.html#cb90-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">50</span>, time.series, <span class="at">type=</span><span class="st">&#39;l&#39;</span>, <span class="at">main=</span><span class="st">&quot;White noise&quot;</span>)</span></code></pre></div>
+<p><img src="figs/unnamed-chunk-26-2.png" width="90%" /></p>
+<div class="sourceCode" id="cb91"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb91-1"><a href="expo.html#cb91-1" aria-hidden="true" tabindex="-1"></a><span class="fu">one_over_f</span>()</span></code></pre></div>
+<pre><code>##   [1]  0.298824010  0.237226439  0.022089966 -0.058677477 -0.143104439
+##   [6] -0.096115585 -0.217674233 -0.318510492 -0.411251888  0.013766040
+##  [11]  0.058893149 -0.250099478 -0.475972239 -0.583968374 -0.185727547
+##  [16] -0.471796572 -0.777508331 -0.911505916 -0.999884280 -1.145470033
+##  [21] -1.144976191 -1.076483805 -1.072279877 -0.968071771 -0.842569319
+##  [26] -1.223831808 -1.260713073 -1.200984196 -1.092624456 -0.912505127
+##  [31] -0.801324833 -0.849137971 -0.666099799 -0.242696588 -0.336315476
+##  [36] -0.413040724 -0.302926138 -0.189909334 -0.111440017 -0.105175915
+##  [41]  0.386642286  0.173388729  0.201344125 -0.078417077 -0.067053947
+##  [46]  0.253079784  0.087084305 -0.175424320  0.175378412 -0.018511340
+##  [51] -0.326746570 -0.307820229 -0.238600098 -0.017850970 -0.242894565
+##  [56] -0.114187912 -0.123189588 -0.250224129 -0.315375425 -0.482370556
+##  [61] -0.679859449 -0.654850531 -0.788414474 -0.862824689 -1.119964520
+##  [66] -1.284946496 -1.501806547 -1.429023014 -1.686673886 -1.717936023
+##  [71] -1.339415250 -1.438129614 -1.376591163 -1.487297230 -1.296710293
+##  [76] -1.141483988 -1.168313720 -1.277595263 -1.267864047 -1.775251874
+##  [81] -1.788995566 -1.438183268 -1.117802176 -1.257935981 -1.105544404
+##  [86] -1.148643680 -1.326412085 -1.452105066 -1.363881397 -1.557466098
+##  [91] -1.447593696 -1.156491906 -0.965223705 -0.940559500 -0.454249722
+##  [96] -0.525117326 -0.552481219 -0.762876531 -0.435203543 -0.181171967
+## [101] -0.043885710  0.003821143 -0.146239428 -0.195746588 -0.168055878
+## [106] -0.130514156 -0.406878361 -0.462138459 -0.394679685 -0.195522343
+## [111]  0.281265599  0.458744369  0.746887742  0.809777963  1.190705346
+## [116]  1.264690242  0.874309071  0.742373164  0.765139339  0.666812962
+## [121]  0.808437966  0.826119619  0.799500046  0.740888658  0.577590139
+## [126]  0.755627670  1.267427177  1.244177427  1.077970660  1.025106186
+## [131]  0.848674967  1.080393233  1.513672665  1.537706076  1.530141514
+## [136]  1.598658591  1.505414796  1.554742635  1.821012230  1.948974147
+## [141]  1.786873405  1.807088422  1.264629628  1.255344152  0.947658329
+## [146]  0.915749082  1.310765326  1.354415207  1.524322656  1.420308620
+## [151]  1.226589960  0.984675278  0.808371597  0.626751709  0.547783422
+## [156]  0.468083434  0.513039379  0.530440634  0.496461435  0.433902955
+## [161]  0.659671581  0.933006176  0.755059314  1.040193197  1.274216904
+## [166]  1.265997977  1.184445211  1.168937063  1.241008459  1.298614092
+## [171]  1.222971943  1.077538730  0.854257118  0.896230927  0.679514064
+## [176]  0.205251182 -0.172535497 -0.275142660 -0.062514131 -0.009668855
+## [181]  0.106339508  0.102343929  0.001463750 -0.053420265 -0.037794333
+## [186] -0.132799374 -0.273124821 -0.276711413 -0.107940539  0.011454678
+## [191]  0.095326934  0.126416026  0.185546476  0.420958833  0.552621056
+## [196]  0.567177990  0.737451506  0.602832006  0.690105908  0.482555676</code></pre>
 <p>In this chapter, we have explored the meaning of density-independent population growth. It is a statistically demonstrable phenomenon, wherein the per captia growth rate exhibits no relation with population density. It is a useful starting point for conceptualizing population growth. We have derived discrete geometric and continuous exponential growth and seen how they are related. We have caculated doubling times. We have discussed the assumptions that different people might make regarding these growth models. Last, we have used simulation to explore prediction and inference in a density-independent context.</p>
 
 </div>
 </div>
 </div>
 <h3> References</h3>
-<div id="refs" class="references">
-<div id="ref-Chaudhary_2019">
-<p>Chaudhary, Vratika, and Madan K. Oli. 2019. “A Critical Appraisal of Population Viability Analysis.” <em>Conservation Biology</em> 34 (1): 26–40.</p>
+<div id="refs" class="references csl-bib-body hanging-indent">
+<div id="ref-Chaudhary_2019" class="csl-entry">
+Chaudhary, Vratika, and Madan K. Oli. 2019. <span>“A Critical Appraisal of Population Viability Analysis.”</span> <em>Conservation Biology</em> 34 (1): 26–40.
 </div>
-<div id="ref-Halley1996">
-<p>Halley, J M. 1996. “Ecology, evolution and 1/f-noise.” <em>Trends in Ecology &amp; Evolution</em> 11: 33–37.</p>
+<div id="ref-Halley1996" class="csl-entry">
+Halley, J M. 1996. <span>“<span class="nocase">Ecology, evolution and 1/f-noise</span>.”</span> <em>Trends in Ecology <span>&amp;</span> Evolution</em> 11: 33–37.
 </div>
-<div id="ref-Hastings2011">
-<p>Hastings, A. 2011. “Single Species Population Dynamics and Its Theoretical Underpinnings.” In, edited by S. M. Scheiner and M. R. Willig. Chicago, IL, USA: University of Chicago Press.</p>
+<div id="ref-Hastings2011" class="csl-entry">
+Hastings, A. 2011. <span>“Single Species Population Dynamics and Its Theoretical Underpinnings.”</span> In, edited by S. M. Scheiner and M. R. Willig. Chicago, IL, USA: University of Chicago Press.
 </div>
-<div id="ref-Shaffer1981">
-<p>Shaffer, Mark L. 1981. “Minimum for species population sizes conservation.” <em>Bioscience</em> 31: 131–34.</p>
+<div id="ref-Shaffer1981" class="csl-entry">
+Shaffer, Mark L. 1981. <span>“<span class="nocase">Minimum for species population sizes conservation</span>.”</span> <em>Bioscience</em> 31: 131–34.
 </div>
 </div>
 <div class="footnotes">
@@ -991,6 +1101,7 @@ gitbook.start({
 "weibo": false,
 "instapaper": false,
 "vk": false,
+"whatsapp": false,
 "all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
 },
 "fontsettings": {
@@ -1011,6 +1122,10 @@ gitbook.start({
 "text": null
 },
 "download": ["_main.pdf"],
+"search": {
+"engine": "lunr",
+"options": null
+},
 "toc": {
 "collapse": "subsection"
 }

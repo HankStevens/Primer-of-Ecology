@@ -12,3 +12,4 @@ library(primer)
 # git push -u origin master to send your committed changes to a remote repository, where the local branch is named master to the remote named origin
 
 # /usr/bin/git push origin HEAD:refs/heads/master
+# /usr/bin/git push origin HEAD:refs/heads/lv_cr
