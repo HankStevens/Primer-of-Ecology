@@ -1,421 +1,93 @@
 <!DOCTYPE html>
-<html lang="" xml:lang="">
+<html lang="en">
 <head>
-<!-- Global site tag (gtag.js) - Google Analytics -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-PZYWVYJRFW"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<title>2 Optimal Foraging | Primer of Ecology using R</title>
+<meta name="author" content="Hank Stevens">
+<meta name="generator" content="bookdown 0.23 with bs4_book()">
+<meta property="og:title" content="2 Optimal Foraging | Primer of Ecology using R">
+<meta property="og:type" content="book">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="2 Optimal Foraging | Primer of Ecology using R">
+<!-- JS --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://kit.fontawesome.com/6ecbd6c532.js" crossorigin="anonymous"></script><script src="libs/header-attrs-2.10/header-attrs.js"></script><script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<link href="libs/bootstrap-4.6.0/bootstrap.min.css" rel="stylesheet">
+<script src="libs/bootstrap-4.6.0/bootstrap.bundle.min.js"></script><script src="libs/bs3compat-0.2.5.1/tabs.js"></script><script src="libs/bs3compat-0.2.5.1/bs3compat.js"></script><link href="libs/bs4_book-1.0.0/bs4_book.css" rel="stylesheet">
+<script src="libs/bs4_book-1.0.0/bs4_book.js"></script><script src="libs/kePrint-0.0.1/kePrint.js"></script><link href="libs/lightable-0.0.1/lightable.css" rel="stylesheet">
+<!-- Global site tag (gtag.js) - Google Analytics --><script async src="https://www.googletagmanager.com/gtag/js?id=G-VCV8MES4YY"></script><script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
 
-  gtag('config', 'G-PZYWVYJRFW');
-</script>
-  <meta charset="utf-8" />
-  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>2 Optimal Foraging | Primer of Ecology using R</title>
-  <meta name="description" content="2 Optimal Foraging | Primer of Ecology using R" />
-  <meta name="generator" content="bookdown 0.20 and GitBook 2.6.7" />
-
-  <meta property="og:title" content="2 Optimal Foraging | Primer of Ecology using R" />
-  <meta property="og:type" content="book" />
-  
-  
-  
-  <meta name="github-repo" content="HankStevens/Primer-of-Ecology" />
-
-  <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="2 Optimal Foraging | Primer of Ecology using R" />
-  
-  
-  
-
-<meta name="author" content="Hank Stevens" />
-
-
-<meta name="date" content="2020-12-02" />
-
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="apple-mobile-web-app-capable" content="yes" />
-  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
-  
-  
-<link rel="prev" href="theory.html"/>
-<link rel="next" href="expo.html"/>
-<script src="libs/jquery-2.2.3/jquery.min.js"></script>
-<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
-<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
-<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
-<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
-<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
-<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
-<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
-
-
-
-
-
-
-
-
-
-<script src="libs/accessible-code-block-0.0.1/empty-anchor.js"></script>
-<script src="libs/kePrint-0.0.1/kePrint.js"></script>
-<link href="libs/lightable-0.0.1/lightable.css" rel="stylesheet" />
-<!-- Global site tag (gtag.js) - Google Analytics -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-VCV8MES4YY"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-VCV8MES4YY');
-</script>
-
-
-<style type="text/css">
-code.sourceCode > span { display: inline-block; line-height: 1.25; }
-code.sourceCode > span { color: inherit; text-decoration: inherit; }
-code.sourceCode > span:empty { height: 1.2em; }
-.sourceCode { overflow: visible; }
-code.sourceCode { white-space: pre; position: relative; }
-pre.sourceCode { margin: 0; }
-@media screen {
-div.sourceCode { overflow: auto; }
-}
-@media print {
-code.sourceCode { white-space: pre-wrap; }
-code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
-}
-pre.numberSource code
-  { counter-reset: source-line 0; }
-pre.numberSource code > span
-  { position: relative; left: -4em; counter-increment: source-line; }
-pre.numberSource code > span > a:first-child::before
-  { content: counter(source-line);
-    position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; display: inline-block;
-    -webkit-touch-callout: none; -webkit-user-select: none;
-    -khtml-user-select: none; -moz-user-select: none;
-    -ms-user-select: none; user-select: none;
-    padding: 0 4px; width: 4em;
-    color: #aaaaaa;
-  }
-pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
-div.sourceCode
-  {   }
-@media screen {
-code.sourceCode > span > a:first-child::before { text-decoration: underline; }
-}
-code span.al { color: #ff0000; font-weight: bold; } /* Alert */
-code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
-code span.at { color: #7d9029; } /* Attribute */
-code span.bn { color: #40a070; } /* BaseN */
-code span.bu { } /* BuiltIn */
-code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
-code span.ch { color: #4070a0; } /* Char */
-code span.cn { color: #880000; } /* Constant */
-code span.co { color: #60a0b0; font-style: italic; } /* Comment */
-code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
-code span.do { color: #ba2121; font-style: italic; } /* Documentation */
-code span.dt { color: #902000; } /* DataType */
-code span.dv { color: #40a070; } /* DecVal */
-code span.er { color: #ff0000; font-weight: bold; } /* Error */
-code span.ex { } /* Extension */
-code span.fl { color: #40a070; } /* Float */
-code span.fu { color: #06287e; } /* Function */
-code span.im { } /* Import */
-code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
-code span.kw { color: #007020; font-weight: bold; } /* Keyword */
-code span.op { color: #666666; } /* Operator */
-code span.ot { color: #007020; } /* Other */
-code span.pp { color: #bc7a00; } /* Preprocessor */
-code span.sc { color: #4070a0; } /* SpecialChar */
-code span.ss { color: #bb6688; } /* SpecialString */
-code span.st { color: #4070a0; } /* String */
-code span.va { color: #19177c; } /* Variable */
-code span.vs { color: #4070a0; } /* VerbatimString */
-code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
-</style>
-
+      gtag('config', 'G-VCV8MES4YY');
+    </script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- CSS --><meta name="description" content="Figure 2.1: Optimal foraging theory (OFT) generates testable quantitative predictions that allow a less ambiguous description and explanation for observed patterns and processes. Here, a...">
+<meta property="og:description" content="Figure 2.1: Optimal foraging theory (OFT) generates testable quantitative predictions that allow a less ambiguous description and explanation for observed patterns and processes. Here, a...">
+<meta name="twitter:description" content="Figure 2.1: Optimal foraging theory (OFT) generates testable quantitative predictions that allow a less ambiguous description and explanation for observed patterns and processes. Here, a...">
 </head>
+<body data-spy="scroll" data-target="#toc">
 
-<body>
+<div class="container-fluid">
+<div class="row">
+  <header class="col-sm-12 col-lg-3 sidebar sidebar-book"><a class="sr-only sr-only-focusable" href="#content">Skip to main content</a>
 
-
-
-  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
-
-    <div class="book-summary">
-      <nav role="navigation">
-
-<ul class="summary">
-<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Preface</a></li>
-<li class="chapter" data-level="1" data-path="theory.html"><a href="theory.html"><i class="fa fa-check"></i><b>1</b> Theory in Ecology</a><ul>
-<li class="chapter" data-level="1.1" data-path="theory.html"><a href="theory.html#examples-of-theories"><i class="fa fa-check"></i><b>1.1</b> Examples of theories</a><ul>
-<li class="chapter" data-level="1.1.1" data-path="theory.html"><a href="theory.html#hierarchy-theory"><i class="fa fa-check"></i><b>1.1.1</b> Hierarchy theory</a></li>
-<li class="chapter" data-level="1.1.2" data-path="theory.html"><a href="theory.html#a-general-theory-of-ecology"><i class="fa fa-check"></i><b>1.1.2</b> A general theory of ecology</a></li>
-<li class="chapter" data-level="1.1.3" data-path="theory.html"><a href="theory.html#efficient-theory"><i class="fa fa-check"></i><b>1.1.3</b> Efficient theory</a></li>
-</ul></li>
-<li class="chapter" data-level="1.2" data-path="theory.html"><a href="theory.html#metabolic_scaling"><i class="fa fa-check"></i><b>1.2</b> An example: Metabolic Theory of Ecology</a><ul>
-<li class="chapter" data-level="1.2.1" data-path="theory.html"><a href="theory.html#body-size-dependence"><i class="fa fa-check"></i><b>1.2.1</b> Body-size dependence</a></li>
-<li class="chapter" data-level="1.2.2" data-path="theory.html"><a href="theory.html#temperature-dependence"><i class="fa fa-check"></i><b>1.2.2</b> Temperature dependence</a></li>
-</ul></li>
-<li class="chapter" data-level="1.3" data-path="theory.html"><a href="theory.html#power-law-scaling-implies-constant-relative-differences"><i class="fa fa-check"></i><b>1.3</b> Power law scaling implies constant relative differences</a></li>
-</ul></li>
-<li class="chapter" data-level="2" data-path="oft.html"><a href="oft.html"><i class="fa fa-check"></i><b>2</b> Optimal Foraging</a><ul>
-<li class="chapter" data-level="2.1" data-path="oft.html"><a href="oft.html#a-prey-model"><i class="fa fa-check"></i><b>2.1</b> A prey model</a><ul>
-<li class="chapter" data-level="2.1.1" data-path="oft.html"><a href="oft.html#our-intuition"><i class="fa fa-check"></i><b>2.1.1</b> Our intuition</a></li>
-<li class="chapter" data-level="2.1.2" data-path="oft.html"><a href="oft.html#mathematical-support"><i class="fa fa-check"></i><b>2.1.2</b> Mathematical support</a></li>
-</ul></li>
-<li class="chapter" data-level="2.2" data-path="oft.html"><a href="oft.html#the-patch-model"><i class="fa fa-check"></i><b>2.2</b> The patch model</a></li>
-<li class="chapter" data-level="2.3" data-path="oft.html"><a href="oft.html#a-simulation-of-a-prey-model"><i class="fa fa-check"></i><b>2.3</b> A simulation of a prey model</a><ul>
-<li class="chapter" data-level="2.3.1" data-path="oft.html"><a href="oft.html#lab-exercise"><i class="fa fa-check"></i><b>2.3.1</b> Lab exercise</a></li>
-</ul></li>
-</ul></li>
-<li class="chapter" data-level="3" data-path="expo.html"><a href="expo.html"><i class="fa fa-check"></i><b>3</b> Simple density-independent growth</a><ul>
-<li class="chapter" data-level="3.1" data-path="expo.html"><a href="expo.html#discrete-growth-rates-of-fruit-flies-in-my-kitchen"><i class="fa fa-check"></i><b>3.1</b> Discrete growth rates of fruit flies in my kitchen</a></li>
-<li class="chapter" data-level="3.2" data-path="expo.html"><a href="expo.html#fruit-flies-with-continuous-overlapping-generations"><i class="fa fa-check"></i><b>3.2</b> Fruit flies with continuous overlapping generations</a></li>
-<li class="chapter" data-level="3.3" data-path="expo.html"><a href="expo.html#properties-of-geometric-and-exponential-growth"><i class="fa fa-check"></i><b>3.3</b> Properties of geometric and exponential growth</a><ul>
-<li class="chapter" data-level="3.3.1" data-path="expo.html"><a href="expo.html#average-growth-rate"><i class="fa fa-check"></i><b>3.3.1</b> Average growth rate</a></li>
-</ul></li>
-<li class="chapter" data-level="3.4" data-path="expo.html"><a href="expo.html#modeling-with-data-simulated-dynamics"><i class="fa fa-check"></i><b>3.4</b> Modeling with Data: Simulated Dynamics</a><ul>
-<li class="chapter" data-level="3.4.1" data-path="expo.html"><a href="expo.html#data-based-approaches"><i class="fa fa-check"></i><b>3.4.1</b> Data-based approaches</a></li>
-<li class="chapter" data-level="3.4.2" data-path="expo.html"><a href="expo.html#creating-and-visualizing-the-data"><i class="fa fa-check"></i><b>3.4.2</b> Creating and visualizing the data</a></li>
-<li class="chapter" data-level="3.4.3" data-path="expo.html"><a href="expo.html#one-simulation"><i class="fa fa-check"></i><b>3.4.3</b> One simulation</a></li>
-<li class="chapter" data-level="3.4.4" data-path="expo.html"><a href="expo.html#multiple-simulations"><i class="fa fa-check"></i><b>3.4.4</b> Multiple simulations</a></li>
-<li class="chapter" data-level="3.4.5" data-path="expo.html"><a href="expo.html#a-distribution-of-possible-futures"><i class="fa fa-check"></i><b>3.4.5</b> A distribution of possible futures</a></li>
-<li class="chapter" data-level="3.4.6" data-path="expo.html"><a href="expo.html#analyzing-results"><i class="fa fa-check"></i><b>3.4.6</b> Analyzing results</a></li>
-<li class="chapter" data-level="3.4.7" data-path="expo.html"><a href="expo.html#inferring-processes-underlying-growth-rate"><i class="fa fa-check"></i><b>3.4.7</b> Inferring processes underlying growth rate</a></li>
-<li class="chapter" data-level="3.4.8" data-path="expo.html"><a href="expo.html#f-environmental-noise"><i class="fa fa-check"></i><b>3.4.8</b> 1/<span class="math inline">\(f\)</span> environmental noise</a></li>
-</ul></li>
-</ul></li>
-<li class="chapter" data-level="4" data-path="DID.html"><a href="DID.html"><i class="fa fa-check"></i><b>4</b> Density-independent Demography</a><ul>
-<li class="chapter" data-level="4.1" data-path="DID.html"><a href="DID.html#a-two-stage-matrix-model"><i class="fa fa-check"></i><b>4.1</b> A two stage matrix model</a></li>
-<li class="chapter" data-level="4.2" data-path="DID.html"><a href="DID.html#a-brief-primer-on-matrices"><i class="fa fa-check"></i><b>4.2</b> A brief primer on matrices</a></li>
-<li class="chapter" data-level="4.3" data-path="DID.html"><a href="DID.html#decomposing-a"><i class="fa fa-check"></i><b>4.3</b> Decomposing <strong>A</strong></a></li>
-<li class="chapter" data-level="4.4" data-path="DID.html"><a href="DID.html#a-three-stage-model"><i class="fa fa-check"></i><b>4.4</b> A three stage model</a></li>
-<li class="chapter" data-level="4.5" data-path="DID.html"><a href="DID.html#projection"><i class="fa fa-check"></i><b>4.5</b> Projection</a></li>
-<li class="chapter" data-level="4.6" data-path="DID.html"><a href="DID.html#analyzing-the-transition-matrix"><i class="fa fa-check"></i><b>4.6</b> Analyzing the transition matrix</a><ul>
-<li class="chapter" data-level="4.6.1" data-path="DID.html"><a href="DID.html#eigenanalysis"><i class="fa fa-check"></i><b>4.6.1</b> Eigenanalysis</a></li>
-<li class="chapter" data-level="4.6.2" data-path="DID.html"><a href="DID.html#finite-rate-of-increase"><i class="fa fa-check"></i><b>4.6.2</b> Finite rate of increase</a></li>
-<li class="chapter" data-level="4.6.3" data-path="DID.html"><a href="DID.html#stable-stage-distribution"><i class="fa fa-check"></i><b>4.6.3</b> Stable stage distribution</a></li>
-<li class="chapter" data-level="4.6.4" data-path="DID.html"><a href="DID.html#calculating-the-stable-stage-distribution"><i class="fa fa-check"></i><b>4.6.4</b> Calculating the stable stage distribution</a></li>
-<li class="chapter" data-level="4.6.5" data-path="DID.html"><a href="DID.html#reproductive-value"><i class="fa fa-check"></i><b>4.6.5</b> Reproductive value</a></li>
-<li class="chapter" data-level="4.6.6" data-path="DID.html"><a href="DID.html#sensitivity-and-elasticity"><i class="fa fa-check"></i><b>4.6.6</b> Sensitivity and elasticity</a></li>
-</ul></li>
-<li class="chapter" data-level="4.7" data-path="DID.html"><a href="DID.html#integral-projection"><i class="fa fa-check"></i><b>4.7</b> Integral projection</a><ul>
-<li class="chapter" data-level="4.7.1" data-path="DID.html"><a href="DID.html#a-size-based-ipm-of-smooth-coneflower"><i class="fa fa-check"></i><b>4.7.1</b> A size-based IPM of smooth coneflower</a></li>
-<li class="chapter" data-level="4.7.2" data-path="DID.html"><a href="DID.html#population-summaries"><i class="fa fa-check"></i><b>4.7.2</b> Population summaries</a></li>
-</ul></li>
-<li class="chapter" data-level="4.8" data-path="DID.html"><a href="DID.html#r-packges-for-demography"><i class="fa fa-check"></i><b>4.8</b> R packges for demography</a></li>
-<li class="chapter" data-level="4.9" data-path="DID.html"><a href="DID.html#exploring-a-real-population"><i class="fa fa-check"></i><b>4.9</b> Exploring a real population</a></li>
-</ul></li>
-<li class="chapter" data-level="5" data-path="DDgrowth.html"><a href="DDgrowth.html"><i class="fa fa-check"></i><b>5</b> Density-dependent growth</a><ul>
-<li class="chapter" data-level="5.1" data-path="DDgrowth.html"><a href="DDgrowth.html#continuous-logistic-growth"><i class="fa fa-check"></i><b>5.1</b> Continuous logistic growth</a></li>
-<li class="chapter" data-level="5.2" data-path="DDgrowth.html"><a href="DDgrowth.html#dynamics-around-the-equilibria-stability"><i class="fa fa-check"></i><b>5.2</b> Dynamics around the equilibria — stability</a><ul>
-<li class="chapter" data-level="5.2.1" data-path="DDgrowth.html"><a href="DDgrowth.html#analytical-linear-stability-analysis"><i class="fa fa-check"></i><b>5.2.1</b> Analytical linear stability analysis</a></li>
-<li class="chapter" data-level="5.2.2" data-path="DDgrowth.html"><a href="DDgrowth.html#projection-with-numerical-integration"><i class="fa fa-check"></i><b>5.2.2</b> Projection with numerical integration</a></li>
-</ul></li>
-<li class="chapter" data-level="5.3" data-path="DDgrowth.html"><a href="DDgrowth.html#other-forms-of-density-dependent-growth"><i class="fa fa-check"></i><b>5.3</b> Other forms of density-dependent growth</a><ul>
-<li class="chapter" data-level="5.3.1" data-path="DDgrowth.html"><a href="DDgrowth.html#effects-of-n-on-birth-and-death-rates"><i class="fa fa-check"></i><b>5.3.1</b> Effects of N on birth and death rates</a></li>
-<li class="chapter" data-level="5.3.2" data-path="DDgrowth.html"><a href="DDgrowth.html#theta-logistic-growth"><i class="fa fa-check"></i><b>5.3.2</b> Theta-logistic growth</a></li>
-<li class="chapter" data-level="5.3.3" data-path="DDgrowth.html"><a href="DDgrowth.html#allee-effect"><i class="fa fa-check"></i><b>5.3.3</b> Allee effect</a></li>
-<li class="chapter" data-level="5.3.4" data-path="DDgrowth.html"><a href="DDgrowth.html#the-integral-of-logistic-growth"><i class="fa fa-check"></i><b>5.3.4</b> The integral of logistic growth</a></li>
-</ul></li>
-<li class="chapter" data-level="5.4" data-path="DDgrowth.html"><a href="DDgrowth.html#discrete-density-dependent-growth"><i class="fa fa-check"></i><b>5.4</b> Discrete Density-dependent Growth</a><ul>
-<li class="chapter" data-level="5.4.1" data-path="DDgrowth.html"><a href="DDgrowth.html#effects-of-r_d"><i class="fa fa-check"></i><b>5.4.1</b> Effects of <span class="math inline">\(r_d\)</span></a></li>
-<li class="chapter" data-level="5.4.2" data-path="DDgrowth.html"><a href="DDgrowth.html#bifurcations"><i class="fa fa-check"></i><b>5.4.2</b> Bifurcations</a></li>
-</ul></li>
-<li class="chapter" data-level="5.5" data-path="DDgrowth.html"><a href="DDgrowth.html#maximum-sustained-yield"><i class="fa fa-check"></i><b>5.5</b> Maximum Sustained Yield</a></li>
-</ul></li>
-<li class="chapter" data-level="6" data-path="meta.html"><a href="meta.html"><i class="fa fa-check"></i><b>6</b> Populations in Space</a><ul>
-<li class="chapter" data-level="6.1" data-path="meta.html"><a href="meta.html#source-sink-dynamics"><i class="fa fa-check"></i><b>6.1</b> Source-sink Dynamics</a><ul>
-<li class="chapter" data-level="6.1.1" data-path="meta.html"><a href="meta.html#complications-and-cases"><i class="fa fa-check"></i><b>6.1.1</b> Complications and cases</a></li>
-</ul></li>
-<li class="chapter" data-level="6.2" data-path="meta.html"><a href="meta.html#metapopulations"><i class="fa fa-check"></i><b>6.2</b> Metapopulations</a><ul>
-<li class="chapter" data-level="6.2.1" data-path="meta.html"><a href="meta.html#the-classic-levins-model"><i class="fa fa-check"></i><b>6.2.1</b> The classic Levins model</a></li>
-<li class="chapter" data-level="6.2.2" data-path="meta.html"><a href="meta.html#propagule-rain"><i class="fa fa-check"></i><b>6.2.2</b> Propagule rain</a></li>
-<li class="chapter" data-level="6.2.3" data-path="meta.html"><a href="meta.html#the-rescue-effect-and-the-core-satellite-model"><i class="fa fa-check"></i><b>6.2.3</b> The rescue effect and the core-satellite model</a></li>
-<li class="chapter" data-level="6.2.4" data-path="meta.html"><a href="meta.html#parallels-with-logistic-growth"><i class="fa fa-check"></i><b>6.2.4</b> Parallels with Logistic Growth</a></li>
-<li class="chapter" data-level="6.2.5" data-path="meta.html"><a href="meta.html#levins-vs.-hanski"><i class="fa fa-check"></i><b>6.2.5</b> Levins <span class="math inline">\(vs\)</span>. Hanski</a></li>
-<li class="chapter" data-level="6.2.6" data-path="meta.html"><a href="meta.html#habitat-destruction"><i class="fa fa-check"></i><b>6.2.6</b> Habitat Destruction</a></li>
-<li class="chapter" data-level="6.2.7" data-path="meta.html"><a href="meta.html#illustrating-the-effects-of-habitat-destruction"><i class="fa fa-check"></i><b>6.2.7</b> Illustrating the effects of habitat destruction</a></li>
-<li class="chapter" data-level="6.2.8" data-path="meta.html"><a href="meta.html#different-assumptions-lead-to-different-predictions-about-rates-of-extinction"><i class="fa fa-check"></i><b>6.2.8</b> Different assumptions lead to different predictions about rates of extinction</a></li>
-</ul></li>
-<li class="chapter" data-level="6.3" data-path="meta.html"><a href="meta.html#hanskis-incidence-function"><i class="fa fa-check"></i><b>6.3</b> Hanski’s incidence function</a></li>
-</ul></li>
-<li class="chapter" data-level="7" data-path="competition.html"><a href="competition.html"><i class="fa fa-check"></i><b>7</b> Competition</a><ul>
-<li class="chapter" data-level="7.1" data-path="competition.html"><a href="competition.html#lotka-volterra-interspecific-competition"><i class="fa fa-check"></i><b>7.1</b> Lotka-Volterra Interspecific Competition</a></li>
-<li class="chapter" data-level="7.2" data-path="competition.html"><a href="competition.html#equilbria"><i class="fa fa-check"></i><b>7.2</b> Equilbria</a><ul>
-<li class="chapter" data-level="7.2.1" data-path="competition.html"><a href="competition.html#isoclines"><i class="fa fa-check"></i><b>7.2.1</b> Isoclines</a></li>
-<li class="chapter" data-level="7.2.2" data-path="competition.html"><a href="competition.html#finding-equilibria"><i class="fa fa-check"></i><b>7.2.2</b> Finding equilibria</a></li>
-<li class="chapter" data-level="7.2.3" data-path="competition.html"><a href="competition.html#coexistence-the-invasion-criterion"><i class="fa fa-check"></i><b>7.2.3</b> Coexistence — the invasion criterion</a></li>
-<li class="chapter" data-level="7.2.4" data-path="competition.html"><a href="competition.html#other-equilibria"><i class="fa fa-check"></i><b>7.2.4</b> Other equilibria</a></li>
-</ul></li>
-<li class="chapter" data-level="7.3" data-path="competition.html"><a href="competition.html#dynamics-at-the-equilibria"><i class="fa fa-check"></i><b>7.3</b> Dynamics at the Equilibria</a><ul>
-<li class="chapter" data-level="7.3.1" data-path="competition.html"><a href="competition.html#determine-the-equilibria"><i class="fa fa-check"></i><b>7.3.1</b> Determine the equilibria</a></li>
-<li class="chapter" data-level="7.3.2" data-path="competition.html"><a href="competition.html#create-the-jacobian-matrix"><i class="fa fa-check"></i><b>7.3.2</b> Create the Jacobian matrix</a></li>
-<li class="chapter" data-level="7.3.3" data-path="competition.html"><a href="competition.html#solve-the-jacobian-at-an-equilibrium"><i class="fa fa-check"></i><b>7.3.3</b> Solve the Jacobian at an equilibrium</a></li>
-<li class="chapter" data-level="7.3.4" data-path="competition.html"><a href="competition.html#use-the-jacobian-matrix"><i class="fa fa-check"></i><b>7.3.4</b> Use the Jacobian matrix</a></li>
-<li class="chapter" data-level="7.3.5" data-path="competition.html"><a href="competition.html#three-interesting-equilbria"><i class="fa fa-check"></i><b>7.3.5</b> Three interesting equilbria</a></li>
-</ul></li>
-<li class="chapter" data-level="7.4" data-path="competition.html"><a href="competition.html#return-time-and-the-effect-of-r"><i class="fa fa-check"></i><b>7.4</b> Return Time and the Effect of <span class="math inline">\(r\)</span></a></li>
-<li class="chapter" data-level="7.5" data-path="competition.html"><a href="competition.html#indirect-competition-for-resources"><i class="fa fa-check"></i><b>7.5</b> Indirect competition for resources</a><ul>
-<li class="chapter" data-level="7.5.1" data-path="competition.html"><a href="competition.html#linear-and-nonlinear-responses"><i class="fa fa-check"></i><b>7.5.1</b> Linear and nonlinear responses</a></li>
-<li class="chapter" data-level="7.5.2" data-path="competition.html"><a href="competition.html#relative-nonlinearity"><i class="fa fa-check"></i><b>7.5.2</b> Relative nonlinearity</a></li>
-<li class="chapter" data-level="7.5.3" data-path="competition.html"><a href="competition.html#competition-for-two-resources-the-resource-ratio-model"><i class="fa fa-check"></i><b>7.5.3</b> Competition for two resources: the resource ratio model</a></li>
-</ul></li>
-<li class="chapter" data-level="7.6" data-path="competition.html"><a href="competition.html#summary"><i class="fa fa-check"></i><b>7.6</b> Summary</a></li>
-</ul></li>
-<li class="chapter" data-level="8" data-path="mutualisms.html"><a href="mutualisms.html"><i class="fa fa-check"></i><b>8</b> Mutualisms</a><ul>
-<li class="chapter" data-level="8.1" data-path="mutualisms.html"><a href="mutualisms.html#background"><i class="fa fa-check"></i><b>8.1</b> Background</a></li>
-<li class="chapter" data-level="8.2" data-path="mutualisms.html"><a href="mutualisms.html#lotka-volterra-mutualism"><i class="fa fa-check"></i><b>8.2</b> Lotka-Volterra mutualism</a></li>
-<li class="chapter" data-level="8.3" data-path="mutualisms.html"><a href="mutualisms.html#consumer-resource-mutualism"><i class="fa fa-check"></i><b>8.3</b> Consumer-resource mutualism</a><ul>
-<li class="chapter" data-level="8.3.1" data-path="mutualisms.html"><a href="mutualisms.html#a-model-of-uni-directional-mutualism"><i class="fa fa-check"></i><b>8.3.1</b> A model of uni-directional mutualism</a></li>
-</ul></li>
-<li class="chapter" data-level="8.4" data-path="mutualisms.html"><a href="mutualisms.html#plant-soil-feedbacks"><i class="fa fa-check"></i><b>8.4</b> Plant-soil feedbacks</a></li>
-<li class="chapter" data-level="8.5" data-path="mutualisms.html"><a href="mutualisms.html#simulations-for-learning"><i class="fa fa-check"></i><b>8.5</b> Simulations for learning</a><ul>
-<li class="chapter" data-level="8.5.1" data-path="mutualisms.html"><a href="mutualisms.html#lvg"><i class="fa fa-check"></i><b>8.5.1</b> <code>lvg()</code></a></li>
-<li class="chapter" data-level="8.5.2" data-path="mutualisms.html"><a href="mutualisms.html#systematic-simulations"><i class="fa fa-check"></i><b>8.5.2</b> Systematic simulations</a></li>
-<li class="chapter" data-level="8.5.3" data-path="mutualisms.html"><a href="mutualisms.html#checking-simulation-results"><i class="fa fa-check"></i><b>8.5.3</b> Checking simulation results</a></li>
-<li class="chapter" data-level="8.5.4" data-path="mutualisms.html"><a href="mutualisms.html#comparing-simulation-results-to-analytical-solutions"><i class="fa fa-check"></i><b>8.5.4</b> Comparing simulation results to analytical solutions</a></li>
-<li class="chapter" data-level="8.5.5" data-path="mutualisms.html"><a href="mutualisms.html#one-last-thing-using-the-jacobian-matrix"><i class="fa fa-check"></i><b>8.5.5</b> One last thing: using the Jacobian matrix</a></li>
-<li class="chapter" data-level="8.5.6" data-path="mutualisms.html"><a href="mutualisms.html#in-fine"><i class="fa fa-check"></i><b>8.5.6</b> <em>In Fine</em></a></li>
-</ul></li>
-</ul></li>
-<li class="chapter" data-level="9" data-path="consumer-resource-interactions.html"><a href="consumer-resource-interactions.html"><i class="fa fa-check"></i><b>9</b> Consumer-resource Interactions</a><ul>
-<li class="chapter" data-level="9.1" data-path="consumer-resource-interactions.html"><a href="consumer-resource-interactions.html#ratio-dependence"><i class="fa fa-check"></i><b>9.1</b> Ratio dependence</a><ul>
-<li class="chapter" data-level="9.1.1" data-path="consumer-resource-interactions.html"><a href="consumer-resource-interactions.html#dynamics-of-ratio-dependent-predation"><i class="fa fa-check"></i><b>9.1.1</b> Dynamics of ratio dependent predation</a></li>
-</ul></li>
-<li class="chapter" data-level="9.2" data-path="consumer-resource-interactions.html"><a href="consumer-resource-interactions.html#prey-dependence"><i class="fa fa-check"></i><b>9.2</b> Prey dependence</a><ul>
-<li class="chapter" data-level="9.2.1" data-path="consumer-resource-interactions.html"><a href="consumer-resource-interactions.html#dyanmics-of-prey-dependent-predation"><i class="fa fa-check"></i><b>9.2.1</b> Dyanmics of prey-dependent predation</a></li>
-</ul></li>
-<li class="chapter" data-level="9.3" data-path="consumer-resource-interactions.html"><a href="consumer-resource-interactions.html#interlude-functional-response---what-an-individual-predator-does"><i class="fa fa-check"></i><b>9.3</b> Interlude: Functional response - what an individual predator does</a></li>
-<li class="chapter" data-level="9.4" data-path="consumer-resource-interactions.html"><a href="consumer-resource-interactions.html#stability-analysis-for-the-prey-dependent-lotkavolterra-model"><i class="fa fa-check"></i><b>9.4</b> Stability analysis for the prey-dependent Lotka–Volterra model</a></li>
-<li class="chapter" data-level="9.5" data-path="consumer-resource-interactions.html"><a href="consumer-resource-interactions.html#prey-carrying-capacity-and-type-ii-functional-response"><i class="fa fa-check"></i><b>9.5</b> Prey carrying capacity and type II functional response</a><ul>
-<li class="chapter" data-level="9.5.1" data-path="consumer-resource-interactions.html"><a href="consumer-resource-interactions.html#paradox-of-enrichment"><i class="fa fa-check"></i><b>9.5.1</b> Paradox of enrichment</a></li>
-</ul></li>
-</ul></li>
-<li class="chapter" data-level="10" data-path="host-parasitoid-relations.html"><a href="host-parasitoid-relations.html"><i class="fa fa-check"></i><b>10</b> Host-parasitoid relations</a><ul>
-<li class="chapter" data-level="10.1" data-path="host-parasitoid-relations.html"><a href="host-parasitoid-relations.html#independent-and-random-attacks"><i class="fa fa-check"></i><b>10.1</b> Independent and random attacks</a><ul>
-<li class="chapter" data-level="10.1.1" data-path="host-parasitoid-relations.html"><a href="host-parasitoid-relations.html#simulating-simple-host-parasitoid-dynamics"><i class="fa fa-check"></i><b>10.1.1</b> Simulating simple host-parasitoid dynamics</a></li>
-</ul></li>
-<li class="chapter" data-level="10.2" data-path="host-parasitoid-relations.html"><a href="host-parasitoid-relations.html#aggregation-leads-to-coexistence"><i class="fa fa-check"></i><b>10.2</b> Aggregation leads to coexistence</a><ul>
-<li class="chapter" data-level="10.2.1" data-path="host-parasitoid-relations.html"><a href="host-parasitoid-relations.html#equilibria-for-a-discrete-time-model"><i class="fa fa-check"></i><b>10.2.1</b> Equilibria for a discrete-time model</a></li>
-</ul></li>
-<li class="chapter" data-level="10.3" data-path="host-parasitoid-relations.html"><a href="host-parasitoid-relations.html#stability-of-hostparasitoid-dynamics"><i class="fa fa-check"></i><b>10.3</b> Stability of host–parasitoid dynamics</a></li>
-<li class="chapter" data-level="10.4" data-path="mutualisms.html"><a href="mutualisms.html#in-fine"><i class="fa fa-check"></i><b>10.4</b> <em>In Fine</em></a></li>
-</ul></li>
-<li class="chapter" data-level="11" data-path="disease.html"><a href="disease.html"><i class="fa fa-check"></i><b>11</b> Disease</a><ul>
-<li class="chapter" data-level="11.1" data-path="disease.html"><a href="disease.html#closed-epidemics"><i class="fa fa-check"></i><b>11.1</b> Closed epidemics</a><ul>
-<li class="chapter" data-level="11.1.1" data-path="disease.html"><a href="disease.html#density-dependent-transmission"><i class="fa fa-check"></i><b>11.1.1</b> Density-dependent transmission</a></li>
-<li class="chapter" data-level="11.1.2" data-path="disease.html"><a href="disease.html#frequency-dependent-transmission"><i class="fa fa-check"></i><b>11.1.2</b> Frequency-dependent transmission</a></li>
-</ul></li>
-<li class="chapter" data-level="11.2" data-path="disease.html"><a href="disease.html#open-epidemics"><i class="fa fa-check"></i><b>11.2</b> Open epidemics</a></li>
-<li class="chapter" data-level="11.3" data-path="disease.html"><a href="disease.html#modeling-data-from-bombay"><i class="fa fa-check"></i><b>11.3</b> Modeling data from Bombay</a><ul>
-<li class="chapter" data-level="11.3.1" data-path="disease.html"><a href="disease.html#optimization"><i class="fa fa-check"></i><b>11.3.1</b> Optimization</a></li>
-</ul></li>
-</ul></li>
-<li class="chapter" data-level="12" data-path="food-webs-and-other-networks.html"><a href="food-webs-and-other-networks.html"><i class="fa fa-check"></i><b>12</b> Food webs and other networks</a><ul>
-<li class="chapter" data-level="12.1" data-path="food-webs-and-other-networks.html"><a href="food-webs-and-other-networks.html#food-web-characteristics"><i class="fa fa-check"></i><b>12.1</b> Food Web Characteristics</a></li>
-<li class="chapter" data-level="12.2" data-path="food-webs-and-other-networks.html"><a href="food-webs-and-other-networks.html#does-omnivory-destablize-food-chains"><i class="fa fa-check"></i><b>12.2</b> Does omnivory destablize food chains?</a><ul>
-<li class="chapter" data-level="12.2.1" data-path="food-webs-and-other-networks.html"><a href="food-webs-and-other-networks.html#multi-species-lotkavolterra-notation"><i class="fa fa-check"></i><b>12.2.1</b> Multi-species Lotka–Volterra notation</a></li>
-<li class="chapter" data-level="12.2.2" data-path="mutualisms.html"><a href="mutualisms.html#background"><i class="fa fa-check"></i><b>12.2.2</b> Background</a></li>
-<li class="chapter" data-level="12.2.3" data-path="food-webs-and-other-networks.html"><a href="food-webs-and-other-networks.html#implementing-pimm-and-lawtons-methods"><i class="fa fa-check"></i><b>12.2.3</b> Implementing Pimm and Lawton’s Methods</a></li>
-<li class="chapter" data-level="12.2.4" data-path="food-webs-and-other-networks.html"><a href="food-webs-and-other-networks.html#shortening-the-chain"><i class="fa fa-check"></i><b>12.2.4</b> Shortening the Chain</a></li>
-<li class="chapter" data-level="12.2.5" data-path="food-webs-and-other-networks.html"><a href="food-webs-and-other-networks.html#adding-omnivory"><i class="fa fa-check"></i><b>12.2.5</b> Adding Omnivory</a></li>
-<li class="chapter" data-level="12.2.6" data-path="food-webs-and-other-networks.html"><a href="food-webs-and-other-networks.html#comparing-chain-a-versus-b"><i class="fa fa-check"></i><b>12.2.6</b> Comparing Chain A versus B</a></li>
-<li class="chapter" data-level="12.2.7" data-path="food-webs-and-other-networks.html"><a href="food-webs-and-other-networks.html#re-evaluating-take-home-messages"><i class="fa fa-check"></i><b>12.2.7</b> Re-evaluating Take-Home Messages</a></li>
-</ul></li>
-<li class="chapter" data-level="12.3" data-path="food-webs-and-other-networks.html"><a href="food-webs-and-other-networks.html#perhaps-mutualism-stabilizes-bipartite-networks"><i class="fa fa-check"></i><b>12.3</b> Perhaps mutualism stabilizes bipartite networks</a><ul>
-<li class="chapter" data-level="12.3.1" data-path="food-webs-and-other-networks.html"><a href="food-webs-and-other-networks.html#creating-bipartite-webs"><i class="fa fa-check"></i><b>12.3.1</b> Creating bipartite webs</a></li>
-<li class="chapter" data-level="12.3.2" data-path="food-webs-and-other-networks.html"><a href="food-webs-and-other-networks.html#testing-effects-of-nestedness-and-modularity-on-network-resilience."><i class="fa fa-check"></i><b>12.3.2</b> Testing effects of nestedness and modularity on network resilience.</a></li>
-<li class="chapter" data-level="12.3.3" data-path="food-webs-and-other-networks.html"><a href="food-webs-and-other-networks.html#path-analysis"><i class="fa fa-check"></i><b>12.3.3</b> Path Analysis</a></li>
-</ul></li>
-<li class="chapter" data-level="12.4" data-path="food-webs-and-other-networks.html"><a href="food-webs-and-other-networks.html#exploring-pandora-right-here-at-home"><i class="fa fa-check"></i><b>12.4</b> Exploring Pandora, right here at home</a><ul>
-<li class="chapter" data-level="12.4.1" data-path="food-webs-and-other-networks.html"><a href="food-webs-and-other-networks.html#properties-assessed"><i class="fa fa-check"></i><b>12.4.1</b> Properties assessed</a></li>
-</ul></li>
-</ul></li>
-<li class="chapter" data-level="13" data-path="diversity.html"><a href="diversity.html"><i class="fa fa-check"></i><b>13</b> Diversity</a><ul>
-<li class="chapter" data-level="13.1" data-path="mutualisms.html"><a href="mutualisms.html#background"><i class="fa fa-check"></i><b>13.1</b> Background</a></li>
-<li class="chapter" data-level="13.2" data-path="diversity.html"><a href="diversity.html#species-composition"><i class="fa fa-check"></i><b>13.2</b> Species Composition</a><ul>
-<li class="chapter" data-level="13.2.1" data-path="diversity.html"><a href="diversity.html#measures-of-abundance"><i class="fa fa-check"></i><b>13.2.1</b> Measures of abundance</a></li>
-<li class="chapter" data-level="13.2.2" data-path="diversity.html"><a href="diversity.html#dissimilarities-and-distances"><i class="fa fa-check"></i><b>13.2.2</b> Dissimilarities and Distances</a></li>
-<li class="chapter" data-level="13.2.3" data-path="diversity.html"><a href="diversity.html#displaying-multidimensional-distances"><i class="fa fa-check"></i><b>13.2.3</b> Displaying multidimensional distances</a></li>
-</ul></li>
-<li class="chapter" data-level="13.3" data-path="diversity.html"><a href="diversity.html#diversity-1"><i class="fa fa-check"></i><b>13.3</b> Diversity</a></li>
-<li class="chapter" data-level="13.4" data-path="diversity.html"><a href="diversity.html#species-diversity"><i class="fa fa-check"></i><b>13.4</b> Species diversity</a></li>
-<li class="chapter" data-level="13.5" data-path="diversity.html"><a href="diversity.html#rarefaction-and-total-species-richness"><i class="fa fa-check"></i><b>13.5</b> Rarefaction and total species richness</a><ul>
-<li class="chapter" data-level="13.5.1" data-path="diversity.html"><a href="diversity.html#an-example-of-rarefaction-and-total-species-richness"><i class="fa fa-check"></i><b>13.5.1</b> An example of rarefaction and total species richness</a></li>
-</ul></li>
-<li class="chapter" data-level="13.6" data-path="diversity.html"><a href="diversity.html#distributions"><i class="fa fa-check"></i><b>13.6</b> Distributions</a><ul>
-<li class="chapter" data-level="13.6.1" data-path="diversity.html"><a href="diversity.html#log-normal-distribution"><i class="fa fa-check"></i><b>13.6.1</b> Log-normal distribution</a></li>
-<li class="chapter" data-level="13.6.2" data-path="diversity.html"><a href="diversity.html#other-distributions"><i class="fa fa-check"></i><b>13.6.2</b> Other distributions</a></li>
-<li class="chapter" data-level="13.6.3" data-path="diversity.html"><a href="diversity.html#pattern-vs.-process"><i class="fa fa-check"></i><b>13.6.3</b> Pattern <em>vs.</em> process</a></li>
-</ul></li>
-<li class="chapter" data-level="13.7" data-path="diversity.html"><a href="diversity.html#neutral-theory-of-biodiversity-and-biogeography"><i class="fa fa-check"></i><b>13.7</b> Neutral Theory of Biodiversity and Biogeography</a><ul>
-<li class="chapter" data-level="13.7.1" data-path="diversity.html"><a href="diversity.html#different-flavors-of-neutral-communities"><i class="fa fa-check"></i><b>13.7.1</b> Different flavors of neutral communities</a></li>
-<li class="chapter" data-level="13.7.2" data-path="diversity.html"><a href="diversity.html#investigating-neutral-communities"><i class="fa fa-check"></i><b>13.7.2</b> Investigating neutral communities</a></li>
-</ul></li>
-<li class="chapter" data-level="13.8" data-path="diversity.html"><a href="diversity.html#speciesarea-relations"><i class="fa fa-check"></i><b>13.8</b> Species–area relations</a><ul>
-<li class="chapter" data-level="13.8.1" data-path="diversity.html"><a href="diversity.html#island-biogeography"><i class="fa fa-check"></i><b>13.8.1</b> Island biogeography</a></li>
-</ul></li>
-<li class="chapter" data-level="13.9" data-path="diversity.html"><a href="diversity.html#diversity-partitioning"><i class="fa fa-check"></i><b>13.9</b> Diversity Partitioning</a><ul>
-<li class="chapter" data-level="13.9.1" data-path="diversity.html"><a href="diversity.html#partitioning-speciesarea-relations"><i class="fa fa-check"></i><b>13.9.1</b> Partitioning species–area relations</a></li>
-</ul></li>
-<li class="chapter" data-level="13.10" data-path="competition.html"><a href="competition.html#summary"><i class="fa fa-check"></i><b>13.10</b> Summary</a></li>
-</ul></li>
-<li class="chapter" data-level="14" data-path="appendix.html"><a href="appendix.html"><i class="fa fa-check"></i><b>14</b> Appendix</a><ul>
-<li class="chapter" data-level="14.1" data-path="appendix.html"><a href="appendix.html#very-introductory-materials"><i class="fa fa-check"></i><b>14.1</b> Very introductory materials</a></li>
-<li class="chapter" data-level="14.2" data-path="appendix.html"><a href="appendix.html#writing-your-own-functions"><i class="fa fa-check"></i><b>14.2</b> Writing your own functions</a></li>
-<li class="chapter" data-level="14.3" data-path="appendix.html"><a href="appendix.html#iterated-actions-the-apply-family-and-loops"><i class="fa fa-check"></i><b>14.3</b> Iterated Actions: the <code>apply</code> Family and Loops</a><ul>
-<li class="chapter" data-level="14.3.1" data-path="appendix.html"><a href="appendix.html#iterations-of-independent-actions"><i class="fa fa-check"></i><b>14.3.1</b> Iterations of independent actions</a></li>
-<li class="chapter" data-level="14.3.2" data-path="appendix.html"><a href="appendix.html#dependent-iterations"><i class="fa fa-check"></i><b>14.3.2</b> Dependent iterations</a></li>
-</ul></li>
-<li class="chapter" data-level="14.4" data-path="appendix.html"><a href="appendix.html#probability-distributions-and-randomization"><i class="fa fa-check"></i><b>14.4</b> Probability Distributions and Randomization</a></li>
-<li class="chapter" data-level="14.5" data-path="appendix.html"><a href="appendix.html#numerical-integration-of-ordinary-differential-equations"><i class="fa fa-check"></i><b>14.5</b> Numerical integration of ordinary differential equations</a></li>
-<li class="chapter" data-level="14.6" data-path="DID.html"><a href="DID.html#eigenanalysis"><i class="fa fa-check"></i><b>14.6</b> Eigenanalysis</a><ul>
-<li class="chapter" data-level="14.6.1" data-path="appendix.html"><a href="appendix.html#eigenanalysis-of-demographic-versus-jacobian-matrices"><i class="fa fa-check"></i><b>14.6.1</b> Eigenanalysis of demographic versus Jacobian matrices</a></li>
-</ul></li>
-<li class="chapter" data-level="14.7" data-path="appendix.html"><a href="appendix.html#derivation-of-the-right-eigenvalues"><i class="fa fa-check"></i><b>14.7</b> Derivation of the right eigenvalues</a></li>
-<li class="chapter" data-level="14.8" data-path="appendix.html"><a href="appendix.html#symbols-used-in-this-book"><i class="fa fa-check"></i><b>14.8</b> Symbols used in this book</a></li>
-</ul></li>
-<li class="chapter" data-level="15" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i><b>15</b> References</a></li>
-</ul>
-
-      </nav>
+    <div class="d-flex align-items-start justify-content-between">
+      <h1>
+        <a href="index.html" title="">Primer of Ecology using R</a>
+      </h1>
+      <button class="btn btn-outline-primary d-lg-none ml-2 mt-1" type="button" data-toggle="collapse" data-target="#main-nav" aria-expanded="true" aria-controls="main-nav"><i class="fas fa-bars"></i><span class="sr-only">Show table of contents</span></button>
     </div>
 
-    <div class="book-body">
-      <div class="body-inner">
-        <div class="book-header" role="navigation">
-          <h1>
-            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Primer of Ecology using R</a>
-          </h1>
+    <div id="main-nav" class="collapse-lg">
+      <form role="search">
+        <input id="search" class="form-control" type="search" placeholder="Search" aria-label="Search">
+</form>
+
+      <nav aria-label="Table of contents"><h2>Table of contents</h2>
+        <ul class="book-toc list-unstyled">
+<li><a class="" href="index.html">Preface</a></li>
+<li><a class="" href="theory.html"><span class="header-section-number">1</span> Theory in Ecology</a></li>
+<li><a class="active" href="oft.html"><span class="header-section-number">2</span> Optimal Foraging</a></li>
+<li><a class="" href="expo.html"><span class="header-section-number">3</span> Simple density-independent growth</a></li>
+<li><a class="" href="DID.html"><span class="header-section-number">4</span> Density-independent Demography</a></li>
+<li><a class="" href="DDgrowth.html"><span class="header-section-number">5</span> Density-dependent growth</a></li>
+<li><a class="" href="meta.html"><span class="header-section-number">6</span> Populations in Space</a></li>
+<li><a class="" href="direct-competition-and-mutualism.html"><span class="header-section-number">7</span> Direct competition and mutualism</a></li>
+<li><a class="" href="cr.html"><span class="header-section-number">8</span> Consumer-resource Interactions</a></li>
+<li><a class="" href="host-parasitoid-relations.html"><span class="header-section-number">9</span> Host-parasitoid relations</a></li>
+<li><a class="" href="disease.html"><span class="header-section-number">10</span> Disease</a></li>
+<li><a class="" href="consumer-resource-competition-and-mutualisms.html"><span class="header-section-number">11</span> Consumer-resource Competition and Mutualisms</a></li>
+<li><a class="" href="food-webs-and-other-networks.html"><span class="header-section-number">12</span> Food webs and other networks</a></li>
+<li><a class="" href="diversity.html"><span class="header-section-number">13</span> Diversity</a></li>
+<li><a class="" href="appendix.html"><span class="header-section-number">14</span> Appendix</a></li>
+<li><a class="" href="references.html"><span class="header-section-number">15</span> References</a></li>
+</ul>
+
+        <div class="book-extra">
+          
         </div>
-
-        <div class="page-wrapper" tabindex="-1" role="main">
-          <div class="page-inner">
-
-            <section class="normal" id="section-">
-<div id="oft" class="section level1">
-<h1><span class="header-section-number">2</span> Optimal Foraging</h1>
-<div class="figure"><span id="fig:cowie"></span>
-<img src="figs/CowieF3.png" alt="Optimal foraging theory (OFT) generates testable quantitative predictions that allow a less ambiguous description and explanation for observed patterns and processes. Here, a simplistic model of Great Tit (Parus major) foraging that includes only gross energy intake underestimates the time spent in patches (dashed). In contrast, a model that includes energetic costs of traveling and searching matches predictions far better (solid).  From Cowie (1977)." width="75%" />
-<p class="caption">
+      </nav>
+</div>
+  </header><main class="col-sm-12 col-md-9 col-lg-7" id="content"><div id="oft" class="section level1" number="2">
+<h1>
+<span class="header-section-number">2</span> Optimal Foraging<a class="anchor" aria-label="anchor" href="#oft"><i class="fas fa-link"></i></a>
+</h1>
+<div class="figure">
+<span style="display:block;" id="fig:cowie"></span>
+<img src="figs/CowieF3.png" alt="Optimal foraging theory (OFT) generates testable quantitative predictions that allow a less ambiguous description and explanation for observed patterns and processes. Here, a simplistic model of Great Tit (Parus major) foraging that includes only gross energy intake underestimates the time spent in patches (dashed). In contrast, a model that includes energetic costs of traveling and searching matches predictions far better (solid).  From Cowie (1977)." width="75%"><p class="caption">
 Figure 2.1: Optimal foraging theory (OFT) generates testable quantitative predictions that allow a less ambiguous description and explanation for observed patterns and processes. Here, a simplistic model of Great Tit (Parus major) foraging that includes only gross energy intake underestimates the time spent in patches (dashed). In contrast, a model that includes energetic costs of traveling and searching matches predictions far better (solid). From Cowie (1977).
 </p>
 </div>
 <p>It can be useful to think of natural selection as an optimizing process: phenotypes diversify, winners replicate and losers don’t, and the phenotypes of winners tend to get passed on to the replicants. Therefore, we often assume, as did Dr. Pangloss, that the species that exist now are the best of all possible species, that is, they are of optimal design. And like Dr. Pangloss, we would be woefully mistaken if we stopped there. Nonetheless, optimization, that is, the tendency toward an optimum, helps us generate testable hypotheses and we consider some of these below.</p>
 <p>Optimal Foraging Theory (OFT) helps us consider what organisms would do <em>if they foraged optimally.</em> All organisms–plants, fungi, archaea, and even animals–forage, and they are all subject to natural selection. Therefore, their phenotypes work pretty well, but probably not optimally and definitely not optimally for all times and places. Nonetheless, OFT is an efficient theory about the behavior of an organism, in the absence of other complications. Therefore, it allows us to study the relative importance of those “other complications.”</p>
-<p>Foraging is a key link between the individual, and communities and ecosystems <span class="citation">(Beckerman, Petchey, and Morin <a href="#ref-Beckerman2010" role="doc-biblioref">2010</a>)</span>. All organisms interact with their environment via consumption, and the choices they make influence population dynamics, species interactions, nutrient cycling, and even the physical structures of terrestrial and aquatic habitats. The text and logic of this chapter rely heavily on <span class="citation">Stephens and Krebs (<a href="#ref-Stephens1986" role="doc-biblioref">1986</a>)</span> and <span class="citation">Ellner (<a href="#ref-Ellner2009" role="doc-biblioref">2009</a>)</span>.</p>
-<p>In Scheiner and Willig’s edited volume on <em>The Theory of Ecology</em>, Andy Sih <span class="citation">(Sih <a href="#ref-Sih2011" role="doc-biblioref">2011</a>)</span> proposes that the following propositions form the basis of foraging theory:</p>
+<p>Foraging is a key link between the individual, and communities and ecosystems <span class="citation">(<a href="references.html#ref-Beckerman2010" role="doc-biblioref">Beckerman, Petchey, and Morin 2010</a>)</span>. All organisms interact with their environment via consumption, and the choices they make influence population dynamics, species interactions, nutrient cycling, and even the physical structures of terrestrial and aquatic habitats. The text and logic of this chapter rely heavily on <span class="citation"><a href="references.html#ref-Stephens1986" role="doc-biblioref">Stephens and Krebs</a> (<a href="references.html#ref-Stephens1986" role="doc-biblioref">1986</a>)</span> and <span class="citation"><a href="references.html#ref-Ellner2009" role="doc-biblioref">S. P. Ellner</a> (<a href="references.html#ref-Ellner2009" role="doc-biblioref">2009</a>)</span>.</p>
+<p>In Scheiner and Willig’s edited volume on <em>The Theory of Ecology</em>, Andy Sih <span class="citation">(<a href="references.html#ref-Sih2011" role="doc-biblioref">Sih 2011</a>)</span> proposes that the following propositions form the basis of foraging theory:</p>
 <ol style="list-style-type: decimal">
 <li>Foraging patterns maximize fitness or a correlate of fitness.</li>
 <li>Foraging patterns depend on the range of options available to the forager and on how each available option affects fitness or a correlate of fitness.</li>
 <li>Foraging behaviour balances conflicting demands–tradeoffs are important in shaping foraging behaviour.</li>
 </ol>
-<p>These properties are the outcome of natural selection operating on foraging behavior. Our understanding of foraging itself considers these three features <span class="citation">(Stephens and Krebs <a href="#ref-Stephens1986" role="doc-biblioref">1986</a>)</span>:</p>
+<p>These properties are the outcome of natural selection operating on foraging behavior. Our understanding of foraging itself considers these three features <span class="citation">(<a href="references.html#ref-Stephens1986" role="doc-biblioref">Stephens and Krebs 1986</a>)</span>:</p>
 <ul>
 <li>currency (what is being optimized),</li>
 <li>constraints (features of behaviour that limit optimality), and</li>
@@ -424,21 +96,24 @@ Figure 2.1: Optimal foraging theory (OFT) generates testable quantitative predic
 <p><em>Currency</em> is that quantity that is optimized by the forager. This currency is assumed to be a quantity that limits fitness, such as energy or a particular consumable resource. We measure it as a rate, for instance, as the energy gained per unit time (E/T) or the uptake of a critically limiting resource per unit time (R/T).</p>
 <p><em>Constraints</em> are limitations that we assume about organisms. These might include distances between resource patches, the time and costs associated with extracting a resource from a substrate or subduing prey. They also include constraints imposed by other species including competitors and predators. Constraints can get complicated quickly; however, simple quantitative theory makes predictions against which we can evaluate more complicated assumptions.</p>
 <p><em>Decision rules</em> are what we ascribed to a forager’s choices. A decision rule concern the probability of attacking prey if encountered, or when to leave one resource patch in order to search for another.</p>
-<p>An additional way to think about all this is <em>where, when, and what.</em> A great deal of effort has focused on understanding patch use: <em>where</em> foragers should explore for resources, and <em>when</em> they should give up and go in search of another patch <span class="citation">(Charnov <a href="#ref-Charnov1976b" role="doc-biblioref">1976</a>)</span>. These are <strong>patch use</strong> models, and are based on economic models and the marginal value theorem.</p>
+<p>An additional way to think about all this is <em>where, when, and what.</em> A great deal of effort has focused on understanding patch use: <em>where</em> foragers should explore for resources, and <em>when</em> they should give up and go in search of another patch <span class="citation">(<a href="references.html#ref-Charnov1976b" role="doc-biblioref">Charnov 1976</a>)</span>. These are <strong>patch use</strong> models, and are based on economic models and the marginal value theorem.</p>
 <p>Another avenue of inquiry concerns <em>what</em> animals should eat. For instance, should they go after big prey that may be hard to catch and difficult to subdue, or just snack on what is easy? These are <strong>prey models</strong> or diet models, and attempt to explain why organisms consume <em>what</em> they do.</p>
-<p><em>A note on “prey”.</em> All organisms forage for resources. Plants extend branches toward the light, and proliferate leaves and roots into resource rich patches, and rhizomes grow longer faster through resource-poor soils. Bumblebees search for and learn where to find nectar-rich flowers, and wolves hunt in packs to take down large ungulates. Some bacterivorous nanoflagellates intercept particles selectively depending on the perceived nutritional value of particles <span class="citation">(Boenigk et al. <a href="#ref-Boenigk2002" role="doc-biblioref">2002</a>)</span>. So, depending on the forager, its “prey” may be <span class="math inline">\(\mathrm{NO}_{3}^-\)</span> ions, nectar, moose, or bacteria. Therefore, we will refer to these resources variously as prey, prey items, resources, and resource items. Some of these ideas are best handled with patch-based models <span class="citation">(Charnov <a href="#ref-Charnov1976b" role="doc-biblioref">1976</a>)</span> where a “resource patch” is a more intuitive and useful unit.</p>
-<p><em>A note on “handle”.</em> All organisms pays costs to consume resources. In OFT, “handle” typically means expending energy an time to attack and subdue prey (predators), proliferate into resource rich areas (plants), exude extra cellular enzymes (fungi); ingest the item(s), and then resume searching.</p>
-<div id="a-prey-model" class="section level2">
-<h2><span class="header-section-number">2.1</span> A prey model</h2>
-<p><em>…in which a forager asks, “should I eat this?”</em><a href="#fn9" class="footnote-ref" id="fnref9"><sup>9</sup></a></p>
-<p>Let’s start where this field started, with a prey-centered model <span class="citation">(MacArthur and Pianka <a href="#ref-MacArthur1966" role="doc-biblioref">1966</a>; Emlen <a href="#ref-Emlen1966" role="doc-biblioref">1966</a>)</span>.</p>
-
+<p><em>A note on “prey.”</em> All organisms forage for resources. Plants extend branches toward the light, and proliferate leaves and roots into resource rich patches, and rhizomes grow longer faster through resource-poor soils. Bumblebees search for and learn where to find nectar-rich flowers, and wolves hunt in packs to take down large ungulates. Some bacterivorous nanoflagellates intercept particles selectively depending on the perceived nutritional value of particles <span class="citation">(<a href="references.html#ref-Boenigk2002" role="doc-biblioref">Boenigk et al. 2002</a>)</span>. So, depending on the forager, its “prey” may be <span class="math inline">\(\mathrm{NO}_{3}^-\)</span> ions, nectar, moose, or bacteria. Therefore, we will refer to these resources variously as prey, prey items, resources, and resource items. Some of these ideas are best handled with patch-based models <span class="citation">(<a href="references.html#ref-Charnov1976b" role="doc-biblioref">Charnov 1976</a>)</span> where a “resource patch” is a more intuitive and useful unit.</p>
+<p><em>A note on “handle.”</em> All organisms pays costs to consume resources. In OFT, “handle” typically means expending energy an time to attack and subdue prey (predators), proliferate into resource rich areas (plants), exude extra cellular enzymes (fungi); ingest the item(s), and then resume searching.</p>
+<div id="a-prey-model" class="section level2" number="2.1">
+<h2>
+<span class="header-section-number">2.1</span> A prey model<a class="anchor" aria-label="anchor" href="#a-prey-model"><i class="fas fa-link"></i></a>
+</h2>
+<p><em>…in which a forager asks, “should I eat this?”</em><a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;whether “I” is a sugar maple tree or a human, most of us do not make this decision conciously…&lt;/p&gt;"><sup>9</sup></a></p>
+<p>Let’s start where this field started, with a prey-centered model <span class="citation">(<a href="references.html#ref-MacArthur1966" role="doc-biblioref">MacArthur and Pianka 1966</a>; <a href="references.html#ref-Emlen1966" role="doc-biblioref">Emlen 1966</a>)</span>.</p>
 <p>The goal is to optimize the currency.</p>
-<div id="our-intuition" class="section level3">
-<h3><span class="header-section-number">2.1.1</span> Our intuition</h3>
-<div class="figure"><span id="fig:ant"></span>
-<img src="figs/foraging_ant2.jpg" alt="The amount of energy, E (y-axis), that is lost and gained by a foraging ant--it may decline slowly over time (x-axis) while searching, and decline quickly while handling a food item. Our ant gains energy when it consumes an item. Below: Our ant. She expends energy while searching for food. Upon encountering a food item, she may choose to 'handle' it (encounters 1 and 3) and gain energy, or not handle it (encounter 2) and save the added cost of handling it." width="100%" />
-<p class="caption">
+<div id="our-intuition" class="section level3" number="2.1.1">
+<h3>
+<span class="header-section-number">2.1.1</span> Our intuition<a class="anchor" aria-label="anchor" href="#our-intuition"><i class="fas fa-link"></i></a>
+</h3>
+<div class="figure">
+<span style="display:block;" id="fig:ant"></span>
+<img src="figs/foraging_ant2.jpg" alt="The amount of energy, E (y-axis), that is lost and gained by a foraging ant--it may decline slowly over time (x-axis) while searching, and decline quickly while handling a food item. Our ant gains energy when it consumes an item. Below: Our ant. She expends energy while searching for food. Upon encountering a food item, she may choose to 'handle' it (encounters 1 and 3) and gain energy, or not handle it (encounter 2) and save the added cost of handling it." width="100%"><p class="caption">
 Figure 2.2: The amount of energy, E (y-axis), that is lost and gained by a foraging ant–it may decline slowly over time (x-axis) while searching, and decline quickly while handling a food item. Our ant gains energy when it consumes an item. Below: Our ant. She expends energy while searching for food. Upon encountering a food item, she may choose to ‘handle’ it (encounters 1 and 3) and gain energy, or not handle it (encounter 2) and save the added cost of handling it.
 </p>
 </div>
@@ -446,17 +121,26 @@ Figure 2.2: The amount of energy, E (y-axis), that is lost and gained by a forag
 <span class="math display">\[\frac{e_i}{h_i}\]</span>
 where <span class="math inline">\(e_i\)</span> is the energy in an item of type <span class="math inline">\(i\)</span>, and <span class="math inline">\(h_i\)</span> is the cost of handling said item. If <span class="math inline">\(e_i/h_i&lt;1\)</span>, then it doesn’t make sense to select the item. Further, handling an item means that the forager is <em>not</em> looking for a better food item. This suggests that even if <span class="math inline">\(e_i/h_i&gt;1\)</span>, a forager may not want to handle it if it is likely to soon encounter food items of higher energy content. On top of this, the act of searching may expose a forager to a risk of running into competing foragers, or even being eaten by a bigger forager. Clearly, a forager faces tradeoffs as it searches and when it encounters resources.</p>
 </div>
-<div id="mathematical-support" class="section level3">
-<h3><span class="header-section-number">2.1.2</span> Mathematical support</h3>
+<div id="mathematical-support" class="section level3" number="2.1.2">
+<h3>
+<span class="header-section-number">2.1.2</span> Mathematical support<a class="anchor" aria-label="anchor" href="#mathematical-support"><i class="fas fa-link"></i></a>
+</h3>
 <p>One of the reasons to represent ideas mathematically is that we make concrete assumptions, and then the math can tell us what the predictions are. That is what we will do here.</p>
 <p>Let’s assume that natural selection tends to maximize the currency as Gain per unit Time, <span class="math inline">\(G/T\)</span>. Our model will use these parameters and variables:</p>
 <ul>
-<li><span class="math inline">\(i =\)</span> index for prey type</li>
-<li><span class="math inline">\(S =\)</span> total time spent <strong>searching</strong> (units = seconds, <span class="math inline">\(s\)</span>).</li>
-<li><span class="math inline">\(\lambda_i =\)</span> rate of encounter with prey of type <span class="math inline">\(i\)</span> (units = # encountered/s = <span class="math inline">\(\#/s\)</span>; note this can also be #/area × area/s, if we like)<a href="#fn10" class="footnote-ref" id="fnref10"><sup>10</sup></a></li>
-<li><span class="math inline">\(p_i =\)</span> probability that a forager attacks prey if encountered (units are number handled per number encountered, or #/#; this is a dimensionless parameter)</li>
-<li><span class="math inline">\(h_i =\)</span> handling time for an item of type <span class="math inline">\(i\)</span>, (units = s/#).</li>
-<li><span class="math inline">\(T =\)</span> <strong>total</strong> elapsed time (units = s)</li>
+<li>
+<span class="math inline">\(i =\)</span> index for prey type</li>
+<li>
+<span class="math inline">\(S =\)</span> total time spent <strong>searching</strong> (units = seconds, <span class="math inline">\(s\)</span>).</li>
+<li>
+<span class="math inline">\(\lambda_i =\)</span> rate of encounter with prey of type <span class="math inline">\(i\)</span> (units = # encountered/s = <span class="math inline">\(\#/s\)</span>; note this can also be #/area × area/s, if we like)<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content='&lt;p&gt;A forager encounters prey at random, and this is known as a “Poisson process,” where the number of encounters in a specified time interval is a random variable drawn from the Poisson probability distribution. It turns out that the &lt;em&gt;time between events&lt;/em&gt; of a Poisson process follows the Exponential distribution. The Poisson distribution is determined by a single parameter, its mean. The Exponential distribution is also described by a single parameter, its &lt;em&gt;rate&lt;/em&gt;. It turns out that we use the same &lt;span class="math inline"&gt;\(\lambda\)&lt;/span&gt; for both. }&lt;/p&gt;'><sup>10</sup></a>
+</li>
+<li>
+<span class="math inline">\(p_i =\)</span> probability that a forager attacks prey if encountered (units are number handled per number encountered, or #/#; this is a dimensionless parameter)</li>
+<li>
+<span class="math inline">\(h_i =\)</span> handling time for an item of type <span class="math inline">\(i\)</span>, (units = s/#).</li>
+<li>
+<span class="math inline">\(T =\)</span> <strong>total</strong> elapsed time (units = s)</li>
 </ul>
 <p>From these definitions we can calculate other important quantities.</p>
 <p><strong>Total number of items</strong> encountered of type <span class="math inline">\(i\)</span> is
@@ -467,14 +151,15 @@ where <span class="math inline">\(e_i\)</span> is the energy in an item of type 
 The units are <span class="math inline">\(\#\)</span>.</p>
 <p><strong>Total time spent handling</strong> all items of type <span class="math inline">\(i\)</span> is
 <span class="math display">\[H=S\lambda_i p_i h_i\]</span>
-The units are <span class="math inline">\(s\)</span>.<a href="#fn11" class="footnote-ref" id="fnref11"><sup>11</sup></a></p>
-<p><strong>Total elapsed time</strong> is time spent searching plus time spent handling, which is<br />
-<span class="math display">\[T=S + \sum_i^n S\lambda_i h_i p_i\]</span>
+The units are <span class="math inline">\(s\)</span>.<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content='&lt;p&gt;We can check units for total handling time, &lt;span class="math inline"&gt;\(H = S\lambda_i p_i h_i\)&lt;/span&gt; by replacing the variables and parameters with their units. The units for &lt;span class="math inline"&gt;\(H\)&lt;/span&gt; are seconds, so we have &lt;span class="math inline"&gt;\(\mathrm{s = s \frac{\#}{s} \frac{\#}{\#} \frac{s}{\#}}\)&lt;/span&gt;. When we multiply these fractions, we find that the &lt;span class="math inline"&gt;\(\#\)&lt;/span&gt;s and two of the s’s cancel out and we are left with &lt;span class="math inline"&gt;\(s=s\)&lt;/span&gt;.&lt;/p&gt;'><sup>11</sup></a></p>
+<p><strong>Total elapsed time</strong> is time spent searching plus time spent handling, which is<br><span class="math display">\[T=S + \sum_i^n S\lambda_i h_i p_i\]</span>
 where we use the summation to add together the total handling times for each prey or resource type <span class="math inline">\(i = \{1,\,2, \ldots ,\,n\}\)</span>.</p>
 <p>Let</p>
 <ul>
-<li><span class="math inline">\(e_i =\)</span> net energetic gain from catching and consuming a single type-i prey item (units = Joules, J). This includes the gross energy of the item minus handling costs plus energy not lost by searching during that time.</li>
-<li><span class="math inline">\(c =\)</span> energy cost per unit of time while searching (units = J).</li>
+<li>
+<span class="math inline">\(e_i =\)</span> net energetic gain from catching and consuming a single type-i prey item (units = Joules, J). This includes the gross energy of the item minus handling costs plus energy not lost by searching during that time.</li>
+<li>
+<span class="math inline">\(c =\)</span> energy cost per unit of time while searching (units = J).</li>
 </ul>
 <p><strong>Total energy gain</strong> from eating all the items is the number of items of each type <span class="math inline">\(i\)</span> handled times the net amount of energy per item of type <span class="math inline">\(i\)</span>, <span class="math inline">\(e_i\)</span>, <span class="math display">\[\sum_{i=1}^n S\lambda_i p_i e_i\]</span>
 where units are <span class="math inline">\(\# (\mathrm{J}/ \#) = \mathrm{J}\)</span>.</p>
@@ -488,36 +173,39 @@ A major question in OFT is whether a forager should include a particular prey ty
 <p><span class="math display" id="eq:preypred1">\[\begin{equation}
 \frac{e_{m+1}}{h_{m+1}} &gt; \frac{\sum_{i=1}^m \lambda_i e_i}{1 + \sum_{i=1}^{m} \lambda_i h_i} \tag{2.1}
 \end{equation}\]</span></p>
-<p>where the diet already includes items 1-<span class="math inline">\(m\)</span>, and the <em>realized</em> energy content of the diet takes into account average encounter rates of each item type. It means that a foraging will always select a particular type (<span class="math inline">\(p_j =1\)</span>), or never select it (<span class="math inline">\(p_j=0\)</span>); this is known as the “zero-one rule”.</p>
+<p>where the diet already includes items 1-<span class="math inline">\(m\)</span>, and the <em>realized</em> energy content of the diet takes into account average encounter rates of each item type. It means that a foraging will always select a particular type (<span class="math inline">\(p_j =1\)</span>), or never select it (<span class="math inline">\(p_j=0\)</span>); this is known as the “zero-one rule.”</p>
 <p><strong>Prediction 2</strong> Foragers will rank prey types by their profitability, <span class="math inline">\(e/h\)</span>.</p>
 <p><strong>Prediction 3</strong> When encounter rates increase (as with increasing abundances), selectivity increases. Note that encounter rates are in the right hand side, so as they increase, so will that fraction on the right. That will make it harder for the above inequality to be true, and a forager will be pickier. If you don’t believe it, try this simplified version (Fig. <a href="oft.html#fig:selectivity">2.3</a>).</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="oft.html#cb9-1"></a>G.T =<span class="st"> </span><span class="cf">function</span>(lambda, <span class="dt">h=</span><span class="dv">1</span>, <span class="dt">e=</span><span class="dv">1</span>){lambda<span class="op">*</span>e<span class="op">/</span>(<span class="dv">1</span><span class="op">+</span>lambda<span class="op">*</span>h)} <span class="co"># create the function you want</span></span>
-<span id="cb9-2"><a href="oft.html#cb9-2"></a>myData &lt;-<span class="st"> </span><span class="kw">data.frame</span>( <span class="dt">lambda=</span><span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">10</span>) ) <span class="co"># data you need</span></span>
-<span id="cb9-3"><a href="oft.html#cb9-3"></a><span class="kw">ggplot</span>(<span class="dt">data=</span>myData, <span class="kw">aes</span>(<span class="dt">x=</span>lambda)) <span class="op">+</span><span class="st"> </span><span class="co"># set the basic properties of the plot</span></span>
-<span id="cb9-4"><a href="oft.html#cb9-4"></a><span class="st">  </span><span class="co"># in the stat_function, we indicate the parameters in our equation.</span></span>
-<span id="cb9-5"><a href="oft.html#cb9-5"></a><span class="st">  </span><span class="kw">stat_function</span>(<span class="dt">fun=</span>G.T, <span class="dt">geom=</span><span class="st">&quot;line&quot;</span>) <span class="op">+</span></span>
-<span id="cb9-6"><a href="oft.html#cb9-6"></a><span class="st">  </span><span class="kw">ylab</span>(<span class="kw">bquote</span>(<span class="kw">over</span>(lambda<span class="op">*</span>e, <span class="dv">1</span> <span class="op">+</span><span class="st"> </span>lambda<span class="op">*</span>h))) <span class="op">+</span><span class="st"> </span><span class="kw">xlab</span>(<span class="kw">bquote</span>(lambda))  <span class="co"># add labels</span></span></code></pre></div>
-<div class="figure"><span id="fig:selectivity"></span>
-<img src="figs/selectivity-1.png" alt="Selectivity increases with average encounter rates." width="60%" />
-<p class="caption">
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">G.T</span> <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">lambda</span>, <span class="va">h</span><span class="op">=</span><span class="fl">1</span>, <span class="va">e</span><span class="op">=</span><span class="fl">1</span><span class="op">)</span><span class="op">{</span><span class="va">lambda</span><span class="op">*</span><span class="va">e</span><span class="op">/</span><span class="op">(</span><span class="fl">1</span><span class="op">+</span><span class="va">lambda</span><span class="op">*</span><span class="va">h</span><span class="op">)</span><span class="op">}</span> <span class="co"># create the function you want</span>
+<span class="va">myData</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span> lambda<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">10</span><span class="op">)</span> <span class="op">)</span> <span class="co"># data you need</span>
+<span class="fu">ggplot</span><span class="op">(</span>data<span class="op">=</span><span class="va">myData</span>, <span class="fu">aes</span><span class="op">(</span>x<span class="op">=</span><span class="va">lambda</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> <span class="co"># set the basic properties of the plot</span>
+  <span class="co"># in the stat_function, we indicate the parameters in our equation.</span>
+  <span class="fu">stat_function</span><span class="op">(</span>fun<span class="op">=</span><span class="va">G.T</span>, geom<span class="op">=</span><span class="st">"line"</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu">ylab</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/bquote.html">bquote</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/grDevices/plotmath.html">over</a></span><span class="op">(</span><span class="va">lambda</span><span class="op">*</span><span class="va">e</span>, <span class="fl">1</span> <span class="op">+</span> <span class="va">lambda</span><span class="op">*</span><span class="va">h</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> <span class="fu">xlab</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/bquote.html">bquote</a></span><span class="op">(</span><span class="va">lambda</span><span class="op">)</span><span class="op">)</span>  <span class="co"># add labels</span></code></pre></div>
+<div class="figure">
+<span style="display:block;" id="fig:selectivity"></span>
+<img src="figs/selectivity-1.png" alt="Selectivity increases with average encounter rates." width="60%"><p class="caption">
 Figure 2.3: Selectivity increases with average encounter rates.
 </p>
 </div>
 <p><strong>Prediction 4</strong> Inclusion of type <span class="math inline">\(m+1\)</span> in the diet does not depend on its encounter rate. Thus, a particular type should be included if the instantaneous net gain of that type is greater than the <em>realized long term average</em> net gain of all the more profitable types. Note that encounter rate appears on the right hand side, but not the left.</p>
-<p>So how does this model fair in the real world? Well, the zero-one rule doesn’t work at all; it turns out that for a variety of reasons, foragers do not completely ignore low-profit prey. However, there is great support for the other predictions (above) <span class="citation">(Stephens and Krebs <a href="#ref-Stephens1986" role="doc-biblioref">1986</a>)</span>. Most importantly, in all cases, the theory has provided a clear framework to generate testable predictions from unambiguous assumptions, and that is what we want from efficient theory. The model itself helped guide research, and inclusion of greater complexity has led to deeper understanding of behavior and its consequences for species interactions.</p>
+<p>So how does this model fair in the real world? Well, the zero-one rule doesn’t work at all; it turns out that for a variety of reasons, foragers do not completely ignore low-profit prey. However, there is great support for the other predictions (above) <span class="citation">(<a href="references.html#ref-Stephens1986" role="doc-biblioref">Stephens and Krebs 1986</a>)</span>. Most importantly, in all cases, the theory has provided a clear framework to generate testable predictions from unambiguous assumptions, and that is what we want from efficient theory. The model itself helped guide research, and inclusion of greater complexity has led to deeper understanding of behavior and its consequences for species interactions.</p>
 </div>
 </div>
-<div id="the-patch-model" class="section level2">
-<h2><span class="header-section-number">2.2</span> The patch model</h2>
+<div id="the-patch-model" class="section level2" number="2.2">
+<h2>
+<span class="header-section-number">2.2</span> The patch model<a class="anchor" aria-label="anchor" href="#the-patch-model"><i class="fas fa-link"></i></a>
+</h2>
 <p><em>…in which omniscient rationale agents roam free.</em></p>
 <p>Here the forager asks, “how long should I stay here?” In the simple <em>prey</em> model, a forager searches for and then encounters prey one at a time, makes a decision to consume or not, and then resumes searching. In a simple <em>patch</em> model, a forager searches for and encounters patches one at a time, first consumes resources and then makes a decision to leave or not. Perhaps the single most important prediction of the simple patch model is that a forager should leave a patch when its current rate of energy gain drops down to the average or expected rate of energy gain for the habitat at large.</p>
-<p>In what follows, we rely on <span class="citation">Charnov (<a href="#ref-Charnov1976b" role="doc-biblioref">1976</a>)</span>, who applies <em>the marginal-value theorem</em> to explain optimal behavior. Here, as in economics, “marginal value” refers to a rate - the slope of a function. In calculus, this is a derivative. Here, it is the derivative (i.e. slope) of the relation between energy gain and time.</p>
+<p>In what follows, we rely on <span class="citation"><a href="references.html#ref-Charnov1976b" role="doc-biblioref">Charnov</a> (<a href="references.html#ref-Charnov1976b" role="doc-biblioref">1976</a>)</span>, who applies <em>the marginal-value theorem</em> to explain optimal behavior. Here, as in economics, “marginal value” refers to a rate - the slope of a function. In calculus, this is a derivative. Here, it is the derivative (i.e. slope) of the relation between energy gain and time.</p>
 <p>Let’s assume the simplest of all patch models: one patch type, all patches are the same, and they are distributed randomly in the habitat. Assume also that a forager uses time to travel between patches (travel time, <span class="math inline">\(t_t\)</span>) and time searching within a patch (residence time, <span class="math inline">\(t_r\)</span>). A forager encounters patches at random, with a rate of <span class="math inline">\(\lambda\)</span>, and as such, would have a mean time to next encounter of <span class="math inline">\(1/\lambda\)</span>.</p>
-The patch is characterisized by its <em>gain function</em> <span class="math inline">\(g(t_r)\)</span> (Fig. <a href="oft.html#fig:gain">2.4</a>) which is the expected<a href="#fn12" class="footnote-ref" id="fnref12"><sup>12</sup></a>
+The patch is characterisized by its <em>gain function</em> <span class="math inline">\(g(t_r)\)</span> (Fig. <a href="oft.html#fig:gain">2.4</a>) which is the expected<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;“expected” value of a variable is the mean of that variable, because that is what we expect given the absence of other knowledge&lt;/p&gt;"><sup>12</sup></a>
 <em>cumulative net energy gained</em>, given time <span class="math inline">\(t_r\)</span> spent in the patch. The gain function is a cumulative total net amount. We can imagine different types of gain functions.
-<div class="figure"><span id="fig:gain"></span>
-<img src="figs/gain-1.png" alt="Net energy gain as a function of patch residence time may take different forms. Net energy gain increases through time but slows (decelerates) as a greater fraction of the resources in the patch are consumed. The top line (solid) assumes that there are diminishing returns as a patch is depleted, but the forager continues to find resources in excess of metabolic losses. The lower line (dashed) represents the net energy gain that could arise as a patch is depleted more fully and the costs continue unabated." width="75%" />
-<p class="caption">
+<div class="figure">
+<span style="display:block;" id="fig:gain"></span>
+<img src="figs/gain-1.png" alt="Net energy gain as a function of patch residence time may take different forms. Net energy gain increases through time but slows (decelerates) as a greater fraction of the resources in the patch are consumed. The top line (solid) assumes that there are diminishing returns as a patch is depleted, but the forager continues to find resources in excess of metabolic losses. The lower line (dashed) represents the net energy gain that could arise as a patch is depleted more fully and the costs continue unabated." width="75%"><p class="caption">
 Figure 2.4: Net energy gain as a function of patch residence time may take different forms. Net energy gain increases through time but slows (decelerates) as a greater fraction of the resources in the patch are consumed. The top line (solid) assumes that there are diminishing returns as a patch is depleted, but the forager continues to find resources in excess of metabolic losses. The lower line (dashed) represents the net energy gain that could arise as a patch is depleted more fully and the costs continue unabated.
 </p>
 </div>
@@ -527,7 +215,7 @@ Figure 2.4: Net energy gain as a function of patch residence time may take diffe
 <li>Draw a gain function where there is no cost to foraging, and where the forager eventually depletes all the prey.</li>
 <li>In one graph, draw two gain functions for a resource rich patch and for a resource poor patch.</li>
 </ol>
-<p>So, our <em>currency</em> is long-term average energy intake, <span class="math inline">\(R\)</span>, and we want to maximize this. The <em>decision</em> our forager needs to make is how long to stay in a patch. The forager’s <em>constraints</em> share some similarity with the prey model <span class="citation">(Stephens and Krebs <a href="#ref-Stephens1986" role="doc-biblioref">1986</a>)</span>.</p>
+<p>So, our <em>currency</em> is long-term average energy intake, <span class="math inline">\(R\)</span>, and we want to maximize this. The <em>decision</em> our forager needs to make is how long to stay in a patch. The forager’s <em>constraints</em> share some similarity with the prey model <span class="citation">(<a href="references.html#ref-Stephens1986" role="doc-biblioref">Stephens and Krebs 1986</a>)</span>.</p>
 <ul>
 <li>between-patch travel time and within-patch hunting time are distinct, and …</li>
 <li>… independent of each other,</li>
@@ -546,94 +234,103 @@ where <span class="math inline">\(t_t + t_r\)</span> is the total time from leav
 With that we can find the necessary derivative.
 <span class="math display">\[\frac{\delta R}{\delta t_r} = - \frac{1}{(t_t+t_r)^2} g(t_r) + \frac{1}{t_t+t_r}g^\prime(t_r)= g^\prime(t_r) - \frac{g(t_r)}{t_t+t_r}=0\]</span>
 Because this derivative equals zero when the slope of the gain function (<span class="math inline">\(g^\prime(t_r)\)</span>) equals <span class="math inline">\(R\)</span>, that tells use that <span class="math inline">\(R\)</span> is maximized at that point. Therefore, it predicts that in order to maximize the long-term average rate, we should stay in a patch until the instantaneous rate, <span class="math inline">\(g^\prime(t_r)\)</span> drops to the long term average rate, <span class="math inline">\(R\)</span> (Fig. <a href="oft.html#fig:marginal">2.5</a>).</p>
-<div class="figure"><span id="fig:marginal"></span>
-<img src="figs/marginal-value.jpg" alt="Energy gain vs. time: The origin is when the forager enters the patch; to the left is time spent traveling from one patch to the next, and to the right is time spent in the patch. The graph represents two different habitats, one in which the patches are easy to get to (habitat 1), and another where it takes more time to get from patch to patch (habitat 2). In all cases, the patches are identical, having the same gain function. The curved line is the gain function, the net energy gain as a function of time spent in the patch. The slope of that curve is the derivative of the gain function. Its slope at any single time point is the instantaneous rate of gain. The two straight lines are the expected gains averaged over time for each habitat as a whole. Lambda is the rate at which a forager randomly encounters patches - because it is a Poisson process, the mean or expected time is 1/lambda. The forager should leave the patch when the instantaneous rate of gain in the patch equals the long term average rate of gain for the habitat as a whole." width="100%" />
-<p class="caption">
+<div class="figure">
+<span style="display:block;" id="fig:marginal"></span>
+<img src="figs/marginal-value.jpg" alt="Energy gain vs. time: The origin is when the forager enters the patch; to the left is time spent traveling from one patch to the next, and to the right is time spent in the patch. The graph represents two different habitats, one in which the patches are easy to get to (habitat 1), and another where it takes more time to get from patch to patch (habitat 2). In all cases, the patches are identical, having the same gain function. The curved line is the gain function, the net energy gain as a function of time spent in the patch. The slope of that curve is the derivative of the gain function. Its slope at any single time point is the instantaneous rate of gain. The two straight lines are the expected gains averaged over time for each habitat as a whole. Lambda is the rate at which a forager randomly encounters patches - because it is a Poisson process, the mean or expected time is 1/lambda. The forager should leave the patch when the instantaneous rate of gain in the patch equals the long term average rate of gain for the habitat as a whole." width="100%"><p class="caption">
 Figure 2.5: Energy gain vs. time: The origin is when the forager enters the patch; to the left is time spent traveling from one patch to the next, and to the right is time spent in the patch. The graph represents two different habitats, one in which the patches are easy to get to (habitat 1), and another where it takes more time to get from patch to patch (habitat 2). In all cases, the patches are identical, having the same gain function. The curved line is the gain function, the net energy gain as a function of time spent in the patch. The slope of that curve is the derivative of the gain function. Its slope at any single time point is the instantaneous rate of gain. The two straight lines are the expected gains averaged over time for each habitat as a whole. Lambda is the rate at which a forager randomly encounters patches - because it is a Poisson process, the mean or expected time is 1/lambda. The forager should leave the patch when the instantaneous rate of gain in the patch equals the long term average rate of gain for the habitat as a whole.
 </p>
 </div>
 <p>The simple patch model predicts that when average travel time is greater, foragers will stay longer in a patch. Similarly, the model predicts that when patch quality is lower, foragers stay longer in each patch. Use Fig. <a href="oft.html#fig:marginal">2.5</a> to construct explanations for these predictions.</p>
 <p><strong>Just a starting point</strong></p>
-<p>The simple prey and patch models have been extended a great deal to help understand a broad range of foraging situations <span class="citation">(Sih <a href="#ref-Sih2011" role="doc-biblioref">2011</a>)</span>. Simultaneous, rather than sequential, encounters can lead to different predictions. In these cases, energy alone, <span class="math inline">\(e_i\)</span>, rather than profitability, <span class="math inline">\(e_i/h_i\)</span>, may determine prey selection that maximizes the long term mean average rate. Travel time and encounter rates interact with this to explain contrasting situations.</p>
-<p>Central place foragers play by slightly different rules <span class="citation">(Stephens and Krebs <a href="#ref-Stephens1986" role="doc-biblioref">1986</a>)</span>. Central place foragers are located in a single location, and remain there. For instance, a parent bird (or dinosaur) finds patches and returns repeatedly to the nest, bringing one or multiple prey items. With parent birds, their fitness depends on offspring viability, and so selection tends to optimize in a manner similar to an organism foraging for themselves. These cases have been built upon patch models, where the question is how to exploit patches that exist at different distances from the nest.</p>
+<p>The simple prey and patch models have been extended a great deal to help understand a broad range of foraging situations <span class="citation">(<a href="references.html#ref-Sih2011" role="doc-biblioref">Sih 2011</a>)</span>. Simultaneous, rather than sequential, encounters can lead to different predictions. In these cases, energy alone, <span class="math inline">\(e_i\)</span>, rather than profitability, <span class="math inline">\(e_i/h_i\)</span>, may determine prey selection that maximizes the long term mean average rate. Travel time and encounter rates interact with this to explain contrasting situations.</p>
+<p>Central place foragers play by slightly different rules <span class="citation">(<a href="references.html#ref-Stephens1986" role="doc-biblioref">Stephens and Krebs 1986</a>)</span>. Central place foragers are located in a single location, and remain there. For instance, a parent bird (or dinosaur) finds patches and returns repeatedly to the nest, bringing one or multiple prey items. With parent birds, their fitness depends on offspring viability, and so selection tends to optimize in a manner similar to an organism foraging for themselves. These cases have been built upon patch models, where the question is how to exploit patches that exist at different distances from the nest.</p>
 <p>Another example of a central place forager is a spider that acts as a ambush or sit-and-wait predator who remains stationary until a prey item gets close enough to attack. One approach to the spider problem is to consider the distance to the prey as a handling cost and search costs are negligible.</p>
 <p>These simple foraging models provide the starting points for a field of inquiry spanning many decades. The interplay between these models, the natural history of species, and experiments have led to greater appreciation of why organisms behave as they do, and the consequences for their evolution and the food webs and ecosystems in which they reside.</p>
 <div style="page-break-after: always;"></div>
 </div>
-<div id="a-simulation-of-a-prey-model" class="section level2">
-<h2><span class="header-section-number">2.3</span> A simulation of a prey model</h2>
+<div id="a-simulation-of-a-prey-model" class="section level2" number="2.3">
+<h2>
+<span class="header-section-number">2.3</span> A simulation of a prey model<a class="anchor" aria-label="anchor" href="#a-simulation-of-a-prey-model"><i class="fas fa-link"></i></a>
+</h2>
 <p>Next, we embark on a simulation of the simple prey model. We will start with these assumptions:</p>
 <ul>
-<li>two prey types, <span class="math inline">\(i = {1,2}\)</span></li>
-<li>ranked effective energy contents, <span class="math inline">\(e_1 &gt; e_2\)</span></li>
-<li>equal handling times, <span class="math inline">\(h_1=h_2=1\)</span></li>
-<li>equal relative abundances, <span class="math inline">\(r_1=r_2=0.5\)</span></li>
+<li>two prey types, <span class="math inline">\(i = {1,2}\)</span>
+</li>
+<li>ranked effective energy contents, <span class="math inline">\(e_1 &gt; e_2\)</span>
+</li>
+<li>equal handling times, <span class="math inline">\(h_1=h_2=1\)</span>
+</li>
+<li>equal relative abundances, <span class="math inline">\(r_1=r_2=0.5\)</span>
+</li>
 <li>encounter rates determined by an overall prey encounter rate, <span class="math inline">\(\lambda\)</span>, and the relative abundances where <span class="math inline">\(\lambda_i = \lambda r_i\)</span>.</li>
 <li>equal probability of attack if prey is encountered, <span class="math inline">\(p_1=p_2=1\)</span>.</li>
-<li>search cost is constant, <span class="math inline">\(c_s=0.01\)</span></li>
+<li>search cost is constant, <span class="math inline">\(c_s=0.01\)</span>
+</li>
 </ul>
 <p>In addition to these properties, our simulation needs several bookkeeping parameters and variables in order to track the forager energy content. It will need to run for a finite amount of time; we’ll control that with the total search time, <code>Total</code>. Remember that encounter rates are means but that actual encounters are random or stochastic. As a result, our forager may go through lean periods in which their net energy intake is negative.</p>
 <p>We need to keep track of total elapsed time, and for each cycle, the search time, search cost, handling time, and energy gain.</p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="oft.html#cb10-1"></a>optimal.forager &lt;-<span class="st"> </span><span class="cf">function</span>(</span>
-<span id="cb10-2"><a href="oft.html#cb10-2"></a>  <span class="dt">e =</span> <span class="kw">c</span>(<span class="dv">2</span>, <span class="dv">1</span>), <span class="co"># energy content of the prey types</span></span>
-<span id="cb10-3"><a href="oft.html#cb10-3"></a>  <span class="dt">h =</span> <span class="kw">c</span>(.<span class="dv">5</span>, <span class="fl">.5</span>), <span class="co"># handling times</span></span>
-<span id="cb10-4"><a href="oft.html#cb10-4"></a>  <span class="dt">r =</span> <span class="kw">c</span>(.<span class="dv">5</span>, <span class="fl">.5</span>), <span class="co"># relative abundance of prey types: sum(r) = 1</span></span>
-<span id="cb10-5"><a href="oft.html#cb10-5"></a>  <span class="dt">lambda =</span> <span class="fl">0.4</span>, <span class="co"># overal encounter rate, for all prey combined</span></span>
-<span id="cb10-6"><a href="oft.html#cb10-6"></a>  <span class="dt">p =</span> <span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">1</span>), <span class="co"># prob. of attack if encountered</span></span>
-<span id="cb10-7"><a href="oft.html#cb10-7"></a>  <span class="dt">cs =</span> <span class="fl">0.4</span>, <span class="co"># cost of searching per unit time</span></span>
-<span id="cb10-8"><a href="oft.html#cb10-8"></a>  <span class="dt">Total =</span> <span class="dv">10</span> <span class="co"># limit to foraging time</span></span>
-<span id="cb10-9"><a href="oft.html#cb10-9"></a>  ) {</span>
-<span id="cb10-10"><a href="oft.html#cb10-10"></a><span class="co">###############</span></span>
-<span id="cb10-11"><a href="oft.html#cb10-11"></a><span class="co">### begin foraging</span></span>
-<span id="cb10-12"><a href="oft.html#cb10-12"></a>ec &lt;-<span class="st"> </span><span class="ot">NULL</span> <span class="co"># an object to tally gains and costs.</span></span>
-<span id="cb10-13"><a href="oft.html#cb10-13"></a>cycle &lt;-<span class="st"> </span><span class="dv">0</span> <span class="co"># the cycle count (= search, choose and maybe attack and eat)</span></span>
-<span id="cb10-14"><a href="oft.html#cb10-14"></a>ct &lt;-<span class="st"> </span><span class="dv">0</span> <span class="co"># start time of the cyclesan object to tally cycle times.</span></span>
-<span id="cb10-15"><a href="oft.html#cb10-15"></a>elapsed.time &lt;-<span class="st"> </span><span class="dv">0</span> <span class="co"># total time spent foraging</span></span>
-<span id="cb10-16"><a href="oft.html#cb10-16"></a><span class="cf">while</span>( elapsed.time <span class="op">&lt;</span><span class="st"> </span>Total ) {</span>
-<span id="cb10-17"><a href="oft.html#cb10-17"></a>  <span class="co"># count which search cycle we&#39;re on</span></span>
-<span id="cb10-18"><a href="oft.html#cb10-18"></a>  (cycle &lt;-<span class="st"> </span>cycle <span class="op">+</span><span class="st"> </span><span class="dv">1</span>)</span>
-<span id="cb10-19"><a href="oft.html#cb10-19"></a>  </span>
-<span id="cb10-20"><a href="oft.html#cb10-20"></a>  <span class="co"># a random amount of search time, t.s, until it finds something.</span></span>
-<span id="cb10-21"><a href="oft.html#cb10-21"></a>  (lambda.r &lt;-<span class="st"> </span>lambda <span class="op">*</span><span class="st"> </span>r)</span>
-<span id="cb10-22"><a href="oft.html#cb10-22"></a>  (ts &lt;-<span class="st"> </span><span class="kw">rexp</span>(<span class="dv">2</span>, <span class="dt">rate=</span>lambda.r))</span>
-<span id="cb10-23"><a href="oft.html#cb10-23"></a>  <span class="cf">if</span>(ts[<span class="dv">1</span>] <span class="op">&lt;</span><span class="st"> </span>ts[<span class="dv">2</span>]) i &lt;-<span class="st"> </span><span class="dv">1</span> <span class="cf">else</span> i &lt;-<span class="st"> </span><span class="dv">2</span></span>
-<span id="cb10-24"><a href="oft.html#cb10-24"></a>  i</span>
-<span id="cb10-25"><a href="oft.html#cb10-25"></a>  <span class="co"># cost of searching for that time</span></span>
-<span id="cb10-26"><a href="oft.html#cb10-26"></a>  (cost.s &lt;-<span class="st"> </span>ts[i] <span class="op">*</span><span class="st"> </span>cs)</span>
-<span id="cb10-27"><a href="oft.html#cb10-27"></a></span>
-<span id="cb10-28"><a href="oft.html#cb10-28"></a>  <span class="co"># choose to attack the encountered item with probability p</span></span>
-<span id="cb10-29"><a href="oft.html#cb10-29"></a>  (gain &lt;-<span class="st"> </span><span class="cf">if</span>(p[i] <span class="op">&gt;</span><span class="st"> </span><span class="kw">runif</span>(<span class="dv">1</span>)){e[i]} <span class="cf">else</span> {<span class="dv">0</span>})</span>
-<span id="cb10-30"><a href="oft.html#cb10-30"></a>  </span>
-<span id="cb10-31"><a href="oft.html#cb10-31"></a>  <span class="co"># observed handling time </span></span>
-<span id="cb10-32"><a href="oft.html#cb10-32"></a>  <span class="cf">if</span>(gain <span class="op">&gt;</span><span class="st"> </span><span class="dv">0</span> ){</span>
-<span id="cb10-33"><a href="oft.html#cb10-33"></a>    h.obs &lt;-<span class="st"> </span>h[i]</span>
-<span id="cb10-34"><a href="oft.html#cb10-34"></a>    h.obs</span>
-<span id="cb10-35"><a href="oft.html#cb10-35"></a>  } <span class="cf">else</span> {</span>
-<span id="cb10-36"><a href="oft.html#cb10-36"></a>    h.obs &lt;-<span class="st"> </span><span class="dv">0</span></span>
-<span id="cb10-37"><a href="oft.html#cb10-37"></a>  }</span>
-<span id="cb10-38"><a href="oft.html#cb10-38"></a>   h.obs</span>
-<span id="cb10-39"><a href="oft.html#cb10-39"></a> (cycle.time &lt;-<span class="st"> </span>ts[i] <span class="op">+</span><span class="st"> </span>h.obs )</span>
-<span id="cb10-40"><a href="oft.html#cb10-40"></a> ct &lt;-<span class="st"> </span><span class="kw">c</span>(ct, cycle.time)</span>
-<span id="cb10-41"><a href="oft.html#cb10-41"></a> (elapsed.time &lt;-<span class="st"> </span>elapsed.time <span class="op">+</span><span class="st"> </span>cycle.time)</span>
-<span id="cb10-42"><a href="oft.html#cb10-42"></a> (ec &lt;-<span class="st"> </span><span class="kw">c</span>(ec, gain <span class="op">-</span><span class="st"> </span>cost.s))</span>
-<span id="cb10-43"><a href="oft.html#cb10-43"></a>}</span>
-<span id="cb10-44"><a href="oft.html#cb10-44"></a>df &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">net.e =</span> ec, <span class="dt">cycle.start =</span> <span class="kw">cumsum</span>(ct[<span class="dv">1</span><span class="op">:</span>cycle]))</span>
-<span id="cb10-45"><a href="oft.html#cb10-45"></a>params &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="dt">e=</span>e, <span class="dt">h=</span>h, <span class="dt">r=</span>r, <span class="dt">lambda=</span>lambda, <span class="dt">p=</span>p, <span class="dt">cs=</span>cs, <span class="dt">Total=</span>Total)</span>
-<span id="cb10-46"><a href="oft.html#cb10-46"></a>  out &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="dt">N =</span> cycle, <span class="dt">G =</span> <span class="kw">sum</span>(ec), <span class="dt">Tt =</span> <span class="kw">sum</span>(ct), </span>
-<span id="cb10-47"><a href="oft.html#cb10-47"></a>              <span class="dt">series =</span> df,</span>
-<span id="cb10-48"><a href="oft.html#cb10-48"></a>              <span class="dt">params =</span> params)</span>
-<span id="cb10-49"><a href="oft.html#cb10-49"></a>  <span class="kw">return</span>(out)</span>
-<span id="cb10-50"><a href="oft.html#cb10-50"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">optimal.forager</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span>
+  <span class="va">e</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">2</span>, <span class="fl">1</span><span class="op">)</span>, <span class="co"># energy content of the prey types</span>
+  <span class="va">h</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">.5</span>, <span class="fl">.5</span><span class="op">)</span>, <span class="co"># handling times</span>
+  <span class="va">r</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">.5</span>, <span class="fl">.5</span><span class="op">)</span>, <span class="co"># relative abundance of prey types: sum(r) = 1</span>
+  <span class="va">lambda</span> <span class="op">=</span> <span class="fl">0.4</span>, <span class="co"># overal encounter rate, for all prey combined</span>
+  <span class="va">p</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">1</span><span class="op">)</span>, <span class="co"># prob. of attack if encountered</span>
+  <span class="va">cs</span> <span class="op">=</span> <span class="fl">0.4</span>, <span class="co"># cost of searching per unit time</span>
+  <span class="va">Total</span> <span class="op">=</span> <span class="fl">10</span> <span class="co"># limit to foraging time</span>
+  <span class="op">)</span> <span class="op">{</span>
+<span class="co">###############</span>
+<span class="co">### begin foraging</span>
+<span class="va">ec</span> <span class="op">&lt;-</span> <span class="cn">NULL</span> <span class="co"># an object to tally gains and costs.</span>
+<span class="va">cycle</span> <span class="op">&lt;-</span> <span class="fl">0</span> <span class="co"># the cycle count (= search, choose and maybe attack and eat)</span>
+<span class="va">ct</span> <span class="op">&lt;-</span> <span class="fl">0</span> <span class="co"># start time of the cyclesan object to tally cycle times.</span>
+<span class="va">elapsed.time</span> <span class="op">&lt;-</span> <span class="fl">0</span> <span class="co"># total time spent foraging</span>
+<span class="kw">while</span><span class="op">(</span> <span class="va">elapsed.time</span> <span class="op">&lt;</span> <span class="va">Total</span> <span class="op">)</span> <span class="op">{</span>
+  <span class="co"># count which search cycle we're on</span>
+  <span class="op">(</span><span class="va">cycle</span> <span class="op">&lt;-</span> <span class="va">cycle</span> <span class="op">+</span> <span class="fl">1</span><span class="op">)</span>
+  
+  <span class="co"># a random amount of search time, t.s, until it finds something.</span>
+  <span class="op">(</span><span class="va">lambda.r</span> <span class="op">&lt;-</span> <span class="va">lambda</span> <span class="op">*</span> <span class="va">r</span><span class="op">)</span>
+  <span class="op">(</span><span class="va">ts</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Exponential.html">rexp</a></span><span class="op">(</span><span class="fl">2</span>, rate<span class="op">=</span><span class="va">lambda.r</span><span class="op">)</span><span class="op">)</span>
+  <span class="kw">if</span><span class="op">(</span><span class="va">ts</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span> <span class="op">&lt;</span> <span class="va">ts</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span><span class="op">)</span> <span class="va">i</span> <span class="op">&lt;-</span> <span class="fl">1</span> <span class="kw">else</span> <span class="va">i</span> <span class="op">&lt;-</span> <span class="fl">2</span>
+  <span class="va">i</span>
+  <span class="co"># cost of searching for that time</span>
+  <span class="op">(</span><span class="va">cost.s</span> <span class="op">&lt;-</span> <span class="va">ts</span><span class="op">[</span><span class="va">i</span><span class="op">]</span> <span class="op">*</span> <span class="va">cs</span><span class="op">)</span>
+
+  <span class="co"># choose to attack the encountered item with probability p</span>
+  <span class="op">(</span><span class="va">gain</span> <span class="op">&lt;-</span> <span class="kw">if</span><span class="op">(</span><span class="va">p</span><span class="op">[</span><span class="va">i</span><span class="op">]</span> <span class="op">&gt;</span> <span class="fu"><a href="https://rdrr.io/r/stats/Uniform.html">runif</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span><span class="op">)</span><span class="op">{</span><span class="va">e</span><span class="op">[</span><span class="va">i</span><span class="op">]</span><span class="op">}</span> <span class="kw">else</span> <span class="op">{</span><span class="fl">0</span><span class="op">}</span><span class="op">)</span>
+  
+  <span class="co"># observed handling time </span>
+  <span class="kw">if</span><span class="op">(</span><span class="va">gain</span> <span class="op">&gt;</span> <span class="fl">0</span> <span class="op">)</span><span class="op">{</span>
+    <span class="va">h.obs</span> <span class="op">&lt;-</span> <span class="va">h</span><span class="op">[</span><span class="va">i</span><span class="op">]</span>
+    <span class="va">h.obs</span>
+  <span class="op">}</span> <span class="kw">else</span> <span class="op">{</span>
+    <span class="va">h.obs</span> <span class="op">&lt;-</span> <span class="fl">0</span>
+  <span class="op">}</span>
+   <span class="va">h.obs</span>
+ <span class="op">(</span><span class="va">cycle.time</span> <span class="op">&lt;-</span> <span class="va">ts</span><span class="op">[</span><span class="va">i</span><span class="op">]</span> <span class="op">+</span> <span class="va">h.obs</span> <span class="op">)</span>
+ <span class="va">ct</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">ct</span>, <span class="va">cycle.time</span><span class="op">)</span>
+ <span class="op">(</span><span class="va">elapsed.time</span> <span class="op">&lt;-</span> <span class="va">elapsed.time</span> <span class="op">+</span> <span class="va">cycle.time</span><span class="op">)</span>
+ <span class="op">(</span><span class="va">ec</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">ec</span>, <span class="va">gain</span> <span class="op">-</span> <span class="va">cost.s</span><span class="op">)</span><span class="op">)</span>
+<span class="op">}</span>
+<span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span>net.e <span class="op">=</span> <span class="va">ec</span>, cycle.start <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/cumsum.html">cumsum</a></span><span class="op">(</span><span class="va">ct</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="va">cycle</span><span class="op">]</span><span class="op">)</span><span class="op">)</span>
+<span class="va">params</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>e<span class="op">=</span><span class="va">e</span>, h<span class="op">=</span><span class="va">h</span>, r<span class="op">=</span><span class="va">r</span>, lambda<span class="op">=</span><span class="va">lambda</span>, p<span class="op">=</span><span class="va">p</span>, cs<span class="op">=</span><span class="va">cs</span>, Total<span class="op">=</span><span class="va">Total</span><span class="op">)</span>
+  <span class="va">out</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>N <span class="op">=</span> <span class="va">cycle</span>, G <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="va">ec</span><span class="op">)</span>, Tt <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="va">ct</span><span class="op">)</span>, 
+              series <span class="op">=</span> <span class="va">df</span>,
+              params <span class="op">=</span> <span class="va">params</span><span class="op">)</span>
+  <span class="kw"><a href="https://rdrr.io/r/base/function.html">return</a></span><span class="op">(</span><span class="va">out</span><span class="op">)</span>
+<span class="op">}</span></code></pre></div>
 <p>Here we let the forager forage for 60 minutes and then examine the structure of the output object.</p>
-<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="oft.html#cb11-1"></a>myOut &lt;-<span class="st"> </span><span class="kw">optimal.forager</span>(<span class="dt">Total=</span><span class="dv">60</span>)</span>
-<span id="cb11-2"><a href="oft.html#cb11-2"></a><span class="kw">str</span>(myOut)</span></code></pre></div>
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">myOut</span> <span class="op">&lt;-</span> <span class="fu">optimal.forager</span><span class="op">(</span>Total<span class="op">=</span><span class="fl">60</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/utils/str.html">str</a></span><span class="op">(</span><span class="va">myOut</span><span class="op">)</span></code></pre></div>
 <pre><code>## List of 5
-##  $ N     : num 18
-##  $ G     : num 5.24
-##  $ Tt    : num 60.9
-##  $ series:&#39;data.frame&#39;:	18 obs. of  2 variables:
-##   ..$ net.e      : num [1:18] 0.674 -0.361 0.901 -2.209 1.803 ...
-##   ..$ cycle.start: num [1:18] 0 3.81 7.72 8.46 16.99 ...
+##  $ N     : num 24
+##  $ G     : num 14.4
+##  $ Tt    : num 63.4
+##  $ series:'data.frame':  24 obs. of  2 variables:
+##   ..$ net.e      : num [1:24] 0.983 0.282 0.406 1.288 -0.228 ...
+##   ..$ cycle.start: num [1:24] 0 3.04 5.34 9.82 12.1 ...
 ##  $ params:List of 7
 ##   ..$ e     : num [1:2] 2 1
 ##   ..$ h     : num [1:2] 0.5 0.5
@@ -650,10 +347,11 @@ Figure 2.5: Energy gain vs. time: The origin is when the forager enters the pat
 <li>params is a list that includes all the parameters we used in this run</li>
 </ul>
 <p>Now let’s graph something, because graphs are fun.</p>
-<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="oft.html#cb13-1"></a><span class="kw">ggplot</span>(myOut<span class="op">$</span>series, <span class="kw">aes</span>(<span class="dt">x=</span>cycle.start, <span class="dt">y=</span><span class="kw">cumsum</span>(net.e))) <span class="op">+</span><span class="st"> </span><span class="kw">geom_line</span>() </span></code></pre></div>
-<div class="figure"><span id="fig:oft1"></span>
-<img src="figs/oft1-1.png" alt="The cumulative energy capital of a forager goes down while searching and handling resource items, but increases each time the prey is assimilated." width="90%" />
-<p class="caption">
+<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu">ggplot</span><span class="op">(</span><span class="va">myOut</span><span class="op">$</span><span class="va">series</span>, <span class="fu">aes</span><span class="op">(</span>x<span class="op">=</span><span class="va">cycle.start</span>, y<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/cumsum.html">cumsum</a></span><span class="op">(</span><span class="va">net.e</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> <span class="fu">geom_line</span><span class="op">(</span><span class="op">)</span> </code></pre></div>
+<div class="figure">
+<span style="display:block;" id="fig:oft1"></span>
+<img src="figs/oft1-1.png" alt="The cumulative energy capital of a forager goes down while searching and handling resource items, but increases each time the prey is assimilated." width="90%"><p class="caption">
 Figure 2.6: The cumulative energy capital of a forager goes down while searching and handling resource items, but increases each time the prey is assimilated.
 </p>
 </div>
@@ -663,121 +361,74 @@ Figure 2.6: The cumulative energy capital of a forager goes down while searching
 <span class="math display" id="eq:prediction">\[\begin{equation}
 \frac{e_2}{h_2} &gt; \frac{\lambda_1 e_1 }{1 + \lambda_1 h_1} \tag{2.2}
 \end{equation}\]</span></p>
-<div class="figure"><span id="fig:preypred"></span>
-<img src="figs/preypred-1.png" alt="The right hand side of our prediction" width="100%" />
-<p class="caption">
+<div class="figure">
+<span style="display:block;" id="fig:preypred"></span>
+<img src="figs/preypred-1.png" alt="The right hand side of our prediction" width="100%"><p class="caption">
 Figure 2.7: The right hand side of our prediction
 </p>
 </div>
 <p>To get a sense of what our prediction <a href="oft.html#eq:prediction">(2.2)</a> means, we should graph the righthand quantity as a function of one relevant variable, such as energy content of type 1, or the encounter rate (Fig. <a href="oft.html#fig:preypred">2.7</a>). The parameters that determined these curves are:</p>
-<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="oft.html#cb14-1"></a><span class="kw">unlist</span>( myOut<span class="op">$</span>params )</span></code></pre></div>
-<pre><code>##     e1     e2     h1     h2     r1     r2 lambda     p1     p2     cs  Total 
-##    2.0    1.0    0.5    0.5    0.5    0.5    0.4    1.0    1.0    0.4   60.0</code></pre>
-<div id="lab-exercise" class="section level3">
-<h3><span class="header-section-number">2.3.1</span> Lab exercise</h3>
+<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/unlist.html">unlist</a></span><span class="op">(</span> <span class="va">myOut</span><span class="op">$</span><span class="va">params</span> <span class="op">)</span></code></pre></div>
+<pre><code>##     e1     e2     h1     h2     r1     r2 lambda     p1     p2 
+##    2.0    1.0    0.5    0.5    0.5    0.5    0.4    1.0    1.0 
+##     cs  Total 
+##    0.4   60.0</code></pre>
+<div id="lab-exercise" class="section level3" number="2.3.1">
+<h3>
+<span class="header-section-number">2.3.1</span> Lab exercise<a class="anchor" aria-label="anchor" href="#lab-exercise"><i class="fas fa-link"></i></a>
+</h3>
 <ol style="list-style-type: decimal">
 <li>Do these parameter values suggest that our forager should or should not include prey type 1 in her diet?</li>
 <li>Create parameter combinations for which the forager (i) should and (ii) should not include prey type 2.</li>
 <li>Use the simulation <code>optimal.forager()</code> to confirm your predictions.</li>
 </ol>
+</div>
+</div>
+</div>
+
+  <div class="chapter-nav">
+<div class="prev"><a href="theory.html"><span class="header-section-number">1</span> Theory in Ecology</a></div>
+<div class="next"><a href="expo.html"><span class="header-section-number">3</span> Simple density-independent growth</a></div>
+</div></main><div class="col-md-3 col-lg-2 d-none d-md-block sidebar sidebar-chapter">
+    <nav id="toc" data-toggle="toc" aria-label="On this page"><h2>On this page</h2>
+      <ul class="nav navbar-nav">
+<li><a class="nav-link" href="#oft"><span class="header-section-number">2</span> Optimal Foraging</a></li>
+<li>
+<a class="nav-link" href="#a-prey-model"><span class="header-section-number">2.1</span> A prey model</a><ul class="nav navbar-nav">
+<li><a class="nav-link" href="#our-intuition"><span class="header-section-number">2.1.1</span> Our intuition</a></li>
+<li><a class="nav-link" href="#mathematical-support"><span class="header-section-number">2.1.2</span> Mathematical support</a></li>
+</ul>
+</li>
+<li><a class="nav-link" href="#the-patch-model"><span class="header-section-number">2.2</span> The patch model</a></li>
+<li>
+<a class="nav-link" href="#a-simulation-of-a-prey-model"><span class="header-section-number">2.3</span> A simulation of a prey model</a><ul class="nav navbar-nav"><li><a class="nav-link" href="#lab-exercise"><span class="header-section-number">2.3.1</span> Lab exercise</a></li></ul>
+</li>
+</ul>
+
+      <div class="book-extra">
+        <ul class="list-unstyled">
+          
+        </ul>
+</div>
+    </nav>
+</div>
 
 </div>
-</div>
-</div>
-<h3> References</h3>
-<div id="refs" class="references">
-<div id="ref-Beckerman2010">
-<p>Beckerman, Andrew, Owen L. Petchey, and Peter J. Morin. 2010. “Adaptive Foragers and Community Ecology: Linking Individuals to Communities and Ecosystems.” <em>Functional Ecology</em> 24 (1): 1–6.</p>
-</div>
-<div id="ref-Boenigk2002">
-<p>Boenigk, J., C. Metz, K. Jürgens, and H. Arndt. 2002. “Food Concentration-Dependent Regulation of Food Selectivity of Interception Feeding Bacterivorous Nanoflagellates.” <em>Aquatic Microbial Ecology</em> 27: 195–202.</p>
-</div>
-<div id="ref-Charnov1976b">
-<p>Charnov, E. L. 1976. “Optimal foraging theory: the marginal value theorem.” <em>Theoretical Population Biology</em> 9: 129–36.</p>
-</div>
-<div id="ref-Ellner2009">
-<p>Ellner, S. P. 2009. “Lecture Notes, Bioee 4600 Theoretical Ecology , Cornell University.”</p>
-</div>
-<div id="ref-Emlen1966">
-<p>Emlen, J. M. 1966. “The Role of Time and Energy in Food Preference.” <em>The American Naturalist</em> 100: 611–17.</p>
-</div>
-<div id="ref-MacArthur1966">
-<p>MacArthur, R H, and E R Pianka. 1966. “On optimal use of a patchy environment.” <em>The American Naturalist</em> 100: 603–9.</p>
-</div>
-<div id="ref-Sih2011">
-<p>Sih, A. 2011. “Foraging Theory.” In, edited by S. M. Scheiner and M. R. Willig. Chicago, IL, USA: University of Chicago Press.</p>
-</div>
-<div id="ref-Stephens1986">
-<p>Stephens, D W, and J R Krebs. 1986. <em>Foraging {T}heory</em>. Edited by J. R. Krebs and T. H. Clutton-Brock. Monographs in Behavior and Ecology. Princeton, University Press, Princeton, NJ, USA: Princeton University Press.</p>
-</div>
-</div>
-<div class="footnotes">
-<hr />
-<ol start="9">
-<li id="fn9"><p>whether “I” is a sugar maple tree or a human, most of us do not make this decision conciously…<a href="oft.html#fnref9" class="footnote-back">↩︎</a></p></li>
-<li id="fn10"><p>A forager encounters prey at random, and this is known as a “Poisson process”, where the number of encounters in a specified time interval is a random variable drawn from the Poisson probability distribution. It turns out that the <em>time between events</em> of a Poisson process follows the Exponential distribution. The Poisson distribution is determined by a single parameter, its mean. The Exponential distribution is also described by a single parameter, its <em>rate</em>. It turns out that we use the same <span class="math inline">\(\lambda\)</span> for both. }<a href="oft.html#fnref10" class="footnote-back">↩︎</a></p></li>
-<li id="fn11"><p>We can check units for total handling time, <span class="math inline">\(H = S\lambda_i p_i h_i\)</span> by replacing the variables and parameters with their units. The units for <span class="math inline">\(H\)</span> are seconds, so we have <span class="math inline">\(\mathrm{s = s \frac{\#}{s} \frac{\#}{\#} \frac{s}{\#}}\)</span>. When we multiply these fractions, we find that the <span class="math inline">\(\#\)</span>s and two of the s’s cancel out and we are left with <span class="math inline">\(s=s\)</span>.<a href="oft.html#fnref11" class="footnote-back">↩︎</a></p></li>
-<li id="fn12"><p>“expected” value of a variable is the mean of that variable, because that is what we expect given the absence of other knowledge<a href="oft.html#fnref12" class="footnote-back">↩︎</a></p></li>
-</ol>
-</div>
-            </section>
+</div> <!-- .container -->
 
-          </div>
-        </div>
-      </div>
-<a href="theory.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="expo.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
-    </div>
+<footer class="bg-primary text-light mt-5"><div class="container"><div class="row">
+
+  <div class="col-12 col-md-6 mt-3">
+    <p>"<strong>Primer of Ecology using R</strong>" was written by Hank Stevens. It was last built on 2021-08-20.</p>
   </div>
-<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
-<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
-<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
-<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
-<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
-<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
-<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
-<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
-<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
-<script>
-gitbook.require(["gitbook"], function(gitbook) {
-gitbook.start({
-"sharing": {
-"github": false,
-"facebook": true,
-"twitter": true,
-"linkedin": false,
-"weibo": false,
-"instapaper": false,
-"vk": false,
-"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
-},
-"fontsettings": {
-"theme": "white",
-"family": "sans",
-"size": 2
-},
-"edit": {
-"link": null,
-"text": null
-},
-"history": {
-"link": null,
-"text": null
-},
-"view": {
-"link": null,
-"text": null
-},
-"download": ["_main.pdf"],
-"toc": {
-"collapse": "subsection"
-}
-});
-});
-</script>
 
-<!-- dynamically load mathjax for compatibility with self-contained -->
-<script>
+  <div class="col-12 col-md-6 mt-3">
+    <p>This book was built by the <a class="text-light" href="https://bookdown.org">bookdown</a> R package.</p>
+  </div>
+
+</div></div>
+</footer><!-- dynamically load mathjax for compatibility with self-contained --><script>
   (function () {
     var script = document.createElement("script");
     script.type = "text/javascript";
@@ -789,7 +440,22 @@ gitbook.start({
     script.src = src;
     document.getElementsByTagName("head")[0].appendChild(script);
   })();
+</script><script type="text/x-mathjax-config">const popovers = document.querySelectorAll('a.footnote-ref[data-toggle="popover"]');
+for (let popover of popovers) {
+  const div = document.createElement('div');
+  div.setAttribute('style', 'position: absolute; top: 0, left:0; width:0, height:0, overflow: hidden; visibility: hidden;');
+  div.innerHTML = popover.getAttribute('data-content');
+
+  var has_math = div.querySelector("span.math");
+  if (has_math) {
+    document.body.appendChild(div);
+    MathJax.Hub.Queue(["Typeset", MathJax.Hub, div]);
+    MathJax.Hub.Queue(function() {
+      popover.setAttribute('data-content', div.innerHTML);
+      document.body.removeChild(div);
+    })
+  }
+}
 </script>
 </body>
-
 </html>

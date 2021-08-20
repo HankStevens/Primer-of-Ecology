@@ -1,0 +1,657 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<title>8 Consumer-resource Interactions | Primer of Ecology using R</title>
+<meta name="author" content="Hank Stevens">
+<meta name="generator" content="bookdown 0.23 with bs4_book()">
+<meta property="og:title" content="8 Consumer-resource Interactions | Primer of Ecology using R">
+<meta property="og:type" content="book">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="8 Consumer-resource Interactions | Primer of Ecology using R">
+<!-- JS --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://kit.fontawesome.com/6ecbd6c532.js" crossorigin="anonymous"></script><script src="libs/header-attrs-2.10/header-attrs.js"></script><script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<link href="libs/bootstrap-4.6.0/bootstrap.min.css" rel="stylesheet">
+<script src="libs/bootstrap-4.6.0/bootstrap.bundle.min.js"></script><script src="libs/bs3compat-0.2.5.1/tabs.js"></script><script src="libs/bs3compat-0.2.5.1/bs3compat.js"></script><link href="libs/bs4_book-1.0.0/bs4_book.css" rel="stylesheet">
+<script src="libs/bs4_book-1.0.0/bs4_book.js"></script><script src="libs/kePrint-0.0.1/kePrint.js"></script><link href="libs/lightable-0.0.1/lightable.css" rel="stylesheet">
+<!-- Global site tag (gtag.js) - Google Analytics --><script async src="https://www.googletagmanager.com/gtag/js?id=G-VCV8MES4YY"></script><script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-VCV8MES4YY');
+    </script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- CSS --><meta name="description" content="Consumption is fundamental to life. Organisms are at a disequilibrium with their surroundings, requiring inputs of resources to maintain themselves, grow, and reproduce. We first considered...">
+<meta property="og:description" content="Consumption is fundamental to life. Organisms are at a disequilibrium with their surroundings, requiring inputs of resources to maintain themselves, grow, and reproduce. We first considered...">
+<meta name="twitter:description" content="Consumption is fundamental to life. Organisms are at a disequilibrium with their surroundings, requiring inputs of resources to maintain themselves, grow, and reproduce. We first considered...">
+</head>
+<body data-spy="scroll" data-target="#toc">
+
+<div class="container-fluid">
+<div class="row">
+  <header class="col-sm-12 col-lg-3 sidebar sidebar-book"><a class="sr-only sr-only-focusable" href="#content">Skip to main content</a>
+
+    <div class="d-flex align-items-start justify-content-between">
+      <h1>
+        <a href="index.html" title="">Primer of Ecology using R</a>
+      </h1>
+      <button class="btn btn-outline-primary d-lg-none ml-2 mt-1" type="button" data-toggle="collapse" data-target="#main-nav" aria-expanded="true" aria-controls="main-nav"><i class="fas fa-bars"></i><span class="sr-only">Show table of contents</span></button>
+    </div>
+
+    <div id="main-nav" class="collapse-lg">
+      <form role="search">
+        <input id="search" class="form-control" type="search" placeholder="Search" aria-label="Search">
+</form>
+
+      <nav aria-label="Table of contents"><h2>Table of contents</h2>
+        <ul class="book-toc list-unstyled">
+<li><a class="" href="index.html">Preface</a></li>
+<li><a class="" href="theory.html"><span class="header-section-number">1</span> Theory in Ecology</a></li>
+<li><a class="" href="oft.html"><span class="header-section-number">2</span> Optimal Foraging</a></li>
+<li><a class="" href="expo.html"><span class="header-section-number">3</span> Simple density-independent growth</a></li>
+<li><a class="" href="DID.html"><span class="header-section-number">4</span> Density-independent Demography</a></li>
+<li><a class="" href="DDgrowth.html"><span class="header-section-number">5</span> Density-dependent growth</a></li>
+<li><a class="" href="meta.html"><span class="header-section-number">6</span> Populations in Space</a></li>
+<li><a class="" href="direct-competition-and-mutualism.html"><span class="header-section-number">7</span> Direct competition and mutualism</a></li>
+<li><a class="active" href="cr.html"><span class="header-section-number">8</span> Consumer-resource Interactions</a></li>
+<li><a class="" href="host-parasitoid-relations.html"><span class="header-section-number">9</span> Host-parasitoid relations</a></li>
+<li><a class="" href="disease.html"><span class="header-section-number">10</span> Disease</a></li>
+<li><a class="" href="consumer-resource-competition-and-mutualisms.html"><span class="header-section-number">11</span> Consumer-resource Competition and Mutualisms</a></li>
+<li><a class="" href="food-webs-and-other-networks.html"><span class="header-section-number">12</span> Food webs and other networks</a></li>
+<li><a class="" href="diversity.html"><span class="header-section-number">13</span> Diversity</a></li>
+<li><a class="" href="appendix.html"><span class="header-section-number">14</span> Appendix</a></li>
+<li><a class="" href="references.html"><span class="header-section-number">15</span> References</a></li>
+</ul>
+
+        <div class="book-extra">
+          
+        </div>
+      </nav>
+</div>
+  </header><main class="col-sm-12 col-md-9 col-lg-7" id="content"><div id="cr" class="section level1" number="8">
+<h1>
+<span class="header-section-number">8</span> Consumer-resource Interactions<a class="anchor" aria-label="anchor" href="#cr"><i class="fas fa-link"></i></a>
+</h1>
+<p>Consumption is fundamental to life. Organisms are at a disequilibrium with their surroundings, requiring inputs of resources to maintain themselves, grow, and reproduce. We first considered organisms from this biophysical or energetic context when we discussed foraging. Optimal foraging theory seeks to understand individual behavior of diet choice as a solution to the problem of maximizing net resource gain per unit time.</p>
+<p>All organisms require carbon and inorganic materials such as nitrogen and phosphorus as basic building blocks of cells. When one or more of these limit growth, we refer to these as <em>limiting resources</em>, and when differential growth limitation among species occurs as a result of this short supply, we refer to this as <em>resource limitation</em> and consequently <em>resource competition</em>. When these resources are other organisms we often refer to them as prey, hosts, or simply victims. The consumers may be predators, pathogens, parasites, herbivores, or just enemies.</p>
+<p>We use simple examples of resource competition based loosely on examples by <span class="citation"><a href="references.html#ref-MacArthur1972" role="doc-biblioref">MacArthur</a> (<a href="references.html#ref-MacArthur1972" role="doc-biblioref">1972</a>)</span> and <span class="citation"><a href="references.html#ref-Tilman1982" role="doc-biblioref">Tilman</a> (<a href="references.html#ref-Tilman1982" role="doc-biblioref">1982</a>)</span>. As with nearly all the models in this book, we represent the growth of resources and consumers as growth rate = gains - losses.</p>
+<p>We have considered population growth from a demographic context beginning in chapter 3 and have continued, as we described with
+<span class="math display">\[\Delta N = B+I-D-E\]</span>.
+In consumer-resource theory, we can combine biophysical and demographic approaches.</p>
+<div class="figure">
+<span style="display:block;" id="fig:LH"></span>
+<img src="figs/LH.png" alt="Lynx-snowshoe hare cycles." width="90%"><p class="caption">
+Figure 8.1: Lynx-snowshoe hare cycles.
+</p>
+</div>
+<p>One of the most famous examples of species interactions in all of ecology is the lynx–snowshoe hare cycle, based on data from the Hudson Bay Trading Co. trapping records (Fig. <a href="cr.html#fig:LH">8.1</a>).<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;These data are actually collected from a number of different regions and embedded with a complex food web, so it probably doesn’t make much sense to think of this as only one predator-prey pair of populations.&lt;/p&gt;"><sup>50</sup></a> For decades, the lynx–hare cycle was used as a possible example of a predator-prey interaction, until a lot of hard work by a lot of people <span class="citation">(<a href="references.html#ref-Stenseth1997" role="doc-biblioref">Stenseth et al. 1997</a>; <a href="references.html#ref-Krebs1995" role="doc-biblioref">Krebs et al. 1995</a>)</span> showed an asymmetric dynamic — while the lynx depends quite heavily on the hare, and seems to track hare abundance, the hare cycles seem to be caused by more than just lynx.</p>
+<p>In this chapter, we will do a few things. First, we will cover a few flavors of consumer-resource models of different levels of complexity, and style. Consumers are always organisms: plants, microbes, or animals. Resources in this context may be biotic (prey) or abiotic resources such as nitrate or phosphate that are taken up by fungi, plants, or algae. Also known as exploitative interactions, we represent cases in which one species has a negative effect and one a positive effect on the other. In doing so, we will illustrate some fundamental concepts about consumer–resource dynamics, such as how predators respond to prey abundances in both a <em>numerical</em> and a <em>functional</em> manner. We will try to develop an understanding of the range of dynamics for both continuous and discrete time systems.</p>
+<p>In general, we can conceptualize consumer-resource interactions as coupled equations,
+<span class="math display">\[\begin{align*}
+\frac{1}{R}\frac{dR}{dt}&amp;= f_R\left(R,C\right)\\
+\frac{1}{C}\frac{dC}{dt} &amp;= f_C\left(C,R\right)
+\end{align*}\]</span>
+in which per-unit change in the resource is a function, <span class="math inline">\(f_R\)</span>, of the resource itself and the consumer. Likewise, per-unit change in the consumer is a function, <span class="math inline">\(f_C\)</span>, of the consumer itself, and the resource. <span class="citation"><a href="references.html#ref-Holt2011th" role="doc-biblioref">Holt</a> (<a href="references.html#ref-Holt2011th" role="doc-biblioref">2011</a>)</span> identified five universal propositions regarding predator-prey interactions, including that the consumption of resource necessarily reduces the amount of the resource, and that all of this depends on the environmental context, but we’ll ignore that for now.</p>
+<p>We start with a famous consumer-resource pairing, that of predator and prey, also known as enemy-victim interactions.</p>
+<p>Let’s go way back toward the beginning of this book where we introduced exponential growth. Let’s imagine that our exponentially growing population grows at rate
+<span class="math display">\[\dot{N} = bN-dN\]</span>
+We knew that this, like all models, was wrong, but have argued that it is very useful. Indeed, it is in some ways null model for biological systems because exponential growth is so fundamental to life.</p>
+<p>Let us stick with this simplicity, and link a predator <span class="math inline">\(P\)</span> to the prey. A very simple way to do this is to include predators as another source of death of prey (<span class="math inline">\(aN\)</span>), and prey as the source of life for predators (<span class="math inline">\(eaN\)</span>),
+<span class="math display">\[\begin{align*}
+\dot{N} &amp;= bN-dN -aN\\
+\dot{P} &amp;= eaN - mP
+\end{align*}\]</span>
+where <span class="math inline">\(e&lt;1\)</span> and is the relative efficiency with which predators turn captured prey into new predators.</p>
+<p>The units of these differential equations are individuals per unit time. Therefore, the units of each term must also be individuals per unit time. The units of <span class="math inline">\(b\)</span> and <span class="math inline">\(d\)</span> are units of prey per unit of prey per unit time,
+<span class="math display">\[\mathrm{units}(b) = \frac{\mathrm{prey}}{\mathrm{prey}}\frac{1}{t} = t^{-1}\]</span>
+or simply per unit time, where a unit could be an individual or a gram. Units of attack rate or consumption rate, <span class="math inline">\(a\)</span>, are also <span class="math inline">\(t^{-1}\)</span>. Units of efficiency are simply new predators per unit prey,
+<span class="math display">\[\mathrm{units}(e) = \frac{\mathrm{predators}}{\mathrm{prey}}\]</span>
+and units of <span class="math inline">\(m\)</span> are predators per predator per unit time, or <span class="math inline">\(t^{-1}\)</span>.</p>
+<p>When we combine all the units for all the terms for <span class="math inline">\(\dot{P}\)</span> above, we get
+<span class="math display">\[ \frac{\mathrm{predators}}{t} = \left(\frac{\mathrm{predators}}{\mathrm{prey}} \cdot \frac{1}{t} \cdot \mathrm{prey}|\right) - \left( \frac{1}{t}\cdot \mathrm{predators}\right)\]</span>
+and prove to ourselves the units are consistent across each term in the equation. Write out the same sort of equation for the prey.</p>
+<p>The mere fact of efficiency, <span class="math inline">\(e&lt;1\)</span>, shows us another general proposition about enemy-victim interactions; if we consider enemy and victim in the same units (e.g., grams), then the cost to the victim is always greater than the benefit to the enemy. This is simply the result of the second law of thermodynamics, and is a fundamental part of all predator-prey interactions <span class="citation">(<a href="#ref-Holt2011" role="doc-biblioref"><strong>Holt2011?</strong></a>)</span>.</p>
+<p>With these two equations, we can make a simple prediction regarding the equilibrium, <span class="math inline">\(P^*\)</span>, by setting <span class="math inline">\(\dot{P} = 0\)</span>,
+<span class="math display">\[P^* = \frac{ea}{m}N\quad ; \quad \frac{P}{N} = \frac{ea}{m}\]</span></p>
+<p>Thus, this simple theory predicts that at steady state, the relative abundances of predator and prey will be constant. Because the prey only grow (or die) exponentially, this theory can make no prediction about <span class="math inline">\(N^*\)</span>, save when <span class="math inline">\(b=d\)</span>. However, it does predict that predator and prey will persist at a constant ratio, assuming the parameters are fixed.</p>
+<div id="ratio-dependence" class="section level2" number="8.1">
+<h2>
+<span class="header-section-number">8.1</span> Ratio dependence<a class="anchor" aria-label="anchor" href="#ratio-dependence"><i class="fas fa-link"></i></a>
+</h2>
+<p>The above ideas posit that if prey grows exponentially, so will the predators. If this is true, then it makes sense that the prey get captured at a constant per capita rate: the predators will always be lurking about at the same relative abundance. And this leads us to another way to think about these relations and these equations.</p>
+<p>Let’s make individual predators an explicit part of the loss rate, so that the per capita capture rate of prey is <span class="math inline">\(a\)</span> while the total rate also depends on <span class="math inline">\(P\)</span>. On average, the number of prey available to each predator is just <span class="math inline">\(N/P\)</span>. Therefore, predators will capture their share of prey at rate
+<span class="math display">\[aP\frac{N}{P}\]</span>.
+In this expression, we see that the capture rate of prey and growth rate of predators depends on the <em>ratio</em> of prey to predators.
+Putting this explicit treatment back into our model, we have
+<span class="math display">\[\begin{align*}
+\dot{N} &amp;= bN-dN -aP\frac{N}{P}\\
+\dot{P} &amp;= eaP\frac{N}{P} - mP
+\end{align*}\]</span></p>
+<p>We refer to this simple predator prey model as <em>ratio-dependent</em> predation <span class="citation">(<a href="references.html#ref-Arditi1989" role="doc-biblioref">R. Arditi and Ginzburg 1989</a>)</span>. We have added biological and mathematical complexity, and what is the end result? If we simplify these expressions, and let the <span class="math inline">\(P\)</span>’s cancel out, we wind up just where we were before. That is reassuring. Both of these pairs of equations are the same: they describe ratio-dependent predation.</p>
+<p>The units of <span class="math inline">\(a\)</span> remain the same as before, because the predator terms cancel out (<span class="math inline">\(a(N/P)P = aN\)</span>).</p>
+<p>As a first model of predator-prey interactions, this is analogous to exponential growth of a single population, and thus has some very satisfying properties:</p>
+<ul>
+<li>Prey and predator both grow and die exponentially; the predator is merely along for the ride.</li>
+<li>the populations are coupled by the simplest possible connection.</li>
+</ul>
+<div id="dynamics-of-ratio-dependent-predation" class="section level3" number="8.1.1">
+<h3>
+<span class="header-section-number">8.1.1</span> Dynamics of ratio dependent predation<a class="anchor" aria-label="anchor" href="#dynamics-of-ratio-dependent-predation"><i class="fas fa-link"></i></a>
+</h3>
+<p>The dynamics of ratio-dependent predation are very simple. There are no cycles or fluctuations, just like in exponential growth of a single species. It assumes that predation rate is a function of predator abundance and the number of prey per predator. I predicts that predator abundance is a constant fraction of the prey. This qualitative prediction is often roughly consistent with data.</p>
+<p>Let’s code a quick function of this model, where we continue to make the assumption of ratio-dependence as transparent as we can (<span class="math inline">\((N/P)P\)</span>), for clarity.</p>
+<div class="sourceCode" id="cb230"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">cr_ratio_dep_pred</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">time</span>, <span class="va">y</span>, <span class="va">parameters</span><span class="op">)</span><span class="op">{</span>
+  <span class="co"># the populations</span>
+  <span class="va">N</span> <span class="op">&lt;-</span> <span class="va">y</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>; <span class="va">P</span> <span class="op">&lt;-</span> <span class="va">y</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span>
+  <span class="fu"><a href="https://rdrr.io/r/base/with.html">with</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html">as.list</a></span><span class="op">(</span><span class="va">parameters</span><span class="op">)</span>,<span class="op">{</span> 
+  
+    <span class="co"># the equations</span>
+    <span class="va">dndt</span> <span class="op">&lt;-</span> <span class="va">r</span><span class="op">*</span><span class="va">N</span> <span class="op">-</span> <span class="va">a</span><span class="op">*</span><span class="va">N</span><span class="op">/</span><span class="va">P</span><span class="op">*</span><span class="va">P</span>
+    <span class="va">dpdt</span> <span class="op">&lt;-</span> <span class="va">e</span><span class="op">*</span><span class="va">a</span><span class="op">*</span><span class="va">N</span><span class="op">/</span><span class="va">P</span><span class="op">*</span><span class="va">P</span> <span class="op">-</span> <span class="va">m</span><span class="op">*</span><span class="va">P</span>
+    
+    <span class="co"># returning a list with one component that is </span>
+    <span class="co"># a two element vector, c(rate1, rate2)</span>
+    <span class="kw"><a href="https://rdrr.io/r/base/function.html">return</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">dndt</span>, <span class="va">dpdt</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>
+  <span class="op">}</span><span class="op">)</span>
+<span class="op">}</span></code></pre></div>
+<p>Now we run it and plot the output.</p>
+<div class="sourceCode" id="cb231"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">t</span> <span class="op">&lt;-</span> <span class="fl">0</span><span class="op">:</span><span class="fl">100</span>
+<span class="va">p</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>r<span class="op">=</span><span class="fl">0.05</span>, a<span class="op">=</span><span class="fl">0.01</span>, e<span class="op">=</span><span class="fl">0.1</span>, m<span class="op">=</span><span class="fl">.1</span><span class="op">)</span>
+
+<span class="va">y0</span> <span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span>N<span class="op">=</span><span class="fl">100</span>, P<span class="op">=</span><span class="fl">3</span><span class="op">)</span>
+<span class="va">outdf</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html">as.data.frame</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/deSolve/man/ode.html">ode</a></span><span class="op">(</span><span class="va">y0</span>, <span class="va">t</span>, <span class="va">cr_ratio_dep_pred</span>,  <span class="va">p</span><span class="op">)</span><span class="op">)</span>
+<span class="va">outL</span> <span class="op">&lt;-</span> <span class="fu">pivot_longer</span><span class="op">(</span><span class="va">outdf</span>, <span class="op">-</span><span class="va">time</span>, names_to<span class="op">=</span><span class="st">"State_vars"</span>, values_to<span class="op">=</span><span class="st">"abun."</span><span class="op">)</span>
+<span class="fu">ggplot</span><span class="op">(</span><span class="va">outL</span>, <span class="fu">aes</span><span class="op">(</span><span class="va">time</span>, <span class="va">abun.</span>, colour<span class="op">=</span><span class="va">State_vars</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> <span class="fu">geom_line</span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> <span class="fu">scale_y_log10</span><span class="op">(</span><span class="op">)</span></code></pre></div>
+<div class="figure">
+<span style="display:block;" id="fig:rdout"></span>
+<img src="figs/rdout-1.png" alt="*With the assumption of simple ratio-dependence, the predator population is a constant fraction of the prey population.*" width="90%"><p class="caption">
+Figure 8.2: <em>With the assumption of simple ratio-dependence, the predator population is a constant fraction of the prey population.</em>
+</p>
+</div>
+If we plot these in state space, we get Fig. <a href="cr.html#fig:rd1phase">8.3</a>.
+<div class="figure">
+<span style="display:block;" id="fig:rd1phase"></span>
+<img src="figs/rd1phase-1.png" alt="*The predator isocline under ratio dependence. There is no prey isocline because its abundance is completely independent of the predator population. Arrows indicate the trajectories. Note the prey are simply increaing.*" width="90%"><p class="caption">
+Figure 8.3: <em>The predator isocline under ratio dependence. There is no prey isocline because its abundance is completely independent of the predator population. Arrows indicate the trajectories. Note the prey are simply increaing.</em>
+</p>
+</div>
+<p><em>Exercise</em> Calculate by hand the equilibrium abundance of predators in the above model.</p>
+</div>
+</div>
+<div id="prey-dependence" class="section level2" number="8.2">
+<h2>
+<span class="header-section-number">8.2</span> Prey dependence<a class="anchor" aria-label="anchor" href="#prey-dependence"><i class="fas fa-link"></i></a>
+</h2>
+<p>A more widely used model of predator-prey dynamics is that championed independently by Alfred Lotka and Vito Volterra. In this formulation, the per predator capture rate depends only on the prey abundance, not on the ratio of prey to predators. We refer to this as “mass effects,” where, as is often the case in chemical reactions, the rate of reaction depends merelyt on the concentration of the reactants. Molecules of each reactant do not interfere with each other. Organisms are not always so chill. Nonetheless, it is a widely used, and often reasonable, approximation of enemy victim interactions, especially at low densities of enemies.</p>
+<p>When capture rate is independent of the number of other predators in the population, we describe it thus.
+<span class="math display">\[\begin{align}
+\dot{N} &amp;= bN-dN - aNP = rN - aNP\\
+\dot{P} &amp;= eaNP - mP
+\end{align}\]</span>
+Here the per predator capture rate is simply <span class="math inline">\(aN\)</span>. Therefore, the units of <span class="math inline">\(a\)</span> differ from the ratio-dependent model.</p>
+<p>Given that <span class="math inline">\(aNP\)</span> must have units of prey per unit time, what must the units of <span class="math inline">\(a\)</span> be? Can you express them in a biologically meaningful way?</p>
+<p>We find equilibria, or more correctly, zero net growth isoclines, by setting <span class="math inline">\(\frac{P}{dt} = 0\)</span> and <span class="math inline">\(\frac{dN}{dt}=0\)</span>. When we do this we get curious results.</p>
+<p><strong>Predator isocline</strong> <span class="math inline">\(\frac{dP}{dt} = 0 \implies N=\frac{m}{ea}\)</span></p>
+<p><strong>Prey isocline</strong> <span class="math inline">\(\frac{dN}{dt} = 0 \implies P=\frac{r}{a}\)</span></p>
+<p>Each population’s growth rate is zero when the other population is at a fixed value. More on this when we deal with dynamics next.</p>
+<div id="dyanmics-of-prey-dependent-predation" class="section level3" number="8.2.1">
+<h3>
+<span class="header-section-number">8.2.1</span> Dyanmics of prey-dependent predation<a class="anchor" aria-label="anchor" href="#dyanmics-of-prey-dependent-predation"><i class="fas fa-link"></i></a>
+</h3>
+<p>Now let’s code a numerical model of prey-dependent, or Lotka-Volterra, predation.</p>
+<div class="sourceCode" id="cb232"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">cr_prey_dep_pred</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">time</span>, <span class="va">y</span>, <span class="va">parameters</span><span class="op">)</span><span class="op">{</span>
+  <span class="co"># the populations</span>
+  <span class="va">N</span> <span class="op">&lt;-</span> <span class="va">y</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>; <span class="va">P</span> <span class="op">&lt;-</span> <span class="va">y</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span>
+  <span class="fu"><a href="https://rdrr.io/r/base/with.html">with</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html">as.list</a></span><span class="op">(</span><span class="va">parameters</span><span class="op">)</span>,<span class="op">{</span> 
+  
+    <span class="co"># the equations</span>
+    <span class="va">dndt</span> <span class="op">&lt;-</span> <span class="va">r</span><span class="op">*</span><span class="va">N</span> <span class="op">-</span> <span class="va">a</span><span class="op">*</span><span class="va">N</span><span class="op">*</span><span class="va">P</span>
+    <span class="va">dpdt</span> <span class="op">&lt;-</span> <span class="va">e</span><span class="op">*</span><span class="va">a</span><span class="op">*</span><span class="va">N</span><span class="op">*</span><span class="va">P</span> <span class="op">-</span> <span class="va">m</span><span class="op">*</span><span class="va">P</span>
+    
+    <span class="co"># returning a list with one component that is </span>
+    <span class="co"># a two element vector, c(rate1, rate2)</span>
+    <span class="kw"><a href="https://rdrr.io/r/base/function.html">return</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">dndt</span>, <span class="va">dpdt</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>
+  <span class="op">}</span><span class="op">)</span>
+<span class="op">}</span></code></pre></div>
+<p>Now we run this model, using the same parameters as for ratio-dependent predation, and plot the output.</p>
+<div class="sourceCode" id="cb233"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">t</span> <span class="op">&lt;-</span> <span class="fl">0</span><span class="op">:</span><span class="fl">200</span>; <span class="va">y0</span> <span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span>N<span class="op">=</span><span class="fl">100</span>, P<span class="op">=</span><span class="fl">3</span><span class="op">)</span>
+<span class="va">p</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>r<span class="op">=</span><span class="fl">0.05</span>, a<span class="op">=</span><span class="fl">0.01</span>, e<span class="op">=</span><span class="fl">0.1</span>, m<span class="op">=</span><span class="fl">.1</span><span class="op">)</span>
+
+<span class="va">outdf</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html">as.data.frame</a></span><span class="op">(</span> <span class="fu"><a href="https://rdrr.io/pkg/deSolve/man/ode.html">ode</a></span><span class="op">(</span><span class="va">y0</span>, <span class="va">t</span>, <span class="va">cr_prey_dep_pred</span>,  <span class="va">p</span><span class="op">)</span> <span class="op">)</span>
+<span class="va">outL</span> <span class="op">&lt;-</span> <span class="fu">pivot_longer</span><span class="op">(</span><span class="va">outdf</span>, <span class="op">-</span><span class="va">time</span>, names_to<span class="op">=</span><span class="st">"State_vars"</span>, values_to<span class="op">=</span><span class="st">"abun."</span><span class="op">)</span>
+<span class="fu">ggplot</span><span class="op">(</span><span class="va">outL</span>, <span class="fu">aes</span><span class="op">(</span><span class="va">time</span>, <span class="va">abun.</span>, colour<span class="op">=</span><span class="va">State_vars</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> <span class="fu">geom_line</span><span class="op">(</span><span class="op">)</span></code></pre></div>
+<div class="figure">
+<span style="display:block;" id="fig:pout"></span>
+<img src="figs/pout-1.png" alt="*Prey-dependent or Lotka-Volterra predation results in oscillations. Prey increase until predators are sufficiently abundant to control them, at which point they decline, leading to the decline of preadtors. The predator peaks lag behind the prey peaks.*" width="90%"><p class="caption">
+Figure 8.4: <em>Prey-dependent or Lotka-Volterra predation results in oscillations. Prey increase until predators are sufficiently abundant to control them, at which point they decline, leading to the decline of preadtors. The predator peaks lag behind the prey peaks.</em>
+</p>
+</div>
+<div class="figure">
+<span style="display:block;" id="fig:unnamed-chunk-86"></span>
+<img src="figs/unnamed-chunk-86-1.png" alt="*The prey and predator isoclines under prey dependence. Arrows indicate the direction of changing population sizes. The black lines are tow different tractories based on two different initial abundances. The 'nullclines' are the zero net growth isoclines for the prey (x) and the predator (y). Based on the arrow heads, we can see that the trajectories oscillate in a counterclockwise direction.*" width="90%"><p class="caption">
+Figure 8.5: <em>The prey and predator isoclines under prey dependence. Arrows indicate the direction of changing population sizes. The black lines are tow different tractories based on two different initial abundances. The ‘nullclines’ are the zero net growth isoclines for the prey (x) and the predator (y). Based on the arrow heads, we can see that the trajectories oscillate in a counterclockwise direction.</em>
+</p>
+</div>
+<p>Think about these isoclines for a bit. Under what conditions does the prey increase (arrows pointing right)? Under what conditions does the prey decrease (arrows pointing left)? This shows us that the prey increase whenever the predator abundance is below a certain value. We found that value above, and it is <span class="math inline">\(P = r/a\)</span>. When does the predator increase or decrease? When the prey is above or below a particular value, <span class="math inline">\(N=m/(ea)\)</span>.</p>
+<p>The only time these populations are at rest is when both of these are true.</p>
+</div>
+</div>
+<div id="interlude-functional-response---what-an-individual-predator-does-fr" class="section level2" number="8.3">
+<h2>
+<span class="header-section-number">8.3</span> Interlude: Functional response - what an individual predator does (#fr)<a class="anchor" aria-label="anchor" href="#interlude-functional-response---what-an-individual-predator-does-fr"><i class="fas fa-link"></i></a>
+</h2>
+<p>We refer to the per predator kill rate as the <em>functional response</em>. It is the response of a predator to different levels of <span class="math inline">\(N\)</span> and <span class="math inline">\(P\)</span>. The functional response of the above ratio-dependent model is <span class="math inline">\(aN/P\)</span>, where as for the prey-dependent model it is <span class="math inline">\(aN\)</span> (Fig. <a href="cr.html#fig:funcresp">8.6</a>). These are referred to as <em>type I</em> functional responses.</p>
+<p>Are these type I functional responses realistic? They both imply that a predator captures a constant fraction of all prey, <em>no matter how many prey there are.</em> It predicts that regardless whether there are two prey individuals or one gazillion prey, a single predator can nonetheless capture the same fraction. So, if prey reach high densities, then type I functional responses are not realistic. However, if prey never reach high densities, then type I is reasonable with the bounds of realized prey densities.</p>
+<p>What is typically thought to be more realistic is if the predator satiates, where the capture rate approaches a plateau as the density of prey increases. After all, a predator has to catch, subdue, and kill a prey item, swallow it, and then move on. Optimal foraging models (Chapter 2) typically account for this. Ecologists refer to this activity as “handling” and the time required to do that as <em>handling time</em>. Buzz <span class="citation"><a href="references.html#ref-Holling1959" role="doc-biblioref">Holling</a> (<a href="references.html#ref-Holling1959" role="doc-biblioref">1959</a>)</span> developed a mathematical form for a functional response with prey-dependent predation that includes handling time:
+<span class="math display">\[\frac{aN}{1+ahN}\]</span>
+where <span class="math inline">\(a\)</span> is attack rate, and <span class="math inline">\(h\)</span> ia handling time. We refer to this functional response as a type II functional response (Fig. <a href="cr.html#fig:funcresp">8.6</a>). As <span class="math inline">\(N\)</span> gets really big, this fraction approaches <span class="math inline">\(1/h\)</span>,
+<span class="math display">\[\lim_{N \rightarrow \infty} \frac{aN}{1+ahN} = \frac{1}{h}\]</span></p>
+<p>If it<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;“The limit, as N approaches infinity, of ‘a N over one plus a h N’ equals one over h.”&lt;/p&gt;"><sup>51</sup></a> is not yet clear why this should be, pause and reflect on it.</p>
+<p>We can do the same exercise using the ratio, <span class="math inline">\(N/P\)</span>,
+<span class="math display">\[\lim_{N/P \rightarrow \infty} \frac{aN/P}{1+ahN/P} = \frac{1}{h}\]</span></p>
+<p>Another very common weigh to represent the same type II response is the formulation for Michaelis-Menten enzyme kinetics,
+<span class="math display">\[m \frac{N}{k+N}\]</span>
+where <span class="math inline">\(k\)</span> is the half-saturation constant, and <span class="math inline">\(m\)</span> is the maximum rate. The half saturation constant is the value of <span class="math inline">\(N\)</span> that results in a reaction rate or killing rate that is half the maximum, <span class="math inline">\(m\)</span>. Algebraic rearrangement between the Holling type II and the Michaelis-Menten type II formulations would show that <span class="math inline">\(m=1/h\)</span> and <span class="math inline">\(k=1/(ah)\)</span>. You might try that to convince yourself it is true.</p>
+<p>Sometimes predators don’t feed a lot until there are enough prey available. Sometimes this is due to predators <strong>switching</strong> from one prey type to another once the other becomes sufficiently common. A predator may develop a search image for a prey type, and ignore others. We’ve all known people like that. We represent this via an exponent (<span class="math inline">\(z&gt;1\)</span>) in our functional response,
+<span class="math display">\[\frac{aN^z}{1+ahN^z}\]</span>
+where <span class="math inline">\(z&gt;1\)</span> and we refer to this as a type III functional response.</p>
+<div class="sourceCode" id="cb234"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="op">{</span>
+  <span class="fu"><a href="https://rdrr.io/r/graphics/par.html">par</a></span><span class="op">(</span>mgp<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">1</span>,<span class="fl">1</span><span class="op">)</span><span class="op">)</span>
+  <span class="fu"><a href="https://rdrr.io/r/graphics/curve.html">curve</a></span><span class="op">(</span><span class="fl">.5</span><span class="op">*</span><span class="va">x</span>, <span class="fl">0</span>, <span class="fl">2.5</span>, ylab<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/bquote.html">bquote</a></span><span class="op">(</span><span class="st">"no. prey (or prey/predator) killed\nper predator per time"</span><span class="op">)</span>,
+       xlab<span class="op">=</span><span class="st">"N or N/P"</span>, axes<span class="op">=</span><span class="cn">FALSE</span>, main<span class="op">=</span><span class="st">"Functional Responses"</span><span class="op">)</span>
+  <span class="fu"><a href="https://rdrr.io/r/graphics/box.html">box</a></span><span class="op">(</span><span class="op">)</span>
+  <span class="fu"><a href="https://rdrr.io/r/graphics/curve.html">curve</a></span><span class="op">(</span><span class="va">x</span><span class="op">/</span><span class="op">(</span><span class="fl">1</span><span class="op">+</span><span class="va">x</span><span class="op">)</span>, add<span class="op">=</span><span class="cn">TRUE</span>, lty<span class="op">=</span><span class="fl">2</span> <span class="op">)</span>
+  <span class="fu"><a href="https://rdrr.io/r/graphics/curve.html">curve</a></span><span class="op">(</span><span class="va">x</span><span class="op">^</span><span class="fl">3</span><span class="op">/</span><span class="op">(</span><span class="fl">1</span><span class="op">+</span><span class="va">x</span><span class="op">^</span><span class="fl">3</span><span class="op">)</span>, add<span class="op">=</span><span class="cn">TRUE</span>, lty<span class="op">=</span><span class="fl">3</span> <span class="op">)</span>
+  <span class="fu"><a href="https://rdrr.io/r/graphics/text.html">text</a></span><span class="op">(</span><span class="fl">2</span>, <span class="fl">1.2</span>, <span class="st">"Type I"</span><span class="op">)</span>
+  <span class="fu"><a href="https://rdrr.io/r/graphics/text.html">text</a></span><span class="op">(</span><span class="fl">2.5</span>, <span class="fl">1</span>, <span class="st">"Type III"</span>, adj<span class="op">=</span><span class="fl">1</span><span class="op">)</span>
+  <span class="fu"><a href="https://rdrr.io/r/graphics/text.html">text</a></span><span class="op">(</span><span class="fl">2.5</span>, <span class="fl">.6</span>, <span class="st">"Type II"</span>, adj<span class="op">=</span><span class="fl">1</span><span class="op">)</span>
+<span class="op">}</span>
+<span class="op">{</span>
+  <span class="fu"><a href="https://rdrr.io/r/graphics/par.html">par</a></span><span class="op">(</span>mgp<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">1</span>,<span class="fl">1</span><span class="op">)</span><span class="op">)</span>
+  <span class="fu"><a href="https://rdrr.io/r/graphics/curve.html">curve</a></span><span class="op">(</span><span class="fl">.5</span><span class="op">*</span><span class="va">x</span><span class="op">/</span><span class="va">x</span>, <span class="fl">0</span>, <span class="fl">2.5</span>, ylab<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/bquote.html">bquote</a></span><span class="op">(</span><span class="st">"no. prey (or prey/predator) killed\nper predator per time"</span><span class="op">)</span>, ylim<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span><span class="op">)</span>,
+       xlab<span class="op">=</span><span class="st">"N or N/P"</span>, axes<span class="op">=</span><span class="cn">FALSE</span>, main<span class="op">=</span><span class="st">"Functional Responses"</span><span class="op">)</span>
+  <span class="fu"><a href="https://rdrr.io/r/graphics/box.html">box</a></span><span class="op">(</span><span class="op">)</span>
+  <span class="fu"><a href="https://rdrr.io/r/graphics/curve.html">curve</a></span><span class="op">(</span><span class="va">x</span><span class="op">/</span><span class="op">(</span><span class="fl">1</span><span class="op">+</span><span class="va">x</span><span class="op">)</span><span class="op">/</span><span class="va">x</span>, add<span class="op">=</span><span class="cn">TRUE</span>, lty<span class="op">=</span><span class="fl">2</span> <span class="op">)</span>
+  <span class="fu"><a href="https://rdrr.io/r/graphics/curve.html">curve</a></span><span class="op">(</span><span class="va">x</span><span class="op">^</span><span class="fl">3</span><span class="op">/</span><span class="op">(</span><span class="fl">1</span><span class="op">+</span><span class="va">x</span><span class="op">^</span><span class="fl">3</span><span class="op">)</span><span class="op">/</span><span class="va">x</span>, add<span class="op">=</span><span class="cn">TRUE</span>, lty<span class="op">=</span><span class="fl">3</span> <span class="op">)</span>
+  <span class="fu"><a href="https://rdrr.io/r/graphics/text.html">text</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">.55</span>, <span class="st">"Type I"</span>, adj<span class="op">=</span><span class="fl">0</span><span class="op">)</span>
+  <span class="fu"><a href="https://rdrr.io/r/graphics/text.html">text</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">.1</span>, <span class="st">"Type III"</span>, adj<span class="op">=</span><span class="fl">0</span><span class="op">)</span>
+  <span class="fu"><a href="https://rdrr.io/r/graphics/text.html">text</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span>, <span class="st">"Type II"</span>, adj<span class="op">=</span><span class="fl">0</span><span class="op">)</span>
+<span class="op">}</span></code></pre></div>
+<div class="figure">
+<span style="display:block;" id="fig:funcresp"></span>
+<img src="figs/funcResp-1.png" alt="*Left: Functional responses for either prey-dependent or ratio-dependent predation; $z=3$. Right: Same functional responses on a per-prey basis.*" width="45%"><img src="figs/funcResp-2.png" alt="*Left: Functional responses for either prey-dependent or ratio-dependent predation; $z=3$. Right: Same functional responses on a per-prey basis.*" width="45%"><p class="caption">
+Figure 8.6: <em>Left: Functional responses for either prey-dependent or ratio-dependent predation; <span class="math inline">\(z=3\)</span>. Right: Same functional responses on a per-prey basis.</em>
+</p>
+</div>
+<p>If we ever want to use data to ask about the behavior of a predator, it can be very difficult to distinguish between these foraging behaviors by fitting data to functional response curves. We typically have more success fitting data of kill rate per unit prey <em>vs.</em> prey density (Fig. <a href="cr.html#fig:funcresp">8.6</a>) because there are qualitative differences in slope (negative vs. positive) at low prey density <span class="citation">(<a href="references.html#ref-Juliano:2001cq" role="doc-biblioref">Juliano 2001</a>)</span>.</p>
+<p><strong>Prey- <em>vs.</em> ratio-dependent functional responses</strong></p>
+<p>Some empirical evidence suggests that partial ratio-dependence may often represent what is happening in nature <span class="citation">(<a href="references.html#ref-Arditi:2012" role="doc-biblioref">Roger Arditi and Ginzburg 2012</a>)</span>. We can get this by introducing an additional constant, <span class="math inline">\(m\)</span>, in our type II functional response:
+<span class="math display">\[\frac{aN/P^m}{1+ahN/P^m}\]</span>
+where <span class="math inline">\(0\le m \le 1\)</span>. When <span class="math inline">\(m=0\)</span>, we have a prey-dependent response, and when <span class="math inline">\(m=1\)</span> we have a purely ratio-dependent response.</p>
+<p>The <strong>numerical response</strong> of the predator is simply the how population growth rate varies with <span class="math inline">\(N\)</span>, or <span class="math inline">\(dP/dt\)</span> vs. <span class="math inline">\(N\)</span>.</p>
+</div>
+<div id="stability-analysis-for-the-prey-dependent-lotkavolterra-model" class="section level2" number="8.4">
+<h2>
+<span class="header-section-number">8.4</span> Stability analysis for the prey-dependent Lotka–Volterra model<a class="anchor" aria-label="anchor" href="#stability-analysis-for-the-prey-dependent-lotkavolterra-model"><i class="fas fa-link"></i></a>
+</h2>
+<p>In this section, we will perform the necessary analytical work to understand the dynamics of Lotka–Volterra predator–prey dynamics, and we follow this up with a peek at the time series dynamics to confirm our understanding based on the analytical work.</p>
+<p>As before for competition, we follow four steps: determine equilibria, create the Jacobian matrix, and solve and use the Jacobian.</p>
+<p><em>Lotka–Volterra equilibrium</em></p>
+<p>All we have to do is to solve the isoclines for where they cross. Thus we could set these equations equal to each other. It turns out, however, that the isoclines were just straight lines, so we see that the equilibrium is at <span class="math inline">\((r/a,\,m/(ea))\)</span>.</p>
+<p>If you haven’t already, set growth rates equal to zero and solve for these isoclines.</p>
+<p><em>Creating, solving and using the Jacobian matrix</em></p>
+<p>Take a look at the growth equations again. Here we take the partial derivatives of these because we want to know how each population growth rate changes in response to changes in the abundance each of the other population. The partial derivatives of the prey growth equation, with respect to itself and to the predator, go into the first row of the matrix, whereas the partial derivatives of the predator growth rate, with respect to the herbivore and itself go into the second row.<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;A partial derivative is just a derivative of a derivative with respect to one of the state variables.&lt;/p&gt;"><sup>52</sup></a></p>
+<p>Just for kicks, you might try deriving these partial derivatives, e.g., <span class="math inline">\(\frac{\delta dN/dt}{\delta N}\)</span>, where for this example, we treat <span class="math inline">\(N\)</span> as the variable and <span class="math inline">\(P\)</span> as a constant.
+<span class="math display" id="eq:jacLV1">\[\begin{align}
+  \tag{8.1}
+\left(
+\begin {array}{cc}
+\frac{\partial \dot{N}}{\partial N}&amp;\frac{\partial \dot{N}}{\partial P}\\
+\frac{\partial \dot{P}}{\partial N}&amp;\frac{\partial \dot{P}}{\partial P}
+\end {array}
+\right) =
+\left(
+\begin {array}{cc}
+r-aP &amp; -aN\\
+eaP &amp; eaN-m\\
+\end {array}
+\right)
+\end{align}\]</span></p>
+<p>We can replace the <span class="math inline">\(P\)</span> and <span class="math inline">\(N\)</span> in the Jacobian with the equibria found above. When we do this, we get</p>
+<p><span class="math display" id="eq:jacLV2">\[\begin{align}
+  \tag{8.2}
+\left(
+\begin {array}{cc}
+r-a(r/a)&amp;-a(m/(ae))\\
+ea(r/a)&amp;ea(m/(ae))-s\\
+\end {array}
+\right) 
+=
+\left(
+\begin {array}{cc}
+0  &amp; - m/e \\
+er &amp;   0  \\
+\end {array}
+\right).
+\end{align}\]</span></p>
+<p>Typically a system will be more stable if the diagonal elements are more negative than the off-diagonals are postive — that would mean that each population is self regulating, and it corresponds to the Routh-Hurwitz criterion (see the competition chapter for an earlier use of the Routh-Hurwitz criteria).
+<span class="math display" id="eq:RH1">\[\begin{equation}
+  \tag{8.3}
+  \mathbf{J_{11}} + \mathbf{J_{22}} &lt; 0.
+\end{equation}\]</span>
+We notice that in <a href="cr.html#eq:jacLV2">(8.2)</a> these diagonal elements are both zero. These zeroes reveal that there is no negative density dependence within each population, that is, no self-regulation.</p>
+<p>The other part of the Routh-Hurwitz criteria is the condition,
+<span class="math display" id="eq:RH2">\[\begin{equation}
+  \tag{8.4}
+\mathbf{J_{11}}\mathbf{J_{22}-\mathbf{J_{12}}\mathbf{J_{21}}} &gt; 0.
+\end{equation}\]</span>
+In the predator–prey context, this suggests that the herbivore <em>declines</em> due to the predator (<span class="math inline">\(\mathbf{J_{12}}&lt;0\)</span>) and the predator <em>increases</em> due to the herbivore (<span class="math inline">\(\mathbf{J_{21}}&gt;0\)</span>). The signs of these elements make their product negative, and help make the above condition true. Note that because <span class="math inline">\(\mathbf{J_{11}} \mathbf{J_{22}} =0\)</span>, this condition reduces to <span class="math inline">\(-rm&gt;0\)</span>. Thus it seems that this will cannot be true as along as both <span class="math inline">\(r\)</span> and <span class="math inline">\(m\)</span> are positive (which we have defined as the case). Therefore, this dynamic will not have a <em>stable</em> equilibrium.</p>
+<p>We can perform eigenanalysis given the parameters above.</p>
+<div class="sourceCode" id="cb235"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># our parameters are inside the list called 'p', so we use 'with()'</span>
+<span class="va">Jac</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/with.html">with</a></span><span class="op">(</span> <span class="va">p</span>, <span class="fu"><a href="https://rdrr.io/r/base/matrix.html">matrix</a></span><span class="op">(</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="op">-</span><span class="va">m</span><span class="op">/</span><span class="va">e</span>, <span class="va">e</span><span class="op">*</span><span class="va">r</span>, <span class="fl">0</span><span class="op">)</span>, byrow<span class="op">=</span><span class="cn">TRUE</span>, nr<span class="op">=</span><span class="fl">2</span><span class="op">)</span> <span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/base/eigen.html">eigen</a></span><span class="op">(</span><span class="va">Jac</span><span class="op">)</span><span class="op">[[</span><span class="st">"values"</span><span class="op">]</span><span class="op">]</span></code></pre></div>
+<pre><code>## [1] 0+0.07071068i 0-0.07071068i</code></pre>
+<p>We find that the eigenvalues are complex, and real real parts are not less than zero. Because they are complex, this means that the populations will oscillate or cycle, with period <span class="math inline">\(2\pi/\omega\)</span> (see Competition chapter). Because the real parts are zero, this means that the Lotka–Volterra predator–prey exhibits <em>neutral</em> stability. Recall that neutral stability is the “in-between” case where perturbations at the equilibrium neither grow nor decline over time. They merely change the abundances but cause no response.</p>
+<p><strong>Here we come to an important distinction:</strong> the simple ratio dependent predation model predicts no oscillations, whereas the simple prey-dependent predation model predictions that oscillations are inherent in predator-prey interactions. Which of these ideas provides a more useful base from which to understand predator-prey dynamics depends on the system, and on who you talk to.</p>
+</div>
+<div id="resource-growth-functions" class="section level2" number="8.5">
+<h2>
+<span class="header-section-number">8.5</span> Resource growth functions<a class="anchor" aria-label="anchor" href="#resource-growth-functions"><i class="fas fa-link"></i></a>
+</h2>
+<p>Up until now, we have assumed that the resource grows exponentially in the absence of a consumer. This is the essential starting point, and now we add two simple extensions, logistic growth, and saturating resource supply.</p>
+<p>When the resource is a biotic population, it is typical to represent their growth function with logistic growth, such as
+<span class="math display">\[\frac{dN}{dt}=rN\left( 1-\alpha N \right)\]</span>
+or to use <span class="math inline">\(N/K\)</span> in place of <span class="math inline">\(\alpha N\)</span>.</p>
+<p>When the resource is an inorganic molecule, such as nitrate or phosphate in soil solution or in an aquatic habitat, we often assume a constant background supply rate <span class="math inline">\(S\)</span> <span class="citation">(<a href="references.html#ref-Tilman1982" role="doc-biblioref">Tilman 1982</a>)</span> in the absence of consumption. We can imagine that this background supply rate results from microbial activities that are little affected by the growth of the single species we are describing. We further imagine that this is inhibited by the availability of the the resource <span class="math inline">\(R\)</span>, so that, in the absence of consumption, the actual resource supply rate is
+<span class="math display">\[\frac{dR}{dt} = r(S-R)\]</span>
+where <span class="math inline">\(r\)</span> is resource renewal rate (not intrinsic rate of increase). The units of <span class="math inline">\(r\)</span> here are <span class="math inline">\(1/t\)</span> or perhaps we can think of it as
+<span class="math display">\[\frac{\mathrm{resource~produced}}{\mathrm{resource~present}} \cdot \frac{1}{t}=t^{-1}\]</span>
+As the amount of <span class="math inline">\(R\)</span> increases, <span class="math inline">\(dR/dt\)</span> decreases. In a sense, it bears some resemblance to logistic growth, where <span class="math inline">\(S=K\)</span> and <span class="math inline">\(R=N\)</span>. Next we explore this model in some detail.</p>
+<div id="consumption-of-a-renewable-resource" class="section level3" number="8.5.1">
+<h3>
+<span class="header-section-number">8.5.1</span> Consumption of a renewable resource<a class="anchor" aria-label="anchor" href="#consumption-of-a-renewable-resource"><i class="fas fa-link"></i></a>
+</h3>
+<p>Consider one of the simplest models of consumer-resource interactions,
+<span class="math display">\[\frac{dR}{dt}= r\left(S-R\right) - aN R\]</span>
+<span class="math display">\[\frac{dN}{dt}= N\left(eaR - d\right)\]</span></p>
+<p>where <span class="math inline">\(a\)</span> is the per capita feeding rate of a consumer on a resource, <span class="math inline">\(e\)</span> is the efficiency with which a consumer converts a unit of resource into new biomass, and <span class="math inline">\(d\)</span> is the per capita death rate of consumers. The fixed parameter <span class="math inline">\(S\)</span> is the background supply rate of a resource, and <span class="math inline">\(r(S-R)\)</span> is the turnover rate of resources that are part of the available <span class="math inline">\(R\)</span> pool. If the resource is nitrate, perhaps this is determined by nitrifying soil microbes at steady state. This rate declines as the amount of resource grows, or <span class="math inline">\(r(S-R)\)</span>. This is likely to happen when a resource is washed out of the soil, or if a high amount of resource suppresses its production.</p>
+<p>Consumers can be measured in mass, such as grams, or per capita. Or perhaps our organisms each weigh one gram.</p>
+<p>Let’s start by exploring what happens to the resource when there is consumer <span class="math inline">\(N=0\)</span>. If we solve for <span class="math inline">\(dR/dt=0=r(S-R)\)</span>, we get,
+<span class="math display">\[R^* = S\]</span>
+and we see that, at this equilibrium (<span class="math inline">\(N=0\)</span>), the environment will contain <span class="math inline">\(S\)</span> amount of resource.</p>
+<p>As we described above, each unit of consumer reduces a unit of resource by <span class="math inline">\(a\)</span> units per unit time. We say that the per capita effect of the consumer on the resource is <span class="math inline">\(a\)</span>. The effect of the resource on the consumer is moderated by the assimilation efficiency <span class="math inline">\(e\)</span>, that is, how much the consumer can grow, given its consumption of <span class="math inline">\(R\)</span>. Therefore, the effect of the resource on the consumer is <span class="math inline">\(ef\)</span>.</p>
+<p>So the consumer consumes resource and grows, but it also dies. At equilibrium, growth = death, and when this is true, we can solve for per capita growth rate equal to zero.
+<span class="math display">\[\frac{dN}{Ndt} = 0 = efR - d \implies R^* = \frac{d}{ef}\]</span></p>
+<p><strong>We refer to this equilibrium as “R-star,” and it plays a central role in competition theory.</strong> More on it in a moment.</p>
+<p>If we set <span class="math inline">\(dR/dt=0\)</span> and substitute <span class="math inline">\(R^*\)</span> in for <span class="math inline">\(R\)</span>, we find that the the consumer population will be
+<span class="math display">\[N^* = \frac{r\left(S - d/(ea)\right)}{a(d/(ea)}=r\left(S\frac{e}{d}-\frac{1}{a} \right)\]</span></p>
+<p>From this we can say that the environment must supply the resource at a rate of at least <span class="math inline">\(S&gt;d/(ea)\)</span> to allow species <span class="math inline">\(N\)</span> to persist. In addition, the per capita effect of the consumer on the entire resource pool at equilibrium is <span class="math inline">\(aR^* =d/e\)</span>.</p>
+<p>Here we make an R function of these populations.</p>
+<div class="sourceCode" id="cb237"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">cr_plant</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">t</span>,<span class="va">y</span>,<span class="va">p</span><span class="op">)</span><span class="op">{</span>
+  <span class="va">N</span> <span class="op">&lt;-</span> <span class="va">y</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>; <span class="va">R</span> <span class="op">&lt;-</span> <span class="va">y</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span>
+  <span class="fu"><a href="https://rdrr.io/r/base/with.html">with</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html">as.list</a></span><span class="op">(</span><span class="va">p</span><span class="op">)</span>,<span class="op">{</span>
+    <span class="va">dN</span> <span class="op">&lt;-</span> <span class="va">N</span><span class="op">*</span><span class="op">(</span><span class="va">e</span><span class="op">*</span><span class="va">a</span><span class="op">*</span><span class="va">R</span> <span class="op">-</span> <span class="va">d</span><span class="op">)</span>
+    <span class="va">dR</span> <span class="op">&lt;-</span> <span class="va">r</span><span class="op">*</span><span class="op">(</span><span class="va">S</span><span class="op">-</span><span class="va">R</span><span class="op">)</span> <span class="op">-</span> <span class="va">a</span><span class="op">*</span><span class="va">R</span><span class="op">*</span><span class="va">N</span>
+    <span class="kw"><a href="https://rdrr.io/r/base/function.html">return</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">dN</span>,<span class="va">dR</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>
+  <span class="op">}</span> <span class="op">)</span>
+<span class="op">}</span></code></pre></div>
+<p>If we select parameter values, we can find <span class="math inline">\(R^*\)</span> and <span class="math inline">\(N^*\)</span>.</p>
+<div class="sourceCode" id="cb238"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">p</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span>e<span class="op">=</span><span class="fl">.1</span>, a<span class="op">=</span><span class="fl">1</span>, d<span class="op">=</span><span class="fl">.1</span>, r<span class="op">=</span><span class="fl">2</span>, S<span class="op">=</span><span class="fl">2</span><span class="op">)</span>
+ <span class="fu"><a href="https://rdrr.io/r/base/with.html">with</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html">as.list</a></span><span class="op">(</span><span class="va">p</span><span class="op">)</span>,<span class="op">{</span>
+   <span class="va">R.star</span> <span class="op">=</span> <span class="va">d</span><span class="op">/</span><span class="op">(</span><span class="va">e</span><span class="op">*</span><span class="va">a</span><span class="op">)</span>
+   <span class="va">N.star</span> <span class="op">=</span> <span class="va">r</span><span class="op">*</span><span class="op">(</span><span class="va">S</span><span class="op">*</span><span class="va">e</span><span class="op">/</span><span class="va">d</span> <span class="op">-</span> <span class="fl">1</span><span class="op">/</span><span class="va">a</span><span class="op">)</span>
+   <span class="kw"><a href="https://rdrr.io/r/base/function.html">return</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">R.star</span>, <span class="va">N.star</span><span class="op">)</span><span class="op">)</span>
+ <span class="op">}</span><span class="op">)</span></code></pre></div>
+<pre><code>## [1] 1 2</code></pre>
+<p>We can also plot the dynamics.</p>
+<div class="sourceCode" id="cb240"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">t</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">100</span>, by<span class="op">=</span><span class="fl">1</span><span class="op">)</span>
+<span class="va">out</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/deSolve/man/ode.html">ode</a></span><span class="op">(</span>y<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span>N<span class="op">=</span><span class="fl">1.5</span>, R<span class="op">=</span><span class="fl">2</span><span class="op">)</span>, times<span class="op">=</span><span class="va">t</span>, func<span class="op">=</span><span class="va">cr_plant</span>, parms<span class="op">=</span><span class="va">p</span><span class="op">)</span>
+
+<span class="va">outdf</span> <span class="op">&lt;-</span> <span class="va">out</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html">as.data.frame</a></span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu">pivot_longer</span><span class="op">(</span>cols<span class="op">=</span><span class="op">!</span><span class="va">time</span>, names_to<span class="op">=</span><span class="st">"population"</span>, values_to<span class="op">=</span><span class="st">"value"</span><span class="op">)</span>
+<span class="fu">qplot</span><span class="op">(</span><span class="va">time</span>, <span class="va">value</span>, col<span class="op">=</span><span class="va">population</span>, data<span class="op">=</span><span class="va">outdf</span>, geom<span class="op">=</span><span class="st">"line"</span><span class="op">)</span></code></pre></div>
+<div class="inline-figure"><img src="figs/unnamed-chunk-90-1.png" width="90%"></div>
+</div>
+<div id="prey-carrying-capacity-and-type-ii-functional-response" class="section level3" number="8.5.2">
+<h3>
+<span class="header-section-number">8.5.2</span> Prey carrying capacity and type II functional response<a class="anchor" aria-label="anchor" href="#prey-carrying-capacity-and-type-ii-functional-response"><i class="fas fa-link"></i></a>
+</h3>
+<p>The most commonly used predator-prey models include a carrying capacity for the prey, so the prey population grows logistically. The predator has a nonlinear type II functional response. These are both well-established realistic biological complications This has commonly been attributed to <span class="citation"><a href="references.html#ref-Rosenzweig:1963fk" role="doc-biblioref">Rosenzweig and MacArthur</a> (<a href="references.html#ref-Rosenzweig:1963fk" role="doc-biblioref">1963</a>)</span>, and others soon began using similar approaches <span class="citation">(<a href="references.html#ref-May1973ab" role="doc-biblioref">R. M. May 1973</a>)</span>. Here is a common version, which I’ll refer to as our Rosenzweig-MacArthur model, for predator, <span class="math inline">\(P\)</span>, and prey, <span class="math inline">\(N\)</span>:
+<span class="math display">\[\begin{align*}
+\frac{dN}{dt} &amp;= r(1-\alpha N) - \frac{aN}{1+ahN}P\\
+\frac{dP}{dt} &amp;= e\frac{aN}{1+ahN}P - mP
+\end{align*}\]</span></p>
+<p>To investigate its dynamics, we can create an ODE function of this consumer-resource model.</p>
+<div class="sourceCode" id="cb241"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">cr_RM_pred</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">time</span>, <span class="va">y</span>, <span class="va">p</span><span class="op">)</span><span class="op">{</span>
+  <span class="co"># prey is first, predator is second.</span>
+  <span class="va">N</span> <span class="op">&lt;-</span> <span class="va">y</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>; <span class="va">P</span> <span class="op">&lt;-</span> <span class="va">y</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span>
+  <span class="fu"><a href="https://rdrr.io/r/base/with.html">with</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html">as.list</a></span><span class="op">(</span><span class="va">p</span><span class="op">)</span>, <span class="op">{</span>
+    <span class="va">Ndot</span> <span class="op">&lt;-</span> <span class="va">r</span><span class="op">*</span><span class="va">N</span><span class="op">*</span><span class="op">(</span><span class="fl">1</span><span class="op">-</span><span class="va">alpha</span><span class="op">*</span><span class="va">N</span><span class="op">)</span> <span class="op">-</span> <span class="va">a</span><span class="op">*</span><span class="va">N</span><span class="op">*</span><span class="va">P</span><span class="op">/</span><span class="op">(</span><span class="fl">1</span><span class="op">+</span><span class="va">a</span><span class="op">*</span><span class="va">h</span><span class="op">*</span><span class="va">N</span><span class="op">)</span> <span class="co"># prey</span>
+    <span class="va">Pdot</span> <span class="op">&lt;-</span> <span class="va">e</span><span class="op">*</span><span class="va">a</span><span class="op">*</span><span class="va">N</span><span class="op">*</span><span class="va">P</span><span class="op">/</span><span class="op">(</span><span class="fl">1</span><span class="op">+</span><span class="va">a</span><span class="op">*</span><span class="va">h</span><span class="op">*</span><span class="va">N</span><span class="op">)</span> <span class="op">-</span> <span class="va">m</span><span class="op">*</span><span class="va">P</span> <span class="co"># predator</span>
+    <span class="kw"><a href="https://rdrr.io/r/base/function.html">return</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">Ndot</span>, <span class="va">Pdot</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>
+  <span class="op">}</span><span class="op">)</span>
+<span class="op">}</span></code></pre></div>
+<div class="sourceCode" id="cb242"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">t</span> <span class="op">&lt;-</span> <span class="fl">0</span><span class="op">:</span><span class="fl">100</span>; <span class="va">y0</span> <span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span>N<span class="op">=</span><span class="fl">100</span>, P<span class="op">=</span><span class="fl">3</span><span class="op">)</span>
+<span class="va">p</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>r<span class="op">=</span><span class="fl">0.8</span>, alpha<span class="op">=</span><span class="fl">0.001</span>, a<span class="op">=</span><span class="fl">.02</span>, e<span class="op">=</span><span class="fl">0.04</span>, m<span class="op">=</span><span class="fl">.15</span>, h<span class="op">=</span><span class="fl">.1</span><span class="op">)</span>
+<span class="va">outdf</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html">as.data.frame</a></span><span class="op">(</span> <span class="fu"><a href="https://rdrr.io/pkg/deSolve/man/ode.html">ode</a></span><span class="op">(</span><span class="va">y0</span>, <span class="va">t</span>, <span class="va">cr_RM_pred</span>,  <span class="va">p</span><span class="op">)</span> <span class="op">)</span>
+<span class="va">outL</span> <span class="op">&lt;-</span> <span class="fu">pivot_longer</span><span class="op">(</span><span class="va">outdf</span>, <span class="op">-</span><span class="va">time</span>, names_to<span class="op">=</span><span class="st">"State_vars"</span>, values_to<span class="op">=</span><span class="st">"abun."</span><span class="op">)</span>
+<span class="fu">ggplot</span><span class="op">(</span><span class="va">outL</span>, <span class="fu">aes</span><span class="op">(</span><span class="va">time</span>, <span class="va">abun.</span>, colour<span class="op">=</span><span class="va">State_vars</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> <span class="fu">geom_line</span><span class="op">(</span><span class="op">)</span></code></pre></div>
+<div class="figure">
+<span style="display:block;" id="fig:unnamed-chunk-92"></span>
+<img src="figs/unnamed-chunk-92-1.png" alt="*Predator-prey dynamics with prey carrying capacity and type II predator functional response. With these parameter values, we see damped oscillations.*" width="67%"><p class="caption">
+Figure 8.7: <em>Predator-prey dynamics with prey carrying capacity and type II predator functional response. With these parameter values, we see damped oscillations.</em>
+</p>
+</div>
+<p>If we plot the isoclines, we can see the dynamical phase plane more clearly.</p>
+<div class="sourceCode" id="cb243"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co">## This use the phaseR package to plot phase planes </span>
+<span class="co">## for 1-D and 2-D systems</span>
+<span class="va">ppp.flowfield</span> <span class="op">&lt;-</span>  <span class="fu">flowField</span><span class="op">(</span><span class="va">cr_RM_pred</span>, xlim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0.1</span>, <span class="fl">1000</span><span class="op">)</span>, 
+                            ylim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0.1</span>,<span class="fl">80</span><span class="op">)</span>,
+                            parameters <span class="op">=</span> <span class="va">p</span>, points <span class="op">=</span> <span class="fl">11</span>,
+                            add<span class="op">=</span><span class="cn">FALSE</span>, ylab<span class="op">=</span><span class="st">"P"</span>, xlab<span class="op">=</span><span class="st">"N"</span>,
+                            main<span class="op">=</span><span class="st">"Rosenzweig-MacArthur"</span><span class="op">)</span>
+<span class="co">## ZNGIs</span>
+<span class="va">ppp.nullclines</span> <span class="op">&lt;-</span> <span class="fu">nullclines</span><span class="op">(</span><span class="va">cr_RM_pred</span>, xlim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">.1</span>,<span class="fl">1000</span><span class="op">)</span>, 
+                             ylim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">.1</span>,<span class="fl">80</span><span class="op">)</span>,
+                            parameters <span class="op">=</span> <span class="va">p</span>, add.legend <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
+<span class="va">y0</span>  <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html">matrix</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">100</span>, <span class="fl">25</span>, <span class="fl">100</span>, <span class="fl">10</span><span class="op">)</span>, nc<span class="op">=</span><span class="fl">2</span>, byrow <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
+
+<span class="co">## Dynamics</span>
+<span class="va">prey_trajectory</span> <span class="op">&lt;-</span> <span class="fu">trajectory</span><span class="op">(</span><span class="va">cr_RM_pred</span>,  y0 <span class="op">=</span> <span class="va">y0</span>,
+                              parameters<span class="op">=</span><span class="va">p</span>,
+                              tlim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">200</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<div class="figure">
+<span style="display:block;" id="fig:unnamed-chunk-94"></span>
+<img src="figs/unnamed-chunk-94-1.png" alt="*Damped oscillations can arise with prey negative density dependence, and a type II predator funcional response. Arrows indicate the direction of changing population sizes. The black lines are tractories based on two different initial abundances. The nullclines are the zero net growth isoclines for the prey (x) and the predator (y). Based on the arrow heads, we can see that the trajectories oscillate in a counterclockwise direction.*" width="90%"><p class="caption">
+Figure 8.8: <em>Damped oscillations can arise with prey negative density dependence, and a type II predator funcional response. Arrows indicate the direction of changing population sizes. The black lines are tractories based on two different initial abundances. The nullclines are the zero net growth isoclines for the prey (x) and the predator (y). Based on the arrow heads, we can see that the trajectories oscillate in a counterclockwise direction.</em>
+</p>
+</div>
+<div class="sourceCode" id="cb244"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">eq</span> <span class="op">&lt;-</span> <span class="fu">findEquilibrium</span><span class="op">(</span><span class="va">cr_RM_pred</span>, y0<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">300</span>,<span class="fl">40</span><span class="op">)</span>, parameters<span class="op">=</span><span class="va">p</span><span class="op">)</span><span class="op">$</span><span class="va">ystar</span></code></pre></div>
+<p>The stable equilibrium occurs at approximately <code>300, 45</code>.</p>
+</div>
+</div>
+<div id="paradox-of-enrichment" class="section level2" number="8.6">
+<h2>
+<span class="header-section-number">8.6</span> Paradox of enrichment<a class="anchor" aria-label="anchor" href="#paradox-of-enrichment"><i class="fas fa-link"></i></a>
+</h2>
+<p>Using a variety of models that assume a prey carrying capacity and a type II functional response, <span class="citation"><a href="references.html#ref-Rosenzweig1971" role="doc-biblioref">Rosenzweig</a> (<a href="references.html#ref-Rosenzweig1971" role="doc-biblioref">1971</a>)</span> showed an unexpected phenomenon — that increasing a prey’s carry capacity could drive it to extinction. This can happen if the prey grow too quickly to high abundance and temporarily support a high abundance of predators which then drive the prey extinct. We can demonstrate that here by lowering <span class="math inline">\(\alpha\)</span> enough to increase oscillations so that abundances get infinitesimally close to zero.</p>
+<div class="sourceCode" id="cb245"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">t</span> <span class="op">&lt;-</span> <span class="fl">0</span><span class="op">:</span><span class="fl">100</span>; <span class="va">y0</span> <span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span>N<span class="op">=</span><span class="fl">100</span>, P<span class="op">=</span><span class="fl">3</span><span class="op">)</span>
+<span class="va">p</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>r<span class="op">=</span><span class="fl">0.8</span>, alpha<span class="op">=</span><span class="fl">0.0005</span>, a<span class="op">=</span><span class="fl">.02</span>, e<span class="op">=</span><span class="fl">0.04</span>, m<span class="op">=</span><span class="fl">.15</span>, h<span class="op">=</span><span class="fl">.1</span><span class="op">)</span>
+<span class="va">outdf</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html">as.data.frame</a></span><span class="op">(</span> <span class="fu"><a href="https://rdrr.io/pkg/deSolve/man/ode.html">ode</a></span><span class="op">(</span><span class="va">y0</span>, <span class="va">t</span>, <span class="va">cr_RM_pred</span>,  <span class="va">p</span><span class="op">)</span> <span class="op">)</span>
+<span class="va">outL</span> <span class="op">&lt;-</span> <span class="fu">pivot_longer</span><span class="op">(</span><span class="va">outdf</span>, <span class="op">-</span><span class="va">time</span>, names_to<span class="op">=</span><span class="st">"State_vars"</span>, values_to<span class="op">=</span><span class="st">"abun."</span><span class="op">)</span>
+<span class="fu">ggplot</span><span class="op">(</span><span class="va">outL</span>, <span class="fu">aes</span><span class="op">(</span><span class="va">time</span>, <span class="va">abun.</span>, colour<span class="op">=</span><span class="va">State_vars</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> <span class="fu">geom_line</span><span class="op">(</span><span class="op">)</span></code></pre></div>
+<div class="figure">
+<span style="display:block;" id="fig:unnamed-chunk-95"></span>
+<img src="figs/unnamed-chunk-95-1.png" alt="*Predator-prey dynamics with prey carrying capacity and type II predator functional response. With these parameter values, we see damped oscillations.*" width="67%"><p class="caption">
+Figure 8.9: <em>Predator-prey dynamics with prey carrying capacity and type II predator functional response. With these parameter values, we see damped oscillations.</em>
+</p>
+</div>
+<p>Try replicating the phase plane plot used above with these new parameters.</p>
+</div>
+<div id="consumption-of-two-resources" class="section level2" number="8.7">
+<h2>
+<span class="header-section-number">8.7</span> Consumption of two resources<a class="anchor" aria-label="anchor" href="#consumption-of-two-resources"><i class="fas fa-link"></i></a>
+</h2>
+<p>In this section, we work through an example of a species that depends on two resources. For simplicity, we will assume that the resources are <em>substitutable</em>, that is, a shortage of one can be made up for with an excess of another.</p>
+<p>Consider a plant, <span class="math inline">\(N\)</span>, that can consume two substitutable resources ammonium (<span class="math inline">\(R_1=\)</span>NH<span class="math inline">\(_4^+\)</span>) and nitrate (<span class="math inline">\(R2=\)</span>NO<span class="math inline">\(_3^-\)</span>). One could just as easily imagine tadpoles that feed on zooplankton and periphyton, fish that feed on macroinvertebrates and periphyton, or wolves that feed on lemmings and caribou. All parameters have the same meanings as above (<span class="math inline">\(e\)</span>-efficiency, <span class="math inline">\(a\)</span>-consumption, <span class="math inline">\(d\)</span>-mortality, <span class="math inline">\(r\)</span>-resource renewal, <span class="math inline">\(S\)</span>-supply).</p>
+<p><span class="math display">\[\frac{dN}{dt}= N\left(e_{1} a_{1} R_1 + e_{2} a_{2} R_2 - d\right)\]</span>
+<span class="math display">\[\frac{dR_1}{dt}= r_1\left(S-R_1\right) - a_{1}N R_1\]</span>
+<span class="math display">\[\frac{dR_2}{dt}= r_2\left(S-R_2\right) - a_{2}NR_2\]</span>
+The growth rate of our plant depends on the concentrations of both resources.</p>
+<p>The ODE function we can write looks like this:</p>
+<div class="sourceCode" id="cb246"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">cr_1substitutable</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">t</span>, <span class="va">y</span>, <span class="va">parameters</span><span class="op">)</span><span class="op">{</span>
+  <span class="co"># consumption by 1 consumer of two substitutable resources</span>
+  <span class="va">N</span> <span class="op">&lt;-</span> <span class="va">y</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span> ; <span class="va">R1</span> <span class="op">&lt;-</span> <span class="va">y</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span>; <span class="va">R2</span> <span class="op">&lt;-</span> <span class="va">y</span><span class="op">[</span><span class="fl">3</span><span class="op">]</span>; 
+  <span class="fu"><a href="https://rdrr.io/r/base/with.html">with</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html">as.list</a></span><span class="op">(</span><span class="va">parameters</span><span class="op">)</span>, <span class="op">{</span>
+    <span class="va">N.dot</span> <span class="op">&lt;-</span> <span class="va">N</span> <span class="op">*</span> <span class="op">(</span> <span class="va">e1</span><span class="op">*</span><span class="va">a1</span><span class="op">*</span><span class="va">R1</span> <span class="op">+</span> <span class="va">e2</span><span class="op">*</span><span class="va">a2</span><span class="op">*</span><span class="va">R2</span>  <span class="op">-</span> <span class="va">d</span> <span class="op">)</span>
+    <span class="va">R1.dot</span> <span class="op">&lt;-</span> <span class="va">r1</span> <span class="op">*</span> <span class="op">(</span><span class="va">S1</span> <span class="op">-</span> <span class="va">R1</span><span class="op">)</span> <span class="op">-</span> <span class="va">a1</span><span class="op">*</span><span class="va">N</span><span class="op">*</span><span class="va">R1</span> 
+    <span class="va">R2.dot</span> <span class="op">&lt;-</span> <span class="va">r2</span> <span class="op">*</span> <span class="op">(</span><span class="va">S2</span> <span class="op">-</span> <span class="va">R2</span><span class="op">)</span> <span class="op">-</span> <span class="va">a2</span><span class="op">*</span><span class="va">N</span><span class="op">*</span><span class="va">R2</span>
+    <span class="kw"><a href="https://rdrr.io/r/base/function.html">return</a></span><span class="op">(</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">N.dot</span>,<span class="va">R1.dot</span>, <span class="va">R2.dot</span><span class="op">)</span><span class="op">)</span> <span class="op">)</span>
+  <span class="op">}</span> <span class="op">)</span>
+<span class="op">}</span></code></pre></div>
+<div class="sourceCode" id="cb247"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">parameters</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>
+                <span class="co"># the environment supplies resources at these rates</span>
+                r1 <span class="op">=</span> <span class="fl">.5</span>, r2<span class="op">=</span><span class="fl">.5</span>, S1<span class="op">=</span><span class="fl">3</span>, S2<span class="op">=</span><span class="fl">3</span>,
+                <span class="co"># consumption rates</span>
+                a1<span class="op">=</span><span class="fl">1</span>, a2<span class="op">=</span><span class="fl">0.5</span>,
+                <span class="co"># assimilation efficiencies</span>
+                e1<span class="op">=</span><span class="fl">.1</span>, e2<span class="op">=</span><span class="fl">.1</span>, 
+                <span class="co"># death rate</span>
+                d<span class="op">=</span><span class="fl">.1</span>
+                <span class="op">)</span>
+<span class="va">t</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">50</span>, by<span class="op">=</span><span class="fl">.1</span><span class="op">)</span>
+<span class="va">y.init</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span>N<span class="op">=</span><span class="fl">.5</span>, R1<span class="op">=</span><span class="fl">.1</span>, R2<span class="op">=</span><span class="fl">2</span><span class="op">)</span>
+<span class="va">out</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/deSolve/man/ode.html">ode</a></span><span class="op">(</span>y <span class="op">=</span> <span class="va">y.init</span>,  times<span class="op">=</span><span class="va">t</span>, func<span class="op">=</span><span class="va">cr_1substitutable</span>,
+             parms<span class="op">=</span><span class="va">parameters</span><span class="op">)</span>
+<span class="va">outL</span> <span class="op">&lt;-</span> <span class="va">out</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html">as.data.frame</a></span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span> 
+  <span class="fu">pivot_longer</span><span class="op">(</span>cols<span class="op">=</span><span class="op">-</span><span class="va">time</span>, names_to<span class="op">=</span><span class="st">"State.vars"</span>, values_to<span class="op">=</span><span class="st">"Abun"</span><span class="op">)</span>
+<span class="fu">ggplot</span><span class="op">(</span><span class="va">outL</span>, <span class="fu">aes</span><span class="op">(</span>x<span class="op">=</span><span class="va">time</span>, y<span class="op">=</span><span class="va">Abun</span>, colour<span class="op">=</span><span class="va">State.vars</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> <span class="fu">geom_line</span><span class="op">(</span><span class="op">)</span></code></pre></div>
+<div class="inline-figure"><img src="figs/unnamed-chunk-97-1.png" width="90%"></div>
+<p>We can solve <span class="math inline">\(dN/dt=0\)</span>, and get the combinations of resource concentrations to result at equilibrium when the plant rate of increase matchs the loss rate:
+<span class="math display">\[R_2 = \frac{d}{e_2 a_2} -\frac{e_1 a_1}{e_2 a_2}R_1\]</span>
+where it takes the form of a straight line
+<span class="math display">\[y = \mathrm{intercept} + \mathrm{slope}\cdot x\]</span>
+with <span class="math inline">\(R_2=y\)</span> and <span class="math inline">\(R_1=x\)</span>. We graph this below, and include the effect of the consumer on the resources (solid arrows, Fig. @ref(fig:cr_vecs)). The total per capita consumption rate is the vector derived from the separate feeding rates <span class="math inline">\(a_1\)</span> and <span class="math inline">\(a2\)</span>, times consumer abundance, <span class="math inline">\(N\)</span>. We also show the effect of resource renewal (dashed arrows, Fig. @ref(fig:cr_vecs)). This is what would happen to resources if the consumer were eliminated. We are most often interested in these vector at the equilibria, <span class="math inline">\(N^*\)</span>, and they depend on the resource supply rates <span class="math inline">\(S_1\)</span>, <span class="math inline">\(S_2\)</span>.</p>
+<div class="figure">
+<img src="figs/cr_vecs-1.png" alt="*A consumer's zero net growth isocline (ZNGI, dN/dt=0, solid line) for two substitutable resources is determined by traits of the species. Solid arrows are consumption effects, dashed arrows are resource renewal vectors; the magnitudes of these are equal to $a_i$ and $r_i$, respectively. Dotted lines are resource dynamics, starting at supply rates with low consumer abundance (open points) and ending at their equilibrium (solidd dots). Parameters: $e_i=d_i=0.1$, $a_1=1$, $a_2=0.5$; $r_i=0.5$; $S_i$ are shown as open points.*" width="90%"><p class="caption">
+(#fig:cr_vecs)<em>A consumer’s zero net growth isocline (ZNGI, dN/dt=0, solid line) for two substitutable resources is determined by traits of the species. Solid arrows are consumption effects, dashed arrows are resource renewal vectors; the magnitudes of these are equal to <span class="math inline">\(a_i\)</span> and <span class="math inline">\(r_i\)</span>, respectively. Dotted lines are resource dynamics, starting at supply rates with low consumer abundance (open points) and ending at their equilibrium (solidd dots). Parameters: <span class="math inline">\(e_i=d_i=0.1\)</span>, <span class="math inline">\(a_1=1\)</span>, <span class="math inline">\(a_2=0.5\)</span>; <span class="math inline">\(r_i=0.5\)</span>; <span class="math inline">\(S_i\)</span> are shown as open points.</em>
+</p>
+</div>
+<div id="interpreting-consumption-and-assimilation" class="section level3" number="8.7.1">
+<h3>
+<span class="header-section-number">8.7.1</span> Interpreting consumption and assimilation<a class="anchor" aria-label="anchor" href="#interpreting-consumption-and-assimilation"><i class="fas fa-link"></i></a>
+</h3>
+<p>On one hand, a higher consumption rate, <span class="math inline">\(a\)</span>, means that an organism consumes more of that resource. On the other hand however, it means that a reduction in that resource has a larger negative effect on the consumer. The same is true for assimilation efficiencies, <span class="math inline">\(e\)</span>. Being more efficient at converting a resource to biomass also means that a reduction in that resource represents a greater reduction in growth rate.</p>
+<p>Evolution has often resulted in adaptations that allow organisms to consume relatively more of resources that they need more of. One reason that an organism needs more of one resource than another is because of its stoichiometric composition <span class="citation">(<a href="references.html#ref-Sterner2002" role="doc-biblioref">Sterner, Elser, and Vitousek 2002</a>)</span>. For instance, a plant species root, stem, and leaf tissue has a higher C:N ratio might have a relatively higher carbon or light requirement and a relatively lower nitrogen requirement than a species with a lower C:N ratio, such as an herbivore. A plant is likely to have adaptions that allow them to acquire relatively more carbon and survive on less nitrogen than the other species.</p>
+<p>As a result of species’ stoichiometric composition, we can hypothesize a that species with relatively higher tissue concentration of <span class="math inline">\(R_1\)</span> will have higher consumption rate, <span class="math inline">\(a_1\)</span>, than a species with a relatively lower <span class="math inline">\(R_1\)</span> tissue concentration.</p>
+<p>Our population, <span class="math inline">\(N\)</span>, is consuming resources in the ratio <span class="math inline">\(a_2 R_2 / a_1 R_1\)</span>, and developing new biomass and individuals in the ratio <span class="math inline">\(e_2 a_2 R_2 / e_1 a_1 R_1\)</span>. This can be a useful approximation of reality. It would be logical, but far from guaranteed, that the organism’s requirements for growth or metabolism are of a similar ratio. Otherwise, they must store or excrete what they do not use. Thus we can consider
+<span class="math display">\[\frac{e_2 a_2 R_2^*}{e_1 a_1 R_1^*}\]</span>
+as a resource ratio requirement.</p>
+</div>
+</div>
+<div id="in-fine-1" class="section level2" number="8.8">
+<h2>
+<span class="header-section-number">8.8</span> In fine<a class="anchor" aria-label="anchor" href="#in-fine-1"><i class="fas fa-link"></i></a>
+</h2>
+<p>So that is what is involved with simple consumer-resource interactions. Resources renew, consumers consume and grow inefficiently, and the environment influences those processes. There are a variety of ways to represent resource renewal, and consumption. Consumption, as attack rate or feeding rate, is the effect of the consumer on the resource, and is illustrated with the functional response.</p>
+<p>In later chapters, we describe different types of enemy-victim relations including host-parasitoid and disease dynamics, and consequences of competition and mutualism that emerge when consumers interact via shared resources.</p>
+
+</div>
+</div>
+
+  <div class="chapter-nav">
+<div class="prev"><a href="direct-competition-and-mutualism.html"><span class="header-section-number">7</span> Direct competition and mutualism</a></div>
+<div class="next"><a href="host-parasitoid-relations.html"><span class="header-section-number">9</span> Host-parasitoid relations</a></div>
+</div></main><div class="col-md-3 col-lg-2 d-none d-md-block sidebar sidebar-chapter">
+    <nav id="toc" data-toggle="toc" aria-label="On this page"><h2>On this page</h2>
+      <ul class="nav navbar-nav">
+<li><a class="nav-link" href="#cr"><span class="header-section-number">8</span> Consumer-resource Interactions</a></li>
+<li>
+<a class="nav-link" href="#ratio-dependence"><span class="header-section-number">8.1</span> Ratio dependence</a><ul class="nav navbar-nav"><li><a class="nav-link" href="#dynamics-of-ratio-dependent-predation"><span class="header-section-number">8.1.1</span> Dynamics of ratio dependent predation</a></li></ul>
+</li>
+<li>
+<a class="nav-link" href="#prey-dependence"><span class="header-section-number">8.2</span> Prey dependence</a><ul class="nav navbar-nav"><li><a class="nav-link" href="#dyanmics-of-prey-dependent-predation"><span class="header-section-number">8.2.1</span> Dyanmics of prey-dependent predation</a></li></ul>
+</li>
+<li><a class="nav-link" href="#interlude-functional-response---what-an-individual-predator-does-fr"><span class="header-section-number">8.3</span> Interlude: Functional response - what an individual predator does (#fr)</a></li>
+<li><a class="nav-link" href="#stability-analysis-for-the-prey-dependent-lotkavolterra-model"><span class="header-section-number">8.4</span> Stability analysis for the prey-dependent Lotka–Volterra model</a></li>
+<li>
+<a class="nav-link" href="#resource-growth-functions"><span class="header-section-number">8.5</span> Resource growth functions</a><ul class="nav navbar-nav">
+<li><a class="nav-link" href="#consumption-of-a-renewable-resource"><span class="header-section-number">8.5.1</span> Consumption of a renewable resource</a></li>
+<li><a class="nav-link" href="#prey-carrying-capacity-and-type-ii-functional-response"><span class="header-section-number">8.5.2</span> Prey carrying capacity and type II functional response</a></li>
+</ul>
+</li>
+<li><a class="nav-link" href="#paradox-of-enrichment"><span class="header-section-number">8.6</span> Paradox of enrichment</a></li>
+<li>
+<a class="nav-link" href="#consumption-of-two-resources"><span class="header-section-number">8.7</span> Consumption of two resources</a><ul class="nav navbar-nav"><li><a class="nav-link" href="#interpreting-consumption-and-assimilation"><span class="header-section-number">8.7.1</span> Interpreting consumption and assimilation</a></li></ul>
+</li>
+<li><a class="nav-link" href="#in-fine-1"><span class="header-section-number">8.8</span> In fine</a></li>
+</ul>
+
+      <div class="book-extra">
+        <ul class="list-unstyled">
+          
+        </ul>
+</div>
+    </nav>
+</div>
+
+</div>
+</div> <!-- .container -->
+
+<footer class="bg-primary text-light mt-5"><div class="container"><div class="row">
+
+  <div class="col-12 col-md-6 mt-3">
+    <p>"<strong>Primer of Ecology using R</strong>" was written by Hank Stevens. It was last built on 2021-08-20.</p>
+  </div>
+
+  <div class="col-12 col-md-6 mt-3">
+    <p>This book was built by the <a class="text-light" href="https://bookdown.org">bookdown</a> R package.</p>
+  </div>
+
+</div></div>
+</footer><!-- dynamically load mathjax for compatibility with self-contained --><script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script><script type="text/x-mathjax-config">const popovers = document.querySelectorAll('a.footnote-ref[data-toggle="popover"]');
+for (let popover of popovers) {
+  const div = document.createElement('div');
+  div.setAttribute('style', 'position: absolute; top: 0, left:0; width:0, height:0, overflow: hidden; visibility: hidden;');
+  div.innerHTML = popover.getAttribute('data-content');
+
+  var has_math = div.querySelector("span.math");
+  if (has_math) {
+    document.body.appendChild(div);
+    MathJax.Hub.Queue(["Typeset", MathJax.Hub, div]);
+    MathJax.Hub.Queue(function() {
+      popover.setAttribute('data-content', div.innerHTML);
+      document.body.removeChild(div);
+    })
+  }
+}
+</script>
+</body>
+</html>
