@@ -24,7 +24,7 @@ These properties are the outcome of natural selection operating on foraging beha
 
 *Constraints* are limitations that we assume about organisms. These might include distances between resource patches, the time and costs associated with extracting a resource from a substrate or subduing prey. They also include constraints imposed by other species including competitors and predators. Constraints can get complicated quickly; however, simple quantitative theory makes predictions against which we can evaluate more complicated assumptions.
 
-*Decision rules* are what we ascribed to a forager's choices. A decision rule concern the probability of attacking prey if encountered, or when to leave one resource patch in order to search for another. 
+*Decision rules* are what we ascribed to a forager's choices. A decision rule concerns the probability of attacking prey if encountered, or when to leave one resource patch in order to search for another. 
 
 An additional way to think about all this is *where, when, and what.* A great deal of effort has focused on understanding patch use: *where* foragers should explore for resources, and *when* they should give up and go in search of another patch [@Charnov1976b]. These are **patch use** models, and are based on economic models and the marginal value theorem. 
 
@@ -32,7 +32,7 @@ Another avenue of inquiry concerns *what* animals should eat. For instance, shou
 
 *A note on "prey".* All organisms forage for resources. Plants extend branches toward the light, and proliferate leaves and roots into resource rich patches, and rhizomes grow longer faster through resource-poor soils. Bumblebees search for and learn where to find nectar-rich flowers, and wolves hunt in packs to take down large ungulates. Some bacterivorous nanoflagellates intercept particles selectively depending on the perceived nutritional value of particles [@Boenigk2002]. So, depending on the forager, its "prey" may be $\mathrm{NO}_{3}^-$ ions, nectar, moose, or bacteria. Therefore, we will refer to these resources variously as prey, prey items, resources, and resource items. Some of these ideas are best handled with patch-based models [@Charnov1976b] where a "resource patch" is a more intuitive and useful unit.
 
-*A note on "handle".* All organisms pays costs to consume resources. In OFT, "handle" typically means expending energy an time to attack and subdue prey (predators), proliferate into resource rich areas (plants), exude extra cellular enzymes (fungi); ingest the item(s), and then resume searching.
+*A note on "handle".* All organisms pays costs to consume resources. In OFT, "handle" typically means expending energy and time to attack and subdue prey (predators), proliferate into resource rich areas (plants), exude extra cellular enzymes (fungi); ingest the item(s), and then resume searching.
 
 ## A prey model
 
@@ -40,16 +40,13 @@ Another avenue of inquiry concerns *what* animals should eat. For instance, shou
 
 Let's start where this field started, with a prey-centered model [@MacArthur1966; @Emlen1966]. 
 
-\begin{itemize}
-\item Currency - long-term energy gain per unit time, $G/T$.
-\item Constraints
-\begin{itemize}
-    \item forager can consume only what it encounters.
-    \item forager uses time and energy searching for items and handling items.
-    \item if the forager chooses to pursue an item, searching stops and handling starts.
-    \end{itemize}
-\item Decision rules - the probability that a forager pauses from searching to handle an item.
-\end{itemize}
+
+* Currency - long-term energy gain per unit time, $G/T$.
+* Constraints
+   * forager can consume only what it encounters.
+   * forager uses time and energy searching for items and handling items.
+   * if the forager chooses to pursue an item, searching stops and handling starts.
+* Decision rules - the probability that a forager pauses from searching to handle an item.
 
 The goal is to optimize the currency.
 
@@ -180,7 +177,7 @@ where $t_t + t_r$ is the total time from leaving one patch, traveling to the nex
 
 Intuitively, we can imagine that the long term average rate of energy gain $R$ is unimodal (hump-shaped) in the following scenario (Fig. \@ref(fig:gain)). Upon encountering a patch the forager has no resources and thus $R$ is actually negative due to the costs of traveling to the new patch. As $t_r$ passes and and the forager gains energy ($g(t_r)$ increases), $R$ will increase and become positive. An assumption of the theory (and reality) is that the gain function, $g(t_r)$, decelerates--the rate of energy intake declines as the patch is depleted. With increasing time in the patch and lower rate of energy intake, $R$ starts to decline. 
 
-When $t_r$ is too short, $R$ is not yet maximizes. When $t_r$ is too long, $R$ begins to decline. Because $R$ is hump-shaped, we can use calculus to find its maximum. This will occur when its slope is zero, and the slope of a function, $F$, is its derivative, $F^\prime$. If we asssume that travel time is constant, then we can take the partial derivative of $R$ with respect to just the residence time, $t_r$, $\delta R / \delta t_r$. First, recall the product rule of differentiation: 
+When $t_r$ is too short, $R$ is not yet maximized. When $t_r$ is too long, $R$ begins to decline. Because $R$ is hump-shaped, we can use calculus to find its maximum. This will occur when its slope is zero, and the slope of a function, $F$, is its derivative, $F^\prime$. If we asssume that travel time is constant, then we can take the partial derivative of $R$ with respect to just the residence time, $t_r$, $\delta R / \delta t_r$. First, recall the product rule of differentiation: 
 $$F(x) = g(x)f(x)\quad ; \quad F^\prime(x) =f^\prime(x)g(x) +  f(x)g^\prime(x)$$
 With that we can find the necessary derivative.
 $$\frac{\delta R}{\delta t_r} = - \frac{1}{(t_t+t_r)^2} g(t_r) + \frac{1}{t_t+t_r}g^\prime(t_r)= g^\prime(t_r) - \frac{g(t_r)}{t_t+t_r}=0$$
@@ -211,7 +208,8 @@ Next, we embark on a simulation of the simple prey model. We will start with the
 * equal handling times, $h_1=h_2=1$
 * equal relative abundances, $r_1=r_2=0.5$
 * encounter rates determined by an overall prey encounter rate, $\lambda$, and the relative abundances where $\lambda_i = \lambda r_i$.
-* equal probability of attack if prey is encountered, $p_1=p_2=1$.
+* probability of attack, $p$, $p_1=1$. Probability of type 2 depends on the model. In the standard (all or nothing) model $p_2=1$ if $\frac{e_{2}}{h_{2}} / \frac{\lambda e_1}{1 + \lambda h_1} > 1$, zero otherwise. In a proportion model, $p_2$ is proportional to the ratio.
+* risk, $k$: varies between [0-1] (including 0, 1). Reduces $p$ by $p (1-k)$
 * search cost is constant, $c_s=0.01$
 
 In addition to these properties, our simulation needs several bookkeeping parameters and variables in order to track the forager energy content. It will need to run for a finite amount of time; we'll control that with the total search time, `Total`. Remember that encounter rates are means but that actual encounters are random or stochastic. As a result, our forager may go through lean periods in which their net energy intake is negative.
@@ -223,48 +221,96 @@ optimal.forager <- function(
   e = c(2, 1), # energy content of the prey types
   h = c(.5, .5), # handling times
   r = c(.5, .5), # relative abundance of prey types: sum(r) = 1
-  lambda = 0.4, # overal encounter rate, for all prey combined
-  p = c(1,1), # prob. of attack if encountered
+  lambda = .4, # overal encounter rate, for all prey combined
+  p = 1, # prob. of attack if encountered
+  type=0, # 0 = all or nothing
+  risk = 0,
   cs = 0.4, # cost of searching per unit time
   Total = 10 # limit to foraging time
   ) {
 ###############
+  
+  # rate of encounter PER PREY TYPE based on relative abundance
+  (lambda.r <- lambda * r)
+  
+  ## relative profitability of item 2
+  # raw varies (0, big)
+  (raw.profit <- (e[2]/h[2]) / 
+    (lambda.r[1]*e[1]/(1+lambda.r[1]*h[1]) ) )
+# rel.profit varies (0,1)
+  ( rel.profit <- min( c(raw.profit, 1) ) )
+  
 ### begin foraging
-ec <- NULL # an object to tally gains and costs.
+  
+ec <- NULL # an object to tally energy gains and costs.
+id <- NULL # an object to tally which species is actually selected
 cycle <- 0 # the cycle count (= search, choose and maybe attack and eat)
-ct <- 0 # start time of the cyclesan object to tally cycle times.
+ct <- 0 # start time of the cycles; an object to tally cycle times.
 elapsed.time <- 0 # total time spent foraging
 while( elapsed.time < Total ) {
   # count which search cycle we're on
   (cycle <- cycle + 1)
   
-  # a random amount of search time, t.s, until it finds something.
-  (lambda.r <- lambda * r)
+  # # a random amount of search time, t.s, until it finds one prey type or the other
   (ts <- rexp(2, rate=lambda.r))
+  
+  # if the time to find prey type 1 < than the other type is 1 other wise type 2.
   if(ts[1] < ts[2]) i <- 1 else i <- 2
   i
   # cost of searching for that time
   (cost.s <- ts[i] * cs)
 
-  # choose to attack the encountered item with probability p
-  (gain <- if(p[i] > runif(1)){e[i]} else {0})
+  # choose with probability p to attack the encountered item 
+  # depends on e_2/h_2
+  if(i == 2){
+    if(type==0) {
+      if(raw.profit > 1 ) {p <- 1} else{ p <- 0}
+    } else {
+      p <- rel.profit
+    }
+  } 
   
+  # track prey item type
+  this.id <- i
+  if(this.id==2 & p==0) this.id <- NA
+  (id <- c(id, this.id))
+  p
+  p2 <- p * (1-risk)
+  
+  (gain <- if(p2 > runif(1)){e[i]} else {0} )
+  
+  # reset 
   # observed handling time 
+  # if something is eaten...
   if(gain > 0 ){
+    # then observed handling time is h_i
     h.obs <- h[i]
-    h.obs
+    
   } else {
+    # otherwise there is no handling
     h.obs <- 0
   }
-   h.obs
+   
+  # cycle time increases if there is handling
  (cycle.time <- ts[i] + h.obs )
+  # combine the vector of times with the new cycle time. 
  ct <- c(ct, cycle.time)
+ 
+ # total time spent foraging increases 
  (elapsed.time <- elapsed.time + cycle.time)
+ 
+ # # combine vector of energies with new observed net energy
  (ec <- c(ec, gain - cost.s))
 }
+
+## organize and output
 df <- data.frame(net.e = ec, cycle.start = cumsum(ct[1:cycle]))
-params <- list(e=e, h=h, r=r, lambda=lambda, p=p, cs=cs, Total=Total)
+params <- list(e=e, h=h, r=r, lambda=lambda, type=type, p=p, risk=risk, cs=cs, Total=Total)
+id.rmna <- id[!is.na(id)]
   out <- list(N = cycle, G = sum(ec), Tt = sum(ct), 
+              id=id,
+              R = sum(ec)/sum(ct),
+              prop1 = sum(id.rmna==1)/length(id.rmna),
               series = df,
               params = params)
   return(out)
@@ -306,19 +352,23 @@ Prediction: Include type 2 if
 
 par(mar=c(5,4,1,0), mgp=c(1.5,.4,0) ) # set figure margins in "lines"
 layout(matrix(1:2, nr=1))
-with(as.list(myOut$params),{
-l1 <- lambda * r[1]
+with(
+  as.list(myOut$params),{
+    
+    l1 <- lambda * r[1]
   curve(l1*x/(1 + l1*h[1]), 0, 20, xlab=bquote(e[1]),
       ylab=bquote( lambda[1]*e[1] / (1+lambda[1]*h[1])))
 abline(h=e[2]/h[2], lty=2); text(0, e[2]/h[2], bquote(e[2]/h[2]), adj=c(0,-.1))
+
 } )
 
 
-with(as.list(myOut$params),{
+with(as.list(myOut$params), {
 l1 <- lambda * r[1]
   curve(x*e[1]/(1 + x*h[1]), 0, 20, xlab=bquote(lambda[1]),
       ylab=bquote( lambda*e[1] / (1+l1*h[1])))
 abline(h=e[2]/h[2], lty=2); text(0, e[2]/h[2], bquote(e[2]/h[2]), adj=c(0,-.1))
+
 } )
 
 ```
@@ -340,17 +390,29 @@ unlist( myOut$params )
 # run it with both types ( p = (1,1) ) and then only type 1 (p=(1,0)) and
 # then test whether G/T [both] is higher or lower than G/T [best only]
 
-prey.test <- function(Total=100,...) {
-  # run with both types
-  both <- optimal.forager(p=c(1,1),...)
-  # run with the better type only
-  best <- optimal.forager(p=c(1,0),...)
-  # Compare long term average energy gain as
-  # both / best, where > 1 argues for including both
-  (both$G/both$Tt) / (best$G/best$Tt)
-}
+reps <- 1000
+## run with both types
+R1 <- replicate(reps, 
+            optimal.forager(Total=100, 
+                            e=c(2,1)
+                            )$prop1 
+  )
+  
+## run with the better type only
+R2 <- replicate(reps,
+                      optimal.forager(Total=100, 
+                            e=c(15,1)
+                            )$prop1
+  )
+  
+  
+out <- data.frame(
+    Prey= rep(c("One", "Two"), each=reps),
+    Prop.prey.1 = c(R1, R2)
+  )
 
-reps <- replicate(5, prey.test(Total=10000, e=c(5,2), cs=.01) )
-reps
-# use summary to summarize your replicate simulations
+ggplot(out, aes(Prop.prey.1, colour=Prey)) + geom_density()
+
+## Try this with 1000 instead of 5 replicates
+
 ```
