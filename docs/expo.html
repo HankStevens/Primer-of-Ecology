@@ -117,19 +117,20 @@ fundamental process of geometric increase. Second, populations can grow in a den
 <span class="va">N</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">2</span>, <span class="fl">4</span>, <span class="fl">8</span>, <span class="fl">16</span><span class="op">)</span>
 <span class="fu">qplot</span><span class="op">(</span>x<span class="op">=</span><span class="va">t</span>, y<span class="op">=</span><span class="va">N</span>, geom<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"line"</span>, <span class="st">"point"</span><span class="op">)</span> <span class="op">)</span></code></pre></div>
 <div class="inline-figure"><img src="figs/flies-1.png" width="60%"></div>
-<p>There are several ways we can describe fruit fly population growth. We begin by thinking about the proximate causes of change to population size per unit time: births, immigration, death and emigration (Fig. <a href="expo.html#fig:fliesi">3.3</a>). Those are the only options, and we state it thus:
+<p>There are several ways we can describe fruit fly population growth. Here, we choose to begin by considering the proximate causes of change to population size per unit time: the numbers of births, immigration, death and emigration (Fig. <a href="expo.html#fig:fliesi">3.3</a>). Those are the only options, and we state it thus:
 <span class="math display">\[\frac{\Delta N}{\Delta t} = \frac{B + I - D - E}{\Delta t}\]</span>
-that is, the pop growthe rate<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;“Delta” N is the change in N.&lt;/p&gt;"><sup>17</sup></a> is determined by the numbers of births, deaths, and migrants per unit time.</p>
-<p>Over the past month, I suspect the fruit flies are increasing primarily through reproduction in my kitchen. Clearly, at some point in the past, a fly or two (or three) must have immigrated into my kitchen, either as adults or as eggs or larvae in fruit I brought home (<span class="math inline">\(I&gt;0\)</span>). For now, I will assume fruit fly population dynamics in my kitchen are governed by only births and deaths (<span class="math inline">\(I=E=0\)</span>), so, we have
+that is, the change in numbers of individuals per unit time<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;“Delta” N is the change in N.&lt;/p&gt;"><sup>17</sup></a> is determined by the numbers of births, deaths, and migrants per unit time.</p>
+<p>Over the past month, I suspect the fruit flies are increasing primarily through reproduction in my kitchen. Clearly, at some point in the past, a fly or two (or three) must have immigrated into my kitchen, either as adults or as eggs or larvae in fruit I brought home (<span class="math inline">\(I&gt;0\)</span>). For now, I will assume fruit fly population dynamics in my kitchen are governed by only births and deaths (<span class="math inline">\(I=E=0\)</span>). We refer to a population like this as <em>closed</em>, because it is closed to migration in or out.</p>
+<p>If I counted the number of flies last week and again this week, I can calculate the change over one month. We have
 <span class="math display">\[ \frac{N_{t+1} - N_t}{(t+1) - t}=\frac{\Delta N}{\Delta t}=\frac{B+D}{\Delta t}\]</span>
-In this equation, <span class="math inline">\(t\)</span> has a particular time unit, one week, so <span class="math inline">\(t+1\)</span> is one additional week. We refer to a population like this as <em>closed</em>, because it is closed to migration in or out.</p>
+In this equation, <span class="math inline">\(t\)</span> has a particular time unit, one week, so <span class="math inline">\(t+1\)</span> is one additional week.</p>
 <div class="figure">
 <span style="display:block;" id="fig:fliesi"></span>
 <img src="figs/fliesi-1.png" alt="The number of fruit flies in my kitchen depends on immigration and emigration, and births and deaths. In the text, we assume that immigration and emigration are zero. All rates are individuals per unit time." width="100%"><p class="caption">
 Figure 3.3: The number of fruit flies in my kitchen depends on immigration and emigration, and births and deaths. In the text, we assume that immigration and emigration are zero. All rates are individuals per unit time.
 </p>
 </div>
-<p>I would like to represent births and deaths as proportions of existing adults. that is, as
+<p>Because adults give rise to offspring, we can represent births and deaths as proportions of existing adults. That is, as per capita rates of birth and death, as
 <span class="math display">\[B = bN;\quad D=dN\]</span>
 This reflects the biological realities that adults produce offspring, and everyone has some chance of dying. The parameter <span class="math inline">\(b\)</span> could be any positive real number, <span class="math inline">\(b \ge 0\)</span>. This model of births reflects the geometric property of reproduction: over a specified time interval <span class="math inline">\(\Delta t\)</span>, an average parent makes <span class="math inline">\(b\)</span> babies. Parameter <span class="math inline">\(d\)</span> is any real number between zero and one, <span class="math inline">\(0 \le d \le 1\)</span>. Both <span class="math inline">\(b\)</span> and <span class="math inline">\(d\)</span> have units of individuals per individual per unit time. They depend on that unit of time.</p>
 <p><em>What if offspring die before the next census?</em></p>
@@ -139,23 +140,18 @@ This reflects the biological realities that adults produce offspring, and everyo
 <li>
 <span class="math inline">\(N_0\)</span>, <span class="math inline">\(N_1\)</span> - the number of flies at the start and after the first time interval.</li>
 <li>
-<span class="math inline">\(N^\prime\)</span>, <span class="math inline">\(N^{\prime\prime}\)</span> - distinct values of <span class="math inline">\(N\)</span>, just after births.</li>
+<span class="math inline">\(N^\prime\)</span>, <span class="math inline">\(N^{\prime\prime}\)</span> - distinct values of <span class="math inline">\(N\)</span>, after births, but before <span class="math inline">\(N_1\)</span>.</li>
 <li>
 <span class="math inline">\(\Delta N\)</span> - the <em>change</em> in <span class="math inline">\(N\)</span> from one point in time to another.</li>
 <li>
 <span class="math inline">\(t\)</span> is time, so <span class="math inline">\(\Delta t\)</span> is the time interval over which <span class="math inline">\(N\)</span> may change.</li>
 </ul>
-<p>Let’s match these numbers to what is going on in my kitchen. For my first census count, <span class="math inline">\(t=0\)</span>, I counted the adults and label that number <span class="math inline">\(N_0\)</span>. These adults lay eggs which hatch, larvae and pupae develop, and become adults, giving us a population of <span class="math inline">\(N^\prime = N_0 + bN\)</span></p>
+<p>Let’s match these numbers to what is going on in my kitchen. For my first census count, at <span class="math inline">\(t=0\)</span>, I counted the adults and label that number <span class="math inline">\(N_0\)</span>. These adults lay eggs which hatch, and then larvae and pupae develop, and become adults, giving us a population of <span class="math inline">\(N^\prime = N_0 + bN\)</span></p>
 <p>Some of the eggs fail to hatch, and some of the larvae die
-before maturing. Many of the adults die as well. If we assume the eggs,
-larvae, and adults all die at the same rate, then by the end of one
-generation we have <span class="math inline">\(N_1 = dN^\prime = d(N_0 + bN)\)</span>.</p>
+before maturing. Many of the adults die as well. If we assume the eggs, larvae, and adults all die at the same rate, then by the end of one generation we have <span class="math inline">\(N_1 = dN^\prime = d(N_0 + bN)\)</span>.</p>
 <p>Substituting and multiplying we get
 <span class="math display">\[ N_1 = N_0 + bN_0 - d\left(N_0 + bN_0\right)\]</span></p>
-<p>We see that by the next time point, <span class="math inline">\(t=1\)</span>, the number of fruit flies
-should be equal to the number we started with, <span class="math inline">\(N_0\)</span>, plus the number
-of new individuals, <span class="math inline">\(bN_0\)</span>, minus the number of original adults that
-die, <span class="math inline">\(dN_0\)</span>, and minus the number of new individuals that die, <span class="math inline">\(dbN_0\)</span>.</p>
+<p>We see that by the next time point, <span class="math inline">\(t=1\)</span>, the number of fruit flies should be equal to the number we started with, <span class="math inline">\(N_0\)</span>, plus the number of new individuals, <span class="math inline">\(bN_0\)</span>, minus the number of original adults that die, <span class="math inline">\(dN_0\)</span>, and minus the number of new individuals that die, <span class="math inline">\(dbN_0\)</span>.</p>
 <p>We can pull all of these parameters together,
 <span class="math display">\[ N_1 = N_0 + bN_0 - dN_0 - dbN_0 \]</span>
 <span class="math display" id="eq:bddb">\[ N_1 - N_0 =  N_0 \left(b - d - db\right)
@@ -163,7 +159,7 @@ die, <span class="math inline">\(dN_0\)</span>, and minus the number of new indi
 <p>where <span class="math inline">\(r_d = b - d - db\)</span>.</p>
 <p>The <em>growth rate</em> of the population is <span class="math inline">\(\Delta N / \Delta t\)</span>, or, at <span class="math inline">\(t=0\)</span>, is
 <span class="math display">\[\frac{\Delta N}{\Delta t} = \frac{N_1 - N_0}{t_1-t_0} = \frac{(N_0 + r_dN_0) - N_0}{t_1-t_0} = r_d N_0 \]</span>
-If we generalize, we drop the zero, to get <span class="math inline">\(r_dN\)</span>. The <em>per capita</em> population growth rate is <span class="math inline">\(r_dN/N =r_d\)</span>). If our time step were something other than 1, we would also divide by <span class="math inline">\(\Delta t\)</span>.</p>
+If we generalize, we drop the zero, to get <span class="math inline">\(r_dN\)</span>. The <em>per capita</em> population growth rate is <span class="math inline">\(r_dN/N =r_d\)</span>. If our time step were something other than 1, we would also divide by <span class="math inline">\(\Delta t\)</span>.</p>
 <p>With the simple census data above, we can
 estimate <span class="math inline">\(r_d\)</span> for the first time step.
 <span class="math display">\[N_1 = N_0 + r_dN_0=  2 + r_d (2) \implies r_d=1\]</span>
@@ -186,17 +182,21 @@ or simply,
 <h2>
 <span class="header-section-number">3.2</span> Fruit flies with continuous overlapping generations<a class="anchor" aria-label="anchor" href="#fruit-flies-with-continuous-overlapping-generations"><i class="fas fa-link"></i></a>
 </h2>
-<p>In the reality that is my kitchen, individual fruit flies are having sex and reproducing on their own schedules. As a population, they breed continuously, so the cohorts re not synchronous. For populations like that, we need to describe instantaneous growth rates, where <span class="math inline">\(\Delta t\)</span> is no longer a fixed period of time, but is an instant, or infinity small.</p>
-<p>We return to our example above (Fig. <a href="expo.html#fig:fliesi">3.3</a>), which we summarize in <a href="expo.html#eq:bddb">(3.1)</a>. Please take a look at that equation; here we make time explicit so that it appears in the equation. We begin by remembering that <span class="math inline">\(b\)</span> and <span class="math inline">\(d\)</span> have time units.</p>
+<p>In the reality that is my kitchen, individual fruit flies are having sex and reproducing on their own schedules. As a population, they breed continuously, so the cohorts are not synchronous. For populations like that, we need to describe instantaneous growth rates, where <span class="math inline">\(\Delta t\)</span> is no longer a fixed period of time, but is an instant, or infinity small.</p>
+<p>We return to our example above (Fig. <a href="expo.html#fig:fliesi">3.3</a>), which we summarize in <a href="expo.html#eq:bddb">(3.1)</a>. Please take a look at that equation. In what follows, we make time more explicit so that it appears in the equation. We begin by remembering that <span class="math inline">\(b\)</span> and <span class="math inline">\(d\)</span> have time units.</p>
 <ul>
-<li>Let <span class="math inline">\(\Delta t\)</span> be a small fraction of <span class="math inline">\(t\)</span>, so that the time step goes from <span class="math inline">\(t\)</span> to <span class="math inline">\(t + \Delta t\)</span>.</li>
-<li>As <span class="math inline">\(\Delta t \rightarrow 0\)</span>, <span class="math inline">\(b\)</span> and <span class="math inline">\(d\)</span> need to shrink as well, to <span class="math inline">\(\Delta t b\)</span> and <span class="math inline">\(\Delta t d\)</span>.</li>
+<li>Let <span class="math inline">\(\Delta t\)</span> be a small fraction of <span class="math inline">\(1\)</span>, so that the time step goes from <span class="math inline">\(t\)</span> to <span class="math inline">\(t + \Delta t\)</span>.</li>
+<li>As <span class="math inline">\(\Delta t\)</span>, shrinks, <span class="math inline">\(b\)</span> and <span class="math inline">\(d\)</span> need to shrink as well, to <span class="math inline">\(\Delta t b\)</span> and <span class="math inline">\(\Delta t d\)</span>.</li>
 <li>
-<span class="math inline">\(dN/dt\)</span> is how we identify the differential equation that is the instantaneous rate of population growth, with lower case <span class="math inline">\(d\)</span> symbolizing infinitesimally small change.</li>
+<span class="math inline">\(dN/dt\)</span> is how we symbolize the instantaneous rate of population growth, with lower case <span class="math inline">\(d\)</span> symbolizing infinitesimally small change; it is a <em>differential equation.</em>
+</li>
 </ul>
 <p>We now have to solve for the limit of <span class="math inline">\(\Delta N /\Delta t\)</span> as <span class="math inline">\(\Delta t\)</span> goes to zero.
-<span class="math display">\[\frac{dN}{dt}=\lim_{\Delta t \rightarrow 0} \frac{N_{t+\Delta t} - N_t}{\Delta t} = \lim_{\Delta t \rightarrow 0} \frac{\Delta t\,bN_t - \Delta t \,dN_t - \Delta t\, d (\Delta t\, b)N_t}{\Delta t} \]</span>
-If we divide through by <span class="math inline">\(\Delta t\)</span> and then let <span class="math inline">\(\Delta t \rightarrow 0\)</span>, we get
+<span class="math display">\[\frac{dN}{dt}=\lim_{\Delta t \rightarrow 0} \frac{N_{t+\Delta t} - N_t}{\Delta t}  \]</span>
+This means that the instantaneous rate of change of <span class="math inline">\(N\)</span> is equal to the limit (as delta t approaches zero) of the difference in <span class="math inline">\(N\)</span>’s of the time interval, delta t.</p>
+<p>Substituting, we get,
+<span class="math display">\[\frac{dN}{dt} = \lim_{\Delta t \rightarrow 0} \frac{\Delta t\,bN_t - \Delta t \,dN_t - \Delta t\, d (\Delta t\, b)N_t}{\Delta t} \]</span></p>
+<p>If we divide through by <span class="math inline">\(\Delta t\)</span> and then let <span class="math inline">\(\Delta t \rightarrow 0\)</span>, we get
 <span class="math display">\[\frac{dN}{dt}=\lim_{\Delta t \rightarrow 0} bN_t - dN_t - \Delta t\, d bN_t = bN_t - dN_t=rN\]</span></p>
 <p>To arrive at the projection equation for a continuously growing population, we integrate <span class="math inline">\(rN\)</span> with respect to time. Integration is the cumulative summing of <span class="math inline">\(y\)</span> across a range of <span class="math inline">\(x\)</span>. It even uses an exagerated “S” to indicate summation, <span class="math inline">\(\int\)</span>. Here we integrate population growth across time. We start by rearranging
 <span class="math display">\[\frac{dN}{dt} = rN \Rightarrow \frac{dN}{N} = r dt\]</span></p>
@@ -252,7 +252,7 @@ This gives us a few useful rules of thumb.</p>
 <span class="va">lambda2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html">exp</a></span><span class="op">(</span><span class="va">r2</span><span class="op">)</span>; <span class="va">lambda2</span></code></pre></div>
 <pre><code>## [1] 1.015309</code></pre>
 <p>This is very, very different than <span class="math inline">\(\lambda/12\)</span>.</p>
-<p><em>Doubling time</em> Sometimes we gain a more intuitive grasp of an idea when we convert to a different form of the same relationship. Exponential growth is one of those ideas that can be hard to grasp. A more intuitive way to compare or express exponential grwoth rate is through <em>doubling time</em>, the time required for the population to double in size. For instance, a per capita growth rate of <span class="math inline">\(r = 0.14\,\mathrm{inds}\cdot \mathrm{ind}^{-1} \mathrm{y}^{-1}\)</span> means that the population will double in less than 5 years.</p>
+<p><em>Doubling time</em> Sometimes we gain a more intuitive grasp of an idea when we convert to a different form of the same relationship. Exponential growth is one of those ideas that can be hard to grasp. A more intuitive way to compare or express exponential growth rate is through <em>doubling time</em>, the time required for the population to double in size. For instance, a per capita growth rate of <span class="math inline">\(r = 0.14\,\mathrm{inds}\cdot \mathrm{ind}^{-1} \mathrm{y}^{-1}\)</span> means that the population will double in less than 5 years.</p>
 <p>We determine this by letting <span class="math inline">\(N_t = 2N_0\)</span>.
 <span class="math display">\[2N_0 = N_0 e^{rt}\]</span>
 <span class="math display">\[\ln 2 = rt\]</span>
@@ -294,7 +294,7 @@ Figure 3.4: Doubling time is inversely related to the intrinsic rate of increase
 <span class="co"># Now we do the annual changes which should equal N3</span>
 <span class="va">N</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span><span class="op">*</span><span class="va">R</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span><span class="op">*</span><span class="va">R</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span><span class="op">*</span><span class="va">R</span><span class="op">[</span><span class="fl">3</span><span class="op">]</span></code></pre></div>
 <pre><code>## [1] 15</code></pre>
-<p>From this calculation, we see that when we start with <span class="math inline">\(N_0=20\)</span> and do the annaul steps, we wind up with a smaller population, even though the arithmetic average is <span class="math inline">\(R_{\mathrm{ave}} = 1\)</span>. How do we calculate an average of numbers that we multiply together?</p>
+<p>From this calculation, we see that when we start with <span class="math inline">\(N_0=20\)</span> and do the annual steps, we wind up with a smaller population, even though the arithmetic average is <span class="math inline">\(R_{\mathrm{ave}} = 1\)</span>. How do we calculate an average of numbers that we multiply together?</p>
 <p>We want a number <span class="math inline">\(\bar{R}\)</span> such that
 <span class="math display">\[\bar{R}^t = R_1R_2\ldots R_t\]</span></p>
 <p>To find that, we simply solve for <span class="math inline">\(\bar{R}\)</span>
@@ -362,23 +362,22 @@ Figure 3.5: Random variation in growth rate alters the long term average growth 
 <h2>
 <span class="header-section-number">3.4</span> Modeling with Data: Simulated Dynamics<a class="anchor" aria-label="anchor" href="#modeling-with-data-simulated-dynamics"><i class="fas fa-link"></i></a>
 </h2>
-<p>Science strives to make predictions about about the behavior of systems.
-Ecologists and conservation biologists frequently strive to predict the fate of populations. This is referred to as <em>population viability analysis</em> (PVA) and is a large field of endeavor that is vital to managing threatened populations. Here we put into practice ideas about population biology to make informed predictions about the fate of the Song Sparrow population in Darrtown, OH. We also illustrate simple computational methods for doing so.</p>
+<p>Science strives to make predictions about the behavior of systems. Ecologists and conservation biologists frequently strive to predict the fate of populations. This is referred to as <em>population viability analysis</em> (PVA) and is a large field of endeavor that is vital to managing threatened populations. Here we put into practice ideas about population biology to make informed predictions about the fate of the Song Sparrow population in Darrtown, OH. We also illustrate simple computational methods for doing so.</p>
 <p>The preceding sections (the bulk of the chapter) emphasized understanding the deterministic underpinnings of simple forms of density independent growth: geometric and exponential growth. This section explores the stochastic simulation of density independent growth. Our simulation makes most of the same assumptions we made at the beginning of the chapter. In addition, we assume that the observed annual growth rates (<span class="math inline">\(N_{t+1}/N_t\)</span>) are representative of future growth rates, and that the growth rate in one year is entirely independent of any other year.</p>
-<p>To make meaning full projections of future population size, we should quantify the uncertainty with our guess. Simulation is one way we can project populations and quantify the uncertainty. The way one often does that is to use the original data and sample it randomly to calculate model parameters. This way, the simulations are random, but based on our best available knowldge, i.e., the real data. The re-use of observed data occurs in many guises, and it is known often as bootstrapping or resampling.</p>
-<p>In a highly influential paper on miminmum population sizes in conservation, <span class="citation"><a href="references.html#ref-Shaffer1981" role="doc-biblioref">Shaffer</a> (<a href="references.html#ref-Shaffer1981" role="doc-biblioref">1981</a>)</span> identifies four different types of noise or stochasticity that are important in driving variability in populations. The first of these is <em>demographic stochasticity</em>. This is the random or more correctly stochastic nature of individual births and deaths. Due to this element of random chance, individuals may live or die, produce offspring or not. As a result, population size will fluctuation randomly. This is very important in small populations, and becomes increasingly unimportant in larger and larger populations. This is the same process that underlies genetic drift in small populations.</p>
+<p>To make meaningful projections of future population size, we should quantify the uncertainty with our guess. Simulation is one way we can project populations and quantify the uncertainty. The way one often does that is to use the original data and sample it randomly to calculate model parameters. This way, the simulations are random, but based on our best available knowledge, i.e., the real data. The re-use of observed data occurs in many guises, and it is known often as bootstrapping or resampling.</p>
+<p>In a highly influential paper on miminmum population sizes in conservation, <span class="citation"><a href="references.html#ref-Shaffer1981" role="doc-biblioref">Shaffer</a> (<a href="references.html#ref-Shaffer1981" role="doc-biblioref">1981</a>)</span> identifies four different types of noise or stochasticity that are important in driving variability in populations. The first of these is <em>demographic stochasticity</em>. This is the random-like or stochastic nature of individual births and deaths. Due to this element of random chance, individuals may live or die, produce offspring or not. As a result, population size will fluctuation randomly. This is very important in small populations, and becomes increasingly unimportant in larger and larger populations. This is the same process that underlies genetic drift in small populations.</p>
 <p>Another source of variation <span class="citation"><a href="references.html#ref-Shaffer1981" role="doc-biblioref">Shaffer</a> (<a href="references.html#ref-Shaffer1981" role="doc-biblioref">1981</a>)</span> identifies is <em>environmental stochasticity</em>. This is temporal variation in birth or death rates that affects all individuals to a similar degree, due to variation in the population’s biotic or abiotic environment.</p>
 <p>The last sources of variation are <em>genetic stochasticity</em> and <em>natural catastrophes</em>. Perhaps the latter of these is the most difficult to deal with, because catastrophes are, by definition, enormously consequential and unpredictable.</p>
-<p>Given these sources of uncertainty, <span class="citation"><a href="references.html#ref-Shaffer1981" role="doc-biblioref">Shaffer</a> (<a href="references.html#ref-Shaffer1981" role="doc-biblioref">1981</a>)</span> defines <em>minimum population size</em> (MVP) thus,</p>
+<p>Given these sources of uncertainty, <span class="citation"><a href="references.html#ref-Shaffer1981" role="doc-biblioref">Shaffer</a> (<a href="references.html#ref-Shaffer1981" role="doc-biblioref">1981</a>)</span> defines <em>minimum viable population</em> size (MVP) thus,</p>
 <p>“<em>A minimum viable population for any given species in any given habitat is the smallest isolated population having a 99% chance of remaining extant for 1000 y despite foreseeable effects of demographic, environmental and genetic stochasticity, and natural catastrophes.</em>”</p>
 <p>In our simulations, we take one approach to simulating a population of Song Sparrows. The computational approaches includes a variety of tricks that you could use in a more serious approach to population projection and determining probabilities of extinction. In their supplemental documentation, <span class="citation"><a href="references.html#ref-Chaudhary_2019" role="doc-biblioref">Chaudhary and Oli</a> (<a href="references.html#ref-Chaudhary_2019" role="doc-biblioref">2019</a>)</span> provide an excellent list of criteria to evaluate your own or someone else’s approach to PVA.</p>
 <div id="data-based-approaches" class="section level3" number="3.4.1">
 <h3>
 <span class="header-section-number">3.4.1</span> Data-based approaches<a class="anchor" aria-label="anchor" href="#data-based-approaches"><i class="fas fa-link"></i></a>
 </h3>
-<p>We could use the observed <em>changes</em> in population counts <span class="math inline">\(R_t=N_{t+1}/N_t\)</span> as our data. We would then draw an <span class="math inline">\(R_t\)</span> at random from among the many observed values, and project the population one year forward. We then repeat this into the future, say, for ten years. Each simulation of a ten year period will result in a different ten year trajectory because we draw <span class="math inline">\(R_t\)</span> at random from among the observed <span class="math inline">\(R_t\)</span>. However, if we do many such simulations, we will have a <em>distribution</em> of outcomes that we can describe with simple statistics (e.g., median, mean, quantiles).</p>
+<p>We will use the observed <em>changes</em> in population counts <span class="math inline">\(R_t=N_{t+1}/N_t\)</span> as our data. We draw an <span class="math inline">\(R_t\)</span> at random from among the many observed values, and project the population one year forward. We then repeat this into the future, say, for ten years. Each simulation of a ten year period will result in a different ten year trajectory because we draw <span class="math inline">\(R_t\)</span> at random from among the observed <span class="math inline">\(R_t\)</span>. However, if we do many such simulations, we will have a <em>distribution</em> of outcomes that we can describe with simple statistics (e.g., median, mean, quantiles).</p>
 <p>A different approach would be to estimate the individual probabilities of births and deaths in the entire Darrtown population, and use those probabilities and birth rates to simulate the entire population into the future. In such an <em>individual-based simulation</em>, we would simulate the fates of individuals, keeping track of all individual births and deaths.</p>
-<p>There are myriad other approaches, but these give you a taste of what might be possible. In this section we focus on the first of these alternatives, in which we use observed <span class="math inline">\(R_t\)</span> to simulate the dynamics of Song Sparrow counts. Do do so, in part, because we have those data, while we do not have any estimates of birth rates or death rates.</p>
+<p>There are myriad other approaches, but these give you a taste of what might be possible. In this section we focus on the first of these alternatives, in which we use observed <span class="math inline">\(R_t\)</span> to simulate the dynamics of Song Sparrow counts. We do so, in part, because we have those data, while we do not have any estimates of birth rates or death rates.</p>
 <p>Here we investigate Song Sparrow (<em>Melospize melodia</em>) dynamics using data from the annual U.S. Breeding Bird Survey (<a href="http://www.mbr-pwrc.usgs.gov/" class="uri">http://www.mbr-pwrc.usgs.gov/</a> bbs/). Below we will</p>
 <ol style="list-style-type: decimal">
 <li>create and examine visually the data (annual <span class="math inline">\(R\)</span>’s),</li>
@@ -392,14 +391,14 @@ Ecologists and conservation biologists frequently strive to predict the fate of 
 <h3>
 <span class="header-section-number">3.4.2</span> Creating and visualizing the data<a class="anchor" aria-label="anchor" href="#creating-and-visualizing-the-data"><i class="fas fa-link"></i></a>
 </h3>
-<p>Let’s start by graphing the data<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;I’ve come to abhor my use of the expression “look at”; I use it when I don’t say what I mean. “Look at” can mean alomst anything these days, and it rarely means only “looking at”…&lt;/p&gt;"><sup>18</sup></a>. <em>Graphing the data is always a good idea — it is a principle of working with data</em>. We first load the data from the <code>primer</code> R package, and look at the names of the data frame. We then choose to <code>attach</code> the data frame, because it makes the code easier to read.<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;Don’t use &lt;code&gt;attach&lt;/code&gt; for anything important&lt;/p&gt;"><sup>19</sup></a></p>
+<p>Let’s start by graphing the data<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;I’ve come to abhor my use of the expression “look at”; I use it when I don’t say what I mean. “Look at” can mean almost anything, but it rarely means only “looking at”…&lt;/p&gt;"><sup>18</sup></a>. <em>Graphing the data is always a good idea — it is a principle of working with data</em>. We first load the data from the <code>primer</code> R package, and look at the names of the data frame. We then choose to <code>attach</code> the data frame, because it makes the code easier to read.<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;Don’t use &lt;code&gt;attach&lt;/code&gt; for anything important&lt;/p&gt;"><sup>19</sup></a></p>
 <div class="sourceCode" id="cb54"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">primer</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="va">sparrows</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="va">sparrows</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">primer</span><span class="op">)</span> <span class="co"># load the primer package</span>
+<span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="va">sparrows</span><span class="op">)</span> <span class="co"># load a built-in data set</span>
+<span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="va">sparrows</span><span class="op">)</span> <span class="co"># extract the names of the columns in the data frame</span></code></pre></div>
 <pre><code>## [1] "Year"           "Count"          "ObserverNumber"</code></pre>
 <div class="sourceCode" id="cb56"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/attach.html">attach</a></span><span class="op">(</span><span class="va">sparrows</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/attach.html">attach</a></span><span class="op">(</span><span class="va">sparrows</span><span class="op">)</span> <span class="co"># put the columns in R's search path</span></code></pre></div>
 <p>Now we plot these counts through time (Fig. <a href="expo.html#fig:cts">3.6</a>).</p>
 <div class="sourceCode" id="cb57"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu">ggplot</span><span class="op">(</span>data<span class="op">=</span><span class="va">sparrows</span>, <span class="fu">aes</span><span class="op">(</span>x<span class="op">=</span><span class="va">Year</span>, y<span class="op">=</span><span class="va">Count</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> <span class="fu">geom_line</span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> <span class="fu">geom_point</span><span class="op">(</span>pch<span class="op">=</span><span class="fl">1</span><span class="op">)</span></code></pre></div>
@@ -412,7 +411,7 @@ Figure 3.6: Observations of Song Sparrows in Darrtown, OH (<a href="http://www.m
 <p>We see that Song Sparrow counts at this site (the DARRTOWN transect, OH, USA) fluctuated a fair bit between 1966 and 2003. They never were completely absent and never exceeded <span class="math inline">\(\sim 120\)</span> individuals.</p>
 <p>Next we calculate annual <span class="math inline">\(R_t=N_{t+1}/N_t\)</span>, that is, the observed growth rate for each year <span class="math inline">\(t\)</span>.</p>
 <div class="sourceCode" id="cb58"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># the use of [-1[ in the index tells R to exclude the first element.</span>
+<code class="sourceCode R"><span class="co"># the use of [-1] in the index tells R to exclude the first element.</span>
 <span class="co"># length() is the length of a vector, so [-length(X)] means exclude the last</span>
 <span class="va">obs.R</span> <span class="op">&lt;-</span> <span class="va">Count</span><span class="op">[</span><span class="op">-</span><span class="fl">1</span><span class="op">]</span><span class="op">/</span><span class="va">Count</span><span class="op">[</span><span class="op">-</span><span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span><span class="op">(</span><span class="va">Count</span><span class="op">)</span><span class="op">]</span></code></pre></div>
 <p>Thus our <em>data</em> are the observed <span class="math inline">\(R_t\)</span>, not the counts <em>per se</em>. These <span class="math inline">\(R\)</span> form the basis of everything else we do. Because they are so important, let’s plot these as well. Let’s also indicate <span class="math inline">\(R=1\)</span> with a horizontal dotted line as a visual cue for zero population growth. Note that we exclude the last year because each <span class="math inline">\(R_t\)</span> is associated with <span class="math inline">\(N_t\)</span> rather than <span class="math inline">\(N_{t+1}\)</span>.</p>
@@ -443,10 +442,10 @@ Figure 3.7: Annual growth rates (R=N[t+1]/N[t]) for Song Sparrows
 <p>First, we decide how many years we want to simulate growth, and create an empty vector that will hold our data.</p>
 <div class="sourceCode" id="cb60"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">years</span> <span class="op">&lt;-</span> <span class="fl">10</span>
-<span class="va">N</span> <span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/base/numeric.html">numeric</a></span><span class="op">(</span><span class="va">years</span><span class="op">+</span><span class="fl">1</span><span class="op">)</span> <span class="co"># rep(0,years+1) would do the same thing.</span></code></pre></div>
-<p>Our vector of <span class="math inline">\(N\)</span> has to be one longer than the number of <span class="math inline">\(R\)</span> we use. This is because each <span class="math inline">\(R\)</span> is sthe change <em>from one year to the next</em> and there will always be one more <em>next</em> than there is <span class="math inline">\(R\)</span>.</p>
-<p>Next we draw 10 <span class="math inline">\(R\)</span> at random with replacement. This is just like having all 35 observed <span class="math inline">\(R\)</span> written down on slips of paper and dropped into a paper bag. We then draw one slip of paper out of the bag, write the number down, and put the slip of paper back in the bag, and then repeat this 9 more times. This is <em>resampling with replacement</em>. In that case, we would be assuming that all of these <span class="math inline">\(R_t\)</span> are important and will occur at some point, but we just don’t know when—they constitute the entire universe of possiblities. The R function <em>sample</em> will do this.
-[A random process occurs only in our imagination, or perhaps at the quantum level.<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;Random, pseudorandom, and stochastic processes.&lt;/p&gt;"><sup>20</sup></a> A stochastic process is one which we treat operationally as random while acknowledging that there are complex underlying deterministic drivers. A pseudorandom process is a completely deterministic and hidden process used by computers and their programmers to generate numbers that cannot be distinguished from random; we can repeat a pseudorandom process by stipulating a key hidden starting point.]</p>
+<span class="va">N</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html">numeric</a></span><span class="op">(</span><span class="va">years</span><span class="op">+</span><span class="fl">1</span><span class="op">)</span> <span class="co"># rep(0,years+1) would do the same thing.</span></code></pre></div>
+<p>Our vector of <span class="math inline">\(N\)</span> has to be one longer than the number of <span class="math inline">\(R\)</span> we use. This is because each <span class="math inline">\(R\)</span> is the change <em>from one year to the next</em> and there will always be one more <em>next</em> than there is <span class="math inline">\(R\)</span>.</p>
+<p>Next we draw 10 <span class="math inline">\(R\)</span> at random with replacement. This is just like having all 35 observed <span class="math inline">\(R\)</span> written down on slips of paper and dropped into a paper bag. We then draw one slip of paper out of the bag, write the number down, and put the slip of paper back in the bag, and then repeat this 9 more times. This is <em>resampling with replacement</em>. In that case, we would be assuming that all of these <span class="math inline">\(R_t\)</span> are important and will occur at some point, but we just don’t know when—they constitute the entire universe of possibilities. The R function <em>sample</em> will do this.</p>
+<p>Terminology: A random process occurs only in our imagination, or perhaps at the quantum level. A stochastic process is one which we treat operationally as random while acknowledging that there are complex underlying deterministic drivers. A pseudorandom process is a completely deterministic and hidden process used by computers and their programmers to generate numbers that cannot be distinguished from random; we can repeat a pseudorandom process by stipulating a key hidden starting point.</p>
 <p>We can use <code><a href="https://rdrr.io/r/base/Random.html">set.seed()</a></code> to make your pseudorandom process the same as mine, i.e., repeatable.</p>
 <div class="sourceCode" id="cb61"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">3</span><span class="op">)</span>
@@ -473,27 +472,34 @@ Figure 3.7: Annual growth rates (R=N[t+1]/N[t]) for Song Sparrows
 Figure 3.8: A single simulated population projection.
 </p>
 </div>
-<p>It appears to work (Fig. <a href="expo.html#fig:simten">3.8</a>). Let’s review what we have done. We</p>
-<p><em>had a bird count each year for 36 years. From this we calculated 35 <span class="math inline">\(R\)</span> (for all years except the very last).
-</em> decided how many years we wanted to project the population (10,y).
-* drew at random and with replacement the observed <span class="math inline">\(R\)</span>—one <span class="math inline">\(R\)</span> for each year we want to project forward.
-* we created an empty vector and put in an initial value (the last year’s real data).
-* performed each year’s calculation, and put it into the vector we made.</p>
-<p>So what does Fig. <a href="expo.html#fig:simten">3.8</a> represent? It represents one possible outcome of a trajectory, if we assume that <span class="math inline">\(R\)</span> has an equal probability of being any of the observed <span class="math inline">\(R_t\)</span>. This <em>particular</em> trajectory is very unlikely, because it would require one particular sequence of randomly selected <span class="math inline">\(R\)</span>s. However, it is <em>no less likely</em> than any other particular trajectory.</p>
-<p>As only one realization of a set of randomly selected <span class="math inline">\(R\)</span>, Fig. <a href="expo.html#fig:simten">3.8</a> tells us very little. What we need to do now is to replicate this process a very large number of times, and examine the <em>distribution</em> of outcomes, including moments of the distribution such as the mean, median, and confidence interval of eventual outcomes.</p>
+<p>It appears to work (Fig. <a href="expo.html#fig:simten">3.8</a>).</p>
+<p>Let’s review what we have done. We</p>
+<ul>
+<li>had a bird count each year for 36 years. From this we calculated 35 <span class="math inline">\(R\)</span> (for all years except the very last).</li>
+<li>decided how many years we wanted to project the population (10,y).</li>
+<li>drew at random and with replacement the observed <span class="math inline">\(R\)</span>—one <span class="math inline">\(R\)</span> for each year we want to project forward.</li>
+<li>we created an empty vector and put in an initial value.</li>
+<li>performed each year’s calculation, and put it into the vector we made.</li>
+</ul>
+<p>So what does Fig. <a href="expo.html#fig:simten">3.8</a> represent? It represents one possible outcome of a trajectory, if we assume that <span class="math inline">\(R\)</span> has an equal probability of being any of the observed <span class="math inline">\(R_t\)</span>. This <em>particular</em> trajectory is very unlikely, because it would require one particular sequence of randomly selected <span class="math inline">\(R\)</span>s. However, we assume that it is <em>no less likely</em> than any other particular trajectory.</p>
+<p>As only one realization of a set of randomly selected <span class="math inline">\(R\)</span>, Fig. <a href="expo.html#fig:simten">3.8</a> tells us very little. What we need to do now is to replicate this process a very large number of times, and examine the <em>distribution</em> of outcomes, including moments of the distribution such as the mean, median, and the uncertainty of eventual outcomes.</p>
 </div>
 <div id="multiple-simulations" class="section level3" number="3.4.4">
 <h3>
 <span class="header-section-number">3.4.4</span> Multiple simulations<a class="anchor" aria-label="anchor" href="#multiple-simulations"><i class="fas fa-link"></i></a>
 </h3>
-<p>Now we create a way to perform the above simulation several times. There are a couple tricks we use to do this. We still want to start small so we can figure out the steps as we go. Here is what we would do next.</p>
+<p>Next we create a way to perform the above simulation several times. There are a couple tricks we use to do this. We still want to start small so we can figure out the steps as we go. Here is what we would do next.</p>
 <ol style="list-style-type: decimal">
 <li>We start by creating a function that will do the steps we did above.</li>
 <li>We then do replicate independent simulations, using <code><a href="https://rdrr.io/r/base/lapply.html">replicate()</a></code>.</li>
 </ol>
-<p>Here we write a function to combine several steps.</p>
+<p>Here we write a function to combine several steps. Our function has three arguments: the observed <span class="math inline">\(R\)</span>, the number of years that we want to simulate, and the initial population size.</p>
 <div class="sourceCode" id="cb66"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">myForLoop</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">obs.R</span>, <span class="va">years</span>, <span class="va">initial.N</span><span class="op">)</span> <span class="op">{</span>
+  <span class="co">## obs.R - observed annual growth rates, </span>
+  <span class="co">## years - the number of years that we want to simulate,</span>
+  <span class="co">## initial.N - the initial population size.</span>
+  
   <span class="co"># select all R at random</span>
   <span class="va">rR</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html">sample</a></span><span class="op">(</span><span class="va">obs.R</span>, size<span class="op">=</span><span class="va">years</span>, replace<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span>
   <span class="co"># create a vector to hold N</span>
@@ -501,26 +507,33 @@ Figure 3.8: A single simulated population projection.
   <span class="co"># give it an initial population size</span>
   <span class="va">N</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="va">initial.N</span>
   <span class="co"># Do the for-loop</span>
+  
+  <span class="co"># For each year...</span>
   <span class="kw">for</span><span class="op">(</span> <span class="va">t</span> <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span><span class="va">years</span> <span class="op">)</span> <span class="op">{</span>
     <span class="co"># project the population one time step</span>
       <span class="va">N</span><span class="op">[</span><span class="va">t</span><span class="op">+</span><span class="fl">1</span><span class="op">]</span> <span class="op">&lt;-</span>  <span class="va">N</span><span class="op">[</span><span class="va">t</span><span class="op">]</span> <span class="op">*</span> <span class="va">rR</span><span class="op">[</span><span class="va">t</span><span class="op">]</span>
   <span class="op">}</span>
   <span class="co"># return the vector of N</span>
   <span class="va">N</span>
-<span class="op">}</span> 
-<span class="co"># try it out with different hypothetical R</span>
-<span class="fu">myForLoop</span><span class="op">(</span>obs.R<span class="op">=</span><span class="fl">0</span><span class="op">:</span><span class="fl">3</span>, years<span class="op">=</span><span class="fl">5</span>, initial.N<span class="op">=</span><span class="fl">43</span><span class="op">)</span></code></pre></div>
-<pre><code>## [1]  43 129   0   0   0   0</code></pre>
-<p>Our function seems to work. Next we do ten such projection simulations, each for 50 time steps, using the sparrow data.</p>
-<div class="sourceCode" id="cb68"><pre class="downlit sourceCode r">
+<span class="op">}</span> </code></pre></div>
+<p>After running the above code, try it out with different hypothetical <span class="math inline">\(R\)</span>.</p>
+<div class="sourceCode" id="cb67"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu">myForLoop</span><span class="op">(</span>obs.R<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0.5</span>, <span class="fl">1</span>, <span class="fl">1.5</span><span class="op">)</span>, years<span class="op">=</span><span class="fl">5</span>, initial.N<span class="op">=</span><span class="fl">43</span><span class="op">)</span></code></pre></div>
+<pre><code>## [1] 43.000 21.500 10.750  5.375  5.375  5.375</code></pre>
+<p>Our function seems to work.</p>
+<p>Next we do ten such projection simulations, each for 50 time steps, using the sparrow data.</p>
+<div class="sourceCode" id="cb69"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># specify the number of simulations and for how long</span>
 <span class="va">sims</span><span class="op">=</span><span class="fl">10</span>; <span class="va">years</span><span class="op">=</span><span class="fl">50</span>
+
+<span class="co"># make the randomizations repeatable</span>
 <span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">3</span><span class="op">)</span>
+
 <span class="va">outmat</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html">replicate</a></span><span class="op">(</span><span class="va">sims</span>,   
-                    expr<span class="op">=</span><span class="fu">myForLoop</span><span class="op">(</span>obs.R<span class="op">=</span><span class="va">obs.R</span>, years<span class="op">=</span><span class="va">years</span>, initial.N<span class="op">=</span><span class="fl">43</span><span class="op">)</span>
+             expr<span class="op">=</span><span class="fu">myForLoop</span><span class="op">(</span>obs.R<span class="op">=</span><span class="va">obs.R</span>, years<span class="op">=</span><span class="va">years</span>, initial.N<span class="op">=</span><span class="fl">43</span><span class="op">)</span>
                     <span class="op">)</span></code></pre></div>
 <p>Now let’s peek at the results (Fig. <a href="expo.html#fig:tensimfig">3.9</a>). It is fun to graph our output, but also helps us make sure we are not making a heinous mistake in our code. Note we use log scale to help us see the small populations.</p>
-<div class="sourceCode" id="cb69"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb70"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/graphics/matplot.html">matplot</a></span><span class="op">(</span><span class="fl">0</span><span class="op">:</span><span class="va">years</span>, <span class="va">outmat</span>, type<span class="op">=</span><span class="st">"l"</span>, log<span class="op">=</span><span class="st">"y"</span><span class="op">)</span></code></pre></div>
 <div class="figure">
 <span style="display:block;" id="fig:tensimfig"></span>
@@ -528,13 +541,13 @@ Figure 3.8: A single simulated population projection.
 Figure 3.9: Using matplot() to plot a matrix vs. a single variable. Our simulated populations sometimes increase and sometimes decrease.
 </p>
 </div>
-<div class="sourceCode" id="cb70"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb71"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># combine columns years, and our output</span>
 <span class="va">junk</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span>years <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="op">(</span><span class="va">years</span><span class="op">+</span><span class="fl">1</span><span class="op">)</span>, <span class="va">outmat</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="va">junk</span><span class="op">)</span></code></pre></div>
 <pre><code>##  [1] "years" "X1"    "X2"    "X3"    "X4"    "X5"    "X6"    "X7"    "X8"   
 ## [10] "X9"    "X10"</code></pre>
-<div class="sourceCode" id="cb72"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb73"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># make sure to load 'tidyr' if you did not already load it or tidyverse</span>
 <span class="co"># library(tidyr)</span>
 <span class="co"># Take the wide data frame with many columns and turn it into </span>
@@ -548,11 +561,11 @@ Figure 3.9: Using matplot() to plot a matrix vs. a single variable. Our simulat
 Figure 3.10: Using ggplot() to plot one variable against vs. a single variable, organized by a grouping variable. Our simulated populations sometimes increase and sometimes decrease.
 </p>
 </div>
-<div class="sourceCode" id="cb73"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb74"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Or for colorful lines</span>
 <span class="co"># ggplot(data=out.long, aes(x=years, y=N,  linetype=Run, colour=Run)) + </span>
 <span class="co">#    geom_line(show.legend=FALSE) + scale_y_log10() </span></code></pre></div>
-<p>What does it mean that the simulation has an approximately even distribution of final population sizes  (Fig. )? If we plotted it on a linear scale, what would it look like?^[Plotting it on the log scale reveals that the relative change is independent of population size; this is true because the rate of change is geometric. If we plotted it on a linear scale, we would see that many trajectories result in small counts, and only a few get really big. That is, the median size is pretty small, but a few populations get huge.}</p>
+<p>What does it mean that the simulation has an approximately even distribution of final population sizes  (Fig. )? If we plotted it on a linear scale, what would it look like?<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;Plotting it on the log scale reveals that the relative change is independent of population size; this is true because the rate of change is geometric. If we plotted it on a linear scale, we would see that many trajectories result in small counts, and only a few get really big. That is, the median size is pretty small, but a few populations get huge.&lt;/p&gt;"><sup>20</sup></a></p>
 <p>Rerunning this simulation, with new <span class="math inline">\(R\)</span> each time, will show different dynamics every time, and that is the point of simulations. Simulations are a way to make a few key assumptions, and then leave the rest to chance. In that sense it is a null model of population dynamics.</p>
 </div>
 <div id="a-distribution-of-possible-futures" class="section level3" number="3.4.5">
@@ -560,8 +573,8 @@ Figure 3.10: Using ggplot() to plot one variable against vs. a single variable,
 <span class="header-section-number">3.4.5</span> A distribution of possible futures<a class="anchor" aria-label="anchor" href="#a-distribution-of-possible-futures"><i class="fas fa-link"></i></a>
 </h3>
 <p>Now we are in a position to make an informed prediction, given our assumptions. We will predict the range of possible outcomes and the most likely outcomes, given our set of assumptions.</p>
-<p>We will simulate the population for 50 years 10,000 times and describe the distribution of final populatin sizes. We use <code>system.time</code> to tell me how long it takes on my computer.</p>
-<div class="sourceCode" id="cb74"><pre class="downlit sourceCode r">
+<p>We will simulate the population for 50 years 10,000 times and describe the distribution of final population sizes. We use <code>system.time</code> to tell me how long it takes on my computer.</p>
+<div class="sourceCode" id="cb75"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">sims</span><span class="op">=</span><span class="fl">1e4</span>; <span class="va">years</span><span class="op">=</span><span class="fl">50</span>
 <span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">3</span><span class="op">)</span>
 <span class="co">## system.time keeps track of how long processes take.</span>
@@ -571,9 +584,9 @@ Figure 3.10: Using ggplot() to plot one variable against vs. a single variable,
                     <span class="op">)</span>
             <span class="op">)</span></code></pre></div>
 <pre><code>##    user  system elapsed 
-##   0.134   0.007   0.141</code></pre>
+##   0.138   0.005   0.145</code></pre>
 <p>This tells me how long it took to complete 10,000 simulations. We also check the dimensions of the output, and they make sense.</p>
-<div class="sourceCode" id="cb76"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb77"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/dim.html">dim</a></span><span class="op">(</span><span class="va">outmat</span><span class="op">)</span></code></pre></div>
 <pre><code>## [1]    51 10000</code></pre>
 <p>We see that we have an object that is the size we think it should be. We shall assume that everything worked way we think it should.</p>
@@ -583,34 +596,34 @@ Figure 3.10: Using ggplot() to plot one variable against vs. a single variable,
 <span class="header-section-number">3.4.6</span> Analyzing results<a class="anchor" aria-label="anchor" href="#analyzing-results"><i class="fas fa-link"></i></a>
 </h3>
 <p>We extract the last year of the simulations (last row), and summarize it with quartiles (0%, 25%, 50%, 75%, 100%, and also the mean).</p>
-<div class="sourceCode" id="cb78"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb79"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">N.2053</span> <span class="op">&lt;-</span> <span class="va">outmat</span><span class="op">[</span><span class="fl">51</span>,<span class="op">]</span>
 <span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">N.2053</span>, digits<span class="op">=</span><span class="fl">6</span><span class="op">)</span></code></pre></div>
 <pre><code>##      Min.   1st Qu.    Median      Mean   3rd Qu.      Max. 
 ##       0.0      12.1      60.7    1306.3     297.7 2299420.0</code></pre>
-<div class="sourceCode" id="cb80"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb81"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/graphics/hist.html">hist</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html">log10</a></span><span class="op">(</span><span class="va">N.2053</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <div class="figure">
-<span style="display:block;" id="fig:unnamed-chunk-22"></span>
-<img src="figs/unnamed-chunk-22-1.png" alt="Distribution of the 10000 final base-10 log population sizes. Note the approximately Normal distribution." width="75%"><p class="caption">
+<span style="display:block;" id="fig:unnamed-chunk-23"></span>
+<img src="figs/unnamed-chunk-23-1.png" alt="Distribution of the 10000 final base-10 log population sizes. Note the approximately Normal distribution." width="75%"><p class="caption">
 Figure 3.11: Distribution of the 10000 final base-10 log population sizes. Note the approximately Normal distribution.
 </p>
 </div>
 <p>The <code><a href="https://rdrr.io/r/stats/quantile.html">quantile()</a></code> function allows us to find a form of empirical confidence interval, including, approximately, the central 90% of the observations.<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;Note that there are many ways to estimate quantiles (R has nine ways), but they are approximately similar to percentiles.&lt;/p&gt;"><sup>21</sup></a></p>
-<div class="sourceCode" id="cb81"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb82"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/stats/quantile.html">quantile</a></span><span class="op">(</span><span class="va">N.2053</span>, prob<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0.05</span>, <span class="fl">.95</span><span class="op">)</span> <span class="op">)</span></code></pre></div>
 <pre><code>##          5%         95% 
 ##    1.331579 2862.940808</code></pre>
-<p>These quantiles provide an estimate of the most likely range of possible populatin sizes, given our assumptions.</p>
+<p>These quantiles provide an estimate of the most likely range of possible population sizes, given our assumptions.</p>
 </div>
 <div id="inferring-processes-underlying-growth-rate" class="section level3" number="3.4.7">
 <h3>
 <span class="header-section-number">3.4.7</span> Inferring processes underlying growth rate<a class="anchor" aria-label="anchor" href="#inferring-processes-underlying-growth-rate"><i class="fas fa-link"></i></a>
 </h3>
 <p>The above approach relies only on the observed data. That means that the growth rates, while representative, can never be different than what was observed. A different approaach would be to assume that the growth rates can be different than observed, <em>but drawn from the same underlying process</em> that caused the observed rates.</p>
-<p>The observed rates are simply a visible manifestation of unseen processes. We might summarize these by asserting that the observed growth rates were samples from a continuous distribution distribution, whose prperties we can infer from the sample. For instance, it may be that these processes cause annual rates to follow a Normal, or perhaps log-normal distribution.</p>
-<p>We can fit a Normal distribution to the logarithms of our observed <span class="math inline">\(R\)</span>, and we see that it doesn’t do too bad a job (Fig. <a href="expo.html#fig:fitln">3.12</a>).</p>
-<div class="sourceCode" id="cb83"><pre class="downlit sourceCode r">
+<p>The observed rates are simply a visible manifestation of unseen processes. We might summarize these by asserting that the observed growth rates were samples from a continuous distribution distribution, whose properties we can infer from the sample. For instance, it may be that these processes cause annual rates to follow a normal<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;Gaussian&lt;/p&gt;"><sup>22</sup></a>, or perhaps log-normal distribution.</p>
+<p>We can fit a normal distribution to the logarithms of our observed <span class="math inline">\(R\)</span>, and we see that it doesn’t do too bad a job (Fig. <a href="expo.html#fig:fitln">3.12</a>).</p>
+<div class="sourceCode" id="cb84"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">mu</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html">log</a></span><span class="op">(</span><span class="va">obs.R</span><span class="op">)</span> <span class="op">)</span>
 <span class="va">sigma</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/sd.html">sd</a></span><span class="op">(</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html">log</a></span><span class="op">(</span><span class="va">obs.R</span><span class="op">)</span> <span class="op">)</span>
 
@@ -631,7 +644,7 @@ Figure 3.12: The logarithms of the observed R seem reasonably approximated by a 
 </div>
 <p>Now we will simulate populations just like before, but instead of random draws from the observed data, we do random draws from the inferred distribution.</p>
 <p>Our new function.</p>
-<div class="sourceCode" id="cb84"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb85"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">myForLoop2</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">mu</span>, <span class="va">sigma</span>, <span class="va">years</span>, <span class="va">initial.N</span><span class="op">)</span> <span class="op">{</span>
   <span class="co"># select all R at random from </span>
   <span class="va">lrR</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html">rnorm</a></span><span class="op">(</span><span class="va">years</span>, m<span class="op">=</span><span class="va">mu</span>, sd<span class="op">=</span><span class="va">sigma</span><span class="op">)</span>
@@ -649,7 +662,7 @@ Figure 3.12: The logarithms of the observed R seem reasonably approximated by a 
   <span class="va">N</span>
 <span class="op">}</span> </code></pre></div>
 <p>Our new simulations.</p>
-<div class="sourceCode" id="cb85"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb86"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">sims</span><span class="op">=</span><span class="fl">1e4</span>; <span class="va">years</span><span class="op">=</span><span class="fl">50</span>
 <span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">3</span><span class="op">)</span>
 <span class="va">outmat2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html">replicate</a></span><span class="op">(</span><span class="va">sims</span>,   
@@ -659,77 +672,142 @@ Figure 3.12: The logarithms of the observed R seem reasonably approximated by a 
 <span class="fu"><a href="https://rdrr.io/r/stats/quantile.html">quantile</a></span><span class="op">(</span><span class="va">N2.2053</span>, prob<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0.05</span>, <span class="fl">.95</span><span class="op">)</span> <span class="op">)</span></code></pre></div>
 <pre><code>##          5%         95% 
 ##    1.205509 3089.819907</code></pre>
-<div class="sourceCode" id="cb87"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb88"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/stats/quantile.html">quantile</a></span><span class="op">(</span><span class="va">N.2053</span>, prob<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0.05</span>, <span class="fl">.95</span><span class="op">)</span> <span class="op">)</span></code></pre></div>
 <pre><code>##          5%         95% 
 ##    1.331579 2862.940808</code></pre>
 <p>The results are very similar to those based on only the observed <span class="math inline">\(R\)</span>. If they were markedly different, we might ask whether our choice of distribution was appropriate.</p>
-<p>Our conclusions are based on a model of discrete density-independent population growth</p>
+<p>Our conclusions are based on a model of discrete density-independent population growth.</p>
 <ul>
 <li>what assumptions are we making and are they valid?</li>
 <li>Are our unrealistic assumptions perhaps nonetheless a good approximation of reality?</li>
 <li>what would you like to add next to make the model a better approximation?</li>
 </ul>
 </div>
-<div id="f-environmental-noise" class="section level3" number="3.4.8">
-<h3>
-<span class="header-section-number">3.4.8</span> 1/<span class="math inline">\(f\)</span> environmental noise<a class="anchor" aria-label="anchor" href="#f-environmental-noise"><i class="fas fa-link"></i></a>
-</h3>
-<p>Perhaps we might explain some of the variation in annual growth rates to weather patterns in the breeding range (Darrtown, Ohio). If so, we might separate demographic effects <em>vs.</em> environmental effects. That would give us an even better model we could use for explanation and prediction.</p>
-<p>When we model or simulate more realistic time series, we often find it essential to account for the <em>temporal autocorrelation</em> that often appears in environmental data. Patterns of autocorrelation are often best characterized by “one over f-noise” (<span class="math inline">\(1/f\)</span>), that is, random variation where the temporal autocorrelation follows a color spectrum. Uncorrelated noise is referred to as white noise because the correlations actually occur at all wavelengths. Red noise emphasized strong positive correlation at short wavelengths and low correlation at long wavelengths. As a result, red noise is more random at longer wavelengths but less random at short wavelengths . Environmental variables typically have a reddened color that we typically refer to as pink noise <span class="citation">(<a href="references.html#ref-Halley1996" role="doc-biblioref">Halley 1996</a>)</span>.</p>
-<p>A good example of reddened noise is average daily air temperature. Daily temperature tends to be positively correlated from one day to the next, but tends more and more weakly correlated between two days that are separated more and more in time. Daily water temperature is even more strongly correlated in adjacent days because of the high specific heat of water.</p>
-<div class="sourceCode" id="cb89"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span>
-<span class="va">time.series</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/primer/man/one_over_f.html">one_over_f</a></span><span class="op">(</span>gamma<span class="op">=</span><span class="fl">2</span>, N<span class="op">=</span><span class="fl">50</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">50</span>, <span class="va">time.series</span>, type<span class="op">=</span><span class="st">'l'</span>, main<span class="op">=</span><span class="st">"Reddened noise"</span><span class="op">)</span></code></pre></div>
-<div class="inline-figure"><img src="figs/unnamed-chunk-26-1.png" width="90%"></div>
+</div>
+<div id="f-environmental-noise" class="section level2" number="3.5">
+<h2>
+<span class="header-section-number">3.5</span> 1/<span class="math inline">\(f\)</span> environmental noise<a class="anchor" aria-label="anchor" href="#f-environmental-noise"><i class="fas fa-link"></i></a>
+</h2>
+<p>Perhaps we can explain some of the variation in annual growth rates of sparrows to weather patterns in the sampling area (Darrtown, Ohio). In doing so, we might be assuming the <em>environmental stochasticity</em> is worth modeling which might allow us to separate demographic effects from environmental effects. That would give us a better model we might use for explanation and prediction.</p>
+<p>When we model or simulate time series, we often find it essential to account for patterns that arise on different time scales and have different magnitudes. For instance, air temperature (and its consequences) varies diurnally, from day to day and week to week, and across seasons. We often refer to this as “one over f-noise” (<span class="math inline">\(1/f\)</span>-noise), that is, random variation multiple overlapping asynchronous patterns of variation can be characterized with <em>spectral analysis</em> <span class="citation">(<a href="references.html#ref-Shumway2019" role="doc-biblioref">Shumway and Stoffer 2019</a>; <a href="references.html#ref-Halley1996" role="doc-biblioref">Halley 1996</a>)</span>. Spectral analysis allows us to detect cyclic repeating patterns in noisy data, such as the El Niño Southern Oscillations, small mammal population cycles, tree masting dynamics, or disease outbreaks.</p>
+<p>In addition to detecting the particular frequencies of some cycles, we can also describe multivariate emergent spectral patterns with reference to a color spectrum. When variation at all time scales is equally important, we refer to this as white noise, analogous to white light, which includes all visible frequencies. When lower frequencies are more important, we refer to this as red noise. This results from low-frequency long-wavelength patterns having greater amplitude than high-frequency, short-wavelength patterns. We refer to this as <em>reddened noise</em>.</p>
+<p>Environmental variables typically have a reddened color that we typically refer to as pink noise <span class="citation">(<a href="references.html#ref-Halley1996" role="doc-biblioref">Halley 1996</a>)</span>. We refer to this type of environmental variation as <em>environmental color</em>, whether white, pink, brown, or even, in the other direction, blue.</p>
 <div class="sourceCode" id="cb90"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">time.series</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/primer/man/one_over_f.html">one_over_f</a></span><span class="op">(</span>gamma<span class="op">=</span><span class="fl">0</span>, N<span class="op">=</span><span class="fl">50</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">50</span>, <span class="va">time.series</span>, type<span class="op">=</span><span class="st">'l'</span>, main<span class="op">=</span><span class="st">"White noise"</span><span class="op">)</span></code></pre></div>
-<div class="inline-figure"><img src="figs/unnamed-chunk-26-2.png" width="90%"></div>
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span>
+<span class="va">time.series.r</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/primer/man/one_over_f.html">one_over_f</a></span><span class="op">(</span>gamma<span class="op">=</span><span class="fl">1</span>, N<span class="op">=</span><span class="fl">50</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">50</span>, <span class="va">time.series.r</span>, type<span class="op">=</span><span class="st">'l'</span>, main<span class="op">=</span><span class="st">"Pink noise"</span><span class="op">)</span>
+<span class="va">time.series.w</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/primer/man/one_over_f.html">one_over_f</a></span><span class="op">(</span>gamma<span class="op">=</span><span class="fl">0</span>, N<span class="op">=</span><span class="fl">50</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">50</span>, <span class="va">time.series.w</span>, type<span class="op">=</span><span class="st">'l'</span>, main<span class="op">=</span><span class="st">"White noise"</span><span class="op">)</span></code></pre></div>
+<div class="figure">
+<span style="display:block;" id="fig:colorex"></span>
+<img src="figs/colorex-1.png" alt="Examples of reddened (left) and white (right) time series." width="67%"><img src="figs/colorex-2.png" alt="Examples of reddened (left) and white (right) time series." width="67%"><p class="caption">
+Figure 3.13: Examples of reddened (left) and white (right) time series.
+</p>
+</div>
+<p>Experimental studies of environmental variation require us to isolate different features of the variability while holding other features constant. For instance, we may want to hold the mean temperature constant but add different amounts of variation. We may want to hold the mean and the variance constant, but vary the spectral environment color. <em>Spectral mimicry</em> <span class="citation">(<a href="references.html#ref-Cohen1999" role="doc-biblioref">J. E. Cohen et al. 1999</a>)</span> is a technique to helps us do that. It takes a string of numbers and arranges them into a sequence whose spectral signature mimics a designated spectral pattern. This imbues the original numbers with a different spectral pattern. Thus, the two sequences retain exactly the same data and therefore the same means and variances, but differ only in their sequences and spectral properties.</p>
+<p>Below, we use spectral mimicry to simulate Song Sparrow population dynamics. We first investigate spectral mimicry by creating</p>
+<ul>
+<li>a string of uniform random numbers between [0,1],</li>
+<li>a template pink (slightly reddened) sequence,</li>
+<li>a rearrangement of the original string to match the spectral properties of the template.</li>
+</ul>
+<p>We then plot the three vectors.</p>
 <div class="sourceCode" id="cb91"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/pkg/primer/man/one_over_f.html">one_over_f</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
-<pre><code>##   [1]  0.298824010  0.237226439  0.022089966 -0.058677477 -0.143104439
-##   [6] -0.096115585 -0.217674233 -0.318510492 -0.411251888  0.013766040
-##  [11]  0.058893149 -0.250099478 -0.475972239 -0.583968374 -0.185727547
-##  [16] -0.471796572 -0.777508331 -0.911505916 -0.999884280 -1.145470033
-##  [21] -1.144976191 -1.076483805 -1.072279877 -0.968071771 -0.842569319
-##  [26] -1.223831808 -1.260713073 -1.200984196 -1.092624456 -0.912505127
-##  [31] -0.801324833 -0.849137971 -0.666099799 -0.242696588 -0.336315476
-##  [36] -0.413040724 -0.302926138 -0.189909334 -0.111440017 -0.105175915
-##  [41]  0.386642286  0.173388729  0.201344125 -0.078417077 -0.067053947
-##  [46]  0.253079784  0.087084305 -0.175424320  0.175378412 -0.018511340
-##  [51] -0.326746570 -0.307820229 -0.238600098 -0.017850970 -0.242894565
-##  [56] -0.114187912 -0.123189588 -0.250224129 -0.315375425 -0.482370556
-##  [61] -0.679859449 -0.654850531 -0.788414474 -0.862824689 -1.119964520
-##  [66] -1.284946496 -1.501806547 -1.429023014 -1.686673886 -1.717936023
-##  [71] -1.339415250 -1.438129614 -1.376591163 -1.487297230 -1.296710293
-##  [76] -1.141483988 -1.168313720 -1.277595263 -1.267864047 -1.775251874
-##  [81] -1.788995566 -1.438183268 -1.117802176 -1.257935981 -1.105544404
-##  [86] -1.148643680 -1.326412085 -1.452105066 -1.363881397 -1.557466098
-##  [91] -1.447593696 -1.156491906 -0.965223705 -0.940559500 -0.454249722
-##  [96] -0.525117326 -0.552481219 -0.762876531 -0.435203543 -0.181171967
-## [101] -0.043885710  0.003821143 -0.146239428 -0.195746588 -0.168055878
-## [106] -0.130514156 -0.406878361 -0.462138459 -0.394679685 -0.195522343
-## [111]  0.281265599  0.458744369  0.746887742  0.809777963  1.190705346
-## [116]  1.264690242  0.874309071  0.742373164  0.765139339  0.666812962
-## [121]  0.808437966  0.826119619  0.799500046  0.740888658  0.577590139
-## [126]  0.755627670  1.267427177  1.244177427  1.077970660  1.025106186
-## [131]  0.848674967  1.080393233  1.513672665  1.537706076  1.530141514
-## [136]  1.598658591  1.505414796  1.554742635  1.821012230  1.948974147
-## [141]  1.786873405  1.807088422  1.264629628  1.255344152  0.947658329
-## [146]  0.915749082  1.310765326  1.354415207  1.524322656  1.420308620
-## [151]  1.226589960  0.984675278  0.808371597  0.626751709  0.547783422
-## [156]  0.468083434  0.513039379  0.530440634  0.496461435  0.433902955
-## [161]  0.659671581  0.933006176  0.755059314  1.040193197  1.274216904
-## [166]  1.265997977  1.184445211  1.168937063  1.241008459  1.298614092
-## [171]  1.222971943  1.077538730  0.854257118  0.896230927  0.679514064
-## [176]  0.205251182 -0.172535497 -0.275142660 -0.062514131 -0.009668855
-## [181]  0.106339508  0.102343929  0.001463750 -0.053420265 -0.037794333
-## [186] -0.132799374 -0.273124821 -0.276711413 -0.107940539  0.011454678
-## [191]  0.095326934  0.126416026  0.185546476  0.420958833  0.552621056
-## [196]  0.567177990  0.737451506  0.602832006  0.690105908  0.482555676</code></pre>
-<p>In this chapter, we have explored the meaning of density-independent population growth. It is a statistically demonstrable phenomenon, wherein the per captia growth rate exhibits no relation with population density. It is a useful starting point for conceptualizing population growth. We have derived discrete geometric and continuous exponential growth and seen how they are related. We have caculated doubling times. We have discussed the assumptions that different people might make regarding these growth models. Last, we have used simulation to explore prediction and inference in a density-independent context.</p>
+<code class="sourceCode R"><span class="va">N</span> <span class="op">=</span> <span class="fl">50</span> <span class="co"># number of data points in one string</span>
+<span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span> <span class="co"># set the pseudorandomization seed</span>
+
+<span class="co">## create uniform random numbers</span>
+<span class="va">N.random</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Uniform.html">runif</a></span><span class="op">(</span><span class="va">N</span><span class="op">)</span>
+<span class="co">## Pink noise template</span>
+<span class="va">one.over.f.pattern</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/primer/man/one_over_f.html">one_over_f</a></span><span class="op">(</span>gamma<span class="op">=</span><span class="fl">1</span>, N<span class="op">=</span><span class="va">N</span><span class="op">)</span>
+<span class="co">## Rearrangement (mimicry)</span>
+<span class="va">N.f</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/primer/man/spec_mimic.html">spec_mimic</a></span><span class="op">(</span><span class="va">N.random</span>, <span class="va">one.over.f.pattern</span><span class="op">)</span>
+
+<span class="co">## combine and plot</span>
+<span class="va">series</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html">cbind</a></span><span class="op">(</span><span class="va">N.random</span>, <span class="va">one.over.f.pattern</span>, <span class="va">N.f</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/graphics/matplot.html">matplot</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">50</span>, <span class="va">series</span>, type<span class="op">=</span><span class="st">'l'</span>, 
+        col<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">2</span>,<span class="fl">2</span><span class="op">)</span>, lty<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">2</span>,<span class="fl">1</span><span class="op">)</span>, lwd<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">2</span>,<span class="fl">2</span><span class="op">)</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/graphics/legend.html">legend</a></span><span class="op">(</span><span class="st">"bottomright"</span>, 
+       legend<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html">colnames</a></span><span class="op">(</span><span class="va">series</span><span class="op">)</span>, bty<span class="op">=</span><span class="st">'n'</span>, 
+        col<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">2</span>,<span class="fl">2</span><span class="op">)</span>, lty<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">2</span>,<span class="fl">1</span><span class="op">)</span>, lwd<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">2</span>,<span class="fl">2</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<div class="figure">
+<span style="display:block;" id="fig:specex"></span>
+<img src="figs/specex-1.png" alt="Example of spectral mimicry, showing the original random data points (solid black line), the template ('one.over.f.pattern', red dashed line), and the rearranged, reddened data points (solid red line)." width="90%"><p class="caption">
+Figure 3.14: Example of spectral mimicry, showing the original random data points (solid black line), the template (‘one.over.f.pattern,’ red dashed line), and the rearranged, reddened data points (solid red line).
+</p>
+</div>
+<p>In Fig. @ref(fig:spec.ex), the solid lines refer to the uniform data (black) and the reddened (red).</p>
+<div id="reddened-song-sparrow-growth" class="section level3" number="3.5.1">
+<h3>
+<span class="header-section-number">3.5.1</span> Reddened Song Sparrow growth<a class="anchor" aria-label="anchor" href="#reddened-song-sparrow-growth"><i class="fas fa-link"></i></a>
+</h3>
+<p>Imagine that the Ohio (USA) environment of our Song Sparrows reveals <em>environmnetal stochasticity</em>, that is, random-like fluctuations that we do not understand. Next imagine that this environmnetal stochasticity affects Song Sparrow growth rate. If we want to simulation future sparrow population dynamics, we may want to mimic the type and magnitude of this underlying variation. We might do that by using our original annual growth data, but arranged in a reddened series.</p>
+<p>Let us first examine whether the sparrow growth rates show evidence of reddened population dynamics. We can use the <code><a href="https://rdrr.io/pkg/primer/man/plot_f.html">plot_f()</a></code> in <code>primer</code> to evaluate that. It plots the time series, and then the power spectra. It fits a line to the log(power) vs. log(frequency) and calculates a frequentist confidence interval.</p>
+<div class="sourceCode" id="cb92"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/pkg/primer/man/plot_f.html">plot_f</a></span><span class="op">(</span><span class="va">Count</span><span class="op">)</span></code></pre></div>
+<div class="figure">
+<span style="display:block;" id="fig:plotf"></span>
+<img src="figs/plotf-1.png" alt="Sparrow population dynamics might show reddened flutuations. On the left, sparrow counts over time, and on the right, the log-log plot of the power spectrum (power vs. frequency). The frequentist confidence interval on the slope of the fitted line suggests that we shouldn't rule out the possibility of a reddened series." width="90%"><p class="caption">
+Figure 3.15: Sparrow population dynamics might show reddened flutuations. On the left, sparrow counts over time, and on the right, the log-log plot of the power spectrum (power vs. frequency). The frequentist confidence interval on the slope of the fitted line suggests that we shouldn’t rule out the possibility of a reddened series.
+</p>
+</div>
+<pre><code>##      2.5 %     97.5 % 
+## -2.4033940 -0.6872647</code></pre>
+<p>Not surprisingly, we see the possibility of reddened population dynamics. You could also investigate the observed annual growth rates the same way.</p>
+<p>To resample the sparrow growth rates and also create a reddened sequences of them, we could do two things, depending on our goals. We could create a large number of different reddened templates and mimic them using only the observed data. Alternatively, we can draw annual growth rates at random, and match each random draw to the same reddened sequence. Of course, we could do both as well.</p>
+<p>Below, we simply rearrange the observed annual growths into a single reddened sequence. For the reddened template, we will assume moderate reddening, or pink noise, for which <span class="math inline">\(\gamma = 1\)</span>.</p>
+<div class="sourceCode" id="cb94"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">R.n</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span><span class="op">(</span><span class="va">obs.R</span><span class="op">)</span> <span class="co"># number of observations</span>
+
+<span class="co">## A random pink noise template</span>
+<span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">2</span><span class="op">)</span>
+<span class="va">one.over.f.pattern</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/primer/man/one_over_f.html">one_over_f</a></span><span class="op">(</span>gamma<span class="op">=</span><span class="fl">1</span>, N<span class="op">=</span><span class="va">R.n</span><span class="op">)</span>
+
+<span class="co">## Rearrange the observed R</span>
+<span class="va">R.f</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/primer/man/spec_mimic.html">spec_mimic</a></span><span class="op">(</span><span class="va">obs.R</span>, <span class="va">one.over.f.pattern</span><span class="op">)</span>
+
+<span class="co">## combine and plot</span>
+<span class="va">series</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html">cbind</a></span><span class="op">(</span><span class="va">obs.R</span>, <span class="va">one.over.f.pattern</span>, <span class="va">R.f</span><span class="op">)</span>
+
+<span class="fu"><a href="https://rdrr.io/r/graphics/matplot.html">matplot</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="va">R.n</span>, <span class="va">series</span>, type<span class="op">=</span><span class="st">'l'</span>, 
+        col<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">2</span>,<span class="fl">2</span><span class="op">)</span>, lty<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">2</span>,<span class="fl">1</span><span class="op">)</span>, lwd<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">2</span>,<span class="fl">2</span><span class="op">)</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/graphics/legend.html">legend</a></span><span class="op">(</span><span class="st">"bottomright"</span>, 
+       legend<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html">colnames</a></span><span class="op">(</span><span class="va">series</span><span class="op">)</span>, bty<span class="op">=</span><span class="st">'n'</span>,
+        col<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">2</span>,<span class="fl">2</span><span class="op">)</span>, lty<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">2</span>,<span class="fl">1</span><span class="op">)</span>, lwd<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">2</span>,<span class="fl">2</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<div class="figure">
+<span style="display:block;" id="fig:Rred"></span>
+<img src="figs/Rred-1.png" alt="Original and rearranged" width="90%"><p class="caption">
+Figure 3.16: Original and rearranged
+</p>
+</div>
+<p>Now we can project a simulated sparrow population</p>
+<div class="sourceCode" id="cb95"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">N.f</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html">numeric</a></span><span class="op">(</span> <span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span><span class="op">(</span><span class="va">R.f</span><span class="op">)</span> <span class="op">+</span> <span class="fl">1</span> <span class="op">)</span>
+<span class="co"># give it an initial population size</span>
+<span class="va">N.f</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fl">43</span>
+
+<span class="co"># Do the for-loop</span>
+  <span class="co"># For each year...</span>
+  <span class="kw">for</span><span class="op">(</span> <span class="va">t</span> <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span><span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span><span class="op">(</span><span class="va">R.f</span><span class="op">)</span> <span class="op">)</span> <span class="op">{</span>
+    <span class="co"># project the population one time step</span>
+      <span class="va">N.f</span><span class="op">[</span><span class="va">t</span><span class="op">+</span><span class="fl">1</span><span class="op">]</span> <span class="op">&lt;-</span>  <span class="va">N.f</span><span class="op">[</span><span class="va">t</span><span class="op">]</span> <span class="op">*</span> <span class="va">R.f</span><span class="op">[</span><span class="va">t</span><span class="op">]</span>
+  <span class="op">}</span>
+
+<span class="co">## Graph N, and R</span>
+<span class="fu"><a href="https://rdrr.io/r/graphics/layout.html">layout</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/matrix.html">matrix</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">2</span>, nrow<span class="op">=</span><span class="fl">2</span><span class="op">)</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/graphics/par.html">par</a></span><span class="op">(</span>mar<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">4</span>,<span class="fl">1</span>,<span class="fl">1</span><span class="op">)</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span><span class="op">(</span><span class="va">N.f</span><span class="op">)</span>, <span class="va">N.f</span>, type<span class="op">=</span><span class="st">'l'</span><span class="op">)</span>; <span class="fu"><a href="https://rdrr.io/r/graphics/text.html">text</a></span><span class="op">(</span><span class="fl">27</span>,<span class="fl">90</span>, <span class="st">"Pop. size"</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span><span class="op">(</span><span class="va">R.f</span><span class="op">)</span>, <span class="va">R.f</span>, type<span class="op">=</span><span class="st">'l'</span><span class="op">)</span>; <span class="fu"><a href="https://rdrr.io/r/graphics/text.html">text</a></span><span class="op">(</span><span class="fl">17</span>, <span class="fl">2</span>, <span class="st">"Randomized Pink Annual R"</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/graphics/abline.html">abline</a></span><span class="op">(</span>h<span class="op">=</span><span class="fl">1</span>, lty<span class="op">=</span><span class="fl">2</span><span class="op">)</span></code></pre></div>
+<div class="figure">
+<span style="display:block;" id="fig:fdyn"></span>
+<img src="figs/fdyn-1.png" alt="Example of a simulated sparrow projection using reddened annual growth rates." width="90%"><p class="caption">
+Figure 3.17: Example of a simulated sparrow projection using reddened annual growth rates.
+</p>
+</div>
+<p>Can you make predictions about how environmental noise might alter the risk of extinction?</p>
+<p>In this chapter, we have explored the meaning of density-independent population growth. It is a statistically demonstrable phenomenon, wherein the per capita growth rate exhibits no relation with population density. It is a useful starting point for conceptualizing population growth. We derived discrete geometric and continuous exponential growth and seen how they are related. We calculated doubling times. We have discussed the assumptions that different people might make regarding these growth models. We introduced a characteristic of environmental variability, <span class="math inline">\(1/f\)</span>-noise. We have used simulation to explore prediction and inference in a density-independent context. Our simulations included those with and without <span class="math inline">\(1/f\)</span>-noise.</p>
 
 </div>
 </div>
@@ -756,8 +834,10 @@ Figure 3.12: The logarithms of the observed R seem reasonably approximated by a 
 <li><a class="nav-link" href="#a-distribution-of-possible-futures"><span class="header-section-number">3.4.5</span> A distribution of possible futures</a></li>
 <li><a class="nav-link" href="#analyzing-results"><span class="header-section-number">3.4.6</span> Analyzing results</a></li>
 <li><a class="nav-link" href="#inferring-processes-underlying-growth-rate"><span class="header-section-number">3.4.7</span> Inferring processes underlying growth rate</a></li>
-<li><a class="nav-link" href="#f-environmental-noise"><span class="header-section-number">3.4.8</span> 1/\(f\) environmental noise</a></li>
 </ul>
+</li>
+<li>
+<a class="nav-link" href="#f-environmental-noise"><span class="header-section-number">3.5</span> 1/\(f\) environmental noise</a><ul class="nav navbar-nav"><li><a class="nav-link" href="#reddened-song-sparrow-growth"><span class="header-section-number">3.5.1</span> Reddened Song Sparrow growth</a></li></ul>
 </li>
 </ul>
 
@@ -775,7 +855,7 @@ Figure 3.12: The logarithms of the observed R seem reasonably approximated by a 
 <footer class="bg-primary text-light mt-5"><div class="container"><div class="row">
 
   <div class="col-12 col-md-6 mt-3">
-    <p>"<strong>Primer of Ecology using R</strong>" was written by Hank Stevens. It was last built on 2021-08-24.</p>
+    <p>"<strong>Primer of Ecology using R</strong>" was written by Hank Stevens. It was last built on 2021-08-27.</p>
   </div>
 
   <div class="col-12 col-md-6 mt-3">

@@ -47,13 +47,15 @@ qplot(x=t, y=N, geom=c("line", "point") )
 ```
 
 
-There are several ways we can describe fruit fly population growth.  We begin by thinking about the proximate causes of change to population size per unit time: births, immigration, death and emigration (Fig. \@ref(fig:fliesi)). Those are the only options, and we state it thus:
+There are several ways we can describe fruit fly population growth.  Here, we choose to begin by considering the proximate causes of change to population size per unit time: the numbers of births, immigration, death and emigration (Fig. \@ref(fig:fliesi)). Those are the only options, and we state it thus:
 $$\frac{\Delta N}{\Delta t} = \frac{B + I - D - E}{\Delta t}$$
-that is, the pop growthe rate^[“Delta” N is the change in N.] is determined by the numbers of births, deaths, and migrants per unit time. 
+that is, the change in numbers of individuals per unit time^[“Delta” N is the change in N.] is determined by the numbers of births, deaths, and migrants per unit time. 
 
-Over the past month, I suspect the fruit flies are increasing primarily through reproduction in my kitchen. Clearly, at some point in the past, a fly or two (or three) must have immigrated into my kitchen, either as adults or as eggs or larvae in fruit I brought home ($I>0$). For now, I will assume fruit fly population dynamics in my kitchen are governed by only births and deaths ($I=E=0$), so, we have 
+Over the past month, I suspect the fruit flies are increasing primarily through reproduction in my kitchen. Clearly, at some point in the past, a fly or two (or three) must have immigrated into my kitchen, either as adults or as eggs or larvae in fruit I brought home ($I>0$). For now, I will assume fruit fly population dynamics in my kitchen are governed by only births and deaths ($I=E=0$). We refer to a population like this as *closed*, because it is closed to migration in or out.
+
+If I counted the number of flies last week and again this week, I can calculate the change over one month. We have 
 $$ \frac{N_{t+1} - N_t}{(t+1) - t}=\frac{\Delta N}{\Delta t}=\frac{B+D}{\Delta t}$$
-In this equation, $t$ has a particular time unit, one week, so $t+1$ is one additional week. We refer to a population like this as *closed*, because it is closed to migration in or out.
+In this equation, $t$ has a particular time unit, one week, so $t+1$ is one additional week. 
 
 ```{r fliesi, echo=FALSE, fig.cap="The number of fruit flies in my kitchen depends on immigration and emigration, and births and deaths. In the text, we assume that immigration and emigration are zero. All rates are individuals per unit time.", out.width="100%", fig.width=5, fig.height=5}
 nodes <- c("I", "F", "D", "E")
@@ -69,7 +71,7 @@ E(g1)$label <- c("I", "E+D", "B")
 plot(g1, layout=l, edge.loop.angle=3*pi/2, margin=c(0,0,0,0), rescale=FALSE, 
      main="Single species population model") 
 ```
-I would like to represent births and deaths as proportions of existing adults.  that is, as
+Because adults give rise to offspring, we can represent births and deaths as proportions of existing adults.  That is, as per capita rates of birth and death, as
 $$B = bN;\quad D=dN$$
 This reflects the biological realities that adults produce offspring, and everyone has some chance of dying. The parameter $b$ could be any positive real number, $b \ge 0$. This model of births reflects the geometric property of reproduction: over a specified time interval $\Delta t$, an average parent makes $b$ babies. Parameter $d$ is any real number between zero and one, $0 \le d \le 1$. Both $b$ and $d$ have units of individuals per individual per unit time. They depend on that unit of time.
 
@@ -81,24 +83,19 @@ Fig. \@ref(fig:fliesi) helps us think about these things. Simplifying, we'll ass
 Let's define a few terms.
 
 * $N_0$, $N_1$ - the number of flies at the start and after the first time interval.
-* $N^\prime$, $N^{\prime\prime}$ - distinct values of $N$, just after births.
+* $N^\prime$, $N^{\prime\prime}$ - distinct values of $N$,  after births, but before $N_1$.
 * $\Delta N$ - the *change* in $N$ from one point in time to another.
 * $t$ is time, so $\Delta t$ is the time interval over which $N$ may change.
 
-Let's match these numbers to what is going on in my kitchen. For my first census count, $t=0$, I counted the adults and label that number $N_0$. These adults lay eggs which hatch, larvae and pupae develop, and become adults, giving us a population of $N^\prime = N_0 + bN$
+Let's match these numbers to what is going on in my kitchen. For my first census count, at $t=0$, I counted the adults and label that number $N_0$. These adults lay eggs which hatch, and then larvae and pupae develop, and become adults, giving us a population of $N^\prime = N_0 + bN$
 
 Some of the eggs fail to hatch, and some of the larvae die
-before maturing. Many of the adults die as well. If we assume the eggs,
-larvae, and adults all die at the same rate, then by the end of one
-generation we have $N_1 = dN^\prime = d(N_0 + bN)$. 
+before maturing. Many of the adults die as well. If we assume the eggs, larvae, and adults all die at the same rate, then by the end of one generation we have $N_1 = dN^\prime = d(N_0 + bN)$. 
 
 Substituting and multiplying we get
 $$ N_1 = N_0 + bN_0 - d\left(N_0 + bN_0\right)$$
 
-We see that by the next time point, $t=1$, the number of fruit flies
-should be equal to the number we started with, $N_0$, plus the number
-of new individuals, $bN_0$, minus the number of original adults that
-die, $dN_0$, and minus the number of new individuals that die, $dbN_0$.
+We see that by the next time point, $t=1$, the number of fruit flies should be equal to the number we started with, $N_0$, plus the number of new individuals, $bN_0$, minus the number of original adults that die, $dN_0$, and minus the number of new individuals that die, $dbN_0$.
 
 We can pull all of these parameters together,
 $$ N_1 = N_0 + bN_0 - dN_0 - dbN_0 $$
@@ -109,7 +106,7 @@ where $r_d = b - d - db$.
 
 The *growth rate* of the population is $\Delta N / \Delta t$, or, at $t=0$, is
 $$\frac{\Delta N}{\Delta t} = \frac{N_1 - N_0}{t_1-t_0} = \frac{(N_0 + r_dN_0) - N_0}{t_1-t_0} = r_d N_0 $$
-If we generalize, we drop the zero, to get $r_dN$. The *per capita* population growth rate is $r_dN/N =r_d$). If our time step were something other than 1, we would also divide by $\Delta t$.
+If we generalize, we drop the zero, to get $r_dN$. The *per capita* population growth rate is $r_dN/N =r_d$. If our time step were something other than 1, we would also divide by $\Delta t$.
 
 With the simple census data above, we can
 estimate $r_d$ for the first time step.
@@ -136,17 +133,21 @@ At last, we see how this is a model of density-independent growth: per capita gr
 
 ## Fruit flies with continuous overlapping generations
 
-In the reality that is my kitchen, individual fruit flies are having sex and reproducing on their own schedules. As a population, they breed continuously, so the cohorts re not synchronous. For populations like that, we need to describe instantaneous growth rates, where $\Delta t$ is no longer a fixed period of time, but is an instant, or infinity small.
+In the reality that is my kitchen, individual fruit flies are having sex and reproducing on their own schedules. As a population, they breed continuously, so the cohorts are not synchronous. For populations like that, we need to describe instantaneous growth rates, where $\Delta t$ is no longer a fixed period of time, but is an instant, or infinity small.
 
+We return to our example above (Fig. \@ref(fig:fliesi)), which we summarize in \@ref(eq:bddb). Please take a look at that equation. In what follows, we make time more explicit so that it appears in the equation. We begin by remembering that $b$ and $d$ have time units. 
 
-We return to our example above (Fig. \@ref(fig:fliesi)), which we summarize in \@ref(eq:bddb). Please take a look at that equation; here we make time explicit so that it appears in the equation. We begin by remembering that $b$ and $d$ have time units. 
-
-* Let $\Delta t$ be a small fraction of $t$, so that the time step goes from $t$ to $t + \Delta t$. 
-* As $\Delta t \rightarrow 0$, $b$ and $d$ need to shrink as well, to $\Delta t  b$ and $\Delta t d$.
-* $dN/dt$ is how we identify the differential equation that is the instantaneous rate of population growth, with lower case $d$ symbolizing infinitesimally small change.
+* Let $\Delta t$ be a small fraction of $1$, so that the time step goes from $t$ to $t + \Delta t$. 
+* As $\Delta t$, shrinks, $b$ and $d$ need to shrink as well, to $\Delta t  b$ and $\Delta t d$.
+* $dN/dt$ is how we symbolize the instantaneous rate of population growth, with lower case $d$ symbolizing infinitesimally small change; it is a *differential equation.*
 
 We now have to solve for the limit of $\Delta N /\Delta t$ as $\Delta t$ goes to zero.
-$$\frac{dN}{dt}=\lim_{\Delta t \rightarrow 0} \frac{N_{t+\Delta t} - N_t}{\Delta t} = \lim_{\Delta t \rightarrow 0} \frac{\Delta t\,bN_t - \Delta t \,dN_t - \Delta t\, d (\Delta t\, b)N_t}{\Delta t} $$
+$$\frac{dN}{dt}=\lim_{\Delta t \rightarrow 0} \frac{N_{t+\Delta t} - N_t}{\Delta t}  $$
+This means that the instantaneous rate of change of $N$ is equal to the limit (as delta t approaches zero) of the difference in $N$'s of the time interval, delta t.
+
+Substituting, we get,
+$$\frac{dN}{dt} = \lim_{\Delta t \rightarrow 0} \frac{\Delta t\,bN_t - \Delta t \,dN_t - \Delta t\, d (\Delta t\, b)N_t}{\Delta t} $$
+
 If we divide through by  $\Delta t$ and then let $\Delta t \rightarrow 0$, we get
 $$\frac{dN}{dt}=\lim_{\Delta t \rightarrow 0} bN_t - dN_t - \Delta t\, d bN_t = bN_t - dN_t=rN$$
 
@@ -206,7 +207,7 @@ lambda2 <- exp(r2); lambda2
 This is very, very different than $\lambda/12$.
 
 
-*Doubling time* Sometimes we gain a more intuitive grasp of an idea when we convert to a different form of the same relationship. Exponential growth is one of those ideas that can be hard to grasp. A more intuitive way to compare or express exponential grwoth rate is through *doubling time*, the time required for the population to double in size. For instance, a per capita growth rate of $r = 0.14\,\mathrm{inds}\cdot \mathrm{ind}^{-1} \mathrm{y}^{-1}$ means that the population will double in less than 5 years.
+*Doubling time* Sometimes we gain a more intuitive grasp of an idea when we convert to a different form of the same relationship. Exponential growth is one of those ideas that can be hard to grasp. A more intuitive way to compare or express exponential growth rate is through *doubling time*, the time required for the population to double in size. For instance, a per capita growth rate of $r = 0.14\,\mathrm{inds}\cdot \mathrm{ind}^{-1} \mathrm{y}^{-1}$ means that the population will double in less than 5 years.
 
 We determine this by letting $N_t = 2N_0$.
 $$2N_0 = N_0 e^{rt}$$
@@ -244,7 +245,7 @@ $$N_3 = (N_0 R_0) R_1 R_2$$
 # Now we do the annual changes which should equal N3
 N[1]*R[1]*R[2]*R[3]
 ```
-From this calculation, we see that when we start with $N_0=20$ and do the annaul steps, we wind up with a smaller population, even though the arithmetic average is $R_{\mathrm{ave}} = 1$. How do we calculate an average of numbers that we multiply together?
+From this calculation, we see that when we start with $N_0=20$ and do the annual steps, we wind up with a smaller population, even though the arithmetic average is $R_{\mathrm{ave}} = 1$. How do we calculate an average of numbers that we multiply together?
 
 We want a number $\bar{R}$ such that 
 $$\bar{R}^t = R_1R_2\ldots R_t$$
@@ -302,31 +303,30 @@ Sometimes the arithmetic average is close to the correct average, but it is neve
 
 
 ## Modeling with Data: Simulated Dynamics
-Science strives to make predictions about about the behavior of systems.
- Ecologists and conservation biologists frequently strive to predict the fate of populations. This is referred to as *population viability analysis* (PVA) and is a large field of endeavor that is vital to managing threatened populations. Here we  put into practice ideas about population biology to make informed predictions about the fate of the Song Sparrow population in Darrtown, OH. We also illustrate simple computational methods for doing so. 
+Science strives to make predictions about the behavior of systems. Ecologists and conservation biologists frequently strive to predict the fate of populations. This is referred to as *population viability analysis* (PVA) and is a large field of endeavor that is vital to managing threatened populations. Here we  put into practice ideas about population biology to make informed predictions about the fate of the Song Sparrow population in Darrtown, OH. We also illustrate simple computational methods for doing so. 
  
 The preceding sections (the bulk of the chapter) emphasized understanding the deterministic underpinnings of simple forms of density independent growth: geometric and exponential growth. This section explores the stochastic simulation of density independent growth. Our simulation makes most of the same assumptions we made at the beginning of the chapter. In addition, we assume that the observed annual growth rates ($N_{t+1}/N_t$) are representative of future growth rates, and that the growth rate in one year is entirely independent of any other year. 
 
-To make meaning full projections of future population size, we should quantify  the uncertainty with our guess. Simulation is one way we can project populations and quantify the uncertainty. The way one often does that is to use the original data and sample it randomly to calculate model parameters. This way, the simulations are random, but based on our best available knowldge, i.e., the real data. The re-use of observed data occurs in many guises, and it is known often as bootstrapping or resampling.
+To make meaningful projections of future population size, we should quantify the uncertainty with our guess. Simulation is one way we can project populations and quantify the uncertainty. The way one often does that is to use the original data and sample it randomly to calculate model parameters. This way, the simulations are random, but based on our best available knowledge, i.e., the real data. The re-use of observed data occurs in many guises, and it is known often as bootstrapping or resampling.
 
-In a highly influential paper on miminmum population sizes in conservation, @Shaffer1981 identifies four different types of noise or stochasticity that are important in driving variability in populations. The first of these is *demographic stochasticity*. This is the random or more correctly stochastic nature of individual births and deaths. Due to this element of random chance, individuals may live or die, produce offspring or not. As a result, population size will fluctuation randomly. This is very important in small populations, and becomes increasingly unimportant in larger and larger populations. This is the same process that underlies genetic drift in small populations. 
+In a highly influential paper on miminmum population sizes in conservation, @Shaffer1981 identifies four different types of noise or stochasticity that are important in driving variability in populations. The first of these is *demographic stochasticity*. This is the random-like or stochastic nature of individual births and deaths. Due to this element of random chance, individuals may live or die, produce offspring or not. As a result, population size will fluctuation randomly. This is very important in small populations, and becomes increasingly unimportant in larger and larger populations. This is the same process that underlies genetic drift in small populations. 
  
 Another source of variation @Shaffer1981 identifies is *environmental stochasticity*. This is temporal variation in birth or death rates that affects all individuals to a similar degree, due to variation in the population's biotic or abiotic environment. 
 
 The last sources of variation are *genetic stochasticity* and *natural catastrophes*. Perhaps the latter of these is the most difficult to deal with, because catastrophes are, by definition, enormously consequential and unpredictable.
 
-Given these sources of uncertainty, @Shaffer1981 defines *minimum population size* (MVP) thus,
+Given these sources of uncertainty, @Shaffer1981 defines *minimum viable population* size (MVP) thus,
 
 "*A minimum viable population for any given species in any given habitat is the smallest isolated population having a 99% chance of remaining extant for 1000 y despite foreseeable effects of demographic, environmental and genetic stochasticity, and natural catastrophes.*"
 
 In our simulations, we take one approach to simulating a population of Song Sparrows. The computational approaches includes a variety of tricks that you could use in a more serious approach to population projection and determining  probabilities of extinction. In their supplemental documentation, @Chaudhary_2019 provide an excellent list of criteria to evaluate your own or someone else's approach to PVA.
 
 ### Data-based approaches
-We could use the observed *changes* in population counts $R_t=N_{t+1}/N_t$ as our data. We would then draw an $R_t$ at random from among the many observed values, and project the population one year forward. We then repeat this into the future, say, for ten years. Each simulation of a ten year period will result in a different ten year trajectory because we draw $R_t$ at random from among the observed $R_t$. However, if we do many such simulations, we will have a *distribution* of outcomes that we can describe with simple statistics (e.g., median, mean, quantiles).
+We will use the observed *changes* in population counts $R_t=N_{t+1}/N_t$ as our data. We draw an $R_t$ at random from among the many observed values, and project the population one year forward. We then repeat this into the future, say, for ten years. Each simulation of a ten year period will result in a different ten year trajectory because we draw $R_t$ at random from among the observed $R_t$. However, if we do many such simulations, we will have a *distribution* of outcomes that we can describe with simple statistics (e.g., median, mean, quantiles).
 
 A different approach would be to estimate the individual probabilities of births and deaths in the entire Darrtown population, and use those probabilities and birth rates to simulate the entire population into the future. In such an *individual-based simulation*, we would simulate the fates of individuals, keeping track of all individual births and deaths. 
 
-There are myriad other approaches, but these give you a taste of what might be possible. In this section we focus on the first of these alternatives, in which we use observed $R_t$ to simulate the dynamics of Song Sparrow counts. Do do so, in part, because we have those data, while we do not have any estimates of birth rates or death rates.
+There are myriad other approaches, but these give you a taste of what might be possible. In this section we focus on the first of these alternatives, in which we use observed $R_t$ to simulate the dynamics of Song Sparrow counts. We do so, in part, because we have those data, while we do not have any estimates of birth rates or death rates.
 
 Here we investigate Song Sparrow (*Melospize melodia*) dynamics using data from the annual U.S. Breeding Bird Survey (http://www.mbr-pwrc.usgs.gov/ bbs/).  Below we will
 
@@ -338,12 +338,12 @@ Here we investigate Song Sparrow (*Melospize melodia*) dynamics using data from 
 
 
 ### Creating and visualizing the data
-Let's start by graphing the data^[I've come to abhor my use of the expression "look at"; I use it when I don't say what I mean. "Look at" can mean alomst anything these days, and it rarely means only "looking at"...]. *Graphing the data is always a good idea --- it is a principle of working with data*. We first load the data from the `primer` R package, and look at the names of the data frame. We then choose to `attach` the data frame, because it makes the code easier to read.^[Don't use `attach` for anything important]
+Let's start by graphing the data^[I've come to abhor my use of the expression "look at"; I use it when I don't say what I mean. "Look at" can mean almost anything, but it rarely means only "looking at"...]. *Graphing the data is always a good idea --- it is a principle of working with data*. We first load the data from the `primer` R package, and look at the names of the data frame. We then choose to `attach` the data frame, because it makes the code easier to read.^[Don't use `attach` for anything important]
 ```{r}
-library(primer)
-data(sparrows)
-names(sparrows)
-attach(sparrows)
+library(primer) # load the primer package
+data(sparrows) # load a built-in data set
+names(sparrows) # extract the names of the columns in the data frame
+attach(sparrows) # put the columns in R's search path
 ```
 
 Now we plot these counts through time (Fig. \@ref(fig:cts)).  
@@ -355,7 +355,7 @@ We see that Song Sparrow counts at this site (the DARRTOWN transect, OH, USA) fl
 
 Next we calculate annual $R_t=N_{t+1}/N_t$, that is, the observed growth rate for each year $t$.
 ```{r}
-# the use of [-1[ in the index tells R to exclude the first element.
+# the use of [-1] in the index tells R to exclude the first element.
 # length() is the length of a vector, so [-length(X)] means exclude the last
 obs.R <- Count[-1]/Count[-length(Count)]
 ```
@@ -380,12 +380,13 @@ Our simulation will,
 First, we decide how many years we want to simulate growth, and create an empty vector that will hold our data.
 ```{r}
 years <- 10
-N <-numeric(years+1) # rep(0,years+1) would do the same thing.
+N <- numeric(years+1) # rep(0,years+1) would do the same thing.
 ```
-Our vector of $N$ has to be one longer than the number of $R$ we use. This is because each $R$ is sthe change *from one year to the next* and there will always be one more *next* than there is $R$.
+Our vector of $N$ has to be one longer than the number of $R$ we use. This is because each $R$ is the change *from one year to the next* and there will always be one more *next* than there is $R$.
 
-Next we draw 10 $R$ at random with replacement. This is just like having all 35 observed $R$ written down on slips of paper and dropped into a paper bag. We then draw one slip of paper out of the bag, write the number down, and put the slip of paper back in the bag, and then repeat this 9 more times. This is *resampling with replacement*. In that case, we would be assuming that all of these $R_t$ are important and will occur at some point, but we just don't know when---they constitute the entire universe of possiblities. The R function *sample* will do this. 
-[A random process occurs only in our imagination, or perhaps at the quantum level.^[Random, pseudorandom, and stochastic processes.] A stochastic process is one which we treat operationally as random while acknowledging that there are complex underlying deterministic drivers. A pseudorandom process is a completely deterministic and hidden process used by computers and their programmers to generate numbers that cannot be distinguished from random; we can repeat a pseudorandom process by stipulating a key hidden starting point.]
+Next we draw 10 $R$ at random with replacement. This is just like having all 35 observed $R$ written down on slips of paper and dropped into a paper bag. We then draw one slip of paper out of the bag, write the number down, and put the slip of paper back in the bag, and then repeat this 9 more times. This is *resampling with replacement*. In that case, we would be assuming that all of these $R_t$ are important and will occur at some point, but we just don't know when---they constitute the entire universe of possibilities. The R function *sample* will do this. 
+
+Terminology: A random process occurs only in our imagination, or perhaps at the quantum level. A stochastic process is one which we treat operationally as random while acknowledging that there are complex underlying deterministic drivers. A pseudorandom process is a completely deterministic and hidden process used by computers and their programmers to generate numbers that cannot be distinguished from random; we can repeat a pseudorandom process by stipulating a key hidden starting point.
 
 We can use `set.seed()` to make your pseudorandom process the same as mine, i.e., repeatable.
 ```{r}
@@ -413,29 +414,34 @@ Let's graph the result.
 qplot(0:years, N, geom=c("point","line"))
 ```
 
-It appears to work (Fig. \@ref(fig:simten)). Let's review what we have done. We
+It appears to work (Fig. \@ref(fig:simten)). 
 
-*had a bird count each year for 36 years. From this we calculated 35 $R$ (for all years except the very last).
+Let's review what we have done. We
+
+* had a bird count each year for 36 years. From this we calculated 35 $R$ (for all years except the very last).
 * decided how many years we wanted to project the population (10\,y).
 * drew at random and with replacement the observed $R$---one $R$ for each year we want to project forward.
-* we created an empty vector and put in an initial value (the last year's real data).
+* we created an empty vector and put in an initial value.
 * performed each year's calculation, and put it into the vector we made.
 
+So what does Fig. \@ref(fig:simten) represent? It represents one possible outcome of a trajectory, if we assume that $R$ has an equal probability of being any of the observed $R_t$. This *particular* trajectory is very unlikely, because it would require one particular sequence of randomly selected $R$s. However, we assume that it is *no less likely* than any other particular trajectory.
 
-So what does Fig. \@ref(fig:simten) represent? It represents one possible outcome of a trajectory, if we assume that $R$ has an equal probability of being any of the observed $R_t$. This *particular* trajectory is very unlikely, because it would require one particular sequence of randomly selected $R$s. However,  it is *no less likely* than any other particular trajectory.
-
-As only one realization of a set of randomly selected $R$, Fig. \@ref(fig:simten) tells us very little. What we need to do now is to replicate this process a very large number of times, and examine the *distribution* of outcomes, including moments of the distribution such as the mean, median, and confidence interval of eventual outcomes. 
+As only one realization of a set of randomly selected $R$, Fig. \@ref(fig:simten) tells us very little. What we need to do now is to replicate this process a very large number of times, and examine the *distribution* of outcomes, including moments of the distribution such as the mean, median, and the uncertainty of eventual outcomes. 
 
 ### Multiple simulations
-Now we create a way to perform the above simulation several times. There are a couple tricks we use to do this. We still want to start small so we can figure out the steps as we go. Here is what we would do next. 
+Next we create a way to perform the above simulation several times. There are a couple tricks we use to do this. We still want to start small so we can figure out the steps as we go. Here is what we would do next. 
 
 1. We start by creating a function that will do the steps we did above.
 2. We then do replicate independent simulations, using `replicate()`.
 
 
-Here we write a function to combine several steps.
+Here we write a function to combine several steps. Our function has three arguments: the observed $R$, the number of years that we want to simulate, and the initial population size.
 ```{r}
 myForLoop <- function(obs.R, years, initial.N) {
+  ## obs.R - observed annual growth rates, 
+  ## years - the number of years that we want to simulate,
+  ## initial.N - the initial population size.
+  
   # select all R at random
   rR <- sample(obs.R, size=years, replace=TRUE)
   # create a vector to hold N
@@ -443,6 +449,8 @@ myForLoop <- function(obs.R, years, initial.N) {
   # give it an initial population size
   N[1] <- initial.N
   # Do the for-loop
+  
+  # For each year...
   for( t in 1:years ) {
     # project the population one time step
       N[t+1] <-  N[t] * rR[t]
@@ -450,22 +458,31 @@ myForLoop <- function(obs.R, years, initial.N) {
   # return the vector of N
   N
 } 
-# try it out with different hypothetical R
-myForLoop(obs.R=0:3, years=5, initial.N=43)
 ```
-Our function seems to work. Next we do ten such projection simulations, each for 50 time steps, using the sparrow data.
+
+After running the above code, try it out with different hypothetical $R$.
+```{r}
+myForLoop(obs.R=c(0.5, 1, 1.5), years=5, initial.N=43)
+```
+Our function seems to work. 
+
+Next we do ten such projection simulations, each for 50 time steps, using the sparrow data.
 ```{r tensim}
 # specify the number of simulations and for how long
 sims=10; years=50
+
+# make the randomizations repeatable
 set.seed(3)
+
 outmat <- replicate(sims,   
-                    expr=myForLoop(obs.R=obs.R, years=years, initial.N=43)
+             expr=myForLoop(obs.R=obs.R, years=years, initial.N=43)
                     )
 ```
 Now let's peek at the results (Fig. \@ref(fig:tensimfig)). It is fun to graph our output, but also helps us make sure we are not making a heinous mistake in our code. Note we use log scale to help us see the small populations.
 ```{r tensimfig, fig.cap="Using matplot() to plot a matrix vs. a single variable. Our simulated populations sometimes increase and sometimes decrease.", out.width="75%"}
 matplot(0:years, outmat, type="l", log="y")
 ```
+
 
 ```{r tensimfig2, fig.cap="Using ggplot() to plot one variable against vs. a single variable, organized by a grouping variable. Our simulated populations sometimes increase and sometimes decrease.", out.width="75%"}
 # combine columns years, and our output
@@ -485,14 +502,14 @@ ggplot(data=out.long, aes(x=years, y=N, group=Run)) + geom_line() +
 ```
 
 
-What does it mean that the simulation has an approximately even distribution of final population sizes \emph{on the log scale} (Fig. \ref{fig:tensimfig2})? If we plotted it on a linear scale, what would it look like?^[Plotting it on the log scale reveals that the relative change is independent of population size; this is true because the rate of change is geometric. If we plotted it on a linear scale, we would see that many trajectories result in small counts, and only a few get really big. That is, the median size is pretty small, but a few populations get huge.}
+What does it mean that the simulation has an approximately even distribution of final population sizes \emph{on the log scale} (Fig. \ref{fig:tensimfig2})? If we plotted it on a linear scale, what would it look like?^[Plotting it on the log scale reveals that the relative change is independent of population size; this is true because the rate of change is geometric. If we plotted it on a linear scale, we would see that many trajectories result in small counts, and only a few get really big. That is, the median size is pretty small, but a few populations get huge.]
 
 Rerunning this simulation, with new $R$ each time, will show different dynamics every time, and that is the point of simulations. Simulations are a way to make a few key assumptions, and then leave the rest to chance. In that sense it is a null model of population dynamics.
 
 ###  A distribution of possible futures
 Now we are in a position to make an informed prediction, given our assumptions. We will predict the range of possible outcomes and the most likely outcomes, given our set of assumptions. 
 
-We will simulate the population for 50 years 10\,000 times and describe the distribution of final populatin sizes. We use `system.time` to tell me how long it takes on my computer.
+We will simulate the population for 50 years 10\,000 times and describe the distribution of final population sizes. We use `system.time` to tell me how long it takes on my computer.
 ```{r}
 sims=1e4; years=50
 set.seed(3)
@@ -524,14 +541,14 @@ The `quantile()` function allows us to find a form of empirical confidence inter
 ```{r}
 quantile(N.2053, prob=c(0.05, .95) )
 ```
-These quantiles provide an estimate of the most likely range of possible populatin sizes, given our assumptions. 
+These quantiles provide an estimate of the most likely range of possible population sizes, given our assumptions. 
 
 ### Inferring processes underlying growth rate
 The above approach relies only on the observed data. That means that the growth rates, while representative, can never be different than what was observed. A different approaach would be to assume that the growth rates can be different than observed, *but drawn from the same underlying process* that caused the observed rates. 
 
-The observed rates are simply a visible manifestation of unseen processes. We might summarize these by asserting that the observed growth rates were samples from a continuous distribution distribution, whose prperties we can infer from the sample. For instance, it may be that these processes cause annual rates to follow a Normal, or perhaps log-normal distribution. 
+The observed rates are simply a visible manifestation of unseen processes. We might summarize these by asserting that the observed growth rates were samples from a continuous distribution distribution, whose properties we can infer from the sample. For instance, it may be that these processes cause annual rates to follow a normal^[Gaussian], or perhaps log-normal distribution. 
 
-We can fit a Normal distribution to the logarithms of our observed $R$, and we see that it doesn't do too bad a job (Fig. \@ref(fig:fitln)).
+We can fit a normal distribution to the logarithms of our observed $R$, and we see that it doesn't do too bad a job (Fig. \@ref(fig:fitln)).
 
 ```{r fitln, fig.cap="The logarithms of the observed R seem reasonably approximated by a Normal distribution whose mean and standard deviation are derived from the log-transformed data. The probability distribution has been rescaled to be visible on this graph.", out.width="75%"}
 mu <- mean( log(obs.R) )
@@ -583,32 +600,119 @@ quantile(N.2053, prob=c(0.05, .95) )
 ```
 The results are very similar to those based on only the observed $R$. If they were markedly different, we might ask whether our choice of distribution was appropriate.
 
-Our conclusions are based on a model of discrete density-independent population growth
+Our conclusions are based on a model of discrete density-independent population growth.
 
 * what assumptions are we making and are they valid? 
 * Are our unrealistic assumptions perhaps nonetheless a good approximation of reality? 
 * what would you like to add next to make the model a better approximation? 
 
 
+## 1/$f$ environmental noise
+Perhaps we can explain some of the variation in annual growth rates of sparrows to weather patterns in the sampling area (Darrtown, Ohio). In doing so, we might be assuming the *environmental stochasticity* is worth modeling which might allow us to separate demographic effects from environmental effects. That would give us a better model we might use for explanation and prediction.
 
-### 1/$f$ environmental noise
-Perhaps we might explain some of the variation in annual growth rates to weather patterns in the breeding range (Darrtown, Ohio). If so, we might separate demographic effects *vs.* environmental effects. That would give us an even better model we could use for explanation and prediction.
+When we model or simulate time series, we often find it essential to account for patterns that arise on different time scales and have different magnitudes. For instance, air temperature (and its consequences) varies diurnally, from day to day and week to week, and across seasons. We often refer to this as "one over f-noise" ($1/f$-noise), that is, random variation multiple overlapping asynchronous patterns of variation can be characterized with *spectral analysis* [@Shumway2019; @Halley1996]. Spectral analysis allows us to detect cyclic repeating patterns in noisy data, such as the El Niño Southern Oscillations, small mammal population cycles, tree masting dynamics, or disease outbreaks.
 
-When we model or simulate more realistic time series, we often find it essential to account for the *temporal autocorrelation* that often appears in environmental data. Patterns of autocorrelation are often best characterized by "one over f-noise" ($1/f$), that is, random variation where the temporal autocorrelation follows a color spectrum. Uncorrelated noise is referred to as white noise because the correlations actually occur at all wavelengths. Red noise emphasized strong positive correlation at short wavelengths and low correlation at long wavelengths. As a result, red noise is more random at longer wavelengths but less random at short wavelengths . Environmental variables typically have a reddened color that we typically refer to as pink noise [@Halley1996]. 
+In addition to detecting the particular frequencies of some cycles, we can also describe multivariate emergent spectral patterns with reference to a color spectrum. When variation at all time scales is equally important, we refer to this as white noise, analogous to white light, which includes all visible frequencies. When lower frequencies are more important, we refer to this as red noise. This results from low-frequency long-wavelength patterns having greater amplitude than high-frequency, short-wavelength patterns. We refer to this as *reddened noise*.
 
-A good example of reddened noise is average daily air temperature. Daily temperature tends to be positively correlated from one day to the next, but tends more and more weakly correlated between two days that are separated more and more in time. Daily water temperature is even more strongly correlated in adjacent days because of the high specific heat of water.
+Environmental variables typically have a reddened color that we typically refer to as pink noise [@Halley1996]. We refer to this type of environmental variation as *environmental color*, whether white, pink, brown, or even, in the other direction, blue. 
 
-
-```{r}
+```{r colorex, fig.cap="Examples of reddened (left) and white (right) time series.", out.width="67%", fig.show='hold' }
 set.seed(1)
-time.series <- one_over_f(gamma=2, N=50)
-plot(1:50, time.series, type='l', main="Reddened noise")
-time.series <- one_over_f(gamma=0, N=50)
-plot(1:50, time.series, type='l', main="White noise")
-one_over_f()
+time.series.r <- one_over_f(gamma=1, N=50)
+plot(1:50, time.series.r, type='l', main="Pink noise")
+time.series.w <- one_over_f(gamma=0, N=50)
+plot(1:50, time.series.w, type='l', main="White noise")
 ```
+
+Experimental studies of environmental variation require us to isolate different features of the variability while holding other features constant. For instance, we may want to hold the mean temperature constant but add different amounts of variation. We may want to hold the mean and the variance constant, but vary the spectral environment color. *Spectral mimicry* [@Cohen1999] is a technique to helps us do that. It takes a string of numbers and arranges them into a sequence whose spectral signature mimics a designated spectral pattern. This imbues the original numbers with a different spectral pattern. Thus, the two sequences retain exactly the same data and therefore the same means and variances, but differ only in their sequences and spectral properties. 
+
+Below, we use spectral mimicry to simulate Song Sparrow population dynamics. We first investigate spectral mimicry by creating
+
+* a string of uniform random numbers between [0,1], 
+* a template pink (slightly reddened) sequence,
+* a rearrangement of the original string to match the spectral properties of the template.
+
+We then plot the three vectors.
+```{r specex, fig.cap="Example of spectral mimicry, showing the original random data points (solid black line), the template ('one.over.f.pattern', red dashed line), and the rearranged, reddened data points (solid red line).", outwidth="67%"}
+N = 50 # number of data points in one string
+set.seed(1) # set the pseudorandomization seed
+
+## create uniform random numbers
+N.random <- runif(N)
+## Pink noise template
+one.over.f.pattern <- one_over_f(gamma=1, N=N)
+## Rearrangement (mimicry)
+N.f <- spec_mimic(N.random, one.over.f.pattern)
+
+## combine and plot
+series <- cbind(N.random, one.over.f.pattern, N.f)
+matplot(1:50, series, type='l', 
+        col=c(1,2,2), lty=c(1,2,1), lwd=c(1,2,2))
+legend("bottomright", 
+       legend=colnames(series), bty='n', 
+        col=c(1,2,2), lty=c(1,2,1), lwd=c(1,2,2))
+```
+
+In Fig. \@ref(fig:spec.ex), the solid lines refer to the uniform data (black) and the reddened (red).
+
+### Reddened Song Sparrow growth
+Imagine that the Ohio (USA) environment of our Song Sparrows reveals *environmnetal stochasticity*, that is, random-like fluctuations that we do not understand. Next imagine that this environmnetal stochasticity affects Song Sparrow growth rate. If we want to simulation future sparrow population dynamics, we may want to mimic the type and magnitude of this underlying variation. We might do that by using our original annual growth data, but arranged in a reddened series. 
+
+Let us first examine whether the sparrow growth rates show evidence of reddened population dynamics. We can use the `plot_f()` in `primer` to evaluate that. It plots the time series, and then the power spectra. It fits a line to the log(power) vs. log(frequency) and calculates a frequentist confidence interval.
+```{r plotf, fig.cap="Sparrow population dynamics might show reddened flutuations. On the left, sparrow counts over time, and on the right, the log-log plot of the power spectrum (power vs. frequency). The frequentist confidence interval on the slope of the fitted line suggests that we shouldn't rule out the possibility of a reddened series."}
+plot_f(Count)
+```
+
+Not surprisingly, we see the possibility of reddened population dynamics. You could also investigate the observed annual growth rates the same way.
+
+To resample the sparrow growth rates and also create a reddened sequences of them, we could do two things, depending on our goals. We could create a large number of different reddened templates and mimic them using only the observed data. Alternatively, we can draw annual growth rates at random, and match each random draw to the same reddened sequence. Of course, we could do both as well.
+
+Below, we simply rearrange the observed annual growths into a single reddened sequence. For the reddened template, we will assume moderate reddening, or pink noise, for which $\gamma = 1$.
+```{r Rred, fig.cap="Original and rearranged"}
+R.n = length(obs.R) # number of observations
+
+## A random pink noise template
+set.seed(2)
+one.over.f.pattern <- one_over_f(gamma=1, N=R.n)
+
+## Rearrange the observed R
+R.f <- spec_mimic(obs.R, one.over.f.pattern)
+
+## combine and plot
+series <- cbind(obs.R, one.over.f.pattern, R.f)
+
+matplot(1:R.n, series, type='l', 
+        col=c(1,2,2), lty=c(1,2,1), lwd=c(1,2,2))
+legend("bottomright", 
+       legend=colnames(series), bty='n',
+        col=c(1,2,2), lty=c(1,2,1), lwd=c(1,2,2))
+```
+
+Now we can project a simulated sparrow population 
+```{r fdyn, fig.cap="Example of a simulated sparrow projection using reddened annual growth rates.", outwidth="67%"}
+
+N.f <- numeric( length(R.f) + 1 )
+# give it an initial population size
+N.f[1] <- 43
+
+# Do the for-loop
+  # For each year...
+  for( t in 1:length(R.f) ) {
+    # project the population one time step
+      N.f[t+1] <-  N.f[t] * R.f[t]
+  }
+
+## Graph N, and R
+layout(matrix(1:2, nrow=2))
+par(mar=c(1,4,1,1))
+plot(1:length(N.f), N.f, type='l'); text(27,90, "Pop. size")
+plot(1:length(R.f), R.f, type='l'); text(17, 2, "Randomized Pink Annual R")
+abline(h=1, lty=2)
+```
+
+Can you make predictions about how environmental noise might alter the risk of extinction?
 
 
 \section{Summary}
-In this chapter, we have explored the meaning of density-independent population growth. It is a statistically demonstrable phenomenon, wherein the per captia growth rate exhibits no relation with population density. It is a useful starting point for conceptualizing population growth. We have derived discrete geometric and continuous exponential growth and seen how they are related. We have caculated doubling times. We have discussed the assumptions that different people might make regarding these growth models. Last, we have used simulation to explore prediction and inference in a density-independent context.
+In this chapter, we have explored the meaning of density-independent population growth. It is a statistically demonstrable phenomenon, wherein the per capita growth rate exhibits no relation with population density. It is a useful starting point for conceptualizing population growth. We derived discrete geometric and continuous exponential growth and seen how they are related. We calculated doubling times. We have discussed the assumptions that different people might make regarding these growth models. We introduced a characteristic of environmental variability, $1/f$-noise. We have used simulation to explore prediction and inference in a density-independent context. Our simulations included those with and without $1/f$-noise.
 
