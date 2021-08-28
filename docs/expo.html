@@ -584,7 +584,7 @@ Figure 3.10: Using ggplot() to plot one variable against vs. a single variable,
                     <span class="op">)</span>
             <span class="op">)</span></code></pre></div>
 <pre><code>##    user  system elapsed 
-##   0.143   0.005   0.149</code></pre>
+##   0.132   0.006   0.138</code></pre>
 <p>This tells me how long it took to complete 10,000 simulations. We also check the dimensions of the output, and they make sense.</p>
 <div class="sourceCode" id="cb77"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/dim.html">dim</a></span><span class="op">(</span><span class="va">outmat</span><span class="op">)</span></code></pre></div>
@@ -616,14 +616,75 @@ Figure 3.11: Distribution of the 10000 final base-10 log population sizes. Note 
 ##    1.331579 2862.940808</code></pre>
 <p>These quantiles provide an estimate of the most likely range of possible population sizes, given our assumptions.</p>
 </div>
-<div id="inferring-processes-underlying-growth-rate" class="section level3" number="3.4.7">
+<div id="extinction-probability" class="section level3" number="3.4.7">
 <h3>
-<span class="header-section-number">3.4.7</span> Inferring processes underlying growth rate<a class="anchor" aria-label="anchor" href="#inferring-processes-underlying-growth-rate"><i class="fas fa-link"></i></a>
+<span class="header-section-number">3.4.7</span> Extinction probability<a class="anchor" aria-label="anchor" href="#extinction-probability"><i class="fas fa-link"></i></a>
+</h3>
+<p>What is the chance that the sparrow would become extinct in this region, due to these inherent processes? As one answer to this question, we can calculate the fraction of times that the population fell below 1.0 (or <span class="math inline">\(\log N = 0\)</span>). Based on the above summaries, it will be a fairly small number.</p>
+<p>First, we convert persisting populations to 1, and extinct populations to zero. We then sum the ones and divide by the total number of all simulated populations. This gives us the fraction surviving.</p>
+<div class="sourceCode" id="cb84"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">persisting</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html">as.numeric</a></span><span class="op">(</span> <span class="va">N.2053</span> <span class="op">&gt;</span> <span class="fl">1</span> <span class="op">)</span>
+<span class="op">(</span><span class="va">p</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="va">persisting</span><span class="op">)</span><span class="op">/</span><span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span><span class="op">(</span><span class="va">persisting</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<pre><code>## [1] 0.9607</code></pre>
+<p>Next we can ask what the uncertainty is associated with that? We will find an intuitive Bayesian answer to the question: What is the probability that the sparrow would become extinct in this region, due to these inherent processes?</p>
+<p>We will gain an intuition into Bayesian probability elsewhere. For now, we will simply rely on well-established relationship between the binomial probability distribution and the beta distribution.</p>
+<p>We start with our expert opinion of whether Song Sparrows are likely to maintain a self-replacing population (a ‘source’ population - Ch. 6) and avoid extinction over our time interval. In other words, we ask Dave Russell. He says “Probably, but you can’t be sure.” Let’s represent that with the beta distribution. The <strong>beta distribution</strong> generates probability densities for a random variable between [0,1], perfect for representing probabilities. It has two parameters, shape 1 (<span class="math inline">\(\alpha\)</span>) and shape 2 (<span class="math inline">\(\beta\)</span>). The mean of the beta distribution is,
+<span class="math display">\[\mu = \frac{\alpha}{\alpha + \beta}\]</span></p>
+<div class="sourceCode" id="cb86"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">base</span> <span class="op">&lt;-</span> <span class="fu">ggplot</span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/graphics/plot.window.html">xlim</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span><span class="op">)</span>
+
+<span class="va">base</span> <span class="op">+</span> 
+  <span class="fu">geom_function</span><span class="op">(</span>fun <span class="op">=</span> <span class="va">dbeta</span>, args <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>shape1 <span class="op">=</span> <span class="fl">3</span>, shape <span class="op">=</span> <span class="fl">2</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> 
+  <span class="fu">labs</span><span class="op">(</span>y<span class="op">=</span><span class="st">"Probability density of surviving"</span>,
+       x<span class="op">=</span><span class="st">"Probability of surviving (p)"</span><span class="op">)</span></code></pre></div>
+<div class="figure">
+<span style="display:block;" id="fig:survivalPrior"></span>
+<img src="figs/survivalPrior-1.png" alt="Our prior belief on the probability that the Song Sparrow population in Darrtown will replace itself over our time interval." width="67%"><p class="caption">
+Figure 3.12: Our prior belief on the probability that the Song Sparrow population in Darrtown will replace itself over our time interval.
+</p>
+</div>
+<p>Fig. <a href="expo.html#fig:survivalPrior">3.12</a> shows our <em>prior beliefs</em>. That is, before we look at our data, we thinking there is a 3/5’s chance (60%) that Song Sparrows in Darrtown won’t become extinct over our time interval. How will we update our beliefs using our data?</p>
+<p>First, our “data” are really just 36 years of counts and 35 estimates of annual growth (<span class="math inline">\(N_{t+1}/N_{t}\)</span>). We can do as many simulations as we like, but they are still based on only 35 annual growth estimates. Therefore, if we combine our survival estimate with the amount of data, we multiply the survival probability by the sample size and think of it as evidence in favor of surviving. Weight of evidence not in favor is the difference.</p>
+<div class="sourceCode" id="cb87"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">nR</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span><span class="op">(</span><span class="va">obs.R</span><span class="op">)</span>
+<span class="va">nR.surv</span> <span class="op">&lt;-</span> <span class="va">nR</span> <span class="op">*</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="va">persisting</span><span class="op">)</span><span class="op">/</span><span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span><span class="op">(</span><span class="va">persisting</span><span class="op">)</span>
+<span class="va">nR.ext</span> <span class="op">&lt;-</span> <span class="va">nR</span> <span class="op">-</span> <span class="va">nR.surv</span></code></pre></div>
+<p>Next, we update our belief about Song Sparrow persistence, using the beta distribution. It turns out that we just add the evidence in favor of and not in favor of survival to the alpha and beta parameters (shape1, shape2) to get updated values that will generate our updated beliefs.</p>
+<div class="sourceCode" id="cb88"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">updated.alpha</span> <span class="op">=</span> <span class="fl">3</span> <span class="op">+</span> <span class="va">nR.surv</span>
+<span class="va">updated.beta</span> <span class="op">=</span> <span class="fl">2</span> <span class="op">+</span> <span class="va">nR.ext</span></code></pre></div>
+<p>Now we plot our <em>updated</em> beliefs, with what we call the <em>posterior distribution.</em></p>
+<div class="sourceCode" id="cb89"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">base</span> <span class="op">+</span> 
+  <span class="fu">geom_function</span><span class="op">(</span>fun <span class="op">=</span> <span class="va">dbeta</span>, 
+                args <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>shape1 <span class="op">=</span> <span class="fl">3</span>, 
+                            shape2 <span class="op">=</span> <span class="fl">2</span><span class="op">)</span>, linetype<span class="op">=</span><span class="fl">2</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu">geom_function</span><span class="op">(</span>fun <span class="op">=</span> <span class="va">dbeta</span>, 
+                args <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>shape1 <span class="op">=</span> <span class="va">updated.alpha</span>, 
+                            shape2 <span class="op">=</span> <span class="va">updated.beta</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu">labs</span><span class="op">(</span>y<span class="op">=</span><span class="st">"Probability density of surviving"</span>,
+       x<span class="op">=</span><span class="st">"Probability of surviving (p)"</span><span class="op">)</span></code></pre></div>
+<div class="figure">
+<span style="display:block;" id="fig:survivalpost"></span>
+<img src="figs/survivalpost-1.png" alt="Our updated beliefs (solid line) about the probability that the Song Sparrows will replace themselves over our time interval. The solid line is the posterior distribution. The dashed line was our prior beliefs or prior distribution." width="67%"><p class="caption">
+Figure 3.13: Our updated beliefs (solid line) about the probability that the Song Sparrows will replace themselves over our time interval. The solid line is the posterior distribution. The dashed line was our prior beliefs or prior distribution.
+</p>
+</div>
+<p>A Bayesian approach to probability and learning</p>
+<ol style="list-style-type: decimal">
+<li>start with what we believe prior to collecting data,</li>
+<li>collect some data, and then</li>
+<li>update our beliefs according to the data.</li>
+</ol>
+</div>
+<div id="inferring-processes-underlying-growth-rate" class="section level3" number="3.4.8">
+<h3>
+<span class="header-section-number">3.4.8</span> Inferring processes underlying growth rate<a class="anchor" aria-label="anchor" href="#inferring-processes-underlying-growth-rate"><i class="fas fa-link"></i></a>
 </h3>
 <p>The above approach relies only on the observed data. That means that the growth rates, while representative, can never be different than what was observed. A different approaach would be to assume that the growth rates can be different than observed, <em>but drawn from the same underlying process</em> that caused the observed rates.</p>
 <p>The observed rates are simply a visible manifestation of unseen processes. We might summarize these by asserting that the observed growth rates were samples from a continuous distribution distribution, whose properties we can infer from the sample. For instance, it may be that these processes cause annual rates to follow a normal<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;Gaussian&lt;/p&gt;"><sup>22</sup></a>, or perhaps log-normal distribution.</p>
-<p>We can fit a normal distribution to the logarithms of our observed <span class="math inline">\(R\)</span>, and we see that it doesn’t do too bad a job (Fig. <a href="expo.html#fig:fitln">3.12</a>).</p>
-<div class="sourceCode" id="cb84"><pre class="downlit sourceCode r">
+<p>We can fit a normal distribution to the logarithms of our observed <span class="math inline">\(R\)</span>, and we see that it doesn’t do too bad a job (Fig. <a href="expo.html#fig:fitln">3.14</a>).</p>
+<div class="sourceCode" id="cb90"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">mu</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html">log</a></span><span class="op">(</span><span class="va">obs.R</span><span class="op">)</span> <span class="op">)</span>
 <span class="va">sigma</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/sd.html">sd</a></span><span class="op">(</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html">log</a></span><span class="op">(</span><span class="va">obs.R</span><span class="op">)</span> <span class="op">)</span>
 
@@ -639,12 +700,12 @@ Figure 3.11: Distribution of the 10000 final base-10 log population sizes. Note 
 <div class="figure">
 <span style="display:block;" id="fig:fitln"></span>
 <img src="figs/fitln-1.png" alt="The logarithms of the observed R seem reasonably approximated by a Normal distribution whose mean and standard deviation are derived from the log-transformed data. The probability distribution has been rescaled to be visible on this graph." width="75%"><p class="caption">
-Figure 3.12: The logarithms of the observed R seem reasonably approximated by a Normal distribution whose mean and standard deviation are derived from the log-transformed data. The probability distribution has been rescaled to be visible on this graph.
+Figure 3.14: The logarithms of the observed R seem reasonably approximated by a Normal distribution whose mean and standard deviation are derived from the log-transformed data. The probability distribution has been rescaled to be visible on this graph.
 </p>
 </div>
 <p>Now we will simulate populations just like before, but instead of random draws from the observed data, we do random draws from the inferred distribution.</p>
 <p>Our new function.</p>
-<div class="sourceCode" id="cb85"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb91"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">myForLoop2</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">mu</span>, <span class="va">sigma</span>, <span class="va">years</span>, <span class="va">initial.N</span><span class="op">)</span> <span class="op">{</span>
   <span class="co"># select all R at random from </span>
   <span class="va">lrR</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html">rnorm</a></span><span class="op">(</span><span class="va">years</span>, m<span class="op">=</span><span class="va">mu</span>, sd<span class="op">=</span><span class="va">sigma</span><span class="op">)</span>
@@ -662,7 +723,7 @@ Figure 3.12: The logarithms of the observed R seem reasonably approximated by a 
   <span class="va">N</span>
 <span class="op">}</span> </code></pre></div>
 <p>Our new simulations.</p>
-<div class="sourceCode" id="cb86"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb92"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">sims</span><span class="op">=</span><span class="fl">1e4</span>; <span class="va">years</span><span class="op">=</span><span class="fl">50</span>
 <span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">3</span><span class="op">)</span>
 <span class="va">outmat2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html">replicate</a></span><span class="op">(</span><span class="va">sims</span>,   
@@ -672,7 +733,7 @@ Figure 3.12: The logarithms of the observed R seem reasonably approximated by a 
 <span class="fu"><a href="https://rdrr.io/r/stats/quantile.html">quantile</a></span><span class="op">(</span><span class="va">N2.2053</span>, prob<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0.05</span>, <span class="fl">.95</span><span class="op">)</span> <span class="op">)</span></code></pre></div>
 <pre><code>##          5%         95% 
 ##    1.205509 3089.819907</code></pre>
-<div class="sourceCode" id="cb88"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb94"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/stats/quantile.html">quantile</a></span><span class="op">(</span><span class="va">N.2053</span>, prob<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0.05</span>, <span class="fl">.95</span><span class="op">)</span> <span class="op">)</span></code></pre></div>
 <pre><code>##          5%         95% 
 ##    1.331579 2862.940808</code></pre>
@@ -693,7 +754,7 @@ Figure 3.12: The logarithms of the observed R seem reasonably approximated by a 
 <p>When we model or simulate time series, we often find it essential to account for patterns that arise on different time scales and have different magnitudes. For instance, air temperature (and its consequences) varies diurnally, from day to day and week to week, and across seasons. We often refer to this as “one over f-noise” (<span class="math inline">\(1/f\)</span>-noise), that is, random variation multiple overlapping asynchronous patterns of variation can be characterized with <em>spectral analysis</em> <span class="citation">(<a href="references.html#ref-Shumway2019" role="doc-biblioref">Shumway and Stoffer 2019</a>; <a href="references.html#ref-Halley1996" role="doc-biblioref">Halley 1996</a>)</span>. Spectral analysis allows us to detect cyclic repeating patterns in noisy data, such as the El Niño Southern Oscillations, small mammal population cycles, tree masting dynamics, or disease outbreaks.</p>
 <p>In addition to detecting the particular frequencies of some cycles, we can also describe multivariate emergent spectral patterns with reference to a color spectrum. When variation at all time scales is equally important, we refer to this as white noise, analogous to white light, which includes all visible frequencies. When lower frequencies are more important, we refer to this as red noise. This results from low-frequency long-wavelength patterns having greater amplitude than high-frequency, short-wavelength patterns. We refer to this as <em>reddened noise</em>.</p>
 <p>Environmental variables typically have a reddened color that we typically refer to as pink noise <span class="citation">(<a href="references.html#ref-Halley1996" role="doc-biblioref">Halley 1996</a>)</span>. We refer to this type of environmental variation as <em>environmental color</em>, whether white, pink, brown, or even, in the other direction, blue.</p>
-<div class="sourceCode" id="cb90"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb96"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span>
 <span class="va">time.series.r</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/primer/man/one_over_f.html">one_over_f</a></span><span class="op">(</span>gamma<span class="op">=</span><span class="fl">1</span>, N<span class="op">=</span><span class="fl">50</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">50</span>, <span class="va">time.series.r</span>, type<span class="op">=</span><span class="st">'l'</span>, main<span class="op">=</span><span class="st">"Pink noise"</span><span class="op">)</span>
@@ -702,7 +763,7 @@ Figure 3.12: The logarithms of the observed R seem reasonably approximated by a 
 <div class="figure">
 <span style="display:block;" id="fig:colorex"></span>
 <img src="figs/colorex-1.png" alt="Examples of reddened (left) and white (right) time series." width="67%"><img src="figs/colorex-2.png" alt="Examples of reddened (left) and white (right) time series." width="67%"><p class="caption">
-Figure 3.13: Examples of reddened (left) and white (right) time series.
+Figure 3.15: Examples of reddened (left) and white (right) time series.
 </p>
 </div>
 <p>Experimental studies of environmental variation require us to isolate different features of the variability while holding other features constant. For instance, we may want to hold the mean temperature constant but add different amounts of variation. We may want to hold the mean and the variance constant, but vary the spectral environment color. <em>Spectral mimicry</em> <span class="citation">(<a href="references.html#ref-Cohen1999" role="doc-biblioref">J. E. Cohen et al. 1999</a>)</span> is a technique to helps us do that. It takes a string of numbers and arranges them into a sequence whose spectral signature mimics a designated spectral pattern. This imbues the original numbers with a different spectral pattern. Thus, the two sequences retain exactly the same data and therefore the same means and variances, but differ only in their sequences and spectral properties.</p>
@@ -713,7 +774,7 @@ Figure 3.13: Examples of reddened (left) and white (right) time series.
 <li>a rearrangement of the original string to match the spectral properties of the template.</li>
 </ul>
 <p>We then plot the three vectors.</p>
-<div class="sourceCode" id="cb91"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb97"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">N</span> <span class="op">=</span> <span class="fl">50</span> <span class="co"># number of data points in one string</span>
 <span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span> <span class="co"># set the pseudorandomization seed</span>
 
@@ -734,22 +795,22 @@ Figure 3.13: Examples of reddened (left) and white (right) time series.
 <div class="figure">
 <span style="display:block;" id="fig:specex"></span>
 <img src="figs/specex-1.png" alt="Example of spectral mimicry, showing the original random data points (solid black line), the template ('one.over.f.pattern', red dashed line), and the rearranged, reddened data points (solid red line)." width="90%"><p class="caption">
-Figure 3.14: Example of spectral mimicry, showing the original random data points (solid black line), the template (‘one.over.f.pattern,’ red dashed line), and the rearranged, reddened data points (solid red line).
+Figure 3.16: Example of spectral mimicry, showing the original random data points (solid black line), the template (‘one.over.f.pattern,’ red dashed line), and the rearranged, reddened data points (solid red line).
 </p>
 </div>
-<p>In Fig. <a href="expo.html#fig:specex">3.14</a>, the solid lines refer to the uniform data (black) and the reddened (red).</p>
+<p>In Fig. <a href="expo.html#fig:specex">3.16</a>, the solid lines refer to the uniform data (black) and the reddened (red).</p>
 <div id="reddened-song-sparrow-growth" class="section level3" number="3.5.1">
 <h3>
 <span class="header-section-number">3.5.1</span> Reddened Song Sparrow growth<a class="anchor" aria-label="anchor" href="#reddened-song-sparrow-growth"><i class="fas fa-link"></i></a>
 </h3>
 <p>Imagine that the Ohio (USA) environment of our Song Sparrows reveals <em>environmnetal stochasticity</em>, that is, random-like fluctuations that we do not understand. Next imagine that this environmnetal stochasticity affects Song Sparrow growth rate. If we want to simulation future sparrow population dynamics, we may want to mimic the type and magnitude of this underlying variation. We might do that by using our original annual growth data, but arranged in a reddened series.</p>
 <p>Let us first examine whether the sparrow growth rates show evidence of reddened population dynamics. We can use the <code><a href="https://rdrr.io/pkg/primer/man/plot_f.html">plot_f()</a></code> in <code>primer</code> to evaluate that. It plots the time series, and then the power spectra. It fits a line to the log(power) vs. log(frequency) and calculates a frequentist confidence interval.</p>
-<div class="sourceCode" id="cb92"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb98"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/pkg/primer/man/plot_f.html">plot_f</a></span><span class="op">(</span><span class="va">Count</span><span class="op">)</span></code></pre></div>
 <div class="figure">
 <span style="display:block;" id="fig:plotf"></span>
 <img src="figs/plotf-1.png" alt="Sparrow population dynamics might show reddened flutuations. On the left, sparrow counts over time, and on the right, the log-log plot of the power spectrum (power vs. frequency). The frequentist confidence interval on the slope of the fitted line suggests that we shouldn't rule out the possibility of a reddened series." width="90%"><p class="caption">
-Figure 3.15: Sparrow population dynamics might show reddened flutuations. On the left, sparrow counts over time, and on the right, the log-log plot of the power spectrum (power vs. frequency). The frequentist confidence interval on the slope of the fitted line suggests that we shouldn’t rule out the possibility of a reddened series.
+Figure 3.17: Sparrow population dynamics might show reddened flutuations. On the left, sparrow counts over time, and on the right, the log-log plot of the power spectrum (power vs. frequency). The frequentist confidence interval on the slope of the fitted line suggests that we shouldn’t rule out the possibility of a reddened series.
 </p>
 </div>
 <pre><code>##      2.5 %     97.5 % 
@@ -757,7 +818,7 @@ Figure 3.15: Sparrow population dynamics might show reddened flutuations. On the
 <p>Not surprisingly, we see the possibility of reddened population dynamics. You could also investigate the observed annual growth rates the same way.</p>
 <p>To resample the sparrow growth rates and also create a reddened sequences of them, we could do two things, depending on our goals. We could create a large number of different reddened templates and mimic them using only the observed data. Alternatively, we can draw annual growth rates at random, and match each random draw to the same reddened sequence. Of course, we could do both as well.</p>
 <p>Below, we simply rearrange the observed annual growths into a single reddened sequence. For the reddened template, we will assume moderate reddening, or pink noise, for which <span class="math inline">\(\gamma = 1\)</span>.</p>
-<div class="sourceCode" id="cb94"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb100"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">R.n</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span><span class="op">(</span><span class="va">obs.R</span><span class="op">)</span> <span class="co"># number of observations</span>
 
 <span class="co">## A random pink noise template</span>
@@ -778,11 +839,11 @@ Figure 3.15: Sparrow population dynamics might show reddened flutuations. On the
 <div class="figure">
 <span style="display:block;" id="fig:Rred"></span>
 <img src="figs/Rred-1.png" alt="Original and rearranged" width="90%"><p class="caption">
-Figure 3.16: Original and rearranged
+Figure 3.18: Original and rearranged
 </p>
 </div>
 <p>Now we can project a simulated sparrow population</p>
-<div class="sourceCode" id="cb95"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb101"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">N.f</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html">numeric</a></span><span class="op">(</span> <span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span><span class="op">(</span><span class="va">R.f</span><span class="op">)</span> <span class="op">+</span> <span class="fl">1</span> <span class="op">)</span>
 <span class="co"># give it an initial population size</span>
 <span class="va">N.f</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fl">43</span>
@@ -803,7 +864,7 @@ Figure 3.16: Original and rearranged
 <div class="figure">
 <span style="display:block;" id="fig:fdyn"></span>
 <img src="figs/fdyn-1.png" alt="Example of a simulated sparrow projection using reddened annual growth rates." width="90%"><p class="caption">
-Figure 3.17: Example of a simulated sparrow projection using reddened annual growth rates.
+Figure 3.19: Example of a simulated sparrow projection using reddened annual growth rates.
 </p>
 </div>
 <p>Can you make predictions about how environmental noise might alter the risk of extinction?</p>
@@ -838,7 +899,8 @@ Figure 3.17: Example of a simulated sparrow projection using reddened annual gro
 <li><a class="nav-link" href="#multiple-simulations"><span class="header-section-number">3.4.4</span> Multiple simulations</a></li>
 <li><a class="nav-link" href="#a-distribution-of-possible-futures"><span class="header-section-number">3.4.5</span> A distribution of possible futures</a></li>
 <li><a class="nav-link" href="#analyzing-results"><span class="header-section-number">3.4.6</span> Analyzing results</a></li>
-<li><a class="nav-link" href="#inferring-processes-underlying-growth-rate"><span class="header-section-number">3.4.7</span> Inferring processes underlying growth rate</a></li>
+<li><a class="nav-link" href="#extinction-probability"><span class="header-section-number">3.4.7</span> Extinction probability</a></li>
+<li><a class="nav-link" href="#inferring-processes-underlying-growth-rate"><span class="header-section-number">3.4.8</span> Inferring processes underlying growth rate</a></li>
 </ul>
 </li>
 <li>
@@ -861,7 +923,7 @@ Figure 3.17: Example of a simulated sparrow projection using reddened annual gro
 <footer class="bg-primary text-light mt-5"><div class="container"><div class="row">
 
   <div class="col-12 col-md-6 mt-3">
-    <p>"<strong>Primer of Ecology using R</strong>" was written by Hank Stevens. It was last built on 2021-08-27.</p>
+    <p>"<strong>Primer of Ecology using R</strong>" was written by Hank Stevens. It was last built on 2021-08-28.</p>
   </div>
 
   <div class="col-12 col-md-6 mt-3">

@@ -215,15 +215,15 @@ expression for <span class="math inline">\(N_2\)</span> in <a href="direct-compe
 <p>The isocline (Fig. <a href="direct-competition-and-mutualism.html#fig:Niso1">7.3</a>) shows that as the competitor’s population size, <span class="math inline">\(N_1\)</span>, becomes larger, <span class="math inline">\(N_2\)</span> declines by <span class="math inline">\(\alpha_{21}/\alpha_{22}\)</span> for each additional individual of the competing species 1, until finally <span class="math inline">\(N_2=0\)</span> when <span class="math inline">\(N_1=1/\alpha_{21}\)</span>.</p>
 <p><strong>Graphing an isocline</strong> isn’t too hard, so let’s graph something similar to Fig. <a href="direct-competition-and-mutualism.html#fig:Niso1">7.3</a>. First, we define a new matrix of competition coefficients, where
 <span class="math inline">\(\alpha_{11}=\alpha_{22} &gt; \alpha_{12}=\alpha_{21}\)</span>.</p>
-<div class="sourceCode" id="cb209"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb215"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">a</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html">matrix</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span>  <span class="fl">0.01</span>, <span class="fl">0.005</span>,
                   <span class="fl">0.005</span>, <span class="fl">0.01</span><span class="op">)</span>, ncol<span class="op">=</span><span class="fl">2</span>, byrow<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
 <p>We create an expression to plot the <span class="math inline">\(N_2\)</span> isocline, as a function of
 possible values of <span class="math inline">\(N_1\)</span>.</p>
-<div class="sourceCode" id="cb210"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb216"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">N2iso</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/expression.html">expression</a></span><span class="op">(</span><span class="fl">1</span><span class="op">/</span><span class="va">a</span><span class="op">[</span><span class="fl">2</span>,<span class="fl">2</span><span class="op">]</span> <span class="op">-</span> <span class="op">(</span><span class="va">a</span><span class="op">[</span><span class="fl">2</span>,<span class="fl">1</span><span class="op">]</span><span class="op">/</span><span class="va">a</span><span class="op">[</span><span class="fl">2</span>,<span class="fl">2</span><span class="op">]</span><span class="op">)</span><span class="op">*</span><span class="va">N1</span><span class="op">)</span></code></pre></div>
 <p>We then specify <span class="math inline">\(N_1\)</span>, and then evaluate and plot <span class="math inline">\(N_2\)</span>. We add arrows to remind us of what happens if <span class="math inline">\(N_2\)</span> is above or below the value on the isocline.</p>
-<div class="sourceCode" id="cb211"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb217"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">N1</span> <span class="op">&lt;-</span> <span class="fl">0</span><span class="op">:</span><span class="fl">200</span>
 <span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">N1</span>, <span class="fu"><a href="https://rdrr.io/r/base/eval.html">eval</a></span><span class="op">(</span><span class="va">N2iso</span><span class="op">)</span>, type<span class="op">=</span><span class="st">'l'</span>,
       ylim<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">200</span><span class="op">)</span>, xlim<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">200</span><span class="op">)</span>,
@@ -364,11 +364,11 @@ Figure 7.4: <em>Phase plane diagrams of Lotka-Volterra competitors under differe
 </h4>
 <p>We just did this above. Given <a href="direct-competition-and-mutualism.html#eq:lvn1eq">(7.8)</a> and <a href="direct-competition-and-mutualism.html#eq:lvn2eq">(7.9)</a>, we see that the <strong><span class="math inline">\(\alpha\)</span></strong> determine completely <span class="math inline">\(N_1^*\)</span> and <span class="math inline">\(N_2^*\)</span>. This is not true for Lotka-Volterra systems with more than two species; such systems also depend on <span class="math inline">\(r_i\)</span>.</p>
 <p><strong>Finding equilibria in R</strong> can be done using <em>expressions</em> for the equilibria, <span class="math inline">\(N_1^*\)</span> and <span class="math inline">\(N_2^*\)</span>. An R expression is a symbolic representation of an equation. These will be symbolic representations that we later evaluate using <code><a href="https://rdrr.io/r/base/eval.html">eval()</a></code>.</p>
-<div class="sourceCode" id="cb212"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb218"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">N1Star</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/expression.html">expression</a></span><span class="op">(</span> <span class="op">(</span><span class="va">a22</span><span class="op">-</span><span class="va">a12</span><span class="op">)</span><span class="op">/</span><span class="op">(</span><span class="va">a22</span><span class="op">*</span><span class="va">a11</span> <span class="op">-</span> <span class="va">a12</span><span class="op">*</span><span class="va">a21</span><span class="op">)</span> <span class="op">)</span>
 <span class="va">N2Star</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/expression.html">expression</a></span><span class="op">(</span> <span class="op">(</span><span class="va">a11</span><span class="op">-</span><span class="va">a21</span><span class="op">)</span><span class="op">/</span><span class="op">(</span><span class="va">a22</span><span class="op">*</span><span class="va">a11</span> <span class="op">-</span> <span class="va">a12</span><span class="op">*</span><span class="va">a21</span><span class="op">)</span> <span class="op">)</span></code></pre></div>
 <p>Next we create the <span class="math inline">\(\mathbf{\alpha}\)</span> and evaluate our expressions.</p>
-<div class="sourceCode" id="cb213"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb219"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">a11</span> <span class="op">&lt;-</span> <span class="va">a22</span> <span class="op">&lt;-</span> <span class="fl">0.01</span>;  <span class="va">a12</span> <span class="op">&lt;-</span> <span class="fl">0.001</span>; <span class="va">a21</span> <span class="op">&lt;-</span> <span class="fl">0.001</span>
 <span class="va">N1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/eval.html">eval</a></span><span class="op">(</span><span class="va">N1Star</span><span class="op">)</span>; <span class="va">N2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/eval.html">eval</a></span><span class="op">(</span><span class="va">N2Star</span><span class="op">)</span>
 <span class="va">N1</span></code></pre></div>
@@ -412,21 +412,21 @@ r_1 - 2r_1\alpha_{11}N_1 - r_1\alpha_{12}N_2&amp; - r_1\alpha_{12}N_1\\
 \end{align}\]</span></p>
 <p>This matrix of PDEs is the Jacobian matrix, or simply the “Jacobian.” As differential equations, they describe the slopes of curves (i.e. the slopes of tangents of curves) at a particular point. That is, they describe the straight line interpretations as that point. As <em>partial</em> differential equations, they describe how the growth rates change as population sizes change.</p>
 <p><strong>Finding partial differential equations and the Jacobian matrix in R</strong> can be done using expressions. Here we create equations or <em>expressions</em> for the for the growth rates, <span class="math inline">\(\dot{N_1}\)</span> and <span class="math inline">\(\dot{N_2}\)</span>, and use these to find the partial derivatives. First, expressions for the growth rates:</p>
-<div class="sourceCode" id="cb215"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb221"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">dN1dt</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/expression.html">expression</a></span><span class="op">(</span> <span class="va">r1</span> <span class="op">*</span> <span class="va">N1</span> <span class="op">-</span> <span class="va">r1</span> <span class="op">*</span> <span class="va">a11</span> <span class="op">*</span> <span class="va">N1</span><span class="op">^</span><span class="fl">2</span> <span class="op">-</span> <span class="va">r1</span> <span class="op">*</span> <span class="va">a12</span> <span class="op">*</span> <span class="va">N1</span> <span class="op">*</span> <span class="va">N2</span> <span class="op">)</span>
 <span class="va">dN2dt</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/expression.html">expression</a></span><span class="op">(</span><span class="va">r2</span><span class="op">*</span><span class="va">N2</span> <span class="op">-</span> <span class="va">r2</span><span class="op">*</span><span class="va">a22</span><span class="op">*</span><span class="va">N2</span><span class="op">^</span><span class="fl">2</span> <span class="op">-</span> <span class="va">r2</span><span class="op">*</span><span class="va">a21</span><span class="op">*</span><span class="va">N1</span><span class="op">*</span><span class="va">N2</span><span class="op">)</span></code></pre></div>
 <p>Next, we use each expression for <span class="math inline">\(\dot{N}\)</span> to get each the partial derivatives with respect to each population size. Here we use the R function <code><a href="https://rdrr.io/r/stats/deriv.html">D()</a></code> (see also <code><a href="https://rdrr.io/r/stats/deriv.html">?deriv</a></code>). We reveal here the result for the first one only, the partial derivative of <span class="math inline">\(\dot{N_1}\)</span> with respect to itself, and then get the others.</p>
-<div class="sourceCode" id="cb216"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb222"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">ddN1dN1</span> <span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/stats/deriv.html">D</a></span><span class="op">(</span><span class="va">dN1dt</span>, <span class="st">"N1"</span><span class="op">)</span>
 <span class="va">ddN1dN1</span></code></pre></div>
 <pre><code>## r1 - r1 * a11 * (2 * N1) - r1 * a12 * N2</code></pre>
 <p>Here we find the remaining PDEs.</p>
-<div class="sourceCode" id="cb218"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb224"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">ddN1dN2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/deriv.html">D</a></span><span class="op">(</span><span class="va">dN1dt</span>, <span class="st">"N2"</span><span class="op">)</span>
 <span class="va">ddN2dN1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/deriv.html">D</a></span><span class="op">(</span><span class="va">dN2dt</span>, <span class="st">"N1"</span><span class="op">)</span>
 <span class="va">ddN2dN2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/deriv.html">D</a></span><span class="op">(</span><span class="va">dN2dt</span>, <span class="st">"N2"</span><span class="op">)</span></code></pre></div>
 <p>Last we put these together to create the Jacobian matrix, which is itself an expression that we can evaluate again and again.</p>
-<div class="sourceCode" id="cb219"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb225"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">J</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/expression.html">expression</a></span><span class="op">(</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html">matrix</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/eval.html">eval</a></span><span class="op">(</span><span class="va">ddN1dN1</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/eval.html">eval</a></span><span class="op">(</span><span class="va">ddN1dN2</span><span class="op">)</span>,
                      <span class="fu"><a href="https://rdrr.io/r/base/eval.html">eval</a></span><span class="op">(</span><span class="va">ddN2dN1</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/eval.html">eval</a></span><span class="op">(</span><span class="va">ddN2dN2</span><span class="op">)</span><span class="op">)</span>,
                    nrow<span class="op">=</span><span class="fl">2</span>, byrow<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span> <span class="op">)</span></code></pre></div>
@@ -449,7 +449,7 @@ r_1 - 2r_1\alpha_{11}N_1 - r_1\alpha_{12}N_2&amp; - r_1\alpha_{12}N_1\\
 <p>Yikes <span class="math inline">\(\ldots\)</span> seems a little intimidating for such a small number of species. However, it is remarkable how each element can be expressed as a product of <span class="math inline">\(-r_i\alpha_{ij}N_i^*\)</span>, where <span class="math inline">\(i\)</span> refers to row, and <span class="math inline">\(j\)</span> refers to column.</p>
 <p><strong>Evaluating the Jacobian matrix in R</strong> is the easy part, if we defined it as above.
 Assuming that above we selected particular <span class="math inline">\(\mathbf{\alpha}\)</span>, used these to determine <span class="math inline">\(N_1^*\)</span> and <span class="math inline">\(N_2^*\)</span>, found the PDEs and created an expression for the Jacobian matrix, and labeled everything appropriately, we can then evaluate the Jacobian at an equilibrium. For <span class="math inline">\(\alpha_{ii}=0.01\)</span> and <span class="math inline">\(\alpha_{ij}=0.001\)</span> (see above) we find</p>
-<div class="sourceCode" id="cb220"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb226"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">r1</span> <span class="op">&lt;-</span> <span class="va">r2</span> <span class="op">&lt;-</span> <span class="fl">1</span>
 <span class="va">J1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/eval.html">eval</a></span><span class="op">(</span><span class="va">J</span><span class="op">)</span>
 <span class="va">J1</span></code></pre></div>
@@ -533,7 +533,7 @@ Oscillations with period <span class="math inline">\(2\pi/\omega\)</span>
 </tbody>
 </table></div>
 <p><strong>Eigenanalysis of the Jacobian matrix in R</strong> is easy once we evaluated the Jacobian matrix at its equilibrium (above). We simply perform eigenanalysis on the matrix (from previous boxes: <span class="math inline">\(\alpha_{11}=\alpha_{22}=0.01,\,\alpha_{12}=\alpha_{21}=0.001,\, r=1\)</span>).</p>
-<div class="sourceCode" id="cb222"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb228"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">eigStable</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/eigen.html">eigen</a></span><span class="op">(</span><span class="va">J1</span><span class="op">)</span>; <span class="va">eigStable</span><span class="op">[[</span><span class="st">"values"</span><span class="op">]</span><span class="op">]</span></code></pre></div>
 <pre><code>## [1] -0.8181818 -1.0000000</code></pre>
 <p>The dominant eigenvalue is negative (the larger of the two: <span class="math inline">\(\lambda_1\)</span> = <code>-0.818</code>) indicating a globally stable equilibrium (Table <a href="direct-competition-and-mutualism.html#tab:eiginterpret">7.2</a>. Both eigenvalues are real, not complex, indicating that there would be no oscillations (Table <a href="direct-competition-and-mutualism.html#tab:eiginterpret">7.2</a>).</p>
@@ -569,7 +569,7 @@ Figure 7.6: Unstable equilibria: as the relative strength of interspecific compe
 </div>
 <p>Recall the geometric interpretation of this unstable equilibrium — a saddle. The trajectory of a ball rolling across a saddle can depend to a very large degree on where the ball starts. Place it on the crown of the saddle, and it will tend to roll in a very deterministic fashion directly toward the unstable equilibrium, even if it eventually rolls off the side.</p>
 <p><strong>Eigenanalysis in R of the Jacobian where <span class="math inline">\(\beta_{ij}, \, \beta_{ji} &gt; 1\)</span></strong>: Here we create values for <span class="math inline">\(\mathbf{\alpha}\)</span> that create an unstable equilbrium.</p>
-<div class="sourceCode" id="cb224"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb230"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">a11</span> <span class="op">&lt;-</span> <span class="va">a22</span> <span class="op">&lt;-</span> <span class="fl">0.01</span>
 <span class="va">a12</span> <span class="op">&lt;-</span> <span class="va">a21</span> <span class="op">&lt;-</span> <span class="fl">0.011</span>
 <span class="va">N1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/eval.html">eval</a></span><span class="op">(</span><span class="va">N1Star</span><span class="op">)</span>; <span class="va">N2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/eval.html">eval</a></span><span class="op">(</span><span class="va">N2Star</span><span class="op">)</span>
@@ -585,15 +585,15 @@ Figure 7.6: Unstable equilibria: as the relative strength of interspecific compe
 \end{align}\]</span>
 Thus, <span class="math inline">\(N_1^* = 1/(\alpha_{11}+\alpha_{22})\)</span>, assuming <span class="math inline">\(\alpha_{12} = \alpha_{22}\)</span> and <span class="math inline">\(\alpha_{21}=\alpha_{11}\)</span>. Therefore, the equilibrium population size is simply the inverse of the sum of these coefficients.</p>
 <p><strong>Eigenanalysis in R of the Jacobian where <span class="math inline">\(\beta_{ij} = \beta_{ji} = 1\)</span></strong>: Here we create values for <span class="math inline">\(\mathbf{\alpha}\)</span> that create a neutral equilbrium.</p>
-<div class="sourceCode" id="cb226"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb232"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">a11</span> <span class="op">&lt;-</span> <span class="va">a21</span> <span class="op">&lt;-</span> <span class="fl">0.01</span>; <span class="va">a22</span> <span class="op">&lt;-</span> <span class="va">a12</span> <span class="op">&lt;-</span> <span class="fl">0.015</span></code></pre></div>
 <p>We determine <span class="math inline">\(N^*\)</span> using <a href="direct-competition-and-mutualism.html#eq:lim">(7.16)</a> because the usual expression, <a href="direct-competition-and-mutualism.html#eq:lvn2eq">(7.9)</a>, fails because the denominator equals 0.</p>
-<div class="sourceCode" id="cb227"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb233"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">N1</span> <span class="op">&lt;-</span> <span class="va">N2</span> <span class="op">&lt;-</span> <span class="fl">1</span><span class="op">/</span><span class="op">(</span><span class="va">a11</span><span class="op">+</span><span class="va">a22</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/base/eigen.html">eigen</a></span><span class="op">(</span> <span class="fu"><a href="https://rdrr.io/r/base/eval.html">eval</a></span><span class="op">(</span><span class="va">J</span><span class="op">)</span> <span class="op">)</span><span class="op">[[</span><span class="st">"values"</span><span class="op">]</span><span class="op">]</span></code></pre></div>
 <pre><code>## [1] -1  0</code></pre>
 <p>The dominant eigenvalue is now zero, indicating a neutral equilibrium (Table <a href="direct-competition-and-mutualism.html#tab:eiginterpret">7.2</a>. The neutral nature of this equilibrium results in more than one equilibrium. Let’s try a different one, also on the isocline.</p>
-<div class="sourceCode" id="cb229"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb235"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">N1</span> <span class="op">&lt;-</span> <span class="fl">1</span><span class="op">/</span><span class="op">(</span><span class="va">a11</span><span class="op">)</span>; <span class="va">N2</span><span class="op">&lt;-</span><span class="fl">0</span>
 <span class="fu"><a href="https://rdrr.io/r/base/eigen.html">eigen</a></span><span class="op">(</span> <span class="fu"><a href="https://rdrr.io/r/base/eval.html">eval</a></span><span class="op">(</span><span class="va">J</span><span class="op">)</span> <span class="op">)</span><span class="op">[[</span><span class="st">"values"</span><span class="op">]</span><span class="op">]</span></code></pre></div>
 <pre><code>## [1] -1  0</code></pre>
@@ -687,11 +687,11 @@ N_2 &amp;=\frac{\alpha_{11}}{\alpha_{12}}N_1 - 1/\alpha_{12}
 Note this assumes that both <span class="math inline">\(\alpha_{jj}\)</span> and <span class="math inline">\(\alpha_{ji}\)</span>, per se, are greater than zero, because our equation assumed it was so.</p>
 <p>Let’s use this to describe a facultative mutualism, that is, one in which neither species needs the other to persist, but in which they each do better. What we mean by that is that let <span class="math inline">\(r&gt;0\)</span>. For now, we will also assume that the mutualism provides only a modest benefit, where species benefits to each is smaller than the negative effects on themselves (<span class="math inline">\(\alpha_{ii} &gt; \alpha_{ij}\)</span>). The dynamics are stable (Fig. <a href="direct-competition-and-mutualism.html#fig:LVmut">7.10</a>)</p>
 <p>To illustrate the dynamics of this population, we will parameterize an ODE model. Our parameters meet our assumptions stated above.</p>
-<div class="sourceCode" id="cb231"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb237"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">parameters</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span>alpha11 <span class="op">=</span> <span class="fl">.2</span>, alpha22 <span class="op">=</span> <span class="fl">.2</span>, alpha12 <span class="op">=</span> <span class="fl">.1</span>, alpha21<span class="op">=</span><span class="fl">.1</span>,
                 r1<span class="op">=</span><span class="fl">.01</span>, r2<span class="op">=</span><span class="fl">.01</span><span class="op">)</span></code></pre></div>
 <p>Here we write an ODE model to help anaylze dynamics.</p>
-<div class="sourceCode" id="cb232"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb238"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">mutualism.LV</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">t</span>, <span class="va">y</span>, <span class="va">params</span><span class="op">)</span><span class="op">{</span>
   <span class="va">n1</span> <span class="op">&lt;-</span> <span class="va">y</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>; <span class="va">n2</span> <span class="op">&lt;-</span> <span class="va">y</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span>
   <span class="fu"><a href="https://rdrr.io/r/base/with.html">with</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html">as.list</a></span><span class="op">(</span><span class="va">params</span><span class="op">)</span>, <span class="op">{</span>
@@ -766,7 +766,7 @@ where <span class="math inline">\(\alpha_{ij}, \alpha_{ji} &lt; 0\)</span> descr
 <footer class="bg-primary text-light mt-5"><div class="container"><div class="row">
 
   <div class="col-12 col-md-6 mt-3">
-    <p>"<strong>Primer of Ecology using R</strong>" was written by Hank Stevens. It was last built on 2021-08-27.</p>
+    <p>"<strong>Primer of Ecology using R</strong>" was written by Hank Stevens. It was last built on 2021-08-28.</p>
   </div>
 
   <div class="col-12 col-md-6 mt-3">

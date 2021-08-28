@@ -93,7 +93,7 @@ Figure 13.1: <em>Empirical rank–abundance distributions of successional plant 
 <p>Differences in species composition among communities is a form of <span class="math inline">\(\beta\)</span>–diversity. Understanding the patterns and processes by which communities change or differs in space and time is perhaps the principal goal of community ecology. Beta-diversity is the term we give to these differences. Understanding precisely what we mean it is essential for correctly addressing our questions, and <span class="citation"><a href="references.html#ref-Anderson2011" role="doc-biblioref">Anderson et al.</a> (<a href="references.html#ref-Anderson2011" role="doc-biblioref">2011</a>)</span> have provided us with an excellent roadmap to help. All of the questions and their answers rely on a proper understanding of <em>multivariate distance.</em> And that requires us to start with species composition.</p>
 <p>Species composition is merely the set of species in a site or a sample. Typically this includes some measure of abundance at each site, but it may also simply be a list of species at each site, where “abundance” is either presence or absence.</p>
 <p>Imagine we have four sites (A–D) from which we collect density data on two species, <em>Salix whompii</em> and <em>Fraxinus virga</em>. We can enter hypothetical data of the following abundances.</p>
-<div class="sourceCode" id="cb455"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb461"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">dens</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span>Salwho<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">0</span>,<span class="fl">2</span>,<span class="fl">3</span><span class="op">)</span>, Fravir<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">21</span>,<span class="fl">8</span>,<span class="fl">13</span>,<span class="fl">5</span><span class="op">)</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/base/row.names.html">row.names</a></span><span class="op">(</span><span class="va">dens</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">LETTERS</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">4</span><span class="op">]</span>
 <span class="va">dens</span></code></pre></div>
@@ -103,7 +103,7 @@ Figure 13.1: <em>Empirical rank–abundance distributions of successional plant 
 ## C      2     13
 ## D      3      5</code></pre>
 <p>Next, we plot the abundances of both species; the plotted points then are the sites (Fig. <a href="diversity.html#fig:dens">13.2</a>).</p>
-<div class="sourceCode" id="cb457"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb463"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">dens</span>, type<span class="op">=</span><span class="st">'n'</span><span class="op">)</span>; <span class="fu"><a href="https://rdrr.io/r/graphics/text.html">text</a></span><span class="op">(</span><span class="va">dens</span>, <span class="fu"><a href="https://rdrr.io/r/base/row.names.html">row.names</a></span><span class="op">(</span><span class="va">dens</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <div class="figure">
 <span style="display:block;" id="fig:dens"></span>
@@ -117,14 +117,14 @@ Figure 13.2: <em>Hypothetical species composition for four sites (A–D)</em>
 <span class="header-section-number">13.2.1</span> Measures of abundance<a class="anchor" aria-label="anchor" href="#measures-of-abundance"><i class="fas fa-link"></i></a>
 </h3>
 <p>Above we pretended that the abundances were absolute densities (i.e., 1 = one stem per sample). We could of course represent all the abundances differently. For instance, we could calculate relative density, where each species in a sample is represented by the proportion of the sample comprised of that species. For site A, we divide each species by the sum of all species.</p>
-<div class="sourceCode" id="cb458"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb464"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">dens</span><span class="op">[</span><span class="fl">1</span>,<span class="op">]</span><span class="op">/</span><span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="va">dens</span><span class="op">[</span><span class="fl">1</span>,<span class="op">]</span><span class="op">)</span></code></pre></div>
 <pre><code>##       Salwho    Fravir
 ## A 0.04545455 0.9545455</code></pre>
 <p>We see that <em>Salix</em> makes up about 5% of the sample for Site A, and <em>Fraxinus</em> makes up about 95% of the sample. Once we calculate relative densities for each species at each site, this eliminates differences in total density at each site because all sites then total to 1.</p>
 <p>We could also calculate relative measures for any type of data, such as biomass or percent cover.</p>
 <p>In most instances, <em>relative density</em> refers to the density of a species <em>relative</em> to the other species in a sample (above), but it can also be density in a sample relative to other samples. We would thus make each <em>species</em> total equal 1, and then its abundance at each site reflects the proportion of a species total abundance comprised by that site. For instance, we can make all <em>Salix</em> densities relative to each other.</p>
-<div class="sourceCode" id="cb460"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb466"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">dens</span><span class="op">[</span>,<span class="fl">1</span><span class="op">]</span><span class="op">/</span><span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="va">dens</span><span class="op">[</span>,<span class="fl">1</span><span class="op">]</span><span class="op">)</span></code></pre></div>
 <pre><code>## [1] 0.1666667 0.0000000 0.3333333 0.5000000</code></pre>
 <p>Here we see that sites A and B both have about 14% of all <em>Salix</em> stems, and site D has 43%.</p>
@@ -145,24 +145,24 @@ where <span class="math inline">\(x_i\)</span> is the abundance of <span class="
 <p><span class="math display">\[J_{AB} = \frac{0+8}{1+21}=4/11 = 0.\overline{36}\]</span>
 and so dissimilarity would again be <span class="math inline">\(1-J_{AB}\)</span>.</p>
 <p><em>Euclidean distance</em> is another important way to measure differences between sites. With two species, we have two dimensional space, which is Fig. <a href="diversity.html#fig:dens">13.2</a>. The Euclidean distance between two sites is merely the length of the vector connecting those sites. We calculate this as <span class="math inline">\(\sqrt{x^2+y^2}\)</span>, where <span class="math inline">\(x\)</span> and <span class="math inline">\(y\)</span> are the <span class="math inline">\((x,y)\)</span> distances between a pair of sites. The <span class="math inline">\(x\)</span> distance between sites B and C is the difference in <em>Salix</em> abundance between the two sites,</p>
-<div class="sourceCode" id="cb462"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb468"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">x</span> <span class="op">&lt;-</span> <span class="va">dens</span><span class="op">[</span><span class="fl">2</span>,<span class="fl">1</span><span class="op">]</span> <span class="op">-</span> <span class="va">dens</span><span class="op">[</span><span class="fl">3</span>,<span class="fl">1</span><span class="op">]</span></code></pre></div>
 <p>where <code>dens</code> is the data frame with sites in rows, and species in different columns. The <span class="math inline">\(y\)</span> distance between sites B and C is difference in <em>Fraxinus</em> abundance between the two sites.</p>
-<div class="sourceCode" id="cb463"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb469"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">y</span> <span class="op">&lt;-</span> <span class="va">dens</span><span class="op">[</span><span class="fl">2</span>,<span class="fl">2</span><span class="op">]</span> <span class="op">-</span> <span class="va">dens</span><span class="op">[</span><span class="fl">3</span>,<span class="fl">2</span><span class="op">]</span></code></pre></div>
 <p>The Euclidean distance between these is therefore</p>
-<div class="sourceCode" id="cb464"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb470"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/MathFun.html">sqrt</a></span><span class="op">(</span><span class="va">x</span><span class="op">^</span><span class="fl">2</span> <span class="op">+</span> <span class="va">y</span><span class="op">^</span><span class="fl">2</span><span class="op">)</span></code></pre></div>
 <pre><code>## [1] 5.385165</code></pre>
 <p>We calculate all pairwise Euclidean distances between sites A–D based on 2 species using built-in functions in R.</p>
-<div class="sourceCode" id="cb466"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb472"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="op">(</span><span class="va">alldists</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/dist.html">dist</a></span><span class="op">(</span><span class="va">dens</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <pre><code>##           A         B         C
 ## B 13.038405                    
 ## C  8.062258  5.385165          
 ## D 16.124515  4.242641  8.062258</code></pre>
 <p>We can generalize this to include any number of species, but it becomes increasingly harder to visualize. We can add a third species, <em>Mandragora officinarum</em>, and recalculate pairwise distances between all sites, but now with three species.</p>
-<div class="sourceCode" id="cb468"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb474"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">dens</span><span class="op">[[</span><span class="st">"Manoff"</span><span class="op">]</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">11</span>,<span class="fl">3</span>,<span class="fl">7</span>,<span class="fl">5</span><span class="op">)</span>
 <span class="op">(</span><span class="va">spp3</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/dist.html">dist</a></span><span class="op">(</span><span class="va">dens</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <pre><code>##           A         B         C
@@ -170,12 +170,12 @@ and so dissimilarity would again be <span class="math inline">\(1-J_{AB}\)</span
 ## C  9.000000  6.708204          
 ## D 17.204651  4.690416  8.306624</code></pre>
 <p>We can plot species abundances as we did above, and <code><a href="https://rdrr.io/r/graphics/pairs.html">pairs(dens)</a></code> would give us all the pairwise plots given three species. However, what we really want for species is a 3-D plot. Here we load another package and create a 3-D scatterplot.</p>
-<div class="sourceCode" id="cb470"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb476"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">scatterplot3d</span><span class="op">)</span>
 <span class="va">sc1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/scatterplot3d/man/scatterplot3d.html">scatterplot3d</a></span><span class="op">(</span><span class="va">dens</span>,  type<span class="op">=</span><span class="st">'h'</span>, pch<span class="op">=</span><span class="st">""</span>,
       xlim<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">5</span><span class="op">)</span>, ylim<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">25</span><span class="op">)</span>, zlim<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">15</span><span class="op">)</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/graphics/text.html">text</a></span><span class="op">(</span><span class="va">sc1</span><span class="op">$</span><span class="fu">xyz.convert</span><span class="op">(</span><span class="va">dens</span><span class="op">)</span>, labels<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html">rownames</a></span><span class="op">(</span><span class="va">dens</span><span class="op">)</span><span class="op">)</span></code></pre></div>
-<p><img src="figs/unnamed-chunk-214-1.png" width="90%">
+<p><img src="figs/unnamed-chunk-217-1.png" width="90%">
 In three dimensions, Euclidean distances are calculated the same basic way, but we add a third species, and the calculation becomes <span class="math inline">\(\sqrt{x^2 + y^2 +z^2}\)</span>. Note that we take the square root (as opposed to the cube root) because we originally squared each distance. We can generalize this for two sites for <span class="math inline">\(S\)</span> species as
 <span class="math display">\[D_E = \sqrt{\sum_{i=1}^S\left( x_{ai} - x_{bi}\right)^2}\]</span></p>
 <p>Of course, it is difficult (impossible?) to visualize arrangements of sites with more than three axes (i.e., <span class="math inline">\(&gt;3\)</span> species), but we can always <em>calculate</em> the distances between pairs of sites, regardless of how many species we have.</p>
@@ -190,10 +190,10 @@ where <span class="math inline">\(S\)</span> is the number of species in all sam
 <span class="header-section-number">13.2.3</span> Displaying multidimensional distances<a class="anchor" aria-label="anchor" href="#displaying-multidimensional-distances"><i class="fas fa-link"></i></a>
 </h3>
 <p>A simple way to display distances for three or more species is to create a plot in two dimensions that attempts to arrange all sites so that they are <em>approximately</em> the correct distances apart. In general this is impossible to achieve precisely, but distances can be approximately correct. One technique that tries to create an optimal (albiet approximate) arrangement is <em>non-metric multidimensional scaling</em>. Here we add a fourth species (<em>Aconitum lycoctonum</em>) to our data set before plotting the distances.</p>
-<div class="sourceCode" id="cb471"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb477"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">dens</span><span class="op">$</span><span class="va">Acolyc</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">16</span>, <span class="fl">0</span>, <span class="fl">9</span>,<span class="fl">4</span><span class="op">)</span></code></pre></div>
 <p>The non-metric multidimensional scaling function is in the  package. It calculates distances for us using the original data. Here we display Euclidean distances among sites (Fig. <a href="diversity.html#fig:mds">13.3</a>).</p>
-<div class="sourceCode" id="cb472"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb478"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># ignore warnings for these toy examples</span>
 <span class="va">mdsE</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/vegan/man/metaMDS.html">metaMDS</a></span><span class="op">(</span><span class="va">dens</span>, distance<span class="op">=</span><span class="st">"euc"</span>, autotransform<span class="op">=</span><span class="cn">FALSE</span>, trace<span class="op">=</span><span class="fl">0</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">mdsE</span>, display<span class="op">=</span><span class="st">"sites"</span>, type<span class="op">=</span><span class="st">"text"</span><span class="op">)</span>
@@ -223,7 +223,7 @@ Figure 13.3: <em>Nonmetric multidimensional (NMDS) plots showing approximate dis
 where mechanisms of coexistence govern <span class="math inline">\(\Delta E\)</span>. This equation is the basis for the theory of island biogeography <span class="citation">(<a href="references.html#ref-MacArthur1963" role="doc-biblioref">MacArthur and Wilson 1963</a>, <a href="references.html#ref-MacArthur1967" role="doc-biblioref">1967</a>)</span>. More on that later.</p>
 <p>There are many diversity indices that we could calculate; here, we will calculate four different measures: species richness, Shannon-Weiner diversity, Simpson’s diversity, and Simpson’s inverse diversity. These sometimes are referred to by slightly different names, so it is important to figure out exactly what someone has done.</p>
 <p>Let’s start by creating two samples of two different communities.</p>
-<div class="sourceCode" id="cb473"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb479"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">comm</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"X"</span>,<span class="st">"Y"</span><span class="op">)</span>, each<span class="op">=</span><span class="fl">4</span><span class="op">)</span>
 <span class="va">spp</span> <span class="op">&lt;-</span> <span class="va">letters</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">4</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">4</span><span class="op">)</span><span class="op">]</span>
 <span class="va">abun</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">10</span>,<span class="fl">3</span>,<span class="fl">1</span>,<span class="fl">0</span>, <span class="fl">4</span>,<span class="fl">1</span>,<span class="fl">6</span>,<span class="fl">3</span><span class="op">)</span>
@@ -239,7 +239,7 @@ Figure 13.4: <em>Two toy communities.</em>
 </div>
 <p>These two samples have different numbers of species, and different distributions. Community Y has a more even distribution of species abundances, whereas community X is dominated by a single species. Now we’ll calculate our different measures of species diversity.</p>
 <p><strong>Species richness</strong> is simply the number of different species in the sample. It is the value of the <em>x</em>-axis in the above figure. To calculate that from these data, we will determine the lengths of the vectors of nonzero abundances.</p>
-<div class="sourceCode" id="cb474"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb480"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/tapply.html">tapply</a></span><span class="op">(</span>X<span class="op">=</span><span class="va">df</span><span class="op">$</span><span class="va">n</span>, INDEX<span class="op">=</span><span class="va">df</span><span class="op">$</span><span class="va">comm</span>, 
        FUN <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span><span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span><span class="op">(</span><span class="va">x</span><span class="op">[</span><span class="va">x</span><span class="op">&gt;</span><span class="fl">0</span><span class="op">]</span><span class="op">)</span><span class="op">}</span> <span class="op">)</span></code></pre></div>
 <pre><code>## X Y 
@@ -248,7 +248,7 @@ Figure 13.4: <em>Two toy communities.</em>
 <p>When most ecologists use the term ‘species diversity’ they are not referring to species richness, but rather some index that incorporates relative abundance as well. One of the most common of these is <strong>Shannon-Weiner diversity</strong> or the Shannon index. This quantity has its roots in information theory and entropy. It measures the disorder in a data set. For instance, if nearly all of the individuals are a single species, then the data are highly predictable and ordered. In contrast, if there are many individuals of many different species, then it would be very difficult to describe in a simple way, and difficult to predict what a sample would look like–disorder, or entropy, would be high. The Shannon index is
 <span class="math display">\[H=-\sum_{i-1}^Sp_i\log p_i\]</span>
 where <span class="math inline">\(p_i\)</span> is the proportion of individuals belonging to species <span class="math inline">\(i\)</span>.</p>
-<div class="sourceCode" id="cb476"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb482"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># a function that starts with abundances and calculates H</span>
 <span class="va">shannon</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">n</span><span class="op">)</span> <span class="op">{</span> 
   <span class="va">n</span> <span class="op">&lt;-</span> <span class="va">n</span><span class="op">[</span><span class="va">n</span><span class="op">&gt;</span><span class="fl">0</span><span class="op">]</span> <span class="co"># remove zero values</span>
@@ -266,7 +266,7 @@ which varies between 1 for a single species and declines toward zero with increa
 <span class="math display">\[S_c = 1-D\]</span>,
 which is the probability that two randomly selected individuals belong to different species. It is also the initial slope of the expected individuals (<span class="math inline">\(x\)</span>) vs. species (<span class="math inline">\(y\)</span>) curve <span class="citation">(<a href="references.html#ref-Lande2000" role="doc-biblioref">R. Lande, DeVries, and Walla 2000</a>)</span>, and the variance of species composition <span class="citation">(<a href="references.html#ref-Lande1996" role="doc-biblioref">Russell Lande and May 1996</a>)</span>.</p>
 <p>Here we show the equivalence of Simpson’s index and the variance of species composition. First, we reimagine community X as collections of individuals comprising different species identities. We we create a pretend community of six individuals (rows) and 3 species (columns). Somewhat oddly, we identify the degree to which each individual is comprised of each species; in this case, individuals can be only one species.<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;Imagine the case where the columns are traits, or genes. In that case, individuals could be characterized by affiliation with multiple columns, whether traits or genes.&lt;/p&gt;"><sup>71</sup></a> Here we let two individuals be each species.</p>
-<div class="sourceCode" id="cb478"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb484"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">X</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html">matrix</a></span><span class="op">(</span><span class="fl">0</span>, nrow<span class="op">=</span><span class="fl">14</span>, ncol<span class="op">=</span><span class="fl">3</span>, 
             dimnames<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span><span class="cn">NULL</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"A"</span>, <span class="st">"B"</span>, <span class="st">"C"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>
 <span class="va">X</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">10</span>,<span class="fl">1</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fl">1</span>
@@ -278,7 +278,7 @@ which is the probability that two randomly selected individuals belong to differ
 ## B    0    0    0    0    0    0    0    0    0     0     1     1     1     0
 ## C    0    0    0    0    0    0    0    0    0     0     0     0     0     1</code></pre>
 <p>We transposed the matrix, so that individuals are columns and species membership or identity is in rows. The first individual belongs to species A, etc. We can plot these individuals in community space, if we like (Fig. <a href="diversity.html#fig:Xvar">13.5</a>).</p>
-<div class="sourceCode" id="cb480"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb486"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">scatterplot3d</span><span class="op">)</span>
 <span class="va">X3D</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/scatterplot3d/man/scatterplot3d.html">scatterplot3d</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/jitter.html">jitter</a></span><span class="op">(</span><span class="va">X</span>, <span class="fl">.1</span><span class="op">)</span>, type<span class="op">=</span><span class="st">'h'</span>, angle<span class="op">=</span><span class="fl">60</span>, pch<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">3</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">10</span>,<span class="fl">3</span>,<span class="fl">1</span><span class="op">)</span><span class="op">)</span> <span class="op">)</span>
 <span class="va">X3D</span><span class="op">$</span><span class="fu">points3d</span><span class="op">(</span>x<span class="op">=</span><span class="fl">10</span><span class="op">/</span><span class="fl">14</span>, y<span class="op">=</span><span class="fl">3</span><span class="op">/</span><span class="fl">14</span>, z<span class="op">=</span><span class="fl">1</span><span class="op">/</span><span class="fl">14</span>,  type<span class="op">=</span><span class="st">'h'</span>, pch<span class="op">=</span><span class="fl">19</span>, cex<span class="op">=</span><span class="fl">2</span><span class="op">)</span></code></pre></div>
@@ -289,16 +289,16 @@ Figure 13.5: <em>Each of 14 individuals in a three species community, plotted in
 </p>
 </div>
 <p>Next we can calculate the centroid, or multivariate mean. It is merely the vector of species means.</p>
-<div class="sourceCode" id="cb481"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb487"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="op">(</span><span class="va">centroid1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/colSums.html">colMeans</a></span><span class="op">(</span><span class="va">X</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <pre><code>##          A          B          C 
 ## 0.71428571 0.21428571 0.07142857</code></pre>
 <p>Given this centroid, we begin to calculate a variance by (i) subtracting each species vector (0s, 1s) from its mean, (ii) squaring each of these deviates, and (3) summing to get the sum of squares.</p>
-<div class="sourceCode" id="cb483"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb489"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="op">(</span><span class="va">SS</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html">sapply</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">3</span>, <span class="kw">function</span><span class="op">(</span><span class="va">j</span><span class="op">)</span> <span class="op">(</span><span class="va">X</span><span class="op">[</span>,<span class="va">j</span><span class="op">]</span> <span class="op">-</span> <span class="va">centroid1</span><span class="op">[</span><span class="va">j</span><span class="op">]</span><span class="op">)</span><span class="op">)</span><span class="op">^</span><span class="fl">2</span><span class="op">)</span> <span class="op">)</span></code></pre></div>
 <pre><code>## [1] 6.142857</code></pre>
 <p>We then divide this sum by the number of individuals that were in the community (<span class="math inline">\(N\)</span>)</p>
-<div class="sourceCode" id="cb485"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb491"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">SS</span><span class="op">/</span><span class="fl">14</span></code></pre></div>
 <pre><code>## [1] 0.4387755</code></pre>
 <p>When you compare this to the calculation of Simpson’s complement below, you will find that they are the same. Further, the finite sample size correction is the same for both.</p>
@@ -308,7 +308,7 @@ Figure 13.5: <em>Each of 14 individuals in a three species community, plotted in
 <span class="math display">\[S_I = \frac{1}{D}\]</span>
 This value could be considered the ‘effective’ number of species, which discounts the rarest species <span class="citation">(<a href="references.html#ref-Nee2005" role="doc-biblioref">Nee 2005</a>)</span> and which is closely allied to population genetics theory as one definition for the ‘effective number of alleles’ <span class="citation">(<a href="references.html#ref-Nee2005" role="doc-biblioref">Nee 2005</a>; <a href="references.html#ref-Crow1970" role="doc-biblioref">Crow and Kimura 1970</a>)</span>.</p>
 <p>We can calculate these by defining our own functions. We then create a grouped data frame and calculate our summary statistics, using the <code>dplyr</code> package (part of <code>tidyverse</code>).</p>
-<div class="sourceCode" id="cb487"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb493"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">Sc</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span>
   <span class="va">p</span> <span class="op">&lt;-</span> <span class="va">x</span><span class="op">/</span><span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>
   <span class="fl">1</span><span class="op">-</span><span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="va">p</span><span class="op">^</span><span class="fl">2</span><span class="op">)</span>
@@ -349,7 +349,7 @@ This value could be considered the ‘effective’ number of species, which disc
 <p>Let us sample a seasonal tropical rainforest on Barro Colorado Island (BCI) Our goal will be to provide baseline data for later comparison to other such studies.</p>
 <p>We will use some of the data from a 50 ha plot that is included in the <code>vegan</code> package <span class="citation">(<a href="references.html#ref-Condit2002" role="doc-biblioref">Condit et al. 2002</a>; <a href="references.html#ref-Oksanen:2019vg" role="doc-biblioref">Oksanen et al. 2019</a>)</span>. We will pretend that we sampled every tree over 10 cm DBH,<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;DBH is diameter at 1.37 m above the ground.&lt;/p&gt;"><sup>72</sup></a> in each of 10 plots scattered throughout the 50 ha area. What could we say about the forest within which the plots were located? We have to consider the scale of the sampling. Both the experimental unit and the grain are the 1 ha plots. Imagine that the plots were scattered throughout the 50 ha plot, so that the extent of the sampling was a full 50 ha <span class="citation">(sensu <a href="references.html#ref-Wiens1989" role="doc-biblioref">Wiens 1989</a>)</span>.</p>
 <p>First, let’s pretend we have sampled 10 1 ha plots by extracting the samples out of the larger dataset.</p>
-<div class="sourceCode" id="cb489"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb495"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://cran.r-project.org">vegan</a></span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="va">BCI</span><span class="op">)</span>;
 <span class="va">bci</span> <span class="op">&lt;-</span> <span class="va">BCI</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="fl">5</span>,<span class="fl">50</span>, by<span class="op">=</span><span class="fl">5</span><span class="op">)</span>,<span class="op">]</span>
@@ -362,31 +362,31 @@ This value could be considered the ‘effective’ number of species, which disc
 ## 25                  0              0</code></pre>
 <p>This data set has plots in rows and species names in columns; the data are numbers of individuals of each species (columns) in each plot (rows).</p>
 <p>Next, we total the numbers for each species, pooling all plots together. We sum the columns, and remove zeroes.</p>
-<div class="sourceCode" id="cb491"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb497"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">N</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/colSums.html">colSums</a></span><span class="op">(</span><span class="va">bci</span><span class="op">)</span> 
 <span class="va">N</span> <span class="op">&lt;-</span> <span class="va">N</span><span class="op">[</span><span class="va">N</span><span class="op">&gt;</span><span class="fl">0</span><span class="op">]</span></code></pre></div>
 <p>Based on this sample, we find that the species richness in all our samples pooled is the tally of all non-zero species.</p>
-<div class="sourceCode" id="cb492"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb498"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="va">N</span><span class="op">&gt;</span><span class="fl">0</span><span class="op">)</span></code></pre></div>
 <pre><code>## [1] 179</code></pre>
 <p>Our goal is to estimate the number of species in the area. For that we need estimators of total species richness, if we can assume that the surrounding forest is homogeneous. First, we’ll use abundance-based coverage estimators, ACE and Chao 1, that appear to give reasonable estimates <span class="citation">(<a href="references.html#ref-Magurran2004" role="doc-biblioref">Magurran 2004</a>)</span>.</p>
-<div class="sourceCode" id="cb494"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb500"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/pkg/vegan/man/specpool.html">estimateR</a></span><span class="op">(</span><span class="va">N</span><span class="op">)</span></code></pre></div>
 <pre><code>##      S.obs    S.chao1   se.chao1      S.ACE     se.ACE 
 ## 179.000000 202.000000  12.763215 190.638313   6.779286</code></pre>
 <p>Here we see the observed number of species and two estimators, with standard errors.</p>
 <p>Next we use a frequency-based estimator, Chao 2, where the data only need to be presence/absence, and for which we also need multiple sample plots. By using multiple plots, we get some idea of of how rare some species are and use that to estimate how many more rare species there might be which are unsampled.</p>
-<div class="sourceCode" id="cb496"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb502"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="op">(</span><span class="va">chaoF</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/vegan/man/specpool.html">specpool</a></span><span class="op">(</span><span class="va">bci</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <pre><code>##     Species     chao  chao.se jack1 jack1.se    jack2     boot  boot.se  n
 ## All     179 202.4321 11.99975 203.3 8.606393 214.9444 190.7196 5.146857 10</code></pre>
 <p>We also get a jackknifed estimate. All of these give some estimate as to the minimum true number of species in an area around our samples.</p>
 <p>Typically the use of these estimators is accompanied by some form of rarefaction. To perform rarefaction, we need to select numbers of individuals for which we want rarefied samples. We will use multiples of 500 and also the total number of individuals in the sample. We then use a built-in function to draw species at random for these numbers of individuals, that is, perform rarefaction.</p>
-<div class="sourceCode" id="cb498"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb504"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">no.of.inds</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="fl">500</span>, <span class="fl">4500</span>, by<span class="op">=</span><span class="fl">500</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="va">N</span><span class="op">)</span><span class="op">)</span>
 <span class="va">rar3</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/vegan/man/rarefy.html">rarefy</a></span><span class="op">(</span><span class="va">N</span>, sample<span class="op">=</span><span class="va">no.of.inds</span>, se<span class="op">=</span><span class="cn">T</span>, MARG<span class="op">=</span><span class="fl">2</span><span class="op">)</span></code></pre></div>
 <p>Next we want to graph it, with a few bells and whistles. We set up the graph of the 10 plot, individual-based rarefaction, and leave room to graph total richness estimators as well (Fig. <a href="diversity.html#fig:estS">13.6</a>).</p>
-<div class="sourceCode" id="cb499"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb505"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">no.of.inds</span> , <span class="va">rar3</span><span class="op">[</span><span class="fl">1</span>,<span class="op">]</span>,  ylab<span class="op">=</span><span class="st">"Species Richness"</span>, axes<span class="op">=</span><span class="cn">FALSE</span>,
      xlab<span class="op">=</span><span class="st">"No. of Individuals"</span>, type<span class="op">=</span><span class="st">'n'</span>,  ylim<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">250</span><span class="op">)</span>, 
      xlim<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">500</span>,<span class="fl">5900</span><span class="op">)</span> <span class="op">)</span>
@@ -471,7 +471,7 @@ where we can let <span class="math inline">\(t=1\)</span> and <span class="math 
 where <span class="math inline">\(N_T\)</span> and <span class="math inline">\(S_T\)</span> are the total number of individuals and species in the sample, respectively. MacArthur described this as resulting from the simultaneous breakage of a stick at random points along the stick. The resulting size fragments are the <span class="math inline">\(N_i\)</span> above. MacArthur’s broken stick model is thus both a stochastic and a deterministic model. It has a simulation of stick breakage that is the direct analogue of the deterministic analytical expression.</p>
 <p>Other similarly tactile stick-breaking distributions create a host of different rank–abundance patterns <span class="citation">(<a href="references.html#ref-Tokeshi:1999fv" role="doc-biblioref">Tokeshi 1999</a>)</span>. In particular, the stick can be broken <em>sequentially</em>, first at one random point, then at a random point along one of two newly broken fragments, then at an additional point along any one of the <em>three</em> broken fragments, <em>etc.</em>, with <span class="math inline">\(S_T-1\)</span> breaks creating <span class="math inline">\(S_T\)</span> species. The critical difference between the models then becomes <em>how each subsequent fragment is selected</em>. If the probability of selecting each fragment is related directly to its size, then this becomes identical to MacArthur’s broken stick model. On the other hand, if each subsequent piece is selected randomly, regardless of its size, then this results in something very similar to the log-normal distribution <span class="citation">(<a href="references.html#ref-Sugihara1980" role="doc-biblioref">Sugihara 1980</a>; <a href="references.html#ref-Tokeshi1990" role="doc-biblioref">Tokeshi 1990</a>)</span>. Other variations on fragment selection generate other patterns <span class="citation">(<a href="references.html#ref-Tokeshi:1999fv" role="doc-biblioref">Tokeshi 1999</a>)</span>.</p>
 <p>Here we plot the empirical rank-abundance distribution of all of the BCI data from this census of the 50 ha plot, along with several fitted distributions. They are fit using the <code>radfit</code> function in the <code>vegan</code> package. We then add the log series distribution.</p>
-<div class="sourceCode" id="cb500"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb506"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># fit the distributions</span>
 <span class="va">N</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/rev.html">rev</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sort.html">sort</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/colSums.html">colSums</a></span><span class="op">(</span><span class="va">BCI</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>
 <span class="co"># get the expected ranks for the log series distribution</span>
@@ -717,7 +717,7 @@ related to the local community, which happen with probability <span class="math 
 <p>Here we explore netural communities using the <code>untb</code> package, which contains a variety of functions for teaching and research on neutral theory.</p>
 <p><strong>Pure drift</strong></p>
 <p>After loading the package and setting graphical parameters, let’s run a simulation of drift. Recall that drift results in the slow extinction of all but one species. We start with a local community with 20 species, each with 25 individuals<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content='&lt;p&gt;This happens to be the approximate tree density (450 trees,ha&lt;span class="math inline"&gt;\(^{-1}\)&lt;/span&gt;, for trees &lt;span class="math inline"&gt;\(&amp;gt;10\)&lt;/span&gt;,cm DBH) on BCI.&lt;/p&gt;'><sup>78</sup></a> The simulation then runs for 1000 generations (where 9/900 individuals die per generation). Note that <code><a href="https://rdrr.io/pkg/untb/man/display.untb.html">display.untb()</a></code> is great for pretty pictures, whereas <code><a href="https://rdrr.io/pkg/untb/man/untb.html">untb()</a></code> is better for more serious simulations.]</p>
-<div class="sourceCode" id="cb501"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb507"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/RobinHankin/untb.git">untb</a></span><span class="op">)</span>
 <span class="va">a</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/untb/man/untb.html">untb</a></span><span class="op">(</span>start<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">20</span>, <span class="fl">25</span><span class="op">)</span>, prob<span class="op">=</span><span class="fl">0</span>, gens<span class="op">=</span><span class="fl">2500</span>, D<span class="op">=</span><span class="fl">9</span>, keep<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
 <p>We <code>keep</code> in a matrix all 450 trees from each of the 1000
@@ -731,7 +731,7 @@ and is replaced by an individual of another species. Thus the
 community always has 450 individuals (columns), but the identities of
 those 450 change through time, according to the rules laid out in
 <a href="diversity.html#eq:b">(13.4)</a>, <a href="diversity.html#eq:d">(13.5)</a>. Each different species is represented by a different integer; here we show the identities of ten individuals (columns) for generations 901–3.</p>
-<div class="sourceCode" id="cb502"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb508"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="op">(</span> <span class="va">a2</span> <span class="op">&lt;-</span> <span class="va">a</span><span class="op">[</span><span class="fl">901</span><span class="op">:</span><span class="fl">903</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">10</span> <span class="op">]</span> <span class="op">)</span></code></pre></div>
 <pre><code>##      [,1] [,2] [,3] [,4] [,5] [,6] [,7] [,8] [,9] [,10]
 ## [1,]    6    2   20   20   20   10   10    6   15    15
@@ -739,12 +739,12 @@ those 450 change through time, according to the rules laid out in
 ## [3,]    6    2   20   20   20   10   10    6   15    15</code></pre>
 <p>Thus, in generation 901, tree no. 1 is species <code>6</code> and in generation 902, tree no. 3 is species <code>20</code>.</p>
 <p>We can make pretty pictures of the communities at time steps 1, 100, and 2500, by having a single point for each tree, and coding species identity by shades of grey. We could use a nice color palette, <code><a href="https://rdrr.io/r/grDevices/hcl.html">hcl()</a></code>, based on hue, chroma, and luminance, for instance <code><a href="https://rdrr.io/r/grDevices/hcl.html">hcl(a[i,]*30+50)</a></code>.</p>
-<div class="sourceCode" id="cb504"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb510"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">times</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">50</span>,<span class="fl">2500</span><span class="op">)</span>
 <span class="va">sppcolors</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html">sapply</a></span><span class="op">(</span><span class="va">times</span>, <span class="kw">function</span><span class="op">(</span><span class="va">i</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/grDevices/gray.html">grey</a></span><span class="op">(</span><span class="op">(</span><span class="va">a</span><span class="op">[</span><span class="va">i</span>,<span class="op">]</span><span class="op">-</span><span class="fl">1</span><span class="op">)</span><span class="op">/</span><span class="fl">20</span><span class="op">)</span> <span class="op">)</span></code></pre></div>
 <p>This function applies to the community, at each time step, the <code><a href="https://rdrr.io/r/grDevices/gray.html">grey()</a></code> function. Recall that species identity is an integer; we use that integer to characterize each species’ shade of grey.</p>
 <p>Next we create the three graphs at three time points, with the appropriate data, colors, and titles.</p>
-<div class="sourceCode" id="cb505"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb511"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/graphics/layout.html">layout</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/matrix.html">matrix</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">3</span>, nr<span class="op">=</span><span class="fl">1</span><span class="op">)</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/graphics/par.html">par</a></span><span class="op">(</span>mar<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">1</span>,<span class="fl">3</span>,<span class="fl">1</span><span class="op">)</span><span class="op">)</span>
 <span class="kw">for</span><span class="op">(</span><span class="va">j</span> <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span><span class="fl">3</span><span class="op">)</span><span class="op">{</span>
@@ -752,8 +752,8 @@ those 450 change through time, according to the rules laid out in
 <span class="fu"><a href="https://rdrr.io/r/graphics/points.html">points</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">20</span>,<span class="fl">25</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">25</span>,each<span class="op">=</span><span class="fl">20</span><span class="op">)</span>, pch<span class="op">=</span><span class="fl">19</span>, cex<span class="op">=</span><span class="fl">2</span>, col<span class="op">=</span><span class="va">sppcolors</span><span class="op">[</span>,<span class="va">j</span><span class="op">]</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/graphics/title.html">title</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste</a></span><span class="op">(</span><span class="st">"Time = "</span>, <span class="va">times</span><span class="op">[</span><span class="va">j</span><span class="op">]</span>, sep<span class="op">=</span><span class="st">""</span><span class="op">)</span><span class="op">)</span>
 <span class="op">}</span></code></pre></div>
-<div class="inline-figure"><img src="figs/unnamed-chunk-232-1.png" width="90%"></div>
-<div class="sourceCode" id="cb506"><pre class="downlit sourceCode r">
+<div class="inline-figure"><img src="figs/unnamed-chunk-235-1.png" width="90%"></div>
+<div class="sourceCode" id="cb512"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/graphics/layout.html">layout</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/matrix.html">matrix</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">9</span>, nr<span class="op">=</span><span class="fl">3</span>, byrow<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/graphics/par.html">par</a></span><span class="op">(</span>mar<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">1</span>,<span class="fl">3</span>,<span class="fl">1</span><span class="op">)</span><span class="op">)</span>
 <span class="kw">for</span><span class="op">(</span><span class="va">j</span> <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span><span class="fl">3</span><span class="op">)</span><span class="op">{</span>
@@ -777,7 +777,7 @@ those 450 change through time, according to the rules laid out in
 ## [1,]    0    0    0    0    0   20    0    0    0
 ## [2,]    0    0    0    0    0   18    2    0    0
 ## [3,]    0    0    0    1    1    1    3    0    2</code></pre>
-<div class="sourceCode" id="cb508"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb514"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/colnames.html">colnames</a></span><span class="op">(</span><span class="va">bins</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/untb/man/preston.html">preston</a></span><span class="op">(</span><span class="va">a</span><span class="op">[</span><span class="va">times</span><span class="op">[</span><span class="fl">3</span><span class="op">]</span>,<span class="op">]</span><span class="op">)</span><span class="op">)</span>
 <span class="kw">for</span><span class="op">(</span><span class="va">i</span> <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span><span class="fl">3</span><span class="op">)</span><span class="op">{</span>
   <span class="fu"><a href="https://rdrr.io/r/graphics/par.html">par</a></span><span class="op">(</span>las<span class="op">=</span><span class="fl">2</span><span class="op">)</span>
@@ -791,14 +791,14 @@ Figure 13.10: <em>Three snapshots of one community, drifting through time. Shade
 </div>
 <p>Bottom line: drift causes the slow loss of species from local communities (Fig. <a href="diversity.html#fig:comms">13.10</a>). What is not illustrated here is that without dispersal, drift will cause different species to become abundant in different places because the variation is random. In that way, drift maintains diversity at large scales, in the metacommunity. Last, low rates of dispersal among local communities maintains some diversity in local communities without changing the entire metacommunity into a single large local community. Thus dispersal limitiation, but not its absence, maintains diversity.</p>
 <p>Next, let’s examine the dynamics through time. We will plot individual species trajectories (Fig. ).</p>
-<div class="sourceCode" id="cb509"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb515"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">sppmat</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/untb/man/species.count.html">species.table</a></span><span class="op">(</span><span class="va">a</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/graphics/matplot.html">matplot</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="va">times</span><span class="op">[</span><span class="fl">3</span><span class="op">]</span>, <span class="va">sppmat</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="va">times</span><span class="op">[</span><span class="fl">3</span><span class="op">]</span>,<span class="op">]</span>, type<span class="op">=</span><span class="st">'l'</span>, ylab<span class="op">=</span><span class="st">"Population Density"</span><span class="op">)</span></code></pre></div>
 <div class="inline-figure">
 <img src="figs/spptable-1.png" width="90%">
 The trajectories all start at the same abundance, but they need not have. The trajectories would still have the same drifting quality.</div>
 <p>For random walks in general, the observed variance and coefficient of variation (<span class="math inline">\(CV=\hat{\sigma}/\bar{x}\)</span>) of a population will grow over time <span class="citation">(<a href="references.html#ref-Clark2003c" role="doc-biblioref">Clark and McLachlan 2003</a>)</span>. Here we calculate the average population <span class="math inline">\(CV\)</span> of cumulative observations (note the convenient use of nested <code>(s)apply</code> functions). Let’s calculate the <span class="math inline">\(CV\)</span>’s for every tenth time step.</p>
-<div class="sourceCode" id="cb510"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb516"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">cvtimes</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="fl">2</span>, <span class="fl">2500</span>, by<span class="op">=</span><span class="fl">10</span><span class="op">)</span>
 <span class="va">CV.within</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html">sapply</a></span><span class="op">(</span><span class="va">cvtimes</span>, <span class="kw">function</span><span class="op">(</span><span class="va">i</span><span class="op">)</span> <span class="op">{</span><span class="co"># Use sapply with i as a row counter</span>
   <span class="co">## For each row i, use apply to caluculate the variance for each</span>
@@ -808,30 +808,30 @@ The trajectories all start at the same abundance, but they need not have. The tr
   <span class="op">}</span> <span class="op">)</span>
 <span class="co">#popvar.among &lt;- apply(sppmat, 1, var)</span></code></pre></div>
 <p>Now plot the average <span class="math inline">\(CV\)</span> through time. The average observed <span class="math inline">\(CV\)</span> should increase (Fig. ).</p>
-<div class="sourceCode" id="cb511"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb517"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span> <span class="va">cvtimes</span>, <span class="va">CV.within</span>, type<span class="op">=</span><span class="st">'l'</span> <span class="op">)</span></code></pre></div>
 <div class="inline-figure">
-<img src="figs/unnamed-chunk-234-1.png" width="90%">
+<img src="figs/unnamed-chunk-237-1.png" width="90%">
 This shows us that the populations never approach an equilibrium, but wander aimlessly.</div>
 <p><strong>Real data</strong></p>
 <p>Last, we examine the BCI data set <span class="citation">(<a href="references.html#ref-Condit2002" role="doc-biblioref">Condit et al. 2002</a>)</span>. We load the data (data from 50 1,ha plots <span class="math inline">\(\times\)</span> 225 species, from the <code>vegan</code> package), and sum species abundances to get each species total for the entire 50,h plot (Fig. <a href="#fig:bcipreston"><strong>??</strong></a>).</p>
-<div class="sourceCode" id="cb512"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb518"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">n</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/colSums.html">colSums</a></span><span class="op">(</span><span class="va">BCI</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/graphics/par.html">par</a></span><span class="op">(</span>las<span class="op">=</span><span class="fl">2</span>, mar<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">7</span>,<span class="fl">4</span>,<span class="fl">1</span>,<span class="fl">1</span><span class="op">)</span><span class="op">)</span>
 <span class="va">xs</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/untb/man/preston.html">preston</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">225</span>,<span class="va">n</span><span class="op">)</span>, n<span class="op">=</span><span class="fl">12</span>, original<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span></code></pre></div>
-<p><img src="figs/unnamed-chunk-235-1.png" width="90%">
+<p><img src="figs/unnamed-chunk-238-1.png" width="90%">
 We would like to estimate <span class="math inline">\(\theta\)</span> and <span class="math inline">\(m\)</span> from these data, but that
 requires specialized software for any data set with a realistic number
 of individuals. Specialized software would provide maximum likelihood
 estimates (in a reasonable amount of computing time) for <span class="math inline">\(m\)</span> and
 <span class="math inline">\(\theta\)</span> for large communities <span class="citation">(<a href="references.html#ref-Etienne2005" role="doc-biblioref">Rampal S. Etienne 2005</a>; <a href="references.html#ref-Hankin:2007zm" role="doc-biblioref">Hankin, R.K.S 2007</a>; <a href="references.html#ref-Jabot:2009mi" role="doc-biblioref">Jabot and Chave 2009</a>)</span>. The BCI data have been used repeatedly, so we rely on estimates from the literature (<span class="math inline">\(\theta \approx 48\)</span>, <span class="math inline">\(m \approx 0.1\)</span>) [<span class="citation"><a href="references.html#ref-Etienne2005" role="doc-biblioref">Rampal S. Etienne</a> (<a href="references.html#ref-Etienne2005" role="doc-biblioref">2005</a>)</span>;Volkov:2003ly]. We use the approach of <span class="citation"><a href="references.html#ref-Volkov:2003ly" role="doc-biblioref">Volkov et al.</a> (<a href="references.html#ref-Volkov:2003ly" role="doc-biblioref">2003</a>)</span> to generate expected species abundances (Fig. <a href="#fig:bcipreston"><strong>??</strong></a>).</p>
-<div class="sourceCode" id="cb513"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb519"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">v1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/untb/man/volkov.html">volkov</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="va">n</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">48</span>, <span class="fl">0.1</span><span class="op">)</span>, bins<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/untb/man/preston.html">preston</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">225</span>,<span class="va">n</span><span class="op">)</span>, n<span class="op">=</span><span class="fl">12</span>, original<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/graphics/points.html">points</a></span><span class="op">(</span><span class="va">xs</span>, <span class="va">v1</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">12</span><span class="op">]</span>, type<span class="op">=</span><span class="st">'b'</span><span class="op">)</span></code></pre></div>
-<p><img src="figs/unnamed-chunk-236-1.png" width="90%"><span class="citation"><a href="references.html#ref-Jabot:2009mi" role="doc-biblioref">Jabot and Chave</a> (<a href="references.html#ref-Jabot:2009mi" role="doc-biblioref">2009</a>)</span> arrived at estimates that differed from previous estimates by orders of magnitude. Their novel approach estimated <span class="math inline">\(\theta\)</span> and <span class="math inline">\(m\)</span> were derived from <em>both</em> species abundance data and from phylogenetic data (<span class="math inline">\(\theta \approx 571\)</span>, <span class="math inline">\(m \approx 0.002\)</span>). This is possible because neutral theory makes a rich array of predictions, based on both ecological and evolutionary processes. Their data were only a little bit different (due to a later census), but their analyses revealed radically different estimates, with a much greater diversity and larger metacommunity (greater <span class="math inline">\(\theta\)</span>), and much lower immigration rates (smaller <span class="math inline">\(m\)</span>).</p>
+<p><img src="figs/unnamed-chunk-239-1.png" width="90%"><span class="citation"><a href="references.html#ref-Jabot:2009mi" role="doc-biblioref">Jabot and Chave</a> (<a href="references.html#ref-Jabot:2009mi" role="doc-biblioref">2009</a>)</span> arrived at estimates that differed from previous estimates by orders of magnitude. Their novel approach estimated <span class="math inline">\(\theta\)</span> and <span class="math inline">\(m\)</span> were derived from <em>both</em> species abundance data and from phylogenetic data (<span class="math inline">\(\theta \approx 571\)</span>, <span class="math inline">\(m \approx 0.002\)</span>). This is possible because neutral theory makes a rich array of predictions, based on both ecological and evolutionary processes. Their data were only a little bit different (due to a later census), but their analyses revealed radically different estimates, with a much greater diversity and larger metacommunity (greater <span class="math inline">\(\theta\)</span>), and much lower immigration rates (smaller <span class="math inline">\(m\)</span>).</p>
 <p>Here we derive expected species abundance distributions. The first is based solely on census data, and is similar to previous expections. However, when they also included phylogenetic data, they found very different expected species abundance distributions (Fig. <a href="diversity.html#fig:bciJabot">13.11</a>).</p>
-<div class="sourceCode" id="cb514"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb520"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Census data only</span>
 <span class="va">v2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/untb/man/volkov.html">volkov</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="va">n</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">48</span>, <span class="fl">0.1</span><span class="op">)</span>, bins<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span>
 <span class="co"># With phylogenetic data as well.</span>
@@ -872,16 +872,16 @@ where <span class="math inline">\(S\)</span> is the number of species in a patch
 \end{equation}\]</span>
 where <span class="math inline">\(b\)</span> is the intercept (equal to <span class="math inline">\(\log c\)</span>) and <span class="math inline">\(z\)</span> is the slope. Other forms have been used, and sometimes better capture the relation <span class="citation">(<a href="references.html#ref-Scheiner:2003aa" role="doc-biblioref">S. M. Scheiner 2003</a>)</span>.</p>
 <p>Here we simply draw some species area curves.</p>
-<div class="sourceCode" id="cb515"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb521"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">A</span> <span class="op">&lt;-</span> <span class="fl">10</span><span class="op">^</span><span class="fl">1</span><span class="op">:</span><span class="fl">10</span>; <span class="va">c</span> <span class="op">&lt;-</span> <span class="fl">1.5</span>; <span class="va">z</span> <span class="op">&lt;-</span> <span class="fl">0.25</span>
 <span class="fu"><a href="https://rdrr.io/r/graphics/curve.html">curve</a></span><span class="op">(</span><span class="va">c</span><span class="op">*</span><span class="va">x</span><span class="op">^</span><span class="va">z</span>, <span class="fl">10</span>, <span class="fl">10</span><span class="op">^</span><span class="fl">10</span>, n<span class="op">=</span><span class="fl">500</span>, ylab<span class="op">=</span><span class="st">"No. of Species"</span>, xlab<span class="op">=</span><span class="st">"Area (ha)"</span><span class="op">)</span></code></pre></div>
-<div class="inline-figure"><img src="figs/unnamed-chunk-237-1.png" width="90%"></div>
-<div class="sourceCode" id="cb516"><pre class="downlit sourceCode r">
+<div class="inline-figure"><img src="figs/unnamed-chunk-240-1.png" width="90%"></div>
+<div class="sourceCode" id="cb522"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/graphics/curve.html">curve</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html">log</a></span><span class="op">(</span><span class="va">c</span>,<span class="fl">10</span><span class="op">)</span> <span class="op">+</span> <span class="va">z</span><span class="op">*</span><span class="va">x</span>, <span class="fl">1</span>, <span class="fl">10</span>, ylab<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/substitute.html">quote</a></span><span class="op">(</span><span class="va">log</span><span class="op">[</span><span class="fl">10</span><span class="op">]</span><span class="op">(</span><span class="st">"No. of Species"</span><span class="op">)</span><span class="op">)</span>, 
       xlab<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/substitute.html">quote</a></span><span class="op">(</span><span class="va">log</span><span class="op">[</span><span class="fl">10</span><span class="op">]</span><span class="op">(</span><span class="st">"Area (ha)"</span><span class="op">)</span><span class="op">)</span> <span class="op">)</span></code></pre></div>
-<div class="inline-figure"><img src="figs/unnamed-chunk-237-2.png" width="90%"></div>
+<div class="inline-figure"><img src="figs/unnamed-chunk-240-2.png" width="90%"></div>
 <p>Here we fit a species–area curve to data, and examine the slope. We could fit a nonlinear power relation (<span class="math inline">\(y=cA^z\)</span>); this would be appropriate, for instance, if the residual noise around the line were of the same magnitude for all patch areas. We could use reduced major axis regression, which is appropriate when there is equivalent uncertainty or error on both <span class="math inline">\(x\)</span> and <span class="math inline">\(y\)</span>. Last (and most often), we could use a simple linear regression on the log-transformed data, which is appropriate when we know <span class="math inline">\(x\)</span> to a high degree of accuracy, but measure <span class="math inline">\(y\)</span> with some error, and the transformation causes the residual errors to be of similar magnitude at all areas. We start with the last (log-transformed). Here we plot the data, and fit a linear model to the common log-transformed data.</p>
-<div class="sourceCode" id="cb517"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb523"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="va">moths</span><span class="op">)</span>
 <span class="va">mod.nonlin</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/nls.html">nls</a></span><span class="op">(</span><span class="va">spp</span> <span class="op">~</span> <span class="va">a</span><span class="op">*</span><span class="va">area</span><span class="op">^</span><span class="va">z</span>, start<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>a<span class="op">=</span><span class="fl">1</span>, z<span class="op">=</span><span class="fl">.2</span><span class="op">)</span>,data<span class="op">=</span><span class="va">moths</span><span class="op">)</span>
 <span class="va">mod</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/lm.html">lm</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html">log</a></span><span class="op">(</span><span class="va">spp</span>,<span class="fl">10</span><span class="op">)</span> <span class="op">~</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html">log</a></span><span class="op">(</span><span class="va">area</span>,<span class="fl">10</span><span class="op">)</span>, data<span class="op">=</span><span class="va">moths</span><span class="op">)</span>
@@ -896,13 +896,13 @@ Figure 13.12: <em>Two different fits to the moth species-area data.</em>
 </p>
 </div>
 <p>Note that in Figure <a href="diversity.html#fig:sarsfit">13.12</a>, the fits differ slightly between the two methods. Let’s compare the confidence intervals of the slopes — we certainly expect them to be similar, given the picture we just drew.</p>
-<div class="sourceCode" id="cb518"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb524"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># linear fit to transformed data</span>
 <span class="fu"><a href="https://rdrr.io/r/stats/confint.html">confint</a></span><span class="op">(</span><span class="va">mod</span><span class="op">)</span></code></pre></div>
 <pre><code>##                    2.5 %   97.5 %
 ## (Intercept)   1.50842866 1.677286
 ## log(area, 10) 0.09025952 0.196390</code></pre>
-<div class="sourceCode" id="cb520"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb526"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># nonlinear fit to raw data</span>
 <span class="fu"><a href="https://rdrr.io/r/stats/confint.html">confint</a></span><span class="op">(</span><span class="va">mod.nonlin</span><span class="op">)</span></code></pre></div>
 <pre><code>##          2.5%      97.5%
@@ -948,18 +948,18 @@ Figure 13.13: <em>Immigration and extinction curves for the theory of island bio
 </p>
 </div>
 <p>We will assume that immigration rate, <span class="math inline">\(I\)</span>, can be represented as a simple negative exponential function <span class="math inline">\(\exp (I_0 - iS)\)</span>, where <span class="math inline">\(I_0\)</span> is the rate of immigration to an empty island, and <span class="math inline">\(-i\)</span> is the per species negative effect on immigration rate.</p>
-<div class="sourceCode" id="cb522"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb528"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">I0</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html">log</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span>
 <span class="va">b</span> <span class="op">&lt;-</span> <span class="fl">.1</span>
 <span class="fu"><a href="https://rdrr.io/r/graphics/curve.html">curve</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html">exp</a></span><span class="op">(</span><span class="va">I0</span> <span class="op">-</span> <span class="va">b</span><span class="op">*</span><span class="va">x</span><span class="op">)</span>,<span class="fl">0</span>, <span class="fl">50</span>, 
       xlab<span class="op">=</span><span class="st">'No. of Species (R)'</span>, ylab<span class="op">=</span><span class="st">"Rate (I or E)"</span><span class="op">)</span></code></pre></div>
-<p><img src="figs/unnamed-chunk-239-1.png" width="90%">
+<p><img src="figs/unnamed-chunk-242-1.png" width="90%">
 Note that extinction rate, <span class="math inline">\(E\)</span>, must be zero if there are no species present. Imagine that extinction rate is a function of density and that average density declines as the number of species increases, or <span class="math inline">\(\bar{N} = 1/S\)</span>.<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;Why would this make sense ecologically?&lt;/p&gt;"><sup>79</sup></a></p>
-<div class="sourceCode" id="cb523"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb529"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">d</span> <span class="op">&lt;-</span> <span class="fl">.01</span>
 <span class="fu"><a href="https://rdrr.io/r/graphics/curve.html">curve</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html">exp</a></span><span class="op">(</span><span class="va">d</span><span class="op">*</span><span class="va">x</span><span class="op">)</span><span class="op">-</span><span class="fl">1</span>, <span class="fl">0</span>, <span class="fl">50</span><span class="op">)</span> </code></pre></div>
-<div class="inline-figure"><img src="figs/unnamed-chunk-240-1.png" width="90%"></div>
-<div class="sourceCode" id="cb524"><pre class="downlit sourceCode r">
+<div class="inline-figure"><img src="figs/unnamed-chunk-243-1.png" width="90%"></div>
+<div class="sourceCode" id="cb530"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># use add=TRUE to add the line to a previous graph</span></code></pre></div>
 <p>We subtract 1 merely to make sure that <span class="math inline">\(E=0\)</span> when <span class="math inline">\(R=0\)</span>.</p>
 <p>The number of species, <span class="math inline">\(R\)</span>, will result from <span class="math inline">\(\Delta S = 0= I-E\)</span>, the point at which the lines cross.
@@ -971,10 +971,10 @@ Note that extinction rate, <span class="math inline">\(E\)</span>, must be zero 
 Here we find this empirically by creating a function of <span class="math inline">\(S\)</span> to
 minimize — we will minimize <span class="math inline">\((I-E)^2\)</span>; squaring the difference gives
 the quantity the convenient property that the minimum will be approached from either positive or negative values.</p>
-<div class="sourceCode" id="cb525"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb531"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">deltaS</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">S</span><span class="op">)</span> <span class="op">{</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html">exp</a></span><span class="op">(</span><span class="va">I0</span><span class="op">-</span><span class="va">b</span><span class="op">*</span><span class="va">S</span><span class="op">)</span> <span class="op">-</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html">exp</a></span><span class="op">(</span><span class="va">d</span><span class="op">*</span><span class="va">S</span><span class="op">)</span><span class="op">-</span><span class="fl">1</span><span class="op">)</span><span class="op">)</span><span class="op">^</span><span class="fl">2</span> <span class="op">}</span></code></pre></div>
 <p>We feed this into an optimizer for one-parameter functions, and specify that we know the optimum will be achieved somewhere in the interval between 1 and 50.</p>
-<div class="sourceCode" id="cb526"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb532"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/stats/optimize.html">optimize</a></span><span class="op">(</span>f<span class="op">=</span><span class="va">deltaS</span>, interval<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">50</span><span class="op">)</span><span class="op">)</span><span class="op">[[</span><span class="st">"minimum"</span><span class="op">]</span><span class="op">]</span></code></pre></div>
 <pre><code>## [1] 16.91321</code></pre>
 <p>The output tells us that the minimum was achieved when <span class="math inline">\(S \approx 16.9\)</span>.</p>
@@ -984,20 +984,20 @@ the quantity the convenient property that the minimum will be approached from ei
 <li>increase extinction rate because of reduced densities.</li>
 </ol>
 <p>Let us represent reduced immigration rate by reducing <span class="math inline">\(I_0\)</span>.</p>
-<div class="sourceCode" id="cb528"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb534"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">I0</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html">log</a></span><span class="op">(</span><span class="fl">1</span><span class="op">/</span><span class="fl">2</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/graphics/curve.html">curve</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html">exp</a></span><span class="op">(</span><span class="va">I0</span> <span class="op">-</span> <span class="va">b</span><span class="op">*</span><span class="va">x</span><span class="op">)</span>, <span class="fl">0</span>,<span class="fl">50</span>, lty<span class="op">=</span><span class="fl">2</span><span class="op">)</span></code></pre></div>
-<div class="inline-figure"><img src="figs/unnamed-chunk-243-1.png" width="90%"></div>
-<div class="sourceCode" id="cb529"><pre class="downlit sourceCode r">
+<div class="inline-figure"><img src="figs/unnamed-chunk-246-1.png" width="90%"></div>
+<div class="sourceCode" id="cb535"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># use add=TRUE to add to a previous plot</span></code></pre></div>
 <p>Next we increase extinction rate by increasing the per species rate.</p>
-<div class="sourceCode" id="cb530"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb536"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">d</span> <span class="op">&lt;-</span> <span class="fl">.014</span>
 <span class="fu"><a href="https://rdrr.io/r/graphics/curve.html">curve</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html">exp</a></span><span class="op">(</span><span class="va">d</span><span class="op">*</span><span class="va">x</span><span class="op">)</span><span class="op">-</span><span class="fl">1</span>, <span class="fl">0</span>, <span class="fl">50</span>, lty<span class="op">=</span><span class="fl">2</span><span class="op">)</span></code></pre></div>
 <div class="inline-figure">
-<img src="figs/unnamed-chunk-244-1.png" width="90%">
+<img src="figs/unnamed-chunk-247-1.png" width="90%">
 If we note where the rates cross, we find that the number of predicted species has declined. With these new immigration and extinciton rates the predicted number of species is</div>
-<div class="sourceCode" id="cb531"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb537"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/stats/optimize.html">optimize</a></span><span class="op">(</span>f<span class="op">=</span><span class="va">deltaS</span>, interval<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">50</span><span class="op">)</span><span class="op">)</span><span class="op">[[</span><span class="st">"minimum"</span><span class="op">]</span><span class="op">]</span></code></pre></div>
 <pre><code>## [1] 10.99834</code></pre>
 <p>or 11 species, roughly a 35% decline (<span class="math inline">\((17-11)/17 = 0.35\)</span>).</p>
@@ -1033,7 +1033,7 @@ Figure 13.14: <em>Hierarchical sampling of moth species richness in forest patch
 </p>
 </div>
 <p>Let us examine the limits of <span class="math inline">\(\beta\)</span> diversity in extremely small and extremely large samples. Imagine that our sample units each contain, on average, one individual (and therefore one species) and we have 10<span class="math inline">\(^6\)</span> samples. If richness is our measure of diversity, then <span class="math inline">\(\bar{\alpha}=1\)</span>. Now imagine that in all of our samples we find a total of 100 species, or <span class="math inline">\(\gamma=100\)</span>. Our additive and multiplicative partitions would then be <span class="math inline">\(\beta_{A}=99\)</span>, and <span class="math inline">\(\beta_{M}=100\)</span>, respectively. If the size of the sample unit increases, each sample will include more and more individuals and therefore more of the diversity, and by definition, <span class="math inline">\(\beta\)</span> will decline. If each sample gets large enough, then each sample will capture more and more of the species until a sample gets so large that it includes all of the species (i.e., <span class="math inline">\(\bar{\alpha} \to \gamma\)</span>). At this point, <span class="math inline">\(\beta_A \to 0\)</span> and <span class="math inline">\(\beta_M \to 1\)</span>.</p>
-<div class="sourceCode" id="cb533"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb539"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">a</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">100</span>, by<span class="op">=</span><span class="fl">.1</span><span class="op">)</span>
 <span class="va">g</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">max</a></span><span class="op">(</span><span class="va">a</span><span class="op">)</span>
 <span class="va">bA</span> <span class="op">&lt;-</span> <span class="va">g</span><span class="op">-</span><span class="va">a</span>
@@ -1048,17 +1048,17 @@ Figure 13.15: <em>Relations of <span class="math inline">\(eta_A\)</span> (with 
 <p>Note that <span class="math inline">\(\beta_A\)</span> and <span class="math inline">\(\beta_M\)</span> do not change at the same rates (Fig. ). When we increase sample size so that each sample includes an average of two species (<span class="math inline">\(\bar{\alpha} = 2\)</span>), then <span class="math inline">\(\beta_A = 98\)</span> and <span class="math inline">\(\beta_M =50\)</span>. If each sample were big enough to have on average 50 species (<span class="math inline">\(\bar{\alpha} = 50\)</span>), then <span class="math inline">\(\beta_A = 50\)</span> and <span class="math inline">\(\beta_M =2\)</span>.</p>
 <p>Multiplicative <span class="math inline">\(\beta_M\)</span> is sometimes thought of as the number of independent “communities” in a set of samples. This would make sense if our sampling regime were designed to capture representative parts of different communities. For example, if we sampled an elevational gradient, or a productivity gradient, and our smallest sample was sufficiently large so as to be representative of that point along the gradient<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;One type of sample that attempts to do this is a relev'e.&lt;/p&gt;"><sup>80</sup></a> then <span class="math inline">\(\beta_M\)</span> could provide a measure of the relative turnover in composition or “number of different communities.” However, we know that, all else being equal, composition is also predicted to vary randomly across the landscape. Therefore, if each sample is small, and not really representative of a community, then the small size of the samples will inflate <span class="math inline">\(\beta_M\)</span> and change the interpretation.</p>
 <p>As an example, consider the BCI data, which consists of 50 contiguous 1,ha plots. First, we find <span class="math inline">\(\gamma\)</span> (all species in the data set, or the number of columns), and <span class="math inline">\(\bar{\alpha}\)</span> (mean species number per 1,ha plot).</p>
-<div class="sourceCode" id="cb534"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb540"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="op">(</span><span class="va">gamma</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/dim.html">dim</a></span><span class="op">(</span><span class="va">BCI</span><span class="op">)</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span><span class="op">)</span></code></pre></div>
 <pre><code>## [1] 225</code></pre>
-<div class="sourceCode" id="cb536"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb542"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="op">(</span><span class="va">alpha.bar</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span> <span class="fu"><a href="https://rdrr.io/pkg/vegan/man/diversity.html">specnumber</a></span><span class="op">(</span><span class="va">BCI</span><span class="op">)</span> <span class="op">)</span><span class="op">)</span></code></pre></div>
 <pre><code>## [1] 90.78</code></pre>
 <p>Next we find additive <span class="math inline">\(\beta\)</span>-diversity and multiplicative <span class="math inline">\(\beta\)</span>-diversity.</p>
-<div class="sourceCode" id="cb538"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb544"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="op">(</span><span class="va">beta.A</span> <span class="op">&lt;-</span> <span class="va">gamma</span> <span class="op">-</span> <span class="va">alpha.bar</span><span class="op">)</span></code></pre></div>
 <pre><code>## [1] 134.22</code></pre>
-<div class="sourceCode" id="cb540"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb546"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="op">(</span><span class="va">beta.M</span> <span class="op">&lt;-</span> <span class="va">gamma</span><span class="op">/</span><span class="va">alpha.bar</span><span class="op">)</span></code></pre></div>
 <pre><code>## [1] 2.478519</code></pre>
 <p>Now we interpret them. These plots are located in a relatively uniform tropical rainforest. Therefore, they each are samples drawn from a single community type. However, the samples are small. Therefore, each 1 ha plot (<span class="math inline">\(10^4\)</span> m<span class="math inline">\(^2\)</span> in size) misses more species than it finds, on average (<span class="math inline">\(\beta_A &gt; \bar{\alpha}\)</span>). In addition, <span class="math inline">\(\beta_M=2.48\)</span>, indicating a great deal of turnover in species composition. We could mistakenly interpret this as indicating something like <span class="math inline">\(\sim 2.5\)</span> independent community types in our samples. Here, however, we have a single community type — additive partitioning is a little simpler and transparent in its interpretation.</p>
@@ -1080,21 +1080,21 @@ Figure 13.15: <em>Relations of <span class="math inline">\(eta_A\)</span> (with 
 data in Fig. <a href="diversity.html#fig:moths">13.14</a>. First, we get
 the average site richness, <span class="math inline">\(\bar{\alpha}_1\)</span>. Because we have different
 numbers of individuals from different site, and richness depends strongly on the number of individuals in our sample, we may want to weight the sites by the number of individuals. However, I will make the perhaps questionable argument for the moment that because trapping effort was similar at all sites, we will not adjust for numbers of individuals. We will assume that different numbers of individuals reflect different population sizes, and let number of individuals be one of the local determinants of richness.</p>
-<div class="sourceCode" id="cb542"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb548"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">a1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">moths</span><span class="op">[[</span><span class="st">'spp'</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></code></pre></div>
 <p>Next we calculate average richness richness for the ecoregions. Because we had 12 sites in NCT, and only nine sites in WAP for what might be argued are landscape constraints, we will use the weighted average richness, adjusted for the number of sites.<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content='&lt;p&gt;The arithmetic mean is &lt;span class="math inline"&gt;\(\sum{a_i Y_i}\)&lt;/span&gt;, where all &lt;span class="math inline"&gt;\(a_i = 1/n\)&lt;/span&gt;, and &lt;span class="math inline"&gt;\(n\)&lt;/span&gt; is the total number of observations. A weighted average is the case where the &lt;span class="math inline"&gt;\(a_i\)&lt;/span&gt; represent unequal &lt;em&gt;weights&lt;/em&gt;, often the fraction of &lt;span class="math inline"&gt;\(n\)&lt;/span&gt; on which each &lt;span class="math inline"&gt;\(Y_i\)&lt;/span&gt; is based. In both cases, &lt;span class="math inline"&gt;\(\sum{a}=1\)&lt;/span&gt;.&lt;/p&gt;'><sup>81</sup></a> We also create an object for <span class="math inline">\(\gamma=230\)</span>.</p>
-<div class="sourceCode" id="cb543"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb549"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">a2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span>NCT<span class="op">=</span><span class="fl">179</span>, WAP<span class="op">=</span><span class="fl">173</span><span class="op">)</span> <span class="op">*</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">12</span>,<span class="fl">9</span><span class="op">)</span><span class="op">/</span><span class="fl">21</span><span class="op">)</span>
 <span class="va">g</span> <span class="op">&lt;-</span> <span class="fl">230</span></code></pre></div>
 <p>Next, we get the remaining quantities of interest, and show that the partition is consistent.</p>
-<div class="sourceCode" id="cb544"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb550"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">b1</span> <span class="op">&lt;-</span> <span class="va">a2</span><span class="op">-</span><span class="va">a1</span>
 <span class="va">b2</span> <span class="op">&lt;-</span> <span class="va">g</span><span class="op">-</span><span class="va">a2</span>
 <span class="va">abg</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span>a1<span class="op">=</span><span class="va">a1</span>, b1<span class="op">=</span><span class="va">b1</span>, a2<span class="op">=</span><span class="va">a2</span>, b2<span class="op">=</span><span class="va">b2</span>, g<span class="op">=</span><span class="va">g</span><span class="op">)</span>
 <span class="va">abg</span></code></pre></div>
 <pre><code>##        a1        b1        a2        b2         g 
 ##  65.42857 111.00000 176.42857  53.57143 230.00000</code></pre>
-<div class="sourceCode" id="cb546"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb552"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">a1</span> <span class="op">+</span> <span class="va">b1</span> <span class="op">+</span> <span class="va">b2</span> <span class="op">==</span> <span class="va">g</span></code></pre></div>
 <pre><code>## [1] TRUE</code></pre>
 <div class="figure">
@@ -1119,10 +1119,10 @@ where <span class="math inline">\(\beta_{replace}\)</span> is the average number
 \end{equation}\]</span>
 where <span class="math inline">\(\beta_{replace} = \beta_{ecoregion} + \beta_{geogr.region}\)</span>. Note that earlier in the chapter, we did not explore the effect of area. In that case, <span class="math inline">\(\beta_{ecoregion}\)</span> included both the effect of area and the effect of ecoregion; here we have further partitioned this variation into variation due to patch size, as well as variation due to ecoregion. This reduces the amount of unexplained variation among sites within each ecoregion.</p>
 <p>Let’s calculate those differences now. We will use quantities we calculated above for <span class="math inline">\(\bar{\alpha}_1\)</span>, <span class="math inline">\(\bar{\alpha}_2\)</span>, <span class="math inline">\(\gamma\)</span>, and a nonlinear species–area model from above. We can start to create a graph similar to Fig. <a href="diversity.html#fig:SARpart">13.17</a>. We’ll start with fitting again a model we used above.</p>
-<div class="sourceCode" id="cb548"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb554"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">mod.nonlin</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/nls.html">nls</a></span><span class="op">(</span><span class="va">spp</span> <span class="op">~</span> <span class="va">a</span><span class="op">*</span><span class="va">area</span><span class="op">^</span><span class="va">z</span>, start<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>a<span class="op">=</span><span class="fl">1</span>, z<span class="op">=</span><span class="fl">.2</span><span class="op">)</span>,data<span class="op">=</span><span class="va">moths</span><span class="op">)</span></code></pre></div>
 <p>Now to plot data and draw a fitted line.</p>
-<div class="sourceCode" id="cb549"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb555"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">spp</span> <span class="op">~</span> <span class="va">area</span>, data<span class="op">=</span><span class="va">moths</span>, ylim<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">30</span>,<span class="fl">230</span><span class="op">)</span>, <span class="co">#log='y',</span>
      xlab<span class="op">=</span><span class="st">"Area (ha)"</span>, ylab<span class="op">=</span><span class="st">"No. of Species (R)"</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/graphics/curve.html">curve</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/coef.html">coef</a></span><span class="op">(</span><span class="va">mod.nonlin</span><span class="op">)</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span> <span class="op">*</span> <span class="va">x</span><span class="op">^</span><span class="fu"><a href="https://rdrr.io/r/stats/coef.html">coef</a></span><span class="op">(</span><span class="va">mod.nonlin</span><span class="op">)</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span>, 
@@ -1135,11 +1135,11 @@ where <span class="math inline">\(\beta_{replace} = \beta_{ecoregion} + \beta_{g
 <span class="fu"><a href="https://rdrr.io/r/graphics/text.html">text</a></span><span class="op">(</span><span class="fl">275</span>, <span class="va">g</span>, <span class="fu"><a href="https://rdrr.io/r/base/substitute.html">quote</a></span><span class="op">(</span><span class="va">gamma</span><span class="op">)</span>, adj<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">.5</span>,<span class="fl">1.5</span><span class="op">)</span>, cex<span class="op">=</span><span class="fl">1.5</span><span class="op">)</span></code></pre></div>
 <p>Next we need to find the <em>predicted richness</em> for the maximum
 area. We use our statistical model to find that.</p>
-<div class="sourceCode" id="cb550"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb556"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="op">(</span><span class="va">MaxR</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span><span class="va">mod.nonlin</span>, <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>area<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">max</a></span><span class="op">(</span><span class="va">moths</span><span class="op">[[</span><span class="st">'area'</span><span class="op">]</span><span class="op">]</span><span class="op">)</span> <span class="op">)</span><span class="op">)</span> <span class="op">)</span></code></pre></div>
 <pre><code>## [1] 88.6185</code></pre>
 <p>We can now find <span class="math inline">\(\beta_{area}\)</span>, <span class="math inline">\(\beta_{eco}\)</span> and <span class="math inline">\(\beta_{geo}\)</span>.</p>
-<div class="sourceCode" id="cb552"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb558"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">b.area</span> <span class="op">&lt;-</span> <span class="va">MaxR</span> <span class="op">-</span> <span class="va">a1</span>
 <span class="va">b.eco</span> <span class="op">&lt;-</span> <span class="va">a2</span><span class="op">-</span><span class="op">(</span><span class="va">b.area</span><span class="op">+</span><span class="va">a1</span><span class="op">)</span>
 <span class="va">b.geo</span> <span class="op">&lt;-</span> <span class="va">g</span> <span class="op">-</span> <span class="va">a2</span></code></pre></div>
@@ -1155,7 +1155,7 @@ area. We use our statistical model to find that.</p>
 <span class="math inline">\(\beta_{geo}\)</span> is the average number of species not found in the samples from different ecoregions.</li>
 </ul>
 <p>Finally, we add lines to our graph to show the partitions.</p>
-<div class="sourceCode" id="cb553"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb559"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/graphics/abline.html">abline</a></span><span class="op">(</span>h<span class="op">=</span><span class="va">g</span>, lty<span class="op">=</span><span class="fl">3</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/graphics/abline.html">abline</a></span><span class="op">(</span>h<span class="op">=</span><span class="va">b.eco</span><span class="op">+</span><span class="va">b.area</span><span class="op">+</span><span class="va">a1</span>, lty<span class="op">=</span><span class="fl">3</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/graphics/abline.html">abline</a></span><span class="op">(</span>h<span class="op">=</span><span class="va">b.area</span><span class="op">+</span><span class="va">a1</span>, lty<span class="op">=</span><span class="fl">3</span><span class="op">)</span>
@@ -1241,7 +1241,7 @@ Figure 13.17: <em>Combining species–area relations with additive diversity par
 <footer class="bg-primary text-light mt-5"><div class="container"><div class="row">
 
   <div class="col-12 col-md-6 mt-3">
-    <p>"<strong>Primer of Ecology using R</strong>" was written by Hank Stevens. It was last built on 2021-08-27.</p>
+    <p>"<strong>Primer of Ecology using R</strong>" was written by Hank Stevens. It was last built on 2021-08-28.</p>
   </div>
 
   <div class="col-12 col-md-6 mt-3">

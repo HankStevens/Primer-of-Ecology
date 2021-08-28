@@ -301,7 +301,6 @@ qplot(x=0:(t-1), N, geom=c("line", "point"), xlab="Time (y)")
 
 Sometimes the arithmetic average is close to the correct average, but it is never the correct approach.
 
-
 ## Modeling with Data: Simulated Dynamics
 Science strives to make predictions about the behavior of systems. Ecologists and conservation biologists frequently strive to predict the fate of populations. This is referred to as *population viability analysis* (PVA) and is a large field of endeavor that is vital to managing threatened populations. Here we  put into practice ideas about population biology to make informed predictions about the fate of the Song Sparrow population in Darrtown, OH. We also illustrate simple computational methods for doing so. 
  
@@ -542,6 +541,68 @@ The `quantile()` function allows us to find a form of empirical confidence inter
 quantile(N.2053, prob=c(0.05, .95) )
 ```
 These quantiles provide an estimate of the most likely range of possible population sizes, given our assumptions. 
+
+### Extinction probability
+
+What is the chance that the sparrow would become extinct in this region, due to these inherent processes? As one answer to this question, we can calculate the fraction of times that the population fell below 1.0 (or $\log N = 0$). Based on the above summaries, it will be a fairly small number.
+
+First, we convert persisting populations to 1, and extinct populations to zero. We then sum the ones and divide by the total number of all simulated populations. This gives us the fraction surviving.
+```{r}
+persisting <- as.numeric( N.2053 > 1 )
+(p <- sum(persisting)/length(persisting))
+```
+
+Next we can ask what the uncertainty is associated with that? We will find an intuitive Bayesian answer to the question: What is the probability that the sparrow would become extinct in this region, due to these inherent processes?
+
+We will gain an intuition into Bayesian probability elsewhere. For now, we will simply rely on well-established relationship between the binomial probability distribution and the beta distribution.
+
+We start with our expert opinion of whether Song Sparrows are likely to maintain a self-replacing population (a 'source' population - Ch. 6) and avoid extinction over our time interval. In other words, we ask Dave Russell. He says "Probably, but you can't be sure." Let's represent that with the beta distribution. The **beta distribution** generates probability densities for a random variable between [0,1], perfect for representing probabilities. It has two parameters, shape 1 ($\alpha$) and shape 2 ($\beta$). The mean of the beta distribution is,
+$$\mu = \frac{\alpha}{\alpha + \beta}$$
+
+```{r survivalPrior, fig.cap="Our prior belief on the probability that the Song Sparrow population in Darrtown will replace itself over our time interval.", out.width="67%"}
+base <- ggplot() + xlim(0, 1)
+
+base + 
+  geom_function(fun = dbeta, args = list(shape1 = 3, shape = 2)) + 
+  labs(y="Probability density of surviving",
+       x="Probability of surviving (p)")
+
+```
+
+Fig. \@ref(fig:survivalPrior) shows our *prior beliefs*. That is, before we look at our data, we thinking there is a 3/5's chance (60%) that Song Sparrows in Darrtown won't become extinct over our time interval. How will we update our beliefs using our data? 
+
+First, our "data" are really just 36 years of counts and 35 estimates of annual growth ($N_{t+1}/N_{t}$). We can do as many simulations as we like, but they are still based on only 35 annual growth estimates. Therefore, if we combine our survival estimate with the amount of data, we multiply the survival probability by the sample size and think of it as evidence in favor of surviving. Weight of evidence not in favor is the difference.
+```{r}
+nR <- length(obs.R)
+nR.surv <- nR * sum(persisting)/length(persisting)
+nR.ext <- nR - nR.surv
+```
+
+Next, we update our belief about Song Sparrow persistence, using the beta distribution. It turns out that we just add the evidence in favor of and not in favor of survival to the alpha and beta parameters (shape1, shape2) to get updated values that will generate our updated beliefs.
+```{r}
+updated.alpha = 3 + nR.surv
+updated.beta = 2 + nR.ext
+```
+
+Now we plot our *updated* beliefs, with what we call the *posterior distribution.*
+```{r survivalpost, fig.cap="Our updated beliefs (solid line) about the probability that the Song Sparrows will replace themselves over our time interval. The solid line is the posterior distribution. The dashed line was our prior beliefs or prior distribution.", out.width="67%"}
+
+base + 
+  geom_function(fun = dbeta, 
+                args = list(shape1 = 3, 
+                            shape2 = 2), linetype=2) +
+  geom_function(fun = dbeta, 
+                args = list(shape1 = updated.alpha, 
+                            shape2 = updated.beta)) +
+  labs(y="Probability density of surviving",
+       x="Probability of surviving (p)")
+```
+
+A Bayesian approach to probability and learning 
+
+1. start with what we believe prior to collecting data, 
+1. collect some data, and then 
+1. update our beliefs according to the data.
 
 ### Inferring processes underlying growth rate
 The above approach relies only on the observed data. That means that the growth rates, while representative, can never be different than what was observed. A different approaach would be to assume that the growth rates can be different than observed, *but drawn from the same underlying process* that caused the observed rates. 
