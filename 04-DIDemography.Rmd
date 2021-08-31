@@ -1,38 +1,28 @@
 # Density-independent Demography {#DID}
 In the preceding chapter, we listed Hastings' [@Hastings2011] key principles and assumptions of single species population growth. One of the key assumptions is that "all individuals in a population are identical." In this chapter, we elucidate an important violation of that assumption, population structure.
 
-
 ```{r human, echo=FALSE, fig.cap='Demography of human populations of Mexico and Sweden. Based on 1990 data from US Census Bureau, Population Division, International Programs Center.', out.width='30%', fig.show='hold'}
 include_graphics(c("figs/AgeDistM.png","figs/AgeDistS.png","figs/AgeSpecFert.png"))
 ```
 
 
-*Populations have structure.* Consider the human populations of Mexico and Sweden in 1990. Mexico had a much larger fraction of their population in child bearing age classes or younger (Fig. \@ref(fig:human)). In addition, the \index{age-specific fertility}age-specific fertility rate was higher in Mexico, especially for younger women
+*Populations have structure.* Consider the human populations of Mexico and Sweden in 1990. Mexico had a much larger fraction of their population in child bearing age classes or younger (Fig. \@ref(fig:human)). In addition, the age-specific fertility rate was higher in Mexico, especially for younger women
 (Fig. \@ref(fig:human)). How did this happen, and why did Mexico have so
 many young people? What were the consequences of this for their
 culture, their use of resources, their domestic and foreign policies,
 and their future population growth? How about Sweden? 
 
-Demography is the study of populations with special attention to their structure [@Lincoln:1998ta]. Originally, age-based human demography was the provenance of actuaries who helped governments keep track of the number citizens of different ages and thus, for instance, know how many would be available for conscription into the military.^[In his chapter entitled ``Interesting Ways to Think about Death'' G.E. Hutchinson @Hutchinson1978 cites C.~F. Trenerry, E.~L. Gover and A.~S. Paul (*The Origins and Early History of Insurance*, London, P.~S. King \& Sons, Ltd.) for description of early Roman actuarial tables.]
+Demography is the study of populations with special attention to their structure [@Lincoln:1998ta]. Originally, age-based human demography was the provenance of actuaries who helped governments keep track of the number citizens of different ages and thus, for instance, know how many would be available for conscription into the military.^[In his chapter entitled "Interesting Ways to Think about Death" G.E. Hutchinson @Hutchinson1978 cites C.~F. Trenerry, E.~L. Gover and A.~S. Paul (*The Origins and Early History of Insurance*, London, P.~S. King \& Sons, Ltd.) for description of early Roman actuarial tables.]
 
 *The reason we model the structure of populations* is because various demographic rates vary markedly with these stages. Juveniles produce no offspring. Very few seeds survive an entire year, whereas some large adults survive very well. We use structure when that structure is associated with important differences in demographic rates: *survival*, *fecundity*, and *growth*. 
 
-The *structure* to which we refer is simply the organization of populations by some character such as life history stage, age, or size. Sizes and ages are often reduced to categories such as we saw in human populations (e.g., 0--4.9\,y, 5--9.9\,y,...). Sizes may be based on any reliable and repeatable measure that relates to demographic rates and are similarly binned. Life history stages may include eggs, larvae, metamorphs, juveniles, and adults in amphibians, or seeds, rosettes, and reproductive stems in herbaceous plants. With a variable such as size, we don't even need to use categories, but rather we can use size as a continuous variable; we address this briefly later in the chapter.
+The *structure* to which we refer is simply the organization of populations by some character such as life history stage, age, or size. Sizes and ages are often reduced to categories such as we saw in human populations (e.g., 0--4.9\,y, 5--9.9\,y,...). Sizes may be based on any reliable and repeatable measure that relates to demographic rates and are similarly binned. Life history stages may include eggs, larvae, metamorphs, juveniles, and adults in amphibians, or seeds, rosettes, and reproductive stems in herbaceous plants. With a variable such as size, we don't need to use categories, but rather we can use size as a continuous variable; we address this briefly later in the chapter.
 
-Structured population models allow us to intertwine species-specific natural history and quantitative methods. This makes the approach especially appealing for the conservation biology of threatened and endangered species. We use structured population models to improve our better understanding of a population or improve predictions of its future dynamics, or guide the management of the population. We might learn a lot about what controls the abundance
-of a species if we can test ideas related to different stages, ages,
-or sizes. What limits the population growth of the Western toad --
-is it egg survival, or overwintering survival of juveniles? Where
-should we invest our efforts to
-control garlic mustard (*Alliaria petiolata*) -- killing the
-first year
-rosettes, or the second year adults? Why are cacti generally endangered [@Goettsch2015]---is the smallest size, or the largest size
-that is most essential to insure long-term survival? We can use
-structured population models to address such questions.
+Structured population models allow us to intertwine species-specific natural history and quantitative methods. This makes the approach especially appealing for the conservation biology of threatened and endangered species. We use structured population models to improve our understanding of a population or improve predictions of its future dynamics, or guide the management of the population. We might learn a lot about what controls the abundance of a species if we can test ideas related to different stages, ages, or sizes. What limits the population growth of the Western toad -- is it egg survival, or overwintering survival of juveniles? Where should we invest our efforts to control garlic mustard (*Alliaria petiolata*) -- killing the first year rosettes, or the second year adults? Why are cacti generally endangered [@Goettsch2015]---is the smallest size or the largest size more important for long-term survival? We can use structured population models to address such questions.
 
 ## A two stage matrix model
 
-```{r toadlh, echo=FALSE, fig.cap='Like all amphibians, the Western toad (Anaxyrus boreas) has a complex life cycle, with several life history stages. Adults breed in early spring, laying eggs in water. The larvae (tadpoles) hatch and develop over the spring and summer, and then metamorphose (become metamorphs), and then juveniles. Juveniles require more than a year to mature. Adults can live up to about a decade. American toads (A. americanus) do the same thing.', out.width='65%', fig.show='hold'}
+```{r toadlh, echo=FALSE, fig.cap='Like all amphibians, the Western toad (*Anaxyrus boreas*) has a complex life cycle, with several life history stages. Adults breed in early spring, laying eggs in water. The larvae (tadpoles) hatch and develop over the spring and summer, and then metamorphose (become metamorphs), and then juveniles. Juveniles require more than a year to mature. Adults can live up to about a decade. American toads (*A. americanus*) do the same thing.', out.width='65%', fig.show='hold'}
 include_graphics("figs/VoneshF1.png")
 ```
 
@@ -40,17 +30,17 @@ A matrix model of a structured population consists of *stages* and *transitions*
 
 In all structured popuation models^[Models comprise stages and transitions.], a transition is the annual contribution of an individual in stage $i$ at time $t$ to stage $j$ at $t+1$. In Fig. \@ref(fig:toadlh), the transition from juvenile to adult is the probability that a juvenile survives an entire year and also matures, becoming sexually viable.^[Practice these pronunciations: $\sigma$ is sigma $\phi$ is phi or phee; $\rho$ is rho.]  The transition from juvenile to juvenile is the probability that a juvenile survives a year and does not mature. The transition from adult to adult is the probability that an adult survives the year. These three transitions are probabilities. 
 
-The transition from adult to juvenile (Fig. \@ref(fig:toadlh)) is typically referred to as *fecundity*, and it is the product of several events. Vonesh and De la Cruz assume that this transition depends on the population sex ratio, the average clutch size of a female, egg survival, larval survival and metamorphosis, and the overwintering survival of metamorphs. They even assume that larval survival depnds on denisty. Thus what we refer to as "fecundity"^[In structured population models, fecundity includes survival.] is far more than just average clutch size because it must include all the processes that occur over the year associated with producing a clutch and the survival of that clutch.
+The transition from adult to juvenile (Fig. \@ref(fig:toadlh)) is typically referred to as *fecundity*, and it is the product of several events. Vonesh and De la Cruz assume that this transition depends on the population sex ratio, the average clutch size of a female, egg survival, larval survival and metamorphosis, and the overwintering survival of metamorphs. They also assume that larval survival depends on density. Thus what we refer to as "fecundity"^[In structured population models, fecundity includes survival.] is far more than just average clutch size because it must include all the processes that occur over the year associated with producing a clutch and the survival of that clutch.
 
 Structured population models allow us to take advantage of the natural history of our study species. For our study population, at a minimum, we need to (i) identify stages that differ in their demographic rates, and (ii) when individuals tend to breed.
 
-Consider the example of the Western toad (*Anaxyrus boreas*). As with all amphibians, survival and fecundity rates depend heavily or entirely on life history stages of egg, larvae (tadpole), juvenile, and adult. We would know that breeding occurs in early spring, depending on latitude and elevation. If we wanted to model juveniles and adults, we would typically sample a population prior to breeding when juveniles and adults are just starting to become active.
+Consider the example of the Western toad (*Anaxyrus boreas*). As with all amphibians, survival and fecundity rates depend heavily or entirely on life history stages of egg, larvae (tadpole), juvenile, and adult. Breeding often occurs in early spring, depending on latitude and elevation. If we wanted to model juveniles and adults, we would typically sample a population prior to breeding when juveniles and adults are just starting to become active.
 
-The design of a structured population model depends on the sampling or census schedule. These models are typically assume an annual census that occurs just before, and just after seed set, egg laying, or births. We refer to these as *pre-breeding* or *post-breeding* census models. @Vonesh:2002fr (Fig. \@ref(fig:toadlh)) use a pre-breeding census model. This is because only juveniles and adults are present in the population at the time of sampling. If the design assumed a post-breeding census (later in the year), it would probably include three stages, with larva (tadpoles) in addition to juveniles and adults. 
+The design of a structured population model depends on the sampling or census schedule. These models are typically assume an annual census that occurs just before, and just after seed set, egg laying, or births. We refer to these as *pre-breeding* or *post-breeding* census models. @Vonesh:2002fr (Fig. \@ref(fig:toadlh)) use a pre-breeding census model. It is a pre-breeding census because only juveniles and adults are present in the population at the time of sampling. If the design assumed a post-breeding census (later in the year), it would include three stages, with larva (tadpoles) in addition to juveniles and adults.
 
-The reasons for using a pre- *vs.* post-breeding census include our ability to actually identify and sample stages, and parameter estimation. For example, it may be easy to accurately estimate the abundance of juvenile and adult toads, but very difficult to estimate larval density and larval survival. In such a case, we could represent the adult to juvenile transition as a black box, estimated as the total number of new juveniles in year $t+1$ divided by the number of adults in year $t$. 
+The reasons for using a pre- *vs.* post-breeding census include our ability to actually identify stages, sample or census individuals in each stage, and whether we can estimate parameters. For example, it may be easy to accurately estimate the abundance of juvenile and adult toads, but very difficult to estimate larval density and larval survival. In such a case, we could represent the adult to juvenile transition as a black box, estimated as the total number of new juveniles in year $t+1$ divided by the number of adults in year $t$. 
 
-We can draw a two different types of life cycle graphs for this two-stage model in just such a population (Fig. \@ref(fig:vdlc1)). Some people find one more illuminating than the other. It is useful to be able to use both.
+We can draw two different types of life cycle graphs for this two-stage model in just such a population (Fig. \@ref(fig:vdlc1)). Some people find one more illuminating than the other. It is useful to be able to use both.
 
 ```{r vdlc1, echo=FALSE, fig.cap='Two types of life cycle graphs. These both represent an amphibian pre-breeding model.', out.width='65%', fig.show='hold'}
 
@@ -70,9 +60,9 @@ transition must represent everything that happens over the
 entire year. Notice the transition from adult toad to juvenile toad
 (Fig. \@ref(fig:vdlc1)) includes egg production, egg survival, tadpole or
 larva survival and growth, and metamorphosis out of the aquatic
-stage. This are obviously important events. We make explicit only those stages that we count during our census; all other other events are implicit within the transitions.
+stage, and also overwintering of the juvenile. This are obviously important events. We make explicit only those stages that we count during our census; all other other events are implicit within the transitions.
 
-Once we have a life cycle diagram (Fig. \@ref(fig:vdlc1)), we create a *transition* or *projection* matrix that represents mathematically all of the stages and transitions between stages \@ref(eq:m1). This matrix will have one row and one column for each stage, and the columns represent the stages in year $t$ and the rows represent the stages in year $t+1$.  We refer to a single column by *j* and a single row by *i*. Each column represents stage *j* in year $t$, and each row represents stage *i* in year $t+1$. For our amphibian example, the transition matrix will have two rows and two columns. It will be a "two by two", or $2 \times 2$ matrix. 
+Once we have a life cycle diagram (Fig. \@ref(fig:vdlc1)), we create a *transition* or *projection* matrix that represents mathematically all of the stages and transitions between stages \@ref(eq:m1). This matrix will have one row and one column for each stage, and the columns represent the stages in year $t$ and the rows represent the stages in year $t+1$.  We refer to a single row by *i* and a single column by *j*. Each column represents stage *j* in year $t$, and each row represents stage *i* in year $t+1$. For our amphibian example, the transition matrix will have two rows and two columns. It will be a "two by two", or $2 \times 2$ matrix. 
 \begin{equation}
 (\#eq:m1)
  \mathbf{A} =
@@ -90,11 +80,11 @@ If \@ref(eq:m1) represents the Western toad (Fig. \@ref(fig:vdlc1)), then transi
 * $p_{22}$ is the probability that adults survive, and 
 * $F_{12}$ is contribution of the average adult to the juvenile stage.
 
-In addition to fecundity, survival, maturation or growth from one stage to the next, some organisms undergo *regression* (Fig. \@ref(fig:conceptualmatrix)). Regressing means to transition from a later stage to an earlier stage. For instance, and plant can shrink in size do to physical damage, disease or herbivory. A plant can also return temporarily to a non-reproductive stage after a large bout of reproduction. These are examples of regression (Fig. \@ref(fig:conceptualmatrix)). 
+In addition to fecundity, survival, maturation or growth from one stage to the next, some organisms undergo *regression* (Fig. \@ref(fig:conceptualmatrix)). Regressing means to transition from a later stage to an earlier stage. For instance, and plant can shrink in size due to physical damage, disease or herbivory. A plant can also return temporarily to a non-reproductive stage after a large bout of reproduction. These are examples of regression (Fig. \@ref(fig:conceptualmatrix)). 
 
-One assumption we are making is that individuals set seed, or give birth, all at once. Therefore, we refer to our model as a \index{birth-pulse}*birth-pulse model*. On the other hand, if we assume that we have continuous reproduction throughout the year, we do things differently, and would refer to this as a \index{birth-flow}*birth-flow model*. Whether a population is breeding continuously over a year, or whether reproduction is seasonal, will influence how we estimate fecundities. Even for synchronously breeding populations, many models pool years into a single age class or stage. The interested reader should consult an authoritative text such as @Caswell:2001gu.
+One assumption we make here is that individuals set seed, or give birth, all at once. Therefore, we refer to our model as a *birth-pulse model*. On the other hand, if we assume that we have continuous reproduction throughout the year, we do things differently, and would refer to this as a *birth-flow model*. Whether a population is breeding continuously over a year, or whether reproduction is seasonal, will influence how we estimate fecundities. Even for synchronously breeding populations, many models pool years into a single age class or stage. The interested reader should consult an authoritative text such as @Caswell:2001gu.
 
-```{r conceptualmatrix, echo=FALSE, fig.cap='A transition matrix, in which each element in the matrix describes the probability that an individual of a given size $j$ at time $t$ appears as size $i$ and time $t+1$. Reproduction typically results in the minimum size, stage, or age. This matrix may be composed of a small number of rows and columns (2-10), or, in the case of integral projection, an infinite number of rows and columns. The number of rows is equal to the number of columns.', out.width='100%', fig.width=6, fig.height=6}
+```{r conceptualmatrix, echo=FALSE, fig.cap='A transition matrix, in which each element in the matrix describes the probability that an individual of a given size $j$ at time $t$ appears as size $i$ and time $t+1$. Reproduction is typically a contribution to the minimum size, stage, or age. This matrix may comprise a small number of rows and columns (2-10), or, in the case of integral projection, an infinite number of rows and columns. The number of rows is equal to the number of columns.', out.width='100%', fig.width=6, fig.height=6}
 
 par(mar=c(1,3,3,1), xaxs = "i", yaxs = "i", pty = "s")
 plot(0:1, 0:1, type="n", axes=F, ylab=expression("Size at "*italic(t) + 1), xlab="" )
@@ -144,7 +134,7 @@ $$\mathbf{ N_{t+1} = A N_t}$$
 and to do that, we need a refresher on matrix multiplication. 
  
 ## A brief primer on matrices
-We refer to matrices by their rows and columns. A matrix with three rows and one column is a $3 \times 1$ matrix (a ``three by one'' matrix); we *always* state the number of rows first. Matrices comprise *elements*; an element of a matrix is signified by its row and column. The element in the second row and first column is $a_{21}$. The *dimension* of a matrix is its number of rows and columns.
+We refer to matrices by their rows and columns. A matrix with three rows and one column is a $3 \times 1$ matrix (a "three by one" matrix); we *always* state the number of rows first. Matrices comprise *elements*; an element of a matrix is signified by its row and column. The element in the second row and first column is $a_{21}$. The *dimension* of a matrix is its number of rows and columns.
 
 To add two matrices, they must have the same dimensions. Consider two matrices, **A** and **B** . To add these two matrices we simply add the elements in the same row and column of both matrices, as below.
 
@@ -223,7 +213,7 @@ M %*% D
 ```
 Make sure you could write out the multiplication and summation for each element in the resulting matrix.
 
-The transpose of **M** is $\mathbf{M^T}$
+The transpose of **M** is the same matrix, but where we flip it along the diagonal, switching rows and columns. We use $\mathbf{M^T}$ to represent the transpose operation. In R, we use `t()`.
 ```{r echo=TRUE}
 M; t(M)
 ```
@@ -239,7 +229,7 @@ Survival, **S**, and growth, **G**, have these elements:
 * each stage $j$ has its own probability of survival $s_j$, which describes survival of each stage from $t$ to $t+1$.
 * each survivor in stage $j$ will grow or regress into a different stage, or remain in the same stage, with probability $g_{ij}$.
 
-In a demographic context, fecundity, **F**, is the surviving number of offspring produced by the average individual in stage $i$. Sometimes this is a complete black box, in which we can only count the adults in year $t$ and the offspring in year $t+1$. Other times, we can use estimates of the probability that an individual in stage $i$ reproduces at all, the average number of offspring of an individual that does actually reproduce, and the survival and growth of the adults or the resulting offspring. It all depends on the detail we have of our study system. And, of course, it depends heavily on whether we census our population shortly before reproduction (pre-breeding census), or shortly after reproduction (post-breeding census).
+In a demographic context, fecundity, **F**, is the surviving number of offspring produced by the average individual in stage $i$. Sometimes this is a complete black box, in which we can only count the adults in year $t$ and the offspring in year $t+1$. Other times, we estimate of the probability that an individual in stage $i$ reproduces at all (yes/no), as well as the average number of offspring of an individual that does actually reproduce, and the survival and growth of the adults or the resulting offspring. It all depends on the detail we have of our study system. And, of course, it depends heavily on whether we census our population shortly before reproduction (pre-breeding census), or shortly after reproduction (post-breeding census).
 
 For our Western Toad (Fig. \@ref(fig:toadlh)), this results in
 \begin{equation*}
@@ -260,7 +250,13 @@ For our Western Toad (Fig. \@ref(fig:toadlh)), this results in
 \begin{array}{cc}
 0 & \rho \phi \sigma_e \sigma_t \sigma_m \\
 0 & 0
-\end{array} \right) = 
+\end{array} \right)
+\end{equation*}
+
+Combining these we get,
+\begin{equation*}
+(\#eq:SGF)
+ \mathbf{A = GS + F} = 
 \left(
 \begin{array}{cc}
 \sigma_j (1-\mathrm{P}) & \rho \phi \sigma_e \sigma_t \sigma_m \\
@@ -268,7 +264,7 @@ For our Western Toad (Fig. \@ref(fig:toadlh)), this results in
 \end{array} \right)
 \end{equation*}
 
-where $\sigma_j,\,\sigma_a$ are survival of juveniles and adults, and P is the probability of juvenile growth, given survival. If an adult survives it always remains an adult ($g_{22}=1$) and never regresses ($g_{12}=0$). Fecundity occurs only in adults, and it is the product of the sex ratio ($\rho$), average clutch size per female ($\phi$), egg survival ($\sigma_e$), survival of tadpoles ($\sigma_t$), and the overwintering survival of the metamorphs ($\sigma_m$).^[Survival, **S**, is really a vector, here ($\sigma_j,\,\sigma_a$). In order to multiply survivals and the growth matrix in the way we want, we need to multiply **S** by the identity matrix to get what we see above.]
+where $\sigma_j,\,\sigma_a$ are survival of juveniles and adults, and P is the probability of juvenile maturation ("growth"), given survival. If an adult survives it always remains an adult ($g_{22}=1$) and never regresses ($g_{12}=0$). Fecundity occurs only in adults, and it is the product of the sex ratio ($\rho$), average clutch size per female ($\phi$), egg survival ($\sigma_e$), survival of tadpoles ($\sigma_t$), and the overwintering survival of the metamorphs ($\sigma_m$).^[Survival, **S**, is really a vector, here ($\sigma_j,\,\sigma_a$). In order to multiply survivals and the growth matrix in the way we want, we need to multiply **S** by the identity matrix to get what we see above.]
 
 
 Vonesh and de la Cruz went further and added *density-dependence* using a term for the negative effects of high tadpole density on tadpole survival and growth. We do not show that here, but regardless how complex the natural history gets, we can build natural history into our models.
@@ -276,9 +272,11 @@ Vonesh and de la Cruz went further and added *density-dependence* using a term f
 
 ## A three stage model
 
-Now we describe a three-stage model of a plant population. Like our amphibian example, it is a *pre-breeding* model, relying on a pre-breeding census. Nonetheless, it includes a seed stage for the seed bank, where seeds may be more than one year old. Eleanor @Pardini:2009aa and colleagues modeled garlic mustard (*Alliaria petiolata*), a biennial plant species that is an exotic invasive species in the eastern deciduous forest of the U.S. The stages they choose to represent were those present in May: seeds in the soil seed bank, 1--2 month old immature rosettes, and adults (Fig. \@ref(fig:garlic1).
-```{r garlic1, echo=FALSE, fig.cap='The life cycle of garlic mustard using a post-breeding census (Pardini et al. 2009). The census takes place in May of each year. Each arrow represents the transition from May to May. Seeds germinate in early spring and become rosettes (basal leaves near the soil surface). The rosettes experience mortality all summer, fall, and winter. Surviving rosettes become reproductive adults the following spring a summer. Adults flower and are pollinated in June, after which the fruits ripen and seeds mature. Seeds overwinter for at least six months before germinating in the spring. Not all seeds germinate, but they may remain viable in the seed bank for several years. Thus, the complete life cycle at least two years. Once the seeds germinate, the plant requires over a year to reach maturity, and produce flowers, fruits and seeds.'}
+Now we describe a three-stage model of a plant population. Like our amphibian example, it is a *pre-breeding* model, relying on a pre-breeding census. Nonetheless, it includes a seed stage for the seed bank, where seeds may be more than one year old. Eleanor @Pardini:2009aa and colleagues modeled garlic mustard (*Alliaria petiolata*), a biennial plant species that is an exotic invasive species in the eastern deciduous forest of the U.S. The stages they choose to represent were those present in May: seeds in the soil seed bank, 1--2 month old immature rosettes, and adults (Fig. \@ref(fig:garlic1)).
+```{r garlic1, echo=FALSE, fig.cap='The life cycle of garlic mustard using a pre-breeding census (Pardini et al. 2009). The census takes place in May of each year. Each arrow represents the transition from May to May. Seeds germinate in early spring and become rosettes (basal leaves near the soil surface). The rosettes experience mortality all summer, fall, and winter. Surviving rosettes become reproductive adults the following spring and summer. Adults flower and are pollinated in June, after which the fruits ripen and seeds mature. Seeds overwinter for at least six months before germinating in the spring. Not all seeds germinate, but they may remain viable in the seed bank for several years. Thus, the complete life cycle at least two years. Once the seeds germinate, the plant requires over a year to reach maturity, and produce flowers, fruits and seeds. Where parameters are functions of A or R (e.g., $s_2(R,A)$), they permit the effect of adult or rosette density on those parameters. Here we do not include that density dependence.', fig.show="hold"}
 knitr::include_graphics("figs/pardiniLC.png")
+
+knitr::include_graphics("figs/pardiniLC2.png")
 ```
 
 Let's work through these probability transitions. 
@@ -308,24 +306,24 @@ g_2 s_1 & 0       & v g_1 s_1 f \\
 
 Put into your own words each of the transition elements.
 
-What about the transition from adult to rosette? Did the plant shrink? While perennial plants can get smaller, or *regress*, that is not what happens here. In this transition, the adult in May gets pollinated, develops fruits, the seeds mature and are deposited on the soil late that summer or fall. Those seeds are survive overwinter, germinate in early spring, and grow into rosettes that summer, and survive until the next census in May. In that way, stage 3 (adult) contributes to stage 2 (rosette) through reproduction plus survival and growth. The transition from adult to seed, $p_{13}$, occurs only when the seeds do not germinate after the first winter, but spend another year in the seed bank in the soil.
+What about the transition from adult to rosette? Did the plant shrink? While perennial plants can get smaller, or *regress*, that is not what happens here. In this transition, the adult in May gets pollinated, develops fruits, the seeds mature and are deposited on the soil late that summer or fall. Those seeds are survive overwinter, germinate in early spring, and grow into rosettes in April, and survive until the census in that May. Thus, stage 3 (adult) contributes to stage 2 (rosette) through reproduction plus survival and germination of the seeds and growth and survival of the young rosette. The transition from adult to seed, $p_{13}$, occurs only when the seeds do not germinate after the first winter, but spend another year in the seed bank in the soil.
 
 
 Once we have the transition matrix, we can use it to characterize many features of the population, including the finite rate of increase ($\lambda$), the predicted relative abundances of the various stages, and the relative importance of each separate transition $p_{ij}$ for the long term population growth rate. We will do this in a later section, but first will explore projection. It is frequently useful to acutally project the population, one year at a time, into the future.
 
 ## Projection
 
-*Projection* is the modeling of a population through time, for prediction under one or another set of assumptions. In practice, we use *matrix multiplication* to project stage- or structured populations. Matrix multiplication does all these calculations for us. We let **A** be our square demographic transition matrix, with one row and one column for each stage. Let $\mathbf{N}_t$  be a one-column matrix of stage sizes, with one row for each stage. Matrix multiplication allows us to project the population, 
+*Projection* is the modeling of a population through time, for prediction under one or another set of assumptions. In practice, we use *matrix multiplication* to project stage- or age-structured populations. Matrix multiplication does all these calculations for us. We let **A** be our square demographic transition matrix, with one row and one column for each stage. Let $\mathbf{N}_t$  be a one-column matrix of stage sizes, with one row for each stage. Matrix multiplication allows us to project the population, 
 $\mathbf{A}\mathbf{N}_t = \mathbf{N}_{t+1}$.
 
-To project a population for multiple years, we use a *for-loop*. We used this in the previous chapter for an unstructured population. Here we multiply our transition matrix by the current year's abundances projecting next year's abundances. All we need to specify are the transition matrix, starting stage abundances for $t=0$, and the number of years through which we want to project. Here we define a transition matrix, $\mathbf{N}_0$, and a numbers of time steps to project.
+To project a population for multiple years, we use a *for-loop*. We used this in the previous chapter for an unstructured population. Here we multiply our transition matrix by the current year's abundances projecting next year's abundances. All we need to specify are the transition matrix, starting stage abundances for $t=0$, and the number of years through which we want to project. Here we define a transition matrix, $\mathbf{N}_0$, and the number of time steps to project.
 ```{r proj2, echo=TRUE} 
 A <- matrix( c(.1, 2.0, 
         .3,.4), nrow=2, byrow=T)
 N0 <- matrix(c(100, 1), nrow=1) 
 years <- 6
 ```
-To do the for-loop, we need an zeroes matrix to hold $n$ for each of the years of each of the stages, including for our first year. We start by filling our matrix with zeroes and "binding" the rows in $\mathbf{N}_0$ onto the top of our zeroes matrix as the first row.
+To do the for-loop, we need a zero matrix to hold $n$ for each of the years of each of the stages, including for our first year. We start by filling our matrix with zeros and "binding" the rows in $\mathbf{N}_0$ onto the top of our zeroes matrix as the first row.
 ```{r echo=TRUE}
 N.proj1 <- matrix( 0, nrow=years, ncol=nrow(A)) 
 colnames(N.proj1) <- c("Juv", "Adult")
@@ -347,9 +345,9 @@ In the first seven years, we see the abundances of the two stages bounce around.
 ## Analyzing the transition matrix
 Projection is very important for many reasons, especially for stochastic models or for very complicated models. However, we also get some of our best insights through direct analysis the transition matrix using *eigenanalysis* [@Caswell:2001gu]. 
 
-The features we learn about a structured population using  eigenanalysis are best thought of as predictions, attractors, or long term averages, assuming that the transition elements don't change. This is a big assumption, but understanding it helps us interpret the analysis appropriately.
+The eigenanalysis of a population matrix can tell us about predictions, attractors, short term dynamics or long term averages, assuming that the transition elements don't change. This is a big assumption, but understanding it helps us interpret the analysis appropriately.
 
-Once you have obtained the transition matrix, $\mathbf{A}$, you can analysis it using *eigenanalysis* to estimate
+Once you have obtained the transition matrix, $\mathbf{A}$, we can analysis it using *eigenanalysis* to estimate
 
 * $\lambda$, the finite rate of increase, 
 * stable stage structure,
@@ -421,10 +419,9 @@ In this book, we will not delve into details of eigenanalysis beyond this. Here 
 * each eigenvalue has a corresponding eigenvector.
 * the number of elements in each eigenvector is the same as the number of rows in **A**.
 
-What is important for us is how we use the results. Below, we describe how we use eigenanalysis to find (i) the long term asymptotic finite rate of increase $\lambda$, (ii) the *stable stage distribution*, and the the *reproductive values* of each stage.
+What is important for us is how we use the results. Below, we describe how we use eigenanalysis to find (i) the long term asymptotic finite rate of increase $\lambda$, (ii) the *stable stage distribution*, and the *reproductive values* of each stage.
 
 ### Finite rate of increase 
-\index{$\lambda$|see{lambda}}
 The asymptotic annual growth rate or finite rate of increase\index{lambda!dominant eigenvalue} is the dominant eigenvalue of the transition matrix. It has the same meaning as in geometric growth of an unstructured population. 
 
 Eigenvalues are always referred to with the Greek symbol $\lambda$, and provide a solution to \@ref(eq:eigsol). The dominant eigenvalue of any matrix, $\lambda_{1}$, is the eigenvalue with the largest magnitude, and it is frequently a complex number. When we perform eigenanalysis, it is common to get complex numbers, with real and imaginary parts. The magnitude is the sum of the squared parts. With population transition matrices, $\lambda_{1}$ will always be positive and real. This will not be the case with other types of matrices we examine in later chapters.
@@ -463,7 +460,7 @@ round(ssd, 3)
 This shows us that if the transition matrix does not change over time, the population will eventually be composed of these relative abundances.
 
 We have claimed, without evidence, that with a constant transition matrix, the projected population will eventually reach a stable stage distribution and grow exponentially with a finite rate of increase of $\lambda_1$. Here we show an example.
-```{r poweriter, echo=TRUE, cap.fig="When we project a hypothetical population with a constant transition matrix, it will reach asymptotically the stable stage distribution. The $y$-axis is the projected relative abundance of the two stages." , fig.width=6, fig.height=6}
+```{r poweriter, echo=TRUE, fig.cap="Dynamics over nine times steps, of relative abundances in a poplation with two stages. When we project a hypothetical population with a constant transition matrix, it will reach asymptotically the stable stage distribution. The $y$-axis is the projected relative abundance of the two stages." , fig.width=6, fig.height=6}
 A <- matrix(c(0, .3, 2, .7), nrow=2) # our tran. matrix
 N0 <- c(Juveniles=1,Adults=10) # initial population
 steps <- 8 # number of time steps
@@ -488,6 +485,8 @@ ggplot(sdg, aes(Stage, Proportion)) + geom_col()  +
 If we sum the abundances of the different stages, we calculate total population sizes. With that, we can calculate an annual rate of increase $N_{t+1}/N_t$. 
 ```{r echo=TRUE, fig.cap="Calculating an annual finite rate of increase from a projected population shows that the population will approach asymptotically a constant geometric rate of increase. Solid points are annual growth rate; the circular point is lambda(1) from eigenanalysis."}
 # using "-" in an index removes that element
+## N.total[-1] is the entire vector N.total EXCEPT the first element
+## N.total[-(steps+1)] is the entire vector N.total EXCEPT the last element
 lambda.t <- N.total[-1]/N.total[-(steps+1)] 
 qplot(x=1:steps, y=lambda.t, geom=c("line", "point")) + 
   annotate("point", x = steps  , y=L1, pch=1, size=3) 
@@ -499,7 +498,7 @@ Iterating the transition matrix to approximate $\lambda_1$ and $w_1$ is actually
 \label{sec:repval}
 If the stage structure gives us one measure of the importance of a stage (its relative abundance), then the *reproductive value* gives us one measure of the importance of an *individual* in each stage. Reproductive value is the expected contribution of each individual to future reproduction. We characterize all individuals in a stage using the same expected \index{reproductive value}reproductive value.
 
-We find the reproductive value associated with each stage by solving for the dominant *left* eigenvector $\mathbf{v}$, where 
+We calculate the reproductive value associated with each stage by solving for the dominant *left* eigenvector $\mathbf{v}$, where 
 \[
  (\#eq:rv)
  \mathbf{vA}=\lambda\mathbf{v}.
@@ -509,7 +508,7 @@ $$
  (\#eq:rv2)
   \frac{v_1}{v_{1[1]}}
 $$
-We find the left eigenvalues and -vectors by performing eigenanalysis on the *transpose* of the transition matrix. Transposition flips rows and columns, so that row 1 becomes column 1 and vice versa. We perform eigenanalysis, extracting just the dominant left eigenvector; we then scale it, so the stage 1 has a reproductive value of 1.0. 
+We find the left eigenvalues and -vectors by performing eigenanalysis on the *transpose* of the transition matrix. Transposition flips rows and columns, so that row 1 becomes column 1 and vice versa. We perform eigenanalysis, extracting just the dominant left eigenvector; we then scale it, so the stage 1 has a reproductive value of 1. 
 ```{r}
 tA <- t(A) # transpose
 etA <- eigen(tA)
@@ -570,7 +569,7 @@ qplot(x=s21, y=l.s21, geom="line") +
   annotate("point", x=A[2,1], y=L1)
 ```
 
-\index{elasticity}**Elasticities** are sensitivities that have been weighted by the transition probabilities. Recall that sensitivities are the effects on lambda of a small absolute change in transition matrix elements. In contrast, elasticities are the effects on lambda of a *proportional* change in a transition element influences $\lambda_1$---how does a 1\% increase in seed production, or a 1\% decline in juvenile survival influence $\lambda_1$? For these answers, we need to adjust sensitivities to account for the relative magnitudes of the transition elements, and this provides the elasticities, $e_{ij}$. Elasticities are *relative sensitivities*, and are defined as
+**Elasticities** are sensitivities that have been weighted by the transition probabilities. Recall that sensitivities are the effects on lambda of a small absolute change in transition matrix elements. In contrast, elasticities are the effects on lambda of a *proportional* change in a transition element influences $\lambda_1$---how does a 1\% increase in seed production, or a 1\% decline in juvenile survival influence $\lambda_1$? For these answers, we need to adjust sensitivities to account for the relative magnitudes of the transition elements, and this provides the elasticities, $e_{ij}$. Elasticities are *relative sensitivities*, and are defined as
 
 $$
 e_{ij}=\frac{\delta \lambda/\lambda}{\delta a_{ij}/a_{ij}} = \frac{a_{ij}}{\lambda}\frac{\delta \lambda}{\delta a_{ij}}.
@@ -586,11 +585,19 @@ e <- (A/L1) * s
 ```
 Now we see that survival by adults ($p_{22}$) has the biggest effect on $\lambda_1$. Why the difference between sensitivities and elasticities? Because the elasticities reflect the effect of a *proportional change* (e.g., 1%) of the elements, whereas sensitivities reflect the effect of a change by a constant amount (e.g., 0.01) of each element. 
 
-Note that elasticities are relative to each other, in that they sum to 1.0. This is an especially nice feature of elasticities because it makes it easier to compare elasticities among different matrices and different organisms.
+Note that elasticities are relative to each other, in that they sum to 1. This is an especially nice feature of elasticities because it makes it easier to compare elasticities among different matrices and different organisms.
 
-Once we have the sensitivities and elasticities, we can really begin to see what is controlling the growth rate of a stage (or age) structured population. They provide us with the predicted effects on $\lambda_1$ of a proportional change in a demographic rate. This is particularly important in the management of invasive (or endangered) species where we seek to have the maximum impact for the minimum amount of effort and resources [@Caswell:2001gu; @Ellner:2006qe]. We can use these to help predict how a population might respond to natural phenomena or management practices that affect one stage or another. 
+Once we have the sensitivities and elasticities, we can really begin to see what is controlling the growth rate of a structured population. They provide us with the predicted effects on $\lambda_1$ of a proportional change in a demographic rate. This is particularly important in the management of invasive (or endangered) species where we seek to have the maximum impact for the minimum amount of effort and resources [@Caswell:2001gu; @Ellner:2006qe]. We can use these to help predict how a population might respond to natural phenomena or management practices that affect one stage or another. 
 
-*All of these details can get very confusing*, and smart people don't always get it right. Therefore, get expert advice [@Caswell:2001gu; @Ellner:2006qe], and remember that the stages of life cycle graph and matrix are the stages that you collect at one point in time, and an arrow or transition element has to include everything that happens from one census period to the next.
+## Matrix models can be challenging
+
+*All of these details can get very confusing*, and smart people don't always get it right. @Kendall2019 reviewed approximately 125 published, peer-reviewed studies of birth-pulse matrix population models of animal populations to assess them for errors. They found that a surprisingly large number of studies made errors in model construction. The three most common errors were: 
+
+1. failing to include survival in the fertility coefficient;
+1. introducing a one-year delay in age at first reproduction; and
+1. calculating incorrectly the growth rate out of a stage class. 
+
+Rely on expert advice [@Caswell:2001gu; @Ellner:2006qe; @Kendall2019], and remember that the stages of life cycle graph and matrix are the stages that you collect at one point in time, and an arrow or transition element has to include everything that happens from one census period to the next.
 
 ## Integral projection
 What do we do if our stages seem like arbitrary categories along a continuous scale? What if size is easy to measure accurately and is a really good predictor of demographic rates, and these rates vary continuously with size? How do we decide on size classes? How do we draw seemingly arbitrary divisions between different sizes? 
