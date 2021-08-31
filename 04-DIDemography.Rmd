@@ -602,25 +602,79 @@ Rely on expert advice [@Caswell:2001gu; @Ellner:2006qe; @Kendall2019], and remem
 ## Integral projection
 What do we do if our stages seem like arbitrary categories along a continuous scale? What if size is easy to measure accurately and is a really good predictor of demographic rates, and these rates vary continuously with size? How do we decide on size classes? How do we draw seemingly arbitrary divisions between different sizes? 
 
-With *integral projection*, as opposed to matrix projection, we no longer have to worry about a particular number of stages or age classes. We select an individual-level state variable, such as body mass, length, stem diameter, or even location, that is a useful predictor of demographic rates. 
+One way to avoid arbitrary stages is to use *integral projection*. With integral projection models  [@Ellner:2016aa], as opposed to matrix projection models, we no longer have to worry about a particular number of stages or age classes. We select an individual-level state variable, such as body mass, that varies continuously and use that. We could also use length, stem diameter, or even location, if any of these provide a useful predictor of demographic rates. 
 
-We use this continuously varying state variable in place of stages or age classes. We rely on statistical methods, such as linear regression, to describe the relations between the individual-level state variable and survival, growth, and fecundity. We then combine those relations to model how individuals in a population are likely to change from one generation to the next. 
+When we use a continuously varying state variable in place of stages or age classes, we can use statistical methods such as linear regression to describe the relations between the individual-level state variable and survival, growth, and fecundity. We then combine those relations to model how individuals in a population are likely to change from one generation to the next.
 
 In many organisms, size is often a relatively good predictor of survival and fecundity. Within a population, size is often associated with age, learning, and resource acquisition. Size is also related to the onset of reproductive maturity and initiation of development of reproductive structures. Among reproductive individuals, size is often strongly correlated with per capita reproductive output. Integral projection can use size to model size-dependent demography. 
 
 Integral projection models (IPMs) are based on the calculus of integration across continuous variables to combine information about size-dependent demographic rates and size distributions to project population abundances and sizes in the future. 
 
-In practice, we rarely use the tools of integral calculus on which IPMs so solidly grounded. Instead, we approximate integration using very large matrices. As a simple example of this approximation, consider plant height that we measure using a meter stick. We assume that plant height is, in principle, a continuous variable that could take any real value between 0 and infinity. However, imagine that we only measure height to the nearest centimeter, and thereby create 100 height categories. This measurement process chops up continuous variation into discrete categories. When implementing integral projection models, we typically combine different techniques that are associated with continuous variation (e.g., linear regression) and with discrete variation (e.g., matrix algebra).
+In practice, we rarely use the tools of integral calculus on which IPMs are so solidly grounded [@Metcalf:2014ab; @ Merow2014; @Ellner:2016aa]. Instead, we approximate integration using very large matrices. As a simple example of this approximation, consider plant height that we measure using a meter stick. We assume that plant height is, in principle, a continuous variable that could take any real value between 0 and infinity. However, imagine that we only measure height to the nearest centimeter, and thereby create 100 height categories. This measurement process chops up continuous variation into very small discrete categories. For instance, if we use height as our measure plant size, and we estimate height to the nearest centimeter, then we have turned a continuous variable into a discrete variable, and could make a matrix in which each row and column represents all individuals who are within 1 cm of each other.
+
+You will see below that when we implement integral projection models, we typically combine different techniques that are associated with continuous variation (e.g., linear regression) and with discrete variation (e.g., matrix algebra).
+
+
+The continuous probability density analog of a matrix is referred to as a "kernel". Regardless, the goal is the same -- we want to use our understanding of growth, survival, and fecundity to estimate a matrix or kernel **K** where,
+$$\mathbf{K = GS + F}$$.
+
+The details require some understanding of probability densities, rather than probabilities, per se, but they are conceptually analogous, and our IPMs will take care of the details, if we build them right.
+
+### On probability density
+Probabilities sum to 1:
+
+* The probabilities of heads and tails on a two-sided coin are each 0.5.
+* The probabilities of a 1, 2, 3, 4, 5, or 6 on a six-sided die are each 1/6.
+* The area under a normal distribution is 1.
+
+This is intuitive for discrete distributions like coins and dice. It gets confusing for continuous distributions, because the probability of getting a point value, such as precisely 1.00010101 goes to zero.
+```{r probdens, fig.cap="With continuous variables, probabilities are calculated by calculating the area under the curve for the region of interest. According to this probability density, the probability of finding bee that weighs between 0.4 and 0.5 g is represented by the shaded area, or about 34%."}
+ggplot(data.frame(x = c(0, 0.7)), aes(x)) +
+  stat_function(fun = dnorm, args=list(m=.4, sd=.1)) + 
+  stat_function(fun = dnorm, args=list(m=.4, sd=.1),
+                xlim = c(.4, .5),
+                geom = "area", fill="lightgrey") + 
+  labs(y="Prob. density", x="grams",
+       title="Hypothetical bumblebee mass")
+
+## two ways to estimate the area under the curve
+## with precision
+area.under.curve.precise <- pnorm(0.5, m=.4, sd=.1) - pnorm(0.4, m=.4, sd=.1)
+## approximation using the midpoint rule
+midpoint <- (.5 + .4)/2
+width <- .5 - .4
+area.under.curve.midpoint <- dnorm(midpoint, m=.4, sd=.1) * width
+```
+
+Probability density functions give us the unimodal curves that we are used to visiualising (e.g., the bell-shaped normal distribution). Cumulative probability functions are the integrals of these and allow us to calculate probabilities that a value will be in a particular region.
+```{r dnormpnrom, fig.cap="The solid line is the cumulative probabilility function, and tells us the area under the probability density function, from the lowest value up to a particular value of the variable $x$. You will notice that at the mean (0.4), the cumulative probability function equals 0.5, indicating that there would be a 50% chance of observing a value of $x$ that is less than the mean. At the right of the figure, the cumulative probability equals nearly 1, indicating that we have a near 100% chance of observing a value of $x$ that is less than 0.8."}
+ggplot(data.frame(x = c(0, 0.7)), aes(x)) +
+  stat_function(fun = dnorm, args=list(m=.4, sd=.1), linetype=2) + 
+  stat_function(fun = pnorm, args=list(m=.4, sd=.1))  + 
+  labs(y="Prob. density and cumulative prob.",
+       x="grams", title="Hypothetical bumblebee mass")
+
+```
+
+R provides a suite of probability functions, abbreviated with d-, p-, q-, and r-. For the Gaussian distribution these are 
+
+* `dnorm()`: the probability density function.
+* `pnrom()`: the cumulative probability function.
+* `qnorm()`: the normal quantile function.
+* `rnorm()`: random draws from a normal distribution.
+
+See `?dnorm` for details.
+
+So,...probability densities are like probabilities, but you have to calculate the area under the curves to get probabilities. IPMs do that.
 
 ### A size-based IPM of smooth coneflower
-Rachel Collins and colleagues have been studying populations of an endangered coneflower, *Echinecea laevigata*, in southwest Virginia, USA. Smooth coneflower is a perennial rhizomatous herbaceous plant that is sparsely distributed across mid-Atlantic and southeastern states (plantsusda.gov). It requires open spaces with little canopy cover, such as meadows or early successional habitat.
+Rachel Collins and colleagues have been studying populations of an endangered coneflower, *Echinecea laevigata*, in southwest Virginia, USA. Smooth coneflower is a perennial rhizomatous herbaceous plant that is sparsely distributed across mid-Atlantic and southeastern states ([https://plants.usda.gov/](https://plants.usda.gov/)). It requires open spaces with little canopy cover, such as meadows or early successional habitat.
 
 Collins marked each individual in selected populations, measured size of individual coneflower plants using total leaf area, which ranged from 3-950 cm$^2$. Because she tagged individuals and tracked changes over time, she was able estimate survival and fecundity of different sized individuals. She also measured seed set (number of seeds per inflorescence) and recruitment. Recruitment is emergence from the seed, that is, germination, growth, and survival in the first year. 
 
-In what follows, we see empirical data on growth, survival, and fecundity. These continuous data will allow us to produce matrices with very, very narrow size classes. The details require some understanding of probability densities, rather than probabilities, per se, but they are conceptually analogous. The continuous probability density analog of a matrix is referred to as a "kernel". Regardless, the goal is the same -- we want to use our understanding of growth, survival, and fecundity to estimate a matrix or kernel **K** where,
-$$\mathbf{K = GS + F}$$.
+In what follows, we graph empirical data on growth, survival, and fecundity (*y*-axis) as functions of log-size (*x*-axis). These continuous data will allow us to produce matrices with very narrow size classes. 
 
-Next we show the the size-dependence of these processes, and the resulting kernels. In IPMs, it is common to use the logarithm of size rather than the original linear scale. This is because many processes scale with log-size. That is what we do here - all sizes are the natural log of leaf area.
+In IPMs, it is common to use the logarithm of size rather than the original linear scale. This is because many processes scale with log-size [@Ellner:2016aa]. That is what we do here - all sizes are the base 10 logarithm of leaf area.
 
 ```{r load_coneflower}
 # vegetative coneflower data.
@@ -635,17 +689,17 @@ rs <- coneflowerrecruits
 # recruit sizes - not shown
 ```
 
-Survival, **S**, from one year to the next depends on size. 
-
-```{r fig.cap="Survival is represented as surviving (1) or not surviving (0). The probability of surviving to the next year, given a size in the first year is esitmated using logistic regression.", out.width="67%" }
+Survival, **S**, from one year to the next depends on size.
+```{r fig.cap="Survival is represented as surviving (1) or not surviving (0). The probability of surviving to the next year, given a size in the first year, is estimated using logistic regression. The fitted line gives us a point estimate for survival for any log-size. The grey band represents uncertainty.", out.width="67%" }
 eda_s <- ggplot(cf, aes(logA, surv)) + lims(x=c(0.5, 2.75)) +
   geom_jitter(height=.02, alpha=0.5) + 
   geom_smooth(method="glm", method.args = list(family = "binomial")) + labs(title="Survival")
 eda_s
 ```
+Using logistic regression provides a straightforward way to estimate size-dependent survival and its uncertainty. We can use both the estimate and it uncertainty in our projections.
 
-Growth, **G** is really how the size of a plant in one year depends on its size in the previous year. 
-```{r growth, fig.cap="Growth is the relation between size at one time vs. size in another. The fitted estimate includes the 95% confidence interval. The dashed line is the 1:1 line; above this line is growth, while below it is regression to a smaller size.", out.width="67%"}
+Growth, **G**, is  how the size of a plant in one year depends on its size in the previous year. 
+```{r growth, fig.cap="Growth is the relation between size at one time vs. size in another. The fitted estimate includes the 95% confidence interval. The dashed line is the 1:1 line; above this line is growth, while below it is regression to a smaller size. We include only those individuals that survive.", out.width="67%"}
 # use only the plants alive in both years
 cfs <- filter(cf, surv==1 & !is.na(logAp))
 eda_g <- ggplot(cfs, aes(logA, logAp)) + geom_point() +
@@ -654,6 +708,8 @@ eda_g <- ggplot(cfs, aes(logA, logAp)) + geom_point() +
   geom_smooth(method="lm",col="red", se=)
 eda_g
 ```
+
+The larger individuals tend to regress to smaller sizes in subsequent years.
 
 Next we tackle fecundity, **F**, which for us is estimated using
 
@@ -671,14 +727,14 @@ eda_f <- ggplot(cfs, aes(logA, flower_p)) +
 eda_f
 ```
 
-It is also true that bigger plants might produce more seeds, although there is not a lot of evidence for that is these data.
+It is also true that bigger plants might produce more seeds, although there is not a lot of evidence for that in these data.
 ```{r seed, fig.cap="No compelling evidence that size influences seed set. Nonetheless, we will use this approach in estiamting fecundity, F.", out.width="67%"}
 eda_sd <- ggplot(sf, aes(logAs, seeds)) + geom_point() +
   geom_smooth(method="lm") + labs(title="Seed set")
 eda_sd
 ```
 
-We also need to estimate *establishment probability*, or the chance that a seed germinates and survives until the following summer. Collins estimated that using seed baskets. These are mesh baskets with soil into which she placed a known number of seeds. They are placed in the ground and seedlings or recruits are counted the following year.
+We also need to estimate *establishment probability*, or the chance that a seed germinates and survives until the following summer. Collins estimated that using seed baskets. These are mesh baskets filled with soil into which she placed a known number of seeds. They are placed in the ground and seedlings or recruits are counted the following year.
 ```{r pr, fig.cap="Probability that seeds in one year establish as new recruits the following summer.", out.width="67%"}
 # 50 seeds into each of baskets
 N <- rep(50, 9)
@@ -698,7 +754,8 @@ nx <- sum(Y[,"failure"])
 # with priors of (1/2, 1/2) being the conjugate prior for the binomial.
 eda_pr <- ggplot(data = data.frame(x = c(0, 0.5)), aes(x)) +
   stat_function(fun = dbeta, n = 501, 
-                args = list(shape1 = x+1/2, shape2=nx+1/2)) + labs(y="Prob(recruiting)", title="Seed basket recruitment") + 
+                args = list(shape1 = x+1/2, shape2=nx+1/2)) + 
+    labs(y="Prob(recruiting)", title="Seed basket recruitment") +
   scale_y_continuous(breaks = NULL)
 eda_pr
 ```
@@ -718,13 +775,12 @@ eda_C
 
 First we estimate something from data, then we use it to build functions. I use code handed down on stone tablets from Ellner, Merow, and others.
 
-
 We start with a data frame to hold summaries.
 ```{r params}
 ## this sets up a list of the model parameters. These parameters will be estimated and recorded below.
 params=data.frame(
-    surv.int=NA,
-    surv.slope=NA,
+    surv.int=NA, # y-intercept of the survival regresion
+    surv.slope=NA, # slope of the survival regresion
     growth.int=NA,
     growth.slope=NA,
     growth.sd=NA,
@@ -772,67 +828,60 @@ params$recruit.size.sd <- std.log
 
 ```
 
-Here we make functions that will be able use the above relationships and the data frame to make the kernel.
-```{r echo=FALSE}
-## The functions
-# z is size in the first year
-# zp is z prime, size in the second year
+Here we make functions that will use the above relationships and the data frame to make the kernel. the variable `z` is size in the first year and `zp` is "z prime", size in the next year.
 
-# 1. probability of surviving
-# this is a logistic funcion
+First we create a function to estimate the probability of surviving, $s$,  given a size $z$. This is a back transformation of the logistic function, where
+$$s = \frac{\exp (\beta_0 + \beta_1 z)}{1 + \exp (\beta_0 + \beta_1 z)}$$
 
+```{r sfunc}
 s.z=function(z,params) {
   # calculate survival probability by
   # backtransforming glm regression params 
-    u=exp(params$surv.int+params$surv.slope*z)
+    u=exp(params$surv.int + params$surv.slope*z)
     s <- u/(1+u)
     return(s)
 }
+```
 
-# 2. growth function
-# this is a normal distribution
+Next we create a function to estimate the probability of growing from size $z$ to size $z^\prime$. This could be an increase or a decrease in size. The regression we did relied on the normal distribution, and so requires an intercept, a slope, and a standard deviation. 
+```{r}
 g.zpz=function(zp,z,params) { 
   # describe the normal linear relation between size at t=0 vs. t=1.
   # size(t+1) = y.intercept + slope*size(t) + e; e~N(0,sigma^2)
+  # dnorm returns the probability density, given those parameters
     dnorm(zp,
           mean=params$growth.int+params$growth.slope*z,
           sd=params$growth.sd)
 }
+```
 
-# 3. reproduction function      
-# this is a constant times a normal distribution times an exponential function
-# size-dependent flowering probability 
-# seeds per flowering head (maybe size dependent)
-# germination probability (seed baskets)
-# survival of new recruits from germination to first census (I think this is wrapped into the germination data).
-#  size distribution of new recruits.
+Next we create a function to estimate the probability of having a particular "fecundity", which in these models is far more than just offspring production because it encompasses an entire year. It does a lot:
 
+* size-dependent flowering probability
+* seeds per flowering head (maybe size dependent)
+* germination probability
+* survival of new recruits from germination to first census
+* size distribution of new recruits
+```{r}
 f.zpz=function(zp,z,params) {
-  # size-dep prob of flowering
-    1/(1+exp(- params$flowering.int - params$flowering.slope*z)) *
-    # size-dep number of seeds
+  # size-dep prob of flowering times...
+    exp(params$flowering.int + params$flowering.slope*z) / (1+exp(params$flowering.int + params$flowering.slope*z)) *
+    # size-dep number of seeds times...
     (params$seed.int+params$seed.slope*z) *
-    # p(r), prob of recruitment (germination and establishment)
+    # p(r), prob of recruitment (germination and establishment) times...
     params$establishment.prob *
     # distribution of sizes in the first year
     dnorm(zp, mean=params$recruit.size.mean, sd=params$recruit.size.sd)
 }
-
 ```
 
-
-```{r kernels, fig.cap="The component kernels G, S, and F, that make up the full demographic projection kernel, K, for smooth cone flower. Unlike proection matrices, kernels scale both axes to start at size = 0 in the lower left corner. The color scaling of the full kernel differs slightly so that we can see the contributions of G, S, and F."}
-## Make the kernel (cf. projection matrix)
-
-# Relies on the Riemann sum, using midpoints. Increase $n$ to decrease $h$ and improve accuracy (but reduce speed).
-
-# The variable 'y' in the figures below is log10(Area).
-
+Finally, we begin to create our finite analogue of the continuous kernel: our discretized kernel, $K$.  We determine the upper and lower size bounds on log-plant size, the number of discrete cells or size intervals, the bounds of each discrete size interval, and the midpoints of each interval, and the width of interval.
+```{r }
 # 1. boundary points b, mesh points y and step size h
 # integration limits - these limits span the range of sizes observed in the data set, and then some.
-min.size=.9*min(c(log10(rs$area17), cf$logA,cf$logAp),na.rm=T)
-max.size=1.1*max(c(log10(rs$area17), cf$logA,cf$logAp),na.rm=T)
-# number of cells in the discretized kernel
+min.size=.9*min(c(log10(rs$area17), cf$logA, cf$logAp),na.rm=T)
+max.size=1.1*max(c(log10(rs$area19), cf$logA,cf$logAp),na.rm=T)
+# number of cells or interval in the discretized kernel
 n=100 
 # boundary points (the edges of the cells defining the kernel)
 b = min.size + c(0:n)*(max.size-min.size)/n 
@@ -840,37 +889,48 @@ b = min.size + c(0:n)*(max.size-min.size)/n
 y = ( b[1:n] + b[2:(n+1)] ) / 2
 # width of the cells
 h = y[2]-y[1]
+```
 
-#############
-# 2. make component kernels
-par(mfrow=c(2,2)) 
-# outer  yields an outer product where each element is can be an arbitrary function.
+Here we use the functions we made above to fill out growth, survival and fecundity elements of the full kernel, $K$.
+```{r}
+## Growth kernel
+# 'outer()'  yields an outer product where each element is can be an arbitrary function.
 G=h*outer(y, y, FUN=g.zpz, params=params)   # growth kernel
-image(y,y,t(G),main='G')        # plot it
-
+## Survival kernel
+S=s.z(y,params=params)   # survival kernel
+## Growth X Survival
 P = G # placeholder;redefine P on the next line
-S=s.z(y,params=params)   
-for(i in 1:n) P[,i]=G[,i]*S[i]          # growth*survival kernel
-{image(y,y,t(P),main='GS')   # plot it
-abline(0,1,lwd=3) }# plot 1:1, which represents stasis
+for(i in 1:n) P[,i]=G[,i]*S[i]  # growth*survival kernel
+## Fecundity kernel
+Fec=h*outer(y, y, f.zpz, params=params) 
 
-Fec=h*outer(y, y, f.zpz, params=params)   # reproduction kernel
-image(y,y,t(Fec),main='F') # plot it
-
+## the full projection kernel
 K=P+Fec # full kernel
-#image(y,y,t(K),main='full kernel')          # plot it
+```
 
-# sometimes it's hard to see both because
-# the fecundity part of the kernel swamps the growth/survival part, 
+Finally, we plot the kernels so that we can visualize them and thereby better appreciate what the result is.
+```{r kernels, fig.cap="The component kernels G, S, and F, that make up the full demographic projection kernel, K, for smooth cone flower. Unlike projection matrices, kernels scale both axes to start at size = 0 in the lower left corner. The color scaling of the full kernel differs slightly so that we can see the contributions of G, S, and F."}
+## create a 2 x 2 array of subfigures
+par(mfrow=c(2,2))
+## plot Growth
+image(y,y,t(G),main='G')        # plot it
+## Plot growth X survival
+{image(y,y,t(P), main='GS')   # plot it
+abline(0,1,lwd=3) }# plot 1:1, which represents stasis
+## plot fecundity
+image(y,y,t(Fec),main='F') # plot it
+## We could just use image(y,y,t(K),main='full kernel')
+# however, sometimes it's hard to see both because
+# fecundity swamps the growth/survival part, 
 # so here's a plotting trick to level out the kernel
 image(y,y,t(K)^.33,main='K', 
-      col=grey.colors(12, start=0, end=1, rev = TRUE))    # plot it
+      col=grey.colors(12, start=0, end=1, rev = TRUE))
 ```
 
 ### Population summaries
 Any question that we could answer using matrices, we can answer using kernels.
 
-We estimate the finite rate of increase, $\lambda$, the same way we did before. 
+We estimate the finite rate of increase, $\lambda$, the same way we did before.
 ```{r results='asis'}
 (lambda=Re(eigen(K)$values[1]))
 ```
@@ -890,13 +950,13 @@ sens=outer(repro.val,stable.dist)/v.dot.w
 elas=matrix(as.vector(sens)*as.vector(K)/lambda,nrow=n)
 
 # 3. plot results 
-
 par(mfrow=c(1,3)) 
 plot(y,stable.dist,xlab="Size",type="l",main="Stable size distribution")
 plot(y,repro.val,xlab="Size",type="l",main="Reproductive values") 
 image(y,y,t(elas),xlab="Size (t)",ylab="Size (t+1)",main="Elasticity")
 ```
  
+ There is a ton more stuff we can do. Way more [@Ellner:2016aa].
 
 ## R packges for demography
 
@@ -906,9 +966,7 @@ image(y,y,t(elas),xlab="Size (t)",ylab="Size (t+1)",main="Elasticity")
 
 @Ellner:2016aa is probably the best source for understanding IPMs. The R package IPMpack [@Metcalf:2014ab] is an excellent package to implement and analyze IPMs.
 
-
-
-## Exploring a real population
+## Loggerhead Sea Turtle: a classic example
 @Crouse1987 performed a demographic analysis of an endangered sea turtle species, the loggerhead (*Caretta caretta*). Management of loggerhead populations seemed essential for their long term survival, and a popular management strategy had been and still is to protect nesting females, eggs, and hatchlings. The ground breaking work by Crouse^[Crouse was a graduate student at the time---graduate students are the life-blood of modern science, doing cutting edge work and pushing their fields forward.] and her colleagues compiled data to create a stage-based projection matrix to analyze quantitatively which stages are most important and least important in influencing long-term growth rate. This work led to US Federal laws requiring that US shrimp fishermen use nets that include Turtle Excluder Devices (TEDs, https://www.fisheries.noaa.gov/southeast/bycatch/turtle-excluder-device-regulations ). Crouse et al. determined a transition matrix, **A**, for their loggerhead population:
 
  

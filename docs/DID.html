@@ -653,21 +653,84 @@ Like sensitivities, we can think of elasticities as slopes.</p>
 <span class="header-section-number">4.8</span> Integral projection<a class="anchor" aria-label="anchor" href="#integral-projection"><i class="fas fa-link"></i></a>
 </h2>
 <p>What do we do if our stages seem like arbitrary categories along a continuous scale? What if size is easy to measure accurately and is a really good predictor of demographic rates, and these rates vary continuously with size? How do we decide on size classes? How do we draw seemingly arbitrary divisions between different sizes?</p>
-<p>With <em>integral projection</em>, as opposed to matrix projection, we no longer have to worry about a particular number of stages or age classes. We select an individual-level state variable, such as body mass, length, stem diameter, or even location, that is a useful predictor of demographic rates.</p>
-<p>We use this continuously varying state variable in place of stages or age classes. We rely on statistical methods, such as linear regression, to describe the relations between the individual-level state variable and survival, growth, and fecundity. We then combine those relations to model how individuals in a population are likely to change from one generation to the next.</p>
+<p>One way to avoid arbitrary stages is to use <em>integral projection</em>. With integral projection models <span class="citation">(<a href="references.html#ref-Ellner:2016aa" role="doc-biblioref">Stephen P. Ellner, Childs, and Rees 2016</a>)</span>, as opposed to matrix projection models, we no longer have to worry about a particular number of stages or age classes. We select an individual-level state variable, such as body mass, that varies continuously and use that. We could also use length, stem diameter, or even location, if any of these provide a useful predictor of demographic rates.</p>
+<p>When we use a continuously varying state variable in place of stages or age classes, we can use statistical methods such as linear regression to describe the relations between the individual-level state variable and survival, growth, and fecundity. We then combine those relations to model how individuals in a population are likely to change from one generation to the next.</p>
 <p>In many organisms, size is often a relatively good predictor of survival and fecundity. Within a population, size is often associated with age, learning, and resource acquisition. Size is also related to the onset of reproductive maturity and initiation of development of reproductive structures. Among reproductive individuals, size is often strongly correlated with per capita reproductive output. Integral projection can use size to model size-dependent demography.</p>
 <p>Integral projection models (IPMs) are based on the calculus of integration across continuous variables to combine information about size-dependent demographic rates and size distributions to project population abundances and sizes in the future.</p>
-<p>In practice, we rarely use the tools of integral calculus on which IPMs so solidly grounded. Instead, we approximate integration using very large matrices. As a simple example of this approximation, consider plant height that we measure using a meter stick. We assume that plant height is, in principle, a continuous variable that could take any real value between 0 and infinity. However, imagine that we only measure height to the nearest centimeter, and thereby create 100 height categories. This measurement process chops up continuous variation into discrete categories. When implementing integral projection models, we typically combine different techniques that are associated with continuous variation (e.g., linear regression) and with discrete variation (e.g., matrix algebra).</p>
-<div id="a-size-based-ipm-of-smooth-coneflower" class="section level3" number="4.8.1">
-<h3>
-<span class="header-section-number">4.8.1</span> A size-based IPM of smooth coneflower<a class="anchor" aria-label="anchor" href="#a-size-based-ipm-of-smooth-coneflower"><i class="fas fa-link"></i></a>
-</h3>
-<p>Rachel Collins and colleagues have been studying populations of an endangered coneflower, <em>Echinecea laevigata</em>, in southwest Virginia, USA. Smooth coneflower is a perennial rhizomatous herbaceous plant that is sparsely distributed across mid-Atlantic and southeastern states (plantsusda.gov). It requires open spaces with little canopy cover, such as meadows or early successional habitat.</p>
-<p>Collins marked each individual in selected populations, measured size of individual coneflower plants using total leaf area, which ranged from 3-950 cm<span class="math inline">\(^2\)</span>. Because she tagged individuals and tracked changes over time, she was able estimate survival and fecundity of different sized individuals. She also measured seed set (number of seeds per inflorescence) and recruitment. Recruitment is emergence from the seed, that is, germination, growth, and survival in the first year.</p>
-<p>In what follows, we see empirical data on growth, survival, and fecundity. These continuous data will allow us to produce matrices with very, very narrow size classes. The details require some understanding of probability densities, rather than probabilities, per se, but they are conceptually analogous. The continuous probability density analog of a matrix is referred to as a “kernel.” Regardless, the goal is the same – we want to use our understanding of growth, survival, and fecundity to estimate a matrix or kernel <strong>K</strong> where,
+<p>In practice, we rarely use the tools of integral calculus on which IPMs are so solidly grounded [<span class="citation"><a href="references.html#ref-Metcalf:2014ab" role="doc-biblioref">Metcalf et al.</a> (<a href="references.html#ref-Metcalf:2014ab" role="doc-biblioref">2014</a>)</span>; @ Merow2014; <span class="citation"><a href="references.html#ref-Ellner:2016aa" role="doc-biblioref">Stephen P. Ellner, Childs, and Rees</a> (<a href="references.html#ref-Ellner:2016aa" role="doc-biblioref">2016</a>)</span>]. Instead, we approximate integration using very large matrices. As a simple example of this approximation, consider plant height that we measure using a meter stick. We assume that plant height is, in principle, a continuous variable that could take any real value between 0 and infinity. However, imagine that we only measure height to the nearest centimeter, and thereby create 100 height categories. This measurement process chops up continuous variation into very small discrete categories. For instance, if we use height as our measure plant size, and we estimate height to the nearest centimeter, then we have turned a continuous variable into a discrete variable, and could make a matrix in which each row and column represents all individuals who are within 1 cm of each other.</p>
+<p>You will see below that when we implement integral projection models, we typically combine different techniques that are associated with continuous variation (e.g., linear regression) and with discrete variation (e.g., matrix algebra).</p>
+<p>The continuous probability density analog of a matrix is referred to as a “kernel.” Regardless, the goal is the same – we want to use our understanding of growth, survival, and fecundity to estimate a matrix or kernel <strong>K</strong> where,
 <span class="math display">\[\mathbf{K = GS + F}\]</span>.</p>
-<p>Next we show the the size-dependence of these processes, and the resulting kernels. In IPMs, it is common to use the logarithm of size rather than the original linear scale. This is because many processes scale with log-size. That is what we do here - all sizes are the natural log of leaf area.</p>
+<p>The details require some understanding of probability densities, rather than probabilities, per se, but they are conceptually analogous, and our IPMs will take care of the details, if we build them right.</p>
+<div id="on-probability-density" class="section level3" number="4.8.1">
+<h3>
+<span class="header-section-number">4.8.1</span> On probability density<a class="anchor" aria-label="anchor" href="#on-probability-density"><i class="fas fa-link"></i></a>
+</h3>
+<p>Probabilities sum to 1:</p>
+<ul>
+<li>The probabilities of heads and tails on a two-sided coin are each 0.5.</li>
+<li>The probabilities of a 1, 2, 3, 4, 5, or 6 on a six-sided die are each 1/6.</li>
+<li>The area under a normal distribution is 1.</li>
+</ul>
+<p>This is intuitive for discrete distributions like coins and dice. It gets confusing for continuous distributions, because the probability of getting a point value, such as precisely 1.00010101 goes to zero.</p>
 <div class="sourceCode" id="cb147"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu">ggplot</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span>x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">0.7</span><span class="op">)</span><span class="op">)</span>, <span class="fu">aes</span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu">stat_function</span><span class="op">(</span>fun <span class="op">=</span> <span class="va">dnorm</span>, args<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>m<span class="op">=</span><span class="fl">.4</span>, sd<span class="op">=</span><span class="fl">.1</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> 
+  <span class="fu">stat_function</span><span class="op">(</span>fun <span class="op">=</span> <span class="va">dnorm</span>, args<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>m<span class="op">=</span><span class="fl">.4</span>, sd<span class="op">=</span><span class="fl">.1</span><span class="op">)</span>,
+                xlim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">.4</span>, <span class="fl">.5</span><span class="op">)</span>,
+                geom <span class="op">=</span> <span class="st">"area"</span>, fill<span class="op">=</span><span class="st">"lightgrey"</span><span class="op">)</span> <span class="op">+</span> 
+  <span class="fu">labs</span><span class="op">(</span>y<span class="op">=</span><span class="st">"Prob. density"</span>, x<span class="op">=</span><span class="st">"grams"</span>,
+       title<span class="op">=</span><span class="st">"Hypothetical bumblebee mass"</span><span class="op">)</span></code></pre></div>
+<div class="figure">
+<span style="display:block;" id="fig:probdens"></span>
+<img src="figs/probdens-1.png" alt="With continuous variables, probabilities are calculated by calculating the area under the curve for the region of interest. According to this probability density, the probability of finding bee that weighs between 0.4 and 0.5 g is represented by the shaded area, or about 34%." width="90%"><p class="caption">
+Figure 4.10: With continuous variables, probabilities are calculated by calculating the area under the curve for the region of interest. According to this probability density, the probability of finding bee that weighs between 0.4 and 0.5 g is represented by the shaded area, or about 34%.
+</p>
+</div>
+<div class="sourceCode" id="cb148"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co">## two ways to estimate the area under the curve</span>
+<span class="co">## with precision</span>
+<span class="va">area.under.curve.precise</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html">pnorm</a></span><span class="op">(</span><span class="fl">0.5</span>, m<span class="op">=</span><span class="fl">.4</span>, sd<span class="op">=</span><span class="fl">.1</span><span class="op">)</span> <span class="op">-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html">pnorm</a></span><span class="op">(</span><span class="fl">0.4</span>, m<span class="op">=</span><span class="fl">.4</span>, sd<span class="op">=</span><span class="fl">.1</span><span class="op">)</span>
+<span class="co">## approximation using the midpoint rule</span>
+<span class="va">midpoint</span> <span class="op">&lt;-</span> <span class="op">(</span><span class="fl">.5</span> <span class="op">+</span> <span class="fl">.4</span><span class="op">)</span><span class="op">/</span><span class="fl">2</span>
+<span class="va">width</span> <span class="op">&lt;-</span> <span class="fl">.5</span> <span class="op">-</span> <span class="fl">.4</span>
+<span class="va">area.under.curve.midpoint</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html">dnorm</a></span><span class="op">(</span><span class="va">midpoint</span>, m<span class="op">=</span><span class="fl">.4</span>, sd<span class="op">=</span><span class="fl">.1</span><span class="op">)</span> <span class="op">*</span> <span class="va">width</span></code></pre></div>
+<p>Probability density functions give us the unimodal curves that we are used to visiualising (e.g., the bell-shaped normal distribution). Cumulative probability functions are the integrals of these and allow us to calculate probabilities that a value will be in a particular region.</p>
+<div class="sourceCode" id="cb149"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu">ggplot</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span>x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">0.7</span><span class="op">)</span><span class="op">)</span>, <span class="fu">aes</span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu">stat_function</span><span class="op">(</span>fun <span class="op">=</span> <span class="va">dnorm</span>, args<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>m<span class="op">=</span><span class="fl">.4</span>, sd<span class="op">=</span><span class="fl">.1</span><span class="op">)</span>, linetype<span class="op">=</span><span class="fl">2</span><span class="op">)</span> <span class="op">+</span> 
+  <span class="fu">stat_function</span><span class="op">(</span>fun <span class="op">=</span> <span class="va">pnorm</span>, args<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>m<span class="op">=</span><span class="fl">.4</span>, sd<span class="op">=</span><span class="fl">.1</span><span class="op">)</span><span class="op">)</span>  <span class="op">+</span> 
+  <span class="fu">labs</span><span class="op">(</span>y<span class="op">=</span><span class="st">"Prob. density and cumulative prob."</span>,
+       x<span class="op">=</span><span class="st">"grams"</span>, title<span class="op">=</span><span class="st">"Hypothetical bumblebee mass"</span><span class="op">)</span></code></pre></div>
+<div class="figure">
+<span style="display:block;" id="fig:dnormpnrom"></span>
+<img src="figs/dnormpnrom-1.png" alt="The solid line is the cumulative probabilility function, and tells us the area under the probability density function, from the lowest value up to a particular value of the variable $x$. You will notice that at the mean (0.4), the cumulative probability function equals 0.5, indicating that there would be a 50% chance of observing a value of $x$ that is less than the mean. At the right of the figure, the cumulative probability equals nearly 1, indicating that we have a near 100% chance of observing a value of $x$ that is less than 0.8." width="90%"><p class="caption">
+Figure 4.11: The solid line is the cumulative probabilility function, and tells us the area under the probability density function, from the lowest value up to a particular value of the variable <span class="math inline">\(x\)</span>. You will notice that at the mean (0.4), the cumulative probability function equals 0.5, indicating that there would be a 50% chance of observing a value of <span class="math inline">\(x\)</span> that is less than the mean. At the right of the figure, the cumulative probability equals nearly 1, indicating that we have a near 100% chance of observing a value of <span class="math inline">\(x\)</span> that is less than 0.8.
+</p>
+</div>
+<p>R provides a suite of probability functions, abbreviated with d-, p-, q-, and r-. For the Gaussian distribution these are</p>
+<ul>
+<li>
+<code><a href="https://rdrr.io/r/stats/Normal.html">dnorm()</a></code>: the probability density function.</li>
+<li>
+<code>pnrom()</code>: the cumulative probability function.</li>
+<li>
+<code><a href="https://rdrr.io/r/stats/Normal.html">qnorm()</a></code>: the normal quantile function.</li>
+<li>
+<code><a href="https://rdrr.io/r/stats/Normal.html">rnorm()</a></code>: random draws from a normal distribution.</li>
+</ul>
+<p>See <code><a href="https://rdrr.io/r/stats/Normal.html">?dnorm</a></code> for details.</p>
+<p>So,…probability densities are like probabilities, but you have to calculate the area under the curves to get probabilities. IPMs do that.</p>
+</div>
+<div id="a-size-based-ipm-of-smooth-coneflower" class="section level3" number="4.8.2">
+<h3>
+<span class="header-section-number">4.8.2</span> A size-based IPM of smooth coneflower<a class="anchor" aria-label="anchor" href="#a-size-based-ipm-of-smooth-coneflower"><i class="fas fa-link"></i></a>
+</h3>
+<p>Rachel Collins and colleagues have been studying populations of an endangered coneflower, <em>Echinecea laevigata</em>, in southwest Virginia, USA. Smooth coneflower is a perennial rhizomatous herbaceous plant that is sparsely distributed across mid-Atlantic and southeastern states (<a href="https://plants.usda.gov/">https://plants.usda.gov/</a>). It requires open spaces with little canopy cover, such as meadows or early successional habitat.</p>
+<p>Collins marked each individual in selected populations, measured size of individual coneflower plants using total leaf area, which ranged from 3-950 cm<span class="math inline">\(^2\)</span>. Because she tagged individuals and tracked changes over time, she was able estimate survival and fecundity of different sized individuals. She also measured seed set (number of seeds per inflorescence) and recruitment. Recruitment is emergence from the seed, that is, germination, growth, and survival in the first year.</p>
+<p>In what follows, we graph empirical data on growth, survival, and fecundity (<em>y</em>-axis) as functions of log-size (<em>x</em>-axis). These continuous data will allow us to produce matrices with very narrow size classes.</p>
+<p>In IPMs, it is common to use the logarithm of size rather than the original linear scale. This is because many processes scale with log-size <span class="citation">(<a href="references.html#ref-Ellner:2016aa" role="doc-biblioref">Stephen P. Ellner, Childs, and Rees 2016</a>)</span>. That is what we do here - all sizes are the base 10 logarithm of leaf area.</p>
+<div class="sourceCode" id="cb150"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># vegetative coneflower data.</span>
 <span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="va">coneflower</span><span class="op">)</span>
 <span class="va">cf</span> <span class="op">&lt;-</span> <span class="va">coneflower</span>
@@ -679,19 +742,20 @@ Like sensitivities, we can think of elasticities as slopes.</p>
 <span class="va">rs</span> <span class="op">&lt;-</span> <span class="va">coneflowerrecruits</span>
 <span class="co"># recruit sizes - not shown</span></code></pre></div>
 <p>Survival, <strong>S</strong>, from one year to the next depends on size.</p>
-<div class="sourceCode" id="cb148"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb151"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">eda_s</span> <span class="op">&lt;-</span> <span class="fu">ggplot</span><span class="op">(</span><span class="va">cf</span>, <span class="fu">aes</span><span class="op">(</span><span class="va">logA</span>, <span class="va">surv</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> <span class="fu">lims</span><span class="op">(</span>x<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0.5</span>, <span class="fl">2.75</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
   <span class="fu">geom_jitter</span><span class="op">(</span>height<span class="op">=</span><span class="fl">.02</span>, alpha<span class="op">=</span><span class="fl">0.5</span><span class="op">)</span> <span class="op">+</span> 
   <span class="fu">geom_smooth</span><span class="op">(</span>method<span class="op">=</span><span class="st">"glm"</span>, method.args <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>family <span class="op">=</span> <span class="st">"binomial"</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> <span class="fu">labs</span><span class="op">(</span>title<span class="op">=</span><span class="st">"Survival"</span><span class="op">)</span>
 <span class="va">eda_s</span></code></pre></div>
 <div class="figure">
 <span style="display:block;" id="fig:unnamed-chunk-47"></span>
-<img src="figs/unnamed-chunk-47-1.png" alt="Survival is represented as surviving (1) or not surviving (0). The probability of surviving to the next year, given a size in the first year is esitmated using logistic regression." width="67%"><p class="caption">
-Figure 4.10: Survival is represented as surviving (1) or not surviving (0). The probability of surviving to the next year, given a size in the first year is esitmated using logistic regression.
+<img src="figs/unnamed-chunk-47-1.png" alt="Survival is represented as surviving (1) or not surviving (0). The probability of surviving to the next year, given a size in the first year, is estimated using logistic regression. The fitted line gives us a point estimate for survival for any log-size. The grey band represents uncertainty." width="67%"><p class="caption">
+Figure 4.12: Survival is represented as surviving (1) or not surviving (0). The probability of surviving to the next year, given a size in the first year, is estimated using logistic regression. The fitted line gives us a point estimate for survival for any log-size. The grey band represents uncertainty.
 </p>
 </div>
-<p>Growth, <strong>G</strong> is really how the size of a plant in one year depends on its size in the previous year.</p>
-<div class="sourceCode" id="cb149"><pre class="downlit sourceCode r">
+<p>Using logistic regression provides a straightforward way to estimate size-dependent survival and its uncertainty. We can use both the estimate and it uncertainty in our projections.</p>
+<p>Growth, <strong>G</strong>, is how the size of a plant in one year depends on its size in the previous year.</p>
+<div class="sourceCode" id="cb152"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># use only the plants alive in both years</span>
 <span class="va">cfs</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span><span class="op">(</span><span class="va">cf</span>, <span class="va">surv</span><span class="op">==</span><span class="fl">1</span> <span class="op">&amp;</span> <span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html">is.na</a></span><span class="op">(</span><span class="va">logAp</span><span class="op">)</span><span class="op">)</span>
 <span class="va">eda_g</span> <span class="op">&lt;-</span> <span class="fu">ggplot</span><span class="op">(</span><span class="va">cfs</span>, <span class="fu">aes</span><span class="op">(</span><span class="va">logA</span>, <span class="va">logAp</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> <span class="fu">geom_point</span><span class="op">(</span><span class="op">)</span> <span class="op">+</span>
@@ -701,10 +765,11 @@ Figure 4.10: Survival is represented as surviving (1) or not surviving (0). The 
 <span class="va">eda_g</span></code></pre></div>
 <div class="figure">
 <span style="display:block;" id="fig:growth"></span>
-<img src="figs/growth-1.png" alt="Growth is the relation between size at one time vs. size in another. The fitted estimate includes the 95% confidence interval. The dashed line is the 1:1 line; above this line is growth, while below it is regression to a smaller size." width="67%"><p class="caption">
-Figure 4.11: Growth is the relation between size at one time vs. size in another. The fitted estimate includes the 95% confidence interval. The dashed line is the 1:1 line; above this line is growth, while below it is regression to a smaller size.
+<img src="figs/growth-1.png" alt="Growth is the relation between size at one time vs. size in another. The fitted estimate includes the 95% confidence interval. The dashed line is the 1:1 line; above this line is growth, while below it is regression to a smaller size. We include only those individuals that survive." width="67%"><p class="caption">
+Figure 4.13: Growth is the relation between size at one time vs. size in another. The fitted estimate includes the 95% confidence interval. The dashed line is the 1:1 line; above this line is growth, while below it is regression to a smaller size. We include only those individuals that survive.
 </p>
 </div>
+<p>The larger individuals tend to regress to smaller sizes in subsequent years.</p>
 <p>Next we tackle fecundity, <strong>F</strong>, which for us is estimated using</p>
 <ul>
 <li>the size-dependent probability of flowering,</li>
@@ -713,7 +778,7 @@ Figure 4.11: Growth is the relation between size at one time vs. size in anothe
 <li>the size-distribution of new recruits.</li>
 </ul>
 <p>Typically, bigger individuals have a greater chance of flowering, and smooth coneflower is no exception. We estimate that chance using logistic regression.</p>
-<div class="sourceCode" id="cb150"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb153"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">cff</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span><span class="op">(</span><span class="va">cf</span>, <span class="va">surv</span><span class="op">==</span><span class="fl">1</span> <span class="op">)</span>
 <span class="va">eda_f</span> <span class="op">&lt;-</span> <span class="fu">ggplot</span><span class="op">(</span><span class="va">cfs</span>, <span class="fu">aes</span><span class="op">(</span><span class="va">logA</span>, <span class="va">flower_p</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> 
   <span class="fu">geom_jitter</span><span class="op">(</span>height<span class="op">=</span><span class="fl">.02</span>, alpha<span class="op">=</span><span class="fl">0.5</span><span class="op">)</span> <span class="op">+</span> 
@@ -722,22 +787,22 @@ Figure 4.11: Growth is the relation between size at one time vs. size in anothe
 <div class="figure">
 <span style="display:block;" id="fig:flowering"></span>
 <img src="figs/flowering-1.png" alt="Plants that are larger in the first year have a greater chance of flowering in the next year." width="67%"><p class="caption">
-Figure 4.12: Plants that are larger in the first year have a greater chance of flowering in the next year.
+Figure 4.14: Plants that are larger in the first year have a greater chance of flowering in the next year.
 </p>
 </div>
-<p>It is also true that bigger plants might produce more seeds, although there is not a lot of evidence for that is these data.</p>
-<div class="sourceCode" id="cb151"><pre class="downlit sourceCode r">
+<p>It is also true that bigger plants might produce more seeds, although there is not a lot of evidence for that in these data.</p>
+<div class="sourceCode" id="cb154"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">eda_sd</span> <span class="op">&lt;-</span> <span class="fu">ggplot</span><span class="op">(</span><span class="va">sf</span>, <span class="fu">aes</span><span class="op">(</span><span class="va">logAs</span>, <span class="va">seeds</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> <span class="fu">geom_point</span><span class="op">(</span><span class="op">)</span> <span class="op">+</span>
   <span class="fu">geom_smooth</span><span class="op">(</span>method<span class="op">=</span><span class="st">"lm"</span><span class="op">)</span> <span class="op">+</span> <span class="fu">labs</span><span class="op">(</span>title<span class="op">=</span><span class="st">"Seed set"</span><span class="op">)</span>
 <span class="va">eda_sd</span></code></pre></div>
 <div class="figure">
 <span style="display:block;" id="fig:seed"></span>
 <img src="figs/seed-1.png" alt="No compelling evidence that size influences seed set. Nonetheless, we will use this approach in estiamting fecundity, F." width="67%"><p class="caption">
-Figure 4.13: No compelling evidence that size influences seed set. Nonetheless, we will use this approach in estiamting fecundity, F.
+Figure 4.15: No compelling evidence that size influences seed set. Nonetheless, we will use this approach in estiamting fecundity, F.
 </p>
 </div>
-<p>We also need to estimate <em>establishment probability</em>, or the chance that a seed germinates and survives until the following summer. Collins estimated that using seed baskets. These are mesh baskets with soil into which she placed a known number of seeds. They are placed in the ground and seedlings or recruits are counted the following year.</p>
-<div class="sourceCode" id="cb152"><pre class="downlit sourceCode r">
+<p>We also need to estimate <em>establishment probability</em>, or the chance that a seed germinates and survives until the following summer. Collins estimated that using seed baskets. These are mesh baskets filled with soil into which she placed a known number of seeds. They are placed in the ground and seedlings or recruits are counted the following year.</p>
+<div class="sourceCode" id="cb155"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># 50 seeds into each of baskets</span>
 <span class="va">N</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span><span class="op">(</span><span class="fl">50</span>, <span class="fl">9</span><span class="op">)</span>
 <span class="co"># no. of seeds planted in the fall that popped up and</span>
@@ -756,17 +821,18 @@ Figure 4.13: No compelling evidence that size influences seed set. Nonetheless, 
 <span class="co"># with priors of (1/2, 1/2) being the conjugate prior for the binomial.</span>
 <span class="va">eda_pr</span> <span class="op">&lt;-</span> <span class="fu">ggplot</span><span class="op">(</span>data <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span>x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">0.5</span><span class="op">)</span><span class="op">)</span>, <span class="fu">aes</span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
   <span class="fu">stat_function</span><span class="op">(</span>fun <span class="op">=</span> <span class="va">dbeta</span>, n <span class="op">=</span> <span class="fl">501</span>, 
-                args <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>shape1 <span class="op">=</span> <span class="va">x</span><span class="op">+</span><span class="fl">1</span><span class="op">/</span><span class="fl">2</span>, shape2<span class="op">=</span><span class="va">nx</span><span class="op">+</span><span class="fl">1</span><span class="op">/</span><span class="fl">2</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> <span class="fu">labs</span><span class="op">(</span>y<span class="op">=</span><span class="st">"Prob(recruiting)"</span>, title<span class="op">=</span><span class="st">"Seed basket recruitment"</span><span class="op">)</span> <span class="op">+</span> 
+                args <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>shape1 <span class="op">=</span> <span class="va">x</span><span class="op">+</span><span class="fl">1</span><span class="op">/</span><span class="fl">2</span>, shape2<span class="op">=</span><span class="va">nx</span><span class="op">+</span><span class="fl">1</span><span class="op">/</span><span class="fl">2</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> 
+    <span class="fu">labs</span><span class="op">(</span>y<span class="op">=</span><span class="st">"Prob(recruiting)"</span>, title<span class="op">=</span><span class="st">"Seed basket recruitment"</span><span class="op">)</span> <span class="op">+</span>
   <span class="fu">scale_y_continuous</span><span class="op">(</span>breaks <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span>
 <span class="va">eda_pr</span></code></pre></div>
 <div class="figure">
 <span style="display:block;" id="fig:pr"></span>
 <img src="figs/pr-1.png" alt="Probability that seeds in one year establish as new recruits the following summer." width="67%"><p class="caption">
-Figure 4.14: Probability that seeds in one year establish as new recruits the following summer.
+Figure 4.16: Probability that seeds in one year establish as new recruits the following summer.
 </p>
 </div>
 <p>We can use other data (not shown) to characterize the size distribution of new recruits, which are approximately log-normally distributed.</p>
-<div class="sourceCode" id="cb153"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb156"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">m.log</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html">log10</a></span><span class="op">(</span><span class="va">rs</span><span class="op">$</span><span class="va">area17</span><span class="op">)</span><span class="op">)</span> <span class="co"># mean of log-area of new recruits</span>
 <span class="va">std.log</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/sd.html">sd</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html">log10</a></span><span class="op">(</span><span class="va">rs</span><span class="op">$</span><span class="va">area17</span><span class="op">)</span><span class="op">)</span> <span class="co"># st. dev. of log-area of new recruits</span>
 <span class="va">eda_C</span> <span class="op">&lt;-</span> <span class="fu">ggplot</span><span class="op">(</span>data <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span>x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0.4</span>, <span class="fl">1.4</span><span class="op">)</span><span class="op">)</span>, <span class="fu">aes</span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
@@ -779,16 +845,16 @@ Figure 4.14: Probability that seeds in one year establish as new recruits the fo
 <div class="figure">
 <span style="display:block;" id="fig:recruits"></span>
 <img src="figs/recruits-1.png" alt="The size distribution of new recruits; we assume that this is independent of plant size in year t." width="67%"><p class="caption">
-Figure 4.15: The size distribution of new recruits; we assume that this is independent of plant size in year t.
+Figure 4.17: The size distribution of new recruits; we assume that this is independent of plant size in year t.
 </p>
 </div>
 <p>First we estimate something from data, then we use it to build functions. I use code handed down on stone tablets from Ellner, Merow, and others.</p>
 <p>We start with a data frame to hold summaries.</p>
-<div class="sourceCode" id="cb154"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb157"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co">## this sets up a list of the model parameters. These parameters will be estimated and recorded below.</span>
 <span class="va">params</span><span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span>
-    surv.int<span class="op">=</span><span class="cn">NA</span>,
-    surv.slope<span class="op">=</span><span class="cn">NA</span>,
+    surv.int<span class="op">=</span><span class="cn">NA</span>, <span class="co"># y-intercept of the survival regresion</span>
+    surv.slope<span class="op">=</span><span class="cn">NA</span>, <span class="co"># slope of the survival regresion</span>
     growth.int<span class="op">=</span><span class="cn">NA</span>,
     growth.slope<span class="op">=</span><span class="cn">NA</span>,
     growth.sd<span class="op">=</span><span class="cn">NA</span>,
@@ -802,7 +868,7 @@ Figure 4.15: The size distribution of new recruits; we assume that this is indep
     establishment.prob<span class="op">=</span><span class="cn">NA</span>
 <span class="op">)</span></code></pre></div>
 <p>Next, we perform the analyses from which we extract means, linear relationships, and variation, and put this values into the above data frame.</p>
-<div class="sourceCode" id="cb155"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb158"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co">#survival regression</span>
 <span class="va">surv.reg</span><span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/stats/glm.html">glm</a></span><span class="op">(</span><span class="va">surv</span><span class="op">~</span><span class="va">logA</span>,data<span class="op">=</span><span class="va">cf</span>,family<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/stats/family.html">binomial</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span>
 <span class="va">params</span><span class="op">$</span><span class="va">surv.int</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/coef.html">coef</a></span><span class="op">(</span><span class="va">surv.reg</span><span class="op">)</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>
@@ -831,69 +897,110 @@ Figure 4.15: The size distribution of new recruits; we assume that this is indep
 <span class="co"># recruit size distr.</span>
 <span class="va">params</span><span class="op">$</span><span class="va">recruit.size.mean</span> <span class="op">&lt;-</span> <span class="va">m.log</span>
 <span class="va">params</span><span class="op">$</span><span class="va">recruit.size.sd</span> <span class="op">&lt;-</span> <span class="va">std.log</span></code></pre></div>
-<p>Here we make functions that will be able use the above relationships and the data frame to make the kernel.</p>
-<div class="sourceCode" id="cb156"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co">## Make the kernel (cf. projection matrix)</span>
-
-<span class="co"># Relies on the Riemann sum, using midpoints. Increase $n$ to decrease $h$ and improve accuracy (but reduce speed).</span>
-
-<span class="co"># The variable 'y' in the figures below is log10(Area).</span>
-
-<span class="co"># 1. boundary points b, mesh points y and step size h</span>
+<p>Here we make functions that will use the above relationships and the data frame to make the kernel. the variable <code>z</code> is size in the first year and <code>zp</code> is “z prime,” size in the next year.</p>
+<p>First we create a function to estimate the probability of surviving, <span class="math inline">\(s\)</span>, given a size <span class="math inline">\(z\)</span>. This is a back transformation of the logistic function, where
+<span class="math display">\[s = \frac{\exp (\beta_0 + \beta_1 z)}{1 + \exp (\beta_0 + \beta_1 z)}\]</span></p>
+<div class="sourceCode" id="cb159"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">s.z</span><span class="op">=</span><span class="kw">function</span><span class="op">(</span><span class="va">z</span>,<span class="va">params</span><span class="op">)</span> <span class="op">{</span>
+  <span class="co"># calculate survival probability by</span>
+  <span class="co"># backtransforming glm regression params </span>
+    <span class="va">u</span><span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html">exp</a></span><span class="op">(</span><span class="va">params</span><span class="op">$</span><span class="va">surv.int</span> <span class="op">+</span> <span class="va">params</span><span class="op">$</span><span class="va">surv.slope</span><span class="op">*</span><span class="va">z</span><span class="op">)</span>
+    <span class="va">s</span> <span class="op">&lt;-</span> <span class="va">u</span><span class="op">/</span><span class="op">(</span><span class="fl">1</span><span class="op">+</span><span class="va">u</span><span class="op">)</span>
+    <span class="kw"><a href="https://rdrr.io/r/base/function.html">return</a></span><span class="op">(</span><span class="va">s</span><span class="op">)</span>
+<span class="op">}</span></code></pre></div>
+<p>Next we create a function to estimate the probability of growing from size <span class="math inline">\(z\)</span> to size <span class="math inline">\(z^\prime\)</span>. This could be an increase or a decrease in size. The regression we did relied on the normal distribution, and so requires an intercept, a slope, and a standard deviation.</p>
+<div class="sourceCode" id="cb160"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">g.zpz</span><span class="op">=</span><span class="kw">function</span><span class="op">(</span><span class="va">zp</span>,<span class="va">z</span>,<span class="va">params</span><span class="op">)</span> <span class="op">{</span> 
+  <span class="co"># describe the normal linear relation between size at t=0 vs. t=1.</span>
+  <span class="co"># size(t+1) = y.intercept + slope*size(t) + e; e~N(0,sigma^2)</span>
+  <span class="co"># dnorm returns the probability density, given those parameters</span>
+    <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html">dnorm</a></span><span class="op">(</span><span class="va">zp</span>,
+          mean<span class="op">=</span><span class="va">params</span><span class="op">$</span><span class="va">growth.int</span><span class="op">+</span><span class="va">params</span><span class="op">$</span><span class="va">growth.slope</span><span class="op">*</span><span class="va">z</span>,
+          sd<span class="op">=</span><span class="va">params</span><span class="op">$</span><span class="va">growth.sd</span><span class="op">)</span>
+<span class="op">}</span></code></pre></div>
+<p>Next we create a function to estimate the probability of having a particular “fecundity,” which in these models is far more than just offspring production because it encompasses an entire year. It does a lot:</p>
+<ul>
+<li>size-dependent flowering probability</li>
+<li>seeds per flowering head (maybe size dependent)</li>
+<li>germination probability</li>
+<li>survival of new recruits from germination to first census</li>
+<li>size distribution of new recruits</li>
+</ul>
+<div class="sourceCode" id="cb161"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">f.zpz</span><span class="op">=</span><span class="kw">function</span><span class="op">(</span><span class="va">zp</span>,<span class="va">z</span>,<span class="va">params</span><span class="op">)</span> <span class="op">{</span>
+  <span class="co"># size-dep prob of flowering times...</span>
+    <span class="fu"><a href="https://rdrr.io/r/base/Log.html">exp</a></span><span class="op">(</span><span class="va">params</span><span class="op">$</span><span class="va">flowering.int</span> <span class="op">+</span> <span class="va">params</span><span class="op">$</span><span class="va">flowering.slope</span><span class="op">*</span><span class="va">z</span><span class="op">)</span> <span class="op">/</span> <span class="op">(</span><span class="fl">1</span><span class="op">+</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html">exp</a></span><span class="op">(</span><span class="va">params</span><span class="op">$</span><span class="va">flowering.int</span> <span class="op">+</span> <span class="va">params</span><span class="op">$</span><span class="va">flowering.slope</span><span class="op">*</span><span class="va">z</span><span class="op">)</span><span class="op">)</span> <span class="op">*</span>
+    <span class="co"># size-dep number of seeds times...</span>
+    <span class="op">(</span><span class="va">params</span><span class="op">$</span><span class="va">seed.int</span><span class="op">+</span><span class="va">params</span><span class="op">$</span><span class="va">seed.slope</span><span class="op">*</span><span class="va">z</span><span class="op">)</span> <span class="op">*</span>
+    <span class="co"># p(r), prob of recruitment (germination and establishment) times...</span>
+    <span class="va">params</span><span class="op">$</span><span class="va">establishment.prob</span> <span class="op">*</span>
+    <span class="co"># distribution of sizes in the first year</span>
+    <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html">dnorm</a></span><span class="op">(</span><span class="va">zp</span>, mean<span class="op">=</span><span class="va">params</span><span class="op">$</span><span class="va">recruit.size.mean</span>, sd<span class="op">=</span><span class="va">params</span><span class="op">$</span><span class="va">recruit.size.sd</span><span class="op">)</span>
+<span class="op">}</span></code></pre></div>
+<p>Finally, we begin to create our finite analogue of the continuous kernel: our discretized kernel, <span class="math inline">\(K\)</span>. We determine the upper and lower size bounds on log-plant size, the number of discrete cells or size intervals, the bounds of each discrete size interval, and the midpoints of each interval, and the width of interval.</p>
+<div class="sourceCode" id="cb162"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># 1. boundary points b, mesh points y and step size h</span>
 <span class="co"># integration limits - these limits span the range of sizes observed in the data set, and then some.</span>
-<span class="va">min.size</span><span class="op">=</span><span class="fl">.9</span><span class="op">*</span><span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">min</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html">log10</a></span><span class="op">(</span><span class="va">rs</span><span class="op">$</span><span class="va">area17</span><span class="op">)</span>, <span class="va">cf</span><span class="op">$</span><span class="va">logA</span>,<span class="va">cf</span><span class="op">$</span><span class="va">logAp</span><span class="op">)</span>,na.rm<span class="op">=</span><span class="cn">T</span><span class="op">)</span>
-<span class="va">max.size</span><span class="op">=</span><span class="fl">1.1</span><span class="op">*</span><span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">max</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html">log10</a></span><span class="op">(</span><span class="va">rs</span><span class="op">$</span><span class="va">area17</span><span class="op">)</span>, <span class="va">cf</span><span class="op">$</span><span class="va">logA</span>,<span class="va">cf</span><span class="op">$</span><span class="va">logAp</span><span class="op">)</span>,na.rm<span class="op">=</span><span class="cn">T</span><span class="op">)</span>
-<span class="co"># number of cells in the discretized kernel</span>
+<span class="va">min.size</span><span class="op">=</span><span class="fl">.9</span><span class="op">*</span><span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">min</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html">log10</a></span><span class="op">(</span><span class="va">rs</span><span class="op">$</span><span class="va">area17</span><span class="op">)</span>, <span class="va">cf</span><span class="op">$</span><span class="va">logA</span>, <span class="va">cf</span><span class="op">$</span><span class="va">logAp</span><span class="op">)</span>,na.rm<span class="op">=</span><span class="cn">T</span><span class="op">)</span>
+<span class="va">max.size</span><span class="op">=</span><span class="fl">1.1</span><span class="op">*</span><span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">max</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html">log10</a></span><span class="op">(</span><span class="va">rs</span><span class="op">$</span><span class="va">area19</span><span class="op">)</span>, <span class="va">cf</span><span class="op">$</span><span class="va">logA</span>,<span class="va">cf</span><span class="op">$</span><span class="va">logAp</span><span class="op">)</span>,na.rm<span class="op">=</span><span class="cn">T</span><span class="op">)</span>
+<span class="co"># number of cells or interval in the discretized kernel</span>
 <span class="va">n</span><span class="op">=</span><span class="fl">100</span> 
 <span class="co"># boundary points (the edges of the cells defining the kernel)</span>
 <span class="va">b</span> <span class="op">=</span> <span class="va">min.size</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span><span class="op">:</span><span class="va">n</span><span class="op">)</span><span class="op">*</span><span class="op">(</span><span class="va">max.size</span><span class="op">-</span><span class="va">min.size</span><span class="op">)</span><span class="op">/</span><span class="va">n</span> 
 <span class="co"># mesh points (midpoints of the cells)</span>
 <span class="va">y</span> <span class="op">=</span> <span class="op">(</span> <span class="va">b</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="va">n</span><span class="op">]</span> <span class="op">+</span> <span class="va">b</span><span class="op">[</span><span class="fl">2</span><span class="op">:</span><span class="op">(</span><span class="va">n</span><span class="op">+</span><span class="fl">1</span><span class="op">)</span><span class="op">]</span> <span class="op">)</span> <span class="op">/</span> <span class="fl">2</span>
 <span class="co"># width of the cells</span>
-<span class="va">h</span> <span class="op">=</span> <span class="va">y</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span><span class="op">-</span><span class="va">y</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>
-
-<span class="co">#############</span>
-<span class="co"># 2. make component kernels</span>
-<span class="fu"><a href="https://rdrr.io/r/graphics/par.html">par</a></span><span class="op">(</span>mfrow<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">2</span>,<span class="fl">2</span><span class="op">)</span><span class="op">)</span> 
-<span class="co"># outer  yields an outer product where each element is can be an arbitrary function.</span>
+<span class="va">h</span> <span class="op">=</span> <span class="va">y</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span><span class="op">-</span><span class="va">y</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span></code></pre></div>
+<p>Here we use the functions we made above to fill out growth, survival and fecundity elements of the full kernel, <span class="math inline">\(K\)</span>.</p>
+<div class="sourceCode" id="cb163"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co">## Growth kernel</span>
+<span class="co"># 'outer()'  yields an outer product where each element is can be an arbitrary function.</span>
 <span class="va">G</span><span class="op">=</span><span class="va">h</span><span class="op">*</span><span class="fu"><a href="https://rdrr.io/r/base/outer.html">outer</a></span><span class="op">(</span><span class="va">y</span>, <span class="va">y</span>, FUN<span class="op">=</span><span class="va">g.zpz</span>, params<span class="op">=</span><span class="va">params</span><span class="op">)</span>   <span class="co"># growth kernel</span>
-<span class="fu"><a href="https://rdrr.io/r/graphics/image.html">image</a></span><span class="op">(</span><span class="va">y</span>,<span class="va">y</span>,<span class="fu"><a href="https://rdrr.io/r/base/t.html">t</a></span><span class="op">(</span><span class="va">G</span><span class="op">)</span>,main<span class="op">=</span><span class="st">'G'</span><span class="op">)</span>        <span class="co"># plot it</span>
-
+<span class="co">## Survival kernel</span>
+<span class="va">S</span><span class="op">=</span><span class="fu">s.z</span><span class="op">(</span><span class="va">y</span>,params<span class="op">=</span><span class="va">params</span><span class="op">)</span>   <span class="co"># survival kernel</span>
+<span class="co">## Growth X Survival</span>
 <span class="va">P</span> <span class="op">=</span> <span class="va">G</span> <span class="co"># placeholder;redefine P on the next line</span>
-<span class="va">S</span><span class="op">=</span><span class="fu">s.z</span><span class="op">(</span><span class="va">y</span>,params<span class="op">=</span><span class="va">params</span><span class="op">)</span>   
-<span class="kw">for</span><span class="op">(</span><span class="va">i</span> <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span><span class="va">n</span><span class="op">)</span> <span class="va">P</span><span class="op">[</span>,<span class="va">i</span><span class="op">]</span><span class="op">=</span><span class="va">G</span><span class="op">[</span>,<span class="va">i</span><span class="op">]</span><span class="op">*</span><span class="va">S</span><span class="op">[</span><span class="va">i</span><span class="op">]</span>          <span class="co"># growth*survival kernel</span>
-<span class="op">{</span><span class="fu"><a href="https://rdrr.io/r/graphics/image.html">image</a></span><span class="op">(</span><span class="va">y</span>,<span class="va">y</span>,<span class="fu"><a href="https://rdrr.io/r/base/t.html">t</a></span><span class="op">(</span><span class="va">P</span><span class="op">)</span>,main<span class="op">=</span><span class="st">'GS'</span><span class="op">)</span>   <span class="co"># plot it</span>
+<span class="kw">for</span><span class="op">(</span><span class="va">i</span> <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span><span class="va">n</span><span class="op">)</span> <span class="va">P</span><span class="op">[</span>,<span class="va">i</span><span class="op">]</span><span class="op">=</span><span class="va">G</span><span class="op">[</span>,<span class="va">i</span><span class="op">]</span><span class="op">*</span><span class="va">S</span><span class="op">[</span><span class="va">i</span><span class="op">]</span>  <span class="co"># growth*survival kernel</span>
+<span class="co">## Fecundity kernel</span>
+<span class="va">Fec</span><span class="op">=</span><span class="va">h</span><span class="op">*</span><span class="fu"><a href="https://rdrr.io/r/base/outer.html">outer</a></span><span class="op">(</span><span class="va">y</span>, <span class="va">y</span>, <span class="va">f.zpz</span>, params<span class="op">=</span><span class="va">params</span><span class="op">)</span> 
+
+<span class="co">## the full projection kernel</span>
+<span class="va">K</span><span class="op">=</span><span class="va">P</span><span class="op">+</span><span class="va">Fec</span> <span class="co"># full kernel</span></code></pre></div>
+<p>Finally, we plot the kernels so that we can visualize them and thereby better appreciate what the result is.</p>
+<div class="sourceCode" id="cb164"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co">## create a 2 x 2 array of subfigures</span>
+<span class="fu"><a href="https://rdrr.io/r/graphics/par.html">par</a></span><span class="op">(</span>mfrow<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">2</span>,<span class="fl">2</span><span class="op">)</span><span class="op">)</span>
+<span class="co">## plot Growth</span>
+<span class="fu"><a href="https://rdrr.io/r/graphics/image.html">image</a></span><span class="op">(</span><span class="va">y</span>,<span class="va">y</span>,<span class="fu"><a href="https://rdrr.io/r/base/t.html">t</a></span><span class="op">(</span><span class="va">G</span><span class="op">)</span>,main<span class="op">=</span><span class="st">'G'</span><span class="op">)</span>        <span class="co"># plot it</span>
+<span class="co">## Plot growth X survival</span>
+<span class="op">{</span><span class="fu"><a href="https://rdrr.io/r/graphics/image.html">image</a></span><span class="op">(</span><span class="va">y</span>,<span class="va">y</span>,<span class="fu"><a href="https://rdrr.io/r/base/t.html">t</a></span><span class="op">(</span><span class="va">P</span><span class="op">)</span>, main<span class="op">=</span><span class="st">'GS'</span><span class="op">)</span>   <span class="co"># plot it</span>
 <span class="fu"><a href="https://rdrr.io/r/graphics/abline.html">abline</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">1</span>,lwd<span class="op">=</span><span class="fl">3</span><span class="op">)</span> <span class="op">}</span><span class="co"># plot 1:1, which represents stasis</span>
-
-<span class="va">Fec</span><span class="op">=</span><span class="va">h</span><span class="op">*</span><span class="fu"><a href="https://rdrr.io/r/base/outer.html">outer</a></span><span class="op">(</span><span class="va">y</span>, <span class="va">y</span>, <span class="va">f.zpz</span>, params<span class="op">=</span><span class="va">params</span><span class="op">)</span>   <span class="co"># reproduction kernel</span>
+<span class="co">## plot fecundity</span>
 <span class="fu"><a href="https://rdrr.io/r/graphics/image.html">image</a></span><span class="op">(</span><span class="va">y</span>,<span class="va">y</span>,<span class="fu"><a href="https://rdrr.io/r/base/t.html">t</a></span><span class="op">(</span><span class="va">Fec</span><span class="op">)</span>,main<span class="op">=</span><span class="st">'F'</span><span class="op">)</span> <span class="co"># plot it</span>
-
-<span class="va">K</span><span class="op">=</span><span class="va">P</span><span class="op">+</span><span class="va">Fec</span> <span class="co"># full kernel</span>
-<span class="co">#image(y,y,t(K),main='full kernel')          # plot it</span>
-
-<span class="co"># sometimes it's hard to see both because</span>
-<span class="co"># the fecundity part of the kernel swamps the growth/survival part, </span>
+<span class="co">## We could just use image(y,y,t(K),main='full kernel')</span>
+<span class="co"># however, sometimes it's hard to see both because</span>
+<span class="co"># fecundity swamps the growth/survival part, </span>
 <span class="co"># so here's a plotting trick to level out the kernel</span>
 <span class="fu"><a href="https://rdrr.io/r/graphics/image.html">image</a></span><span class="op">(</span><span class="va">y</span>,<span class="va">y</span>,<span class="fu"><a href="https://rdrr.io/r/base/t.html">t</a></span><span class="op">(</span><span class="va">K</span><span class="op">)</span><span class="op">^</span><span class="fl">.33</span>,main<span class="op">=</span><span class="st">'K'</span>, 
-      col<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/grDevices/gray.colors.html">grey.colors</a></span><span class="op">(</span><span class="fl">12</span>, start<span class="op">=</span><span class="fl">0</span>, end<span class="op">=</span><span class="fl">1</span>, rev <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span>    <span class="co"># plot it</span></code></pre></div>
+      col<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/grDevices/gray.colors.html">grey.colors</a></span><span class="op">(</span><span class="fl">12</span>, start<span class="op">=</span><span class="fl">0</span>, end<span class="op">=</span><span class="fl">1</span>, rev <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <div class="figure">
 <span style="display:block;" id="fig:kernels"></span>
-<img src="figs/kernels-1.png" alt="The component kernels G, S, and F, that make up the full demographic projection kernel, K, for smooth cone flower. Unlike proection matrices, kernels scale both axes to start at size = 0 in the lower left corner. The color scaling of the full kernel differs slightly so that we can see the contributions of G, S, and F." width="90%"><p class="caption">
-Figure 4.16: The component kernels G, S, and F, that make up the full demographic projection kernel, K, for smooth cone flower. Unlike proection matrices, kernels scale both axes to start at size = 0 in the lower left corner. The color scaling of the full kernel differs slightly so that we can see the contributions of G, S, and F.
+<img src="figs/kernels-1.png" alt="The component kernels G, S, and F, that make up the full demographic projection kernel, K, for smooth cone flower. Unlike projection matrices, kernels scale both axes to start at size = 0 in the lower left corner. The color scaling of the full kernel differs slightly so that we can see the contributions of G, S, and F." width="90%"><p class="caption">
+Figure 4.18: The component kernels G, S, and F, that make up the full demographic projection kernel, K, for smooth cone flower. Unlike projection matrices, kernels scale both axes to start at size = 0 in the lower left corner. The color scaling of the full kernel differs slightly so that we can see the contributions of G, S, and F.
 </p>
 </div>
 </div>
-<div id="population-summaries" class="section level3" number="4.8.2">
+<div id="population-summaries" class="section level3" number="4.8.3">
 <h3>
-<span class="header-section-number">4.8.2</span> Population summaries<a class="anchor" aria-label="anchor" href="#population-summaries"><i class="fas fa-link"></i></a>
+<span class="header-section-number">4.8.3</span> Population summaries<a class="anchor" aria-label="anchor" href="#population-summaries"><i class="fas fa-link"></i></a>
 </h3>
 <p>Any question that we could answer using matrices, we can answer using kernels.</p>
 <p>We estimate the finite rate of increase, <span class="math inline">\(\lambda\)</span>, the same way we did before.</p>
-<div class="sourceCode" id="cb157"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb165"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="op">(</span><span class="va">lambda</span><span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/complex.html">Re</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/eigen.html">eigen</a></span><span class="op">(</span><span class="va">K</span><span class="op">)</span><span class="op">$</span><span class="va">values</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <p>[1] 1.061195</p>
 <p>The same is true for the stable size distribution, reproductive value, and elasticity.</p>
-<div class="sourceCode" id="cb158"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb166"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">w.eigen</span><span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/complex.html">Re</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/eigen.html">eigen</a></span><span class="op">(</span><span class="va">K</span><span class="op">)</span><span class="op">$</span><span class="va">vectors</span><span class="op">[</span>,<span class="fl">1</span><span class="op">]</span><span class="op">)</span>
 <span class="va">stable.dist</span><span class="op">=</span><span class="va">w.eigen</span><span class="op">/</span><span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="va">w.eigen</span><span class="op">)</span> 
 <span class="va">v.eigen</span><span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/complex.html">Re</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/eigen.html">eigen</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/t.html">t</a></span><span class="op">(</span><span class="va">K</span><span class="op">)</span><span class="op">)</span><span class="op">$</span><span class="va">vectors</span><span class="op">[</span>,<span class="fl">1</span><span class="op">]</span><span class="op">)</span>
@@ -907,7 +1014,6 @@ Figure 4.16: The component kernels G, S, and F, that make up the full demographi
 <span class="va">elas</span><span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/matrix.html">matrix</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/vector.html">as.vector</a></span><span class="op">(</span><span class="va">sens</span><span class="op">)</span><span class="op">*</span><span class="fu"><a href="https://rdrr.io/r/base/vector.html">as.vector</a></span><span class="op">(</span><span class="va">K</span><span class="op">)</span><span class="op">/</span><span class="va">lambda</span>,nrow<span class="op">=</span><span class="va">n</span><span class="op">)</span>
 
 <span class="co"># 3. plot results </span>
-
 <span class="fu"><a href="https://rdrr.io/r/graphics/par.html">par</a></span><span class="op">(</span>mfrow<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">3</span><span class="op">)</span><span class="op">)</span> 
 <span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">y</span>,<span class="va">stable.dist</span>,xlab<span class="op">=</span><span class="st">"Size"</span>,type<span class="op">=</span><span class="st">"l"</span>,main<span class="op">=</span><span class="st">"Stable size distribution"</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">y</span>,<span class="va">repro.val</span>,xlab<span class="op">=</span><span class="st">"Size"</span>,type<span class="op">=</span><span class="st">"l"</span>,main<span class="op">=</span><span class="st">"Reproductive values"</span><span class="op">)</span> 
@@ -915,9 +1021,10 @@ Figure 4.16: The component kernels G, S, and F, that make up the full demographi
 <div class="figure">
 <span style="display:block;" id="fig:Ksolutions"></span>
 <img src="figs/Ksolutions-1.png" alt="Descriptions of smooth coneflower demographics." width="90%"><p class="caption">
-Figure 4.17: Descriptions of smooth coneflower demographics.
+Figure 4.19: Descriptions of smooth coneflower demographics.
 </p>
 </div>
+<p>There is a ton more stuff we can do. Way more <span class="citation">(<a href="references.html#ref-Ellner:2016aa" role="doc-biblioref">Stephen P. Ellner, Childs, and Rees 2016</a>)</span>.</p>
 </div>
 </div>
 <div id="r-packges-for-demography" class="section level2" number="4.9">
@@ -928,9 +1035,9 @@ Figure 4.17: Descriptions of smooth coneflower demographics.
 <p><span class="citation"><a href="references.html#ref-Stubben:2007" role="doc-biblioref">Stubben and Milligan</a> (<a href="references.html#ref-Stubben:2007" role="doc-biblioref">2007</a>)</span> and <span class="citation"><a href="references.html#ref-Stott:2018" role="doc-biblioref">Stott, Hodgson, and Townley</a> (<a href="references.html#ref-Stott:2018" role="doc-biblioref">2018</a>)</span>, and <span class="citation"><a href="references.html#ref-delaCruz:2019" role="doc-biblioref">de la Cruz</a> (<a href="references.html#ref-delaCruz:2019" role="doc-biblioref">2019</a>)</span> provide R packages for stage-based matrix models with methods that go well beyond this text. In addition, there are several other packages for analyzing life tables and human demography.</p>
 <p><span class="citation"><a href="references.html#ref-Ellner:2016aa" role="doc-biblioref">Stephen P. Ellner, Childs, and Rees</a> (<a href="references.html#ref-Ellner:2016aa" role="doc-biblioref">2016</a>)</span> is probably the best source for understanding IPMs. The R package IPMpack <span class="citation">(<a href="references.html#ref-Metcalf:2014ab" role="doc-biblioref">Metcalf et al. 2014</a>)</span> is an excellent package to implement and analyze IPMs.</p>
 </div>
-<div id="exploring-a-real-population" class="section level2" number="4.10">
+<div id="loggerhead-sea-turtle-a-classic-example" class="section level2" number="4.10">
 <h2>
-<span class="header-section-number">4.10</span> Exploring a real population<a class="anchor" aria-label="anchor" href="#exploring-a-real-population"><i class="fas fa-link"></i></a>
+<span class="header-section-number">4.10</span> Loggerhead Sea Turtle: a classic example<a class="anchor" aria-label="anchor" href="#loggerhead-sea-turtle-a-classic-example"><i class="fas fa-link"></i></a>
 </h2>
 <p><span class="citation"><a href="references.html#ref-Crouse1987" role="doc-biblioref">Crouse, Crowder, and Caswell</a> (<a href="references.html#ref-Crouse1987" role="doc-biblioref">1987</a>)</span> performed a demographic analysis of an endangered sea turtle species, the loggerhead (<em>Caretta caretta</em>). Management of loggerhead populations seemed essential for their long term survival, and a popular management strategy had been and still is to protect nesting females, eggs, and hatchlings. The ground breaking work by Crouse<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;Crouse was a graduate student at the time—graduate students are the life-blood of modern science, doing cutting edge work and pushing their fields forward.&lt;/p&gt;"><sup>29</sup></a> and her colleagues compiled data to create a stage-based projection matrix to analyze quantitatively which stages are most important and least important in influencing long-term growth rate. This work led to US Federal laws requiring that US shrimp fishermen use nets that include Turtle Excluder Devices (TEDs, <a href="https://www.fisheries.noaa.gov/southeast/bycatch/turtle-excluder-device-regulations" class="uri">https://www.fisheries.noaa.gov/southeast/bycatch/turtle-excluder-device-regulations</a> ). Crouse et al. determined a transition matrix, <strong>A</strong>, for their loggerhead population:</p>
 <p><span class="math display">\[\begin{array}{c}
@@ -947,7 +1054,7 @@ H\\J_s\\J_l \\sub \\ B_1 \\B_2 \\ M
       0&amp;      0&amp;      0&amp;      0&amp;      0&amp; 0.8091&amp; 0.8089
 \end{array} 
 \right)\]</span></p>
-<div class="sourceCode" id="cb159"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb167"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">A</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html">matrix</a></span><span class="op">(</span>
   <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>,      <span class="fl">0</span>,      <span class="fl">0</span>,      <span class="fl">0</span>,    <span class="fl">127</span>,      <span class="fl">4</span>,    <span class="fl">80</span>,
     <span class="fl">0.6747</span>, <span class="fl">0.7370</span>, <span class="fl">0</span>,      <span class="fl">0</span>,      <span class="fl">0</span>,      <span class="fl">0</span>,     <span class="fl">0</span>,
@@ -998,12 +1105,13 @@ nrow<span class="op">=</span><span class="fl">7</span>, ncol<span class="op">=</
 <li><a class="nav-link" href="#matrix-models-can-be-challenging"><span class="header-section-number">4.7</span> Matrix models can be challenging</a></li>
 <li>
 <a class="nav-link" href="#integral-projection"><span class="header-section-number">4.8</span> Integral projection</a><ul class="nav navbar-nav">
-<li><a class="nav-link" href="#a-size-based-ipm-of-smooth-coneflower"><span class="header-section-number">4.8.1</span> A size-based IPM of smooth coneflower</a></li>
-<li><a class="nav-link" href="#population-summaries"><span class="header-section-number">4.8.2</span> Population summaries</a></li>
+<li><a class="nav-link" href="#on-probability-density"><span class="header-section-number">4.8.1</span> On probability density</a></li>
+<li><a class="nav-link" href="#a-size-based-ipm-of-smooth-coneflower"><span class="header-section-number">4.8.2</span> A size-based IPM of smooth coneflower</a></li>
+<li><a class="nav-link" href="#population-summaries"><span class="header-section-number">4.8.3</span> Population summaries</a></li>
 </ul>
 </li>
 <li><a class="nav-link" href="#r-packges-for-demography"><span class="header-section-number">4.9</span> R packges for demography</a></li>
-<li><a class="nav-link" href="#exploring-a-real-population"><span class="header-section-number">4.10</span> Exploring a real population</a></li>
+<li><a class="nav-link" href="#loggerhead-sea-turtle-a-classic-example"><span class="header-section-number">4.10</span> Loggerhead Sea Turtle: a classic example</a></li>
 </ul>
 
       <div class="book-extra">
