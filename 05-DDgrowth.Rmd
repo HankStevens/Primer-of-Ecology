@@ -1,7 +1,7 @@
 # Density-dependent growth {#DDgrowth}
 Let's go back to our Song Sparrow (*Melospiza melodia*) data that we used to illustrate density-independent growth --- now we graph *all* the data.
 
-```{r sparrowDD, echo=FALSE, out.width='50%', fig.cap='*Song Sparrow *Melospiza melodia* counts, $N$, from 1966--2003 and the relation between observed counts and annual growth rate determined from those counts, fit with ordinary least squares regression. See Chapter 3 for data source.*', fig.show='hold'}
+```{r sparrowDD, echo=FALSE, out.width='50%', fig.cap='*Song Sparrow *Melospiza melodia* counts, $N$, from 1966--2003 and the relation between observed counts ($N_t$) and annual growth rate ($r_t = N_{t+1}/N_t - 1$) determined from those counts, fit with ordinary least squares regression. See Chapter 3 for data source.*', fig.show='hold'}
 data(sparrows)
 sparrows$Rt <- with(sparrows, log(c(Count[-1]/Count[-length(Count)],NA) ))
 #<<MelospizaDDG1, fig=TRUE,echo=false, results=hide>>=
@@ -25,8 +25,7 @@ summary(m12)
 qplot(foN, Rt2,  geom=c("point"))
 ```
 
-
-When we plot the annual per capita growth rate, $r_t = \log (N_{t+1}/N_t)$, as a function of $N$, we see a pattern emerge. At low $N$, $r>0$, whereas at high $N$, $r < 0$. The annual growth rate depends on the size or density of the population. This is the sort of thing we mean we we use the term *density-dependent growth*.
+When we plot the annual per capita growth rate, $r_t = \log (N_{t+1}/N_t)$, as a function of $N$, we see a pattern emerge. At low $N$, $r>0$, whereas at high $N$, $r < 0$. The annual growth rate depends on the size or density of the population. This is the sort of thing we mean when we use the term *density-dependent growth*.
 
 What might limit the population growth of these sparrows? Space available for male territories in their successional-scrub type habitat? Availability of seeds, fruits and invertebrates? We don't necessarily know precisely what limits it, but if it is something related to their own abundance, then we can treat density as a proxy for the amount of limitation.
 
@@ -58,24 +57,28 @@ Yet another representation is
 \end{equation}
 where $b = r$ and $a = r \alpha$. Notice now that $b$ or $r$ can be negative, and $b$ is independent of the the effect of the other species. We take advantage of this when we first discuss obligate mutualisms in a later chapter.
 
+## Dynamics around the equilibria
+Features of our world are changing all the time. I'm getting older, my cat is getting fatter, and the seasons come an go. These changes through time are *dynamics*. Dynamics are changes through time. 
 
-## Dynamics around the equilibria --- stability
-The *stability* of a system^[A system might be nearly any set of interacting parts, such as a population, or an economy, or the internet.] is a measure of how much it tends to stay the same, in spite of external disturbances or changes in the state of the system. 
+In spite of the dynamics of our lives, the world we experience shows some constancy over time --- I was here yesterday and the day before, and I am still here today. This constancy exists in spite of forces that work against it --- I eat to get the energy I need, and I don't play in traffic. Thus the world we experience reflects a sort of *stability*. That is, it lasts long enough for us to notice it in spite of processes that tend destroy it. The constant parts of our world often appear to be at an *equilibrium*, always on the verge of coming and going at the same time. As I type this sentence, I am at rest---at an equilibrium---because my attraction toward the ground due gravity is balanced by the repulsion of the floor in the opposite direction.
 
-The term *stability* has been given many more specific meanings, including resilience, resistant,  reactivity, and permanence. We won't go into these here, but one could consider them different facets of stability [@Chen2001].^[Resistance refers to the tendency to resist change in the first place; resilience refers to the long term rate of return to an equilibrium; reactivity refers to the rate of change immediately following such a disturbance [@Neubert1997], and permanence is the degree to which a system does not simplify by entering one of its boundary equilibria.] We will focus on resilience, the tendency for a population to return an equilibrium, or be *attracted toward* an equilibrium, if it is perturbed from it.
+Ecological systems are constantly changing but often stay around long enough for us to notice. We tend to study the systems that stay around. For that reason, we are interested in *dynamics around equilibria*. The *stability* of a system^[A system might be nearly any set of interacting parts, such as a population, or an economy, or the internet.] is a quantitative measure of how much it tends to stay the same in spite of external disturbances or changes in the state of the system. 
 
+The term *stability* is often an umbrella term related to multiple related ideas such as resilience, resistance, and permanence [@Chen2001].^[Resistance refers to the tendency to resist change in the first place; resilience refers to the long term rate of return to an equilibrium; reactivity refers to the rate of change immediately following such a disturbance [@Neubert1997], and permanence is the degree to which a system does not simplify by entering one of its boundary equilibria.] In this book, we focus on resilience, the tendency for a system to return an equilibrium, or be *attracted toward* an equilibrium, if it is perturbed from it.
+
+### A marble and a wok
 Consider the stability of a marble inside a wok. If the wok doesn't move, then the marble just sits in the lowest spot on the bottom. If the wok is bumped, the marble jiggles and rolls around a bit, but settles back down to the bottom. This is a stable system because there is a point at the bottom of the bowl (the attractor) toward which the marble rolls --- all points inside the wok allow the marble to find the lowest point (the attractor). For this reason, we call the collection of points on the inside surface of the wok the *basin of attraction*. The steeper the sides, the more quickly the marble moves toward the bottom. This rate is referred to as its *resilience*.
 
-To translate the notion of a basin into a population, let the position of marble inside the wok be the value of $N$ at any particular point. Bumping the wok is any disturbance that causes a change in $N$. The slope of the sides of the wok reflects the biology and its mathematics that cause $N$ to move quickly or slowly back toward the bottom. For the logistic model, this rate is determined by $r$ and $\alpha$, and also by $N$ itself. The attractor at the very bottom of the bowl is the population's carrying capacity, $K=1/\alpha$.^[The marble's inertia, which contributes to its momentum, is analogous to a time lag in density dependence that we wil see in the discrete model; with a time lag, a population can overshoot the equilibrium.]
+To translate the notion of a basin into a population, let the position of marble inside the wok be the value of $N$ at any particular point. Let bumping the wok be any disturbance that causes a change in $N$. The slope of the sides of the wok reflects the biology and its mathematical representation that cause $N$ to move quickly or slowly back toward the bottom. For the logistic model, this rate is determined by $r$ and $\alpha$, and also by $N$ itself. The attractor at the very bottom of the bowl is the population's carrying capacity, $K=1/\alpha$.^[The marble's inertia, which contributes to its momentum, is analogous to a time lag in density dependence that we wil see in the discrete model; with a time lag, a population can overshoot the equilibrium.]
 
 When we imagine a marble in a wok, it becomes easy to envision $K$ as an attractor at the bottom of the bowl.  That is why we consider the carrying capacity a stable equilibrium point, or attractor, even if other factors, such as a disturbance, may cause $N$ to deviate from it.
 
-The equilibrium we have focused on has been $K$, but recall that $N=0$ is also an equilibrium. This equilibrium is actually the edge of the wok --- the slightest jiggle, and the marble falls in and moves toward the center of the wok, $K$.  The biological analog of this "jiggle" is the additional of one or a very small numbers of individuals to an otherwise extinct population. For example, consider that a sterile Petri dish with nutrient agar has an *E. coli* population size of zero. If that *E. coli* $N=0$ gets "perturbed" with a single added cell, the population will move quickly toward its carrying capacity $K$. In this sense, $N=0$ is an equilibrium, but it is an *unstable* equilibrium. We also call such an unstable equilibrium a *repeller*.
+The equilibrium we have focused on has been $K$, but recall that $N=0$ is also an equilibrium. This equilibrium is actually the edge of the wok --- the slightest jiggle, and the marble falls in and moves toward the center of the wok, $K$.  The biological analog of this "jiggle" is the additional of one or a very small numbers of individuals to an otherwise extinct population. For example, consider that a sterile Petri dish with nutrient agar has an *E. coli* population size of zero. If that *E. coli* $N=0$ gets "perturbed" with a single added cell, the population will move quickly toward its carrying capacity $K$. In this sense, $N=0$ is an equilibrium, but it is an *unstable* equilibrium. We also call such an unstable equilibrium a *repellor*.
 
 ### Analytical linear stability analysis
-We are interested in the dynamics or stability of $N$ at each of the equilibria, $N^*$. Here we use *analytical linear \index{stability analysis!single species}stability analysis* to show mathematically what we described above with the marble and the wok. While somewhat limited in its scope, linear stability is nonetheless a powerful technique for dynamic model analysis.
+We are interested in the dynamics or stability of $N$ at each of the equilibria, $N^*$. Here we use *analytical linear stability analysis* to show mathematically what we described above with the marble and the wok. While somewhat limited in its scope, linear stability is nonetheless a powerful technique for dynamic model analysis.
 
-In a nutshell, what we do is determine whether the growth rate, which is zero at each equilibrium, becomes positive or negative in response to a small change in $N$. That is, if $N$ takes a tiny step away from the equilbrium, does that tiny step shrink, or grow? If a tiny step results in a shrinking of that step, back toward the equilibrium, that demonstrates stability. If a tiny step results in growth and a bigger step, that demonstrates instability. That is what analytical stability analysis tells us.
+In a nutshell, what we do is determine whether the growth rate, which is zero at each equilibrium, becomes positive or negative in response to a small change in $N$. That is, if $N$ takes a tiny step away from the equilibrium, does that tiny step shrink, or grow? If a tiny step results in a shrinking of that step, back toward the equilibrium, that demonstrates stability. If a tiny step results in growth and a bigger step, that demonstrates instability. That is what analytical stability analysis tells us.
 
 Consider a plot of the growth rate, $dN/dt$ *vs.* $N$ (Fig. \@ref(fig:FNN)).  The equilibria, $N^*$, are the $N$ ($x$-axis) at which $dN/dt=0$ (points a, d). Note where population growth rate is positive and where it is negative. What will happen to this population if it finds itself at $N=50$? It will grow, moving along the $x$-axis, until population growth rate slows so much that it comes to rest where $N=1/\alpha=K=100$. Thus, $N$ changes until it converges on the equilibrium, $N^*$, where $dN/dt=0$. Alternatively at $N=110$, $dN/dt$ is negative, and so $N$ shrinks back down to $K$ (point d). This return toward $K$ means that $K$ is an attractor and a stable equilibrium.
 
@@ -164,7 +167,7 @@ We can use R's minimal symbolic capabilities to get derivatives. Here we get the
 ```{r symbolic}
 alpha <- 0.01; r <- 1
 pop.growth.rate <- expression( r * N * (1 -  alpha*N) )
-# find the partial derivative of dNdt
+# find the partial derivative of dNdt wrt N
 dF.dN <- D(pop.growth.rate,"N")
 dF.dN # here it is
 # set N equal to zero and the carrying capacity
@@ -182,7 +185,7 @@ When we have an ordinary differential equation (ODE) such as logistic growth,$dN
 
 * over a particular time interval
 * given a set of parameters and 
-* particular initial conditions or initial population size. 
+* with particular initial conditions or initial population size. 
 
 For instance, we say that we solve the logistic growth model for time at $t=0,\, 1 \ldots \, 20$, with parameters $r=1$, $\alpha=0.001$, and $N_0=10$. 
 
@@ -190,7 +193,7 @@ Let's do an example with `ode`, using logistic growth. We first have to define a
 ```{r}
 clogistic <- function(time, y, parameters){
   # y is a single value of N; if we have more than one population, 
-  # e.g. competition, then y would have two values, one for 
+  # e.g. competition, then y would be a vector with two elements, one for 
   # each population.
   
   # parameters is a vector of...parameters....
@@ -241,7 +244,7 @@ out[1:5,]
 
 
 We can plot the output as well. The `deSolve` package directs R to use special methods to plot output from `ode`. 
-```{r odeplot, fig.cap="*Output from a numerical integration of logistic growth, where N0==10, r=1, alpha=0.001.*"}
+```{r odeplot, fig.cap="*Output from a numerical integration of logistic growth, where N0=10, r=1, alpha=0.001.*"}
 plot(out)
 ```
 
@@ -252,21 +255,33 @@ Here we see the classic S-shaped curve of logistic growth. Regardless where we s
 * $\alpha$ is smaller, or larger.
 * the initial population size is above $K$
 
-```{r logisticVariety, echo=TRUE, fig.cap="*How variation in logistic growth parameters influence the dynamics.*", out.width="75%"}
-t=seq(0, 20, by=0.01); r <- c(.5, 1.5)
-alpha <- c(0.002, 0.001); N0 <- c(10, 1500)
+```{r logisticVariety, echo=TRUE, fig.cap="*How variation in logistic growth parameters influence the dynamics.*", out.width="100%"}
+t=seq(0, 20, by=0.01); 
+r <- c(.5, 1.5) # two values of r
+alpha <- c(0.002, 0.001); # two values of alpha
+N0 <- c(10, 1500) # two starting points
+## create a small data frame with all combinations
 input <- expand.grid(r=r, alpha=alpha, N=N0)
+## Create an object to hold results
 outdf <- NULL
-#outdf <- data.frame(time=NULL, N=NULL, N0=NULL, r=NULL, alpha=NULL)
+
+## for each (i) combination of parameters, 
+## choose the parameter set, integrate with ode(), 
+## combine the data outputs
 for(i in 1:nrow(input)) { 
+  ## Use each
   y <- c(N=input[i,"N"])
   p <- c(r=input[i,"r"], alpha=input[i,"alpha"] )
   out <- ode(y, times=t, fun=clogistic, p)
   out2 <- cbind(out, N0=y, r=p["r"], alpha=p["alpha"])
   outdf <- rbind.data.frame(outdf, out2)
 }
+
+## Change the class of some variables to make plotting easier
 outdf$N0 <- as.factor( outdf$N0 )
 outdf$alpha <- as.factor(outdf$alpha )
+
+## graph all the results together
 ggplot(outdf, aes(time, N, colour=N0, linetype=alpha) ) + geom_line() + 
   facet_grid(r~., labeller=label_both) + theme_bw()
 ```
@@ -303,7 +318,7 @@ logistic_trajectory    <- trajectory(logistic,
 
 ## Other forms of density-dependent growth
 
-There are many forms of density-dependent growth, some of which will we describe below. Let's start by decoupling the density-dependence of birth and death rates [@Gotelli2001]. 
+There are many mathematical forms of density-dependent growth, some of which will we describe below. Let's start by decoupling the density-dependence of birth and death rates in logistic growth [@Gotelli2001]. 
 
 ### Effects of N on birth and death rates
 
@@ -367,7 +382,7 @@ Here we explore a simple extension of the logistic model, the \index{logistic gr
 \end{equation}
 Here $\theta$ is strictly positive ($\theta>0$); $\theta=0$ means zero growth, and $\theta < 0$ would mean negative growth below $K$, and unbounded positive growth above $K$. Approximations of eq. \@ref(eq:11) that allow $\theta \leq 0$ are possible [@Sibly:2005ys], but the interpretation becomes strained.
 
-Here we make a function that we can use with `ode()`, the numerical integration function. You'll need to run this code to use it later.
+Here we make a function that we can use with `ode()`, the numerical integration function. This function is already in the primer package.
 ```{r}
 thetalogistic  <- function(times, y, parms) {
   ## with() and as.list() create an environment in which R will see 
@@ -480,7 +495,7 @@ Let's explore the dynamics of this numerically by writing a function to project 
 
 To project a discrete time model, we have to project entire one year at a time. We did this for structured demographic models, and unstructured geometric growth and our sparrow simulation. We will do it here using a function in the `deSolve` package that imposes a one year time step, specifically for discrete time models, including difference equations.^[`deSolve` allows several different ways to project discrete time models. Consult `vignette('deSolve', package='deSolve')`.]
 
-We set up the model as we did with the continuous time model. 
+The model in `primer` looks like this, much like the continuous time model. 
 ```{r}
 dlogistic <- function (t, y, p) {
   N <- y[1]
@@ -489,7 +504,7 @@ dlogistic <- function (t, y, p) {
       return(list(N.diff))  }) }
 ```
 
-We then specific the parameters, the initial state or population size, and the time steps. Note that for a discrete time model the **time steps must be annual increments**. We then project the population.
+We then specify the parameters, the initial state or population size, and the time steps. Note that for a discrete time model the **time steps must be annual increments**, not fractions of a year. We then project the population using `ode()` with `method="euler"` to force discrete annual jumps.
 ```{r dlogistic, fig.cap="*Discrete growth can look a lot like continuous growth as long as the per capita growth rate is low.*"}
 p <- c(rd=1, alpha=.01)
 y <- c(N=10)
@@ -502,7 +517,7 @@ ggplot(outd, aes(x=time, N)) + geom_line() + geom_point() +
 ```
 
 ### Effects of $r_d$
-Changing $\alpha$ or $K$ does not change radically the dynamics of this model. However, increasing $r_d$ changes the dynamics a lot. This is in contrast to what happens in continuous logsitic growth. When we increase $r_d$ sufficiently, we get *stable limit cycles* and if we raise $r_d$ high enough, we get *chaos*.^[Not the evil spy agency featured in the 1960's US television show, *Get Smart*.].
+Changing $\alpha$ or $K$ does not change radically the dynamics of this model. However, increasing $r_d$ changes the dynamics a lot. This is in contrast to what happens in continuous logisitic growth. When we increase $r_d$ sufficiently, we get *stable limit cycles* and if we raise $r_d$ high enough, we get *chaos*.^[Not the evil spy agency featured in the 1960's US television show, *Get Smart*.].
 
 ```{r dlogcycles, fig.cap="*How variation in $r_d$ influences dynamics of discrete logistic growth.*", out.width="75%"}
 rd.v <- seq(1.3, 2.8, by=.3)
@@ -629,7 +644,7 @@ Like discrete logistic growth, the Ricker model^[Bill Ricker, the eponym of the 
 
 
 ## Maximum Sustained Yield
-The classical model of harvesting fisheries and wildlife populations is based on a particular conceptualization of *maximum sustained yield* (MSY). Maximum sustained yield is historically defined as the population size where both population growth rate and harvest rate are at a maximum. For the logistic growth model, this is half the carrying capacity. We can solve this by finding the maximum of the production function. To do this we use calculus (differentiation) to find where the slope of the production function equals zero. Starting with the partial derivative with respect to $N$ (eq. \@ref(eq:pdlog)), we solve for zero.
+The classical model of harvesting fisheries and wildlife populations is based on a particular conceptualization of *maximum sustained yield* (MSY). Maximum sustained yield is  defined historically as the population size where both population growth rate and harvest rate are at a maximum. For the logistic growth model, this is half the carrying capacity. We can solve this by finding the maximum of the production function. To do this we use calculus (differentiation) to find where the slope of the production function equals zero. Starting with the partial derivative with respect to $N$ (eq. \@ref(eq:pdlog)), we solve for zero.
 \begin{align}
   (\#eq:msy1)
     0 &= r - 2r\alpha N\\
@@ -650,7 +665,7 @@ Let us assume that total catch or harvest, $H$, is a simple linear function of $
   (\#eq:FN)
 \frac{dN}{dt}&=rN(1-\frac{N}{K})-FN
 \end{align}
-where $FN=H$ harvest rate, and $F$ is the per capita fishing mortality rate. Here we assume a fixed per capita catch mortality $F$ so that total harvest is $H=F\times N$. Maximum sustained yield should then occur at $K/2$ (Fig. \@ref(fig:msy1)). Therefore would like to know the value of $F$ for which a new $N^* = K/2$ rather than $K$. We can determine the value of $F$ for which this is true by finding when $dN/dt=0$ and $N=K/2$.
+where $FN=H$ harvest rate, and $F$ is the per capita fishing mortality rate. Here we assume a fixed per capita catch mortality $F$ so that total harvest is $H=F\times N$. In order to maximize our catch year after year, we want to find a value of $F$ for which a new $N^* = K/2$ rather than $K$. We can determine the value of $F$ for which this is true by finding when $dN/dt=0$ and $N=K/2$.
 \begin{align}
   0 &= r\frac{K}{2}\left(1-\frac{\frac{K}{2}}{K}\right)-F\frac{K}{2}\\
   F &= \frac{r}{2} (\#eq:F)
@@ -689,7 +704,7 @@ Typically the economically optimal approach leads to over-harvesting because the
    N\frac{r}{K}&=r -\frac{r}{2} -\frac{\rho}{2}\\
   N &=\frac{K}{2}\left(1-\frac{\rho}{r}\right)
 \end{align*}
-Thus, unless $\rho=0$, the typical economic optimum $N_{e}^*$ will be smaller than $N*=K/2$.  This makes intuitive economic sense if we consider income from invested profits. The margin of error, however, is much smaller, putting the fisheries population, and the investment of fishing fleets and associated econmoies at greater risk. @Roughgarden:1996fr showed that ecological stability of a fishery is likely to beget economic and cultural stability. They show that the supposed "economic optimal" harvesting rate was so low that it increased the extinction risk of the harvested population to unacceptably high levels. The collapse of a fishery is, of course, both economically and culturally devastating.
+Thus, unless $\rho=0$, the typical economic optimum $N_{e}^*$ will be smaller than $N*=K/2$.  This makes intuitive economic sense if we consider income from invested profits. The margin of error, however, is much smaller, putting the fisheries population, and the investment of fishing fleets and associated economies at greater risk. @Roughgarden:1996fr showed that ecological stability of a fishery is likely to beget economic and cultural stability. They show that the supposed "economic optimal" harvesting rate was so low that it increased the extinction risk of the harvested population to unacceptably high levels. The collapse of a fishery is, of course, both economically and culturally devastating.
 
 
 
