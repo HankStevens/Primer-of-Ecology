@@ -593,9 +593,9 @@ Once we have the sensitivities and elasticities, we can really begin to see what
 
 *All of these details can get very confusing*, and smart people don't always get it right. @Kendall2019 reviewed approximately 125 published, peer-reviewed studies of birth-pulse matrix population models of animal populations to assess them for errors. They found that a surprisingly large number of studies made errors in model construction. The three most common errors were: 
 
-1. failing to include survival in the fertility coefficient;
-1. introducing a one-year delay in age at first reproduction; and
-1. calculating incorrectly the growth rate out of a stage class. 
+1. failing to include survival in the fertility coefficient; post-breeding models typically require adult survival, while pre-breeding models typically require seed/egg/larval transitions in fertility coefficients.
+1. introducing a one-year delay in age at first reproduction; when juveniles transition to adult, this often creates a fertility coefficient for juveniles because they become adult and then breed within the year.
+1. calculating incorrectly the growth rate out of a multi-age stage class; this can be tricky [@kendall2019].
 
 Rely on expert advice [@Caswell:2001gu; @Ellner:2006qe; @Kendall2019], and remember that the stages of life cycle graph and matrix are the stages that you collect at one point in time, and an arrow or transition element has to include everything that happens from one census period to the next.
 
@@ -671,6 +671,9 @@ So,...probability densities are like probabilities, but you have to calculate th
 Rachel Collins and colleagues have been studying populations of an endangered coneflower, *Echinecea laevigata*, in southwest Virginia, USA. Smooth coneflower is a perennial rhizomatous herbaceous plant that is sparsely distributed across mid-Atlantic and southeastern states ([https://plants.usda.gov/](https://plants.usda.gov/)). It requires open spaces with little canopy cover, such as meadows or early successional habitat.
 
 Collins marked each individual in selected populations, measured size of individual coneflower plants using total leaf area, which ranged from 3-950 cm$^2$. Because she tagged individuals and tracked changes over time, she was able estimate survival and fecundity of different sized individuals. She also measured seed set (number of seeds per inflorescence) and recruitment. Recruitment is emergence from the seed, that is, germination, growth, and survival in the first year. 
+```{r cflh, echo=FALSE, fig.cap='Smooth coneflower, *Echinecea laevigata*, is an endangered plant that lives in only a few places on poor soils. It prefers sunny open habitats, long walks in the rain, and reading a good book by the fire.', out.width='100%', fig.show='hold'}
+include_graphics("figs/coneflowerLH.png")
+```
 
 In what follows, we graph empirical data on growth, survival, and fecundity (*y*-axis) as functions of log-size (*x*-axis). These continuous data will allow us to produce matrices with very narrow size classes. 
 
@@ -689,6 +692,7 @@ rs <- coneflowerrecruits
 # recruit sizes - not shown
 ```
 
+#### Graphing size-dependent transitions
 Survival, **S**, from one year to the next depends on size.
 ```{r fig.cap="Survival is represented as surviving (1) or not surviving (0). The probability of surviving to the next year, given a size in the first year, is estimated using logistic regression. The fitted line gives us a point estimate for survival for any log-size. The grey band represents uncertainty.", out.width="67%" }
 eda_s <- ggplot(cf, aes(logA, surv)) + lims(x=c(0.5, 2.75)) +
@@ -696,11 +700,11 @@ eda_s <- ggplot(cf, aes(logA, surv)) + lims(x=c(0.5, 2.75)) +
   geom_smooth(method="glm", method.args = list(family = "binomial")) + labs(title="Survival")
 eda_s
 ```
-Using logistic regression provides a straightforward way to estimate size-dependent survival and its uncertainty. We can use both the estimate and it uncertainty in our projections.
+Using logistic regression provides a straightforward way to estimate size-dependent survival and its uncertainty. We can use both the estimate and its uncertainty in our projections.
 
-Growth, **G**, is  how the size of a plant in one year depends on its size in the previous year. 
+Growth, **G**, is how the size of a plant in one year depends on its size in the previous year. 
 ```{r growth, fig.cap="Growth is the relation between size at one time vs. size in another. The fitted estimate includes the 95% confidence interval. The dashed line is the 1:1 line; above this line is growth, while below it is regression to a smaller size. We include only those individuals that survive.", out.width="67%"}
-# use only the plants alive in both years
+# use (filter) only the plants alive in both years
 cfs <- filter(cf, surv==1 & !is.na(logAp))
 eda_g <- ggplot(cfs, aes(logA, logAp)) + geom_point() +
   geom_abline(intercept=0, slope=1, lty=2, col="blue") +
@@ -709,7 +713,7 @@ eda_g <- ggplot(cfs, aes(logA, logAp)) + geom_point() +
 eda_g
 ```
 
-The larger individuals tend to regress to smaller sizes in subsequent years.
+Notice two features of this relation. First, the slope is less than 1:1. That means that smaller individuals tend to grow relatively more each year than large individuals. That is not surprising. Second, larger individuals actually tend to to regress to smaller sizes in a given year. This is not necessarily surprising either, but is useful to keep in mind. There might be some indication of a systematic tendancy to shrink after a year of flowering.
 
 Next we tackle fecundity, **F**, which for us is estimated using
 
@@ -727,12 +731,17 @@ eda_f <- ggplot(cfs, aes(logA, flower_p)) +
 eda_f
 ```
 
-It is also true that bigger plants might produce more seeds, although there is not a lot of evidence for that in these data.
+One feature of these data is that most individuals do no flower at all and the even large individuals do not necessarily flower.
+
+We will also check whether bigger plants might produce more seeds.
 ```{r seed, fig.cap="No compelling evidence that size influences seed set. Nonetheless, we will use this approach in estiamting fecundity, F.", out.width="67%"}
 eda_sd <- ggplot(sf, aes(logAs, seeds)) + geom_point() +
   geom_smooth(method="lm") + labs(title="Seed set")
 eda_sd
 ```
+
+
+These data don't provide strong evidence that larger plants produce more seeds. However, using this relation regardless will allow us to include the observation variation in seed production among those individuals to do flower.
 
 We also need to estimate *establishment probability*, or the chance that a seed germinates and survives until the following summer. Collins estimated that using seed baskets. These are mesh baskets filled with soil into which she placed a known number of seeds. They are placed in the ground and seedlings or recruits are counted the following year.
 ```{r pr, fig.cap="Probability that seeds in one year establish as new recruits the following summer.", out.width="67%"}
@@ -773,11 +782,13 @@ eda_C <- ggplot(data = data.frame(x = c(0.4, 1.4)), aes(x)) +
 eda_C
 ```
 
+#### Statistical modeling of size-dependent transitions
 First we estimate something from data, then we use it to build functions. I use code handed down on stone tablets from Ellner, Merow, and others.
 
 We start with a data frame to hold summaries.
 ```{r params}
-## this sets up a list of the model parameters. These parameters will be estimated and recorded below.
+## this sets up a list of the model parameters. 
+## These parameters will be estimated below and stored in 'params'.
 params=data.frame(
     surv.int=NA, # y-intercept of the survival regresion
     surv.slope=NA, # slope of the survival regresion
@@ -795,31 +806,61 @@ params=data.frame(
 )
 ```
 
-Next, we perform the analyses from which we extract means, linear relationships, and variation, and put this values into the above data frame.
+Next, we perform the analyses from which we extract means, linear relationships, and variation, and put these values into the above data frame.
+
+For survival probability, $s$, we use logistic regression, also known as a *general linearized model* with a binomial error distribution and a logit link function. Genaralized linear models are a broad class of models that allow the use of a wide variety of types of data and error distributions
+$$\log \left( \frac{s}{1-s} \right) = b_0 + b_1 \mathrm{size} + \mathrm{error}$$
+where $0 \le s \le 1$ because it is a probability. The data for a logistic regression are ones and zeroes, or successes and failures.
 ```{r}
 #survival regression
-surv.reg=glm(surv~logA,data=cf,family=binomial())
+## the model statement
+surv.reg <- glm(surv~logA,data=cf,family=binomial())
+
+## saving the intercept and slope of the line
 params$surv.int <- coef(surv.reg)[1]
 params$surv.slope <- coef(surv.reg)[2]
+## the uncertainty is built into the model
+```
 
-# Growth
+We can model growth in a linear model, with a normal error distribution - the type of regression we are most familiar with,
+$$ z^\prime = b_0 + b_1 z + \mathrm{error}$$
+where $z$ and  $z^\prime$ are log-leaf area in one year and the next year.
+```{r}
+## Model statement
 gr.reg <- lm(logAp ~ logA, data=cf)
+## Saving the intercept and slope
 params$growth.int <- coef(gr.reg)[1]
 params$growth.slope <- coef(gr.reg)[2]
+## Saving standard deviation, our estimate of uncertainty
+## in a normal model
 params$growth.sd <- sd(resid(gr.reg))
+```
 
-# flowering
-fl.reg=glm(flower_p~logA, data=cf,family=binomial())
+To estimate the probability that a plant flowers, we use survivors and the presence or absence of flowers to fit a logistic regression.
+```{r}
+# Flowering
+## model statement
+fl.reg <- glm(flower_p~logA, data=cf,family=binomial())
+## saving the intercept and slope
 params$flowering.int <- coef(fl.reg)[1]
 params$flowering.slope <- coef(fl.reg)[2]
+```
 
-# seed set
+To estimate seed set, or the number of seeds per individual, we can once again rely on a linear model with normal errors.
+```{r}
+## Seed set
+## model statement
 seed.reg <- lm(seeds ~ logAs, data=sf)
+## Saving the intercept and the slope
 params$seed.int <- coef(seed.reg)[1]
 params$seed.slope <- coef(seed.reg)[2]
+## Our estimate of uncertainty, the standard deviation
 params$seed.sd <- sd(resid(seed.reg))
+```
 
-# recruitment
+We estimated the probability of recruitment and the recruit size distribution above, when we made graphs. See the code above for details. Here we save the estimates in our list called `params`.
+```{r}
+# recruitment - see above for details
 params$establishment.prob <- pr
 
 # recruit size distr.
@@ -828,16 +869,18 @@ params$recruit.size.sd <- std.log
 
 ```
 
-Here we make functions that will use the above relationships and the data frame to make the kernel. the variable `z` is size in the first year and `zp` is "z prime", size in the next year.
+#### Generating the projection kernel 
+First, we make functions that will use the above relationships and the data frame to make the kernel. the variable `z` is size in the first year and `zp` is "z prime", size in the next year. Then we use those to fill out the kernel. The kernel is, in principle, continuous, but in practice is matrix with very narrow size stages.
 
-First we create a function to estimate the probability of surviving, $s$,  given a size $z$. This is a back transformation of the logistic function, where
+We begin by creating a function to estimate the probability of surviving, $s$,  given a size $z$. This is a back transformation of the logistic function, where
 $$s = \frac{\exp (\beta_0 + \beta_1 z)}{1 + \exp (\beta_0 + \beta_1 z)}$$
 
 ```{r sfunc}
 s.z=function(z,params) {
   # calculate survival probability by
-  # backtransforming glm regression params 
-    u=exp(params$surv.int + params$surv.slope*z)
+  # backtransforming glm regression params for the 
+  # intercept and slope of the regression
+    u <- exp(params$surv.int + params$surv.slope*z)
     s <- u/(1+u)
     return(s)
 }
@@ -852,10 +895,13 @@ g.zpz=function(zp,z,params) {
     dnorm(zp,
           mean=params$growth.int+params$growth.slope*z,
           sd=params$growth.sd)
+  # 'mean' is the mean log-size, 
+  # 'sd' is the standard deviation, and thus describes the 
+  # variety of sizes that will occur
 }
 ```
 
-Next we create a function to estimate the probability of having a particular "fecundity", which in these models is far more than just offspring production because it encompasses an entire year. It does a lot:
+Next we create a function to estimate the probability of having a particular "fecundity", which in these models is far more than just offspring production because it encompasses an entire year. It includes a lot:
 
 * size-dependent flowering probability
 * seeds per flowering head (maybe size dependent)
@@ -875,7 +921,13 @@ f.zpz=function(zp,z,params) {
 }
 ```
 
-Finally, we begin to create our finite analogue of the continuous kernel: our discretized kernel, $K$.  We determine the upper and lower size bounds on log-plant size, the number of discrete cells or size intervals, the bounds of each discrete size interval, and the midpoints of each interval, and the width of interval.
+Finally, we begin to create our finite analogue of the continuous kernel: our discretized kernel, $K$.  We determine 
+
+* the upper and lower size bounds on log-plant size, 
+* the number of discrete cells or size intervals, 
+* the bounds of each discrete size interval, and 
+* the midpoints of each interval, and 
+* the width of interval.
 ```{r }
 # 1. boundary points b, mesh points y and step size h
 # integration limits - these limits span the range of sizes observed in the data set, and then some.
@@ -891,25 +943,30 @@ y = ( b[1:n] + b[2:(n+1)] ) / 2
 h = y[2]-y[1]
 ```
 
+Our discretized kernel, will be a 100 x 100 matrix (n=100). Thus we are dividing up a log-size range of 2.32 (0.629--2.949) into 100 equal size categories or size stages. That is more finely divided than Collins and her colleagues actually used in their sizes estimates and ensures that we are not simplifying their data.
+
 Here we use the functions we made above to fill out growth, survival and fecundity elements of the full kernel, $K$.
 ```{r}
 ## Growth kernel
-# 'outer()'  yields an outer product where each element is can be an arbitrary function.
-G=h*outer(y, y, FUN=g.zpz, params=params)   # growth kernel
+# 'outer()'  yields an outer matrix product where each element is can be an arbitrary function.
+G=h*outer(y, y, FUN=g.zpz, params=params)   # 100 x 100 growth kernel
+
 ## Survival kernel
-S=s.z(y,params=params)   # survival kernel
-## Growth X Survival
+S=s.z(y,params=params)   # 100 x 100 survival kernel
+
+## Growth X Survival kernel
 P = G # placeholder;redefine P on the next line
-for(i in 1:n) P[,i]=G[,i]*S[i]  # growth*survival kernel
+for(i in 1:n) P[,i]=G[,i]*S[i]  # 100 x 100 growth*survival kernel
+
 ## Fecundity kernel
-Fec=h*outer(y, y, f.zpz, params=params) 
+Fec=h*outer(y, y, f.zpz, params=params)  # 100 x 100 fecundity
 
 ## the full projection kernel
-K=P+Fec # full kernel
+K=P+Fec # full 100 x 100 discretized kernel
 ```
 
-Finally, we plot the kernels so that we can visualize them and thereby better appreciate what the result is.
-```{r kernels, fig.cap="The component kernels G, S, and F, that make up the full demographic projection kernel, K, for smooth cone flower. Unlike projection matrices, kernels scale both axes to start at size = 0 in the lower left corner. The color scaling of the full kernel differs slightly so that we can see the contributions of G, S, and F."}
+Finally, we plot the component and full kernels so that we can visualize them and thereby better appreciate what the result is.
+```{r kernels, fig.cap="The component kernels G, S, and F, that make up the full demographic projection kernel, K, for smooth cone flower. By convention and unlike projection matrices, kernels scale both axes to start at the smallest size in the lower left corner. The color scaling of the full kernel differs slightly so that we can see the contributions of G, S, and F."}
 ## create a 2 x 2 array of subfigures
 par(mfrow=c(2,2))
 ## plot Growth
@@ -927,8 +984,10 @@ image(y,y,t(K)^.33,main='K',
       col=grey.colors(12, start=0, end=1, rev = TRUE))
 ```
 
+So there we have it: a discretized projection kernel that allows us to start with reasonably intuitive data on size, and size-dependent life history and demography of survival, growth, and more, and arrive at a way to predict future status and understand the roles of different life history stages on population dynamics.
+
 ### Population summaries
-Any question that we could answer using matrices, we can answer using kernels.
+Any question that we could answer using matrices, we can answer using discretized kernels (i.e., finely divided matrices).
 
 We estimate the finite rate of increase, $\lambda$, the same way we did before.
 ```{r results='asis'}
@@ -956,7 +1015,7 @@ plot(y,repro.val,xlab="Size",type="l",main="Reproductive values")
 image(y,y,t(elas),xlab="Size (t)",ylab="Size (t+1)",main="Elasticity")
 ```
  
- There is a ton more stuff we can do. Way more [@Ellner:2016aa].
+There is a ton more stuff we can do. Way more [@Ellner:2016aa].
 
 ## R packges for demography
 
