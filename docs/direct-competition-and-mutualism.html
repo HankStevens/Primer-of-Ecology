@@ -707,44 +707,6 @@ N_2 &amp;=\frac{\alpha_{11}}{\alpha_{12}}N_1 - 1/\alpha_{12}
 Figure 7.10: Only weak facultative mutualisms are stable.
 </p>
 </div>
-<div id="representing-more-realistic-direct-mutualisms" class="section level3" number="7.2.1">
-<h3>
-<span class="header-section-number">7.2.1</span> Representing more realistic direct mutualisms<a class="anchor" aria-label="anchor" href="#representing-more-realistic-direct-mutualisms"><i class="fas fa-link"></i></a>
-</h3>
-<p>One feature of the above representation is that we cannot represent obligate mutualisms. We can do this if we rewrite the above equations in one of the ways we did in Chapter 5, letting <span class="math inline">\(b=r\)</span> and <span class="math inline">\(a=r\alpha\)</span>.</p>
-<p><span class="math display">\[\begin{align*}
-\frac{dN_1}{dt} &amp;= N_1\left( b_1 - a_{11} N_1 + a_{12} N_2\right)\\
-\frac{dN_2}{dt} &amp;= N_2 \left(b_2 + a_{21}N_1 - a_{22}N_2\right)
-\end{align*}\]</span></p>
-<p>In the above equations we see the sign of the intraspecific terms <span class="math inline">\(\alpha_{ii}N_i\)</span> is negative, while the sign of the interspecific terms <span class="math inline">\(\alpha_{ij}N_j\)</span>.</p>
-<p>The zero net growth isoclines are found the same way we found those for interspecific competition, by solving <span class="math inline">\(dN_1/dt\)</span> (for zero). We will graph these, so we solve each in terms of species 1.
-<span class="math display">\[\begin{align*}
-0 &amp;= b_1 - a_{11} N_1 + a_{12} N_2\\
-N_2 &amp;= 1/\alpha_{22} + \frac{\alpha_{21}}{\alpha_{22}}N_1
-\end{align*}\]</span>
-<span class="math display">\[\begin{align*}
-0 &amp;= 1 - \alpha_{11}N_1 + \alpha_{12}N_2\\
-N_2 &amp;=\frac{\alpha_{11}}{\alpha_{12}}N_1 - 1/\alpha_{12}
-\end{align*}\]</span></p>
-<p>The equilibria are
-<span class="math display">\[N_i^* = \frac{\alpha_{jj} + \alpha_{ij}}{\alpha_{ii}\alpha_{jj} - \alpha_{ij}\alpha_{ji}}\]</span></p>
-<p>Here we write an ODE model to help anaylze dynamics.</p>
-<div class="sourceCode" id="cb251"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">mutualism.LV2</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">t</span>, <span class="va">y</span>, <span class="va">params</span><span class="op">)</span><span class="op">{</span>
-  <span class="va">n1</span> <span class="op">&lt;-</span> <span class="va">y</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>; <span class="va">n2</span> <span class="op">&lt;-</span> <span class="va">y</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span>
-  <span class="fu"><a href="https://rdrr.io/r/base/with.html">with</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html">as.list</a></span><span class="op">(</span><span class="va">params</span><span class="op">)</span>, <span class="op">{</span>
-    <span class="va">dn1.dt</span> <span class="op">=</span> <span class="va">n1</span><span class="op">*</span><span class="op">(</span><span class="va">b1</span> <span class="op">-</span> <span class="va">a11</span><span class="op">*</span><span class="va">n1</span> <span class="op">+</span> <span class="va">a12</span><span class="op">*</span><span class="va">n2</span><span class="op">)</span>
-    <span class="va">dn2.dt</span> <span class="op">=</span> <span class="va">n2</span><span class="op">*</span><span class="op">(</span><span class="va">b2</span> <span class="op">+</span> <span class="va">a21</span><span class="op">*</span><span class="va">n1</span> <span class="op">-</span> <span class="va">a22</span><span class="op">*</span><span class="va">n2</span><span class="op">)</span>
-    <span class="kw"><a href="https://rdrr.io/r/base/function.html">return</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">dn1.dt</span>, <span class="va">dn2.dt</span><span class="op">)</span> <span class="op">)</span> <span class="op">)</span>
-  <span class="op">}</span><span class="op">)</span>
-<span class="op">}</span>
-
-<span class="va">parameters2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span>a11 <span class="op">=</span> <span class="fl">.002</span>, a22 <span class="op">=</span> <span class="fl">.002</span>, a12 <span class="op">=</span> <span class="fl">.001</span>, a21<span class="op">=</span><span class="fl">.001</span>,
-                b1<span class="op">=</span> <span class="op">-</span><span class="fl">.01</span>, b2<span class="op">=</span> <span class="op">-</span><span class="fl">.01</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/base/with.html">with</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html">as.list</a></span><span class="op">(</span><span class="va">parameters2</span><span class="op">)</span>,
-     <span class="op">(</span><span class="va">b1</span><span class="op">*</span><span class="va">a21</span> <span class="op">-</span> <span class="va">b2</span><span class="op">*</span><span class="va">a11</span><span class="op">)</span><span class="op">/</span><span class="op">(</span><span class="va">a11</span><span class="op">*</span><span class="va">a22</span><span class="op">-</span><span class="va">a12</span><span class="op">*</span><span class="va">a21</span><span class="op">)</span><span class="op">)</span></code></pre></div>
-<pre><code>## [1] 3.333333</code></pre>
-</div>
 </div>
 <div id="generalized-lotka-volterra-models" class="section level2" number="7.3">
 <h2>
@@ -785,9 +747,7 @@ where <span class="math inline">\(\alpha_{ij}, \alpha_{ji} &lt; 0\)</span> descr
 <li><a class="nav-link" href="#return-time-and-the-effect-of-r"><span class="header-section-number">7.1.3</span> Return Time and the Effect of \(r\)</a></li>
 </ul>
 </li>
-<li>
-<a class="nav-link" href="#interspecific-mutualism"><span class="header-section-number">7.2</span> Interspecific mutualism</a><ul class="nav navbar-nav"><li><a class="nav-link" href="#representing-more-realistic-direct-mutualisms"><span class="header-section-number">7.2.1</span> Representing more realistic direct mutualisms</a></li></ul>
-</li>
+<li><a class="nav-link" href="#interspecific-mutualism"><span class="header-section-number">7.2</span> Interspecific mutualism</a></li>
 <li><a class="nav-link" href="#generalized-lotka-volterra-models"><span class="header-section-number">7.3</span> Generalized Lotka-Volterra models</a></li>
 <li><a class="nav-link" href="#summary"><span class="header-section-number">7.4</span> Summary</a></li>
 </ul>

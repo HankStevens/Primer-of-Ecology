@@ -97,7 +97,7 @@
   \frac{d I}{d t} &amp;=\beta IS  - \gamma I\\
   \frac{d R}{d t} &amp;= \gamma I
 \end{align*}\]</span></p>
-<div class="sourceCode" id="cb306"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb304"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Here we create the function for the simple SIR model.</span>
 <span class="va">SIRd</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">t</span>, <span class="va">y</span>, <span class="va">p</span><span class="op">)</span> <span class="op">{</span>
   <span class="op">{</span>
@@ -135,7 +135,7 @@ What does this tell us? First, because we could divide through by <span class="m
 \end{equation}\]</span>
 where <span class="math inline">\(R_0\)</span> is the basic reproductive rate of the disease. If <span class="math inline">\(R_0 &gt; 1\)</span>, then an outbreak (i.e., disease growth) is plausible. Try not to confuse density of resistant hosts, <span class="math inline">\(R\)</span>, with the basic reproductive rate of the disease, <span class="math inline">\(R_0\)</span>. This is analogous to the finite rate of increase of a population where <span class="math inline">\(\lambda&gt;1\)</span>.</p>
 <p>Here we model the outbreak of a nonlethal disease (e.g., a new cold virus in winter at university). We assume that the disease is neither life-threatening, and nor is anyone resistant, thus <span class="math inline">\(R=0\)</span>. We can investigate the SIR model by pretending that, as is often the case, we begin with a largely uninfected population and <span class="math inline">\(t=0\)</span>, so <span class="math inline">\(I_0=1\)</span> and <span class="math inline">\(S_0\approx N\)</span>. We first set parameters. Let’s assume that a cold lasts about a week - that is the duration of the disease, which is <span class="math inline">\(1/\gamma\)</span>. This assumes that the duration ot he cold symptoms are exponentially distributed.</p>
-<div class="sourceCode" id="cb307"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb305"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">parms</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span>B<span class="op">=</span><span class="fl">.001</span>, g<span class="op">=</span><span class="fl">1</span><span class="op">/</span><span class="fl">7</span><span class="op">)</span>
 <span class="va">N</span> <span class="op">&lt;-</span> <span class="fl">10</span><span class="op">^</span><span class="fl">3</span>; <span class="va">I</span> <span class="op">&lt;-</span> <span class="va">R</span> <span class="op">&lt;-</span> <span class="fl">1</span>; <span class="va">S</span> <span class="op">&lt;-</span> <span class="va">N</span> <span class="op">-</span> <span class="va">I</span> <span class="op">-</span> <span class="va">R</span>
 <span class="va">y</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span>S<span class="op">=</span><span class="va">S</span>, I<span class="op">=</span><span class="va">I</span>, R<span class="op">=</span><span class="va">R</span><span class="op">)</span>
@@ -159,7 +159,7 @@ where <span class="math inline">\(R_0\)</span> is the basic reproductive rate of
   \frac{d I}{d t} &amp;=   \gamma I. \tag{10.6}
 \end{align}\]</span></p>
 <p>Here we create the function for the system of ODEs in eq. .</p>
-<div class="sourceCode" id="cb308"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb306"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">SIRf</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">t</span>, <span class="va">y</span>, <span class="va">p</span><span class="op">)</span> <span class="op">{</span>
   <span class="op">{</span>
         <span class="va">S</span> <span class="op">&lt;-</span> <span class="va">y</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>
@@ -180,7 +180,7 @@ where <span class="math inline">\(R_0\)</span> is the basic reproductive rate of
 <li>If only the immediate neighbor gets exposed to the pathogen, then the probability that the neighbor is susceptible declines with increasing <span class="math inline">\(R\)</span>, and thus the rate of spread <em>will</em> decline with declining prevalence.</li>
 </ol>
 <p>It is fairly easy to imagine different scenarios, and it is very important to justify the form of the function. Density- and frequency-dependent transmission are the two most common caricatures.</p>
-<div class="sourceCode" id="cb309"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb307"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">R</span> <span class="op">&lt;-</span> <span class="fl">0</span>; <span class="va">S</span> <span class="op">&lt;-</span> <span class="va">I</span> <span class="op">&lt;-</span> <span class="fl">1000</span>; <span class="va">Ss</span> <span class="op">&lt;-</span> <span class="va">Is</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="fl">1</span>, <span class="va">S</span>, length<span class="op">=</span><span class="fl">11</span><span class="op">)</span>; <span class="va">N</span> <span class="op">&lt;-</span> <span class="va">S</span><span class="op">+</span><span class="va">I</span><span class="op">+</span><span class="va">R</span>
 <span class="va">betaD</span> <span class="op">&lt;-</span> <span class="fl">0.1</span>; <span class="va">betaF</span> <span class="op">&lt;-</span> <span class="va">betaD</span><span class="op">*</span><span class="va">N</span>
 
@@ -199,7 +199,7 @@ where <span class="math inline">\(R_0\)</span> is the basic reproductive rate of
       main<span class="op">=</span><span class="st">"Frequency Dependent"</span>,
       xlab<span class="op">=</span><span class="st">"I"</span>, ylab<span class="op">=</span><span class="st">"S"</span>, zlab<span class="op">=</span><span class="st">"Transmission Rate"</span><span class="op">)</span>
 <span class="op">}</span></code></pre></div>
-<div class="inline-figure"><img src="figs/unnamed-chunk-132-1.png" width="90%"></div>
+<div class="inline-figure"><img src="figs/unnamed-chunk-130-1.png" width="90%"></div>
 <p>What does frequency–dependent transmission imply about dynamics? Let’s solve for <span class="math inline">\(dI / dt &gt; 0\)</span>.
 <span class="math display" id="eq:19">\[\begin{align}
   \tag{10.7}
@@ -210,10 +210,10 @@ As we did above, let’s consider the pre-outbreak situation where <span class="
 <p>Another interesting phenomenon with frequency–dependent transmission is that prevalence (<span class="math inline">\(I/N\)</span>) can decline with increasing population size (Fig. <a href="#fig:sirFD"><strong>??</strong></a>). Two phenomena contribute to this pattern. First, outbreak in a completely susceptible population typically begins with a single individual, and so initial prevalence is always <span class="math inline">\(I/N=1/N\)</span>. Second, as a consequence of this, the transmission rate is lower in larger populations because <span class="math inline">\(\beta SI/N\)</span> is small. As a consequence, prevalence remains low for a relatively long time. In a seasonal population, most individuals in large populations remain uninfected after four months. Depending upon the organism, this could be long enough to reproduce. In contrast, a density–dependent model typically shows the oppositive, pattern, with more rapid, extreme outbreaks and greater prevalence in more dense populations (Fig. <a href="#fig:sirFD"><strong>??</strong></a>).</p>
 <p><em>SIR</em> dynamics with frequency–dependent transmission (Fig. (fig:sirFD)).</p>
 <p>Here we demonstrate that prevalence can decline with increasing population size in a frequency–dependent disease (e.g., a smut on plant <span class="citation">(<a href="references.html#ref-Antonovics1992" role="doc-biblioref">Antonovics and Alexander 1992</a>)</span>). Let us assume that resistance cannot be acquired, so <span class="math inline">\(\gamma=0\)</span>, and <span class="math inline">\(R = 0\)</span>. We can investigate the SIR model by pretending that, as is often the case, we begin with a largely uninfected population and <span class="math inline">\(t=0\)</span>, so <span class="math inline">\(I_0=1\)</span> and <span class="math inline">\(S_0\approx N\)</span>. We first set parameters.</p>
-<div class="sourceCode" id="cb310"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb308"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">S</span> <span class="op">&lt;-</span> <span class="fl">4</span><span class="op">^</span><span class="op">(</span><span class="fl">0</span><span class="op">:</span><span class="fl">4</span><span class="op">)</span>;  <span class="va">I</span> <span class="op">&lt;-</span> <span class="fl">1</span>; <span class="va">parmsf</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span>B<span class="op">=</span><span class="fl">1</span>, g<span class="op">=</span><span class="fl">0</span><span class="op">)</span>; <span class="va">parmsd</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span>B<span class="op">=</span><span class="fl">1</span><span class="op">/</span><span class="fl">16</span>, g<span class="op">=</span><span class="fl">0</span><span class="op">)</span></code></pre></div>
 <p>We next integrate for six months, letting <span class="math inline">\(R=S/2\)</span>.</p>
-<div class="sourceCode" id="cb311"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb309"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">Months</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">8</span>, by<span class="op">=</span><span class="fl">0.1</span><span class="op">)</span>
 <span class="va">outd</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html">sapply</a></span><span class="op">(</span><span class="va">S</span>, <span class="kw">function</span><span class="op">(</span><span class="va">s</span><span class="op">)</span> <span class="op">{</span><span class="va">out</span> <span class="op">&lt;-</span> <span class="fu">ode</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">s</span>,<span class="va">I</span>,<span class="va">R</span><span class="op">)</span>, <span class="va">Months</span>, <span class="va">SIRd</span>, <span class="va">parmsd</span><span class="op">)</span>
                                <span class="va">out</span><span class="op">[</span>,<span class="fl">3</span><span class="op">]</span><span class="op">/</span><span class="fu"><a href="https://rdrr.io/r/base/apply.html">apply</a></span><span class="op">(</span><span class="va">out</span><span class="op">[</span>,<span class="fl">2</span><span class="op">:</span><span class="fl">4</span><span class="op">]</span>, <span class="fl">1</span>, <span class="va">sum</span><span class="op">)</span> <span class="op">}</span> <span class="op">)</span>
@@ -221,7 +221,7 @@ As we did above, let’s consider the pre-outbreak situation where <span class="
                                <span class="va">out</span><span class="op">[</span>,<span class="fl">3</span><span class="op">]</span><span class="op">/</span><span class="fu"><a href="https://rdrr.io/r/base/apply.html">apply</a></span><span class="op">(</span><span class="va">out</span><span class="op">[</span>,<span class="fl">2</span><span class="op">:</span><span class="fl">4</span><span class="op">]</span>, <span class="fl">1</span>, <span class="va">sum</span><span class="op">)</span> <span class="op">}</span> <span class="op">)</span>
 <span class="co">#TR &lt;- sapply(S, function(s) {R &lt;- s/2; parmsf["B"]*s*I/(s+I+R)})</span></code></pre></div>
 <p>Last, we make the figures.</p>
-<div class="sourceCode" id="cb312"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb310"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/graphics/matplot.html">matplot</a></span><span class="op">(</span><span class="va">Months</span>, <span class="va">outd</span>, type<span class="op">=</span><span class="st">'l'</span>, col<span class="op">=</span><span class="fl">1</span>, ylab<span class="op">=</span><span class="st">"Prevalence (I/N)"</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/graphics/matplot.html">matplot</a></span><span class="op">(</span><span class="va">Months</span>, <span class="va">outf</span>, type<span class="op">=</span><span class="st">'l'</span>, col<span class="op">=</span><span class="fl">1</span>, ylab<span class="op">=</span><span class="st">"Prevalence (I/N)"</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/graphics/legend.html">legend</a></span><span class="op">(</span><span class="st">'bottomright'</span>, legend<span class="op">=</span><span class="va">S</span>, lty<span class="op">=</span><span class="fl">1</span><span class="op">:</span><span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span><span class="op">(</span><span class="va">S</span><span class="op">)</span>,  bty<span class="op">=</span><span class="st">'n'</span><span class="op">)</span>
@@ -234,7 +234,7 @@ As we did above, let’s consider the pre-outbreak situation where <span class="
 <span class="header-section-number">10.2</span> Open epidemics<a class="anchor" aria-label="anchor" href="#open-epidemics"><i class="fas fa-link"></i></a>
 </h2>
 <p>The above model assumes a constant population size. Here expand this to include population growth and death unrelated to disease (Fig. <a href="disease.html#fig:sirmod">10.1</a>).</p>
-<div class="sourceCode" id="cb313"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb311"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">A</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html">matrix</a></span><span class="op">(</span><span class="cn">NA</span>, nrow<span class="op">=</span><span class="fl">7</span>, ncol<span class="op">=</span><span class="fl">7</span><span class="op">)</span>
 <span class="va">a</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html">matrix</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span> <span class="fl">2</span>,<span class="fl">1</span>, <span class="fl">3</span>,<span class="fl">2</span>, <span class="fl">4</span>,<span class="fl">3</span>, <span class="fl">5</span>,<span class="fl">2</span>, <span class="fl">6</span>,<span class="fl">3</span>, <span class="fl">7</span>,<span class="fl">4</span><span class="op">)</span>, ncol<span class="op">=</span><span class="fl">2</span>, byrow<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span>
 <span class="va">A</span><span class="op">[</span><span class="va">a</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fl">1</span>
@@ -261,7 +261,7 @@ Figure 10.1: <em>Conceptual model of an open epidemic. We’ll let lambda be mig
 Note that the births add only to the susceptible group, whereas density independent mortality subtracts from each group.</p>
 <p><strong>Disease model with population growth</strong>
 Here we create the function for the system of ODE’s in <a href="disease.html#eq:SIRbd">(10.8)</a>.</p>
-<div class="sourceCode" id="cb314"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb312"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">SIRmod</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">t</span>, <span class="va">y</span>, <span class="va">p</span><span class="op">)</span> <span class="op">{</span>
   <span class="va">S</span> <span class="op">&lt;-</span> <span class="va">y</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>; <span class="va">I</span> <span class="op">&lt;-</span> <span class="va">y</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span>; <span class="va">R</span> <span class="op">&lt;-</span> <span class="va">y</span><span class="op">[</span><span class="fl">3</span><span class="op">]</span>; <span class="va">N</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="va">y</span><span class="op">)</span>
   <span class="fu"><a href="https://rdrr.io/r/base/with.html">with</a></span><span class="op">(</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">as.list</a></span><span class="op">(</span><span class="va">p</span><span class="op">)</span>, <span class="op">{</span>
@@ -277,28 +277,28 @@ Here we create the function for the system of ODE’s in <a href="disease.html#e
 so that when <span class="math inline">\(z=0\)</span> we have pure density dependence, and <span class="math inline">\(z=1\)</span> is pure frequency dependence.</p>
 <p>Note that if we let <span class="math inline">\(z,\, b,\, \mu =0\)</span>, the we have the simplest SIR model with which we bagn the chapter.</p>
 <p>Now imagine a large city, with say, a million people. Let’s then assume that we start of with a population of virtually all susceptible people, but we introduce a single infected person.</p>
-<div class="sourceCode" id="cb315"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb313"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">N</span> <span class="op">&lt;-</span> <span class="fl">10</span><span class="op">^</span><span class="fl">6</span>
 <span class="va">R</span> <span class="op">&lt;-</span> <span class="fl">0</span>; <span class="va">I</span> <span class="op">&lt;-</span> <span class="fl">1</span>; <span class="va">S</span> <span class="op">&lt;-</span> <span class="va">N</span> <span class="op">-</span> <span class="va">I</span> <span class="op">-</span> <span class="va">R</span></code></pre></div>
 <p>Let us further pretend that the disease runs its course over about 10–14 days. Recall that <span class="math inline">\(\gamma\)</span> (gamma) is the inverse of the <em>duration</em> of the disease.</p>
-<div class="sourceCode" id="cb316"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb314"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">g</span> <span class="op">&lt;-</span> <span class="fl">1</span><span class="op">/</span><span class="op">(</span><span class="fl">13</span><span class="op">/</span><span class="fl">365</span><span class="op">)</span></code></pre></div>
 <p>Given a constant population size and exponential growth, then the average life span is the inverse of the birth rate. Let us pretend that the average life span is 50 years.</p>
-<div class="sourceCode" id="cb317"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb315"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">b</span> <span class="op">&lt;-</span> <span class="fl">1</span><span class="op">/</span><span class="fl">50</span></code></pre></div>
 <p>For this model, the force of infection turns out to be <span class="math inline">\(R_0 = 1 + 1 / \left(b + \alpha\right)\)</span>, where <span class="math inline">\(\alpha\)</span> is the average age at onset of the disease <span class="citation">(<a href="references.html#ref-Ellner:2006qe" role="doc-biblioref">S. P. Ellner and Guckenheimer 2006</a>)</span>. We can therefore estimate <span class="math inline">\(\beta\)</span> from all the other parameters, including population size, average life span, average age at onset, and the average duration of the disease. For instance, imagine that we have a disease of children, where the average onset of disease is 5,y, so we have</p>
-<div class="sourceCode" id="cb318"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb316"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">age</span> <span class="op">&lt;-</span> <span class="fl">5</span>
 <span class="va">R0</span> <span class="op">&lt;-</span> <span class="fl">1</span> <span class="op">+</span> <span class="fl">1</span><span class="op">/</span><span class="op">(</span><span class="va">b</span><span class="op">*</span><span class="va">age</span><span class="op">)</span></code></pre></div>
 <p>so <span class="math inline">\(\beta\)</span> becomes</p>
-<div class="sourceCode" id="cb319"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb317"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">B</span> <span class="op">&lt;-</span> <span class="va">R0</span> <span class="op">*</span> <span class="op">(</span><span class="va">g</span> <span class="op">+</span> <span class="va">b</span><span class="op">)</span> <span class="op">/</span> <span class="va">N</span></code></pre></div>
 <p>Finally, we can integrate the population and its states. We create a named vector of parameters, and decide on the time interval.</p>
-<div class="sourceCode" id="cb320"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb318"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">parms</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span>B <span class="op">=</span> <span class="va">B</span>, g <span class="op">=</span> <span class="va">g</span>, b <span class="op">=</span> <span class="va">b</span>, mu<span class="op">=</span><span class="va">b</span>, z<span class="op">=</span><span class="fl">0</span><span class="op">)</span>
 <span class="va">years</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">30</span>, by<span class="op">=</span><span class="fl">.1</span><span class="op">)</span></code></pre></div>
 <p>It turns out that because of the relatively extreme dynamics (Fig. <a href="disease.html#fig:sirbd">10.2</a>), we want to tell the ODE solver to take baby steps, so as to properly capture the dynamics—we use the <code>hmax</code> argument to make sure that the maximum step it takes is relatively small.</p>
-<div class="sourceCode" id="cb321"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb319"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">out</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span><span class="fu">ode</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span>S<span class="op">=</span><span class="va">S</span>,I<span class="op">=</span><span class="va">I</span>,R<span class="op">=</span><span class="va">R</span><span class="op">)</span>, <span class="va">years</span>, <span class="va">SIRmod</span>, <span class="va">parms</span>, hmax<span class="op">=</span><span class="fl">.01</span><span class="op">)</span><span class="op">)</span> 
 <span class="va">SIRbd.out</span> <span class="op">&lt;-</span> <span class="fu">pivot_longer</span><span class="op">(</span><span class="va">out</span>, cols<span class="op">=</span><span class="fl">2</span><span class="op">:</span><span class="fl">4</span>, names_to<span class="op">=</span><span class="st">"Populations"</span>, values_to<span class="op">=</span><span class="st">"Density"</span><span class="op">)</span>
 <span class="fu">ggplot</span><span class="op">(</span><span class="va">SIRbd.out</span>, <span class="fu">aes</span><span class="op">(</span><span class="va">time</span>, <span class="va">Density</span><span class="op">+</span><span class="fl">1</span>, colour<span class="op">=</span><span class="va">Populations</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> 
@@ -316,7 +316,7 @@ Figure 10.2: <em>Epidemic for a nonlethal disease, with an SIR model which inclu
 <span class="header-section-number">10.3</span> Modeling data from Bombay<a class="anchor" aria-label="anchor" href="#modeling-data-from-bombay"><i class="fas fa-link"></i></a>
 </h2>
 <p>Here we try our hand at fitting the SIR model to some data. Kermack and McCormick <a href="#Kermack:1927fk"><strong>??</strong></a> provided data on the number of plague deaths per week in Bombay<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;Bombay is the coastal city now known as Mumbai, and is the capital of Maharashtra; it is one of the largest cities in the world.&lt;/p&gt;"><sup>60</sup></a> in 1905–06. We first enter them and look at them.<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;Data provided kindly by S.P. Ellner&lt;/p&gt;"><sup>61</sup></a></p>
-<div class="sourceCode" id="cb322"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb320"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="va">ross</span><span class="op">)</span>
 <span class="fu">qplot</span><span class="op">(</span>x<span class="op">=</span><span class="va">Week</span>, y<span class="op">=</span><span class="va">CumulativeDeaths</span>, data<span class="op">=</span><span class="va">ross</span><span class="op">)</span></code></pre></div>
 <div class="figure">
@@ -342,7 +342,7 @@ Figure 10.3: <em>Cumulative deaths for plague, in Bombay, India, 1905–1906 (ra
 <li>It returns the negative log-likelihood of the data, given the parameter values.</li>
 </ol>
 <p>Here is our objective function. Note that its last value is the negative sum of the log-probabilities of the data (given a particular realization of the model).</p>
-<div class="sourceCode" id="cb323"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb321"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">sirLL</span><span class="op">=</span><span class="kw">function</span><span class="op">(</span><span class="va">logit.B</span>, <span class="va">logit.g</span>, <span class="va">log.I0</span>, <span class="va">log.N</span><span class="op">)</span> <span class="op">{</span>
   <span class="co">#parameters</span>
   <span class="va">parms</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span>B<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/stats/Logistic.html">plogis</a></span><span class="op">(</span><span class="va">logit.B</span><span class="op">)</span>, g<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/stats/Logistic.html">plogis</a></span><span class="op">(</span><span class="va">logit.g</span><span class="op">)</span><span class="op">)</span>;
@@ -357,26 +357,26 @@ Figure 10.3: <em>Cumulative deaths for plague, in Bombay, India, 1905–1906 (ra
 <span class="op">}</span></code></pre></div>
 <p>We then use this function, <code>sirLL</code>, to find the likelihood of the best parameters. The <code>mle2</code> function in the <code>bbmle</code> library<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;You will need to install the &lt;code&gt;bbmle&lt;/code&gt; package, unless someone has already done this for the computer you are using.&lt;/p&gt;"><sup>64</sup></a> will minimize the negative log-likelihood generated by <code>sirLL</code>, and return values for the parameters of interest.</p>
 <p>We will use a robust, but relatively slow method called Nelder-Mead (it is the default). We supply <code>mle2</code> with the objective function and a list of initial parameter values. This can take a few minutes, but that’s okay.</p>
-<div class="sourceCode" id="cb324"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb322"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/bbolker/bbmle">bbmle</a></span><span class="op">)</span>
 <span class="co"># we used fixed to fix N and I0 to particular values and not estimate them.</span>
 <span class="va">fit</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/bbmle/man/mle2.html">mle2</a></span><span class="op">(</span><span class="va">sirLL</span>, start<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>logit.B<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/stats/Logistic.html">qlogis</a></span><span class="op">(</span><span class="fl">1e-5</span><span class="op">)</span>, logit.g<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/stats/Logistic.html">qlogis</a></span><span class="op">(</span><span class="fl">.2</span><span class="op">)</span>, 
                      log.N<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html">log</a></span><span class="op">(</span><span class="fl">9.5e5</span><span class="op">)</span>, log.I0<span class="op">=</span><span class="fl">0</span><span class="op">)</span>, 
                      method<span class="op">=</span><span class="st">"Nelder-Mead"</span><span class="op">)</span> </code></pre></div>
 <p>Let’s look at a summary of the fit, as far as it went. Here is what I get.</p>
-<div class="sourceCode" id="cb325"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb323"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">fit</span><span class="op">)</span></code></pre></div>
 <pre><code>## Length  Class   Mode 
 ##      1   mle2     S4</code></pre>
 <p>This gets us some parameter estimates, but they are probably not accurate because the computer couldn’t settle on what it thought was a stable solution (convergence failure. This occurs frequently when we ask the computer to estimate too many, often correlated, parameters for a given data set. Therefore, we have to make assumptions regarding selected parameters. Let us assume for the time being that the two variable estimates are correct, that the population size of the vulnerable population was approximately exp(<code>rround(coef(fit)[3],1)</code>) and the number of infections at the onset of the outbreak was <code>9.6</code>. We will hold these constant and ask R to refit the model, using the default method.</p>
-<div class="sourceCode" id="cb327"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb325"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">fit2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/bbmle/man/mle2.html">mle2</a></span><span class="op">(</span><span class="va">sirLL</span>, start<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/list.html">as.list</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/coef.html">coef</a></span><span class="op">(</span><span class="va">fit</span><span class="op">)</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">2</span><span class="op">]</span><span class="op">)</span>,
             fixed<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>log.N<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/stats/coef.html">coef</a></span><span class="op">(</span><span class="va">fit</span><span class="op">)</span><span class="op">[</span><span class="fl">4</span><span class="op">]</span>, log.I0<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/stats/coef.html">coef</a></span><span class="op">(</span><span class="va">fit</span><span class="op">)</span><span class="op">[</span><span class="fl">3</span><span class="op">]</span><span class="op">)</span>, method<span class="op">=</span><span class="st">"BFGS"</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">fit2</span><span class="op">)</span></code></pre></div>
 <p>Next we want to find confidence intervals for <span class="math inline">\(\beta\)</span> and <span class="math inline">\(\gamma\)</span>. This can take more than several minutes, but it results in a likelihood profile for these parameters, which show the confidence regions for these parameters (Fig. <a href="disease.html#fig:profile">10.4</a>).</p>
-<div class="sourceCode" id="cb328"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb326"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">pr2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/profile.html">profile</a></span><span class="op">(</span><span class="va">fit2</span><span class="op">)</span></code></pre></div>
-<div class="sourceCode" id="cb329"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb327"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/graphics/par.html">par</a></span><span class="op">(</span>mar<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">5</span>,<span class="fl">4</span>,<span class="fl">4</span>,<span class="fl">1</span><span class="op">)</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">pr2</span><span class="op">)</span></code></pre></div>
 <div class="figure">
@@ -386,37 +386,37 @@ Figure 10.4: <em>The likelihood profile plots show us the confidence intervals o
 </p>
 </div>
 <p>Last we get to plot our curve with the data. We first backtransform the coefficients of the objective function.</p>
-<div class="sourceCode" id="cb330"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb328"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">p</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html">as.numeric</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/Logistic.html">plogis</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/coef.html">coef</a></span><span class="op">(</span><span class="va">fit</span><span class="op">)</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">2</span><span class="op">]</span><span class="op">)</span>,
        <span class="fu"><a href="https://rdrr.io/r/base/Log.html">exp</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/coef.html">coef</a></span><span class="op">(</span><span class="va">fit</span><span class="op">)</span><span class="op">[</span><span class="fl">3</span><span class="op">:</span><span class="fl">4</span><span class="op">]</span><span class="op">)</span><span class="op">)</span> <span class="op">)</span>; <span class="va">p</span></code></pre></div>
 <pre><code>## [1] 8.018462e-05 7.364288e-01 2.992425e+00 1.461884e+04</code></pre>
 <p>We then get ready to integrate the disease dynamics over this time period.</p>
-<div class="sourceCode" id="cb332"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb330"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">inits</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span>S <span class="op">=</span> <span class="va">p</span><span class="op">[</span><span class="fl">4</span><span class="op">]</span>, I<span class="op">=</span><span class="va">p</span><span class="op">[</span><span class="fl">3</span><span class="op">]</span>, R<span class="op">=</span><span class="fl">0</span><span class="op">)</span>
 <span class="va">params</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span>B<span class="op">=</span><span class="va">p</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>, g<span class="op">=</span><span class="va">p</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span><span class="op">)</span>
 <span class="va">outdf</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span> <span class="fu">ode</span><span class="op">(</span><span class="va">inits</span>, <span class="va">ross</span><span class="op">$</span><span class="va">Week</span>, <span class="va">SIRd</span>, <span class="va">params</span><span class="op">)</span> <span class="op">)</span></code></pre></div>
 <p>Last, we plot the model and the data (Fig. ).</p>
-<div class="sourceCode" id="cb333"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb331"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">sir.Bombay</span> <span class="op">&lt;-</span> <span class="fu">pivot_longer</span><span class="op">(</span>data<span class="op">=</span><span class="va">outdf</span>, <span class="fl">2</span><span class="op">:</span><span class="fl">4</span>, names_to<span class="op">=</span><span class="st">"Populations"</span>, values_to<span class="op">=</span><span class="st">"Density"</span><span class="op">)</span>
 <span class="fu">ggplot</span><span class="op">(</span><span class="va">sir.Bombay</span>, <span class="fu">aes</span><span class="op">(</span><span class="va">time</span>, <span class="va">Density</span>, colour<span class="op">=</span><span class="va">Populations</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> <span class="fu">geom_line</span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> 
   <span class="fu">geom_point</span><span class="op">(</span>data<span class="op">=</span><span class="va">ross</span>, 
              mapping<span class="op">=</span><span class="fu">aes</span><span class="op">(</span>x<span class="op">=</span><span class="va">Week</span>, y<span class="op">=</span><span class="va">CumulativeDeaths</span><span class="op">)</span>, 
              inherit.aes<span class="op">=</span><span class="cn">FALSE</span> <span class="op">)</span></code></pre></div>
-<div class="inline-figure"><img src="figs/unnamed-chunk-150-1.png" width="90%"></div>
-<div class="sourceCode" id="cb334"><pre class="downlit sourceCode r">
+<div class="inline-figure"><img src="figs/unnamed-chunk-148-1.png" width="90%"></div>
+<div class="sourceCode" id="cb332"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># inherit.aes=FALSE tells geom_point not color by "Populations" </span></code></pre></div>
 <p>So, what does this mean (Fig. <a href="disease.html#fig:sir2">10.3</a>? We might check what these values mean, against what we know about the reality. Our model predicts that logit of <span class="math inline">\(\gamma\)</span> was a confidence interval,</p>
-<div class="sourceCode" id="cb335"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb333"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="op">(</span><span class="va">CIs</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/confint.html">confint</a></span><span class="op">(</span><span class="va">pr2</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <pre><code>##              2.5 %    97.5 %
 ## logit.B -9.4425402 -9.416570
 ## logit.g  0.9659977  1.114912</code></pre>
 <p>This corresponds to a confidence interval for <span class="math inline">\(\gamma\)</span> of</p>
-<div class="sourceCode" id="cb337"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb335"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="op">(</span><span class="va">gs</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html">as.numeric</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/Logistic.html">plogis</a></span><span class="op">(</span><span class="va">CIs</span><span class="op">[</span><span class="fl">2</span>,<span class="op">]</span><span class="op">)</span> <span class="op">)</span><span class="op">)</span></code></pre></div>
 <pre><code>## [1] 0.7243210 0.7530437</code></pre>
 <p>Recall that the duration of the disease in the host is <span class="math inline">\(1/\gamma\)</span>. Therefore, our model predicts a confidence interval for the duration (in days) of</p>
-<div class="sourceCode" id="cb339"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb337"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fl">7</span><span class="op">*</span><span class="fl">1</span><span class="op">/</span><span class="va">gs</span></code></pre></div>
 <pre><code>## [1] 9.664223 9.295610</code></pre>
 <p>Thus, based on this analysis, the duration of the disease is about 9.5 days. This seems to agree with what we know about the biology of the Bubonic plague. Its duration, in a human host, is typically thought to last 4–10 days.</p>

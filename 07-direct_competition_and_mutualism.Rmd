@@ -957,52 +957,6 @@ umut.nullclines <- nullclines(mutualism.LV, xlim = c(0, 15),
 
 ```
 
-### Representing more realistic direct mutualisms
-One feature of the above representation is that we cannot represent obligate mutualisms. We can do this if we rewrite the above equations in one of the ways we did in Chapter 5, letting $b=r$ and $a=r\alpha$. 
-
-\begin{align*}
-\frac{dN_1}{dt} &= N_1\left( b_1 - a_{11} N_1 + a_{12} N_2\right)\\
-\frac{dN_2}{dt} &= N_2 \left(b_2 + a_{21}N_1 - a_{22}N_2\right)
-\end{align*}
-
-In the above equations we see the sign of the intraspecific terms $\alpha_{ii}N_i$ is negative, while the sign of the interspecific terms $\alpha_{ij}N_j$.
-
-The zero net growth isoclines are found the same way we found those for interspecific competition, by solving $dN_1/dt$ (for zero). We will graph these, so we solve each in terms of species 1.
-\begin{align*}
-0 &= b_1 - a_{11} N_1 + a_{12} N_2\\
-N_2 &= 1/\alpha_{22} + \frac{\alpha_{21}}{\alpha_{22}}N_1
-\end{align*}
-\begin{align*}
-0 &= 1 - \alpha_{11}N_1 + \alpha_{12}N_2\\
-N_2 &=\frac{\alpha_{11}}{\alpha_{12}}N_1 - 1/\alpha_{12}
-\end{align*}
-
-The equilibria are
-$$N_i^* = \frac{\alpha_{jj} + \alpha_{ij}}{\alpha_{ii}\alpha_{jj} - \alpha_{ij}\alpha_{ji}}$$
-
-Here we write an ODE model to help anaylze dynamics.
-```{r echo=TRUE}
-mutualism.LV2 <- function(t, y, params){
-  n1 <- y[1]; n2 <- y[2]
-  with(as.list(params), {
-    dn1.dt = n1*(b1 - a11*n1 + a12*n2)
-    dn2.dt = n2*(b2 + a21*n1 - a22*n2)
-    return(list( c(dn1.dt, dn2.dt) ) )
-  })
-}
-
-parameters2 <- c(a11 = .002, a22 = .002, a12 = .001, a21=.001,
-                b1= -.01, b2= -.01)
-with(as.list(parameters2),
-     (b1*a21 - b2*a11)/(a11*a22-a12*a21))
-```
-```{r results='hide', include=FALSE}
-t <- 0:100
-out <- ode(c(4,4), t, mutualism.LV2, parameters2)
-plot(out)
-```
-
-
 ## Generalized Lotka-Volterra models
 
 Up to this point, we have used the sign ($\pm$) of each term in our equations to illustrate as clearly as possible the types interactions that we are exploring. If instead, we let the sign of the coefficient determine the type of interaction, we let $\alpha$ be less than or greater than zero, we can describe the growth rate of any species $i$ as a function of all species $j$, with
