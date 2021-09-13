@@ -548,7 +548,7 @@ Up until now, we have examined $N$ as a function of time. We have
 graphed it for different $\alpha$ and $N_0$, but time was always on
 the $x$-axis. Now we are going to examine $N$ as a function of $r_d$, so $r_d$ is on the $x$-axis. Specifically, we will plot the stable limits or attractors $vs$. $r_d$ (Fig. \@ref(fig:bifurcation)). What does it mean? For $r_{d} < 2$, there is only a single $N$. This is what we mean by a stable point equilibrium, or point attractor.
 
-As long as $r_d$ is small, $N$ always converges to a particular point.^[It need not be the same $N$ for each $r_d$, although in this case it is.] When $2<r_{d}<2.45$, then all of a sudden there are two different $N$; that is, there is a two-point stable limit cycle. Note that when $r_d\approx 2$ these oscillations between the two point attractors around $K$ are small, but as we increase $r_d$, those two points are farther apart. The point at which the limit cycle emerges, at $r_d=2$, is called a *bifurcation*; it is a splitting of the single attractor into two attractors. At $r_{d}\approx 2.45$, there is another bifurcation, and each the two stable attractors split into two, resulting in a total of  four unique $N$. At $r_{d}\approx 2.53$, there are eight $N$. 
+As long as $r_d$ is small, $N$ always converges to a particular point.^[It need not be the same $N$ for each $r_d$, although in this case it is.] When $2<r_{d}<2.45$, then all of a sudden there are two different $N$; that is, there is a two-point stable limit cycle. Note that when $r_d\approx 2$ these oscillations between the two point attractors around $K$ are small, but as we increase $r_d$, those two points are farther apart. The point at which the limit cycle emerges, at $r_d=2$, is called a *bifurcation*; it is a splitting of the single attractor into two attractors^[A bifurcation is when a small smooth change to a continuous parameter causes a qualitative or discreet change to the system or its topology.]. At $r_{d}\approx 2.45$, there is another bifurcation, and each the two stable attractors split into two, resulting in a total of  four unique $N$. At $r_{d}\approx 2.53$, there are eight $N$. 
 
 All of these points are *periodic attractors* because $N$ is drawn to these particular points at regular intervals. As $r_d$ increases the number of attractors will continue to double, growing geometrically. Eventually, we reach a point when there becomes an infinite number of unique points, *that are determined by $r_{d}$*.^[They are also determined by the initial $N$, but we will get to that later.] This completely deterministic, non-repeating pattern in $N$ is a property of *chaos*. Chaos is not a random phenomenon; rather it is the result of deterministic mechanisms generating non-repeating patterns.
 
@@ -591,10 +591,11 @@ ggplot(out.l.chaotic, aes(rd, N)) + geom_point(pch=".") + theme_bw()
 There has been a great deal of effort expended trying to determine whether a particular model or real population exhibits true chaos. In any practical sense, it may be somewhat unimportant whether a population exhibits true chaos, or merely a higher order periodic attractor [@Ellner:2005fk]. The key point here is that very simple models, and therefore potentially simple mechanisms, can generate very complex dynamics.
 
 
-\subsubsection{Sensitivity to initial conditions}
+#### Sensitivity to initial conditions
+
 Another very important characteristic feature of chaotic populations is that they are very sensitive to initial conditions. Thus emerges the idea that whether a butterfly in Sierra Leone flaps its wings twice or thrice may determine whether a hurricane hits the southeastern United States in New Orleans, Louisiana, or in Galveston, Texas.^[Clearly, this suggests that the solution to increased storm severity due to global warming is to kill all butterflies.]
 
-If we generate simulations where we vary initial population size by a single individual, we find that this can have an enormous impact on the similarity of two populations' dynamics, and on our ability to predict future population sizes (Fig. \@(fig:DDGChaosInitN)). Note how the populations start with similar trajectories, but soon diverge so that they experience different sequences of minima and maxima (Fig. \@(fig:DDGChaosInitN)). This is part of what was so upsetting to ecologists about May's 1974 paper --- perhaps even the simplest deterministic model could create dynamics so complex that we could not distinguish them from random [@May:1974fk]. Over time, however, we came to learn that (i) we could distinguish random dynamics from some chaos-like dynamics, and (ii) the hunt for chaos could be very exciting, if most frequently disappointing [@Becks2005; @Constantino1995; @Kendall:1998ys].
+If we generate simulations where we vary initial population size by a single individual, we find that this can have an enormous impact on the similarity of two populations' dynamics, and on our ability to predict future population sizes (Fig. \@ref(fig:DDGChaosInitN)). Note how the populations start with similar trajectories, but soon diverge so that they experience different sequences of minima and maxima (Fig. \@ref(fig:DDGChaosInitN)). This is part of what was so upsetting to ecologists about May's 1974 paper --- perhaps even the simplest deterministic model could create dynamics so complex that we could not distinguish them from random [@May:1974fk]. Over time, however, we came to learn that (i) we could distinguish random dynamics from some chaos-like dynamics, and (ii) the hunt for chaos could be very exciting, if most frequently disappointing [@Becks2005; @Constantino1995; @Kendall:1998ys].
 
 We start with three populations, all very close in initial abundance, $N_0 \in \{97,98,99\}$. We then project the population with a $r_d$ to generate chaos for 30 time steps.
 ```{r DDGChaosInitN, fig.cap="*Effects of differences in initial population size on the short term and long term dynamics, and their correspondence, of three populations.*", out.width="75%"}
@@ -615,7 +616,7 @@ for(i in  1:3){
 ggplot(data=out, aes(time, N, colour=N0, linetype=N0)) + geom_line()
 ```
 
-\subsubsection{Boundedness, and other descriptors}
+#### Boundedness, and other descriptors
 One last issue that we should note is the extent to which our populations are *bounded*. A population may have complex dynamics, but we may be able to characterize a given population by its upper and lower bounds. In spite of the differences created by the initial conditions, the upper and lower bounds of our chaotic populations were very similar (Fig. \@ref(fig:DDGChaosInitN)). Note also as $r_d$ increases (Fig. \@ref(fig:bifurcation)) the oscillations increase very systematically.
 
 One way to see the deterministic nature of chaos is to trace population size from each time point to the next time point. We put $N_t$ on the $x$-axis and $N_{t+1}$ on the $y$-axis, and connect all successive points.  
@@ -631,7 +632,7 @@ qplot(nt, ntp1, geom=c("point", "path") ) + labs(y="N[t+1]", x="N[t]")
 
 In general, we can describe many characteristics of populations, even if we cannot predict exactly what the population size will be five years hence. For instance, we can describe the shape of density dependence (linear, nonlinear), and characteristics of $N$, such as the average, the variance, the periodicity, the upper and lower bounds, and the color (i.e. degree of temporal auto-correlation). Indeed, these characteristics may vary among types of organisms, body sizes, or environments.
 
-#### Ricker and more
+### Ricker and more
 There are many more models of density dependent growth. Some, like the theta-logistic and the Richards models, are more flexible and have more parameters. Others, like the Gompertz model, are used more widely in other fields, such as cancer research for tumor growth, von Bertalanffy for body size growth, and the Ricker model for fisheries. 
 
 The Ricker model looks a lot like our friend, exponential growth, but where $r$ is modified by density. Here we see them side by side.
