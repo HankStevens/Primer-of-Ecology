@@ -595,11 +595,12 @@ Once we have the sensitivities and elasticities, we can really begin to see what
 
 1. failing to include survival in the fertility coefficient; post-breeding models typically require adult survival, while pre-breeding models typically require seed/egg/larval transitions in fertility coefficients.
 1. introducing a one-year delay in age at first reproduction; when juveniles transition to adult, this often creates a fertility coefficient for juveniles because they become adult and then breed within the year.
-1. calculating incorrectly the growth rate out of a multi-age stage class; this can be tricky [@kendall2019].
+1. calculating incorrectly the growth rate out of a multi-age stage class; this can be tricky [@Kendall2019].
 
 Rely on expert advice [@Caswell:2001gu; @Ellner:2006qe; @Kendall2019], and remember that the stages of life cycle graph and matrix are the stages that you collect at one point in time, and an arrow or transition element has to include everything that happens from one census period to the next.
 
 ## Integral projection
+[Make sure `primer` and `tidyverse` packages are loaded.]
 What do we do if our stages seem like arbitrary categories along a continuous scale? What if size is easy to measure accurately and is a really good predictor of demographic rates, and these rates vary continuously with size? How do we decide on size classes? How do we draw seemingly arbitrary divisions between different sizes? 
 
 One way to avoid arbitrary stages is to use *integral projection*. With integral projection models  [@Ellner:2016aa], as opposed to matrix projection models, we no longer have to worry about a particular number of stages or age classes. We select an individual-level state variable, such as body mass, that varies continuously and use that. We could also use length, stem diameter, or even location, if any of these provide a useful predictor of demographic rates. 
@@ -610,7 +611,7 @@ In many organisms, size is often a relatively good predictor of survival and fec
 
 Integral projection models (IPMs) are based on the calculus of integration across continuous variables to combine information about size-dependent demographic rates and size distributions to project population abundances and sizes in the future. 
 
-In practice, we rarely use the tools of integral calculus on which IPMs are so solidly grounded [@Metcalf:2014ab; @ Merow2014; @Ellner:2016aa]. Instead, we approximate integration using very large matrices. As a simple example of this approximation, consider plant height that we measure using a meter stick. We assume that plant height is, in principle, a continuous variable that could take any real value between 0 and infinity. However, imagine that we only measure height to the nearest centimeter, and thereby create 100 height categories. This measurement process chops up continuous variation into very small discrete categories. For instance, if we use height as our measure plant size, and we estimate height to the nearest centimeter, then we have turned a continuous variable into a discrete variable, and could make a matrix in which each row and column represents all individuals who are within 1 cm of each other.
+In practice, we rarely use the tools of integral calculus on which IPMs are so solidly grounded [@Metcalf:2014ab; @Merow2014; @Ellner:2016aa]. Instead, we approximate integration using very large matrices. As a simple example of this approximation, consider plant height that we measure using a meter stick. We assume that plant height is, in principle, a continuous variable that could take any real value between 0 and infinity. However, imagine that we only measure height to the nearest centimeter, and thereby create 100 height categories. This measurement process chops up continuous variation into very small discrete categories. For instance, if we use height as our measure plant size, and we estimate height to the nearest centimeter, then we have turned a continuous variable into a discrete variable, and could make a matrix in which each row and column represents all individuals who are within 1 cm of each other.
 
 You will see below that when we implement integral projection models, we typically combine different techniques that are associated with continuous variation (e.g., linear regression) and with discrete variation (e.g., matrix algebra).
 
@@ -705,7 +706,7 @@ Using logistic regression provides a straightforward way to estimate size-depend
 Growth, **G**, is how the size of a plant in one year depends on its size in the previous year. 
 ```{r growth, fig.cap="Growth is the relation between size at one time vs. size in another. The fitted estimate includes the 95% confidence interval. The dashed line is the 1:1 line; above this line is growth, while below it is regression to a smaller size. We include only those individuals that survive.", out.width="67%"}
 # use (filter) only the plants alive in both years
-cfs <- filter(cf, surv==1 & !is.na(logAp))
+cfs <- dplyr::filter(cf, surv==1 & !is.na(logAp))
 eda_g <- ggplot(cfs, aes(logA, logAp)) + geom_point() +
   geom_abline(intercept=0, slope=1, lty=2, col="blue") +
   labs(title="Growth, Stasis, Regr.") + 
@@ -764,7 +765,7 @@ nx <- sum(Y[,"failure"])
 eda_pr <- ggplot(data = data.frame(x = c(0, 0.5)), aes(x)) +
   stat_function(fun = dbeta, n = 501, 
                 args = list(shape1 = x+1/2, shape2=nx+1/2)) + 
-    labs(y="Prob(recruiting)", title="Seed basket recruitment") +
+    labs(x="Prob(recruiting)", y="Probability density", title="Seed basket recruitment") +
   scale_y_continuous(breaks = NULL)
 eda_pr
 ```
