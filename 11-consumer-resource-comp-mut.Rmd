@@ -1,20 +1,20 @@
 # Consumer-resource Competition and Mutualisms
 
-In an earlier chapter, we used Lotka-Volterra models of competition and mutualism to learn about some fundamental properties of (-,-) and and (+,+) interactions. Here we add some model complexity to illustrate a more mechanistic approach to modeling greater biological reality.  
+In [Chapter 7](#comp), we used Lotka-Volterra models of competition and mutualism to learn about some fundamental properties of (-,-) and and (+,+) interactions. Here we add some model complexity to illustrate a more mechanistic approach to modeling greater biological reality.  
 
 In [Chapter 8](#cr), on consumer-resource interactions, we learned a variety of approaches to representing different types of resources or prey, and different ways consumers consume them. **Please read chapter 8 before proceeding here.** There are a lot of terms and parameters we use here that are more fully explained in [Chapter 8](#cr). 
 
 ## Competition for one resource
 Let's imagine we have competition between two species for the shared limiting inorganic resource,
-$$\frac{dN_1}{dt}= N\left(e_1a_1R - d_1\right)$$
+$$\frac{dN_1}{dt}= N_1\left(e_1a_1R - d_1\right)$$
 $$\frac{dN_2}{dt}= N_2\left(e_2a_2R - d_2\right)$$
-where $e$ is assimilation efficiency, $a$ is consumption rate, and $d$ is mortality. As we can see, these two species do not interact directly--$N_2$ is not in the expression for $dN_1/dt$ and vice versa. 
+where $e$ is assimilation efficiency, $a$ is consumption rate, and $d$ is mortality. As we can see, these two species do not interact directly--$N_2$ is not in the expression for $dN_1/dt$ and vice versa.^[Note that *N* usually refers to number of individuals, but here we can also think of it as a measure of mass.] 
 
 The expression for $dR/dt$ includes a renewing resource,
 $$\frac{dR}{dt} = r(S-R) - e_1a_1N_1R - e_2a_2N_2R$$
 where $S$ is background resource supply rate, and $r$ is resource renewal rate. 
 
-Here we graph mass-specific or per capita growth rates as functions of resource concentrations. These curves are simply,
+Here we graph mass-specific or per capita growth rates as functions of resource concentrations. These curves are simply straight lines (Fig. \@ref{fig:dN}) described by,
 $$y = e_ia_i x - d_i$$
 where $y$ is the per capita or mass-specific growth rate (dN/dt), and $x$ is resource concentration or density ($R$).
 ```{r dN, fig.cap="*Mass-specific growth rates of two species across a range of resource concentrations. Note that where growth rates equal death rates, consumer growth is zero (arrows) and this determines each species' $R^*$s.*", out.width="75%" }
@@ -48,9 +48,9 @@ From Fig. \@ref(fig:dN), we see that at high resource concentrations, species 1 
 
 Both species (Fig. \@ref(fig:dN)) increase in biomass as long as resources are high enough to allow growth, whereas resources will decline as consumers grow more and more and take up increasing amounts of resources. Eventually consumer biomass is high enough to drive down resources so low that mass-specific growth rate is zero. This will happen at different resource concentrations for our two species. We see that species 2 has a positive growth rate when species 1 does not (Fig. \@ref(fig:dN)). This type of resource competition for a single limiting resource was named the $R^*$ rule ("R-star"):
 
-**The species with the lowest $R^*$ for the shared limiting resource will exclude all others.**
+**In the absence of other processes, the species with the lowest $R^*$ for the shared limiting resource will exclude all others.**
 
-We refer to this type of resource competition as $R^*$ competition.
+We refer to this type of resource competition as **$R^*$ competition**.
 
 We can create a model to integrate the dynamics of these three components.
 ```{r cr2}
@@ -86,7 +86,7 @@ Substituting $R^*$ in for $R$ gives us this solution:
 $$N^*_2 = r\left(S\frac{e_2}{d_2} - \frac{1}{a_2}\right)$$
 It is clear from this expression that increasing the death rate ($d$) will drive down $N^*_2$. However, increasing resource turnover rate, $b$, assimilation efficiency, $e$, or uptake rate, $a$, will all cause $N_2^*$ to increase.
 
-In the above model, per capita growth rates were linear functions of resource concentration. It more common to use a type II [functional response](#fr) for the consumers [@Tilman1982] (Fig. \@ref(fig:monod)), which we described in Chapter 8.
+In the above model, per capita growth rates were linear functions of resource concentration. It is more common to see a type II [functional response](#fr) for the consumers [@Tilman1982] (Fig. \@ref(fig:monod)), which we described in Chapter 8.
 $$\frac{dN_i}{Ndt}= b_i\frac{R}{k_i + R} - d_i$$
 ```{r monod, fig.cap="*The Monod function for per capita resource-dependent growth rates of two different populations. These are a type II functional responses.*", out.width="67%"}
 b <-c(1, .5); k=c(5, .1); d = 0.3
@@ -99,7 +99,7 @@ As we saw earlier with linear mass-specific growth rates, one species will have 
 
 ## Competition for Substitutable resources
 
-For two species, $N_1$ and $N_2$, competing for two shared and substitutable resources, $R_1,\,R_2$, we will identify $e_{ij}$ and $a_{ij}$, where $e$ is assimilation efficiency, $a$ is feeding rate. They now have two subscripts, where $i$ refers to the consumer species $N_{i}$, and $j$ refers to either resource 1 or 2 ($R_1$, $R_2$). With that, we have the following relations.
+For two species, $N_1$ and $N_2$, competing for two shared and substitutable^[substitutable resources are those that a species can use in partial replacement of each other.] resources, $R_1,\,R_2$, we will identify $e_{ij}$ and $a_{ij}$, where $e$ is assimilation efficiency, $a$ is feeding rate. They now have two subscripts, where $i$ refers to the consumer species $N_{i}$, and $j$ refers to either resource 1 or 2 ($R_1$, $R_2$). With that, we have the following relations.
 
 $$\frac{dN_1}{dt}= N_1\left(e_{11} a_{11} R_1 + e_{12} a_{12} R_2 - d_1\right)$$
 $$\frac{dN_2}{dt}= N_2\left(e_{21} a_{21} R_1 + e_{22} a_{22} R_2 - d_2\right)$$
@@ -107,7 +107,7 @@ $$\frac{dN_2}{dt}= N_2\left(e_{21} a_{21} R_1 + e_{22} a_{22} R_2 - d_2\right)$$
 $$\frac{dR_1}{dt}= r_1\left(S-R_1\right) - a_{11}N_1R_1 - a_{21}N_2 R_1$$
 $$\frac{dR_2}{dt}= r_2\left(S-R_2\right) - a_{12}N_1R_2 - a_{22}N_2R_2$$
 
-where $a_i$ is the per capita feeding rate of a consumer on a resource, $e_i$ is the efficiency with which a consumer converts a unit of resource into new biomass, $d_i$ is the per capita death rate of consumers, $S$ is the background supply rate of a resoure, and $r(S-R)$ is the turnover rate of resources that are part of the available $R$ pool.
+where $S$ is the background supply rate of a resource, and $r(S-R)$ is the turnover rate of resources that are part of the available $R$ pool.
 
 The differential feeding rates, $a_{i1}$ and $a_{i2}$, tell us a lot about the relative requirements and limitations experienced by the two consumers. If
 $$a_{i1} > a_{i2}$$
@@ -142,9 +142,9 @@ parameters <- c(# the environment supplies slightly more of resources 1
                 d1=.1, d2=.1)
 ```
 
-```{r cr_2x2, fig.cap="*Initial dynamics of two species competing for two shared substitutable resources. Species 1 uses resource 1 more efficiently than it does resource 2 and also consumes more of it, per capita. Conversely, species 2 uses resource 2 more efficiently than it does resource 1 and also consumes more of it per capita.*" }
+```{r cr2by2, fig.cap="*Initial dynamics of two species competing for two shared substitutable resources. Species 1 uses resource 1 more efficiently than it does resource 2 and also consumes more of it, per capita. Conversely, species 2 uses resource 2 more efficiently than it does resource 1 and also consumes more of it per capita.*" }
 
-t <- seq(0, 20, by=.1); y.init <- c(N1=1, N2=1, R1=1.8, R2=1.2)
+t <- seq(0, 200, by=.1); y.init <- c(N1=1, N2=1, R1=1.8, R2=1.2)
 out <- ode(y = y.init, times=t, func=cr_2substitutable, 
            parms=parameters)
 outL <- out %>% as.data.frame %>% pivot_longer(-time, names_to="State_vars", values_to="abun.")
