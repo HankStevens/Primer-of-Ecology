@@ -105,7 +105,7 @@ In addition to density-dependent transmission, investigators have used other for
 \begin{align}
   \frac{d S}{d t} &= - \beta \frac{SI}{N} (\#eq:SIRfd1)\\
   \frac{d I}{d t} &=   \beta \frac{SI}{N} - \gamma I (\#eq:SIRfd2)\\
-  \frac{d I}{d t} &=   \gamma I. (\#eq:SIRfd3)
+  \frac{d R}{d t} &=   \gamma I. (\#eq:SIRfd3)
 \end{align}
 
 Here we create the function for the system of ODEs in eq. \ref{eq:SIR}.
@@ -132,7 +132,7 @@ The proper form of the transmission function depends on the mode of transmission
 
 It is fairly easy to imagine different scenarios, and it is very important to justify the form of the function. Density- and frequency-dependent transmission are the two most common caricatures.
 
-```{r}
+```{r trasmission, fig.cap="*Disease transmission rates vary linearly vs. curvilinearly as functions of the Susceptible and Infected populations in density-dependent vs. frequency-dependent transmission models.*"}
 R <- 0; S <- I <- 1000; Ss <- Is <- seq(1, S, length=11); N <- S+I+R
 betaD <- 0.1; betaF <- betaD*N
 
@@ -162,9 +162,9 @@ What does frequency--dependent transmission imply about dynamics? Let's solve fo
 \end{align}
 As we did above, let's consider the pre-outbreak situation where $S \approx N$, so that $S/N \approx 1$. In that case, the basic reproductive rate is $R_0=\beta/\gamma$, which is *independent of $N$*. An outbreak will occur as long as $\beta > \gamma$, regardless of population density. This is in direct contrast to the density-dependent transmission model (\@ref(eq:SIRfd1), \@ref(eq:SIRfd2)), where outbreak could be prevented if we simply reduce the population, $N$, to a sufficently low density. Both modes of transmission are observed in human and non-human populations, so it is important to understand how the disease is spread in order to predict its dynamics.
 
-Another interesting phenomenon with frequency--dependent transmission is that prevalence ($I/N$) can decline with increasing population size (Fig. \@ref(fig:sirFD)). Two phenomena contribute to this pattern. First, outbreak in a completely susceptible population typically begins with a single individual, and so initial prevalence is always $I/N=1/N$. Second, as a consequence of this, the transmission rate is lower in larger populations because $\beta SI/N$ is small. As a consequence, prevalence remains low for a relatively long time. In a seasonal population, most individuals in large populations remain uninfected after four months. Depending upon the organism, this could be long enough to reproduce. In contrast, a density--dependent model typically shows the oppositive, pattern, with more rapid, extreme outbreaks and greater prevalence in more dense populations (Fig. \@ref(fig:sirFD)).
+Another interesting phenomenon with frequency--dependent transmission is that prevalence ($I/N$) can decline with increasing population size (Fig. \@ref(fig:SIRfd)). Two phenomena contribute to this pattern. First, outbreak in a completely susceptible population typically begins with a single individual, and so initial prevalence is always $I/N=1/N$. Second, as a consequence of this, the transmission rate is lower in larger populations because $\beta SI/N$ is small. As a consequence, prevalence remains low for a relatively long time. In a seasonal population, most individuals in large populations remain uninfected after four months. Depending upon the organism, this could be long enough to reproduce. In contrast, a density--dependent model typically shows the opposite, pattern, with more rapid, extreme outbreaks and greater prevalence in more dense populations (Fig. \@ref(fig:SIRfd)).
 
-*SIR* dynamics with frequency--dependent transmission (Fig. \ref(fig:sirFD)). 
+**SIR** dynamics with frequency--dependent transmission (Fig. \@ref(fig:SIRfd)). 
 
 Here we demonstrate that prevalence can decline with increasing population size in a frequency--dependent disease (e.g.,  a smut on plant [@Antonovics1992]).  Let us assume that resistance cannot be acquired, so $\gamma=0$, and $R = 0$. We can investigate the SIR model by pretending that, as is often the case, we begin with a largely uninfected population and $t=0$, so $I_0=1$ and $S_0\approx N$.  We first set parameters.
 
@@ -181,7 +181,8 @@ outf <- sapply(S, function(s) {out <- ode(c(s,I,R), Months, SIRf, parmsf)
 #TR <- sapply(S, function(s) {R <- s/2; parmsf["B"]*s*I/(s+I+R)})
 ```
 Last, we make the figures.
-```{r SIRfd, fig.show='hold', out.width="40%"}
+
+```{r SIRfd, fig.cap="*Density and frequency dependent transmission alters how prevalence changes over time.*", fig.show='hold', out.width="50%"}
 matplot(Months, outd, type='l', col=1, ylab="Prevalence (I/N)")
 matplot(Months, outf, type='l', col=1, ylab="Prevalence (I/N)")
 legend('bottomright', legend=S, lty=1:length(S),  bty='n')
