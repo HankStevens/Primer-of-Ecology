@@ -166,27 +166,26 @@ Another interesting phenomenon with frequency--dependent transmission is that pr
 
 **SIR** dynamics with frequency--dependent transmission (Fig. \@ref(fig:SIRfd)). 
 
-Here we demonstrate that prevalence can decline with increasing population size in a frequency--dependent disease (e.g.,  a smut on plant [@Antonovics1992]).  Let us assume that resistance cannot be acquired, so $\gamma=0$, and $R = 0$. We can investigate the SIR model by pretending that, as is often the case, we begin with a largely uninfected population and $t=0$, so $I_0=1$ and $S_0\approx N$.  We first set parameters.
+Here we demonstrate that prevalence can vary with population size (e.g.,  a smut on plant [@Antonovics1992]).  Let us assume that resistance cannot be acquired, so $\gamma=0$, and $R = 0$. We can investigate the SIR model by pretending that, as is often the case, we begin with a largely uninfected population and $t=0$, so $I_0=1$ and $S_0\approx N$.  We first set parameters.
 
 ```{r}
-S <- 4^(0:4);  I <- 1; parmsf <- c(B=1, g=0); parmsd <- c(B=1/16, g=0)
+S <- 4^(0:4);  I <- 1; parmsf <- c(B=1, g=0)
 ```
-We next integrate for six months, letting $R=S/2$.
+We next integrate for 12 months.
 ```{r}
-Months <- seq(0, 8, by=0.1)
-outd <- sapply(S, function(s) {out <- ode(c(s,I,R), Months, SIRd, parmsd)
-                               out[,3]/apply(out[,2:4], 1, sum) } )
+Months <- seq(0, 12, by=0.1)
 outf <- sapply(S, function(s) {out <- ode(c(s,I,R), Months, SIRf, parmsf)
                                out[,3]/apply(out[,2:4], 1, sum) } )
+outf.t <- cbind.data.frame(Months=Months, Transmission="Frequency", outf)
+names(outf.t)[3:7] <- paste("N =", S+1)
+outf.tl <- pivot_longer(outf.t, cols=3:7, names_to="N", values_to="Prevalence")
+outf.tl$N <- factor(outf.tl$N, levels = paste("N =", S+1) )
 #TR <- sapply(S, function(s) {R <- s/2; parmsf["B"]*s*I/(s+I+R)})
 ```
-Last, we make the figures.
+Last, we make the figure.
 
-```{r SIRfd, fig.cap="*Density and frequency dependent transmission alters how prevalence changes over time.*", fig.show='hold', out.width="50%"}
-matplot(Months, outd, type='l', col=1, ylab="Prevalence (I/N)")
-matplot(Months, outf, type='l', col=1, ylab="Prevalence (I/N)")
-legend('bottomright', legend=S, lty=1:length(S),  bty='n')
-#plot(S, TR)
+```{r SIRprev, fig.cap="*Total population size can alter prevalence over time.*", out.width="90%"}
+ggplot(outf.tl, aes(Months, Prevalence, colour=N)) + geom_line()  
 ```
 
 ## Open epidemics
