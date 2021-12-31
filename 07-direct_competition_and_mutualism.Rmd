@@ -98,7 +98,7 @@ We start by setting \@ref(eq:N2b) to zero, and solving for $N_2$.
 Recall that the formula for a straight line is $y=mx + b$ where $m$ is
 the slope and $b$ is the intercept on the $y$ axis. We can see that the
 expression for $N_2$ in \@ref(eq:N2iso) is a straight line, where
-$y=N_2$, $m= \alpha_{21}/\alpha_{22}$, and $b=1/\alpha_{22}$ (Fig. \@ref(fig:Niso1)). When $N_1$ is zero, $N_2=1/\alpha_{22}$. This is precisely what we saw in Chapter 3 (logistic growth), that a single species logistic population has an equilibrium at its carrying capacity, $K=1/\alpha$.
+$y=N_2$, $m= -\alpha_{21}/\alpha_{22}$, and $b=1/\alpha_{22}$ (Fig. \@ref(fig:Niso1)). When $N_1$ is zero, $N_2=1/\alpha_{22}$. This is precisely what we saw in Chapter 3 (logistic growth), that a single species logistic population has an equilibrium at its carrying capacity, $K=1/\alpha$.
 
 The isocline (Fig. \@ref(fig:Niso1)) shows that as the competitor's population size, $N_1$, becomes larger, $N_2$ declines by $\alpha_{21}/\alpha_{22}$ for each additional individual of the competing species 1, until finally $N_2=0$ when $N_1=1/\alpha_{21}$.
 
@@ -776,7 +776,7 @@ If we envision the populations sitting at an equilibrium, we can then envision a
   \frac{d x}{d t} \approx c\lambda_1 t.
 \end{equation}
 where $c$ is a constant, so the distance traveled, $x$, is given by \@ref(eq:2x). Therefore, a negative $\lambda_1$ indicates an exponential decline in the disturbance, back toward the equilibrium (Fig. \@ref(fig:RT). The units of return time are the same as for $r$. Recall that all of this depends on the linearization of the curved surface around an equilibrium; it therefore applies exactly to only an infinitesimally small region around the equilibrium. It also usually provides the average, regardless of whether the perturbation is a population decline or a population increase.
-```{r RT, echo=FALSE, fig.cap="*For $\beta_{ij} < 1$, return time is positive because some time will lapse before the system returns toward to its equilibrium.  For $\beta_{ij}>1$, return time is negative, because the system was closer to the (unstable) equilibrium in the past.*", fig.width=4, fig.height=4, out.width="75%"}
+```{r RT, echo=FALSE, fig.cap="*For $\\beta_{ij} < 1$, return time is positive because some time will lapse before the system returns toward to its equilibrium.  For $\\beta_{ij}>1$, return time is negative, because the system was closer to the (unstable) equilibrium in the past.*", fig.width=4, fig.height=4, out.width="75%"}
 par(mar=c(5,4,.5,1))
 aij <- seq(0.0001, 0.009, length=30)
 a11 <- a22 <- 0.01
@@ -788,7 +788,7 @@ a11 <- a22 <- 0.01
                                  N1 <- eval(N1Star); N2 <- eval(N2Star)
                                  -1/max(Re(eigen(eval(J))$values))})
  
-plot(aij, RT, type='l', xlab=expression(alpha[ij]), xlim=c(0,.02),  ylim=c(-20,20))
+plot(aij, RT, type='l', xlab=expression(beta[ij]), xlim=c(0,.02),  ylim=c(-20,20))
 lines(aij2, RT2, lty=2)
 abline(h=0)
  abline(v=a11)
@@ -855,7 +855,7 @@ Lotka-Volterra mutualism is very straightforward, following the same template as
 \frac{dN_2}{dt} &= r_2N_2 \left(1 + \alpha_{21}N_1 - \alpha_{22}N_2\right)
 \end{align*}
 
-In the above equations we see the sign of the intraspecific terms $\alpha_{ii}N_i$ is negative, while the sign of the interspecific terms $\alpha_{ij}N_j$.
+In the above equations we see the sign of the intraspecific terms $\alpha_{ii}N_i$ is negative, while the sign of the interspecific terms $\alpha_{ij}N_j$ is positive.
 
 The zero net growth isoclines are found the same way we found those for interspecific competition, by solving $dN_1/dt$ (for zero). We will graph these, so we solve each in terms of species 1.
 \begin{align*}
@@ -917,7 +917,7 @@ out <- ode(y=c(11,11), time=t, mutualism.LV, parameters)
 #plot(out)
 ```
 
-The Lotka-Volterra approach predicts exclusion of one species in two realistic scenarios, obligate mutualisms and mutualisms with large effects. An obligate mutualism is one in which growth rate is negative in the absence of the mutualism. The way to describe that in Lotka-Volterra models is to set $r < 0$. This results in an unstable equilibrium which is a global repellor which results in the loss of one species. Second, if the benefit is greater than the negative intraspecific effect, we get an uncontrolled positive feedback loop leading to infinite population sizes. In this sense, it is like exponential growth: a potentially very useful idea, but it must be moderated somehow in order to reflect long term trajectories.
+This particular Lotka-Volterra approach predicts exclusion of one species in two realistic scenarios, obligate mutualisms and mutualisms with large effects. An obligate mutualism is one in which growth rate is negative in the absence of the mutualism. The way to describe that in Lotka-Volterra models is to set $r < 0$. This results in an unstable equilibrium which is a global repellor which results in the loss of one species. Second, if the benefit is greater than the negative intraspecific effect, we get an uncontrolled positive feedback loop leading to infinite population sizes. In this sense, it is like exponential growth: a potentially very useful idea, but it must be moderated somehow in order to reflect long term trajectories.
 
 ```{r LVmut, echo=FALSE, fig=TRUE, fig.show = 'hold', fig.cap="Only weak facultative mutualisms are stable.", fig.width=3, fig.height=3.5, out.width='33%'}
 #source("nullclines2.R")

@@ -212,7 +212,7 @@ Thus we see return time, <span class="math inline">\(t\)</span>, here is a posit
 <h3>
 <span class="header-section-number">5.2.3</span> Projection with numerical integration<a class="anchor" aria-label="anchor" href="#projection-with-numerical-integration"><i class="fas fa-link"></i></a>
 </h3>
-<p>In simple density-independent growth, we were able to project a population using the integral of the exponential growth equation, <span class="math inline">\(N_t=N_0 e^{rt}\)</span>. As our models become more complex, we are no longer able to to do that. Instead, we use <em>numerical integration</em> to project models of continuous growth through time. We use numerical techniques that turn the infinitely small intervals of calculus (<span class="math inline">\(dx\)</span>, <span class="math inline">\(dy\)</span>) into very, very small, but finite steps. Mathematicians and computer scientists have devised very clever ways of doing this very accurately and precisely. In R, the best package for this is <code>deSolve</code>, which contains several <em>solvers</em> for differential equations that perform numerical integration. We will access these solvers (i.e. numerical integraters) using the <code>ode</code> function in the <code>deSolve</code> package. This function, <code>ode</code>, is a wrapper for the underlying suite of functions that do the work.</p>
+<p>In simple density-independent growth, we were able to project a population using the integral of the exponential growth equation, <span class="math inline">\(N_t=N_0 e^{rt}\)</span>. As our models become more and more complex, we are no longer able to to do that. Instead, we use <em>numerical integration</em> to project models of continuous growth through time. We use numerical techniques that turn the infinitely small intervals of calculus (<span class="math inline">\(dx\)</span>, <span class="math inline">\(dy\)</span>) into very, very small, but finite steps. Mathematicians and computer scientists have devised very clever ways of doing this very accurately and precisely. In R, the best package for this is <code>deSolve</code>, which contains several <em>solvers</em> for differential equations that perform numerical integration. We will access these solvers (i.e. numerical integraters) using the <code>ode</code> function in the <code>deSolve</code> package. This function, <code>ode</code>, is a wrapper for the underlying suite of functions that do the work.</p>
 <p>When we have an ordinary differential equation (ODE) such as logistic growth,<span class="math inline">\(dN/dt = rN(1-\alpha N)\)</span> we say that we “solve” the equation,</p>
 <ul>
 <li>over a particular time interval</li>
@@ -673,11 +673,11 @@ N_{t+1} = N_t e^{r} \quad ; \quad N_{t+1}=N_t e^{r_d \left(1-N_t/K\right)}
 <p>Like discrete logistic growth, the Ricker model<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;Bill Ricker, the eponym of the famous model, made very important contributions to the study of poplation dynamics and fisheries science.&lt;/p&gt;"><sup>43</sup></a> will also exhibit chaos at high per capita growth rates (<span class="math inline">\(r_d&gt;&gt;1\)</span>).</p>
 </div>
 </div>
-<div id="maximum-sustained-yield" class="section level2" number="5.5">
+<div id="maximum-sustainable-yield" class="section level2" number="5.5">
 <h2>
-<span class="header-section-number">5.5</span> Maximum Sustained Yield<a class="anchor" aria-label="anchor" href="#maximum-sustained-yield"><i class="fas fa-link"></i></a>
+<span class="header-section-number">5.5</span> Maximum Sustainable Yield<a class="anchor" aria-label="anchor" href="#maximum-sustainable-yield"><i class="fas fa-link"></i></a>
 </h2>
-<p>The classical model of harvesting fisheries and wildlife populations is based on a particular conceptualization of <em>maximum sustained yield</em> (MSY). Maximum sustained yield is defined historically as the population size where both population growth rate and harvest rate are at a maximum. For the logistic growth model, this is half the carrying capacity. We can solve this by finding the maximum of the production function. To do this we use calculus (differentiation) to find where the slope of the production function equals zero. Starting with the partial derivative with respect to <span class="math inline">\(N\)</span> (eq. <a href="DDgrowth.html#eq:pdlog">(5.5)</a>), we solve for zero.
+<p>The classical model of harvesting fisheries and wildlife populations is based on a particular conceptualization of <em>maximum sustainable yield</em> (MSY). Maximum sustainable yield is defined historically as the population size where both population growth rate and harvest rate are at a maximum. For the logistic growth model, this is half the carrying capacity. We can solve this by finding the maximum of the production function. To do this we use calculus (differentiation) to find where the slope of the production function equals zero. Starting with the partial derivative with respect to <span class="math inline">\(N\)</span> (eq. <a href="DDgrowth.html#eq:pdlog">(5.5)</a>), we solve for zero.
 <span class="math display" id="eq:msy1">\[\begin{align}
   \tag{5.14}
     0 &amp;= r - 2r\alpha N\\
@@ -691,7 +691,7 @@ Similarly, we could determine this peak for the <span class="math inline">\(\the
 \end{align}\]</span>
 When <span class="math inline">\(\theta=1\)</span>, this reduces to <span class="math inline">\(K/2\)</span>, as for the logistic model. As we saw above, <span class="math inline">\(\theta &lt; 1\)</span> causes this value to be less than <span class="math inline">\(K/2\)</span>.</p>
 <p>Even if we assume the logistic model is appropriate for a given population, harvests in practice seldom reduce populations to <span class="math inline">\(K/2\)</span>, because often <span class="math inline">\(N\)</span> and <span class="math inline">\(K\)</span> vary with time and are difficult to estimate. Moreover, economic forces often lead to over-harvesting. More contemporary models of harvesting incorporate these concepts <span class="citation">(<a href="references.html#ref-Roughgarden:1996fr" role="doc-biblioref">Roughgarden and Smith 1996</a>)</span> but still may not prevent fisheries collapse driven by social and political pressures. We should note that when more detailed information is available on age- or stage-specific survivorship and reproduction, age- or stage-structured models of harvesting are the preferred method (e.g., Chapter 2). For many populations, such as marine fisheries, however, data are often available only on stock size (<span class="math inline">\(N\)</span>) and total catch (<span class="math inline">\(H\)</span>). In some fisheries models, the total catch is fixed and does not vary with <span class="math inline">\(N\)</span>. This leads to highly unstable population dynamics and fortunately is no longer practiced in most fisheries. Usually the total catch <span class="math inline">\(H\)</span> is modeled as a function of <span class="math inline">\(N\)</span>.</p>
-<p>Let us assume that total catch or harvest, <span class="math inline">\(H\)</span>, is a simple linear function of <span class="math inline">\(N\)</span>; the total harvest rate <span class="math inline">\(FN\)</span> is usually described this way.<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content='&lt;p&gt;We could, but will not, further describe this by &lt;span class="math inline"&gt;\(F=qE\)&lt;/span&gt;, where &lt;span class="math inline"&gt;\(q\)&lt;/span&gt; is the catchability coefficient for the fishery, and &lt;span class="math inline"&gt;\(E\)&lt;/span&gt; is fishing effort in hours.&lt;/p&gt;'><sup>44</sup></a> In this case, a maximum sustained yield can be determined from the logistic growth-harvest model. This basic model is then
+<p>Let us assume that total catch or harvest, <span class="math inline">\(H\)</span>, is a simple linear function of <span class="math inline">\(N\)</span>; the total harvest rate <span class="math inline">\(FN\)</span> is usually described this way.<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content='&lt;p&gt;We could, but will not, further describe this by &lt;span class="math inline"&gt;\(F=qE\)&lt;/span&gt;, where &lt;span class="math inline"&gt;\(q\)&lt;/span&gt; is the catchability coefficient for the fishery, and &lt;span class="math inline"&gt;\(E\)&lt;/span&gt; is fishing effort in hours.&lt;/p&gt;'><sup>44</sup></a> In this case, a maximum sustainable yield can be determined from the logistic growth-harvest model. This basic model is then
 <span class="math display" id="eq:FN">\[\begin{align}
   \tag{5.16}
 \frac{dN}{dt}&amp;=rN(1-\frac{N}{K})-FN
@@ -772,7 +772,7 @@ Thus, unless <span class="math inline">\(\rho=0\)</span>, the typical economic o
 <li><a class="nav-link" href="#ricker-and-more"><span class="header-section-number">5.4.3</span> Ricker and more</a></li>
 </ul>
 </li>
-<li><a class="nav-link" href="#maximum-sustained-yield"><span class="header-section-number">5.5</span> Maximum Sustained Yield</a></li>
+<li><a class="nav-link" href="#maximum-sustainable-yield"><span class="header-section-number">5.5</span> Maximum Sustainable Yield</a></li>
 </ul>
 
       <div class="book-extra">
@@ -789,7 +789,7 @@ Thus, unless <span class="math inline">\(\rho=0\)</span>, the typical economic o
 <footer class="bg-primary text-light mt-5"><div class="container"><div class="row">
 
   <div class="col-12 col-md-6 mt-3">
-    <p>"<strong>Primer of Ecology using R</strong>" was written by Hank Stevens. It was last built on 2021-11-09.</p>
+    <p>"<strong>Primer of Ecology using R</strong>" was written by Hank Stevens. It was last built on 2021-12-31.</p>
   </div>
 
   <div class="col-12 col-md-6 mt-3">
