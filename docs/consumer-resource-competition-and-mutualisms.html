@@ -82,14 +82,14 @@
 <p>Let’s imagine we have competition between two species for the shared limiting inorganic resource,
 <span class="math display">\[\frac{dN_1}{dt}= N_1\left(e_1a_1R - d_1\right)\]</span>
 <span class="math display">\[\frac{dN_2}{dt}= N_2\left(e_2a_2R - d_2\right)\]</span>
-where <span class="math inline">\(e\)</span> is assimilation efficiency, <span class="math inline">\(a\)</span> is consumption rate, and <span class="math inline">\(d\)</span> is mortality. As we can see, these two species do not interact directly–<span class="math inline">\(N_2\)</span> is not in the expression for <span class="math inline">\(dN_1/dt\)</span> and vice versa.<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;Note that &lt;em&gt;N&lt;/em&gt; usually refers to number of individuals, but here we can also think of it as a measure of mass.&lt;/p&gt;"><sup>67</sup></a></p>
+where <span class="math inline">\(e\)</span> is assimilation efficiency, <span class="math inline">\(a\)</span> is consumption rate, and <span class="math inline">\(d\)</span> is mortality. As we can see, these two species do not interact directly–<span class="math inline">\(N_2\)</span> is not in the expression for <span class="math inline">\(dN_1/dt\)</span> and vice versa.<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;Note that &lt;em&gt;N&lt;/em&gt; usually refers to number of individuals, but here we can also think of it as a measure of mass.&lt;/p&gt;"><sup>66</sup></a></p>
 <p>The expression for <span class="math inline">\(dR/dt\)</span> includes a renewing resource,
 <span class="math display">\[\frac{dR}{dt} = r(S-R) - e_1a_1N_1R - e_2a_2N_2R\]</span>
 where <span class="math inline">\(S\)</span> is background resource supply rate, and <span class="math inline">\(r\)</span> is resource renewal rate.</p>
 <p>Here we graph mass-specific or per capita growth rates as functions of resource concentrations. These curves are simply straight lines (Fig. @ref{fig:dN}) described by,
 <span class="math display">\[y = e_ia_i x - d_i\]</span>
 where <span class="math inline">\(y\)</span> is the per capita or mass-specific growth rate (dN/Ndt), and <span class="math inline">\(x\)</span> is resource concentration or density (<span class="math inline">\(R\)</span>).</p>
-<div class="sourceCode" id="cb339"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb334"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">e1</span> <span class="op">&lt;-</span> <span class="fl">0.1</span>; <span class="va">a1</span> <span class="op">&lt;-</span> <span class="fl">1</span>; <span class="va">d1</span> <span class="op">&lt;-</span> <span class="fl">0.3</span>
 <span class="va">e2</span> <span class="op">&lt;-</span> <span class="fl">0.1</span>; <span class="va">a2</span> <span class="op">&lt;-</span> <span class="fl">.5</span>; <span class="va">d2</span> <span class="op">&lt;-</span> <span class="fl">0.1</span>
 
@@ -114,7 +114,7 @@ Figure 11.1: <em>Mass-specific growth rates of two species across a range of res
 </p>
 </div>
 <p>We can calculate the equilibrium resource concentration that each species would create on its own, their <span class="math inline">\(R^*\)</span>s. Recall that we find this by setting each species per capita growth rates to zero, and solving for <span class="math inline">\(R\)</span>.</p>
-<div class="sourceCode" id="cb340"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb335"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">R.star.sp1</span> <span class="op">&lt;-</span> <span class="va">d1</span><span class="op">/</span><span class="op">(</span><span class="va">e1</span><span class="op">*</span><span class="va">a1</span><span class="op">)</span>
 <span class="va">R.star.sp2</span> <span class="op">&lt;-</span> <span class="va">d2</span><span class="op">/</span><span class="op">(</span><span class="va">e2</span><span class="op">*</span><span class="va">a2</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">R.star.sp1</span>, <span class="va">R.star.sp2</span><span class="op">)</span></code></pre></div>
@@ -124,7 +124,7 @@ Figure 11.1: <em>Mass-specific growth rates of two species across a range of res
 <p><strong>In the absence of other processes, the species with the lowest <span class="math inline">\(R^*\)</span> for the shared limiting resource will exclude all others.</strong></p>
 <p>We refer to this type of resource competition as <strong><span class="math inline">\(R^*\)</span> competition</strong>.</p>
 <p>We can create a model to integrate the dynamics of these three components.</p>
-<div class="sourceCode" id="cb342"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb337"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">cr_2plants</span>  <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">t</span>,<span class="va">y</span>,<span class="va">p</span><span class="op">)</span><span class="op">{</span>
   <span class="va">N1</span> <span class="op">&lt;-</span> <span class="va">y</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>; <span class="va">N2</span> <span class="op">&lt;-</span> <span class="va">y</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span>; <span class="va">R</span> <span class="op">&lt;-</span> <span class="va">y</span><span class="op">[</span><span class="fl">3</span><span class="op">]</span>
   <span class="fu"><a href="https://rdrr.io/r/base/with.html">with</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html">as.list</a></span><span class="op">(</span><span class="va">p</span><span class="op">)</span>,<span class="op">{</span>
@@ -135,7 +135,7 @@ Figure 11.1: <em>Mass-specific growth rates of two species across a range of res
   <span class="op">}</span> <span class="op">)</span>
 <span class="op">}</span></code></pre></div>
 <p>Now we run the model.</p>
-<div class="sourceCode" id="cb343"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb338"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">t</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">100</span>, by<span class="op">=</span><span class="fl">.5</span><span class="op">)</span>
 <span class="va">p</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>e1<span class="op">=</span><span class="fl">0.1</span>, a1<span class="op">=</span><span class="fl">1</span>, d1<span class="op">=</span><span class="fl">0.3</span>, 
           e2<span class="op">=</span><span class="fl">0.1</span>, a2<span class="op">=</span><span class="fl">.5</span>, d2<span class="op">=</span><span class="fl">0.1</span>,
@@ -146,7 +146,7 @@ Figure 11.1: <em>Mass-specific growth rates of two species across a range of res
 <span class="va">r.long</span> <span class="op">&lt;-</span> <span class="va">rout</span> <span class="op">%&gt;%</span> <span class="va">as.data.frame</span> <span class="op">%&gt;%</span> <span class="fu">pivot_longer</span><span class="op">(</span>cols<span class="op">=</span><span class="op">-</span><span class="va">time</span>, names_to <span class="op">=</span> <span class="st">"State"</span>, values_to <span class="op">=</span> <span class="st">"Grams"</span><span class="op">)</span>
 <span class="fu">ggplot</span><span class="op">(</span>data<span class="op">=</span><span class="va">r.long</span>, <span class="fu">aes</span><span class="op">(</span><span class="va">time</span>, <span class="va">Grams</span>, colour<span class="op">=</span><span class="va">State</span>, linetype<span class="op">=</span><span class="va">State</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> 
   <span class="fu">geom_line</span><span class="op">(</span><span class="op">)</span> </code></pre></div>
-<div class="inline-figure"><img src="figs/unnamed-chunk-152-1.png" width="90%"></div>
+<div class="inline-figure"><img src="figs/unnamed-chunk-150-1.png" width="90%"></div>
 <p>Now if we like, we can find <span class="math inline">\(N_2^*\)</span> when <span class="math inline">\(R^*=d_2/(e_2a_2)\)</span>, and <span class="math inline">\(N_1 =0\)</span>.
 <span class="math display">\[\frac{dR}{dt} = 0 = r\left(S-R\right) - a_2N_2R\]</span>
 Substituting <span class="math inline">\(R^*\)</span> in for <span class="math inline">\(R\)</span> gives us this solution:</p>
@@ -154,7 +154,7 @@ Substituting <span class="math inline">\(R^*\)</span> in for <span class="math i
 It is clear from this expression that increasing the death rate (<span class="math inline">\(d\)</span>) will drive down <span class="math inline">\(N^*_2\)</span>. However, increasing resource turnover rate, <span class="math inline">\(r\)</span>, assimilation efficiency, <span class="math inline">\(e\)</span>, or uptake rate, <span class="math inline">\(a\)</span>, will all cause <span class="math inline">\(N_2^*\)</span> to increase.</p>
 <p>In the above model, per capita growth rates were linear functions of resource concentration. It is more common to see a type II <a href="cr.html#fr">functional response</a> for the consumers <span class="citation">(<a href="references.html#ref-Tilman1982" role="doc-biblioref">Tilman 1982</a>)</span> (Fig. <a href="consumer-resource-competition-and-mutualisms.html#fig:monod">11.2</a>), which we described in Chapter 8.
 <span class="math display">\[\frac{dN_i}{Ndt}= b_i\frac{R}{k_i + R} - d_i\]</span></p>
-<div class="sourceCode" id="cb344"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb339"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">b</span> <span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">.5</span><span class="op">)</span>; <span class="va">k</span><span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">5</span>, <span class="fl">.1</span><span class="op">)</span>; <span class="va">d</span> <span class="op">=</span> <span class="fl">0.3</span>
 <span class="op">{</span><span class="fu"><a href="https://rdrr.io/r/graphics/curve.html">curve</a></span><span class="op">(</span><span class="va">b</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span><span class="op">*</span><span class="va">x</span><span class="op">/</span><span class="op">(</span><span class="va">k</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span><span class="op">+</span><span class="va">x</span><span class="op">)</span> <span class="op">-</span> <span class="va">d</span>, <span class="fl">0</span>, <span class="fl">10</span>, ylab<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/bquote.html">bquote</a></span><span class="op">(</span><span class="va">dP</span><span class="op">/</span><span class="op">(</span><span class="va">Pdt</span><span class="op">)</span><span class="op">)</span>, xlab<span class="op">=</span><span class="st">"R"</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/graphics/curve.html">curve</a></span><span class="op">(</span><span class="va">b</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span><span class="op">*</span><span class="va">x</span><span class="op">/</span><span class="op">(</span><span class="va">k</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span> <span class="op">+</span> <span class="va">x</span><span class="op">)</span> <span class="op">-</span> <span class="va">d</span>, lty<span class="op">=</span><span class="fl">2</span>, add<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span>
@@ -172,7 +172,7 @@ Figure 11.2: <em>The Monod function for per capita resource-dependent growth rat
 <h2>
 <span class="header-section-number">11.2</span> Competition for Substitutable resources<a class="anchor" aria-label="anchor" href="#competition-for-substitutable-resources"><i class="fas fa-link"></i></a>
 </h2>
-<p>For two species, <span class="math inline">\(N_1\)</span> and <span class="math inline">\(N_2\)</span>, competing for two shared and substitutable<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;substitutable resources are those that a species can use in partial replacement of each other.&lt;/p&gt;"><sup>68</sup></a> resources, <span class="math inline">\(R_1,\,R_2\)</span>, we will identify <span class="math inline">\(e_{ij}\)</span> and <span class="math inline">\(a_{ij}\)</span>, where <span class="math inline">\(e\)</span> is assimilation efficiency, <span class="math inline">\(a\)</span> is feeding rate. They now have two subscripts, where <span class="math inline">\(i\)</span> refers to the consumer species <span class="math inline">\(N_{i}\)</span>, and <span class="math inline">\(j\)</span> refers to either resource 1 or 2 (<span class="math inline">\(R_1\)</span>, <span class="math inline">\(R_2\)</span>). With that, we have the following relations.</p>
+<p>For two species, <span class="math inline">\(N_1\)</span> and <span class="math inline">\(N_2\)</span>, competing for two shared and substitutable<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;substitutable resources are those that a species can use in partial replacement of each other.&lt;/p&gt;"><sup>67</sup></a> resources, <span class="math inline">\(R_1,\,R_2\)</span>, we will identify <span class="math inline">\(e_{ij}\)</span> and <span class="math inline">\(a_{ij}\)</span>, where <span class="math inline">\(e\)</span> is assimilation efficiency, <span class="math inline">\(a\)</span> is feeding rate. They now have two subscripts, where <span class="math inline">\(i\)</span> refers to the consumer species <span class="math inline">\(N_{i}\)</span>, and <span class="math inline">\(j\)</span> refers to either resource 1 or 2 (<span class="math inline">\(R_1\)</span>, <span class="math inline">\(R_2\)</span>). With that, we have the following relations.</p>
 <p><span class="math display">\[\frac{dN_1}{dt}= N_1\left(e_{11} a_{11} R_1 + e_{12} a_{12} R_2 - d_1\right)\]</span>
 <span class="math display">\[\frac{dN_2}{dt}= N_2\left(e_{21} a_{21} R_1 + e_{22} a_{22} R_2 - d_2\right)\]</span></p>
 <p><span class="math display">\[\frac{dR_1}{dt}= r_1\left(S-R_1\right) - a_{11}N_1R_1 - a_{21}N_2 R_1\]</span>
@@ -182,7 +182,7 @@ Figure 11.2: <em>The Monod function for per capita resource-dependent growth rat
 <span class="math display">\[a_{i1} &gt; a_{i2}\]</span>
 then, all else being equal, species <span class="math inline">\(i\)</span> requires more <span class="math inline">\(R_1\)</span> than <span class="math inline">\(R_2\)</span> in the environment.</p>
 <p>Here we create an R function for the 4-D system of ODEs.</p>
-<div class="sourceCode" id="cb345"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb340"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co">## </span>
 <span class="va">cr_2substitutable</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">t</span>, <span class="va">y</span>, <span class="va">parameters</span><span class="op">)</span><span class="op">{</span>
   <span class="va">N1</span> <span class="op">&lt;-</span> <span class="va">y</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span> ; <span class="va">N2</span> <span class="op">&lt;-</span> <span class="va">y</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span> ; <span class="va">R1</span> <span class="op">&lt;-</span> <span class="va">y</span><span class="op">[</span><span class="fl">3</span><span class="op">]</span>; <span class="va">R2</span> <span class="op">&lt;-</span> <span class="va">y</span><span class="op">[</span><span class="fl">4</span><span class="op">]</span>; 
@@ -195,7 +195,7 @@ then, all else being equal, species <span class="math inline">\(i\)</span> requi
   <span class="op">}</span> <span class="op">)</span>
 <span class="op">}</span></code></pre></div>
 <p>Next we create a parameter set in which species 1 grows more with each unit of <span class="math inline">\(R_1\)</span> and also consumes more of it than <span class="math inline">\(R_2\)</span>.</p>
-<div class="sourceCode" id="cb346"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb341"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">parameters</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="co"># the environment supplies slightly more of resources 1</span>
                 r1 <span class="op">=</span> <span class="fl">1</span>, r2<span class="op">=</span><span class="fl">1</span>, S1<span class="op">=</span><span class="fl">1.8</span>, S2<span class="op">=</span><span class="fl">1.2</span>, 
                 <span class="co"># sp 1 grows more with each unit of R1</span>
@@ -206,7 +206,7 @@ then, all else being equal, species <span class="math inline">\(i\)</span> requi
                 a11<span class="op">=</span><span class="fl">2</span>, a12<span class="op">=</span><span class="fl">1</span>, a21<span class="op">=</span><span class="fl">1</span>, a22<span class="op">=</span><span class="fl">2</span>, 
                 <span class="co"># both spp die at the same rate</span>
                 d1<span class="op">=</span><span class="fl">.1</span>, d2<span class="op">=</span><span class="fl">.1</span><span class="op">)</span></code></pre></div>
-<div class="sourceCode" id="cb347"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb342"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">t</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">200</span>, by<span class="op">=</span><span class="fl">.1</span><span class="op">)</span>; <span class="va">y.init</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span>N1<span class="op">=</span><span class="fl">1</span>, N2<span class="op">=</span><span class="fl">1</span>, R1<span class="op">=</span><span class="fl">1.8</span>, R2<span class="op">=</span><span class="fl">1.2</span><span class="op">)</span>
 <span class="va">out</span> <span class="op">&lt;-</span> <span class="fu">ode</span><span class="op">(</span>y <span class="op">=</span> <span class="va">y.init</span>, times<span class="op">=</span><span class="va">t</span>, func<span class="op">=</span><span class="va">cr_2substitutable</span>, 
            parms<span class="op">=</span><span class="va">parameters</span><span class="op">)</span>
@@ -219,9 +219,9 @@ Figure 11.3: <em>Initial dynamics of two species competing for two shared substi
 </p>
 </div>
 <p>It is</p>
-<div class="sourceCode" id="cb348"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb343"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">output</span> <span class="op">&lt;-</span> <span class="fu">cr_2subst_graph</span><span class="op">(</span><span class="va">parameters</span><span class="op">)</span></code></pre></div>
-<div class="inline-figure"><img src="figs/unnamed-chunk-155-1.png" width="90%"></div>
+<div class="inline-figure"><img src="figs/unnamed-chunk-153-1.png" width="90%"></div>
 </div>
 <div id="tilmans-resource-ratio-with-essential-resources" class="section level2" number="11.3">
 <h2>
@@ -237,7 +237,7 @@ Figure 11.3: <em>Initial dynamics of two species competing for two shared substi
 <span class="math display">\[ \dot{R_2} = a_2\left(S_2-R_2\right) - \left( \dot{N_1} + m_1 \right)  - \left( \dot{N_2} + m_2 \right) \]</span></p>
 <p><span class="math display">\[\dot{N_1} = r_1 \,\mathrm{MIN}\left(e_{11}c_{11}\frac{R_1}{k_{11} + R_1} \, , \, e_{12}c_{21}\frac{R_2}{k_{21} + R_1}\right) - m_1\]</span></p>
 <p><span class="math display">\[\dot{N_2} = r_2 \,\mathrm{MIN}\left(e_{21}c_{12}\frac{R_1}{k_{12} + R_1} \, , \, e_{22}c_{22}\frac{R_2}{k_{22} + R_1}\right) - m_2\]</span></p>
-<div class="sourceCode" id="cb349"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb344"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co">## Something is not right here</span>
 <span class="va">resratio</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">t</span>, <span class="va">y</span>, <span class="va">parameters</span><span class="op">)</span><span class="op">{</span>
   <span class="va">R1</span> <span class="op">&lt;-</span> <span class="va">y</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>; <span class="va">R2</span> <span class="op">&lt;-</span> <span class="va">y</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span>; <span class="va">N1</span> <span class="op">&lt;-</span> <span class="va">y</span><span class="op">[</span><span class="fl">3</span><span class="op">]</span> ; <span class="va">N2</span> <span class="op">&lt;-</span> <span class="va">y</span><span class="op">[</span><span class="fl">4</span><span class="op">]</span> ;
@@ -271,8 +271,8 @@ Figure 11.3: <em>Initial dynamics of two species competing for two shared substi
   <span class="fu"><a href="https://rdrr.io/r/graphics/legend.html">legend</a></span><span class="op">(</span><span class="st">'right'</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">'N1(R1)'</span>, <span class="st">'N1(R2)'</span>, <span class="st">'N2(R1)'</span>, <span class="st">'N2(R2)'</span><span class="op">)</span>, 
          lty<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">2</span>,<span class="fl">1</span>,<span class="fl">2</span><span class="op">)</span>, col<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">1</span>,<span class="fl">4</span>,<span class="fl">4</span><span class="op">)</span>, lwd<span class="op">=</span><span class="fl">2</span>, bty<span class="op">=</span><span class="st">'n'</span><span class="op">)</span>
 <span class="op">}</span><span class="op">)</span></code></pre></div>
-<div class="inline-figure"><img src="figs/unnamed-chunk-156-1.png" width="90%"></div>
-<div class="sourceCode" id="cb350"><pre class="downlit sourceCode r">
+<div class="inline-figure"><img src="figs/unnamed-chunk-154-1.png" width="90%"></div>
+<div class="sourceCode" id="cb345"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">t</span> <span class="op">&lt;-</span> <span class="fl">0</span><span class="op">:</span><span class="fl">100</span>
 <span class="va">y0</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span>R1<span class="op">=</span><span class="fl">.5</span>, R2<span class="op">=</span><span class="fl">.5</span>, N1<span class="op">=</span><span class="fl">10</span>, N2<span class="op">=</span><span class="fl">10</span><span class="op">)</span>
 <span class="va">run1</span> <span class="op">&lt;-</span> <span class="fu">ode</span><span class="op">(</span>y<span class="op">=</span><span class="va">y0</span>, times<span class="op">=</span><span class="va">t</span>, func<span class="op">=</span><span class="va">resratio</span>, parms<span class="op">=</span><span class="va">parameters</span><span class="op">)</span>
@@ -282,7 +282,7 @@ Figure 11.3: <em>Initial dynamics of two species competing for two shared substi
 ##  e11  e21  e12  e22 
 ##  0.1  0.1  0.1  0.1</code></pre>
 <div class="inline-figure"><img src="figs/ode-1.png" width="90%"></div>
-<div class="sourceCode" id="cb352"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb347"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">run1</span><span class="op">[</span><span class="fl">101</span>,<span class="op">]</span></code></pre></div>
 <pre><code>##        time          R1          R2          N1          N2 
 ## 100.0000000   0.1111048   0.1111048   4.9447001   4.9447001</code></pre>
@@ -336,7 +336,7 @@ cached, or moved seeds.</p>
 <p>The growth equation for the plant species, <span class="math inline">\(M_1\)</span>, includes logistic growth, and has terms for the benefit it receives from its mutualist frugivore and the cost paid to that frugivore.</p>
 <p><span class="math display">\[\frac{dM_1}{dt} = r_1 M_1\left(1-d_1M_1\right)  - aM_2\left(\frac{M_1}{h_1 + M_1}\right) + sM_1\left(\frac{M_2}{h_2 + M_2}\right)\]</span></p>
 <p>The plant species (<span class="math inline">\(M_1\)</span>) grows logistically in the absence of fruit consumption or seed dispersal <span class="math inline">\(r_1 M_1\left(1-d_1M_1\right)\)</span>. Consumption of fruits are governed by a type II functional response by the frugivore <span class="math inline">\(aM_2\left(\frac{M_1}{h_1 + M_1}\right)\)</span>, so that the consumption rate of a single frugivore has an upper limit (Fig. <a href="consumer-resource-competition-and-mutualisms.html#fig:funcResp">11.5</a>). Successful seed dispersal and establishment is also governed by a type II functional response. The success of a single seed reaches an upper limit as the number of frugivores continues to increase, <span class="math inline">\(c_1M_1\left(\frac{M_2}{h_2 + M_2}\right)\)</span> (Fig. <a href="consumer-resource-competition-and-mutualisms.html#fig:funcResp">11.5</a>).</p>
-<div class="sourceCode" id="cb354"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb349"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu">ggplot</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span>x<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span>, <span class="fu">aes</span><span class="op">(</span>x<span class="op">=</span><span class="va">x</span><span class="op">)</span> <span class="op">)</span> <span class="op">+</span> 
   <span class="fu">stat_function</span><span class="op">(</span>fun<span class="op">=</span><span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span> <span class="fl">10</span><span class="op">*</span><span class="va">x</span><span class="op">/</span><span class="op">(</span><span class="fl">1</span><span class="op">+</span><span class="fl">10</span><span class="op">*</span><span class="va">x</span><span class="op">)</span> <span class="op">}</span><span class="op">)</span> <span class="op">+</span>
   <span class="fu">labs</span><span class="op">(</span> x<span class="op">=</span><span class="st">"Fruit abundance"</span>, y<span class="op">=</span><span class="st">"Consumption Rate of a frugivore"</span><span class="op">)</span>
@@ -359,7 +359,7 @@ The animal seed disperser grows logistically in in the absence of consuming this
 <li>service &gt; consumption = net mutualism</li>
 </ul>
 <p>Here we provide code for the ODE for the complete bidirectional mutualism. When we define the parameters, we will set some of them equal to zero so that it represents a unidirectional consumer-resource mutualism.</p>
-<div class="sourceCode" id="cb355"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb350"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># The derivative </span>
 <span class="co">## A two-species consumer-resource mutualism</span>
 <span class="co">## Holland and DeAngelis 2009, Ecology Letters Ecology Letters, 12: 1357–1366.</span>
@@ -377,7 +377,7 @@ The animal seed disperser grows logistically in in the absence of consuming this
   <span class="op">)</span>
 <span class="op">}</span></code></pre></div>
 <p>And here are the parameters, and we graph the time series.</p>
-<div class="sourceCode" id="cb356"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb351"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co">### These parameters create a unidirectional, resource-service mutualism (B2 = 0)</span>
 <span class="co">## Translating, a12 = a above, and a21 = ea above, and B1 = s above</span>
 <span class="co">## therefore e = a21/a12</span>
@@ -396,7 +396,7 @@ The animal seed disperser grows logistically in in the absence of consuming this
 <span class="va">outL</span> <span class="op">&lt;-</span> <span class="fu">pivot_longer</span><span class="op">(</span><span class="va">outdf</span>, <span class="op">-</span><span class="va">time</span>, 
                      names_to<span class="op">=</span><span class="st">"State_var"</span>, values_to<span class="op">=</span><span class="st">"N"</span><span class="op">)</span>
 <span class="fu">ggplot</span><span class="op">(</span><span class="va">outL</span>, <span class="fu">aes</span><span class="op">(</span><span class="va">time</span>, <span class="va">N</span>, colour<span class="op">=</span><span class="va">State_var</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> <span class="fu">geom_line</span><span class="op">(</span><span class="op">)</span></code></pre></div>
-<div class="inline-figure"><img src="figs/unnamed-chunk-158-1.png" width="90%"></div>
+<div class="inline-figure"><img src="figs/unnamed-chunk-156-1.png" width="90%"></div>
 <p>The dynamics can result in <em>multiple basins of attraction</em> or <em>alternative stable states</em> (Fig. <a href="consumer-resource-competition-and-mutualisms.html#fig:mba">11.6</a>).</p>
 <div class="figure">
 <span style="display:block;" id="fig:mba"></span>
@@ -455,7 +455,7 @@ The coexistence criterion is that each species must be able to invade when rare,
 \end{equation}\]</span></p>
 <p>where both conditions on the left must be satisfied. In the numerator on the right, we have the effect of each soil flora on their away plant species. In the denominator, we have the effects of each flora on the home plant species. Thus, the fraction on the right is the relative benefit of the soil flora.</p>
 <p>Now we will create an ODE function that will let us see the dynamics play out. We need only model one soil flora because <span class="math inline">\(S_B = 1-S_A\)</span>.</p>
-<div class="sourceCode" id="cb357"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb352"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">bever3</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">t</span>,<span class="va">y</span>,<span class="va">p</span><span class="op">)</span><span class="op">{</span>
   <span class="fu"><a href="https://rdrr.io/r/base/with.html">with</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html">as.list</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">y</span>,<span class="va">p</span><span class="op">)</span><span class="op">)</span>, <span class="op">{</span>
     <span class="va">dNa</span> <span class="op">&lt;-</span> <span class="va">ra</span> <span class="op">*</span> <span class="va">Na</span> <span class="op">*</span> <span class="op">(</span><span class="fl">1</span><span class="op">+</span><span class="va">alphaA</span><span class="op">*</span><span class="va">SA</span> <span class="op">+</span> <span class="va">betaA</span><span class="op">*</span><span class="op">(</span><span class="fl">1</span><span class="op">-</span><span class="va">SA</span><span class="op">)</span> <span class="op">-</span> <span class="op">(</span><span class="va">Na</span> <span class="op">+</span> <span class="va">cB</span><span class="op">*</span><span class="va">Nb</span><span class="op">)</span><span class="op">/</span><span class="va">Ka</span><span class="op">)</span>
@@ -465,25 +465,25 @@ The coexistence criterion is that each species must be able to invade when rare,
   <span class="op">}</span><span class="op">)</span>
   <span class="op">}</span></code></pre></div>
 <p>We will parameterize the model in a way that reveals the importance of the soil floras to coexistence, according to criteria stated above <a href="consumer-resource-competition-and-mutualisms.html#eq:bevercrit">(11.1)</a>. We will create a vector of parameters, and then test whether the inequality in <a href="consumer-resource-competition-and-mutualisms.html#eq:bevercrit">(11.1)</a> is true. We start with an absence of a soil flora effect.</p>
-<div class="sourceCode" id="cb358"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb353"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">p0</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>ra<span class="op">=</span><span class="fl">0.7</span>, rb<span class="op">=</span><span class="fl">0.5</span>, Ka <span class="op">=</span> <span class="fl">10</span>, Kb<span class="op">=</span><span class="fl">12</span>, cA<span class="op">=</span><span class="fl">.98</span>, cB<span class="op">=</span><span class="fl">.98</span>, 
            alphaA<span class="op">=</span><span class="fl">0</span>, alphaB<span class="op">=</span><span class="fl">0</span>, betaA<span class="op">=</span><span class="fl">0</span>, betaB<span class="op">=</span><span class="fl">0</span>, nu<span class="op">=</span><span class="fl">0.8</span><span class="op">)</span></code></pre></div>
 <p>Use the criterion above, and paper and a pencil, and see what you discover. We could also do it in R.</p>
-<div class="sourceCode" id="cb359"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb354"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/with.html">with</a></span><span class="op">(</span><span class="va">p0</span>, <span class="op">{</span> <span class="va">cA</span><span class="op">/</span><span class="va">Kb</span><span class="op">*</span><span class="va">Ka</span>  <span class="op">&lt;</span> <span class="op">(</span><span class="fl">1</span><span class="op">+</span><span class="va">alphaB</span><span class="op">)</span><span class="op">*</span><span class="op">(</span><span class="fl">1</span><span class="op">+</span><span class="va">betaA</span><span class="op">)</span> <span class="op">/</span> <span class="op">(</span> <span class="op">(</span><span class="fl">1</span><span class="op">+</span><span class="va">alphaA</span><span class="op">)</span><span class="op">*</span><span class="op">(</span><span class="fl">1</span><span class="op">+</span><span class="va">betaB</span><span class="op">)</span><span class="op">)</span> <span class="op">}</span><span class="op">)</span></code></pre></div>
 <pre><code>## [1] TRUE</code></pre>
-<div class="sourceCode" id="cb361"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb356"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/with.html">with</a></span><span class="op">(</span><span class="va">p0</span>, <span class="op">{</span> <span class="va">cB</span><span class="op">/</span><span class="va">Ka</span><span class="op">*</span><span class="va">Kb</span> <span class="op">&lt;</span> <span class="op">(</span><span class="fl">1</span><span class="op">+</span><span class="va">alphaB</span><span class="op">)</span><span class="op">*</span><span class="op">(</span><span class="fl">1</span><span class="op">+</span><span class="va">betaA</span><span class="op">)</span> <span class="op">/</span> <span class="op">(</span> <span class="op">(</span><span class="fl">1</span><span class="op">+</span><span class="va">alphaA</span><span class="op">)</span><span class="op">*</span><span class="op">(</span><span class="fl">1</span><span class="op">+</span><span class="va">betaB</span><span class="op">)</span><span class="op">)</span> <span class="op">}</span><span class="op">)</span></code></pre></div>
 <pre><code>## [1] FALSE</code></pre>
 <pre><code>                                                                            This shows us we will not get coexistence in the absence of soil flora. Now we add the soil flora.
                                                                             </code></pre>
-<div class="sourceCode" id="cb364"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb359"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">p</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>ra<span class="op">=</span><span class="fl">0.7</span>, rb<span class="op">=</span><span class="fl">0.5</span>, Ka <span class="op">=</span> <span class="fl">10</span>, Kb<span class="op">=</span><span class="fl">12</span>, cA<span class="op">=</span><span class="fl">.98</span>, cB<span class="op">=</span><span class="fl">.98</span>, alphaA<span class="op">=</span><span class="op">-</span><span class="fl">0.03</span>, alphaB<span class="op">=</span><span class="fl">0.1</span>, betaA<span class="op">=</span><span class="fl">0.1</span>, betaB<span class="op">=</span><span class="op">-</span><span class="fl">0.2</span>, nu<span class="op">=</span><span class="fl">0.8</span><span class="op">)</span></code></pre></div>
 <p>Try your hand again, with paper and pencil. And then do it in R.</p>
-<div class="sourceCode" id="cb365"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb360"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/with.html">with</a></span><span class="op">(</span><span class="va">p</span>, <span class="op">{</span> <span class="va">cA</span><span class="op">/</span><span class="va">Kb</span><span class="op">*</span><span class="va">Ka</span>  <span class="op">&lt;</span> <span class="op">(</span><span class="fl">1</span><span class="op">+</span><span class="va">alphaB</span><span class="op">)</span><span class="op">*</span><span class="op">(</span><span class="fl">1</span><span class="op">+</span><span class="va">betaA</span><span class="op">)</span> <span class="op">/</span> <span class="op">(</span> <span class="op">(</span><span class="fl">1</span><span class="op">+</span><span class="va">alphaA</span><span class="op">)</span><span class="op">*</span><span class="op">(</span><span class="fl">1</span><span class="op">+</span><span class="va">betaB</span><span class="op">)</span><span class="op">)</span> <span class="op">}</span><span class="op">)</span></code></pre></div>
 <pre><code>## [1] TRUE</code></pre>
-<div class="sourceCode" id="cb367"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb362"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/with.html">with</a></span><span class="op">(</span><span class="va">p</span>, <span class="op">{</span> <span class="va">cB</span><span class="op">/</span><span class="va">Ka</span><span class="op">*</span><span class="va">Kb</span> <span class="op">&lt;</span> <span class="op">(</span><span class="fl">1</span><span class="op">+</span><span class="va">alphaB</span><span class="op">)</span><span class="op">*</span><span class="op">(</span><span class="fl">1</span><span class="op">+</span><span class="va">betaA</span><span class="op">)</span> <span class="op">/</span> <span class="op">(</span> <span class="op">(</span><span class="fl">1</span><span class="op">+</span><span class="va">alphaA</span><span class="op">)</span><span class="op">*</span><span class="op">(</span><span class="fl">1</span><span class="op">+</span><span class="va">betaB</span><span class="op">)</span><span class="op">)</span> <span class="op">}</span><span class="op">)</span></code></pre></div>
 <pre><code>## [1] TRUE</code></pre>
 On this basis, we should see that each species can invade when rare.
@@ -506,7 +506,7 @@ Figure 11.8: Dynamics of competing plant species, subject to self-limiting negat
 <span class="header-section-number">11.6.1</span> <code>lvg()</code><a class="anchor" aria-label="anchor" href="#lvg"><i class="fas fa-link"></i></a>
 </h3>
 <p>The core of our simulations will use a general purpose Lotka-Volterra model that simpy takes an interaction matrix and <span class="math inline">\(r\)</span> as inputs.</p>
-<div class="sourceCode" id="cb369"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb364"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">lvg</span> <span class="op">&lt;-</span> <span class="kw">function</span> <span class="op">(</span><span class="va">time</span>, <span class="va">n</span>, <span class="va">parameters</span><span class="op">)</span> 
 <span class="op">{</span>
   <span class="va">r</span> <span class="op">&lt;-</span> <span class="va">parameters</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span>
@@ -516,7 +516,7 @@ Figure 11.8: Dynamics of competing plant species, subject to self-limiting negat
 <span class="op">}</span></code></pre></div>
 <p>In this model, the parameters are a <em>list</em> (a type of R data object) with two components. The first is a vector of <em>r</em>, one for each species we want to model. The second component of the list is the matrix of interaction coefficients. This matrix is square (same number of rows and columns). The elements of this matrix must have the correct sign. For instance, to represent competition, the relevant elements would have to be negative.</p>
 <p>Here we create an interaction matrix for a two-species Lotka-Volterra mutualism, where each species suffers from intraspecific competition, and benefits from its mutualist.</p>
-<div class="sourceCode" id="cb370"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb365"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">a</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html">matrix</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span> <span class="op">-</span><span class="fl">.1</span>, <span class="fl">.02</span>,
                <span class="fl">.02</span>, <span class="op">-</span><span class="fl">.09</span><span class="op">)</span>, nrow <span class="op">=</span> <span class="fl">2</span>, byrow<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span>
 <span class="va">a</span></code></pre></div>
@@ -524,7 +524,7 @@ Figure 11.8: Dynamics of competing plant species, subject to self-limiting negat
 ## [1,] -0.10  0.02
 ## [2,]  0.02 -0.09</code></pre>
 <p>Now let’s numerically integrate, or simulate, the model and plot the outcome. Comment your code to help remind you what is going on.</p>
-<div class="sourceCode" id="cb372"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb367"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Let r be the same fpor each species</span>
 <span class="va">r</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">1</span><span class="op">)</span>
 <span class="va">parms</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>r<span class="op">=</span><span class="va">r</span>, a<span class="op">=</span><span class="va">a</span><span class="op">)</span>
@@ -536,7 +536,7 @@ Figure 11.8: Dynamics of competing plant species, subject to self-limiting negat
 ##       [,1]  [,2]
 ## [1,] -0.10  0.02
 ## [2,]  0.02 -0.09</code></pre>
-<div class="sourceCode" id="cb374"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb369"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">t</span><span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">30</span>, by<span class="op">=</span><span class="fl">.1</span><span class="op">)</span>
 <span class="va">N0</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span>N1<span class="op">=</span><span class="fl">20</span>, N2<span class="op">=</span><span class="fl">5</span><span class="op">)</span>
 <span class="va">lvout</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html">as.data.frame</a></span><span class="op">(</span> <span class="fu">ode</span><span class="op">(</span><span class="va">N0</span>, <span class="va">t</span>, <span class="va">lvg</span>, <span class="va">parms</span><span class="op">)</span> <span class="op">)</span>
@@ -549,8 +549,8 @@ Figure 11.8: Dynamics of competing plant species, subject to self-limiting negat
   <span class="fu">annotate</span><span class="op">(</span>geom<span class="op">=</span><span class="st">"text"</span>, 
            x<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">15</span>, <span class="fl">20</span><span class="op">)</span>,y<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">1</span><span class="op">/</span><span class="va">a</span><span class="op">[</span><span class="fl">1</span>,<span class="fl">1</span><span class="op">]</span>, <span class="op">-</span><span class="fl">1</span><span class="op">/</span><span class="va">a</span><span class="op">[</span><span class="fl">2</span>,<span class="fl">2</span><span class="op">]</span><span class="op">)</span>, label<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"K1"</span>, <span class="st">"K2"</span><span class="op">)</span>, vjust<span class="op">=</span><span class="op">-</span><span class="fl">0.2</span> <span class="op">)</span></code></pre></div>
 <div class="figure">
-<span style="display:block;" id="fig:unnamed-chunk-167"></span>
-<img src="figs/unnamed-chunk-167-1.png" alt="Dyanmics of a Lotka-Volterra mutualism. " width="90%"><p class="caption">
+<span style="display:block;" id="fig:unnamed-chunk-165"></span>
+<img src="figs/unnamed-chunk-165-1.png" alt="Dyanmics of a Lotka-Volterra mutualism. " width="90%"><p class="caption">
 Figure 11.9: Dyanmics of a Lotka-Volterra mutualism.
 </p>
 </div>
@@ -561,13 +561,13 @@ Figure 11.9: Dyanmics of a Lotka-Volterra mutualism.
 </h3>
 <p>When we use a model to explore the consequences of our assumptions, we want to use a range of plausible assumptions. In a case like this one where we are exploring a model more than the natural phenomenon it represents, we should use a wide range of parameter values that include cases where it is likely to fail. In our case, we will hold intraspecific density dependence constant and vary interspecific interaction coefficients from zero to twice the value of intraspecific interactions.</p>
 <p>We start with building the bits and pieces that the simulation will use, and then use a for-loop to cycle through all the parameter combinations we are interested in.</p>
-<div class="sourceCode" id="cb375"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb370"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Use expand.grid to create systematically combinations of parameters</span>
 <span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/expand.grid.html">expand.grid</a></span><span class="op">(</span>a11 <span class="op">=</span> <span class="op">-</span><span class="fl">0.1</span>, a12<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">.2</span>, by <span class="op">=</span><span class="fl">.02</span><span class="op">)</span>,
                   a21 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">.2</span>, by<span class="op">=</span><span class="fl">.02</span><span class="op">)</span>,  a22<span class="op">=</span><span class="op">-</span><span class="fl">0.1</span> <span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/base/dim.html">dim</a></span><span class="op">(</span><span class="va">df</span><span class="op">)</span> <span class="co"># The number of rows and columns</span></code></pre></div>
 <pre><code>## [1] 121   4</code></pre>
-<div class="sourceCode" id="cb377"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb372"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">df</span><span class="op">)</span> <span class="co"># the top of the data frame</span></code></pre></div>
 <pre><code>##    a11  a12 a21  a22
 ## 1 -0.1 0.00   0 -0.1
@@ -576,7 +576,7 @@ Figure 11.9: Dyanmics of a Lotka-Volterra mutualism.
 ## 4 -0.1 0.06   0 -0.1
 ## 5 -0.1 0.08   0 -0.1
 ## 6 -0.1 0.10   0 -0.1</code></pre>
-<div class="sourceCode" id="cb379"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb374"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># set intrinsic rates of increase...</span>
 <span class="va">r</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">1</span><span class="op">)</span>
 
@@ -620,7 +620,7 @@ Figure 11.9: Dyanmics of a Lotka-Volterra mutualism.
 <span class="header-section-number">11.6.3</span> Checking simulation results<a class="anchor" aria-label="anchor" href="#checking-simulation-results"><i class="fas fa-link"></i></a>
 </h3>
 <p>Let’s look for anomalous results, such as negative population sizes, or infinite or “too” large sizes.</p>
-<div class="sourceCode" id="cb380"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb375"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Do simplistic numerical summaries.</span>
 <span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">simdat</span><span class="op">[</span>,<span class="fl">5</span><span class="op">:</span><span class="fl">7</span><span class="op">]</span><span class="op">)</span></code></pre></div>
 <pre><code>##        t                  N1                   N2            
@@ -632,7 +632,7 @@ Figure 11.9: Dyanmics of a Lotka-Volterra mutualism.
 ##  Max.   :200.0000   Max.   :8.187e+147   Max.   :8.187e+147</code></pre>
 <p>If we run this, we see some strange population sizes and time was not always 200, showing that the numerical integration failed before completing. Also, <span class="math inline">\(N\)</span> included unreasonably large values.</p>
 <p>Let’s look for all rows in which <em>either</em> <span class="math inline">\(N_1\)</span> <em>or</em> <span class="math inline">\(N_2\)</span> are huge (<span class="math inline">\(&gt; 10\,000\)</span>).</p>
-<div class="sourceCode" id="cb382"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb377"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># the vertical bar | means "or"</span>
 <span class="va">sim.N</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/subset.html">subset</a></span><span class="op">(</span><span class="va">simdat</span>, <span class="va">N1</span> <span class="op">&gt;</span> <span class="fl">10000</span> <span class="op">|</span> <span class="va">N2</span> <span class="op">&gt;</span> <span class="fl">10000</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">sim.N</span><span class="op">)</span></code></pre></div>
@@ -645,11 +645,11 @@ Figure 11.9: Dyanmics of a Lotka-Volterra mutualism.
 ## 55 -0.1 0.20 0.08 -0.1 1.541959 1.041579e+147 6.249472e+146</code></pre>
 <p>Notice also that values for <span class="math inline">\(t\)</span> indicate that the integration couldn’t find values beyond a certain time point. Hmm. For now, let’s assume our simulation is doing what we think it is and that these results indicate a true lack of equilibrium.</p>
 <p>What could we do to learn the emerging rules? What if we just plot the values of <span class="math inline">\(\alpha_{ij},\,\alpha_{ji}\)</span> where <span class="math inline">\(N\)</span> is really, really big?</p>
-<div class="sourceCode" id="cb384"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb379"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu">ggplot</span><span class="op">(</span><span class="va">sim.N</span>, <span class="fu">aes</span><span class="op">(</span><span class="va">a12</span>, <span class="va">a21</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> <span class="fu">geom_point</span><span class="op">(</span><span class="op">)</span></code></pre></div>
 <div class="figure">
-<span style="display:block;" id="fig:unnamed-chunk-172"></span>
-<img src="figs/unnamed-chunk-172-1.png" alt="*Values of $alpha$ when N is extraordinarily large.*" width="50%"><p class="caption">
+<span style="display:block;" id="fig:unnamed-chunk-170"></span>
+<img src="figs/unnamed-chunk-170-1.png" alt="*Values of $alpha$ when N is extraordinarily large.*" width="50%"><p class="caption">
 Figure 11.10: <em>Values of <span class="math inline">\(alpha\)</span> when N is extraordinarily large.</em>
 </p>
 </div>
@@ -663,7 +663,7 @@ Figure 11.10: <em>Values of <span class="math inline">\(alpha\)</span> when N is
 <p>One thing we can do is to compare the long-term steady state values we get in simulation to the analytical equilibria of this mutualism model.</p>
 <p>First, we find analytical solutions for all of the equilibria predicted by the coefficients. Consult the equilibrium solution in the first section of the chapter. We then compare these to numerical solutions.</p>
 <p>Here we calculate the predicted equilibria for each row of our coefficients, using the above solution.</p>
-<div class="sourceCode" id="cb385"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb380"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">denom</span> <span class="op">&lt;-</span> <span class="va">simdat</span><span class="op">[</span>,<span class="fl">1</span><span class="op">]</span> <span class="op">*</span> <span class="va">simdat</span><span class="op">[</span>,<span class="fl">4</span><span class="op">]</span> <span class="op">-</span> <span class="va">simdat</span><span class="op">[</span>,<span class="fl">2</span><span class="op">]</span> <span class="op">*</span> <span class="va">simdat</span><span class="op">[</span>,<span class="fl">3</span><span class="op">]</span>
 <span class="co"># note this solution is subtracting the negative intraspecific comp coef.</span>
 <span class="co"># making it consistent with our equations in section 1</span>
@@ -676,18 +676,18 @@ Figure 11.10: <em>Values of <span class="math inline">\(alpha\)</span> when N is
 <span class="va">sim.check1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html">cbind</a></span><span class="op">(</span><span class="va">simdat</span>, <span class="va">N1.eq</span>, <span class="va">N2.eq</span><span class="op">)</span>
 <span class="co"># sim.check1[order(sim.check1$a12, sim.check1$a21),]</span></code></pre></div>
 <p>Let’s find the subset with potential problems, such as for <span class="math inline">\(N_1\)</span> or <span class="math inline">\(N_2\)</span> less than than zero or really, really big (<span class="math inline">\(&gt;10000\)</span>).</p>
-<div class="sourceCode" id="cb386"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb381"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">problems1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/subset.html">subset</a></span><span class="op">(</span><span class="va">sim.check1</span>, <span class="op">(</span><span class="va">N1</span> <span class="op">&lt;</span> <span class="fl">0</span> <span class="op">|</span> <span class="va">N2</span> <span class="op">&lt;</span> <span class="fl">0</span> <span class="op">|</span> <span class="va">N1</span> <span class="op">&gt;</span> <span class="fl">1e4</span> <span class="op">|</span> <span class="va">N2</span> <span class="op">&gt;</span> <span class="fl">1e4</span> <span class="op">)</span> <span class="op">)</span>
 <span class="co"># look at the subset</span>
 <span class="fu">ggplot</span><span class="op">(</span><span class="va">problems1</span>, <span class="fu">aes</span><span class="op">(</span><span class="va">N1</span>, <span class="va">N1.eq</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> <span class="fu">geom_point</span><span class="op">(</span><span class="op">)</span></code></pre></div>
 <div class="figure">
-<span style="display:block;" id="fig:unnamed-chunk-174"></span>
-<img src="figs/unnamed-chunk-174-1.png" alt="*Analytically calculated predictions for $N^*$* vs. observed simulated $N$." width="50%"><p class="caption">
+<span style="display:block;" id="fig:unnamed-chunk-172"></span>
+<img src="figs/unnamed-chunk-172-1.png" alt="*Analytically calculated predictions for $N^*$* vs. observed simulated $N$." width="50%"><p class="caption">
 Figure 11.11: <em>Analytically calculated predictions for <span class="math inline">\(N^*\)</span></em> vs. observed simulated <span class="math inline">\(N\)</span>.
 </p>
 </div>
 <p>Fascinating! Both the analytical and the simulated results give us wacky, but very different results. Let’s examine the coefficients that generated these results.</p>
-<div class="sourceCode" id="cb387"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb382"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">problems1</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span>,<span class="op">]</span></code></pre></div>
 <pre><code>##     a11  a12  a21  a22        t            N1            N2      N1.eq
 ## 43 -0.1 0.18 0.06 -0.1 3.241398 2.434044e+103 1.390882e+103 -350.00000
@@ -707,10 +707,10 @@ Figure 11.11: <em>Analytically calculated predictions for <span class="math inli
 <li>How do you reconcile these results?</li>
 </ul>
 <p>Once we understand the anomalous results above, let’s compare the simulated and the analytical solutions for <span class="math inline">\(N_1\)</span> and <span class="math inline">\(N_2\)</span> both greater than zero and both less than a huge number.</p>
-<div class="sourceCode" id="cb389"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb384"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">check2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/subset.html">subset</a></span><span class="op">(</span><span class="va">sim.check1</span>, <span class="op">(</span><span class="va">N1.eq</span> <span class="op">&gt;</span> <span class="fl">0</span> <span class="op">&amp;</span> <span class="va">N2.eq</span> <span class="op">&gt;</span> <span class="fl">0</span><span class="op">)</span> <span class="op">&amp;</span> <span class="op">(</span><span class="va">N1</span> <span class="op">&lt;</span> <span class="fl">1e4</span> <span class="op">&amp;</span> <span class="va">N2</span> <span class="op">&lt;</span> <span class="fl">1e4</span> <span class="op">)</span><span class="op">)</span></code></pre></div>
 <p>Next we calculate the differences between the analytical solutions and the simulated values.</p>
-<div class="sourceCode" id="cb390"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb385"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">N1.diff</span> <span class="op">&lt;-</span> <span class="va">check2</span><span class="op">$</span><span class="va">N1</span> <span class="op">-</span> <span class="va">check2</span><span class="op">$</span><span class="va">N1.eq</span>
 <span class="va">N2.diff</span> <span class="op">&lt;-</span> <span class="va">check2</span><span class="op">$</span><span class="va">N2</span> <span class="op">-</span> <span class="va">check2</span><span class="op">$</span><span class="va">N2.eq</span>
 <span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">N1.diff</span><span class="op">)</span>; <span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">N2.diff</span><span class="op">)</span></code></pre></div>
@@ -728,11 +728,11 @@ Figure 11.11: <em>Analytically calculated predictions for <span class="math inli
 </h3>
 <p>Use eigenanalysis of the Jacobian matrix to assess the stability of these equilibria. Consult eq. 5.21 and Table 5.2 of Stevens (2009).</p>
 <p>A sensible equilibrium.</p>
-<div class="sourceCode" id="cb393"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb388"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/subset.html">subset</a></span><span class="op">(</span><span class="va">sim.check1</span>, <span class="va">a12</span> <span class="op">==</span> <span class="fl">.02</span> <span class="op">&amp;</span> <span class="va">a21</span> <span class="op">==</span> <span class="fl">.02</span><span class="op">)</span></code></pre></div>
 <pre><code>##     a11  a12  a21  a22   t   N1   N2 N1.eq N2.eq
 ## 13 -0.1 0.02 0.02 -0.1 200 12.5 12.5  12.5  12.5</code></pre>
-<div class="sourceCode" id="cb395"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb390"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># form remember that we set r = 1</span>
 <span class="va">J1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html">matrix</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">.1</span><span class="op">*</span><span class="fl">12.5</span>, <span class="op">-</span><span class="fl">.02</span><span class="op">*</span><span class="fl">12.5</span>,
                <span class="op">-</span><span class="fl">.02</span><span class="op">*</span><span class="fl">12.5</span>, <span class="op">-</span><span class="fl">.1</span><span class="op">*</span><span class="fl">12.5</span><span class="op">)</span>, nrow<span class="op">=</span><span class="fl">2</span>, byrow<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span>
@@ -748,11 +748,11 @@ Figure 11.11: <em>Analytically calculated predictions for <span class="math inli
 <p>What do these results mean?</p>
 <p></p>
 <p>A nonsensical equilibrium</p>
-<div class="sourceCode" id="cb397"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb392"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/subset.html">subset</a></span><span class="op">(</span><span class="va">sim.check1</span>, <span class="va">a12</span> <span class="op">==</span> <span class="fl">.2</span> <span class="op">&amp;</span> <span class="va">a21</span> <span class="op">==</span> <span class="fl">.2</span><span class="op">)</span></code></pre></div>
 <pre><code>##      a11 a12 a21  a22         t            N1            N2 N1.eq N2.eq
 ## 121 -0.1 0.2 0.2 -0.1 0.6931166 8.389656e+145 8.389656e+145   -10   -10</code></pre>
-<div class="sourceCode" id="cb399"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb394"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">J2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html">matrix</a></span><span class="op">(</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span> <span class="op">-</span><span class="fl">.1</span><span class="op">*</span><span class="op">(</span><span class="op">-</span><span class="fl">10</span><span class="op">)</span>, <span class="op">-</span><span class="fl">.2</span><span class="op">*</span><span class="op">(</span><span class="op">-</span><span class="fl">10</span><span class="op">)</span>, 
                  <span class="op">-</span><span class="fl">.2</span><span class="op">*</span><span class="op">(</span><span class="op">-</span><span class="fl">10</span><span class="op">)</span>, <span class="op">-</span><span class="fl">.1</span><span class="op">*</span><span class="op">(</span><span class="op">-</span><span class="fl">10</span><span class="op">)</span><span class="op">)</span>, nrow<span class="op">=</span><span class="fl">2</span>, byrow<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span> 
 <span class="fu"><a href="https://rdrr.io/r/base/eigen.html">eigen</a></span><span class="op">(</span><span class="va">J2</span><span class="op">)</span></code></pre></div>

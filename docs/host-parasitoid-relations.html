@@ -286,130 +286,36 @@ and given contant <span class="math inline">\(H\)</span> and <span class="math i
 where <span class="math inline">\(P^*\)</span> is <a href="host-parasitoid-relations.html#eq:may14a">(9.4)</a>.</p>
 </div>
 </div>
-<div id="stability-of-hostparasitoid-dynamics" class="section level2" number="9.3">
+<div id="dynamics-of-the-may-hostparasitoid-model" class="section level2" number="9.3">
 <h2>
-<span class="header-section-number">9.3</span> Stability of host–parasitoid dynamics<a class="anchor" aria-label="anchor" href="#stability-of-hostparasitoid-dynamics"><i class="fas fa-link"></i></a>
+<span class="header-section-number">9.3</span> Dynamics of the May host–parasitoid model<a class="anchor" aria-label="anchor" href="#dynamics-of-the-may-hostparasitoid-model"><i class="fas fa-link"></i></a>
 </h2>
-<p>As with differential equation models, we can analyze the stability in the immediate vicinity of equilibria in discrete time models using eigenanalysis of the Jacobian matrix. Although analogous, there are some important differences between continuous and discrete models.</p>
-<ul>
-<li>The Jacobian matrix is comprised of partial derivatives of growth increments (e.g., <span class="math inline">\(\Delta N = N_{t+1}-N_t\)</span>), rather than of time derivatives (e.g., <span class="math inline">\(\dot{N}\)</span>).</li>
-<li>Interpretation of eigenvalues of the Jacobian reflects the difference between finite rate of increase (<span class="math inline">\(\lambda\)</span>) and the intrinsic rate of increase (<span class="math inline">\(r\)</span>); e.g., for discrete models, <span class="math inline">\(\lambda = 1\)</span> indicates zero growth.</li>
-<li>Populations with discrete generations can grow too quickly to be stable (e.g., chaos in discrete logistic growth).</li>
-</ul>
-<p>In the discrete time case, the Jacobian matrix is the set of partial derivatives of the discrete growth increment rather than of the time derivatives used for continuous growth<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content='&lt;p&gt;Note &lt;span class="math inline"&gt;\(dN/dt\)&lt;/span&gt; is also an increment — it is the increment &lt;span class="math inline"&gt;\(\Delta N\)&lt;/span&gt; as &lt;span class="math inline"&gt;\(\Delta t \to 0\)&lt;/span&gt;, whereas in the discrete case, &lt;span class="math inline"&gt;\(\Delta t = 1\)&lt;/span&gt;.&lt;/p&gt;'><sup>59</sup></a>. The growth increments are the increments of change over an entire time step, or <span class="math inline">\(\Delta H=H_{t+1} - H_t\)</span> and <span class="math inline">\(\Delta P=P_{t+1} - P_t\)</span>. Taking those increments from <a href="host-parasitoid-relations.html#eq:may14a">(9.4)</a>, <a href="host-parasitoid-relations.html#eq:may14b">(9.5)</a>, the Jacobian matrix of partial differential equations is
-<span class="math display" id="eq:jachp">\[\begin{align}
-  \tag{9.7}
-\left(
-\begin {array}{cc}
-\frac{\partial \Delta H}{\partial H}&amp;\frac{\partial \Delta H}{\partial P}\\
-\frac{\partial \Delta P}{\partial H}&amp;\frac{\partial \Delta P}{\partial P}
-\end {array}
-\right) =
-\left(
-\begin {array}{cc}
-R\left(1+aP\right)^{-k}-1\quad &amp;-akHR\left(1+aP\right)^{-\left(k+1\right)} \\
-1-\left(1+aP\right)^{-k}&amp; akH\left(1+aP\right)^{-\left(k+1\right)}
-\end {array}
-\right) 
-\end{align}\]</span>
-@
-To analyze this at the equilibrium, we substitute <span class="math inline">\(H^*,\,P^*\)</span> for <span class="math inline">\(H,\,P\)</span>, and perform eigenanalysis. The resulting eigenvalues, <span class="math inline">\(\lambda_1,\,\lambda_2\)</span>, then reflect <em>perturbation growth increments</em>, the discrete time analogy of the instantaneous perturbation growth rates of continuous models.</p>
-<p>Recall that for continuous time, <span class="math inline">\(\lambda_1\)</span> is the instantaneous rate of change in a perturbation at equilibrium,
-<span class="math display" id="eq:pert1">\[\begin{equation}
- \tag{9.8}
-  \dot{x}= \lambda_1 x,\quad x_t = x_0e^{\lambda_1 t}
-\end{equation}\]</span>
-where <span class="math inline">\(x\)</span> is the perturbation at the equilibrium; if <span class="math inline">\(\lambda_1&lt;0\)</span>, the perturbation would decline. For discrete growth, we can think of <span class="math inline">\(\lambda_1\)</span> as the discrete growth factor of a perturbation at equilibrium,
-<span class="math display" id="eq:pert2">\[\begin{equation}
-  \tag{9.9}
-  x_{t+1}=\lambda_1x_t
-\end{equation}\]</span>
-where <span class="math inline">\(x\)</span> is the perturbation. Here, we see that <span class="math inline">\(x\)</span> will decline as long as <span class="math inline">\(0 &lt;\lambda_1 &lt; 1\)</span>. Second, if <span class="math inline">\(\lambda_1 &lt; 0\)</span>, then <span class="math inline">\(x_{t+1}\)</span> changes sign with each time step, and the perturbation oscillates around 0. That is alright, as the magnitude also decreases with each time step, so the perturbation still declines toward zero. However, if <span class="math inline">\(\lambda &lt; -1\)</span>, those oscillations grow and the perturbation oscillates permanently. This is directly analogous to the oscillations, or stable limit cycles, we saw in the discrete logistic growth model. Thus, a criterion for stability in discrete growth models is that for all eigenvalues, <span class="math inline">\(-1 &lt; \lambda &lt; 1\)</span>.</p>
-<p>For discrete models, we also need to be a little more concerned about the imaginary part of the eigenvalues, because they contribute to the magnitude of the oscillations and eigenvalues. We therefore add that the magnitude of <span class="math inline">\(\lambda = a + bi\)</span> is <span class="math inline">\(|\lambda|=\sqrt{a^2 +b^2}\)</span>. Thus, the system is stable when <span class="math inline">\(|\lambda|\leq 1\)</span>. The magnitude of a complex number is known as its <em>modulus</em>. The moduli (plural of modulus) of the host–parasite model therefore includes the complex plane, were the real part of each eigenvalue is on the <span class="math inline">\(x\)</span>-axis, and the imaginary part is on the <span class="math inline">\(y\)</span>-axis (Fig. <a href="#fig:mod"><strong>??</strong></a>). The magnitude or modulus of an eigenvalue is the length of the vector in this plane.</p>
-<p>We can illustrate the stability criterion for discrete models in a few ways. The phase plane portrait or time series would illustrate the dynamics directly. However, it is also useful to show the relation between a measure of stability and parameters influencing stability. Since aggregation seems so important in the host–parasitoid model, we can show how stability (<span class="math inline">\(\lambda\)</span>) varies with <span class="math inline">\(k\)</span>. We can thus investigate <em>how much</em> aggregation is required for stability <span class="citation">(<a href="references.html#ref-Pacala1990" role="doc-biblioref">Pacala, Hassell, and May 1990</a>)</span>. We would anticipate that stability declines (<span class="math inline">\(|\lambda| \to 1\)</span>) as <span class="math inline">\(k\)</span> increases.</p>
-<p>We proceed largely as we did for continuous models, first with expressions for, and partial derivatives of, the relevant functions — for discrete models we use <span class="math inline">\(F(N_t)\)</span>, where of <span class="math inline">\(N_{t+1}=F(N_t)\)</span>.</p>
-<div class="sourceCode" id="cb292"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">F.H</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/expression.html">expression</a></span><span class="op">(</span><span class="va">R</span><span class="op">*</span><span class="va">H</span><span class="op">*</span><span class="op">(</span><span class="fl">1</span><span class="op">+</span><span class="va">a</span><span class="op">*</span><span class="va">P</span><span class="op">/</span><span class="va">k</span><span class="op">)</span><span class="op">^</span><span class="op">-</span><span class="va">k</span> <span class="op">-</span> <span class="va">H</span> <span class="op">)</span>
-<span class="va">F.P</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/expression.html">expression</a></span><span class="op">(</span><span class="va">H</span> <span class="op">-</span> <span class="va">H</span><span class="op">*</span><span class="op">(</span><span class="fl">1</span><span class="op">+</span><span class="va">a</span><span class="op">*</span><span class="va">P</span><span class="op">/</span><span class="va">k</span><span class="op">)</span><span class="op">^</span><span class="op">-</span><span class="va">k</span> <span class="op">-</span> <span class="va">P</span><span class="op">)</span>
-<span class="va">F.H.H</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/deriv.html">D</a></span><span class="op">(</span><span class="va">F.H</span>, <span class="st">"H"</span><span class="op">)</span>; <span class="va">F.H.P</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/deriv.html">D</a></span><span class="op">(</span><span class="va">F.H</span>, <span class="st">"P"</span><span class="op">)</span>
-<span class="va">F.P.H</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/deriv.html">D</a></span><span class="op">(</span><span class="va">F.P</span>, <span class="st">"H"</span><span class="op">)</span>; <span class="va">F.P.P</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/deriv.html">D</a></span><span class="op">(</span><span class="va">F.P</span>, <span class="st">"P"</span><span class="op">)</span></code></pre></div>
-<p>We next specify a sequence of <span class="math inline">\(k\)</span>’s, and for each <span class="math inline">\(k\)</span>, find the equilibria, evaluate the Jacobian, and return the eigenvalues of the Jacobian.</p>
-<div class="sourceCode" id="cb293"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">k</span> <span class="op">&lt;-</span> <span class="fl">10</span><span class="op">^</span><span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="op">-</span><span class="fl">1</span>, <span class="fl">1</span>, by<span class="op">=</span><span class="fl">.01</span><span class="op">)</span>
-<span class="va">R</span> <span class="op">&lt;-</span> <span class="fl">3</span>
-<span class="va">a</span> <span class="op">&lt;-</span> <span class="fl">.005</span>
-<span class="va">HPeigs</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html">sapply</a></span><span class="op">(</span><span class="va">k</span>, <span class="kw">function</span><span class="op">(</span><span class="va">ki</span><span class="op">)</span> <span class="op">{</span>
-  <span class="va">k</span> <span class="op">&lt;-</span> <span class="va">ki</span>
-  <span class="va">P</span> <span class="op">&lt;-</span> <span class="va">k</span><span class="op">*</span><span class="op">(</span><span class="va">R</span><span class="op">^</span><span class="op">(</span><span class="fl">1</span><span class="op">/</span><span class="va">k</span><span class="op">)</span> <span class="op">-</span> <span class="fl">1</span><span class="op">)</span><span class="op">/</span><span class="va">a</span>
-  <span class="va">H</span> <span class="op">&lt;-</span> <span class="va">P</span> <span class="op">*</span> <span class="va">R</span><span class="op">/</span><span class="op">(</span><span class="va">R</span><span class="op">-</span><span class="fl">1</span><span class="op">)</span>
-  <span class="va">jac</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html">matrix</a></span><span class="op">(</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/eval.html">eval</a></span><span class="op">(</span><span class="va">F.H.H</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/eval.html">eval</a></span><span class="op">(</span><span class="va">F.H.P</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/eval.html">eval</a></span><span class="op">(</span><span class="va">F.P.H</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/eval.html">eval</a></span><span class="op">(</span><span class="va">F.P.P</span><span class="op">)</span><span class="op">)</span>, 
-                nrow<span class="op">=</span><span class="fl">2</span>, byrow<span class="op">=</span><span class="cn">TRUE</span> <span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/base/eigen.html">eigen</a></span><span class="op">(</span><span class="va">jac</span><span class="op">)</span><span class="op">[[</span><span class="st">"values"</span><span class="op">]</span><span class="op">]</span> 
-<span class="op">}</span> <span class="op">)</span></code></pre></div>
-<p>Last, we plot the eigenvalue with the greatest absolute magnitude, and retain the sign of the real part, <span class="math inline">\(\lambda\)</span>  <span class="math inline">\(k\)</span>.</p>
-<div class="sourceCode" id="cb294"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">modmaxs</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/apply.html">apply</a></span><span class="op">(</span> <span class="va">HPeigs</span>, <span class="fl">2</span>, <span class="kw">function</span><span class="op">(</span><span class="va">lambdas</span><span class="op">)</span> <span class="op">{</span>
-  <span class="va">i</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/which.min.html">which.max</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/complex.html">Mod</a></span><span class="op">(</span><span class="va">lambdas</span><span class="op">)</span><span class="op">)</span>
-  <span class="fu"><a href="https://rdrr.io/r/base/sign.html">sign</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/complex.html">Re</a></span><span class="op">(</span><span class="va">lambdas</span><span class="op">[</span><span class="va">i</span><span class="op">]</span><span class="op">)</span><span class="op">)</span> <span class="op">*</span> <span class="fu"><a href="https://rdrr.io/r/base/complex.html">Mod</a></span><span class="op">(</span><span class="va">lambdas</span><span class="op">[</span><span class="va">i</span><span class="op">]</span><span class="op">)</span> <span class="op">}</span><span class="op">)</span>
-
-<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">k</span>, <span class="va">modmaxs</span>, type<span class="op">=</span><span class="st">'l'</span>, 
-     ylab<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/substitute.html">quote</a></span><span class="op">(</span><span class="st">"Stability "</span><span class="op">*</span><span class="op">(</span><span class="va">lambda</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span><span class="op">)</span><span class="op">)</span> <span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/graphics/abline.html">abline</a></span><span class="op">(</span>h<span class="op">=</span><span class="op">-</span><span class="fl">1</span>, lty<span class="op">=</span><span class="fl">3</span><span class="op">)</span></code></pre></div>
-<div class="figure">
-<span style="display:block;" id="fig:LK"></span>
-<img src="figs/LK-1.png" alt="*Dynamical stability of a discrete host-parasitoid model with aggregation. Region of stability for the rate of change following a small perturbation away from equilibrium. The plus sign '+' is $(0,0)$ and the two small circles are the complex eigenvalues. The length of the vector is the modulus.*" width="90%"><p class="caption">
-Figure 9.4: <em>Dynamical stability of a discrete host-parasitoid model with aggregation. Region of stability for the rate of change following a small perturbation away from equilibrium. The plus sign ‘+’ is <span class="math inline">\((0,0)\)</span> and the two small circles are the complex eigenvalues. The length of the vector is the modulus.</em>
-</p>
-</div>
-<p>Most of our eigenvalues are complex numbers. It is typically important to evaluate the modulus, or magnitude, of the eigenvalues of a Jacobian matrix for a discrete model. Here we graph them in the complex number plane (Fig. <a href="#fig:mod"><strong>??</strong></a>).</p>
-<p>First we set up the unit circle which will define the stability region in the complex number plane.</p>
-<div class="sourceCode" id="cb295"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">th</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="op">-</span><span class="va">pi</span>, <span class="va">pi</span>, len<span class="op">=</span><span class="fl">100</span><span class="op">)</span>
-<span class="va">z</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html">exp</a></span><span class="op">(</span><span class="fl">1i</span><span class="op">*</span><span class="va">th</span><span class="op">)</span></code></pre></div>
-<p>We then plot the circle and add the eigenvalues for our smallest <span class="math inline">\(k\)</span>;</p>
-<div class="sourceCode" id="cb296"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/graphics/par.html">par</a></span><span class="op">(</span>pty<span class="op">=</span><span class="st">"s"</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">z</span>, type<span class="op">=</span><span class="st">"l"</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/graphics/points.html">points</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">0</span>, pch<span class="op">=</span><span class="fl">3</span><span class="op">)</span>; <span class="fu"><a href="https://rdrr.io/r/graphics/points.html">points</a></span><span class="op">(</span><span class="va">HPeigs</span><span class="op">[</span>,<span class="fl">100</span><span class="op">]</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/graphics/arrows.html">arrows</a></span><span class="op">(</span>x0<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">0</span><span class="op">)</span>, y0<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">0</span><span class="op">)</span>, x1<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/complex.html">Re</a></span><span class="op">(</span><span class="va">HPeigs</span><span class="op">[</span>,<span class="fl">100</span><span class="op">]</span><span class="op">)</span>, y1<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/complex.html">Im</a></span><span class="op">(</span><span class="va">HPeigs</span><span class="op">[</span>,<span class="fl">100</span><span class="op">]</span><span class="op">)</span><span class="op">)</span></code></pre></div>
-<div class="figure">
-<span style="display:block;" id="fig:LK2"></span>
-<img src="figs/LK2-1.png" alt="*The complex number plane; the length of the arrows are the moduli, lambda.*" width="90%"><p class="caption">
-Figure 9.5: <em>The complex number plane; the length of the arrows are the moduli, lambda.</em>
-</p>
-</div>
-<p>The length of the arrows are the moduli, <span class="math inline">\(|\lambda|\)</span>.</p>
-<div id="dynamics-of-the-may-hostparasitoid-model" class="section level4" number="9.3.0.1">
-<h4>
-<span class="header-section-number">9.3.0.1</span> Dynamics of the May host–parasitoid model<a class="anchor" aria-label="anchor" href="#dynamics-of-the-may-hostparasitoid-model"><i class="fas fa-link"></i></a>
-</h4>
 <p>Here we simply play with May’s model. The following generates a phase plane diagram of the dynamics, although it is not shown. We set the duration of the time series, the model parameters, and create an empty data frame to hold the results.</p>
-<div class="sourceCode" id="cb297"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb292"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">time</span> <span class="op">&lt;-</span> <span class="fl">20</span>; <span class="va">R</span> <span class="op">&lt;-</span> <span class="fl">3</span>; <span class="va">a</span> <span class="op">&lt;-</span> <span class="fl">.005</span>; <span class="va">k</span> <span class="op">&lt;-</span> <span class="fl">.6</span>
 <span class="va">HP2s</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span>Hs <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html">numeric</a></span><span class="op">(</span><span class="va">time</span><span class="op">)</span>, Ps <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html">numeric</a></span><span class="op">(</span><span class="va">time</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <p>Next we calculate the equilibrium, and use a nearby point for the initial abundances.</p>
-<div class="sourceCode" id="cb298"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb293"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">P2st</span> <span class="op">&lt;-</span> <span class="va">k</span><span class="op">*</span><span class="op">(</span><span class="va">R</span><span class="op">^</span><span class="op">(</span><span class="fl">1</span><span class="op">/</span><span class="va">k</span><span class="op">)</span> <span class="op">-</span> <span class="fl">1</span><span class="op">)</span><span class="op">/</span><span class="va">a</span>; <span class="va">H2st</span> <span class="op">&lt;-</span> <span class="va">P2st</span> <span class="op">*</span> <span class="va">R</span><span class="op">/</span><span class="op">(</span><span class="va">R</span><span class="op">-</span><span class="fl">1</span><span class="op">)</span>
 <span class="va">P2st</span>;<span class="va">H2st</span></code></pre></div>
 <pre><code>## [1] 628.8302</code></pre>
 <pre><code>## [1] 943.2453</code></pre>
-<div class="sourceCode" id="cb301"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb296"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">HP2s</span><span class="op">[</span><span class="fl">1</span>, <span class="op">]</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1000</span>,<span class="fl">500</span><span class="op">)</span></code></pre></div>
 <p>We then project the dynamics, one generation at a time, for each time step.</p>
-<div class="sourceCode" id="cb302"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb297"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw">for</span><span class="op">(</span><span class="va">t</span> <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span><span class="op">(</span><span class="va">time</span><span class="op">-</span><span class="fl">1</span><span class="op">)</span><span class="op">)</span>  <span class="va">HP2s</span><span class="op">[</span><span class="va">t</span><span class="op">+</span><span class="fl">1</span>,<span class="op">]</span>  <span class="op">&lt;-</span> <span class="op">{</span>
   <span class="va">H</span> <span class="op">&lt;-</span> <span class="va">R</span> <span class="op">*</span> <span class="va">HP2s</span><span class="op">[</span><span class="va">t</span>,<span class="fl">1</span><span class="op">]</span> <span class="op">*</span> <span class="op">(</span><span class="fl">1</span><span class="op">+</span><span class="va">a</span><span class="op">*</span><span class="va">HP2s</span><span class="op">[</span><span class="va">t</span>,<span class="fl">2</span><span class="op">]</span><span class="op">/</span><span class="va">k</span><span class="op">)</span><span class="op">^</span><span class="op">(</span><span class="op">-</span><span class="va">k</span><span class="op">)</span>
   <span class="va">P</span> <span class="op">&lt;-</span> <span class="va">HP2s</span><span class="op">[</span><span class="va">t</span>,<span class="fl">1</span><span class="op">]</span> <span class="op">-</span> <span class="va">HP2s</span><span class="op">[</span><span class="va">t</span>,<span class="fl">1</span><span class="op">]</span> <span class="op">*</span> <span class="op">(</span><span class="fl">1</span><span class="op">+</span><span class="va">a</span><span class="op">*</span><span class="va">HP2s</span><span class="op">[</span><span class="va">t</span>,<span class="fl">2</span><span class="op">]</span><span class="op">/</span><span class="va">k</span><span class="op">)</span><span class="op">^</span><span class="op">(</span><span class="op">-</span><span class="va">k</span><span class="op">)</span>
                                <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">H</span>,<span class="va">P</span><span class="op">)</span> <span class="op">}</span></code></pre></div>
 <p>Last we plot the trajectory, placing a point at the equilibrium, and using arrows to highlight the direction and magnitude of the increment of change per time step.</p>
-<div class="sourceCode" id="cb303"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb298"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="op">{</span>
   <span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">HP2s</span><span class="op">[</span>,<span class="fl">1</span><span class="op">]</span>, <span class="va">HP2s</span><span class="op">[</span>,<span class="fl">2</span><span class="op">]</span>, type<span class="op">=</span><span class="st">"l"</span>, xlab<span class="op">=</span><span class="st">"H"</span>, ylab<span class="op">=</span><span class="st">"P"</span><span class="op">)</span>
   <span class="fu"><a href="https://rdrr.io/r/graphics/points.html">points</a></span><span class="op">(</span><span class="va">H2st</span>, <span class="va">P2st</span><span class="op">)</span>
   <span class="fu"><a href="https://rdrr.io/r/graphics/arrows.html">arrows</a></span><span class="op">(</span><span class="va">HP2s</span><span class="op">[</span><span class="op">-</span><span class="va">time</span>,<span class="fl">1</span><span class="op">]</span>, <span class="va">HP2s</span><span class="op">[</span><span class="op">-</span><span class="va">time</span>,<span class="fl">2</span><span class="op">]</span>, <span class="va">HP2s</span><span class="op">[</span><span class="op">-</span><span class="fl">1</span>,<span class="fl">1</span><span class="op">]</span>, <span class="va">HP2s</span><span class="op">[</span><span class="op">-</span><span class="fl">1</span>,<span class="fl">2</span><span class="op">]</span>, length<span class="op">=</span><span class="fl">.05</span><span class="op">)</span>
 <span class="op">}</span></code></pre></div>
 <div class="inline-figure"><img src="figs/NBdynStable-1.png" width="90%"></div>
-</div>
 </div>
 <div id="in-fine-3" class="section level2" number="9.4">
 <h2>
@@ -438,7 +344,7 @@ Figure 9.5: <em>The complex number plane; the length of the arrows are the modul
 <li>
 <a class="nav-link" href="#aggregation-leads-to-coexistence"><span class="header-section-number">9.2</span> Aggregation leads to coexistence</a><ul class="nav navbar-nav"><li><a class="nav-link" href="#equilibria-for-a-discrete-time-model"><span class="header-section-number">9.2.1</span> Equilibria for a discrete-time model</a></li></ul>
 </li>
-<li><a class="nav-link" href="#stability-of-hostparasitoid-dynamics"><span class="header-section-number">9.3</span> Stability of host–parasitoid dynamics</a></li>
+<li><a class="nav-link" href="#dynamics-of-the-may-hostparasitoid-model"><span class="header-section-number">9.3</span> Dynamics of the May host–parasitoid model</a></li>
 <li><a class="nav-link" href="#in-fine-3"><span class="header-section-number">9.4</span> In Fine</a></li>
 </ul>
 

@@ -92,7 +92,7 @@ F&amp;+&amp;+&amp;0&amp;0
 <h2>
 <span class="header-section-number">12.1</span> Food Web Characteristics<a class="anchor" aria-label="anchor" href="#food-web-characteristics"><i class="fas fa-link"></i></a>
 </h2>
-<p>We need language to describe the components of a food web, such as <em>links</em> and <em>nodes</em>, and we also need language to describe the properties of a web as a whole. Generally speaking, networks such as food webs have <em>emergent properties</em> <span class="citation">(<a href="references.html#ref-May:2006lr" role="doc-biblioref">R. M. May 2006</a>)</span>, such as the number of nodes in the network. Emergent properties are typically considered to be nothing more than characteristics which do not exist at simpler levels of organization. For instance, one emergent property of a population is its density, because population density cannot be measured in an individual; that is why density is an emergent property.<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;If we assume no supernatural or spectral interference, then we can also assume that density arises mechanistically from complicated interactions among individuals and their environments, rather than via magic. Other scientists will disagree and say that properties like density that are merely additive aggregates do not qualify for the lofty title of “emergent property.”&lt;/p&gt;"><sup>69</sup></a> While all food web models are based on simple pairwise interactions, the resulting emergent properties of multispecies webs quickly become complex due to indirect interactions and coupled oscillations <span class="citation">(<a href="references.html#ref-Berlow:2004yq" role="doc-biblioref">Berlow et al. 2004</a>; <a href="references.html#ref-Vandermeer:2006fj" role="doc-biblioref">Vandermeer 2006</a>)</span>. In addition, any extrinsic factor (e.g., seasonality) that might influence species interactions may also influence the emergent properties of food webs.</p>
+<p>We need language to describe the components of a food web, such as <em>links</em> and <em>nodes</em>, and we also need language to describe the properties of a web as a whole. Generally speaking, networks such as food webs have <em>emergent properties</em> <span class="citation">(<a href="references.html#ref-May:2006lr" role="doc-biblioref">R. M. May 2006</a>)</span>, such as the number of nodes in the network. Emergent properties are typically considered to be nothing more than characteristics which do not exist at simpler levels of organization. For instance, one emergent property of a population is its density, because population density cannot be measured in an individual; that is why density is an emergent property.<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;If we assume no supernatural or spectral interference, then we can also assume that density arises mechanistically from complicated interactions among individuals and their environments, rather than via magic. Other scientists will disagree and say that properties like density that are merely additive aggregates do not qualify for the lofty title of “emergent property.”&lt;/p&gt;"><sup>68</sup></a> While all food web models are based on simple pairwise interactions, the resulting emergent properties of multispecies webs quickly become complex due to indirect interactions and coupled oscillations <span class="citation">(<a href="references.html#ref-Berlow:2004yq" role="doc-biblioref">Berlow et al. 2004</a>; <a href="references.html#ref-Vandermeer:2006fj" role="doc-biblioref">Vandermeer 2006</a>)</span>. In addition, any extrinsic factor (e.g., seasonality) that might influence species interactions may also influence the emergent properties of food webs.</p>
 <p>A few important network descriptors and emergent properties include,</p>
 <ul>
 <li>
@@ -239,7 +239,7 @@ negative density dependence only in the basal species.</p>
 <p>In previous chapters, we began with explicit time derivatives, found partial derivatives and solved them at their equilibria. Rather than do all this, Pimm and Lawton bypassed these steps and went straight to the evaluated Jacobian matrix. They inserted random estimates for the elements of the Jacobian into each non-zero element in the food web matrix. These estimates were constrained within (presumably) reasonable limits, given large less abundant predators and small more abundant prey.</p>
 <p>Their methods followed this approach.</p>
 <ol style="list-style-type: decimal">
-<li>Specify a food web interaction matrix.<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;In the original publication, webs E and D seem to be represented incorrectly.&lt;/p&gt;"><sup>70</sup></a>
+<li>Specify a food web interaction matrix.<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;In the original publication, webs E and D seem to be represented incorrectly.&lt;/p&gt;"><sup>69</sup></a>
 </li>
 <li>Include negative density dependence for basal species only.</li>
 <li>Set upper and lower bounds for the effects of predators on prey (<span class="math inline">\(0\)</span> to
@@ -252,7 +252,7 @@ of omnivory, but hold the number of species constant.</li>
 </ol>
 <p>It is worth discussing briefly the Jacobian elements. <span class="citation"><a href="references.html#ref-May1973ab" role="doc-biblioref">R. M. May</a> (<a href="references.html#ref-May1973ab" role="doc-biblioref">1973</a>)</span> defined interaction strength as the Jacobian element of a matrix, which represents the <em>total effect of one individual on the population growth rate of another species</em>. Think about how you calculate the Jacobian — as the partial derivative of one species’ growth rate with respect to the size of the other population. It is the instantaneous change in the population growth rate per unit change in the population of another, at the equilibrium. The units chosen for the Jacobian elements thus mean that individual predators have relatively much larger effects on the population growth rates of prey than <em>vice versa</em>.</p>
 <p>Let’s build a function that does what Pimm and Lawton did. There are an infinite number of ways to do this, but this will suffice. First, we’ll create a matrix that represents qualitatively the simplest longest food chain where each species feeds only on one other species and where no prey are fed upon by more than one consumer. Initially, we will use the values of greatest magnitude used by Pimm and Lawton.</p>
-<div class="sourceCode" id="cb401"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb396"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">Aq</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html">matrix</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span>
   <span class="op">-</span><span class="fl">1</span>,   <span class="op">-</span><span class="fl">10</span>,   <span class="fl">0</span>,     <span class="fl">0</span>,
   <span class="fl">0.1</span>, <span class="fl">0</span>,   <span class="op">-</span><span class="fl">10</span>,  <span class="fl">0</span>,
@@ -261,48 +261,48 @@ of omnivory, but hold the number of species constant.</li>
   nrow<span class="op">=</span><span class="fl">4</span>, byrow<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
 <p>Note that this matrix indicates a negative effect of the basal species on itself, large negative effects (<span class="math inline">\(-10\)</span>) of each consumer on its prey, and small positive effects of each prey on its consumer.</p>
 <p>We can do a quick check of this web using the <code>diagram</code> package.</p>
-<div class="sourceCode" id="cb402"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb397"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">diagram</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/pkg/diagram/man/plotmat.html">plotmat</a></span><span class="op">(</span><span class="va">Aq</span>,relsize<span class="op">=</span><span class="fl">.8</span><span class="op">)</span></code></pre></div>
-<div class="inline-figure"><img src="figs/unnamed-chunk-181-1.png" width="90%"></div>
+<div class="inline-figure"><img src="figs/unnamed-chunk-179-1.png" width="90%"></div>
 <p>Without any additional arguments, it shows us pretty much all we need to see.</p>
 <p>For subsequent calculations, it is convenient to to find out from the matrix itself how big the matrix is, that is, how many species, <span class="math inline">\(S\)</span>, are in the web.</p>
-<div class="sourceCode" id="cb403"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb398"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">S</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span><span class="op">(</span><span class="va">Aq</span><span class="op">)</span></code></pre></div>
 <p>Next, we create a random realization of this matrix by multiplying each element times a unique random number between zero and 1. For this matrix, that requires <span class="math inline">\(4^2\)</span> unique numbers.</p>
-<div class="sourceCode" id="cb404"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb399"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">M</span> <span class="op">&lt;-</span> <span class="va">Aq</span> <span class="op">*</span> <span class="fu"><a href="https://rdrr.io/r/stats/Uniform.html">runif</a></span><span class="op">(</span><span class="va">S</span><span class="op">^</span><span class="fl">2</span><span class="op">)</span></code></pre></div>
 <p>Next we perform eigenanalysis on it, retaining the eigenvalues.</p>
-<div class="sourceCode" id="cb405"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb400"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">eM</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/eigen.html">eigen</a></span><span class="op">(</span><span class="va">M</span><span class="op">)</span><span class="op">[[</span><span class="st">"values"</span><span class="op">]</span><span class="op">]</span></code></pre></div>
 <p>Pimm and Lawton tested whether the dominant eigenvalue was greater than 0 (unstable) and if less than zero, they calculated return time. We will simply record the dominant eigenvalue (the maximum of the real parts of the eigenvalues).</p>
-<div class="sourceCode" id="cb406"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb401"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">deM</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">max</a></span><span class="op">(</span> <span class="fu"><a href="https://rdrr.io/r/base/complex.html">Re</a></span><span class="op">(</span><span class="va">eM</span><span class="op">)</span> <span class="op">)</span></code></pre></div>
 <p>Given the stabilizing effect of the intraspecific negative density dependence, we will hang on to that as well.</p>
-<div class="sourceCode" id="cb407"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb402"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">intraNDD</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html">sqrt</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/diag.html">diag</a></span><span class="op">(</span><span class="va">M</span><span class="op">)</span><span class="op">^</span><span class="fl">2</span><span class="op">)</span><span class="op">/</span><span class="va">S</span><span class="op">)</span></code></pre></div>
 <p>Given lessons from May’s work, we might also want to calculate the average interaction strength, not including the intraspecific interactions. Here we set the diagonal interactions equal to zero, square the remaining elements, find their average, and take the square root.</p>
-<div class="sourceCode" id="cb408"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb403"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/diag.html">diag</a></span><span class="op">(</span><span class="va">M</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fl">0</span>
 <span class="va">IS</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html">sqrt</a></span><span class="op">(</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="va">M</span><span class="op">^</span><span class="fl">2</span><span class="op">)</span><span class="op">/</span><span class="op">(</span><span class="va">S</span><span class="op">*</span><span class="op">(</span><span class="va">S</span><span class="op">-</span><span class="fl">1</span><span class="op">)</span><span class="op">)</span> <span class="op">)</span></code></pre></div>
 <p>Recall that weak omnivory is supposed to stabilize food webs <span class="citation">(<a href="references.html#ref-McCann1997" role="doc-biblioref">McCann and Hastings 1997</a>)</span>. For webs that include omnivory, we will calculate the interaction strength of omnivory in the same way we do for other interactions, as the square root of the average of the squared <span class="math inline">\(a_{ij}\)</span> <a href="food-webs-and-other-networks.html#eq:IS">(12.2)</a>.</p>
 <p>We can wrap all this up in a function where we specify the <span class="math inline">\(i,\,j\)</span> of one of the directed omnivorous links. It does not matter which we specify, either the <span class="math inline">\(ij\)</span> or the <span class="math inline">\(ji\)</span>.</p>
 <p>See the arguments in the function.</p>
-<div class="sourceCode" id="cb409"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb404"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/args.html">args</a></span><span class="op">(</span><span class="va">pimmlawton</span><span class="op">)</span></code></pre></div>
 <pre><code>## function (mat, N = 1, omni.i = NA, omni.j = NA, omega = NULL) 
 ## NULL</code></pre>
 <p>Now we can check this function for a single simulation for our first web,</p>
-<div class="sourceCode" id="cb411"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb406"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/pkg/primer/man/pimmlawton.html">pimmlawton</a></span><span class="op">(</span><span class="va">Aq</span><span class="op">)</span></code></pre></div>
 <pre><code>##        DomEig        Im   IntraDD        I
 ## 1 -0.01593096 0.4626425 0.1327543 2.304443</code></pre>
 <p>Now let’s do it 2000 times, as Pimm and Lawton did. Each row will be an independent randomization, and the columns will be the dominant eigenvalue, the intraspecific density dependence, and the average interaction strength.</p>
-<div class="sourceCode" id="cb413"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb408"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">out.A</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/primer/man/pimmlawton.html">pimmlawton</a></span><span class="op">(</span><span class="va">Aq</span>, N<span class="op">=</span><span class="fl">2000</span><span class="op">)</span> </code></pre></div>
 <p>We might like to look at basic summary statistics of the information we collected — what are their minima and maxima and mean?</p>
-<div class="sourceCode" id="cb414"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb409"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">out.A</span><span class="op">)</span></code></pre></div>
 <pre><code>##      DomEig                 Im            IntraDD                I         
 ##  Min.   :-2.281e-01   Min.   :0.0000   Min.   :0.0001776   Min.   :0.2652  
@@ -311,10 +311,10 @@ of omnivory, but hold the number of species constant.</li>
 ##  Mean   :-2.916e-02   Mean   :0.5916   Mean   :0.2464662   Mean   :2.7665  
 ##  3rd Qu.:-3.534e-03   3rd Qu.:0.8813   3rd Qu.:0.3761273   3rd Qu.:3.3695  
 ##  Max.   :-7.000e-08   Max.   :1.3732   Max.   :0.4997094   Max.   :4.7617</code></pre>
-<p>We see that out of 2000 random food chains, the largest dominant eigenvalue is still less than zero (<span class="math inline">\(\lambda_1&lt;0\)</span>). What does that mean? It means that all of the chains are qualitatively stable, and that the return times are greater than zero (<span class="math inline">\(-1/\lambda_1&gt;0\)</span>).<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;Recall that a negative return time indicates that any ``perturbation’’ at the equilibrium would have been closer to zero at some time in the past, i.e., that the perturbation is growing.&lt;/p&gt;"><sup>71</sup></a></p>
+<p>We see that out of 2000 random food chains, the largest dominant eigenvalue is still less than zero (<span class="math inline">\(\lambda_1&lt;0\)</span>). What does that mean? It means that all of the chains are qualitatively stable, and that the return times are greater than zero (<span class="math inline">\(-1/\lambda_1&gt;0\)</span>).<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;Recall that a negative return time indicates that any ``perturbation’’ at the equilibrium would have been closer to zero at some time in the past, i.e., that the perturbation is growing.&lt;/p&gt;"><sup>70</sup></a></p>
+<p>May’s work showed that stability is related to interaction strength. Let’s examine how the dominant eigenvalue is related to interaction strength.<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;Recall that if we think of stability analysis as the analysis of a small perturbation at the equilibrium, then the dominant eigenvalue is the growth rate of that perturbation.&lt;/p&gt;"><sup>71</sup></a></p>
 <p>May’s work showed that stability is related to interaction strength. Let’s examine how the dominant eigenvalue is related to interaction strength.<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;Recall that if we think of stability analysis as the analysis of a small perturbation at the equilibrium, then the dominant eigenvalue is the growth rate of that perturbation.&lt;/p&gt;"><sup>72</sup></a></p>
-<p>May’s work showed that stability is related to interaction strength. Let’s examine how the dominant eigenvalue is related to interaction strength.<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;Recall that if we think of stability analysis as the analysis of a small perturbation at the equilibrium, then the dominant eigenvalue is the growth rate of that perturbation.&lt;/p&gt;"><sup>73</sup></a></p>
-<div class="sourceCode" id="cb416"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb411"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">out.A</span><span class="op">$</span><span class="va">I.rel</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/with.html">with</a></span><span class="op">(</span><span class="va">out.A</span>, <span class="fu"><a href="https://rdrr.io/r/base/Log.html">log</a></span><span class="op">(</span><span class="va">I</span><span class="op">/</span><span class="va">IntraDD</span><span class="op">)</span> <span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/graphics/pairs.html">pairs</a></span><span class="op">(</span><span class="va">out.A</span><span class="op">)</span></code></pre></div>
 <div class="figure">
@@ -323,25 +323,25 @@ of omnivory, but hold the number of species constant.</li>
 Figure 12.5: Perturbations at the equilibrium tend to dissipate more rapidly (more negative dominant eigenvalues) with greater intraspecific negative density dependence (IntraDD) and greater interspecific interaction strength (I). This graph also demonstrates the independence of IntraDD and I in these simulations.
 </p>
 </div>
-<div class="sourceCode" id="cb417"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb412"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># out.A$Idd &lt;-  cut(out.A$IntraDD, </span>
 <span class="co">#          quantile(out.A$IntraDD), include.lowest=TRUE )</span>
 <span class="co"># ggplot(data=out.A, aes(I, DomEig)) + geom_point() +</span>
 <span class="co">#   geom_smooth() + facet_wrap(~ Idd)</span></code></pre></div>
 <p>The results of our simulation (Fig. <a href="food-webs-and-other-networks.html#fig:pairsA">12.5</a>) show that the dominant eigenvalue can become more negative with greater intraspecific negative density dependence (<code>IntraDD</code>) and greater intersepcifiic interaction strength (<code>I</code>). Recall what this means — the dominant eigenvalue is akin to a perturbation growth rate at the equilibrium and is the negative inverse of return time. Therefore, stability can increase and return time decrease with increasing interaction strengths.</p>
 <p>Note also (Fig. <a href="food-webs-and-other-networks.html#fig:pairsA">12.5</a>) that many eigenvalues seem very close to zero — what does this mean for return times? The inverse of a very small number is a very big number, so it appears that many return times will be very, very large, and rendering the webs effectively unstable. Let’s calculate return times and examine a summary.</p>
-<div class="sourceCode" id="cb418"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb413"><pre class="downlit sourceCode r">
 <code class="sourceCode R">  <span class="va">RT.A</span> <span class="op">&lt;-</span> <span class="op">-</span><span class="fl">1</span><span class="op">/</span><span class="va">out.A</span><span class="op">[[</span><span class="st">"DomEig"</span><span class="op">]</span><span class="op">]</span>
   <span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">RT.A</span><span class="op">)</span></code></pre></div>
 <pre><code>##     Min.  1st Qu.   Median     Mean  3rd Qu.     Max. 
 ##        4       23       67    11698      283 13909682</code></pre>
 <p>We find that the maximum return time is a very large number, and even the median is fairly large (<code>67</code>). In an ever-changing world, is there any meaningful difference between a return time of 1000 generations <em>vs.</em> being unstable or neutrally stable?</p>
 <p>Pimm and Lawton addressed this by picking an arbitrarily large number (150) and recording the percentage of return times greater than that. This percentage will tell us the percentage of webs that are not effectively stable.</p>
-<div class="sourceCode" id="cb420"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb415"><pre class="downlit sourceCode r">
 <code class="sourceCode R">  <span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span> <span class="va">RT.A</span> <span class="op">&gt;</span> <span class="fl">150</span> <span class="op">)</span> <span class="op">/</span> <span class="fl">2000</span></code></pre></div>
 <pre><code>## [1] 0.348</code></pre>
 <p>Now let’s extract the return times that are less than or equal to 150 and make a histogram with the right number of divisions or bins to allow it to look like the one in the original <span class="citation">(<a href="references.html#ref-Pimm1977" role="doc-biblioref">Pimm and Lawton 1977</a>)</span>.</p>
-<div class="sourceCode" id="cb422"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb417"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">A.fast</span> <span class="op">&lt;-</span><span class="va">RT.A</span><span class="op">[</span><span class="va">RT.A</span> <span class="op">&lt;</span> <span class="fl">150</span><span class="op">]</span>
 <span class="va">histA</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/graphics/hist.html">hist</a></span><span class="op">(</span><span class="va">A.fast</span>, breaks<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">150</span>, by<span class="op">=</span><span class="fl">5</span><span class="op">)</span>, main<span class="op">=</span><span class="cn">NULL</span><span class="op">)</span></code></pre></div>
 <div class="figure">
@@ -357,7 +357,7 @@ Figure 12.6: <em>A linear four-species food chain has is only somewhat likely to
 <span class="header-section-number">12.2.4</span> Shortening the Chain<a class="anchor" aria-label="anchor" href="#shortening-the-chain"><i class="fas fa-link"></i></a>
 </h3>
 <p>Now let’s repeat all this (more quickly) for a shorter chain, but with the same number of species (Fig. <a href="food-webs-and-other-networks.html#fig:PLABE">12.3</a>, web E). So, we first make the web function. Next we run the 2000 simulations, and check a quick summary.</p>
-<div class="sourceCode" id="cb423"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb418"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">Eq</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html">matrix</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span>
   <span class="op">-</span><span class="fl">1</span>,   <span class="fl">0</span>,   <span class="fl">0</span>, <span class="op">-</span><span class="fl">10</span>,
   <span class="fl">0</span>,   <span class="op">-</span><span class="fl">1</span>,   <span class="fl">0</span>, <span class="op">-</span><span class="fl">10</span>,
@@ -367,7 +367,7 @@ Figure 12.6: <em>A linear four-species food chain has is only somewhat likely to
 <span class="co"># to confirm we got it right:</span>
 <span class="co"># plotmat(Eq, relsize=.8)</span></code></pre></div>
 <p>Now we can run the simulation.</p>
-<div class="sourceCode" id="cb424"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb419"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">out.E</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/primer/man/pimmlawton.html">pimmlawton</a></span><span class="op">(</span><span class="va">Eq</span>, N<span class="op">=</span><span class="fl">2000</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">out.E</span><span class="op">)</span></code></pre></div>
 <pre><code>##      DomEig                Im            IntraDD              I        
@@ -378,7 +378,7 @@ Figure 12.6: <em>A linear four-species food chain has is only somewhat likely to
 ##  3rd Qu.:-0.124729   3rd Qu.:0.8967   3rd Qu.:0.58144   3rd Qu.:3.372  
 ##  Max.   :-0.002686   Max.   :1.4232   Max.   :0.83458   Max.   :4.772</code></pre>
 <p>The summary shows that, again, that all webs are stable (<span class="math inline">\(\lambda_1&lt;0\)</span>). A histogram of return times also shows very short return times (Fig. <a href="food-webs-and-other-networks.html#fig:histE">12.8</a>). Plots of <span class="math inline">\(\lambda_1\)</span> <em>vs.</em> interaction strengths show that with this short chain, and three basal species that the role of intraspecfic density dependence becomes even more important, and the predator-prey interactions less important in governing <span class="math inline">\(\lambda_1\)</span>.</p>
-<div class="sourceCode" id="cb426"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb421"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/graphics/layout.html">layout</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/matrix.html">matrix</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">2</span>,nr<span class="op">=</span><span class="fl">1</span><span class="op">)</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">DomEig</span> <span class="op">~</span> <span class="va">IntraDD</span>, data<span class="op">=</span><span class="va">out.E</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">DomEig</span> <span class="op">~</span> <span class="va">I</span>, data<span class="op">=</span><span class="va">out.E</span><span class="op">)</span></code></pre></div>
@@ -390,7 +390,7 @@ Figure 12.7: For a food chain with two levels, and three basal species, perturba
 </div>
 <p>Note that with the shorter food chain, a greater proportion of the <span class="math inline">\(\lambda_1\)</span> are more negative (farther away from zero) than in the four level food chain. Clearly then, shortening the web and increasing the amount of negative density dependence stabilizes it, in spite of still having the same number of species.</p>
 <p>Let us again categorize these as having long and short return times, and graph the distribution of the short ones.</p>
-<div class="sourceCode" id="cb427"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb422"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">RT.E</span> <span class="op">&lt;-</span> <span class="op">-</span><span class="fl">1</span><span class="op">/</span><span class="va">out.E</span><span class="op">[[</span><span class="st">"DomEig"</span><span class="op">]</span><span class="op">]</span>
 <span class="va">E.fast</span> <span class="op">&lt;-</span><span class="va">RT.E</span><span class="op">[</span><span class="va">RT.E</span> <span class="op">&lt;</span> <span class="fl">150</span><span class="op">]</span>
 <span class="va">histE</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/graphics/hist.html">hist</a></span><span class="op">(</span><span class="va">E.fast</span>, breaks<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">150</span>, by<span class="op">=</span><span class="fl">5</span><span class="op">)</span>, main<span class="op">=</span><span class="cn">NULL</span><span class="op">)</span></code></pre></div>
@@ -406,7 +406,7 @@ Figure 12.8: <em>One predator and three prey, each with negative density depende
 <span class="header-section-number">12.2.5</span> Adding Omnivory<a class="anchor" aria-label="anchor" href="#adding-omnivory"><i class="fas fa-link"></i></a>
 </h3>
 <p>Real webs also have omnivory — feeding on more than one trophic level. A nagging question, then and now, concerns the effect of omnivory on food web dynamics. Pimm and Lawton compared food web dynamics with and without omnivory. Let’s now create the omnivorous web they used to compare directly with their linear food chain (Fig. <a href="food-webs-and-other-networks.html#fig:PLABE">12.3</a>, B vs. A). Next we run the 2000 simulations, and check a quick summary.</p>
-<div class="sourceCode" id="cb428"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb423"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">Bq</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html">matrix</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span>
   <span class="op">-</span><span class="fl">1</span>, <span class="op">-</span><span class="fl">10</span>,   <span class="fl">0</span>,     <span class="fl">0</span>,
   <span class="fl">0.1</span>,  <span class="fl">0</span>,   <span class="op">-</span><span class="fl">10</span>,   <span class="op">-</span><span class="fl">2</span>,
@@ -432,12 +432,12 @@ Figure 12.8: <em>One predator and three prey, each with negative density depende
 ##  3rd Qu.:1.048982  
 ##  Max.   :1.412821</code></pre>
 <p>With omnivory, we now see that most webs have <span class="math inline">\(\lambda_1&gt;0\)</span>, and thus are <em>unstable</em>. This was one of the main points made by Pimm and Lawton. Let’s look at the data for just the stable webs.</p>
-<div class="sourceCode" id="cb430"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb425"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">out.B.stable</span> <span class="op">&lt;-</span> <span class="va">out.B</span><span class="op">[</span><span class="va">out.B</span><span class="op">[</span>,<span class="st">"DomEig"</span><span class="op">]</span><span class="op">&lt;</span><span class="fl">0</span>,<span class="op">]</span>
 <span class="fu"><a href="https://rdrr.io/r/graphics/pairs.html">pairs</a></span><span class="op">(</span><span class="va">out.B.stable</span><span class="op">)</span></code></pre></div>
-<div class="inline-figure"><img src="figs/unnamed-chunk-197-1.png" width="90%"></div>
+<div class="inline-figure"><img src="figs/unnamed-chunk-195-1.png" width="90%"></div>
 <p>It means that most of the randomly constructed webs were not stable point equilibria. To be complete, let’s graph what Pimm and Lawton did. They graphed the return times that were positive, and ignored those that were negative.</p>
-<div class="sourceCode" id="cb431"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb426"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">RT.B</span> <span class="op">&lt;-</span> <span class="op">-</span><span class="fl">1</span><span class="op">/</span><span class="va">out.B</span><span class="op">[[</span><span class="st">"DomEig"</span><span class="op">]</span><span class="op">]</span>
 <span class="va">B.fast</span> <span class="op">&lt;-</span> <span class="va">RT.B</span><span class="op">[</span><span class="va">RT.B</span> <span class="op">&lt;</span> <span class="fl">150</span> <span class="op">&amp;</span> <span class="va">RT.B</span> <span class="op">&gt;</span> <span class="fl">0</span> <span class="op">]</span>
 <span class="va">out.B.fast</span> <span class="op">&lt;-</span> <span class="va">out.B</span><span class="op">[</span><span class="va">RT.B</span> <span class="op">&lt;</span> <span class="fl">150</span> <span class="op">&amp;</span> <span class="va">RT.B</span> <span class="op">&gt;</span> <span class="fl">0</span>,<span class="op">]</span>
@@ -462,12 +462,12 @@ we can plot histograms for each of them. Pimm and Lawton compared their webs in 
 </ul>
 <p>Now let’s try graphical displays. Rather than simply chopping off the long return times, we use base 10 logarithms of return times because the
 distributions are so right-skewed. First, we make a data frame with a column for web ID (A or B) and a column for all the return times. We then filter for just positive return times</p>
-<div class="sourceCode" id="cb432"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb427"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">ret.time</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span>web<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span><span class="op">(</span><span class="va">LETTERS</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">2</span><span class="op">]</span>, each<span class="op">=</span><span class="fl">2000</span><span class="op">)</span>,
                        return.time <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">RT.A</span>, <span class="va">RT.B</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span> 
   <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span><span class="op">(</span><span class="va">return.time</span><span class="op">&gt;</span><span class="fl">0</span><span class="op">)</span></code></pre></div>
-<p>Next we create a histogram of return times using probability density instead of counts.<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content='&lt;p&gt;Note that now we use probabilities for the &lt;span class="math inline"&gt;\(y\)&lt;/span&gt;-axis, rather than counts. The probability associated with any particular return time is the product of the height of the column and the width of the column (or bin).&lt;/p&gt;'><sup>74</sup></a> We also add a nonparametric density estimator.</p>
-<div class="sourceCode" id="cb433"><pre class="downlit sourceCode r">
+<p>Next we create a histogram of return times using probability density instead of counts.<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content='&lt;p&gt;Note that now we use probabilities for the &lt;span class="math inline"&gt;\(y\)&lt;/span&gt;-axis, rather than counts. The probability associated with any particular return time is the product of the height of the column and the width of the column (or bin).&lt;/p&gt;'><sup>73</sup></a> We also add a nonparametric density estimator.</p>
+<div class="sourceCode" id="cb428"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu">ggplot</span><span class="op">(</span><span class="va">ret.time</span>, <span class="fu">aes</span><span class="op">(</span><span class="va">return.time</span>, fill<span class="op">=</span><span class="va">web</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> 
   <span class="fu">geom_histogram</span><span class="op">(</span><span class="fu">aes</span><span class="op">(</span>y <span class="op">=</span> <span class="va">..density..</span><span class="op">)</span>,
                  alpha<span class="op">=</span><span class="fl">.5</span>, position<span class="op">=</span><span class="st">"identity"</span><span class="op">)</span> <span class="op">+</span> 
@@ -506,7 +506,7 @@ Figure 12.10: <em>Comparing the distributions of return times for chain <strong>
 </h2>
 <p>Understanding the effects of network architecture on network resilience is a core mission of community ecology. In this section, we compare how mutualist and antagonist interactions in bipartite networks affect network resilience <span class="citation">(<a href="references.html#ref-Thebault2010" role="doc-biblioref">Thebault and Fontaine 2010</a>)</span>. A bipartite network is one in which there are two separate groups of species, in which species interact between groups, but never within groups. Two such examples would be herbivores and plants, or pollinators and plants. <span class="citation"><a href="references.html#ref-Thebault2010" role="doc-biblioref">Thebault and Fontaine</a> (<a href="references.html#ref-Thebault2010" role="doc-biblioref">2010</a>)</span> compared both empirical and simulated plant-pollinator and plant-herbivore bipartite webs and found they differed in the network structure and the consequences for network stability.</p>
 <p>To run the code in this section, you will need to install a few more packages. If you’ve already installed them, just load them.</p>
-<div class="sourceCode" id="cb434"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb429"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">pkgs</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"bipartite"</span>, <span class="st">"igraph"</span>, <span class="st">"rARPACK"</span>, <span class="st">"lavaan"</span>, <span class="st">"semPlot"</span><span class="op">)</span>
 <span class="co"># install.packages(pkgs)</span>
 <span class="fu"><a href="https://rdrr.io/r/base/invisible.html">invisible</a></span><span class="op">(</span> <span class="co"># to hide messages</span>
@@ -526,7 +526,7 @@ Figure 12.11: <em>Possible effects of species richness, connectance, modularity,
 <span class="header-section-number">12.3.1</span> Creating bipartite webs<a class="anchor" aria-label="anchor" href="#creating-bipartite-webs"><i class="fas fa-link"></i></a>
 </h3>
 <p>We’ll start by demonstrating a toy example of a bipartite web of mutualists: plants and their pollinators. We select the numbers of species and the connectance.</p>
-<div class="sourceCode" id="cb435"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb430"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># The number of species of plants</span>
 <span class="va">Sp</span> <span class="op">&lt;-</span> <span class="fl">5</span>
 <span class="co"># The number of species of pollinators</span>
@@ -537,23 +537,23 @@ Figure 12.11: <em>Possible effects of species richness, connectance, modularity,
 <span class="co"># The connectance in this web. </span>
 <span class="va">contc</span> <span class="op">&lt;-</span> <span class="fl">.4</span></code></pre></div>
 <p>We then generate random interactions between species using the <em>binomial distribution</em>. This is the distribution of coin flips or rolling of die. If we want to flip a single fair coin ten times, we can use <code><a href="https://rdrr.io/r/stats/Binomial.html">rbinom()</a></code>.</p>
-<div class="sourceCode" id="cb436"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb431"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># size is the number of coins to flip at once.</span>
 <span class="fu"><a href="https://rdrr.io/r/stats/Binomial.html">rbinom</a></span><span class="op">(</span>n<span class="op">=</span><span class="fl">10</span>, size <span class="op">=</span> <span class="fl">1</span>, prob<span class="op">=</span><span class="fl">0.5</span> <span class="op">)</span></code></pre></div>
 <pre><code>##  [1] 1 1 0 0 1 1 1 1 0 0</code></pre>
 <p>We say this is “ten observations of 1 trial.”</p>
 <p>If we want to flip 10 coins all at once and count the number of heads, we could do this:</p>
-<div class="sourceCode" id="cb438"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb433"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># size is the number of coins to flip at once.</span>
 <span class="fu"><a href="https://rdrr.io/r/stats/Binomial.html">rbinom</a></span><span class="op">(</span>n<span class="op">=</span><span class="fl">1</span>, size <span class="op">=</span> <span class="fl">10</span>, prob<span class="op">=</span><span class="fl">0.5</span> <span class="op">)</span></code></pre></div>
 <pre><code>## [1] 5</code></pre>
 <p>We would say this is “one observation of ten trials.”</p>
 <p>For our bipartite web, we will create <code>Sa * Sp</code> coin flips or observations of one trial, each with the probability of 0.4 of getting a link.</p>
-<div class="sourceCode" id="cb440"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb435"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Create interactions at random, drawing 0's and 1's with a probability of contc=0.5</span>
 <span class="va">interactions</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Binomial.html">rbinom</a></span><span class="op">(</span> n <span class="op">=</span> <span class="va">Sa</span> <span class="op">*</span> <span class="va">Sp</span>, size<span class="op">=</span><span class="fl">1</span>, prob<span class="op">=</span><span class="va">contc</span><span class="op">)</span></code></pre></div>
 <p>We create a matrix with these links (and no links). This will create our topology.</p>
-<div class="sourceCode" id="cb441"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb436"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">bip.network</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html">matrix</a></span><span class="op">(</span><span class="va">interactions</span>, nrow<span class="op">=</span><span class="va">Sp</span>, ncol<span class="op">=</span><span class="va">Sa</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/base/colnames.html">rownames</a></span><span class="op">(</span><span class="va">bip.network</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste</a></span><span class="op">(</span><span class="st">"plant"</span>, <span class="va">LETTERS</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="va">Sp</span><span class="op">]</span>, sep<span class="op">=</span><span class="st">""</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/base/colnames.html">colnames</a></span><span class="op">(</span><span class="va">bip.network</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste</a></span><span class="op">(</span><span class="st">"bug"</span>, <span class="va">LETTERS</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="va">Sa</span><span class="op">]</span>, sep<span class="op">=</span><span class="st">""</span><span class="op">)</span>
@@ -567,7 +567,7 @@ Figure 12.11: <em>Possible effects of species richness, connectance, modularity,
 ## plantE    0    1    0    1    0    0    0    0    1    0    1    0</code></pre>
 <p>Your web may have species that do not interact with any others; that’s okay for now. One day, you might have data like that.</p>
 <p>Now let’s add interaction strength. We’ll rely on a semi-realistic assumption about <em>how much</em> each of the pollinators interact with those plant species. It is generally observed that most interactions are weak (e.g., infrequent visits) and a few are strong (e.g., frequent visits). That pattern can be approximated by an exponential distribution. We will create those interactions and then plot them.</p>
-<div class="sourceCode" id="cb443"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb438"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Exponentially distributed of interaction strengths</span>
 <span class="co"># Random numbers from and exponential distribution</span>
 <span class="va">xp</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Exponential.html">rexp</a></span><span class="op">(</span><span class="va">Sa</span><span class="op">*</span><span class="va">Sp</span><span class="op">)</span>
@@ -579,7 +579,7 @@ Figure 12.11: <em>Possible effects of species richness, connectance, modularity,
 <span class="co"># creating the Quantitative network</span>
 <span class="va">bip.networkQ</span> <span class="op">&lt;-</span> <span class="va">bip.network</span> <span class="op">*</span> <span class="va">xp</span></code></pre></div>
 <p>Next we can make some pretty pictures of this web. To do this, you’ll need to load the <code>bipartite</code> package.</p>
-<div class="sourceCode" id="cb444"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb439"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="op">{</span>
   <span class="co"># library(bipartite) if needed</span>
   <span class="co"># visweb and plotweb are in the bipartite package</span>
@@ -596,18 +596,18 @@ Figure 12.12: <em>Illustrations of a hypothetical plant-pollinator network. The 
 </p>
 </div>
 <p>There are several good network packages in R. We will use <code>bipartite</code> and <code>igraph</code>. Here we will measure the nestedness and the modularity using functions from package <code>bipartite</code>.</p>
-<div class="sourceCode" id="cb445"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb440"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Nestedness:</span>
 <span class="co"># quant. version of NODF  (Almeida-Neto et al. 2008, 2011)</span>
 <span class="fu">networklevel</span><span class="op">(</span><span class="va">bip.networkQ</span>, index<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"weighted NODF"</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <pre><code>## weighted NODF 
 ##      7.272727</code></pre>
-<div class="sourceCode" id="cb447"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb442"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu">metaComputeModules</span><span class="op">(</span><span class="va">bip.networkQ</span>, N<span class="op">=</span><span class="fl">5</span>, method<span class="op">=</span><span class="st">"Beckett"</span><span class="op">)</span> <span class="op">@</span> <span class="va">likelihood</span></code></pre></div>
 <pre><code>## [1] 0.5686917</code></pre>
 <p>This measure of nestedness (WNODF, <span class="citation"><a href="references.html#ref-AlmeidaNeto2011" role="doc-biblioref">Almeida-Neto and Ulrich</a> (<a href="references.html#ref-AlmeidaNeto2011" role="doc-biblioref">2011</a>)</span>) varies between 0 and 100 for completely nonnested and nested networks. This measure of modularity varies between 0 and 1 for completely non-modular and modular networks.</p>
 <p>To measure stability of this plant by animal matrix, we first convert it to a square matrix, add a little negative denisty dependence, and then use eigenanalysis to find the dominant eigenvalue.</p>
-<div class="sourceCode" id="cb449"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb444"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">n</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html">matrix</a></span><span class="op">(</span><span class="fl">0</span>, nr<span class="op">=</span><span class="va">S</span>, nc<span class="op">=</span><span class="va">S</span><span class="op">)</span> 
 <span class="co"># upper triangular part</span>
 <span class="va">n</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="va">Sp</span>, <span class="op">(</span><span class="va">Sp</span><span class="op">+</span><span class="fl">1</span><span class="op">)</span><span class="op">:</span><span class="va">S</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="va">bip.networkQ</span>
@@ -640,11 +640,11 @@ Figure 12.12: <em>Illustrations of a hypothetical plant-pollinator network. The 
 <code>reps</code>: the number of random networks to create.</li>
 </ul>
 <p>Here we use it to generate 1000 random webs. We will then use those to examine the relations between various emergent properties of the networks.</p>
-<div class="sourceCode" id="cb451"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb446"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co">#library(primer)</span>
 <span class="va">b</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/primer/man/bip_stability.html">bip_stability</a></span><span class="op">(</span>Spp.a <span class="op">=</span> <span class="fl">16</span><span class="op">:</span><span class="fl">60</span>, Spp.p <span class="op">=</span> <span class="fl">8</span><span class="op">:</span><span class="fl">30</span>, C<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">.05</span>, <span class="fl">0.5</span><span class="op">)</span>, reps<span class="op">=</span><span class="fl">5000</span>, quant<span class="op">=</span><span class="cn">FALSE</span><span class="op">)</span></code></pre></div>
 <p>We can get a summary of the output of the 1000 simulated webs here.</p>
-<div class="sourceCode" id="cb452"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb447"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">b</span><span class="op">)</span></code></pre></div>
 <pre><code>##        S               C             modularity        nestedness    
 ##  Min.   :13.00   Min.   :0.06491   Min.   :0.00000   Min.   : 0.000  
@@ -662,9 +662,9 @@ Figure 12.12: <em>Illustrations of a hypothetical plant-pollinator network. The 
 ##  Max.   :0.069583   Max.   :0.057484</code></pre>
 <p>Are these webs stable? What are the means, medians and ranges of each of the web properties? What is the percent differences in the resiliences of the two interaction types?</p>
 <p>We can also graph the pairwise relations.</p>
-<div class="sourceCode" id="cb454"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb449"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/graphics/pairs.html">pairs</a></span><span class="op">(</span><span class="va">b</span><span class="op">)</span></code></pre></div>
-<div class="inline-figure"><img src="figs/unnamed-chunk-206-1.png" width="90%"></div>
+<div class="inline-figure"><img src="figs/unnamed-chunk-204-1.png" width="90%"></div>
 <p>If you have a copy of Thebault and Fontaine (2010), you might check whether the above relations are similar to theirs.</p>
 </div>
 <div id="path-analysis" class="section level3" number="12.3.3">
@@ -673,14 +673,14 @@ Figure 12.12: <em>Illustrations of a hypothetical plant-pollinator network. The 
 </h3>
 <p>Now we do the same sort of analysis that Thebault and Fontaine did to get their Fig. 2 C,D. Path analysis is a relatively simple way to model sets of correlations among dependent variables. To do this, we will use the <code>lavaan</code> package.</p>
 <p>If we look above, we see curvature in some of the relations. In simple path analysis, as in Thebault and Fontaine, these relations are assumed to be linear. Here we transform these data a tad to help linearize these relations.</p>
-<div class="sourceCode" id="cb455"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb450"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">out.tr</span> <span class="op">&lt;-</span> <span class="op">(</span><span class="va">b</span><span class="op">)</span><span class="op">^</span><span class="fl">.75</span></code></pre></div>
 <p>We next scale our data so that all variables have a mean of zero and a standard deviation of 1. This will simplify the interpretation of the path analysis output: the regression coefficients partial correlation coefficients and will be effect sizes that are each comparable to the others.</p>
-<div class="sourceCode" id="cb456"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb451"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">dat</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span> <span class="fu"><a href="https://rdrr.io/r/base/scale.html">scale</a></span><span class="op">(</span><span class="va">out.tr</span><span class="op">)</span> <span class="op">)</span> </code></pre></div>
 <p>We specify each of the relationships, where <code>y ~ x</code> is “y as a function of x.” We then fit the model and get the path coefficients.</p>
 <p>To mimic Thebault and Fontaine, we will include all and only the interactions in their figure 2. We start with the mutualism web. Start by loading the <code>lavaan</code> package if you haven’t previously.</p>
-<div class="sourceCode" id="cb457"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb452"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># library(lavvan)</span>
 <span class="co"># Step 1: Specify model</span>
 <span class="va">model.m</span> <span class="op">&lt;-</span> <span class="st">'resilience.m ~ nestedness + modularity + S + C
@@ -704,7 +704,7 @@ Figure 12.12: <em>Illustrations of a hypothetical plant-pollinator network. The 
 ##                      0.152</code></pre>
 <p>These are the estimates of the pairwise regressions. Those are the path coefficients that tell us the strengths of the relations among the network properties. Below we make a path diagram using these.</p>
 <p>Next, do the same thing for herbivory.</p>
-<div class="sourceCode" id="cb459"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb454"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Step 1: Specify model</span>
 <span class="va">model.h</span> <span class="op">&lt;-</span> <span class="st">'resilience.h ~ nestedness + modularity + S + C
           nestedness ~ S + C
@@ -714,7 +714,7 @@ Figure 12.12: <em>Illustrations of a hypothetical plant-pollinator network. The 
 <span class="va">mod.h.fit</span> <span class="op">&lt;-</span> <span class="fu">sem</span><span class="op">(</span><span class="va">model.h</span>, data<span class="op">=</span><span class="va">dat</span><span class="op">)</span>
 <span class="co">#coef(mod.h.fit)  </span></code></pre></div>
 <p>To make the path diagrams, you’ll need the <code>semPlot</code> package.</p>
-<div class="sourceCode" id="cb460"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb455"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># library(semPlot)</span>
 <span class="fu">semPaths</span><span class="op">(</span><span class="va">mod.m.fit</span>, what<span class="op">=</span><span class="st">'path'</span>, whatLabels<span class="op">=</span><span class="st">"std"</span>, 
          curve<span class="op">=</span><span class="fl">1</span>, curvature<span class="op">=</span><span class="fl">1</span>, sizeMan<span class="op">=</span><span class="fl">10</span>,
@@ -772,7 +772,7 @@ Figure 12.13: <em>Given the same bipartite network structure and the identical i
 </ul>
 <p>All these were evaluated by whether the observed properties differed from properties that emerge from random networks with the same number of nodes and average node degree as the empirical mycorrhizal networks. We can generate such a graph using the <code>igraph</code> package.</p>
 <p>Plot 1, from a xeric site, had 26 trees and 258 links. Therefore, the average node degree must be <span class="math inline">\(258/26\approx 9.9\)</span>. We can create a random graph by simply specify the number of vertices and the number of edges.</p>
-<div class="sourceCode" id="cb461"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb456"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># node clustering coefficient: 0.84</span>
 <span class="co"># for Plot 1</span>
 <span class="va">V</span> <span class="op">&lt;-</span> <span class="fl">26</span>
@@ -783,7 +783,7 @@ Figure 12.13: <em>Given the same bipartite network structure and the identical i
 <span class="fu">gorder</span><span class="op">(</span><span class="va">gr</span><span class="op">)</span>; <span class="fu">gsize</span><span class="op">(</span><span class="va">gr</span><span class="op">)</span></code></pre></div>
 <pre><code>## [1] 26</code></pre>
 <pre><code>## [1] 258</code></pre>
-<div class="sourceCode" id="cb464"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb459"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">gr</span>, vertex.label<span class="op">=</span> <span class="cn">NA</span>, edge.arrow.size<span class="op">=</span><span class="fl">0.02</span>,vertex.size <span class="op">=</span> <span class="fl">0.5</span>, xlab <span class="op">=</span> <span class="st">"Random Network: G(V,E) model"</span><span class="op">)</span></code></pre></div>
 <div class="figure">
 <span style="display:block;" id="fig:plot1"></span>
@@ -792,11 +792,11 @@ Figure 12.14: <em>Example of a random graph using the same number of vertices an
 </p>
 </div>
 <p>We can compare the observed average node clustering coefficient (<span class="math inline">\(0.84 \pm 0.37\)</span>) to that of the random graph we created above. Note that transivity is node clustering.</p>
-<div class="sourceCode" id="cb465"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb460"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="fu">transitivity</span><span class="op">(</span><span class="va">gr</span>, type <span class="op">=</span> <span class="st">"local"</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <pre><code>## [1] 0.7959873</code></pre>
 <p>We find that these differ. The observed can then be compared to 1000s of simulated random networks to see how unusual the observed value is. Here we use a toy example with 100 simulations to compare the node clustering coefficient observed in plot 1 to what we would expect in a random network.</p>
-<div class="sourceCode" id="cb467"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb462"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">ncc.sims</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html">replicate</a></span><span class="op">(</span><span class="fl">100</span>, <span class="op">{</span> 
   <span class="va">gr</span> <span class="op">&lt;-</span> <span class="fu">erdos.renyi.game</span><span class="op">(</span><span class="va">V</span>, <span class="va">E</span>, type <span class="op">=</span> <span class="st">"gnm"</span><span class="op">)</span>
   <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="fu">transitivity</span><span class="op">(</span><span class="va">gr</span>, type <span class="op">=</span> <span class="st">"local"</span><span class="op">)</span><span class="op">)</span>
@@ -814,7 +814,7 @@ Figure 12.15: <em>Observed node clustering appears unuusally high, relatively to
 <p>A <em>scale-free</em> graph is one in which the probability of a node having L links follows a power law relation,
 <span class="math display">\[Pr(L) \sim L^{-z}\]</span>
 where, apparently, <span class="math inline">\(2&lt;z&lt;3\)</span>. Let’s demonstrate that for one plot.</p>
-<div class="sourceCode" id="cb468"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb463"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># node clustering coefficients (per node)</span>
 <span class="va">ncc</span> <span class="op">&lt;-</span> <span class="fu">transitivity</span><span class="op">(</span><span class="va">gr</span>, type <span class="op">=</span> <span class="st">"local"</span><span class="op">)</span>
 <span class="co"># degrees of each node</span>
@@ -827,7 +827,7 @@ Figure 12.16: <em>Emergent relation between node clustering and node degree in a
 </p>
 </div>
 <p>Now let’s combine all the plots into one graph. First I collect all the data from Beiler et al. (Table 1,2, Beiler et al. (2015)).</p>
-<div class="sourceCode" id="cb469"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb464"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># vertices</span>
 <span class="va">V</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">26</span>, <span class="fl">13</span>, <span class="fl">31</span>, <span class="fl">27</span>, <span class="fl">27</span>, <span class="fl">41</span><span class="op">)</span>
 <span class="co"># egdes</span>
@@ -850,7 +850,7 @@ Figure 12.16: <em>Emergent relation between node clustering and node degree in a
 ## 6    6 41 434 0.889    20.19     0.80</code></pre>
 <p>Next I make a function that generates a random graph from the data in Beiler et al. and calculates the properties I need.</p>
 <p>For scale free graphs, I will set the power exponent to something between 2 and 3.</p>
-<div class="sourceCode" id="cb471"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb466"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">exp.out</span> <span class="op">&lt;-</span> <span class="fl">2.5</span></code></pre></div>
 <p>The following somewhat complicated looking code does the following for each plot in each site</p>
 <ul>
@@ -860,7 +860,7 @@ Figure 12.16: <em>Emergent relation between node clustering and node degree in a
 <li>records the site of the plot.</li>
 </ul>
 <p>It then binds together the data collected for each plot at each site.</p>
-<div class="sourceCode" id="cb472"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb467"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">df2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/apply.html">apply</a></span><span class="op">(</span><span class="va">df</span><span class="op">[</span>,<span class="fl">1</span><span class="op">:</span><span class="fl">3</span><span class="op">]</span>, <span class="fl">1</span>, <span class="kw">function</span><span class="op">(</span><span class="va">ve</span><span class="op">)</span><span class="op">{</span>
   <span class="co">#make a scale-free random graph, given V and E</span>
   <span class="va">gsf</span> <span class="op">&lt;-</span> <span class="fu">sample_fitness_pl</span><span class="op">(</span><span class="va">ve</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span>, <span class="va">ve</span><span class="op">[</span><span class="fl">3</span><span class="op">]</span>, exponent.out<span class="op">=</span> <span class="va">exp.out</span>,
