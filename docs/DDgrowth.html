@@ -688,13 +688,25 @@ Figure 5.15: <em>A chaotic discrete logistic population shows certain highly pre
 <p>In general, we can describe many characteristics of populations, even if we cannot predict exactly what the population size will be five years hence. For instance, we can describe the shape of density dependence (linear, nonlinear), and characteristics of <span class="math inline">\(N\)</span>, such as the average, the variance, the periodicity, the upper and lower bounds, and the color (i.e. degree of temporal auto-correlation). Indeed, these characteristics may vary among types of organisms, body sizes, or environments.</p>
 </div>
 </div>
+<div id="the-ricker-model" class="section level3" number="5.3.3">
+<h3>
+<span class="header-section-number">5.3.3</span> The Ricker model<a class="anchor" aria-label="anchor" href="#the-ricker-model"><i class="fas fa-link"></i></a>
+</h3>
+<p>The discrete Ricker model looks a lot like our friend, exponential growth, but where <span class="math inline">\(r\)</span> is modified by density. Here we see them side by side.</p>
+<p><span class="math display">\[\begin{equation}
+N_{t+1} = N_t e^{r} \quad ; \quad N_{t+1}=N_t e^{r_d \left(1-N_t/K\right)}
+\end{equation}\]</span></p>
+<p>Like discrete logistic growth, the Ricker model<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;Bill Ricker, the eponym of the famous model, made very important contributions to the study of poplation dynamics and fisheries science.&lt;/p&gt;"><sup>48</sup></a> will also exhibit chaos at high per capita growth rates (<span class="math inline">\(r_d&gt;&gt;1\)</span>).</p>
+<p>We leave it to the reader to show whether this model shows linear density-dependence (like logistic) or nonlinear density-dependence (like <span class="math inline">\(\theta\)</span>-logistic).</p>
+<p>There are many more models of density dependent growth. Some, like the theta-logistic and the Richards models, are more flexible and have more parameters. Others, like the Gompertz model, are used more widely in other fields, such as cancer research for tumor growth, von Bertalanffy for body size growth, and the Ricker model for fisheries.</p>
 </div>
-<div id="discrete-density-dependence-in-single-species-populations-of-plants" class="section level2" number="5.4">
+</div>
+<div id="nonlinear-discrete-density-dependence-in-single-species-populations-of-plants" class="section level2" number="5.4">
 <h2>
-<span class="header-section-number">5.4</span> Discrete Density-dependence in Single-species Populations of Plants<a class="anchor" aria-label="anchor" href="#discrete-density-dependence-in-single-species-populations-of-plants"><i class="fas fa-link"></i></a>
+<span class="header-section-number">5.4</span> Nonlinear Discrete Density-dependence in Single-species Populations of Plants<a class="anchor" aria-label="anchor" href="#nonlinear-discrete-density-dependence-in-single-species-populations-of-plants"><i class="fas fa-link"></i></a>
 </h2>
-<p><span class="citation">Watkinson (<a href="references.html#ref-watkinson1980" role="doc-biblioref">1980</a>)</span> described a simple model that incorporates nonlinear density dependence which is intuitive, extensible, and is now used to help test modern coexistence theory <span class="citation">Aoyama et al. (<a href="references.html#ref-aoyama2022" role="doc-biblioref">2022</a>)</span>.
-Imagine an annual plant. In that case, all we have to do is tracks seeds:</p>
+<p><span class="citation">Watkinson (<a href="references.html#ref-watkinson1980" role="doc-biblioref">1980</a>)</span> described a simple model that incorporates nonlinear density dependence which is intuitive, extensible, and is now used to help test modern coexistence theory <span class="citation">Aoyama et al. (<a href="references.html#ref-aoyama2022" role="doc-biblioref">2022</a>)</span>.</p>
+<p>Imagine an annual plant. In that case, all we have to do is tracks seeds. We can ignore the vegetative material, because, for many questions, the number of individuals is the key and all we need a repeatable annual census. So, consider an annual population of seeds:</p>
 <ul>
 <li>
 <span class="math inline">\(F_t\)</span> is number of seeds at start of season.</li>
@@ -744,23 +756,16 @@ Just like with logistic growth, this approaches a maximum as <span class="math i
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/legend.html">legend</a></span><span class="op">(</span><span class="st">'topright'</span>, legend<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste</a></span><span class="op">(</span><span class="st">"alpha = "</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0.1</span>, <span class="fl">1</span>, <span class="fl">10</span><span class="op">)</span><span class="op">)</span>, lty<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">3</span>,<span class="fl">1</span>,<span class="fl">2</span><span class="op">)</span>, bty<span class="op">=</span><span class="st">'n'</span><span class="op">)</span></span></code></pre></div>
 <div class="figure">
 <span style="display:block;" id="fig:dd"></span>
-<img src="figs/dd-1.png" alt="Growth rate declines very quickly with additional individuals in the population." width="90%"><p class="caption">
-Figure 5.16: Growth rate declines very quickly with additional individuals in the population.
+<img src="figs/dd-1.png" alt="Growth rate declines very quickly with additional individuals in the population. Alpha is the coefficient for density-dependence." width="90%"><p class="caption">
+Figure 5.16: Growth rate declines very quickly with additional individuals in the population. Alpha is the coefficient for density-dependence.
 </p>
 </div>
 </div>
-<div id="the-ricker-model" class="section level2" number="5.5">
+<div id="maximum-sustainable-yield" class="section level2" number="5.5">
 <h2>
-<span class="header-section-number">5.5</span> The Ricker model<a class="anchor" aria-label="anchor" href="#the-ricker-model"><i class="fas fa-link"></i></a>
+<span class="header-section-number">5.5</span> Maximum Sustainable Yield<a class="anchor" aria-label="anchor" href="#maximum-sustainable-yield"><i class="fas fa-link"></i></a>
 </h2>
-<p>The discrete Ricker model looks a lot like our friend, exponential growth, but where <span class="math inline">\(r\)</span> is modified by density. Here we see them side by side.</p>
-<p><span class="math display">\[\begin{equation}
-N_{t+1} = N_t e^{r} \quad ; \quad N_{t+1}=N_t e^{r_d \left(1-N_t/K\right)}
-\end{equation}\]</span></p>
-<p>Like discrete logistic growth, the Ricker model<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;Bill Ricker, the eponym of the famous model, made very important contributions to the study of poplation dynamics and fisheries science.&lt;/p&gt;"><sup>48</sup></a> will also exhibit chaos at high per capita growth rates (<span class="math inline">\(r_d&gt;&gt;1\)</span>).</p>
-<p>There are many more models of density dependent growth. Some, like the theta-logistic and the Richards models, are more flexible and have more parameters. Others, like the Gompertz model, are used more widely in other fields, such as cancer research for tumor growth, von Bertalanffy for body size growth, and the Ricker model for fisheries.
-## Maximum Sustainable Yield
-The classical model of harvesting fisheries and wildlife populations is based on a particular conceptualization of <em>maximum sustainable yield</em> (MSY). Maximum sustainable yield is defined historically as the population size where both population growth rate and harvest rate are at a maximum. For the logistic growth model, this is half the carrying capacity. We can solve this by finding the maximum of the production function. To do this we use calculus (differentiation) to find where the slope of the production function equals zero. Starting with the partial derivative with respect to <span class="math inline">\(N\)</span> (eq. <a href="DDgrowth.html#eq:pdlog">(5.5)</a>), we solve for zero.
+<p>The classical model of harvesting fisheries and wildlife populations is based on a particular conceptualization of <em>maximum sustainable yield</em> (MSY). Maximum sustainable yield is defined historically as the population size where both population growth rate and harvest rate are at a maximum. For the logistic growth model, this is half the carrying capacity. We can solve this by finding the maximum of the production function. To do this we use calculus (differentiation) to find where the slope of the production function equals zero. Starting with the partial derivative with respect to <span class="math inline">\(N\)</span> (eq. <a href="DDgrowth.html#eq:pdlog">(5.5)</a>), we solve for zero.
 <span class="math display" id="eq:msy1">\[\begin{align}
   \tag{5.13}
     0 &amp;= r - 2r\alpha N\\
@@ -848,10 +853,11 @@ Thus, unless <span class="math inline">\(\rho=0\)</span>, the typical economic o
 <a class="nav-link" href="#discrete-density-dependent-growth"><span class="header-section-number">5.3</span> Discrete Density-dependent Growth</a><ul class="nav navbar-nav">
 <li><a class="nav-link" href="#effects-of-r_d"><span class="header-section-number">5.3.1</span> Effects of \(r_d\)</a></li>
 <li><a class="nav-link" href="#bifurcations"><span class="header-section-number">5.3.2</span> Bifurcations</a></li>
+<li><a class="nav-link" href="#the-ricker-model"><span class="header-section-number">5.3.3</span> The Ricker model</a></li>
 </ul>
 </li>
-<li><a class="nav-link" href="#discrete-density-dependence-in-single-species-populations-of-plants"><span class="header-section-number">5.4</span> Discrete Density-dependence in Single-species Populations of Plants</a></li>
-<li><a class="nav-link" href="#the-ricker-model"><span class="header-section-number">5.5</span> The Ricker model</a></li>
+<li><a class="nav-link" href="#nonlinear-discrete-density-dependence-in-single-species-populations-of-plants"><span class="header-section-number">5.4</span> Nonlinear Discrete Density-dependence in Single-species Populations of Plants</a></li>
+<li><a class="nav-link" href="#maximum-sustainable-yield"><span class="header-section-number">5.5</span> Maximum Sustainable Yield</a></li>
 </ul>
 
       <div class="book-extra">
@@ -868,7 +874,7 @@ Thus, unless <span class="math inline">\(\rho=0\)</span>, the typical economic o
 <footer class="bg-primary text-light mt-5"><div class="container"><div class="row">
 
   <div class="col-12 col-md-6 mt-3">
-    <p>"<strong>Primer of Ecology using R</strong>" was written by Hank Stevens. It was last built on 2022-08-24.</p>
+    <p>"<strong>Primer of Ecology using R</strong>" was written by Hank Stevens. It was last built on 2022-08-25.</p>
   </div>
 
   <div class="col-12 col-md-6 mt-3">
