@@ -35,7 +35,7 @@ In this chapter model direct interactions using the Lotka-Volterra framework.
 ## Interspecific competition
 Our models of density-dependent growth were built upon the assumption that individuals within a single population had negative effects on each other, which we refered to as intraspecific competition. Here we assume that individuals of different species also have negative effects on each other.
 
-The classic model of competitive interactions is the continuous Lotka-Volterra model of interspecific competition [@Kingsland:1985kx]. We build directly on the logistic growth model by adding an additional term for negative density dependence, this time, with the competing species. Now we have to label our populations and all of our parameters using subscripts. These subscripts identify the species to which the parameter relates. For instance, $r_1$ is the intrinsic rate of increase for species 1, and $\alpha_{12}$ is the per capita effect of species 2 on 1. 
+The classic model of competitive interactions is the continuous Lotka-Volterra model of interspecific competition [@kingsland:1985kx]. We build directly on the logistic growth model by adding an additional term for negative density dependence, this time, with the competing species. Now we have to label our populations and all of our parameters using subscripts. These subscripts identify the species to which the parameter relates. For instance, $r_1$ is the intrinsic rate of increase for species 1, and $\alpha_{12}$ is the per capita effect of species 2 on 1. 
 \begin{align}
   \frac{d N_1}{d t}&=r_1N_1\left(1-\alpha_{11}N_1-\alpha_{12}N_2\right)(\#eq:N2a)\\
   \frac{d N_2}{d t}&=r_2N_2\left(1-\alpha_{21}N_1-\alpha_{22}N_2\right) (\#eq:N2b)
@@ -279,7 +279,7 @@ This leads to competitive exclusion by species 2 --- species 2 wins. This is the
 \alpha_{12} > \alpha_{22} \quad,\quad \alpha_{21} > \alpha_{11}
 \end{equation*}
 
-This creates an unstable internal equilibrium---exclusion will occur, but either species could win. This condition is sometimes referred to as *founder control* [@Bolker2003a] because the identity of the winner depends in part on the starting abundances. It creates a *saddle* in state space. What the heck is a saddle? More on that below. It suffices to say that from some directions, an saddle attracts the trajectories of the populations, while from other directions, it repels the trajectories.^[The topography of mountain ranges can include saddles, which are precisely the context in which we use "saddle" here. Search the web for Saddleback Mountain, New York, USA, Lat/Long: 44$^\circ$ 8' N; 73$^\circ$ 53' W. See also pictures of horse saddles --- same shape.]
+This creates an unstable internal equilibrium---exclusion will occur, but either species could win. This condition is sometimes referred to as *founder control* [@bolker2003a] because the identity of the winner depends in part on the starting abundances. It creates a *saddle* in state space. What the heck is a saddle? More on that below. It suffices to say that from some directions, an saddle attracts the trajectories of the populations, while from other directions, it repels the trajectories.^[The topography of mountain ranges can include saddles, which are precisely the context in which we use "saddle" here. Search the web for Saddleback Mountain, New York, USA, Lat/Long: 44$^\circ$ 8' N; 73$^\circ$ 53' W. See also pictures of horse saddles --- same shape.]
 
 
 ```{r LVIsoclines, results='hide', echo=FALSE, fig.cap="*Phase plane diagrams of Lotka-Volterra competitors under different invasion conditions. Horizontal and vertical arrows indicate directions of attraction and repulsion for each population (solid and dased arrows); diagonal arrows indicate combined trajectory. Circles indicate equilibria; additional boundary equilibria can occur whenever one species is zero. Left to right: stable eq., $a_{ji} < a_{ii}$; $N_2$ wins, $a_{12} > a_{22}$; $N_1$ wins, $a_{21} > a_{11}; saddle attractor-repellor, $a_{ji} > a_{ii}$.*", fig.show='hold', fig.ncol=2, out.width="40%" , fig.width=4, fig.height=4}
@@ -396,7 +396,7 @@ points(n1star,n2star, cex=2)
 ### Dynamics at the Equilibria
 Here we use eigenanalysis to analyze the properties of the equilibrium, whether they are attractors, repellers, or both, and whether the system oscillates around these equilibria. 
 
-For logistic growth, we assessed stability with the partial derivative of the growth rate, with respect to population size. If it was negative the population was stable, and the more negative the value, the shorter the return time.  Here we build on this, and present a general recipe for stability analysis [@Morin1999a]:
+For logistic growth, we assessed stability with the partial derivative of the growth rate, with respect to population size. If it was negative the population was stable, and the more negative the value, the shorter the return time.  Here we build on this, and present a general recipe for stability analysis [@morin1999a]:
 
 1. Determine the equilibrium abundances of each species by setting its growth equation to zero, and solving for $N$.
 1. Create the Jacobian matrix. This matrix represents the response of each species to changes in its own population and to changes in each other's populations.   The matrix elements are the partial derivatives of each species' growth rate with respect to each population.
@@ -516,7 +516,7 @@ Just the way we used eigenanalysis to understand long term asymptotic behavior o
 \end{equation}
  Thus, the more negative the value, the faster the exponential decline back toward the equilibrium (i.e., toward $x=0$). As we did for logistic growth, we should think of the dominant eigenvalue as a "perturbation growth rate": negative values mean a decline of the perturbation, and positive values indicate an increase in the perturbation, causing the system to diverge or be repelled away from the equilibrium.
 
-In addition to the dominant eigenvalue, we need to consider the other eigenvalues. Table \@ref(tab:eiginterpret) provides a summary for interpreting eigenvalues with respect to the dynamics of the system. The eigenvalues depend upon elements of the Jacobian, and values calculated from the elements, notably the determinant, the trace, and the discriminant; a similar set of rules of system behavior can be based upon these values [@Roughgarden1998]. For instance, the *Routh-Hurwitz criterion* for stability tells us that a two-species equilibrium will be locally stable, only if $\mathbf{J_{11}} + \mathbf{J_{22}} < 0$ and if $\mathbf{J_{11}}\mathbf{J_{22}-\mathbf{J_{12}}\mathbf{J_{21}}} > 0$. The biological interpretation of this criterion will be posed as a problem at the end of the chapter. For now, Table \@ref(tab:eiginterpret) will suffice.
+In addition to the dominant eigenvalue, we need to consider the other eigenvalues. Table \@ref(tab:eiginterpret) provides a summary for interpreting eigenvalues with respect to the dynamics of the system. The eigenvalues depend upon elements of the Jacobian, and values calculated from the elements, notably the determinant, the trace, and the discriminant; a similar set of rules of system behavior can be based upon these values [@roughgarden1998]. For instance, the *Routh-Hurwitz criterion* for stability tells us that a two-species equilibrium will be locally stable, only if $\mathbf{J_{11}} + \mathbf{J_{22}} < 0$ and if $\mathbf{J_{11}}\mathbf{J_{22}-\mathbf{J_{12}}\mathbf{J_{21}}} > 0$. The biological interpretation of this criterion will be posed as a problem at the end of the chapter. For now, Table \@ref(tab:eiginterpret) will suffice.
 
 ```{r eiginterpret, echo=FALSE}
 dt2 <- data.frame(
@@ -625,7 +625,7 @@ for( i in 1:length(n1) ) {Ns <- ode(c(n1[i],n2[i]), 1:200,
 **Unstable equilibria -- $\beta_{ij}, \, \beta_{ji} > 1$**
   
 These criteria correspond to  $\alpha_{12}>\alpha_{22} ,\, \alpha_{21}>\alpha_{11}$ (Fig. \@ref(fig:LVeigU)). 
-As we saw above, the Lotka-Volterra competition model has not only stable equilibria, but also unstable equilibria, when both populations are greater than zero. Although an unstable equilibrium cannot persist, $\beta_{ij}, \, \beta_{ji} > 1$ creates interesting and probably important dynamics[@Hastings2004a]. One of the results is referred to as *founder control*, where either species can colonize a patch, and whichever species  gets there first (i.e. the founder) can resist any invader [@Bolker2003a].
+As we saw above, the Lotka-Volterra competition model has not only stable equilibria, but also unstable equilibria, when both populations are greater than zero. Although an unstable equilibrium cannot persist, $\beta_{ij}, \, \beta_{ji} > 1$ creates interesting and probably important dynamics[@hastings2004a]. One of the results is referred to as *founder control*, where either species can colonize a patch, and whichever species  gets there first (i.e. the founder) can resist any invader [@bolker2003a].
 
 Another interesting phenomenon is the *saddle* itself; this unstable equilibrium is an *attractor-repeller*, that is, it attracts from some directions and repels from others (Fig. \@ref(fig:LVeigU)). This implies that the final outcome of dynamics may be difficult to predict from initial trajectories.
 
@@ -829,7 +829,7 @@ print(wireframe(L2 ~ B12 + B21, dat3, scales=list(arrows=FALSE),
 
 ## Interspecific mutualism
 
-Mutualisms occur in a wide variety of different species. Mutualisms form the foundations of ecosystems including coral reefs (coral and zooxanthellae), grasslands, and forests (plants and mycorrhizal fungi, pollinators, and dispersers). The natural history of mutualisms are wildly diverse and complex, and and @Boucher1982 list types of mutualisms:
+Mutualisms occur in a wide variety of different species. Mutualisms form the foundations of ecosystems including coral reefs (coral and zooxanthellae), grasslands, and forests (plants and mycorrhizal fungi, pollinators, and dispersers). The natural history of mutualisms are wildly diverse and complex [@bronstein2015], and @boucher1982 list types of mutualisms:
   
 * Energetic
 * Nutritional
@@ -844,7 +844,7 @@ One of the most common of these is
 case where "the enemy of my enemy is my friend." For instance,
 consider a three plant species that all compete for the same limiting
 resource. When species A suppresses species B, it is indirectly
-helping species C [@Miller1994]. 
+helping species C [@miller1994]. 
 
 We will focus on *direct mutualisms*, and in this chapter, we'll explore this using Lotka-Volterra models
 

@@ -12,12 +12,28 @@ knitr::opts_chunk$set(echo = TRUE)
 ## Stability of host--parasitoid dynamics
 As with differential equation models, we can analyze the stability in the immediate vicinity of equilibria in discrete time models using eigenanalysis of the Jacobian matrix. Although analogous, there are some important differences  between continuous and discrete models.
 
+$$H_{t+1} = RH_t e^{-aP}$$
+
+$$\Delta H = H_{t+1} - H_{t} = RH_te^{-aP} - H_t$$
+
+
+$$\left. \Delta H  \right|_{P = \hat{P}} = R H_t e^{-a\hat{P}} - 1=R H_t e^{-a \log(R)/a} - 1=R H_t e^{- \log(R)} - 1 = R H_t / R - 1 = H-1$$
+
+$$\frac{\partial \Delta H}{\partial H} = 1$$
+
+$$\left. \Delta H  \right|_{H = \hat{H}} = R \hat{H} e^{-aP} - \hat{H}$$
+$$\left. \Delta H  \right|_{H = \hat{H}} = R\log(R)/a\frac{R}{R-1}\,e^{-aP} - \log(R)/a \frac{R}{R-1}$$
+
+
+$$\frac{\partial \Delta H}{\partial P} = -aR\hat{H}e^{-aP} = -aR\hat{P}\frac{R}{R-1}e^{-aP}= -R\log{R}\frac{R}{R-1}e^{-aP}$$
+
 * The Jacobian matrix is comprised of partial derivatives of growth increments (e.g., $\Delta N = N_{t+1}-N_t$), rather than of time derivatives (e.g., $\dot{N}$).
 * Interpretation of eigenvalues of the Jacobian reflects the difference between finite rate of increase ($\lambda$) and the intrinsic rate of increase ($r$); e.g., for discrete models, $\lambda = 1$ indicates zero growth.
 * Populations with discrete generations can grow too quickly to be stable (e.g., chaos in discrete logistic growth).
 
+In the discrete time case, the Jacobian matrix is the set of partial derivatives of the discrete growth increment rather than of the time derivatives used for continuous growth^[Note $dN/dt$ is also an increment --- it is the increment $\Delta N$ as $\Delta t \to 0$, whereas in the discrete case, $\Delta t = 1$.]. The growth increments are the increments of change over an entire time step, or $\Delta H=H_{t+1} - H_t$ and $\Delta P=P_{t+1} - P_t$. 
 
-In the discrete time case, the Jacobian matrix is the set of partial derivatives of the discrete growth increment rather than of the time derivatives used for continuous growth^[Note $dN/dt$ is also an increment --- it is the increment $\Delta N$ as $\Delta t \to 0$, whereas in the discrete case, $\Delta t = 1$.]. The growth increments are the increments of change over an entire time step, or $\Delta H=H_{t+1} - H_t$ and $\Delta P=P_{t+1} - P_t$. Taking those increments from \@ref(eq:may14a), \@ref(eq:may14b), the Jacobian matrix of partial differential equations is 
+Taking those increments from \@ref(eq:may14a), \@ref(eq:may14b), the Jacobian matrix of partial differential equations is 
 \begin{align}
   (\#eq:jachp)
 \left(

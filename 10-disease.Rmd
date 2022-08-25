@@ -1,16 +1,16 @@
 # Disease
-Here we discuss epidemiological disease models. Pathogens cause diseases, and are typically defined as microorganisms (fungi, bacteria, and viruses) with some host specificity, and which undergo population growth within the host. The curious reader may want to consult @Ellner:2006qe and @Bjornstad2018b.
+Here we discuss epidemiological disease models. Pathogens cause diseases, and are typically defined as microorganisms (fungi, bacteria, and viruses) with some host specificity, and which undergo population growth within the host. The curious reader may want to consult @ellner:2006qe and @bjornstad2018b.
 
 
 I think, without tons of evidence, that one nice aspect of disease ecology and the use epidemiological models is that they have helped ecologists feel more comfortable with short term dynamics and also the importance of prediction. Human epidemiology is rightly obsessed with understanding the disease outbreak in front of us, whether it is the common cold, or SARS-CoV-2 and how to alter its course. It is even more interested in being able to predict the course of an outbreak. In contrast, ecology has often been more interested in asymptotic dynamics rather than short term, and more on understanding than prediction. There is a place for everything, and it is good to see the two having merged a bit.
 
-Our simplest models of disease are funny, in that they don't model pathogens (the enemy) at all. These famous models, by @Kermack:1927fk, keep track of different types of hosts, primarily those with and without disease:
+Our simplest models of disease are funny, in that they don't model pathogens (the enemy) at all. These famous models, by @kermack:1927fk, keep track of different types of hosts, primarily those with and without disease:
 
 * **Susceptible hosts** Individuals which are not infected, but could become infected,
 * **Infected hosts** Individuals which are already infected, and
 * **Resistant hosts** Individuals which are resistant to the disease, typically assumed to have built up an immunity through past exposure,
 
-where $N=S+I+R$. It is important to note that $N$, $S$, $I$, and $R$ are *densities*. That is, we track numbers of individuals in a fixed area. This is important because it has direct consequences for the spread, or transmission, of disease [@McCallum2001].
+where $N=S+I+R$. It is important to note that $N$, $S$, $I$, and $R$ are *densities*. That is, we track numbers of individuals in a fixed area. This is important because it has direct consequences for the spread, or transmission, of disease [@mccallum2001].
 
 Disease spreads from infected individuals to susceptible individuals. The rate depends to some extent on the number or alternatively, on the fraction of the population that is infected. Resistant individuals are not typically considered vectors of the pathogens, and so increased abundance of resistant individuals slow the transmission rate by diluting the other two groups. 
 
@@ -44,7 +44,7 @@ SIRd <- function(t, y, p) {
 
 ### Density-dependent transmission
 
-In \@ref(eq:SIRd), the total transmission rate depends on the density of susceptible hosts. The *transmission coefficient*, $\beta$, describes the instantaneous rate at which the number of infected hosts increases per infected individual. It is directly analogous to the attack rate of type I prey-dependent models. Recall that it is based on the law of mass action, borrowed from physics and chemistry. It assumes that the rate at which events occur (new infections) is due to complete and random mixing of the reactants ($S,\,I$), and the rate at which the reactants collide and react can be described by a single constant, $\beta$. As density of either type of molecule increases, so too does the rate of interaction. In prey-dependent predation, we referred to $aN$ as a linear functional response; here we refer to $\beta S$ as the *density-dependent transmission function*. The *transmission rate* is the instantaneous rate for the number of *new infections* or cases per unit time [@McCallum2001].
+In \@ref(eq:SIRd), the total transmission rate depends on the density of susceptible hosts. The *transmission coefficient*, $\beta$, describes the instantaneous rate at which the number of infected hosts increases per infected individual. It is directly analogous to the attack rate of type I prey-dependent models. Recall that it is based on the law of mass action, borrowed from physics and chemistry. It assumes that the rate at which events occur (new infections) is due to complete and random mixing of the reactants ($S,\,I$), and the rate at which the reactants collide and react can be described by a single constant, $\beta$. As density of either type of molecule increases, so too does the rate of interaction. In prey-dependent predation, we referred to $aN$ as a linear functional response; here we refer to $\beta S$ as the *density-dependent transmission function*. The *transmission rate* is the instantaneous rate for the number of *new infections* or cases per unit time [@mccallum2001].
 
 Resistant individuals might be resistant for one of two reasons. They may die, or they may develop immunities. In either case, we assume they cannot catch the disease again, nor spread the disease. As this model assumses  a constant population  size, we continue to count all $R$ individuals, regardless of whether they become immune or die.
 
@@ -98,7 +98,7 @@ out2 <- pivot_longer(out1, cols=S:R, names_to="Host", values_to="N")
 ggplot(out2, aes(time, N, linetype=Host)) + geom_line() + labs(x="Years")
 ```
 
-It is important at this point to reiterate a point we made above---*these conclusions apply when S, I, and R are densities* [@McCallum2001]. If you increase population size but also the area associated with the population, then you have not changed density. If population size only increases, but density is constant, then interaction frequency does not increase. Some populations may increase in density as they increase is size, but some may not. Mass action dynamics are the same as type I functional response as predators---there is a constant linear increase in per capita infection rate as the number of susceptible hosts increases.
+It is important at this point to reiterate a point we made above---*these conclusions apply when S, I, and R are densities* [@mccallum2001]. If you increase population size but also the area associated with the population, then you have not changed density. If population size only increases, but density is constant, then interaction frequency does not increase. Some populations may increase in density as they increase is size, but some may not. Mass action dynamics are the same as type I functional response as predators---there is a constant linear increase in per capita infection rate as the number of susceptible hosts increases.
 
 ### Frequency-dependent transmission
 In addition to density-dependent transmission, investigators have used other forms of density dependence. One the most common is typically known as *frequency--dependent* transmission, where transmission depends on the *prevalence*, or the frequency of infecteds in the population, $I/N$.
@@ -125,7 +125,7 @@ SIRf <- function(t, y, p) {
   } )
 }
 ```
-The proper form of the transmission function depends on the mode of transmission  [@McCallum2001]. Imagine two people are on an elevator, one sick (infected), and one healthy but susceptible, and then the sick individual sneezes [@Ellner:2006qe]. This results in a particular probability, $\beta$, that the susceptible individual gets infected. Now imagine resistant individuals get on the elevator---should adding resistant individuals change the probability that the susceptible individual gets infected? Note what has and has not changed. First, with the addition of a resistant individual, $N$ has increased, and prevalence, $I/N$, has decreased. However, the densities of $I$ and $S$ remain the same (1 per elevator). What might happen? There are at least two possible outcomes:
+The proper form of the transmission function depends on the mode of transmission  [@mccallum2001]. Imagine two people are on an elevator, one sick (infected), and one healthy but susceptible, and then the sick individual sneezes [@ellner:2006qe]. This results in a particular probability, $\beta$, that the susceptible individual gets infected. Now imagine resistant individuals get on the elevator---should adding resistant individuals change the probability that the susceptible individual gets infected? Note what has and has not changed. First, with the addition of a resistant individual, $N$ has increased, and prevalence, $I/N$, has decreased. However, the densities of $I$ and $S$ remain the same (1 per elevator). What might happen? There are at least two possible outcomes:
 
 1. If sufficient amounts of the virus spread evenly throughout the elevator, adding a resistant individual does *not* change the probability of the susceptible becoming sick, and the rate of spread will remain dependent on the densities of $I$ and $S$---the rate will not vary with declining prevalence.
 2.  If only the immediate neighbor gets exposed to the pathogen, then the probability that the neighbor is susceptible declines with increasing $R$, and thus the rate of spread *will* decline with declining prevalence.
@@ -166,7 +166,7 @@ Another interesting phenomenon with frequency--dependent transmission is that pr
 
 **SIR** dynamics with frequency--dependent transmission (Fig. \@ref(fig:SIRfd)). 
 
-Here we demonstrate that prevalence can vary with population size (e.g.,  a smut on plant [@Antonovics1992]).  Let us assume that resistance cannot be acquired, so $\gamma=0$, and $R = 0$. We can investigate the SIR model by pretending that, as is often the case, we begin with a largely uninfected population and $t=0$, so $I_0=1$ and $S_0\approx N$.  We first set parameters.
+Here we demonstrate that prevalence can vary with population size (e.g.,  a smut on plant [@antonovics1992]).  Let us assume that resistance cannot be acquired, so $\gamma=0$, and $R = 0$. We can investigate the SIR model by pretending that, as is often the case, we begin with a largely uninfected population and $t=0$, so $I_0=1$ and $S_0\approx N$.  We first set parameters.
 
 ```{r}
 S <- 4^(0:4);  I <- 1; parmsf <- c(B=1, g=0)
@@ -245,7 +245,7 @@ Given a constant population size and exponential growth, then the average life s
 ```{r}
 b <- 1/50
 ```
-For this model, the force of infection turns out to be $R_0 = 1 + 1 / \left(b\, \alpha\right)$, where $\alpha$ is the average age at onset of the disease [@Ellner:2006qe]. We can therefore estimate $\beta$ from all the other parameters, including population size, average life span, average age at onset, and the average duration of the disease. For instance, imagine that we have a disease of children, where the average onset of disease is 5\,y, so we have 
+For this model, the force of infection turns out to be $R_0 = 1 + 1 / \left(b\, \alpha\right)$, where $\alpha$ is the average age at onset of the disease [@ellner:2006qe]. We can therefore estimate $\beta$ from all the other parameters, including population size, average life span, average age at onset, and the average duration of the disease. For instance, imagine that we have a disease of children, where the average onset of disease is 5\,y, so we have 
 ```{r}
 age <- 5
 R0 <- 1 + 1/(b*age)
@@ -268,11 +268,11 @@ ggplot(SIRbd.out, aes(time, Density+1, colour=Populations)) +
 ```
 
 
-Note that the population quickly becomes resistant (Fig. \@ref(fig:sirbd)). Note also that we have oscillations, albeit damped oscillations. An analytical treatment of the model, including eigenanalysis of the Jacobian matrix could show us precisely the predicted periodicity [@Ellner:2006qe]. It depends on the the age at onset, and the duration of the disease. 
+Note that the population quickly becomes resistant (Fig. \@ref(fig:sirbd)). Note also that we have oscillations, albeit damped oscillations. An analytical treatment of the model, including eigenanalysis of the Jacobian matrix could show us precisely the predicted periodicity [@ellner:2006qe]. It depends on the the age at onset, and the duration of the disease. 
 
 
 ## Modeling data from Bombay
-Here we try our hand at fitting the SIR model to some data. Kermack and McCormick \@ref(Kermack:1927fk) provided data on the number of plague deaths per week in Bombay^[Bombay is the coastal city now known as Mumbai, and is the capital of Maharashtra; it is one of the largest cities in the world.] in 1905--06. We first enter them and look at them.^[Data provided kindly by S.P. Ellner]
+Here we try our hand at fitting the SIR model to some data. Kermack and McCormick \@ref(kermack:1927fk) provided data on the number of plague deaths per week in Bombay^[Bombay is the coastal city now known as Mumbai, and is the capital of Maharashtra; it is one of the largest cities in the world.] in 1905--06. We first enter them and look at them.^[Data provided kindly by S.P. Ellner]
 
 ```{r sir2, fig.cap="*Cumulative deaths for plague, in Bombay, India, 1905--1906 (raw data and fitted model, as described in this section).*"}
 data(ross)
@@ -283,10 +283,10 @@ As with most such enterprises, we wish we knew far more than we do about the whi
 
 %We begin by assuming, and Kermack and Mckendrick did, that mortality from bubonic plague, in Bombay, in 1905, was quite high, close to 90\%. Next, we realize that the only data we have is deaths. Given, however, that the mortality is very high, we might approximate the number of infections by saying that Deaths = 0.9 $\times$ Infections.
 
-A good starting place is a simple SIR model for a population of constant size \@ref(eq:SIRd) [@Ellner:2006qe; @Kermack:1927fk].
+A good starting place is a simple SIR model for a population of constant size \@ref(eq:SIRd) [@ellner:2006qe; @kermack:1927fk].
 
 ### Optimization
-We next want to let R find the most accurate estimates of our model parameters $\beta,\,\gamma$. The best and most accessible reference for this is @Bolker:2008rr. Please read the Appendix (for the moment, available on request) for more explanation regarding optimization and objective functions.
+We next want to let R find the most accurate estimates of our model parameters $\beta,\,\gamma$. The best and most accessible reference for this is @bolker:2008rr. Please read the Appendix (for the moment, available on request) for more explanation regarding optimization and objective functions.
 
 Now we create the objective function. An objective function compares a model to data, and calculates a measure of fit (e.g., residual sum of squares or likelihood). Our objective function will calculate the likelihood^[Likelihood is proportional the probability of data, given a particular model and its parameters.] of particular values for SIR model parameters. These parameters include  $\gamma$ and $\beta$ of the SIR model. We will also estimate $I_0$, initial size of the infected population at our $t=0$. A survey of easily accessed census data suggests the population at the time was in the neighborhood of $\sim 9.5 \times 10^5$ individuals. We also might assume that $I_0$ would be a very small number, perhaps $\sim 1$ in principle, so we will use that. We would really like to estimate $N$ and $I_0$, but we'll save that for another day.
 

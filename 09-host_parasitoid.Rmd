@@ -6,7 +6,7 @@ There are a variety of characteristics about host--parasitoid relations that mig
 
 ## Independent and random attacks
 
-In keeping with convention of parasitoid models, let us describe dynamics of hosts and their parasitoid enemies with a discrete time model [@Nicholson:1935aa; @May:1978fk]. This makes sense, as these organisms, typically insects, frequently complete their life cycles together and within a year. Let us pretend that the hosts, $H$, grow geometrically in the absence of parasitoids, such that $H_{t+1} = RH_t$. If we assume that some individuals are attacked and killed by parasitoids, $H_a$, then this rate becomes 
+In keeping with convention of parasitoid models, let us describe dynamics of hosts and their parasitoid enemies with a discrete time model [@nicholson:1935aa; @may:1978fk]. This makes sense, as these organisms, typically insects, frequently complete their life cycles together and within a year. Let us pretend that the hosts, $H$, grow geometrically in the absence of parasitoids, such that $H_{t+1} = RH_t$. If we assume that some individuals are attacked and killed by parasitoids, $H_a$, then this rate becomes 
 \begin{equation}
  (\#eq:12)
   H_{t+1} = R\left( H_t - H_a \right)
@@ -20,7 +20,7 @@ For many species of parasitoids, only one adult can emerge from a single host, r
 \end{equation}
 The assumption of one dead host = one new parasitoid can be easily relaxed if we introduce a constant $q$, such that $P_{t+1} = qH_a$. 
 
-@Nicholson:1935aa took advantage of a well known discrete probability distribution, the *Poisson distribution*^[This distribution was discovered by a French mathematician (Sim\'{e}on-Denis Poisson (1781--1840), so we pronounce the name "pwah-sohn," like the "fois" of fois gras, and the "sohn" with a quiet "n," like, well, like the French would say it.] which describes the probability of observing a particular number of events in a specified time interval or area, when those events occur randomly and independently. It is defined as
+@nicholson:1935aa took advantage of a well known discrete probability distribution, the *Poisson distribution*^[This distribution was discovered by a French mathematician (Sim\'{e}on-Denis Poisson (1781--1840), so we pronounce the name "pwah-sohn," like the "fois" of fois gras, and the "sohn" with a quiet "n," like, well, like the French would say it.] which describes the probability of observing a particular number of events in a specified time interval or area, when those events occur randomly and independently. It is defined as
 $$P\left(x\right) = \frac{\mu^x e^{-\mu}}{x!} $$
 where the probability of observing $x$ events (in a given time interval) depends on the overall average rate $\mu$ and the number of observed events.
 It generates the series
@@ -74,7 +74,7 @@ arrows(HPs[-time,1], HPs[-time,2], HPs[-1,1], HPs[-1,2], length=.05)
 ```
 
 #### Simulating Random Attacks
-This model makes strong assumptions about the proportion of hosts that escape attacks, that depends on parasitoid attacks being random and independent. Therefore let us simulate parasitoid attacks that are random and independent and compare those data to field data. Let's start with some field data collected by Mark Hassell [@May:1978fk], which are the number of parasitoid larvae per host, either 0, 1, 2, 3, or 4 larvae.
+This model makes strong assumptions about the proportion of hosts that escape attacks, that depends on parasitoid attacks being random and independent. Therefore let us simulate parasitoid attacks that are random and independent and compare those data to field data. Let's start with some field data collected by Mark Hassell [@may:1978fk], which are the number of parasitoid larvae per host, either 0, 1, 2, 3, or 4 larvae.
 ```{r}
 totals <- c(1066, 176, 48, 8, 5)
 ```
@@ -154,13 +154,13 @@ The Nicholson-Bailey model with independent and radnom attacks, \@ref(eq:para1),
 
 Perhaps what we are missing is some important parasitoid natural history. Parasitoids tend to aggregate on particular hosts or on local populations of the hosts. Some hosts are more likely to get attacked than others, resulting in more unattacked hosts and more hosts receiving multiple attacks than predicted under random and independent attacks. This may be related to their searching behavior, or to spatial distributions of hosts in the landscape. When the parasitoids aggregate, they tend to leave the low density host populations unparasitized. As a result, these low density populations act as *refuges*.
 
-Perhaps we can kill two birds with one stone, and fix both problems with one step. That is what @May:1978fk and others have done, by assuming that parasitoids *aggregate*. 
+Perhaps we can kill two birds with one stone, and fix both problems with one step. That is what @may:1978fk and others have done, by assuming that parasitoids *aggregate*. 
 
 May proposed the following logic for one reason we might observe more unattacked hosts than expected. Imagine that the distribution of parasitoids *among* patches in the landscape can be described with one probability distribution, with some particular mean and variance in the number of parasitoids per patch. Imagine next that their attacks on hosts *within* each patch are random and independent and thus described with the Poisson distribution. This will result in a compound distribution of attacks --- a combination of the among-patch, and within-patch distributions.^[This distribution is actually a mixture of Poisson distributions. The Poisson distribution is determined entirely by its mean, $\mu$. If we let $\mu$ itself be a random variable drawn from the Gamma distribution, then we arrive at the negative binomial distribution.] If we examine the distribution of larvae per host, for all hosts in the landscape, we will find a higher proportion of unattacked hosts, and a higher proportion of hosts that are attacked many times. 
 
 The *negative binomial distribution* can describe aggregated data, such as the number of larvae per host. Such data are counts greater than or equal to zero, in which the variance is greater than the mean. Thus, the negative binomial distribution can describe greater aggregation than the Poisson distribution (where $\mu=\sigma^2$), and thereby describe nature somewhat more accurately. May suggested that while the true distribution of larvae in hosts, in any particular case, was unlikely to truly be a negative binomial, it was nonetheless a useful approximation.
 
-Ecologists frequently use the negative binomial distribution for count data where the variance is greater than the mean. There are different derivations of the distribution, and therefore different parameterizations [@Bolker:2008rr]. In ecology, we typically use the mean, $\mu$, and the *overdispersion parameter* $k$. The variance, $\sigma^2$, is a function of these, where $\sigma^2 = \mu + \mu^2/k$; by overdispersion we mean that $\sigma^2 > \mu$. Large values of $k$ ($k>10$) indicate random and independent events rather than aggregation, and the distribution becomes indistinguishable from the Poisson. Small values ($k<2$) indicate aggregation.^[Although $k$ is often referred to as a "clumping" or "aggregation" parameter, we might think of it as a "randomness" parameter, because larger values result in more random, Poisson-like distributions.] Fig. \@ref(fig:negbin) shows examples. R has the negative binomial distribution built in (`nbinom`), but does not use $k$ as one of its arguments; rather, `size` $=k$. Here we generate a graph showing the distribution with different values of $k$.
+Ecologists frequently use the negative binomial distribution for count data where the variance is greater than the mean. There are different derivations of the distribution, and therefore different parameterizations [@bolker:2008rr]. In ecology, we typically use the mean, $\mu$, and the *overdispersion parameter* $k$. The variance, $\sigma^2$, is a function of these, where $\sigma^2 = \mu + \mu^2/k$; by overdispersion we mean that $\sigma^2 > \mu$. Large values of $k$ ($k>10$) indicate random and independent events rather than aggregation, and the distribution becomes indistinguishable from the Poisson. Small values ($k<2$) indicate aggregation.^[Although $k$ is often referred to as a "clumping" or "aggregation" parameter, we might think of it as a "randomness" parameter, because larger values result in more random, Poisson-like distributions.] Fig. \@ref(fig:negbin) shows examples. R has the negative binomial distribution built in (`nbinom`), but does not use $k$ as one of its arguments; rather, `size` $=k$. Here we generate a graph showing the distribution with different values of $k$.
 ```{r eval=FALSE, echo=FALSE}
 getk <- function(CV2, mu){mu/(mu*CV2-1)}
 getk(7.33, -.24)
@@ -168,7 +168,7 @@ getk(7.77, -.46)
 getk(2, -.025)
 getk(.1,.395)
 ```
-```{r negbin, fig.cap="*The negative binomial distribution, where the dispersion parameter $k$ controls variance or breadth the distribution. For a given mean, smaller $k$ causes a greater variance, and results in a higher proportion of zeroes. These $k$ are representative of values from @Pacala1990.*"}
+```{r negbin, fig.cap="*The negative binomial distribution, where the dispersion parameter $k$ controls variance or breadth the distribution. For a given mean, smaller $k$ causes a greater variance, and results in a higher proportion of zeroes. These $k$ are representative of values from @pacala1990.*"}
 nb.dat <- cbind(
        Random = dnbinom(0:5, mu=.5, size=10^10),
       "k=10"=dnbinom(0:5, mu=.5, size=10),
@@ -186,7 +186,7 @@ The proportion of unattacked hosts expected under the negative binomial is $(1 +
   H_{t+1} &= RH_t\left(1+\frac{aP_t}{k} \right)^{-k}  (\#eq:may14a)\\
   P_{t+1} &=  H_t - H_t\left(1+\frac{aP_t}{k} \right)^{-k}  (\#eq:may14b)
 \end{align}
-@May:1978fk referred to this as a phenomenlogical model (as opposed to mechanistic) because the negative binomial merely approximates the true, perhaps compound, distribution.
+@may:1978fk referred to this as a phenomenlogical model (as opposed to mechanistic) because the negative binomial merely approximates the true, perhaps compound, distribution.
 
 ### Equilibria for a discrete-time model
 The equilibria of the host and parasitoid populations in May's model \@ref(eq:may14a), \@ref(eq:may14b), are  derived simply, once we decide upon how to describe the condition for an equilibrium (a.k.a. steady state). In models of differential equations, this meant letting $d N/d t =0$. In the discrete case it means letting  $N_{t+1}-N_t=0$. The equilibrium is the value of $N$ when this is true, so $N^*=N_{t+1}=N_t$. Following this train of thought, we have $H^*=H_{t+1} = H_t$ and $P^*=P_{t+1} = P_t$. 
