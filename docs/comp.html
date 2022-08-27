@@ -745,7 +745,48 @@ where <span class="math inline">\(\alpha_{ij}, \alpha_{ji} &lt; 0\)</span> descr
 <h2>
 <span class="header-section-number">7.4</span> Nonlinear direct competition<a class="anchor" aria-label="anchor" href="#nonlinear-direct-competition"><i class="fas fa-link"></i></a>
 </h2>
-<p>TBD - Sept. 2022</p>
+<p>Historically <span class="citation">(e.g., <a href="references.html#ref-levine2009" role="doc-biblioref">Levine and HilleRisLambers 2009</a>)</span>, competition among annual plants has been described for species <span class="math inline">\(i\)</span> as</p>
+<p><span class="math display">\[F_{i, t+1} = \frac{F_{i,t} g \lambda}{c + \alpha_{ii} F_{i,t} g + \alpha_{ij} F_{j,t} g} + F_{i,t}(1-g)(1-d)\]</span></p>
+<p>where <span class="math inline">\(\alpha_{ij}\)</span> is the total annual effect of a competing germinant <span class="math inline">\(j\)</span> on the fecundity of a focal germinant <span class="math inline">\(i\)</span>. If we assume partridge pea, species <span class="math inline">\(i\)</span>, resides typically in perennial-dominated herbaceous vegetation, then we might think about substituting something else in for the second population in which seed number is largely irrelevant. Alternatively, if we assume that the pea has no meaningful effect on the surrounding vegetation, we might simply scale <span class="math inline">\(\lambda\)</span>, <span class="math inline">\(g\)</span>, or <span class="math inline">\(c\)</span> by the effect of the competition.</p>
+<p>We might believe that in the long term, the pea contributes to its own competitive demise by increasing the surrounding soil N content. If so, then it has a net benefit on surrounding perennial vegetation, and we might model that with <span class="math inline">\(alpha_{ji} &lt; 0\)</span> such that increasing <span class="math inline">\(F_i\)</span> causes a <em>decrease in the negative density dependence</em> experienced by the competitor. It might even reduce, but not reverse the sign of, <span class="math inline">\(\alpha_{jj}\)</span>.</p>
+<div class="sourceCode" id="cb265"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">gens</span> <span class="op">&lt;-</span> <span class="fl">100</span></span>
+<span><span class="co">## Cf = Chamaecrista; Pv = perennial vegetation</span></span>
+<span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span> t<span class="op">=</span><span class="fl">0</span><span class="op">:</span><span class="va">gens</span>, Cf<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/numeric.html">numeric</a></span><span class="op">(</span><span class="fl">1</span><span class="op">+</span><span class="va">gens</span><span class="op">)</span>, Pv<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/numeric.html">numeric</a></span><span class="op">(</span><span class="fl">1</span><span class="op">+</span><span class="va">gens</span><span class="op">)</span> <span class="op">)</span></span>
+<span><span class="va">df</span><span class="op">[</span><span class="fl">1</span>,<span class="fl">2</span><span class="op">:</span><span class="fl">3</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">100</span>,<span class="fl">100</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">lambda</span><span class="op">=</span><span class="fl">2.5</span> <span class="co"># seeds produced per seed</span></span>
+<span></span>
+<span><span class="co">## Positive values indicate negative (competitive) effects</span></span>
+<span><span class="co">## Negative values indicate positive (facilitative) effects</span></span>
+<span><span class="va">a11</span> <span class="op">&lt;-</span> <span class="fl">0.01</span> <span class="co"># effect of Cf on itself</span></span>
+<span><span class="va">a12</span> <span class="op">&lt;-</span> <span class="fl">0.005</span> <span class="co"># effect of Pv on Cf</span></span>
+<span><span class="va">a22</span> <span class="op">&lt;-</span> <span class="fl">0.01</span> <span class="co"># effect of Pv on itself</span></span>
+<span><span class="va">a21</span> <span class="op">&lt;-</span> <span class="fl">0.005</span> <span class="co"># effect of Cf on Pv</span></span>
+<span></span>
+<span><span class="va">c</span> <span class="op">&lt;-</span> <span class="fl">1</span> <span class="co"># overall competitive effect</span></span>
+<span><span class="va">g</span> <span class="op">&lt;-</span> <span class="fl">0.5</span> <span class="co"># fraction of seeds germinating</span></span>
+<span><span class="va">d</span> <span class="op">&lt;-</span> <span class="fl">0.5</span> <span class="co"># fraction of seeds in seed bank that die</span></span>
+<span></span>
+<span><span class="va">rd</span> <span class="op">=</span> <span class="fl">0.1</span> <span class="co"># per capita density-independent growth rate of Pv</span></span>
+<span><span class="kw">for</span><span class="op">(</span><span class="va">t</span> <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span><span class="va">gens</span><span class="op">)</span><span class="op">{</span></span>
+<span>  <span class="va">Cft</span> <span class="op">&lt;-</span> <span class="va">df</span><span class="op">[</span><span class="va">t</span>,<span class="st">"Cf"</span><span class="op">]</span>; <span class="va">Pvt</span> <span class="op">&lt;-</span> <span class="va">df</span><span class="op">[</span><span class="va">t</span>,<span class="st">"Pv"</span><span class="op">]</span></span>
+<span><span class="va">Cft1</span> <span class="op">&lt;-</span> <span class="va">Cft</span> <span class="op">*</span> <span class="va">g</span><span class="op">*</span><span class="va">lambda</span><span class="op">/</span><span class="op">(</span><span class="va">c</span><span class="op">+</span><span class="va">a11</span><span class="op">*</span><span class="va">g</span><span class="op">*</span><span class="va">Cft</span> <span class="op">+</span> <span class="va">a12</span><span class="op">*</span><span class="va">Pvt</span><span class="op">)</span> <span class="op">+</span> <span class="va">Cft</span><span class="op">*</span><span class="op">(</span><span class="fl">1</span><span class="op">-</span><span class="va">g</span><span class="op">)</span><span class="op">*</span><span class="op">(</span><span class="fl">1</span><span class="op">-</span><span class="va">d</span><span class="op">)</span></span>
+<span><span class="va">Pvt1</span> <span class="op">&lt;-</span> <span class="va">Pvt</span> <span class="op">+</span> <span class="va">Pvt</span> <span class="op">*</span> <span class="va">rd</span><span class="op">*</span><span class="op">(</span><span class="fl">1</span> <span class="op">-</span> <span class="va">a22</span><span class="op">*</span><span class="va">Pvt</span> <span class="op">-</span> <span class="va">a21</span><span class="op">*</span><span class="va">Cft</span><span class="op">)</span> </span>
+<span><span class="va">df</span><span class="op">[</span><span class="va">t</span><span class="op">+</span><span class="fl">1</span>,<span class="fl">2</span><span class="op">:</span><span class="fl">3</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">Cft1</span>, <span class="va">Pvt1</span><span class="op">)</span></span>
+<span><span class="op">}</span></span>
+<span></span>
+<span><span class="va">dfl</span> <span class="op">&lt;-</span> <span class="fu">pivot_longer</span><span class="op">(</span><span class="va">df</span>, cols<span class="op">=</span><span class="fl">2</span><span class="op">:</span><span class="fl">3</span>, names_to<span class="op">=</span><span class="st">"Population"</span>, values_to<span class="op">=</span><span class="st">"N"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span><span class="va">t</span>, <span class="va">N</span>, colour<span class="op">=</span><span class="va">Population</span><span class="op">)</span>, data<span class="op">=</span><span class="va">dfl</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html">geom_line</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<div class="inline-figure"><img src="figs/unnamed-chunk-98-1.png" width="90%"></div>
+<div id="investigate-stability-criteria" class="section level3" number="7.4.1">
+<h3>
+<span class="header-section-number">7.4.1</span> Investigate stability criteria<a class="anchor" aria-label="anchor" href="#investigate-stability-criteria"><i class="fas fa-link"></i></a>
+</h3>
+<p>With discrete models, we solve for equilibria by setting the difference equations equal to zero. That is, we “solve the difference equations”, i.e., solve
+<span class="math display">\[Cf_{t+1} - Cf_t=0 \quad ; \quad Pv_{t+1} - Pv_t=0\]</span></p>
+<p>I leave it for the industrious to work through that. :)</p>
+</div>
 </div>
 <div id="summary" class="section level2" number="7.5">
 <h2>
@@ -779,7 +820,9 @@ where <span class="math inline">\(\alpha_{ij}, \alpha_{ji} &lt; 0\)</span> descr
 </li>
 <li><a class="nav-link" href="#interspecific-mutualism"><span class="header-section-number">7.2</span> Interspecific mutualism</a></li>
 <li><a class="nav-link" href="#generalized-lotka-volterra-models"><span class="header-section-number">7.3</span> Generalized Lotka-Volterra models</a></li>
-<li><a class="nav-link" href="#nonlinear-direct-competition"><span class="header-section-number">7.4</span> Nonlinear direct competition</a></li>
+<li>
+<a class="nav-link" href="#nonlinear-direct-competition"><span class="header-section-number">7.4</span> Nonlinear direct competition</a><ul class="nav navbar-nav"><li><a class="nav-link" href="#investigate-stability-criteria"><span class="header-section-number">7.4.1</span> Investigate stability criteria</a></li></ul>
+</li>
 <li><a class="nav-link" href="#summary"><span class="header-section-number">7.5</span> Summary</a></li>
 </ul>
 
@@ -797,7 +840,7 @@ where <span class="math inline">\(\alpha_{ij}, \alpha_{ji} &lt; 0\)</span> descr
 <footer class="bg-primary text-light mt-5"><div class="container"><div class="row">
 
   <div class="col-12 col-md-6 mt-3">
-    <p>"<strong>Primer of Ecology using R</strong>" was written by Hank Stevens. It was last built on 2022-08-25.</p>
+    <p>"<strong>Primer of Ecology using R</strong>" was written by Hank Stevens. It was last built on 2022-08-27.</p>
   </div>
 
   <div class="col-12 col-md-6 mt-3">

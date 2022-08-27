@@ -967,7 +967,52 @@ where $\alpha_{ij}, \alpha_{ji} < 0$ describes competitive interactions, and $\a
 
 ## Nonlinear direct competition
 
-TBD - Sept. 2022
+Historically [e.g., @levine2009], competition among annual plants has been described for species $i$ as
+
+$$F_{i, t+1} = \frac{F_{i,t} g \lambda}{c + \alpha_{ii} F_{i,t} g + \alpha_{ij} F_{j,t} g} + F_{i,t}(1-g)(1-d)$$
+
+where $\alpha_{ij}$ is the total annual effect of a competing germinant $j$ on the fecundity of a focal germinant $i$. If we assume partridge pea, species $i$, resides typically in perennial-dominated herbaceous vegetation, then we might think about substituting something else in for the second population in which seed number is largely irrelevant. Alternatively, if we assume that the pea has no meaningful effect on the surrounding vegetation, we might simply scale $\lambda$, $g$, or $c$ by the effect of the competition.
+
+We might believe that in the long term, the pea contributes to its own competitive demise by increasing the surrounding soil N content. If so, then it has a net benefit on surrounding perennial vegetation, and we might model that with $alpha_{ji} < 0$ such that increasing $F_i$ causes a *decrease in the negative density dependence* experienced by the competitor. It might even reduce, but not reverse the sign of, $\alpha_{jj}$.
+
+```{r}
+gens <- 100
+## Cf = Chamaecrista; Pv = perennial vegetation
+df <- data.frame( t=0:gens, Cf=numeric(1+gens), Pv=numeric(1+gens) )
+df[1,2:3] <- c(100,100)
+
+lambda=2.5 # seeds produced per seed
+
+## Positive values indicate negative (competitive) effects
+## Negative values indicate positive (facilitative) effects
+a11 <- 0.01 # effect of Cf on itself
+a12 <- 0.005 # effect of Pv on Cf
+a22 <- 0.01 # effect of Pv on itself
+a21 <- 0.005 # effect of Cf on Pv
+
+c <- 1 # overall competitive effect
+g <- 0.5 # fraction of seeds germinating
+d <- 0.5 # fraction of seeds in seed bank that die
+
+rd = 0.1 # per capita density-independent growth rate of Pv
+for(t in 1:gens){
+  Cft <- df[t,"Cf"]; Pvt <- df[t,"Pv"]
+Cft1 <- Cft * g*lambda/(c+a11*g*Cft + a12*Pvt) + Cft*(1-g)*(1-d)
+Pvt1 <- Pvt + Pvt * rd*(1 - a22*Pvt - a21*Cft) 
+df[t+1,2:3] <- c(Cft1, Pvt1)
+}
+
+dfl <- pivot_longer(df, cols=2:3, names_to="Population", values_to="N")
+ggplot(aes(t, N, colour=Population), data=dfl) + geom_line()
+```
+
+### Investigate stability criteria
+
+With discrete models, we solve for equilibria by setting the difference equations equal to zero. That is, we "solve the difference equations", i.e., solve 
+$$Cf_{t+1} - Cf_t=0 \quad ; \quad Pv_{t+1} - Pv_t=0$$
+
+I leave it for the industrious to work through that. :)
+
 
 ## Summary
 This chapter has provided several useful results. 
