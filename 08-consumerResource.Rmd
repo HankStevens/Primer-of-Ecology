@@ -303,7 +303,7 @@ We can replace the $P$ and $N$ in the Jacobian with the equibria found above. Wh
 \left(
 \begin {array}{cc}
 r-a(r/a)&-a(m/(ae))\\
-ea(r/a)&ea(m/(ae))-s\\
+ea(r/a)&ea(m/(ae))-m\\
 \end {array}
 \right) 
 =
@@ -481,8 +481,8 @@ The stable equilibrium occurs at approximately ```r round(eq)   ```.
 ## Paradox of enrichment
 Using a variety of models that assume a prey carrying capacity and a type II functional response, @rosenzweig1971 showed an unexpected phenomenon --- that increasing a prey's carry capacity could drive it to extinction. This can happen if the prey grow too quickly to high abundance and temporarily support a high abundance of predators which then drive the prey extinct. We can demonstrate that here by lowering $\alpha$ enough to increase oscillations so that abundances get infinitesimally close to zero.
 
-```{r fig.cap="*Predator-prey dynamics with prey carrying capacity and type II predator functional response. With these parameter values, we see damped oscillations.*", out.width="67%"}
-t <- 0:100; y0 <-c(N=100, P=3)
+```{r fig.cap="*Predator-prey dynamics with prey carrying capacity and type II predator functional response. With these parameter values, the oscillations persist and do not dissipate.*", out.width="67%"}
+t <- 0:200; y0 <-c(N=100, P=3)
 p <- list(r=0.8, alpha=0.0005, a=.02, e=0.04, m=.15, h=.1)
 outdf <- as.data.frame( ode(y0, t, cr_RM_pred,  p) )
 outL <- pivot_longer(outdf, -time, names_to="State_vars", values_to="abun.")

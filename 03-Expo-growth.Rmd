@@ -432,8 +432,7 @@ As only one realization of a set of randomly selected $R$, Fig. \@ref(fig:simten
 Next we create a way to perform the above simulation several times. There are a couple tricks we use to do this. We still want to start small so we can figure out the steps as we go. Here is what we would do next. 
 
 1. We start by creating a function that will do the steps we did above.
-2. We then do replicate independent simulations, using `replicate()`.
-
+2. We then perform replicate, independent simulations, using `replicate()`.
 
 Here we write a function to combine several steps. Our function has three arguments: the observed $R$, the number of years that we want to simulate, and the initial population size.
 ```{r}
@@ -530,7 +529,7 @@ We see that we have an object that is the size we think it should be. We shall a
 We extract the last year of the simulations (last row), and summarize it with quartiles (0%, 25%, 50%, 75%, 100%, and also the mean).
 ```{r}
 N.2053 <- outmat[51,]
-summary(N.2053, digits=6)
+summary(N.2053)
 ```
 
 ```{r fig.cap="Distribution of the 10000 final base-10 log population sizes. Note the approximately Normal distribution.", out.width="75%"}
@@ -553,11 +552,11 @@ persisting <- as.numeric( N.2053 >= 1 )
 (p <- sum(persisting)/length(persisting))
 ```
 
-Next we ask, what the *uncertainty* associated with that? We will find an intuitive Bayesian answer to the question: What is the probability that the sparrow would become extinct in this region, due to these inherent processes?
+Next we ask, what is the *uncertainty* associated with that? We will find an intuitive Bayesian answer to the question: What is the probability that the sparrow would become extinct in this region, due to these inherent processes?
 
-We will gain an intuition into Bayesian probability elsewhere. For now, we will simply rely on well-established relationship between the binomial probability distribution and the beta distribution.
+We will gain an intuition into Bayesian probability elsewhere^[Bayesian analysis allows us to estimate the probabiility that our hypothesis is true, as opposed to the probability of our data given our hypothesis (Pr(H|D) vs. Pr(D|H)).]. For now, we will simply rely on well-established relationship between the binomial probability distribution and the beta distribution.
 
-We start with our expert opinion of whether Song Sparrows are likely to maintain a self-replacing population (a 'source' population - Ch. 6) and avoid extinction over our time interval. In other words, we ask Dave Russell. He says "Probably, but you can't be sure." Let's represent that with the beta distribution. The **beta distribution** generates probability densities for a random variable between [0,1], perfect for representing probabilities. It has two parameters, shape 1 ($\alpha$) and shape 2 ($\beta$). The mean of the beta distribution is,
+A Bayesian approach forces us to use what we already know. For us, we will start with expert opinion of whether Song Sparrows are likely to maintain a self-replacing population (a 'source' population - Ch. 6) and avoid extinction over our time interval. In other words, we ask Dr. Dave Russell. He says "Probably, but you can't be sure." Let's represent "probably" with the beta distribution. The **beta distribution** generates probability densities for a random variable between [0,1], perfect for representing probabilities which always lie between zero and one. The beta distribution has two parameters, often called shape 1 ($\alpha$) and shape 2 ($\beta$). The mean of the beta distribution is,
 $$\mu = \frac{\alpha}{\alpha + \beta}$$
 
 ```{r survivalPrior, fig.cap="Our prior belief on the probability that the Song Sparrow population in Darrtown will replace itself over our time interval. We call this the *prior probability distribution.*", out.width="67%"}
@@ -691,7 +690,7 @@ Our conclusions are based on a model of discrete density-independent population 
 ## 1/$f$ environmental noise
 Perhaps we can explain some of the variation in annual growth rates of sparrows to weather patterns in the sampling area (Darrtown, Ohio). In doing so, we might be assuming the *environmental stochasticity* is worth modeling which might allow us to separate demographic effects from environmental effects. That would give us a better model we might use for explanation and prediction.
 
-When we model or simulate a time series, we often find it essential to account for patterns that arise on different time scales and have different magnitudes. For instance, air temperature (and its consequences) varies diurnally, from day to day, week to week, and across seasons. We often refer to this as "one over f-noise" ($1/f$-noise), that is, random variation of multiple overlapping asynchronous patterns of variation. This can be characterized with *spectral analysis* [@shumway2019; @halley1996]. Spectral analysis allows us to detect cyclic repeating patterns in noisy data, such as the El Niño Southern Oscillations, small mammal population cycles, tree masting dynamics, or disease outbreaks.
+When we model or simulate a time series, we often find it essential to account for patterns that arise on different time scales and have different magnitudes. For instance, air temperature (and its consequences) varies diurnally, from day to day, week to week, and across seasons. We often refer to this as "one over f-noise" ($1/f$-noise), that is, random variation of multiple overlapping asynchronous patterns of variation. This can be characterized with *spectral analysis* [@shumway2019; @halley1996]. Spectral analysis allows us to detect cyclic repeating patterns in strongly cyclic data, such as El Niño Southern Oscillations, small mammal population cycles, tree masting dynamics, disease outbreaks. In fact, nearly all environmental variability typically shows some degree of structure that is nonrandom.
 
 In addition to detecting the particular frequencies of some cycles, we can also describe multivariate emergent spectral patterns with reference to a color spectrum. When variation at all time scales is equally important, we refer to this as white noise, analogous to white light, which includes all visible frequencies. When lower frequencies are more important, we refer to this as red noise. This results from low-frequency long-wavelength patterns having greater amplitude than high-frequency, short-wavelength patterns. We refer to this as *reddened noise*.
 
@@ -740,7 +739,7 @@ In Fig. \@ref(fig:specex), the solid lines refer to the uniform data (black) and
 Imagine that the Ohio (USA) environment of our Song Sparrows reveals *environmnetal stochasticity*, that is, random-like fluctuations that we do not understand. Next imagine that this environmental stochasticity affects Song Sparrow growth rate. If we want to simulate future sparrow population dynamics, we may want to mimic the type and magnitude of this underlying variation. We might do that by using our original annual growth data, but arranged in a reddened series. 
 
 Let us first examine whether the sparrow growth rates show evidence of reddened population dynamics. We can use the `plot_f()` in `primer` to evaluate that. It plots the time series, and then the power spectra. It fits a line to the log(power) vs. log(frequency) and calculates a frequentist confidence interval.
-```{r plotf, fig.cap="Sparrow population dynamics might show reddened flutuations. On the left, sparrow counts over time, and on the right, the log-log plot of the power spectrum (power vs. frequency). The frequentist confidence interval on the slope of the fitted line suggests that we shouldn't rule out the possibility of a reddened series."}
+```{r plotf, fig.cap="Sparrow population dynamics seems to show reddened flutuations. On the left, sparrow counts over time, and on the right, the log-log plot of the power spectrum (power vs. frequency). The frequentist confidence interval on the slope of the fitted line suggests that we shouldn't rule out the possibility of a reddened series."}
 plot_f(Count)
 ```
 

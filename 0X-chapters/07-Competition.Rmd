@@ -963,15 +963,15 @@ RCB <- function(t,y,p){
 })
 }
 p <- list(m1=.3, m2=.3, a1=2, a2=40, k1=.1, k2=5, r=1, a3=1)
-
-{par(mar=c(5,4,.5,.5))
-  with(as.list(p), {
-  curve(m2*(a2*x/(k2+x) - 1), 0, 1, lty=2, col=2, #ylim=c(-.2,.5) , 
-      ylab = "Per capita growth rate", xlab = "Resource")
-curve(m1*(a1*x/(k1+x) - 1), 0, 1, add=TRUE); abline(h=0, lty=1)
-legend('right', c("Pred 2", "Pred 1"), lty=2:1, col=2:1, bty='n')
-})
-}
+  
+  {par(mar=c(5,4,.5,.5))
+    with(as.list(p), {
+    curve(m2*(a2*x/(k2+x) - 1), 0, 1, lty=2, col=2, #ylim=c(-.2,.5) , 
+        ylab = "Per capita growth rate", xlab = "Resource")
+  curve(m1*(a1*x/(k1+x) - 1), 0, 1, add=TRUE); abline(h=0, lty=1)
+  legend('right', c("Pred 2", "Pred 1"), lty=2:1, col=2:1, bty='n')
+  })
+  }
 ```
 
 ```{r echo=FALSE, fig.cap="*The type of fixed oscillations possible given a self-reproducing resource and consumers with whose nonlinear growth rates differ in their curvature. The parameters are the same as in the previous figure.*", out.width="75%"}
@@ -984,6 +984,7 @@ df <- data.frame(ode(yi, t=t, RCB, p))
 
 df2 <- pivot_longer(df, 2:4, names_to="State_var", values_to="N")
 ggplot(df2, aes(time, N, colour=State_var, linetype=State_var )) + geom_line() + guides(colour = guide_legend(reverse=T), linetype = guide_legend(reverse=T))
+ggsave("relnonlin_dyns.png")
 ```
 
 

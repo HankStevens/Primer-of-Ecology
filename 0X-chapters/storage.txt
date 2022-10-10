@@ -1,0 +1,235 @@
+
+
+## Storage effect
+In the storage effect, competing species can \emph{store} energy for reproduction until favored conditions arise \cite{Chesson2000a,Warner1985}. Assumptions include:
+
+* **Variable environment** Each species encounters both favorable and unfavorable periods for reproduction.
+* **Buffered population growth** Each species stores energy in a resistant stage (e.g., long lived adults, seeds, spores, eggs) between favorable periods.
+* **Environment--competition covariation** The same conditions that favor reproduction for a particular species also increase competition intensity for that species. If, for instance, winter rains favor a particular desert annual, that desert annual will experience the greatest intraspecific competition following a wet winter precisely because 
+One prediction of the storage effect is that small population sizes will be more variable (have higher $CV$, coefficient of variation) than large populations of competing species \cite{Kelly2002}. 
+
+In one sense, the storage effect constitutes a temporal niche \cite{Chesson2000a}. That is, the theory simply stipulates that different species succeed at different times. For rare species to coexist with common species, their relative success needs to be somewhat greater than the relative success of common species. In the absence of environmental variability, species would not coexist.
+
+Here we provide one set of equations describing the dynamics of the storage effect for each species $i$ in the community \cite{Chesson:1994pb}.
+\begin{gather}
+  \label{eq:storage}
+  N_{i,t+1} = \left(1-d\right)N_{i,t} + R_{i,t}N_{i,t} \\
+  R_{i,t} = e^{E_{i,t} - C_{i,t}} \\
+  E_{i,t} = F\left( X_{i,t} \right)\\
+  C_{i,t} = \sum_{i=1}^S\alpha_i e^{E_{i,t}}N_{i,t}\\
+\end{gather}
+Here, $E$ is an unspecified function of the environment, $X_{i,t}$, so that $E$ specifically differs among species and across time. We can think of $exp(E_{i,t})$ (the first growth factor in $R_{i,t}$) as the maximum per capita reproductive rate for species $i$, at time $t$, in the absence of competition. It is determined by the environment at time $t$. 
+
+The other growth factor, $exp(-C_{i,t})$, is the effect of competition. It allows us to intensify competition at large population sizes (e.g., during favorable conditions), and lessen competition at low population sizes (e.g., during poor conditions). These two factors allow us to represent independently the positive and negative effects of the environment on an organism's capacity to grow ($E_i$), and also to represent how competition intensity covaries with population density ($C_i$). There are many other representations of the storage effect  \cite{Chesson2003,Warner1985}, but this is a simple and convenient one \cite{Chesson:1994pb}.
+
+The storage effect is a special case of \emph{\index{lottery models}lottery} models \cite{Morin1999}. Originally developed for reef fishes \cite{Sale1977}, lottery models are considered general models for other systems with important spatial structure such as forest tree assemblages. Conditions associated with lottery systems \cite{Chesson1981} include:
+\begin{enumerate}
+\item Juveniles (seedlings, larvae) establish territories in suitable locations and hold this territory for the remainder of their lives. Individuals in non-suitable sites do not survive to reproduce.
+\item Space is limiting; there are always far more juveniles than available sites.
+\item Juveniles are highly dispersed such that their relative abundances and their spatial distributions are independent of the distribution of parents.
+\end{enumerate}
+These conditions facilitate coexistence because the same amount of open space has a greater benefit for rare species than for common species. While the invulnerable nature of successful establishment slows competitive exclusion, permanent nonequilibrium coexistence does not occur unless there is a storage effect, such as with overlapping generations, where a reproductive stage (resting eggs, seeds, long lived adults) buffers the population during unfavorable environmental conditions, and negative environment--competition covariation.
+
+\subsection{Building a simulation of the storage effect}
+Here we simulate one rare and one common species, wherein the rare species persists only via the storage effect. We conclude with a simple function, \texttt{chesson}, that simplifies performing more elaborate simulations.
+
+\paragraph{Fluctuating environment}
+First we create a variable environment. Environments are frequently noisy and also temporally autocorrelated --- we refer to a special type of scale-independent autocorrelation as \emph{red noise} or \emph{$1/f$ noise} (``one over 'f' noise'') \cite{Halley1996}. Here we use simply \emph{white noise}, which is not temporally autocorrelated, but rather, completely random at the time scale we are examining.
+<<env, fig=true>>=
+years <- 100
+t <- 1:years
+variability = 4
+env <- rnorm(years, m=0, sd=variability)
+plot(t, env, type='l')
+@ 
+\paragraph{Differential responses to the environment}
+A key part of the storage effect is that species have differential reproduction in response to a fluctuating environment  (Fig. \ref{fig:rho}). However, species can differ for all sorts of reasons. Therefore, we will let our two species have different \emph{average} fitness. We do this specifically because in the absence of the stochastic temporal niche of the storage effect, the  species with the higher fitness would eventually replace the rare species. We want to show that the storage effect allows coexistance in spite of this difference. We will let these fitnesses be
+<<>>=
+w.rare <- .5
+w.comm <- 1
+@ 
+but as we will see in the simulation, competitive exclusion does not happen --- the species coexist. For the example we are building  (Fig. \ref{fig:rho}), we will pretend that
+\begin{itemize}
+\item our rare species grows best when the environment (maybe rainfall) is above average,
+  \item our common species grows best when the environment is below average, and,
+    \item both grow under average conditions; their niches overlap, and we will call the overlap rho, $\rho$.
+\end{itemize}
+
+As merely a starting point, we let overlap, $\rho$, be equal to the standard deviation of our environmental variabiity.
+<<>>=
+rho <- sd(env)
+@ 
+
+\begin{figure}[ht]
+  \centering
+  \subfloat[Environment]{%
+    \includegraphics[width=.48\linewidth]{rho} \label{rho}}
+  \subfloat[Buffered growth rates]{%
+    \includegraphics[width=.48\linewidth]{Eenv} \label{Eenv}}
+  \caption{Environmental variability, niche overlap ($\rho$), and the resulting buffered population growth rates.}
+  \label{fig:rho}
+\end{figure}
+
+\medskip \noindent
+\begin{boxedminipage}{\linewidth}
+  {\footnotesize
+\paragraph{Code for a pretty histogram (Fig. \ref{fig:rho})} 
+Here we simply create a pretty histogram.
+<<rho, fig=true, width=6, height=6>>=
+hist.env <- hist(env,col='lightgray',main="Histogram of Environment")
+abline(v=c(c(-rho, rho)/2), lty=3)
+arrows(x0=-rho/2, y0=mean(hist.env[["counts"]]), 
+       x1=rho/2, y1=mean(hist.env[["counts"]]), code=3, length=.1)
+text(0, mean(hist.env[["counts"]]), quote(italic(rho)), adj=c(1.5,0), cex=1.5)
+text(min(hist.env[["breaks"]]),mean(hist.env[["counts"]]),
+     "Common sp.\ngrows best", adj=c(0,0))
+text(max(hist.env[["breaks"]]),mean(hist.env[["counts"]]),
+     "Rare sp.\ngrows best", adj=c(1,0))
+@ 
+}
+\end{boxedminipage} \medskip
+@ 
+
+To quantitfy reproduction as a function of the environment, we will simply let each species growth rate be, in part, the product of its fitness and the environment, with the sign appropriate for each species.
+<<diff>>=
+a.rare <-  (env+rho/2)*w.rare
+a.comm <- -(env-rho/2)*w.comm
+@ 
+This will allow the rare species to have highest reproduction when the environment variable is above average, and the common species to have high reproduction when the environmental variable is below average. It also allows them to share a zone of overlap, $\rho$, when they can both reproduce (Fig. \ref{rho}).
+
+\paragraph{Buffered population growth}
+A key feature of the storage effect is that each species has \emph{buffered population growth}. That is, each species has a life history stage that is very resistant to poor environmental conditions. This allows the population to persist even in really bad times. In some cases, the resistant stage may be a long-lived adult, as with many tree species, or other large-bodied organisms. In other cases, species have very resistant resting stages, such as the eggs of zooplankton \cite{Caceres:1997zv}, or the seeds of annual plants \cite{Facelli:2005kc}. 
+
+To model this buffering effect, we will simply prevent the reproductive rates from falling below zero. (We will, however, create mortality (below) that is independent of the growth rate of each species). Let us impose this constraint of reproduction $\ge 0$ now. 
+<<Etime, fig=true>>=
+Es <- matrix(NA, nrow=years, ncol=2)
+Es[,1] <- ifelse(a.rare > 0, a.rare, 0)
+Es[,2] <- ifelse(a.comm > 0, a.comm, 0)
+matplot(t, Es, type='l', col=1)
+<<Eenv, fig=true>>=
+matplot(env,Es, col=1)
+@ 
+As we said, however, organisms will die. Let us create a variable for community-wide mortality, $\delta$, as if a disturbance kills a constant fraction of the community.
+<<>>=
+d <- 0.1
+@ 
+
+\paragraph{Covariance between competition and environment}
+\index{covariance|see{environment--competition covariation}}
+We also want to assume that species compete for shared, limiting resources. Individuals have negative effects on each other. As a result, the more individuals of all species there are (increasing $N_{total}$), the more negative the total effect is. To account for this, we will stipulate a per capita negative effect $\alpha$ of any individual on any other. Therefore, in good times (high $N_{total}$), the effect of competition increases. In contrast, when times are bad, and $N$ is small, competition is low. This is what Chesson and colleagues mean by \emph{covariation between competition and the environment}. 
+
+Eq. (\ref{eq:storage}) provides a reasonable way to represent the competitve effect $C_{i,t}$. Here we simplify further, and assume that the per capita effect of competition on growth is constant  through time. However, to emphasize that point that one species has higher average fitness, we let the rare species experience greater per capita effects of competition. For our example, let us set $\alpha_{rare}=0.0002, \alpha_{comm}=0.0001$.
+<<alpha>>=
+alpha <- c(2*1e-5,1e-5)
+@ 
+Thus, these $\alpha$ are the species-specific effects of all individuals on the rare and common species.
+
+\subsubsection{Simulating dynamics}
+Finally, we simulate these dynamics. We should create matrices to hold stuff as we simulate each year, for $N$, $C$, and $R$. Unlike $E$, these are simplest to collect as we simulate $N$, year by year.
+<<>>=
+Ns <- matrix(NA, nrow=years+1, ncol=2)
+Cs <- matrix(NA, nrow=years, ncol=2)
+Rs <- matrix(NA, nrow=years, ncol=2)
+@ 
+Next we initialize our populations at $t_0$.
+<<>>=
+Ns[1,] <- c(1e3,1e5)
+@ 
+
+Finally, we run the for-loop
+<<>>=
+for(i in 1:years) Ns[i+1,] <- { 
+  juveniles <- sum( exp(Es[i,]) * Ns[i,] )
+  Cs[i,]  <-  alpha*juveniles
+  #Cs[i,] <- log(juveniles/sum(d*Ns[i,]))
+  Rs[i,] <- exp(Es[i,]-Cs[i,])
+  (1-d) * Ns[i,] + Rs[i,]*Ns[i,]
+                              }
+@ 
+and plot the populations.
+<<storepops, fig=true>>=
+matplot(c(0,t), Ns, type='b', log='y')
+@ 
+\begin{figure}[ht]
+  \centering
+  \includegraphics[width=\linewidth]{chessonsim}
+  \caption{A simulation of coexistence via the storage effect. $E$ (middle panel) is maximum environment-mediated reproduction, in the absence of competition. See text and Fig. \ref{fig:rho} for more information about species responses to the environment and average fitness.}
+  \label{fig:storedyns1}
+\end{figure}
+<<chessonsim, fig=true, echo=false, results=hide, width=7, height=7>>=
+layout(matrix(1:3, nc=1))
+par(mar=c(2,4,1,1) )
+plot(t, env, type='l', ylab="Environment") 
+matplot(t, Es, type='l',  ylab="E", col=1)
+par(mar=c(5,4,1,1) )
+matplot(c(t,years+1), Ns,  log='y', type='l', col=1, xlab="Time",
+        ylab="Population Size (N)")
+@ 
+
+\subsubsection{Examining characteristics of the storage effect}
+Let us go back and examine a few of the characteristics that we should observe, if the storage effect is operating. First, note that above we showed differential responses to the environment, incomplete niche overlap, and buffered growth (Fig. \ref{fig:rho}). 
+
+Next, we will try to examine the environment-competition covariation. This is not trivial, and papers are written about how to estimate this. For now, recall that in Chapter 3, we began with an examination of negative density-dependence. Here we quantify the magnitude of this negative effect, as our ``effect of competition.'' Let us invent a new value, $\nu$, to measure how much the observed growth rate is affected by large population sizes,
+\begin{equation}
+  \label{eq:compnu}
+  \nu_{i,t} = \log\left(\frac{R_{max}}{R_{i,t}}\right) 
+\end{equation}
+where $R_{i,t}$ is the observed annual population growth rate, $N_{t+1}/N_t$, for species $i$, and $R_{max}$ is the maximum of these. 
+
+To measure the covariation, we will find first $N_{total,t}$, $R_{i,t}$, and $R_{i,max}$.
+<<>>=
+Nt1 <- rowSums(Ns)[1:years]
+R.obs <- Ns[-1,]/Ns[-(years+1),]
+Rmax <- apply(R.obs,2,max)
+@ 
+Now we calculate $\nu_i$, and estimate the covariance.
+<<covar>>=
+nu <- log( t(Rmax / t(R.obs) ) )
+colnames(nu) <- c("nu.rare", "nu.comm")
+var(Nt1,nu)
+@
+This illustrates that  both populations exhibit positive covariation between the quality of the environment (defined operationally as $N_{total}$) and the intensity of competition.
+
+Last, recall that we stated above that the \index{CV@$CV$|see{coefficent of variation}}$CV$ (\index{coefficent of variation}coefficent of variation) should be greater for rare species than for common species. If we check that for our populations (eliminating the first half of the time series),
+<<cv>>=
+apply(Ns[round(years/2):years,], 2, function(x) sd(x)/mean(x) * 100)
+@ 
+we see that, indeed, the rare species has a higher $CV$. Examination of the time series (Fig. \ref{fig:storedyns1}) confirms this.
+
+To facilitate playing more games, the function \texttt{chesson} provides an easy wrapper for storage effect simulations (Fig. \ref{fig:chess}). Please try \texttt{?chesson} at the \R prompt.
+
+Here we run the \texttt{chesson} model, and calculate the overlap, $\rho$, for each simulation. 
+<<loadchesson,echo=false, results=hide>>=
+source("chesson.r")
+#help.start()
+<<>>=
+outA <- chesson(years=500, specialization=1, spread=.1)
+outB <- chesson(years=500, specialization=5, spread=.67)
+outA$overlap
+outB$overlap
+@ 
+By specifying greater \index{specialization}specialization and greater spread between the environmental optima of the species pair in the second model, we have reduced \index{niche overlap}niche overlap (Fig. \ref{beta1}). Overlap in this model is the area under both species fitness-independent response curves. Note that large differences in overall fitness can alter effective overlap described by the density-independent reproductive rate, $E_{i,t}$ (Fig. \ref{betaE}).
+
+<<chessonfunc1, fig=true, echo=false, results=hide>>=
+matplot(outB[['env']], outB[['Bs']], pch=1:2, xlim=c(-.6,.6),
+        ylab="Fitness-independent Response", xlab="Environment")
+matplot(outA[['env']], outA[['Bs']], pch=c(19,17), add=TRUE)
+bs <- outB[["Bs"]][order(outB[["env"]]),]
+rho.y <- apply(bs, 1, min )
+envs <- sort(outB[["env"]])
+polygon(envs, rho.y, col='grey', border=FALSE)
+<<chessonfunc2, fig=true>>=
+matplot(outB[['env']], outB[['Es']], pch=1:2, xlim=c(-.6,.6),
+        ylab="Density-independent Reproduction", xlab="Environment")
+matplot(outA[['env']], outA[['Es']], pch=c(19,17), add=TRUE)
+
+@
+\begin{figure}[ht]
+  \centering
+  \subfloat[]{\includegraphics[width=.48\linewidth]{chessonfunc1}\label{beta1}}
+  \subfloat[]{\includegraphics[width=.48\linewidth]{chessonfunc2}\label{betaE}}
+  \caption{Species responses to the environment, using the \texttt{chesson} model. Relative to the pair of species represented by solid circles, the pair of species with open symbols shows greater difference between optimal environments (greater \texttt{spread}), and narrower niches (greater \texttt{specialization}).  \subref{beta1} The underlying Beta probability density distributions; the grey \emph{area} under the curves of the more differentiated species is $\rho$, the degree of niche overlap.  \subref{betaE} Density-independent reproduction (the parameter $E_{i,t}$ from eq. \ref{eq:storage}). (grey/red triangles - common species, black circles - rare species; open symbols - highly differentiated species, solid symbols - similar species). See text and help page (?\texttt{chesson}) for more details.}
+  \label{fig:chess}
+\end{figure}
+
+
