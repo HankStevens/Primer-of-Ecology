@@ -7,7 +7,7 @@
 <title>4 Density-independent Demography | Primer of Ecology using R</title>
 <meta name="author" content="Hank Stevens">
 <meta name="description" content="In the preceding chapter, we listed Hastings’ (A. Hastings 2011) key principles and assumptions of single species population growth. One of the key assumptions is that “all individuals in a...">
-<meta name="generator" content="bookdown 0.27 with bs4_book()">
+<meta name="generator" content="bookdown 0.29 with bs4_book()">
 <meta property="og:title" content="4 Density-independent Demography | Primer of Ecology using R">
 <meta property="og:type" content="book">
 <meta property="og:description" content="In the preceding chapter, we listed Hastings’ (A. Hastings 2011) key principles and assumptions of single species population growth. One of the key assumptions is that “all individuals in a...">
@@ -16,7 +16,7 @@
 <meta name="twitter:description" content="In the preceding chapter, we listed Hastings’ (A. Hastings 2011) key principles and assumptions of single species population growth. One of the key assumptions is that “all individuals in a...">
 <!-- JS --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://kit.fontawesome.com/6ecbd6c532.js" crossorigin="anonymous"></script><script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="libs/bootstrap-4.6.0/bootstrap.min.css" rel="stylesheet">
-<script src="libs/bootstrap-4.6.0/bootstrap.bundle.min.js"></script><script src="libs/bs3compat-0.3.1/transition.js"></script><script src="libs/bs3compat-0.3.1/tabs.js"></script><script src="libs/bs3compat-0.3.1/bs3compat.js"></script><link href="libs/bs4_book-1.0.0/bs4_book.css" rel="stylesheet">
+<script src="libs/bootstrap-4.6.0/bootstrap.bundle.min.js"></script><script src="libs/bs3compat-0.4.0/transition.js"></script><script src="libs/bs3compat-0.4.0/tabs.js"></script><script src="libs/bs3compat-0.4.0/bs3compat.js"></script><link href="libs/bs4_book-1.0.0/bs4_book.css" rel="stylesheet">
 <script src="libs/bs4_book-1.0.0/bs4_book.js"></script><script src="libs/kePrint-0.0.1/kePrint.js"></script><link href="libs/lightable-0.0.1/lightable.css" rel="stylesheet">
 <!-- Global site tag (gtag.js) - Google Analytics --><script async src="https://www.googletagmanager.com/gtag/js?id=G-VCV8MES4YY"></script><script>
       window.dataLayer = window.dataLayer || [];
@@ -309,8 +309,8 @@ A dot product begins with two equal length vectors and returns a single number (
 \end{array} \right)
 \end{equation*}\]</span></p>
 <p>Combining these we get,
-<span class="math display" id="eq:SGF">\[\begin{equation*}
-\tag{4.3}
+<span class="math display" id="eq:SGF2">\[\begin{equation*}
+\tag{4.4}
 \mathbf{A = GS + F} =
 \left(
 \begin{array}{cc}
@@ -350,7 +350,7 @@ Figure 4.5: The life cycle of garlic mustard using a pre-breeding census (Pardin
 <p>Fecundity, <span class="math inline">\(f\)</span>, is the average number of seeds per reproductive plant.</p>
 <p>The transition matrix <strong>A</strong> would thus be</p>
 <p><span class="math display" id="eq:pardini">\[\begin{equation*}
-\tag{4.4}
+\tag{4.5}
 \mathbf{A} =
 \left(
 \begin{array}{ccc}
@@ -418,12 +418,12 @@ Figure 4.6: Projection of a population showing transient dynamics.
 <p>Eigenanalysis is a mathematical technique that summarizes multivariate data. Ecologists use eigenanalysis frequently, for (i) multivariate statistics such as ordination, (ii) local stability analyses with two or more species, and (iii) analyzing population transition matrices. Eigenanalysis is simply a method to transform a square matrix into independent, or orthogonal, pieces. These pieces are <em>eigenvectors</em> and their corresponding <em>eigenvalues.</em> There are the same number of eigenvalues (and eigenvectors) as there are columns in a matrix. In demography, the two of the most useful pieces are the <em>dominant right eigenvalue</em> and its <em>corresponding right eigenvector</em>.</p>
 <p>Eigenanalysis is a technique that finds all the solutions for <span class="math inline">\(\lambda\)</span> and <span class="math inline">\(\mathbf{w}\)</span> of
 <span class="math display" id="eq:eigsol">\[
-\tag{4.5}
+\tag{4.6}
 \mathbf{Aw}=\lambda \mathbf{w}
 \]</span></p>
-<p>where <span class="math inline">\(\mathbf{w}\)</span> is a column vector with the same number of rows as <span class="math inline">\(\mathbf{A}\)</span>. If we write out eq. <a href="DID.html#eq:eigsol">(4.5)</a> for a <span class="math inline">\(2 \times 2\)</span> matrix, we would have</p>
+<p>where <span class="math inline">\(\mathbf{w}\)</span> is a column vector with the same number of rows as <span class="math inline">\(\mathbf{A}\)</span>. If we write out eq. <a href="DID.html#eq:eigsol">(4.6)</a> for a <span class="math inline">\(2 \times 2\)</span> matrix, we would have</p>
 <p><span class="math display" id="eq:eigsollong">\[
-\tag{4.6}
+\tag{4.7}
 \left(
 \begin{array}{ccc}
   a_{11} &amp; a_{12} \\
@@ -460,7 +460,7 @@ For instance, we can perform eigenanalysis on this transition matrix.</p>
 ## [1,] -0.8574929 -0.9701425
 ## [2,] -0.5144958  0.2425356</code></pre>
 <p>This gives us one eigenvalue per column of our transition matrix (<code>values</code>). Each eigenvalue has a <em>corresponding eigenvector</em> that is the corresponding column of the <code>vectors</code> matrix.</p>
-<p>Let’s use R to prove to ourselves that eq. <a href="DID.html#eq:eigsol">(4.5)</a> is what we say it is. Here we see for ourselves whether <span class="math inline">\(\mathbf{A}\mathbf{w} = \lambda \mathbf{w}\)</span> for
+<p>Let’s use R to prove to ourselves that eq. <a href="DID.html#eq:eigsol">(4.6)</a> is what we say it is. Here we see for ourselves whether <span class="math inline">\(\mathbf{A}\mathbf{w} = \lambda \mathbf{w}\)</span> for
 <span class="math inline">\(i = 1\)</span>. Below, we use the results of the previous eigenanalysis.</p>
 <div class="sourceCode" id="cb132"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="op">(</span><span class="va">lambda1</span> <span class="op">&lt;-</span> <span class="va">eA</span><span class="op">$</span><span class="va">values</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span><span class="op">)</span></span></code></pre></div>
@@ -493,7 +493,7 @@ For instance, we can perform eigenanalysis on this transition matrix.</p>
 <span class="header-section-number">4.6.2</span> Finite rate of increase<a class="anchor" aria-label="anchor" href="#finite-rate-of-increase"><i class="fas fa-link"></i></a>
 </h3>
 <p>The asymptotic annual growth rate or finite rate of increase is the dominant eigenvalue of the transition matrix. It has the same meaning as in geometric growth of an unstructured population.</p>
-<p>Eigenvalues are always referred to with the Greek symbol <span class="math inline">\(\lambda\)</span>, and provide a solution to <a href="DID.html#eq:eigsol">(4.5)</a>. The dominant eigenvalue of any matrix, <span class="math inline">\(\lambda_{1}\)</span>, is the eigenvalue with the largest magnitude, and it is frequently a complex number. When we perform eigenanalysis, it is common to get complex numbers, with real and imaginary parts. The magnitude is the sum of the squared parts. With population transition matrices, <span class="math inline">\(\lambda_{1}\)</span> will always be positive and real. This will not be the case with other types of matrices we examine in later chapters.</p>
+<p>Eigenvalues are always referred to with the Greek symbol <span class="math inline">\(\lambda\)</span>, and provide a solution to <a href="DID.html#eq:eigsol">(4.6)</a>. The dominant eigenvalue of any matrix, <span class="math inline">\(\lambda_{1}\)</span>, is the eigenvalue with the largest magnitude, and it is frequently a complex number. When we perform eigenanalysis, it is common to get complex numbers, with real and imaginary parts. The magnitude is the sum of the squared parts. With population transition matrices, <span class="math inline">\(\lambda_{1}\)</span> will always be positive and real. This will not be the case with other types of matrices we examine in later chapters.</p>
 <p>The dominant eigenvalue is the biggest one. We can find which one it is by asking R to tell us the index position <span class="math inline">\(i\)</span> of the largest absolute value (the modulus) of the eigenvalues. In most cases, it is the first eigenvalue, as it is here.</p>
 <div class="sourceCode" id="cb138"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="op">(</span> <span class="va">dom.pos</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/which.min.html">which.max</a></span><span class="op">(</span> <span class="fu"><a href="https://rdrr.io/r/base/complex.html">Mod</a></span><span class="op">(</span><span class="va">eA</span><span class="op">[[</span><span class="st">"values"</span><span class="op">]</span><span class="op">]</span><span class="op">)</span> <span class="op">)</span>  <span class="op">)</span></span></code></pre></div>
@@ -512,7 +512,7 @@ For instance, we can perform eigenanalysis on this transition matrix.</p>
 <p>The predicted long term average relative abundance of the different life history stages or ages is called the <em>stage distribution</em>, that is, the distribution of individuals among the stages. A property of a stage structured population is that, if all the demographic rates (elements of the transition matrix) remain constant, its stage structure will approach a <em>stable</em> stage distribution, a stage distribution in which the relative number of individuals in each stage is constant. Note that a population can grow, so that the absolute number of individuals increases, but the relative abundances of the stages is constant; this is the stable stage distribution. If the population is not actually growing (i.e. <span class="math inline">\(\lambda=1\)</span>) and demographic parameters remain constant, then the population is <em>stationary</em> and will achieve a <em>stationary stage distribution</em>, where neither absolute nor relative abundances change.</p>
 <p>How do we find the stable stage distribution? It also turns out that <span class="math inline">\(w_1\)</span> provides the necessary information. We scale the eigenvector <span class="math inline">\(w_1\)</span> by the sum of its elements because we are interested in the <em>distribution</em>, which is defined by all stages summing to one. Therefore the stable stage distribution is
 <span class="math display" id="eq:ssd">\[
-\tag{4.7}
+\tag{4.8}
 \frac{w_1}{\sum_{i=1}^s{w_1}}
 \]</span>
 where <span class="math inline">\(s\)</span> is the number of stages.</p>
@@ -567,8 +567,8 @@ Figure 4.7: Dynamics over nine times steps, of relative abundances in a poplatio
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/annotate.html">annotate</a></span><span class="op">(</span><span class="st">"point"</span>, x <span class="op">=</span> <span class="va">steps</span>  , y<span class="op">=</span><span class="va">L1</span>, pch<span class="op">=</span><span class="fl">1</span>, size<span class="op">=</span><span class="fl">3</span><span class="op">)</span> </span></code></pre></div>
 <div class="figure">
 <span style="display:block;" id="fig:unnamed-chunk-42"></span>
-<img src="figs/unnamed-chunk-42-1.png" alt="Calculating an annual finite rate of increase from a projected population shows that the population will approach asymptotically a constant geometric rate of increase. Solid points are annual growth rate; the circular point is lambda(1) from eigenanalysis." width="90%"><p class="caption">
-Figure 4.8: Calculating an annual finite rate of increase from a projected population shows that the population will approach asymptotically a constant geometric rate of increase. Solid points are annual growth rate; the circular point is lambda(1) from eigenanalysis.
+<img src="figs/unnamed-chunk-42-1.png" alt="Calculating an annual finite rate of increase from a projected population shows that the population will approach asymptotically a constant geometric rate of increase. Solid points are annual growth rate; the circular point is the dominant eigenvalue, $\lambda_1$." width="90%"><p class="caption">
+Figure 4.8: Calculating an annual finite rate of increase from a projected population shows that the population will approach asymptotically a constant geometric rate of increase. Solid points are annual growth rate; the circular point is the dominant eigenvalue, <span class="math inline">\(\lambda_1\)</span>.
 </p>
 </div>
 <p>Iterating the transition matrix to approximate <span class="math inline">\(\lambda_1\)</span> and <span class="math inline">\(w_1\)</span> is actually called the <em>power iteration method</em> for eigenanalysis.</p>
@@ -577,16 +577,15 @@ Figure 4.8: Calculating an annual finite rate of increase from a projected popul
 <h3>
 <span class="header-section-number">4.6.5</span> Reproductive value<a class="anchor" aria-label="anchor" href="#reproductive-value"><i class="fas fa-link"></i></a>
 </h3>
-<p>
-If the stage structure gives us one measure of the importance of a stage (its relative abundance), then the <em>reproductive value</em> gives us one measure of the importance of an <em>individual</em> in each stage. Reproductive value is the expected contribution of each individual to future reproduction. We characterize all individuals in a stage using the same expected reproductive value.</p>
+<p>If the stage structure gives us one measure of the importance of a stage (its relative abundance), then the <em>reproductive value</em> gives us one measure of the importance of an <em>individual</em> in each stage. Reproductive value is the expected contribution of each individual to future reproduction. We characterize all individuals in a stage using the same expected reproductive value.</p>
 <p>We calculate the reproductive value associated with each stage by solving for the dominant <em>left</em> eigenvector <span class="math inline">\(\mathbf{v}\)</span>, where
 <span class="math display" id="eq:rv">\[
-\tag{4.8}
+\tag{4.9}
 \mathbf{vA}=\lambda\mathbf{v}.
 \]</span>
 Like the relation between the dominant right eigenvector and the stable stage distribution, this vector is actually <em>proportional</em> to the reproductive values. Unlike the stable stage distribution, we scale it so that all reproductive values are relative to that of the first stage (e.g. juveniles or seeds).
 <span class="math display" id="eq:rv2">\[
-\tag{4.9}
+\tag{4.10}
   \frac{v_1}{v_{1[1]}}
 \]</span>
 We find the left eigenvalues and -vectors by performing eigenanalysis on the <em>transpose</em> of the transition matrix. Transposition flips rows and columns, so that row 1 becomes column 1 and vice versa. We perform eigenanalysis, extracting just the dominant left eigenvector; we then scale it, so the stage 1 has a reproductive value of 1.</p>
@@ -610,7 +609,7 @@ We find the left eigenvalues and -vectors by performing eigenanalysis on the <em
 It isn’t surprising, then, these are derived from the stable stage distribution and the reproductive values. Specifically, the sensitivities are calculated as</p>
 <p><span class="math display" id="eq:sens">\[
 \frac{\delta \lambda}{\delta a_{ij}}=\frac{v_{1[i]}w_{1[j]}}{v_1\cdot w_1}
-\tag{4.10}
+\tag{4.11}
 \]</span>
 where <span class="math inline">\(v_{i}w_{j}\)</span> is the product of each pairwise combination of elements of the dominant left and right eigenvectors, <span class="math inline">\(v\)</span> and <span class="math inline">\(w\)</span>. Specifically, the numerator is generated by the reproductive value of the target stage and the stable stage distribution of the source stage,
 <span class="math display">\[
@@ -754,8 +753,8 @@ Figure 4.11: The solid line is the cumulative probabilility function, and tells 
 <p>Rachel Collins and colleagues have been studying populations of an endangered coneflower, <em>Echinecea laevigata</em>, in southwest Virginia, USA. Smooth coneflower is a perennial rhizomatous herbaceous plant that is sparsely distributed across mid-Atlantic and southeastern states (<a href="https://plants.usda.gov/">https://plants.usda.gov/</a>). It requires open spaces with little canopy cover, such as meadows or early successional habitat.</p>
 <div class="figure">
 <span style="display:block;" id="fig:cflh1"></span>
-<img src="figs/echinacea_laevigata_habitat_lg.jpg" alt="Smooth coneflower, *Echinecea laevigata*, is an endangered plant that lives in only a few places on poor soils. It enjoys open, sunny habitats, long walks in the rain, and reading a good book by the fire (prescribed or wild). Photo credit: Steve Croy, https://www.fs.fed.us/wildflowers/Rare_Plants/profiles/TEP/echinacea_laevigata" width="33%"><p class="caption">
-Figure 4.12: Smooth coneflower, <em>Echinecea laevigata</em>, is an endangered plant that lives in only a few places on poor soils. It enjoys open, sunny habitats, long walks in the rain, and reading a good book by the fire (prescribed or wild). Photo credit: Steve Croy, <a href="https://www.fs.fed.us/wildflowers/Rare_Plants/profiles/TEP/echinacea_laevigata" class="uri">https://www.fs.fed.us/wildflowers/Rare_Plants/profiles/TEP/echinacea_laevigata</a>
+<img src="figs/echinacea_laevigata_habitat_lg.jpg" alt="Smooth coneflower, *Echinecea laevigata*, is an endangered plant that lives in only a few places on poor soils. It enjoys open, sunny habitats, long walks in the rain, and reading a good book by the fire (prescribed or wild). Photo credit: Steve Croy" width="33%"><p class="caption">
+Figure 4.12: Smooth coneflower, <em>Echinecea laevigata</em>, is an endangered plant that lives in only a few places on poor soils. It enjoys open, sunny habitats, long walks in the rain, and reading a good book by the fire (prescribed or wild). Photo credit: Steve Croy
 </p>
 </div>
 Collins marked each individual in selected populations, measured size of individual coneflower plants using total leaf area, which ranged from 3-950 cm<span class="math inline">\(^2\)</span>. Because she tagged individuals and tracked changes over time, she was able estimate survival and fecundity of different sized individuals. She also measured seed set (number of seeds per inflorescence) and recruitment. Recruitment is emergence from the seed, that is, germination, growth, and survival in the first year.
@@ -811,8 +810,9 @@ Figure 4.13: Smooth coneflower, <em>Echinecea laevigata</em>, is an herbaceous p
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_smooth.html">geom_smooth</a></span><span class="op">(</span>method<span class="op">=</span><span class="st">"glm"</span>, method.args <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>family <span class="op">=</span> <span class="st">"binomial"</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>title<span class="op">=</span><span class="st">"Survival"</span><span class="op">)</span></span>
 <span><span class="va">eda_s</span></span></code></pre></div>
 <div class="figure">
-<img src="figs/flower_surv-1.png" alt="Survival is represented as surviving (1) or not surviving (0). The probability of surviving to the next year, given a size in the first year, is estimated using logistic regression. The fitted line gives us a point estimate for survival for any log-size. The grey band represents uncertainty." width="67%"><p class="caption">
-(#fig:flower_surv)Survival is represented as surviving (1) or not surviving (0). The probability of surviving to the next year, given a size in the first year, is estimated using logistic regression. The fitted line gives us a point estimate for survival for any log-size. The grey band represents uncertainty.
+<span style="display:block;" id="fig:flowersurv"></span>
+<img src="figs/flowersurv-1.png" alt="Survival is represented as surviving (1) or not surviving (0). The probability of surviving to the next year, given a size in the first year, is estimated using logistic regression. The fitted line gives us a point estimate for survival for any log-size. The grey band represents uncertainty." width="67%"><p class="caption">
+Figure 4.14: Survival is represented as surviving (1) or not surviving (0). The probability of surviving to the next year, given a size in the first year, is estimated using logistic regression. The fitted line gives us a point estimate for survival for any log-size. The grey band represents uncertainty.
 </p>
 </div>
 <p>Using logistic regression provides a straightforward way to estimate size-dependent survival and its uncertainty. We can use both the estimate and its uncertainty in our projections.</p>
@@ -828,7 +828,7 @@ Figure 4.13: Smooth coneflower, <em>Echinecea laevigata</em>, is an herbaceous p
 <div class="figure">
 <span style="display:block;" id="fig:growth"></span>
 <img src="figs/growth-1.png" alt="Growth is the relation between size at one time vs. size in another. The fitted estimate includes the 95% confidence interval. The dashed line is the 1:1 line; above this line is growth, while below it is regression to a smaller size. We include only those individuals that survive." width="67%"><p class="caption">
-Figure 4.14: Growth is the relation between size at one time vs. size in another. The fitted estimate includes the 95% confidence interval. The dashed line is the 1:1 line; above this line is growth, while below it is regression to a smaller size. We include only those individuals that survive.
+Figure 4.15: Growth is the relation between size at one time vs. size in another. The fitted estimate includes the 95% confidence interval. The dashed line is the 1:1 line; above this line is growth, while below it is regression to a smaller size. We include only those individuals that survive.
 </p>
 </div>
 <p>Notice two features of this relation. First, the slope is less than 1:1. That means that smaller individuals tend to grow relatively more each year than large individuals. That is not surprising. Second, larger individuals actually tend to to regress to smaller sizes in a given year. This is not necessarily surprising either, but is useful to keep in mind. There might be some indication of a systematic tendancy to shrink after a year of flowering.</p>
@@ -849,7 +849,7 @@ Figure 4.14: Growth is the relation between size at one time vs. size in anothe
 <div class="figure">
 <span style="display:block;" id="fig:flowering"></span>
 <img src="figs/flowering-1.png" alt="Plants that are larger in the first year have a greater chance of flowering in the next year." width="67%"><p class="caption">
-Figure 4.15: Plants that are larger in the first year have a greater chance of flowering in the next year.
+Figure 4.16: Plants that are larger in the first year have a greater chance of flowering in the next year.
 </p>
 </div>
 <p>One feature of these data is that most individuals do not flower at all and the even large individuals do not necessarily flower.</p>
@@ -861,7 +861,7 @@ Figure 4.15: Plants that are larger in the first year have a greater chance of f
 <div class="figure">
 <span style="display:block;" id="fig:seed"></span>
 <img src="figs/seed-1.png" alt="No compelling evidence that size influences seed set. Nonetheless, we will use this approach in estiamting fecundity, F." width="67%"><p class="caption">
-Figure 4.16: No compelling evidence that size influences seed set. Nonetheless, we will use this approach in estiamting fecundity, F.
+Figure 4.17: No compelling evidence that size influences seed set. Nonetheless, we will use this approach in estiamting fecundity, F.
 </p>
 </div>
 <p>These data don’t provide strong evidence that larger plants produce more seeds. However, using this relation regardless will allow us to include the observation variation in seed production among those individuals to do flower.</p>
@@ -892,7 +892,7 @@ Figure 4.16: No compelling evidence that size influences seed set. Nonetheless, 
 <div class="figure">
 <span style="display:block;" id="fig:pr"></span>
 <img src="figs/pr-1.png" alt="Probability that seeds in one year establish as new recruits the following summer." width="67%"><p class="caption">
-Figure 4.17: Probability that seeds in one year establish as new recruits the following summer.
+Figure 4.18: Probability that seeds in one year establish as new recruits the following summer.
 </p>
 </div>
 <p>We can also describe the size distribution of new recruits, which are approximately log-normally distributed.</p>
@@ -909,7 +909,7 @@ Figure 4.17: Probability that seeds in one year establish as new recruits the fo
 <div class="figure">
 <span style="display:block;" id="fig:recruits"></span>
 <img src="figs/recruits-1.png" alt="The size distribution of new recruits; we assume that this is independent of plant size in year t." width="67%"><p class="caption">
-Figure 4.18: The size distribution of new recruits; we assume that this is independent of plant size in year t.
+Figure 4.19: The size distribution of new recruits; we assume that this is independent of plant size in year t.
 </p>
 </div>
 </div>
@@ -952,7 +952,7 @@ where <span class="math inline">\(z\)</span> is log-size, and <span class="math 
 <span><span class="fu"><a href="https://rdrr.io/r/stats/coef.html">coef</a></span><span class="op">(</span><span class="va">surv.reg</span><span class="op">)</span></span></code></pre></div>
 <pre><code>## (Intercept)        logA 
 ##   -2.923727    2.687308</code></pre>
-<p>These are <span class="math inline">\(b_0\)</span> and <span class="math inline">\(b_1\)</span> from the above equation and allow us to describe the line and uncertainty<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;In logistic regression, the uncertainty is a function of the mean at each size.&lt;/p&gt;"><sup>32</sup></a> we saw above in Fig. @ref(flower_surv). Next, we extract them and save them.</p>
+<p>These are <span class="math inline">\(b_0\)</span> and <span class="math inline">\(b_1\)</span> from the above equation and allow us to describe the line and uncertainty<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;In logistic regression, the uncertainty is a function of the mean probability of survival at each size.&lt;/p&gt;"><sup>32</sup></a> we saw above in Fig. <a href="DID.html#fig:flowersurv">4.14</a>. Next, we extract them and save them.</p>
 <div class="sourceCode" id="cb168"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">## saving the intercept and slope of the line</span></span>
 <span><span class="va">params</span><span class="op">$</span><span class="va">surv.int</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/coef.html">coef</a></span><span class="op">(</span><span class="va">surv.reg</span><span class="op">)</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span></span>
@@ -1131,7 +1131,7 @@ where <span class="math inline">\(z\)</span> is the log-size in year 1, <span cl
 <div class="figure">
 <span style="display:block;" id="fig:kernels"></span>
 <img src="figs/kernels-1.png" alt="The component kernels G, S, and F, that make up the full demographic projection kernel, K, for smooth cone flower. By convention and unlike projection matrices, kernels scale both axes to start at the smallest size in the lower left corner. The color scaling of the full kernel differs slightly so that we can see the contributions of G, S, and F." width="90%"><p class="caption">
-Figure 4.19: The component kernels G, S, and F, that make up the full demographic projection kernel, K, for smooth cone flower. By convention and unlike projection matrices, kernels scale both axes to start at the smallest size in the lower left corner. The color scaling of the full kernel differs slightly so that we can see the contributions of G, S, and F.
+Figure 4.20: The component kernels G, S, and F, that make up the full demographic projection kernel, K, for smooth cone flower. By convention and unlike projection matrices, kernels scale both axes to start at the smallest size in the lower left corner. The color scaling of the full kernel differs slightly so that we can see the contributions of G, S, and F.
 </p>
 </div>
 <p>So there we have it: a discretized projection kernel that allows us to start with reasonably intuitive data on size, and size-dependent life history and demography of survival, growth, and more, and arrive at a way to predict future status and understand the roles of different life history stages on population dynamics.</p>
@@ -1170,7 +1170,7 @@ Figure 4.19: The component kernels G, S, and F, that make up the full demographi
 <div class="figure">
 <span style="display:block;" id="fig:Ksolutions"></span>
 <img src="figs/Ksolutions-1.png" alt="Descriptions of smooth coneflower demographics." width="90%"><p class="caption">
-Figure 4.20: Descriptions of smooth coneflower demographics.
+Figure 4.21: Descriptions of smooth coneflower demographics.
 </p>
 </div>
 <p>There is a ton more stuff we can do—way more <span class="citation">(<a href="references.html#ref-ellner:2016aa" role="doc-biblioref">Stephen P. Ellner, Childs, and Rees 2016</a>)</span>.</p>
@@ -1279,7 +1279,7 @@ H\\J_s\\J_l \\sub \\ B_1 \\B_2 \\ M
 <footer class="bg-primary text-light mt-5"><div class="container"><div class="row">
 
   <div class="col-12 col-md-6 mt-3">
-    <p>"<strong>Primer of Ecology using R</strong>" was written by Hank Stevens. It was last built on 2022-10-10.</p>
+    <p>"<strong>Primer of Ecology using R</strong>" was written by Hank Stevens. It was last built on 2022-10-25.</p>
   </div>
 
   <div class="col-12 col-md-6 mt-3">
@@ -1292,7 +1292,7 @@ H\\J_s\\J_l \\sub \\ B_1 \\B_2 \\ M
     var script = document.createElement("script");
     script.type = "text/javascript";
     var src = "true";
-    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
     if (location.protocol !== "file:")
       if (/^https?:/.test(src))
         src = src.replace(/^https?:/, '');

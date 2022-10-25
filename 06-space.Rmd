@@ -1,6 +1,6 @@
 # Populations in Space {#meta} 
 
-```{r CandG, echo=FALSE, fig.cap="*A frequency distribution of the number of plant species (y-axis) that occupy different numbers of  grassland remnants (x-axis). Note the U-shaped (bimodal) distribution of the number of sites occupied. Other years were similar (Collins and Glenn 1991).*", out.width="75%"}
+```{r CandG, echo=FALSE, fig.cap="A frequency distribution of the number of plant species (y-axis) that occupy different numbers of  grassland remnants (x-axis). This U-shaped (bimodal) distribution of the number of sites occupied is common, and is consistent with Hanski's model of the rescue effect. Other years were similar (Collins and Glenn 1991).", out.width="75%"}
 CandG <- c(32,16,10,9,8,7,8,6,4,5,7,4,2,1,1,1,3,8,12)
 NoS <- 1:19
 qplot(NoS, CandG, geom="col",  ylab="No. of Species", 
@@ -11,7 +11,7 @@ Over relatively large spatial scales, it is not unusual to have some species tha
 
 ## Source-sink Dynamics
 In Chapters 3-5, we considered *closed* populations. In contrast, one could imagine a population governed by *b*irths plus *i*mmigration, and *d*eaths plus *e*migration (a *BIDE* model). Ron Pulliam [@pulliam:1988ez] proposed a simple model that includes all four components of *BIDE* which provides a foundation for thinking about connected subpopulations. We refer to the dynamics of these as *source-sink* models. Examples include subpopulations of birds inhabit low quality forest patches only because of immigration from high quality forest patches [@robinson1995; @donovan1995], or understory palms that inhabitat distinct microhabitats in which seeds move from high to low quality patches [@berry2008].
-```{r ssmodel, echo=FALSE, fig.cap="The simplest source-sink model, where m21 > m12 so that net movement of individuals is from the source to the sink.", fig.width=10, fig.height=5, out.width="75%"}
+```{r ssmodel, echo=FALSE, fig.cap="The simplest source-sink model, where $m_{21} > m_{12}$ so that net movement of individuals is from the source to the sink.", fig.width=10, fig.height=5, out.width="75%"}
 ss <- matrix(c("lambda>1", "m[21]", "m[12]", "lambda<1"), nr=2)
 colnames(ss) <- c("Source", "Sink")
 par(mar=c(0,0,0,0))
@@ -182,7 +182,7 @@ Initial.p <- 0.01
 out.L <- data.frame(ode(y=Initial.p, times=1:100, func=levins, parms=prms ))
 ``` 
 We then plot the result (Fig. \@ref(fig:levins)).
-```{r levins, fig.cap="*Levins metapopulation model*", out.width="75%"}
+```{r levins, fig.cap="The Levins metapopulation model (Levins 1969).", out.width="75%"}
 qplot(x=out.L[,1], y=out.L[,2], geom="line", ylim=c(0,1), ylab="p", xlab="time")  +
   annotate("text", 25, .75, label=bquote(over(dp,dt)==cp(1-p)-ep))
 ```
@@ -219,7 +219,7 @@ out.G <- data.frame(ode(y=Initial.p, times=1:100, func=gotelli, parms=prms ))
 ``` 
 
 We then plot the result (Fig. \@ref(fig:gotelli)).
-```{r gotelli, fig.cap="*Propagule rain metapopulation model*", out.width="75%"}
+```{r gotelli, fig.cap="*Propagule rain metapopulation model (a.k.a. island-mainland model).*", out.width="75%"}
 qplot(x=out.G[,1], y=out.G[,2], geom="line", ylim=c(0,1), ylab="p", xlab="time")  +
   annotate("text", 50, .25, label=bquote(over(dp,dt)==c[e](1-p)-ep))
 ```
@@ -269,7 +269,7 @@ Initial.p <- 0.01
 out.H <- data.frame(ode(y=Initial.p, times=1:100, func=hanski, parms=prms ))
 ``` 
 We then plot the result (Fig. \@ref(fig:hanski)).
-```{r hanski, fig.cap="*The core-satellite metapopulation model*", out.width="75%"}
+```{r hanski, fig.cap="The core-satellite metapopulation model, with the rescue effect.", out.width="75%"}
 qplot(x=out.H[,1], y=out.H[,2], geom="line", ylim=c(0,1), ylab="p", xlab="time")  + 
   annotate("text", 50, .25, label=bquote(over(dp,dt)==c[i]*p(1-p)-ep(1-p)))
 ```
@@ -284,7 +284,7 @@ This shows us that for any value of $p$ between zero and one, the sign of the gr
 If $c_i>e$, the rate of increase will always be positive, and because occupancy cannot exceed 1.0, the metapopulation will go to full occupancy ($p^*=1$), and stay there. This equilibrium will be a *stable attractor* or stable equilibrium. What happens if for some reason the metapopulation becomes globally extinct, such that $p=0$, even though $c_i>e$? If $p=0$, then like logistic growth, the metapopulation stops changing and cannot increase. However, the slightest perturbation away from $p=0$ will lead to a positive growth rate, and increase toward the stable attractor, $p^*=1$. In this case, we refer to $p^*=0$ as an unstable equilibrium and a *repellor*.
 
 Let's explore the stability of these equilibria by plotting the metapopulation growth rate as a function of $p$ (Fig. \@ref(fig:hanskiP)). When we set $c_i>e$, and examine the slope of that line at $p^*=1$, we see the slope is negative, indicating a stable equilibrium. At $p^*=0$ the slope is positive, indicating an unstable equilibrium. 
-```{r hanskiP, fig.cap="*Metapopulation growth rate as a function of $p$, in the core-satellite model when $c_i > e$. We see that growth rate falls to zero at full occupancy (i.e., at $p^*=1$). At that point, the slope is negative, indicating that this equilibrium is stable.*", outwidth="75%"}
+```{r hanskiP, fig.cap="Metapopulation growth rate as a function of $p$, in the core-satellite model when $c_i > e$. We see that growth rate falls to zero at full occupancy (i.e., at $p^*=1$). At that point, the slope is negative, indicating that this equilibrium is stable.", outwidth="75%"}
 dpdtCS <- expression((ci-e)*p*(1-p))
 ci <- 0.15; e <- 0.05
 p <- seq(0,1, length=50)
@@ -373,7 +373,7 @@ Other researchers have investigated effects of habitat loss on metapopulation dy
 where $D$ is the amount of habitat destroyed, expressed as a fraction of the original total available habitat. 
 
 \paragraph{Habitat destruction model:} To turn eq. \@ref(eq:D) into a function we can use with `ode`, we have,
-```{r lande, fig.cap="*Habitat destruction metapopulation model*", out.width="75%"}
+```{r lande, fig.cap="A metapopulation model with habitat destruction.", out.width="75%"}
 lande <- function(t, y, parms) {
        with(as.list(c(y,parms)), {
        dp <- ci * p * (1-D-p) - e * p
@@ -408,7 +408,7 @@ ps$D <- as.character( rep(c(0, .2, .5), each=length(t)) )
 ``` 
 
 Last, we plot it and add some useful labels.
-```{r lande3, fig.cap="*Three different levels of habitat destruction*", width=5, height=5}
+```{r lande3, fig.cap="Three different levels of habitat destruction.", width=5, height=5}
 ggplot(ps, aes(time, p, linetype=D)) + geom_line() 
 ```
 
@@ -433,7 +433,7 @@ When $c_i > e$, we see that $p^*=1$ is the stable attractor (Fig. \@ref(fig:hans
 If we try this experiment with the Levins model, we see something very different. The Levins model predicts very rapid decline once $c_i < e$. Both models predict extinction, but the rescue effect delays the appearance of that extinction. It appears that the rescue effect (which is the difference between the two models) may act a bit like the ``extinction debt'' [@tilman1994b] wherein deterministic extinction of a dominant species in a multi-species community is merely delayed, but not postponed indefinitely. Perhaps populations influenced by the rescue effect might be prone to unexpected collapse, if the only stable equilibria are 1 and 0. Thus simple theory can provide interesting insight, resulting in very different predictions for superficially similar processes.
 
 Here we show the unexpected collapse of core populations, starting at or near equilbrium. The first two use the Hanski model, while the third uses Levins. The second and third use $c_i < e$.
-```{r hanski2, fig.cap="*Metapopulation dynamics, starting from near equilibrium for $c_i=0.20$ and $e=0.01$. If the environment changes, causing extinction rate to increase until it is greater than colonization rate, we may observe greatly delayed, but inevitable, extinction (e.g., $c_i=0.20, e=0.25$)*"}
+```{r hanski2, fig.cap="Metapopulation dynamics, starting from near equilibrium for $c_i=0.20$ and $e=0.01$. If the environment changes, causing extinction rate to increase until it is greater than colonization rate, we may observe greatly delayed, but inevitable, extinction (e.g., $c_i=0.20, e=0.25$)"}
 C1 <- ode(y=c(p=0.999), times=t, func=hanski, parms=c(ci=0.2, e=0.01))
 C2 <- ode(y=c(p=0.999), times=t, func=hanski, parms=c(ci=0.2, e=0.25))
 L2 <- ode(y=c(p=0.999), times=t, func=levins, parms=c(ci=0.2, e=0.25))
@@ -484,7 +484,7 @@ E_i = 1 \quad &\mathrm{if} A_i \le e^{1/x}
 where $e$ and $x$ are constants letting $E_i$ vary for different systems. Parameter $x$ controls the effect of area, where larger values $x>1$ mean that large patches have very low extinction risk. Smaller values of $x$ ($x<1$) mean that patches have to become exceedingly larger to appreciably reduce extinction risk. The parameter $e$ is the area-independent measure of extinction risk, and so is related to intrinsic population dynamics and environmental stochasticity.
 
 We can illustrate extinction probability with toy code.
-```{r E, fig.cap="*Extinction probabliity for a butterfly population (silver spotted skipper, Hanski 1994).*", out.width="75%"}
+```{r E, fig.cap="Extinction probabliity for a butterfly population (silver spotted skipper, Hanski 1994).", out.width="75%"}
 # Extinction probability
 E.p <- function(A, e=0.01, X=1.009){
   Ei <- ifelse(A > e^(1/X), e/(A^X), 1)
@@ -508,7 +508,7 @@ $$S_i = \sum_{j=1}^n\left(p_j \mathrm{exp}(-\alpha d_{ij}) A_j\right)$$
 where there are a total $n$ other patches $j$ that are habitats, $p_j$ is an indicator of whether a patch is currently occupied (0,1), $d_{ij}$ is the distance from patch $j$ to patch $i$, $\alpha$ is the effect of distance, and $A_j$ is the area of patch $j$ and thus an index of population size.
 
 We can illustrate extinction probability with toy code.
-```{r C, fig.cap="*Colonization probabliity for a butterfly population (silver spotted skipper, Hanski 1994).*", out.width="75%"}
+```{r C, fig.cap="Colonization probabliity for a butterfly population (silver spotted skipper, Hanski 1994).", out.width="75%"}
 # Colonization probability from one patch to another, as a function of distance
 C.p <- function(d, yprime, alpha, area){
   Sij <- exp(-alpha*d ) * area

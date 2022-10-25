@@ -108,7 +108,7 @@ In addition to density-dependent transmission, investigators have used other for
   \frac{d R}{d t} &=   \gamma I. (\#eq:SIRfd3)
 \end{align}
 
-Here we create the function for the system of ODEs in eq. \ref{eq:SIR}.
+Here we create the function for this system of ODEs.
 ```{r}
 SIRf <- function(t, y, p) {
   {
@@ -132,7 +132,7 @@ The proper form of the transmission function depends on the mode of transmission
 
 It is fairly easy to imagine different scenarios, and it is very important to justify the form of the function. Density- and frequency-dependent transmission are the two most common caricatures.
 
-```{r trasmission, fig.cap="*Disease transmission rates vary linearly vs. curvilinearly as functions of the Susceptible and Infected populations in density-dependent vs. frequency-dependent transmission models.*"}
+```{r trasmission, fig.cap="Disease transmission rates vary linearly vs. curvilinearly as functions of the Susceptible and Infected populations in density-dependent vs. frequency-dependent transmission models."}
 R <- 0; S <- I <- 1000; Ss <- Is <- seq(1, S, length=11); N <- S+I+R
 betaD <- 0.1; betaF <- betaD*N
 
@@ -162,9 +162,9 @@ What does frequency--dependent transmission imply about dynamics? Let's solve fo
 \end{align}
 As we did above, let's consider the pre-outbreak situation where $S \approx N$, so that $S/N \approx 1$. In that case, the basic reproductive rate is $R_0=\beta/\gamma$, which is *independent of $N$*. An outbreak will occur as long as $\beta > \gamma$, regardless of population density. This is in direct contrast to the density-dependent transmission model (\@ref(eq:SIRfd1), \@ref(eq:SIRfd2)), where outbreak could be prevented if we simply reduce the population, $N$, to a sufficently low density. Both modes of transmission are observed in human and non-human populations, so it is important to understand how the disease is spread in order to predict its dynamics.
 
-Another interesting phenomenon with frequency--dependent transmission is that prevalence ($I/N$) can decline with increasing population size (Fig. \@ref(fig:SIRfd)). Two phenomena contribute to this pattern. First, outbreak in a completely susceptible population typically begins with a single individual, and so initial prevalence is always $I/N=1/N$. Second, as a consequence of this, the transmission rate is lower in larger populations because $\beta SI/N$ is small. As a consequence, prevalence remains low for a relatively long time. In a seasonal population, most individuals in large populations remain uninfected after four months. Depending upon the organism, this could be long enough to reproduce. In contrast, a density--dependent model typically shows the opposite, pattern, with more rapid, extreme outbreaks and greater prevalence in more dense populations (Fig. \@ref(fig:SIRfd)).
+Another interesting phenomenon with frequency--dependent transmission is that prevalence ($I/N$) can decline with increasing population size (Fig. \@ref(fig:SIRfprev)). Two phenomena contribute to this pattern. First, outbreak in a completely susceptible population typically begins with a single individual, and so initial prevalence is always $I/N=1/N$. Second, as a consequence of this, the transmission rate is lower in larger populations because $\beta SI/N$ is small. As a consequence, prevalence remains low for a relatively long time. In a seasonal population, most individuals in large populations remain uninfected after four months. Depending upon the organism, this could be long enough to reproduce. In contrast, a density--dependent model typically shows the opposite, pattern, with more rapid, extreme outbreaks and greater prevalence in more dense populations (Fig. \@ref(fig:SIRfprev)).
 
-**SIR** dynamics with frequency--dependent transmission (Fig. \@ref(fig:SIRfd)). 
+**SIR** dynamics with frequency--dependent transmission (Fig. \@ref(fig:SIRfprev)). 
 
 Here we demonstrate that prevalence can vary with population size (e.g.,  a smut on plant [@antonovics1992]).  Let us assume that resistance cannot be acquired, so $\gamma=0$, and $R = 0$. We can investigate the SIR model by pretending that, as is often the case, we begin with a largely uninfected population and $t=0$, so $I_0=1$ and $S_0\approx N$.  We first set parameters.
 
@@ -184,13 +184,13 @@ outf.tl$N <- factor(outf.tl$N, levels = paste("N =", S+1) )
 ```
 Last, we make the figure.
 
-```{r SIRprev, fig.cap="*Total population size can alter prevalence over time.*", out.width="90%"}
+```{r SIRfprev, fig.cap="Total population size can alter prevalence over time.", out.width="80%"}
 ggplot(outf.tl, aes(Months, Prevalence, colour=N)) + geom_line()  
 ```
 
 ## Open epidemics
 The above model assumes a constant population size. Here expand this to include population growth and death unrelated to disease (Fig. \@ref(fig:sirmod)). 
-```{r sirmod, fig.cap="*Conceptual model of an open epidemic. We'll let lambda be migration and births, and mu be mortality. Births may come from any group.*"}
+```{r sirmod, fig.cap="Conceptual model of an open epidemic. We'll let lambda be migration and births, and mu be mortality. Births may come from any group."}
 A <- matrix(NA, nrow=7, ncol=7)
 a <- matrix(c( 2,1, 3,2, 4,3, 5,2, 6,3, 7,4), ncol=2, byrow=TRUE)
 A[a] <- 1
@@ -260,7 +260,7 @@ parms <- c(B = B, g = g, b = b, mu=b, z=0)
 years <- seq(0,30, by=.1)
 ```
 It turns out that because of the relatively extreme dynamics (Fig. \@ref(fig:sirbd)), we want to tell the ODE solver to take baby steps, so as to properly capture the dynamics---we use the `hmax` argument to make sure that the maximum step it takes is relatively small.
-```{r sirbd, fig.cap="*Epidemic for a nonlethal disease, with an SIR model which includes births and deaths, and a constant population size.*", out.width="70%"}
+```{r sirbd, fig.cap="Epidemic for a nonlethal disease, with an SIR model which includes births and deaths, and a constant population size.", out.width="70%"}
 out <- data.frame(ode(c(S=S,I=I,R=R), years, SIRmod, parms, hmax=.01)) 
 SIRbd.out <- pivot_longer(out, cols=2:4, names_to="Populations", values_to="Density")
 ggplot(SIRbd.out, aes(time, Density+1, colour=Populations)) + 
@@ -272,9 +272,9 @@ Note that the population quickly becomes resistant (Fig. \@ref(fig:sirbd)). Note
 
 
 ## Modeling data from Bombay
-Here we try our hand at fitting the SIR model to some data. Kermack and McCormick \@ref(kermack:1927fk) provided data on the number of plague deaths per week in Bombay^[Bombay is the coastal city now known as Mumbai, and is the capital of Maharashtra; it is one of the largest cities in the world.] in 1905--06. We first enter them and look at them.^[Data provided kindly by S.P. Ellner]
+Here we try our hand at fitting the SIR model to some data. @kermack:1927fk provided data on the number of plague deaths per week in Bombay^[Bombay is the coastal city now known as Mumbai, and is the capital of Maharashtra; it is one of the largest cities in the world.] in 1905--06. We first enter them and look at them.^[Data provided kindly by S.P. Ellner]
 
-```{r sir2, fig.cap="*Cumulative deaths for plague, in Bombay, India, 1905--1906 (raw data and fitted model, as described in this section).*"}
+```{r sir2, fig.cap="Cumulative deaths for plague, in Bombay, India, 1905--1906 (raw data and fitted model, as described in this section)."}
 data(ross)
 qplot(x=Week, y=CumulativeDeaths, data=ross)
 ```
@@ -341,7 +341,7 @@ Next we want to find confidence intervals for $\beta$ and $\gamma$. This can tak
 pr2 <- profile(fit2)
 ```
 
-```{r profile, fig.cap="*The likelihood profile plots show us the confidence intervals on transformed SIR model parameters.*"}
+```{r profile, fig.cap="The likelihood profile plots show us the confidence intervals on transformed SIR model parameters."}
 par(mar=c(5,4,4,1))
 plot(pr2)
 ```

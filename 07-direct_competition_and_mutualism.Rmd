@@ -2,7 +2,7 @@
 
 Different species frequently compete for limiting resources, and as a result have negative impacts on each other. For example, change in species composition during secondary succession (Fig. \@ref(fig:weeds)) appears mediated by, among other things, a species' ability to intercept light, grow, and cast shade over other species. This chapter addresses very simple ways to represent such interactions between species. Unless I specify otherwise, "competition" in this chapter will refer to competition between species, or *inter*specific competition. 
 
-```{r weeds, echo=FALSE, fig.cap="*Changes in abundances of six species of asters during early secondary succession. This turnover of perennial weeds appears mediated by competition for light, among other factors (data from the long-term Buell-Small Succession study [http://www.ecostudies.org/bss/]).*", out.width="75%"}
+```{r weeds, echo=FALSE, fig.cap="Changes in abundances of six species of asters during early secondary succession. This turnover of perennial weeds appears mediated by competition for light, among other factors (data from the long-term Buell-Small Succession study [http://www.ecostudies.org/bss/]).", out.width="75%"}
     
 data(weeds)
 ggplot(weeds, aes(Age, Cover, colour=Species, linetype=Species)) +
@@ -89,12 +89,12 @@ A zero net growth isocline is the set of all points for which the growth of a po
 We find the isocline of a species by setting its growth rate equal to zero and solving the equation for that species in terms of the other species. As an example, find the zero net growth isocline for $N_2$. We find below that there is a straight line that describes all points for which $d N_2/dt=0$, if $N_1$ were held constant. 
 
 We start by setting \@ref(eq:N2b) to zero, and solving for $N_2$.
-\begin{align*}
+\begin{align}
   \frac{d N_2}{d t}&=r_2N_2\left(1-\alpha_{21}N_1-\alpha_{22}N_2\right) \\
   0 &=r_2N_2\left(1-\alpha_{21}N_1-\alpha_{22}N_2\right)\\
   0 &= 1-\alpha_{21}N_1-\alpha_{22}N_2\\
   N_2 &=\frac{1}{\alpha_{22}} - \frac{\alpha_{21}}{\alpha_{22}}N_1 .(\#eq:N2iso)
-\end{align*}
+\end{align}
 Recall that the formula for a straight line is $y=mx + b$ where $m$ is
 the slope and $b$ is the intercept on the $y$ axis. We can see that the
 expression for $N_2$ in \@ref(eq:N2iso) is a straight line, where
@@ -129,7 +129,7 @@ single species logistic growth model, if $N_2$ exceeds its
 equilibrium, it declines, and if $N_2$ is less than its equilibrium,
 it grows. The isocline (Fig. \@ref(fig:Niso1) is the set of balance points between positive and negative growth. This is reflected in the arrows in Fig. \@ref(fig:Niso1) --- if the $N_2$ is ever above this isocline, it declines and if it is ever below this isocline, it rises. This isocline shows that whether $N_2$ increases or decreases depends on $N_1$.
 
-```{r Niso1, fig.cap="*Phase plane plots of each of the two competing species, with Lotka-Volterra zero growth isoclines. Arrows indicate population trajectories. Recall $K = 1/alpha$.*", echo=FALSE, results='hide', fig.show='hold', out.width="40%", fig.ncol=2, fig.width=3.5, fig.height=4}
+```{r Niso1, fig.cap="*Phase plane plots of each of the two competing species, with Lotka-Volterra zero growth isoclines. Arrows indicate population trajectories. Recall $K = 1/\\alpha$.*", echo=FALSE, results='hide', fig.show='hold', out.width="40%", fig.ncol=2, fig.width=3.5, fig.height=4}
 a <- matrix(c(  0.01, 0.005,
                   0.005, 0.01), ncol=2, byrow=TRUE)
 par(mar=c(5,4,3, 1.5))
@@ -205,7 +205,7 @@ The expressions for $N_1^*$ and $N_2^*$ look pretty complicated, but can we use 
 
 We can also say something a little less obvious about species 1. What happens when the negative effect of the competitor, $N_2$, starts to increase, that is, as $\alpha_{12}$ gets bigger? Or, put more obtusely but precisely, let's find
 \begin{equation}
-  \label{eq:1}
+  \label{eq:1competition}
   N_1^* = \lim_{\alpha_{12} \to \infty}\frac{\alpha_{22}-\alpha_{12}}{\alpha_{22}\alpha_{11}-\alpha_{12}\alpha_{21}}
 \end{equation}
 that is, find the limit of the equilibrium \@ref(eq:lvn1eq) as
@@ -282,7 +282,7 @@ This leads to competitive exclusion by species 2 --- species 2 wins. This is the
 This creates an unstable internal equilibrium---exclusion will occur, but either species could win. This condition is sometimes referred to as *founder control* [@bolker2003a] because the identity of the winner depends in part on the starting abundances. It creates a *saddle* in state space. What the heck is a saddle? More on that below. It suffices to say that from some directions, an saddle attracts the trajectories of the populations, while from other directions, it repels the trajectories.^[The topography of mountain ranges can include saddles, which are precisely the context in which we use "saddle" here. Search the web for Saddleback Mountain, New York, USA, Lat/Long: 44$^\circ$ 8' N; 73$^\circ$ 53' W. See also pictures of horse saddles --- same shape.]
 
 
-```{r LVIsoclines, results='hide', echo=FALSE, fig.cap="*Phase plane diagrams of Lotka-Volterra competitors under different invasion conditions. Horizontal and vertical arrows indicate directions of attraction and repulsion for each population (solid and dased arrows); diagonal arrows indicate combined trajectory. Circles indicate equilibria; additional boundary equilibria can occur whenever one species is zero. Left to right: stable eq., $a_{ji} < a_{ii}$; $N_2$ wins, $a_{12} > a_{22}$; $N_1$ wins, $a_{21} > a_{11}; saddle attractor-repellor, $a_{ji} > a_{ii}$.*", fig.show='hold', fig.ncol=2, out.width="40%" , fig.width=4, fig.height=4}
+```{r LVIsoclines, results='hide', echo=FALSE, fig.cap="Phase plane diagrams of Lotka-Volterra competitors under different invasion conditions. Horizontal and vertical arrows indicate directions of attraction and repulsion for each population (solid and dased arrows); diagonal arrows indicate combined trajectory. Circles indicate equilibria; additional boundary equilibria can occur whenever one species is zero. Left to right: stable eq., $a_{ji} < a_{ii}$; $N_2$ wins, $a_{12} > a_{22}$; $N_1$ wins, $a_{21} > a_{11}$; saddle attractor-repellor, $a_{ji} > a_{ii}$.", fig.show='hold', fig.ncol=2, out.width="40%" , fig.width=4, fig.height=4}
 
 ### Isoclines for combinations of invasion criteria
 ### Both isoclines on the same graph
@@ -579,7 +579,7 @@ return( list(domL=max(Re(eigAll$values)), eigenanal = eigAll, Jacobian=J1, N = c
   }
 ```
 
-```{r LVeig, echo=FALSE, fig.cap="Stable equilibria: as the relative strength of interspecific competition increases (B(ij) increases toward 1), instability increases (lambda(1) increases toward 0). Solid dots represent initial abundances.", fig.width=4, fig.height=4, fig.show='hold', out.width="50%"}
+```{r LVeig, echo=FALSE, fig.cap="Stable equilibria: as the relative strength of interspecific competition increases ($\\beta_{ij}$ increases toward 1), instability increases ($\\lambda_1$ increases toward 0). Solid dots represent initial abundances.", fig.width=4, fig.height=4, fig.show='hold', out.width="50%"}
 dat <- expand.grid(B12=seq(0.0001, 1, by=0.05), 
                    B21=seq(0.0001, 1, by=0.05))
 
@@ -629,7 +629,7 @@ As we saw above, the Lotka-Volterra competition model has not only stable equili
 
 Another interesting phenomenon is the *saddle* itself; this unstable equilibrium is an *attractor-repeller*, that is, it attracts from some directions and repels from others (Fig. \@ref(fig:LVeigU)). This implies that the final outcome of dynamics may be difficult to predict from initial trajectories.
 
-```{r LVeigU, echo=FALSE, fig.cap="Unstable equilibria: as the relative strength of interspecific competition increases (B(ij) > 1), instability increases (lambda(1) > 0). The unstable equilibrium may attract trajectories from some initial states, but repel from others (solid dots represent initial abundances).", fig.width=4, fig.height=4, fig.show='hold', out.width="40%"}
+```{r LVeigU, echo=FALSE, fig.cap="Unstable equilibria: as the relative strength of interspecific competition increases ($\\beta_{ij} > 1$), instability increases ($\\lambda_1 > 0$). The unstable equilibrium may attract trajectories from some initial states, but repel from others (solid dots represent initial abundances).", fig.width=4, fig.height=4, fig.show='hold', out.width="40%"}
 dat2 <- expand.grid(B12=seq(1.01, 2.01, by=0.05), 
                    B21=seq(1.01, 2.01, by=0.05))
 dat2$L <- apply(dat2, 1, function(b) findL1(B=b)$domL)
@@ -708,7 +708,7 @@ Again $\lambda_1=0$ so this equilibrium is also neutral.
 When we perform eigenanalysis, we find that the largest of the two eigenvalues is zero, while the other is negative. This reveals that we have neither a bowl nor an unstable saddle, but rather, a taco shell, with a level bottom --- a neutral saddle.
 
 
-```{r lvstabneut, echo=FALSE, fig.cap="*Trajectories of N(1),N(2) for $\beta_{12} = \beta_{21} = 1$. The entire isocline is an attractor, a neutral saddle, and the final abundances depend on the initial abundances and the ratio of $\alpha_{11}/\alpha_{22}$. The circle represents our one derived equilibrium.*", fig.width=4, fig.height=4, out.width="40%"}
+```{r lvstabneut, echo=FALSE, fig.cap="Trajectories of N(1),N(2) for $\\beta_{12} = \\beta_{21} = 1$. The entire isocline is an attractor, a neutral saddle, and the final abundances depend on the initial abundances and the ratio of $\\alpha_{11}/\\alpha_{22}$. The circle represents our one derived equilibrium.", fig.width=4, fig.height=4, out.width="40%"}
 par(mar=c(5,4,.5,1))
 a <- matrix(c(  0.01, 0.015,
                   0.01, 0.015), ncol=2, byrow=TRUE)
@@ -803,7 +803,7 @@ Consider the Jacobian matrix \@ref(eq:jac), and note that $-r_i$ appears in each
 
 If we consider return time for continuous models where $\beta_{12},\,\beta_{21} < 1$, greater $r$ shortens return time, increasing stability (Fig. \@ref(fig:LVeigR). For continuous models where $\beta_{12},\,\beta_{21} > 1$, greater $r$ increases perturbation growth rate, decreasing stability  (Fig. \@ref(fig:LVeigR). For discrete models, which we have not discussed in this context, recall that increasing $r_d$ of discrete logistic growth can destabilize the population because of the built-in lag. The same is true for discrete competition models --- increasing $r_d$ too much destabilizes the interaction.
 
-```{r LVeigR, echo=FALSE, fig.cap="*The dominant eigenvalue of the Jacobian matrix varies with r as well as with $\beta$ --- higher r causes greater responsiveness to perturbations around an internal equilibrium for r = 1 and r = 0.5.*", fig.show='hold', out.width="40%", fig.width=4, fig.height=4}
+```{r LVeigR, echo=FALSE, fig.cap="The dominant eigenvalue of the Jacobian matrix varies with r as well as with $\\beta$ --- higher r causes greater responsiveness to perturbations around an internal equilibrium for r = 1 and r = 0.5.", fig.show='hold', out.width="40%", fig.width=4, fig.height=4}
 
 dat3 <- expand.grid(B12=seq(.01, 2, by=0.05), 
                     B21=seq(.01, 2, by=0.05))
@@ -1014,7 +1014,7 @@ $$Cf_{t+1} - Cf_t=0 \quad ; \quad Pv_{t+1} - Pv_t=0$$
 I leave it for the industrious to work through that. :)
 
 
-## Summary
+## In fine
 This chapter has provided several useful results. 
 
 * We can represent species effects on each other in precisely the same way we represented their effects on themselves.

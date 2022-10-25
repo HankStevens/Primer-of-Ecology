@@ -152,7 +152,7 @@ An important component of May's work explored the properties of *randomly* conne
 
 One conclusion May derived was a threshold between stability and instability for random webs, defined by the relation
 \begin{equation}
-  (\#eq:1)
+  (\#eq:1May)
   I\left( S C_D \right)^{1/2} = 1
 \end{equation}
 where $I$ is the average interaction strength, $S$ is the number of species, and $C_D$ is directed connectance.  If $I\left( S C \right)^{1/2} > 1$, the system tended to be unstable  (Fig. \@ref(fig:may1)). Thus, if we
@@ -343,7 +343,7 @@ Pimm and Lawton addressed this by picking an arbitrarily large number (150) and 
   sum( RT.A > 150 ) / 2000
 ```
 Now let's extract the return times that are less than or equal to 150 and make a histogram with the right number of divisions or bins to allow it to look like the one in the original [@pimm1977].
-```{r histA, fig.cap="*A linear four-species food chain has is only somewhat likely to have reasonble return times.*"}
+```{r histA, fig.cap="A linear four-species food chain has is only somewhat likely to have reasonble return times."}
 A.fast <-RT.A[RT.A < 150]
 histA <- hist(A.fast, breaks=seq(0,150, by=5), main=NULL)
 ```
@@ -368,7 +368,7 @@ out.E <- pimmlawton(Eq, N=2000)
 summary(out.E)
 ```
 The summary shows that, again, that all webs are stable ($\lambda_1<0$). A histogram of return times also shows very short return times (Fig. \@ref(fig:histE)). Plots of $\lambda_1$ *vs.* interaction strengths show that with this short chain, and three basal species that the role of intraspecfic density dependence becomes even more important, and the predator-prey interactions less important in governing $\lambda_1$. 
-```{r E1, fig.cap="For a food chain with two levels, and three basal species, perturbation growth rate (lambda_1) declines with increasing intraspecific negative density dependence (IntraDD) and is unrelated to predator-prey interaction strengths.", out.width=9}
+```{r E1, fig.cap="For a food chain with two levels, and three basal species, perturbation growth rate ($\\lambda_1$) declines with increasing intraspecific negative density dependence (IntraDD) and is unrelated to predator-prey interaction strengths.", out.width=9}
 layout(matrix(1:2,nr=1))
 plot(DomEig ~ IntraDD, data=out.E)
 plot(DomEig ~ I, data=out.E)
@@ -377,7 +377,7 @@ plot(DomEig ~ I, data=out.E)
 Note that with the shorter food chain, a greater proportion of the $\lambda_1$ are more negative (farther away from zero) than in the four level food chain. Clearly then, shortening the web and increasing the amount of negative density dependence stabilizes it, in spite of still having the same number of species.
 
 Let us again categorize these as having long and short return times, and graph the distribution of the short ones.
-```{r histE, fig.cap="*One predator and three prey, each with negative density dependence results in very stable webs.*"}
+```{r histE, fig.cap="One predator and three prey, each with negative density dependence results in very stable webs."}
 RT.E <- -1/out.E[["DomEig"]]
 E.fast <-RT.E[RT.E < 150]
 histE <- hist(E.fast, breaks=seq(0,150, by=5), main=NULL)
@@ -405,7 +405,7 @@ pairs(out.B.stable)
 ```
 
 It means that most of the randomly constructed webs were not stable point equilibria. To be complete, let's graph what Pimm and Lawton did. They graphed the return times that were positive, and ignored those that were negative.
-```{r histB, fig.cap="*Of the relatively few omnivorous webs that were qualitatively stable, a moderate fraction had low return times.*"}
+```{r histB, fig.cap="Of the relatively few omnivorous webs that were qualitatively stable, a moderate fraction had low return times."}
 RT.B <- -1/out.B[["DomEig"]]
 B.fast <- RT.B[RT.B < 150 & RT.B > 0 ]
 out.B.fast <- out.B[RT.B < 150 & RT.B > 0,]
@@ -429,7 +429,7 @@ ret.time <- data.frame(web=rep(LETTERS[1:2], each=2000),
 ```
 
 Next we create a histogram of return times using probability density instead of counts.^[Note that now we use probabilities for the $y$-axis, rather than counts. The probability associated with any particular return time is the product of the height of the column and the width of the column (or bin).] We also add a nonparametric density estimator. 
-```{r histsAB, fig.cap="*Comparing the distributions of return times for chain **A** and **B**. 'Density' is probability density.*"}
+```{r histsAB, fig.cap="Comparing the distributions of return times for chain **A** and **B**. 'Density' is probability density."}
 ggplot(ret.time, aes(return.time, fill=web)) + 
   geom_histogram(aes(y = ..density..),
                  alpha=.5, position="identity") + 
@@ -476,7 +476,7 @@ invisible( # to hide messages
 ```
 
 In the following comparison between mutualist and antagonist bipartite networks, we control for network structure, and measure direct and indirect effects of diversity, connectance, nestedness, and modularity on resilience. We can then ask whether these effects differ between mutualist and antagonist networks (Fig. \@ref(fig:TandF)). In brief, you will find that they do.  
-```{r TandF, echo=FALSE, fig.cap="*Possible effects of species richness, connectance, modularity, and nestedness on network resilience.*", out.width="50%"}
+```{r TandF, echo=FALSE, fig.cap="Possible effects of species richness, connectance, modularity, and nestedness on network resilience.", out.width="50%"}
 tf <-
 "digraph{
   rankdir = BT;
@@ -567,7 +567,7 @@ bip.networkQ <- bip.network * xp
 ```
 
 Next we can make some pretty pictures of this web. To do this, you'll need to load the `bipartite` package.
-```{r toys, fig.cap="*Illustrations of a hypothetical plant-pollinator network. The two matrices organize the species to highlight either nestedness (left) or modularity (right).*" }
+```{r toys, fig.cap="Illustrations of a hypothetical plant-pollinator network. The two matrices organize the species to highlight either nestedness (left) or modularity (right)." }
 {
   # library(bipartite) if needed
   # visweb and plotweb are in the bipartite package
@@ -686,7 +686,7 @@ mod.h.fit <- sem(model.h, data=dat)
 ```
 
 To make the path diagrams, you'll need the `semPlot` package.
-```{r paths, fig.cap="*Given the same bipartite network structure and the identical interaction strengths, mutualistic (left) and antagonistic webs (right) show slightly different relations among emergent properties. Recall also that resilience is about *", fig.show='hold', out.width="50%"}
+```{r paths, fig.cap="Given the same bipartite network structure and the identical interaction strengths, mutualistic (left) and antagonistic webs (right) show slightly different relations among emergent properties.", fig.show='hold', out.width="50%"}
 # library(semPlot)
 semPaths(mod.m.fit, what='path', whatLabels="std", 
          curve=1, curvature=1, sizeMan=10,
@@ -730,7 +730,7 @@ Most plant species develop mycorrhizae, fungi-root associations which are typica
 All these were evaluated by whether the observed properties differed from properties that emerge from random networks with the same number of nodes and average node degree as the empirical mycorrhizal networks. We can generate such a graph using the `igraph` package. 
 
 Plot 1, from a xeric site, had 26 trees and 258 links. Therefore, the average node degree must be $258/26\approx 9.9$. We can create a random graph by simply specify the number of vertices and the number of edges.
-```{r plot1, fig.cap="*Example of a random graph using the same number of vertices and links as in plot 1 (Beiler et al. (2015)).*", out.width="70%" }
+```{r plot1, fig.cap="Example of a random graph using the same number of vertices and links as in plot 1 (Beiler et al. (2015)).", out.width="70%" }
 # node clustering coefficient: 0.84
 # for Plot 1
 V <- 26
@@ -747,7 +747,7 @@ We can compare the observed average node clustering coefficient ($0.84 \pm 0.37$
 mean(transitivity(gr, type = "local"))
 ```
 We find that these differ. The observed can then be compared to 1000s of simulated random networks to see how unusual the observed value is. Here we use a toy example with 100 simulations to compare the node clustering coefficient observed in plot 1 to what we would expect in a random network.
-```{r nccHist, fig.cap="*Observed node clustering appears unuusally high, relatively to that of random networks.*"}
+```{r nccHist, fig.cap="Observed node clustering appears unuusally high, relatively to that of random networks."}
 ncc.sims <- replicate(100, { 
   gr <- erdos.renyi.game(V, E, type = "gnm")
   mean(transitivity(gr, type = "local"))
@@ -765,7 +765,7 @@ A *scale-free* graph is one in which the probability of a node having L links fo
 $$Pr(L) \sim L^{-z}$$
 where, apparently, $2<z<3$. Let's demonstrate that for one plot.
 
-```{r plot1sf, fig.cap="*Emergent relation between node clustering and node degree in a scale-free random network, based on the number of nodes and links in plot 1.*"}
+```{r plot1sf, fig.cap="Emergent relation between node clustering and node degree in a scale-free random network, based on the number of nodes and links in plot 1."}
 # node clustering coefficients (per node)
 ncc <- transitivity(gr, type = "local")
 # degrees of each node
@@ -833,7 +833,7 @@ The following somewhat complicated looking code does the following for each plot
 * records the site of the plot.
 
 It then binds together the data collected for each plot at each site.
-```{r allplotsf, fig.cap="*Emergent relations between node clustering and node degree in scale-free random networks, based on the number of nodes and links in each plot.*"}
+```{r allplotsf, fig.cap="Emergent relations between node clustering and node degree in scale-free random networks, based on the number of nodes and links in each plot."}
 df2 <- apply(df[,1:3], 1, function(ve){
   #make a scale-free random graph, given V and E
   gsf <- sample_fitness_pl(ve[2], ve[3], exponent.out= exp.out,

@@ -1,7 +1,7 @@
 # Diversity
 
 ## Background
-```{r BSsuc,fig=TRUE, echo=FALSE, results='hide', message=FALSE, fig.cap="*Empirical rank--abundance distributions of successional plant communities (old-fields) within the temperate deciduous forest biome of North America. 'Year' indicates the time since abandonment from agriculture.  Data from the Buell-Small succession study* (http://www.ecostudies.org/bss/)."}
+```{r BSsuc,fig=TRUE, echo=FALSE, results='hide', message=FALSE, fig.cap="Empirical rank--abundance distributions of successional plant communities (old-fields) within the temperate deciduous forest biome of North America. 'Year' indicates the time since abandonment from agriculture.  Data from the Buell-Small succession study (http://www.ecostudies.org/bss/)."}
 bsdiv <- read.csv('figs/C3rank.csv')
 bs <- pivot_longer(bsdiv, cols=-1, names_to="Year", 
                    values_to="Percent_cover") 
@@ -28,7 +28,7 @@ row.names(dens) <- LETTERS[1:4]
 dens
 ```
 Next, we plot the abundances of both species; the plotted points then are the sites (Fig. \@ref(fig:dens)).
-```{r dens, fig.cap="*Hypothetical species composition for four sites (A--D)*"}
+```{r dens, fig.cap="Hypothetical species composition for four sites (A--D)"}
 plot(dens, type='n'); text(dens, row.names(dens))
 ```
 In Fig. \@ref(fig:dens), we see that the species composition in site A is most different from the composition of site D. That is, the distance between site A and D is greater than between any other sites. The next question, then, is *how* far apart are any two sites? Clearly, this depends on the scale of the measurement (e.g., the values on the axes), and also on how we measure distance through multivariate space. 
@@ -113,7 +113,7 @@ dens$Acolyc <- c(16, 0, 9,4)
 ```
 The non-metric multidimensional scaling function is in the \texttt{vegan} package. It calculates distances for us using the original data. Here we display Euclidean distances among sites (Fig. \@ref(fig:mds)).
 
-```{r mds, fig.cap="*Nonmetric multidimensional (NMDS) plots showing approximate distances between sites. These two figures display the same raw data, but Euclidean distances tend to emphasize differences due to the more abundant species, whereas Bray-Curtis does not. Because NMDS provides iterative optimizations, it will find slightly different arrangements each time you run it.*", fig.height=3.5, fig.width=3.5, fig.show='hold', out.width="45%"}
+```{r mds, fig.cap="Nonmetric multidimensional (NMDS) plots showing approximate distances between sites. These two figures display the same raw data, but Euclidean distances tend to emphasize differences due to the more abundant species, whereas Bray-Curtis does not. Because NMDS provides iterative optimizations, it will find slightly different arrangements each time you run it.", fig.height=3.5, fig.width=3.5, fig.show='hold', out.width="45%"}
 # ignore warnings for these toy examples
 mdsE <- metaMDS(dens, distance="euc", autotransform=FALSE, trace=0)
 plot(mdsE, display="sites", type="text")
@@ -134,7 +134,7 @@ where mechanisms of coexistence govern $\Delta E$. This equation is the basis fo
 There are many diversity indices that we could calculate; here, we will calculate four different measures: species richness, Shannon-Weiner diversity, Simpson's diversity, and Simpson's inverse diversity. These sometimes are referred to by slightly different names, so it is important to figure out exactly what someone has done.
 
 Let's start by creating two samples of two different communities.
-```{r toy, fig.cap="*Two toy communities.*", ou.width="70%"}
+```{r toy, fig.cap="Two toy communities.", ou.width="70%"}
 comm <- rep(c("X","Y"), each=4)
 spp <- letters[c(1:4, 1:4)]
 abun <- c(10,3,1,0, 4,1,6,3)
@@ -185,7 +185,7 @@ X[14,3] <- 1
 t(X)
 ```
 We transposed the matrix, so that individuals are columns and species membership or identity is in rows. The first individual belongs to species A, etc. We can plot these individuals in community space, if we like (Fig. \@ref(fig:Xvar)).
-```{r Xvar, fig.cap="*Each of 14 individuals in a three species community, plotted in 'compsition space'. The large black dot is the multivariate mean, or centroid, which is the center of gravity in this composition space. Simpson's diversity is the variance of species composition of individuals.*"}
+```{r Xvar, fig.cap="Each of 14 individuals in a three species community, plotted in 'compsition space'. The large black dot is the multivariate mean, or centroid, which is the center of gravity in this composition space. Simpson's diversity is the variance of species composition of individuals (Lande 1996)."}
 library(scatterplot3d)
 X3D <- scatterplot3d(jitter(X, .1), type='h', angle=60, pch=rep(1:3, c(10,3,1)) )
 X3D$points3d(x=10/14, y=3/14, z=1/14,  type='h', pch=19, cex=2)
@@ -285,7 +285,7 @@ no.of.inds <- c(seq(500, 4500, by=500), sum(N))
 rar3 <- rarefy(N, sample=no.of.inds, se=T, MARG=2)
 ``` 
 Next we want to graph it, with a few bells and whistles. We set up the graph of the 10 plot, individual-based rarefaction, and leave room to graph total richness estimators as well (Fig. \@ref(fig:estS)). 
-```{r estS, fig.cap="*Baseline tree species richness estimation based on ten 1 ha plots, using individual-based rarefaction. We also include the Chao 2 total richness estimators and the observed total tree richness in the 50 ha plot for comparison (black dot).*"}
+```{r estS, fig.cap="Baseline tree species richness estimation based on ten 1 ha plots, using individual-based rarefaction. We also include the Chao 2 total richness estimators and the observed total tree richness in the 50 ha plot for comparison (black dot)."}
 plot(no.of.inds , rar3[1,],  ylab="Species Richness", axes=FALSE,
      xlab="No. of Individuals", type='n',  ylim=c(0,250), 
      xlim=c(500,5900) )
@@ -329,7 +329,7 @@ The above estimators for total species richness each assume that species abundan
 
 Like any other vector of numbers, we can make a histogram of species abundances. As an example, here we make a histogram of bci tree densities, where each species has its own density (left, Fig. \@ref(fig:bci)). This shows us what is patently true for nearly all ecological communities, that *most species are rare*. 
 
-```{r bci, echo=FALSE, fig.cap="*Three related types of distributions of tree species densities from Barro Colorado Island. Left, histogram of raw data; center, the species--abundance distribution, which is a histogram of log-transformed abundances, accompanied here by the normal probability density function; right, the rank--abundance distribution, as typically presented with the log-transformed data, with the complement of the cumulative probability density function (1-pdf). Normal distributions were applied using the mean and standard deviation from the log-transformed data, times the total number of species.*", fig.show='hold', out.width="33%"}
+```{r bci, echo=FALSE, fig.cap="Three related types of distributions of tree species densities from Barro Colorado Island. Left, histogram of raw data; center, the species--abundance distribution, which is a histogram of log-transformed abundances, accompanied here by the normal probability density function; right, the rank--abundance distribution, as typically presented with the log-transformed data, with the complement of the cumulative probability density function (1-pdf). Normal distributions were applied using the mean and standard deviation from the log-transformed data, times the total number of species.", fig.show='hold', out.width="33%"}
 knitr::include_graphics(c("figs/bci1.png", "figs/bci2.png", "figs/bci3.png"))
 ```
 
@@ -372,7 +372,7 @@ Other similarly tactile stick-breaking distributions create a host of different 
 
 
 Here we plot the empirical rank-abundance distribution of all of the BCI data from this census of the 50 ha plot, along with several fitted distributions. They are fit using the `radfit` function in the `vegan` package. We then add the log series distribution.
-```{r bcifit, fig.cap="*Entire BCI rank abundance distribution with several fitted models. 'Null' is the broken stick distribution, and the dashed line is the log series.*", fig.height=6, fig.width=6}
+```{r bcifit, fig.cap="Entire BCI rank abundance distribution with several fitted models. 'Null' is the broken stick distribution, and the dashed line is the log series.", fig.height=6, fig.width=6}
 # fit the distributions
 N <- rev(sort(colSums(BCI)))
 # get the expected ranks for the log series distribution
@@ -405,7 +405,7 @@ Just as evolutionary biology has neutral theories of gene and allele frequencies
 
 Stephen Hubbell proposed his unified neutral theory of biodiversity and biogeography (hereafter NTBB, [@hubbell2001]) as a null expectation of the dynamics of individuals, to help explain relative abundances of tropical trees. Hubbell describes it as a direct descendant of MacArthur and Wilson's theory of island biogeography [@macarthur1963;@macarthur1967] (see below, species--area relations). Hubbell proposed it both as a null hypothesis and also --- and this is the controversial part --- as a model of community dynamics that closely approximates reality.
 
-```{r meta, echo=FALSE, fig.cap="***Left:** A local community of forest canopy trees (small box) nested inside part of the metacommunity of a tropical forest. The true metaccommunity would extend far beyond the boundaries of this figure to include the true potential source of propagules. Shades of grey indicate different species. The local community is a sample of the larger community (such as the 50 ha forest dynamics plot on BCI) and receives migrants from the metacommunity. Mutation gives rise to new species in the metacommunity. For a particular local community, such as a 50 ha plot on an island in the Panama canal, the metacommunity will include not only the surrounding forest on the island, but also Panama, and perhaps much of the neotropics. **Right:** Neutral ecological drift. Ten species, each of 90 individuals, undergo random walks within a finite local community, with no immigration. Here, one generation is equal to nine deaths and nine births. Note the slow decline in unevenness --- after 1000 deaths, no species has become extinct.", fig.width=7, fig.height=7, fig.show='hold', out.width="50%"}
+```{r meta, echo=FALSE, fig.cap="**Left:** A local community of forest canopy trees (small box) nested inside part of the metacommunity of a tropical forest. The true metaccommunity would extend far beyond the boundaries of this figure to include the true potential source of propagules. Shades of grey indicate different species. The local community is a sample of the larger community (such as the 50 ha forest dynamics plot on BCI) and receives migrants from the metacommunity. Mutation gives rise to new species in the metacommunity. For a particular local community, such as a 50 ha plot on an island in the Panama canal, the metacommunity will include not only the surrounding forest on the island, but also Panama, and perhaps much of the neotropics. **Right:** Neutral ecological drift. Ten species, each of 90 individuals, undergo random walks within a finite local community, with no immigration. Here, one generation is equal to nine deaths and nine births. Note the slow decline in unevenness --- after 1000 deaths, no species has become extinct.", fig.width=7, fig.height=7, fig.show='hold', out.width="50%"}
 library(untb)
 par(mar=c(1,1,1,1))
 display.untb(start=rep(10, 900), prob=0.1, gens=5000)
@@ -549,7 +549,7 @@ points(rep(1:20,25), rep(1:25,each=20), pch=19, cex=2, col=sppcolors[,j])
 title(paste("Time = ", times[j], sep=""))
 }
 ```
-```{r comms, fig.cap="*Three snapshots of one community, drifting through time. Shades of grey represent different species. The second and third rows are the rank-abundances and species -abundance distributions corresponding to the communities above. Drift results in the slow loss of diversity.*"}
+```{r comms, fig.cap="Three snapshots of one community, drifting through time. Shades of grey represent different species. The second and third rows are the rank-abundances and species -abundance distributions corresponding to the communities above. Drift results in the slow loss of diversity."}
 layout(matrix(1:9, nr=3, byrow=TRUE))
 par(mar=c(1,1,3,1))
 for(j in 1:3){
@@ -626,7 +626,7 @@ points(xs, v1[1:12], type='b')
 
 Here we derive expected species abundance distributions. The first is based solely on census data, and is similar to previous expections. However, when they also included phylogenetic data, they found very different expected species abundance distributions (Fig. \@ref(fig:bciJabot)).
 
-```{r bciJabot, fig.cap="*Jabot and Chave found that when they used only species abundances (as did previous investigators) their pattern was similar to previous findings (solid line). However, adding phylogenetic information led to very different expectations (dashed line)*"}
+```{r bciJabot, fig.cap="Jabot and Chave found that when they used only species abundances (as did previous investigators) their pattern was similar to previous findings (solid line). However, adding phylogenetic information led to very different expectations (dashed line)."}
 # Census data only
 v2 <- volkov(sum(n), c(48, 0.1), bins=TRUE)
 # With phylogenetic data as well.
@@ -651,7 +651,11 @@ The number of species we observe clearly depends on the number of individuals we
 
 The relation between the number of species found in samples of different area has a long tradition [@arrhenius1921a; @macarthur1972; @macarthur1963; @macarthur1967; @preston:1960uq; @rosenzweig1995], and is now an important part of the subdiscipline of *macroecology* [@brown1995; @harte:2008nq].
 
-Most generally, the species--area relation (SAR) is simply an empirical pattern of the number of species found in patches of different size, plotted as a function of the sizes of the respective patches (Fig. \@ref(fig:sars)). These patches may be isolated from each other, as islands in the South Pacific [@macarthur1963], or mountaintops covered in coniferous forest surrounded by a sea of desert [@brown1977], or calcareous grasslands in an agricultural landscape [@hamback:2007yj]. On the other hand, these patches might be nested sets, where each larger patch contains all others [@crawley:2001aa].
+Most generally, the species--area relation (SAR) is simply an empirical pattern of the number of species found in patches of different size, plotted as a function of the sizes of the respective patches. These patches may be isolated from each other, as islands in the South Pacific [@macarthur1963] (Fig. \@ref(fig:sarsMW)), or mountaintops covered in coniferous forest surrounded by a sea of desert [@brown1977], or calcareous grasslands in an agricultural landscape [@hamback:2007yj]. On the other hand, these patches might be nested sets, where each larger patch contains all others [@crawley:2001aa].
+```{r sarsMW, echo=FALSE, out.width="85%", fig.cap="The numbers of land and freshwater bird species on islands in Melanesia, Micronesia, and Polynesia. From MacArthur and Wilson (1963) An equilibrium theory of insular zoogeography. *Evolution* 17:373-387."}
+include_graphics("figs/macAndWil_1963.png")
+```
+
 
 Quantitatively, the relation is most often proposed as a simple power law,
 \begin{equation}
@@ -674,7 +678,7 @@ curve(log(c,10) + z*x, 1, 10, ylab=quote(log[10]("No. of Species")),
 ```
 
 Here we fit a species--area curve to data, and examine the slope. We could fit a nonlinear power relation ($y=cA^z$); this would be appropriate, for instance, if the residual noise around the line were of the same magnitude for all patch areas. We could use reduced major axis regression, which is appropriate when there is equivalent uncertainty or error on both $x$ and $y$. Last (and most often), we could use a simple linear regression on the log-transformed data, which is appropriate when we know $x$ to a high degree of accuracy, but measure $y$ with some error, and the transformation causes the residual errors to be of similar magnitude at all areas. We start with the last (log-transformed). Here we plot the data, and fit a linear model to the common log-transformed data.
-```{r sarsfit, fig.cap="*Two different fits to the moth species-area data.*"}
+```{r sarsfit, fig.cap="Two different fits to the moth species-area data: linear least squares on log-transformed data (solid line), and nonlinear least squares on the raw data (dashed line) for which the fit is plotted on the log-log scale."}
 data(moths)
 mod.nonlin <- nls(spp ~ a*area^z, start=list(a=1, z=.2),data=moths)
 mod <- lm(log(spp,10) ~log(area,10), data=moths)
@@ -735,7 +739,7 @@ continue to influence community ecologists.
 **Drawing immigration and extinction curves**
 
 It would be fun to derive a model of immigration and extinction rates from first principles [@macarthur1963], but here we can illustrate these relations with some simple phenomenological graphs. The code that follows recreates Fig. \@ref(fig:IE), and also estimates $S$.
-```{r IE, echo=FALSE, fig.cap="*Immigration and extinction curves for the theory of island biogeography. The declining curves represent immigration rates as functions of the number of species present on an island. The increasing curves represent extinction rates, also as functions of island richness. See text for discussion of the heights of these curves, i.e.,  controls on these rates. Here the dashed lines represent an island that is shrinking in size.*"}
+```{r IE, echo=FALSE, fig.cap="Immigration and extinction curves for the theory of island biogeography. The declining curves represent immigration rates as functions of the number of species present on an island. The increasing curves represent extinction rates, also as functions of island richness. See text for discussion of the heights of these curves, i.e.,  controls on these rates. Here the dashed lines represent an island that is shrinking in size."}
 I0 <- log(1)
 b <- .1
 curve(exp(I0 - b*x),0, 50, 
@@ -807,6 +811,7 @@ Next we increase extinction rate by increasing the per species rate.
 d <- .014
 curve(exp(d*x)-1, 0, 50, lty=2)
 ```
+
 If we note where the rates cross, we find that the number of predicted species has declined. With these new immigration and extinciton rates the predicted number of species is
 ```{r}
 optimize(f=deltaS, interval=c(1,50))[["minimum"]]
@@ -884,7 +889,7 @@ lines(pts)
 }
 points(coords, pch=inds, cex = .5)
 ```
-```{r moths, fig.cap="*Hierarchical sampling of moth species richness in forest patches in Indiana and Ohio, USA. $\\alpha$-diversity is the diversity of a single site (richness indicated by numbers). $\\gamma$-diversity is the total number of species found in any of the samples (here $\\gamma=230$ spp.). Additive $\\beta$-diversity is the difference, $\\gamma - \\bar{\\alpha}$, or the average number of species not observed in a single sample. Diversity partitioning can be done at two levels, sites within ecoregions and ecoregions within the geographic region (see example in text for details).*", echo=FALSE, results='hide', fig.width=8, fig.height=5}
+```{r moths, fig.cap="Hierarchical sampling of moth species richness in forest patches in Indiana and Ohio, USA. $\\alpha$-diversity is the diversity of a single site (richness indicated by numbers). $\\gamma$-diversity is the total number of species found in any of the samples (here $\\gamma=230$ spp.). Additive $\\beta$-diversity is the difference, $\\gamma - \\bar{\\alpha}$, or the average number of species not observed in a single sample. Diversity partitioning can be done at two levels, sites within ecoregions and ecoregions within the geographic region (see example in text for details).", echo=FALSE, results='hide', fig.width=8, fig.height=5}
 #moths <- read.table("Summervillle_CristMothsALL.txt", header=TRUE)
 data(moths)
 rowsnct <- c(4,7,9,11,6,3,5,1,10,12,8,2) 
@@ -940,7 +945,7 @@ text(x3,y3, mothswap[['spp']], adj=c(.75,0.5))
 
 Let us examine the limits of $\beta$ diversity in extremely small and extremely large samples. Imagine that our sample units each contain, on average,  one individual (and therefore one species)  and we have 10$^6$ samples. If richness is our measure of diversity, then $\bar{\alpha}=1$. Now imagine that in all of our samples we find a total of 100 species, or $\gamma=100$. Our additive and multiplicative partitions would then be $\beta_{A}=99$, and $\beta_{M}=100$, respectively. If the size of the sample unit increases, each sample will include more and more individuals and therefore more of the diversity, and by definition, $\beta$ will decline. If each sample gets large enough, then each sample will capture more and more of the species until a sample gets so large that it includes all of the species (i.e., $\bar{\alpha} \to \gamma$). At this point, $\beta_A \to 0$ and $\beta_M \to 1$.  
 
-```{r beta, fig.cap="*Relations of $\beta_A$ (with additive partitioning) and $\\beta_M$ (with multiplicative partitioning) to $\\bar{\\alpha}$, for a fixed $\\gamma=500$ species. In our example, we defined diversityas species richness, so the units of $\\beta_A$ and $\\alpha$ are number of species per sample, and $\\bar{\\alpha}$ is the mean number of species in a sample. In contrast, in a multiplicative partition, $\\beta$ is the number of communities.*"}
+```{r beta, fig.cap="Relations of $\\beta_A$ (with additive partitioning) and $\\beta_M$ (with multiplicative partitioning) to $\\bar{\\alpha}$, for a fixed $\\gamma=500$ species. In our example, we defined diversityas species richness, so the units of $\\beta_A$ and $\\alpha$ are number of species per sample, and $\\bar{\\alpha}$ is the mean number of species in a sample. In contrast, in a multiplicative partition, $\\beta$ is the number of communities."}
 a <- seq(1,100, by=.1)
 g <- max(a)
 bA <- g-a
@@ -1002,7 +1007,7 @@ abg
 a1 + b1 + b2 == g
 ```
 
-```{r partplot, fig.cap="*Hierarchical partitioning of moth species richness in forest patches.*", fig.height=4, fig.width=6, results='hide', echo=FALSE}
+```{r partplot, fig.cap="Hierarchical partitioning of moth species richness in forest patches.", fig.height=4, fig.width=6, results='hide', echo=FALSE}
 par(las=2)
 bp <- barplot(abg[c(1,2,4,5)], hor=T, xlim=c(0, 250), space=1,
         names=expression(alpha[1],beta[1],beta[2],gamma))
@@ -1078,7 +1083,7 @@ abline(h=a1, lty=3)
 
 Now we have further quantified how forest fragment area  explains moth species richness. Such understanding of the spatial distribution of biodiversity provides a way to better quantify patterns governed by both dispersal and habitat preference, and allows us to better describe and manage biodiversity in human-dominated landscapes.
 
-```{r SARpart, fig.cap="*Combining species--area relations with additive diversity partitioning. Forest fragment area explains relatively little of the diversity which accumulates in isolated patches distributed in space. However, it is likely that area associated with the collection of samples (i.e., the distances among fragments) contributes to beta[eco] and beta[geo].*", echo=FALSE, results='hide'}
+```{r SARpart, fig.cap="Combining species--area relations with additive diversity partitioning. Forest fragment area explains relatively little of the diversity which accumulates in isolated patches distributed in space. However, it is likely that area associated with the collection of samples (i.e., the distances among fragments) contributes to $\\beta_{eco}$ and $\\beta_{geo}$.", echo=FALSE, results='hide'}
 par(mar=c(5,4,1,3), las=1)
 plot(spp ~ area, data=moths, ylim=c(0,250), xlim=c(-15,300), #log='y',
      xlab="Area (ha)", ylab="No. of Species (R)")
@@ -1122,7 +1127,7 @@ arrows(32, 0, 32, a1, code=3, length=.05)
 ```
 
 
-## Summary
+## In fine
 We have examined communities as multivariate entities which we can describe and compare in a variety of ways. 
 
 * Composition includes all species (multivariate data), whereas species diversity is a univariate description of the variety of species present. 

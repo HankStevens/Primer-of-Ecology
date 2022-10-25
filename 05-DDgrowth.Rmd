@@ -1,7 +1,7 @@
 # Density-dependent growth {#DDgrowth}
 Let's go back to our Song Sparrow (*Melospiza melodia*) data that we used to illustrate density-independent growth --- now we graph *all* the data.
 
-```{r sparrowDD, echo=FALSE, out.width='50%', fig.cap='*Song Sparrow *Melospiza melodia* counts, $N$, from 1966--2003 and the relation between observed counts ($N_t$) and annual growth rate ($r_t = N_{t+1}/N_t - 1$) determined from those counts, fit with ordinary least squares regression. See Chapter 3 for data source.*', fig.show='hold'}
+```{r sparrowDD, echo=FALSE, out.width='50%', fig.cap="Song Sparrow *Melospiza melodia* counts, $N$, from 1966--2003 and the relation between observed counts ($N_t$) and annual growth rate ($r_t = N_{t+1}/N_t - 1$) determined from those counts, fit with ordinary least squares regression. See Chapter 3 for data source.", fig.show='hold'}
 data(sparrows)
 sparrows$Rt <- with(sparrows, log(c(Count[-1]/Count[-length(Count)],NA) ))
 #<<MelospizaDDG1, fig=TRUE,echo=false, results=hide>>=
@@ -71,9 +71,9 @@ The term *stability* is often an umbrella term for many related ideas such as re
 ### A marble and a wok
 Consider the stability of a marble inside a wok. If the wok doesn't move, then the marble just sits in the lowest spot on the bottom. If the wok is bumped, the marble jiggles and rolls around a bit, but settles back down to the bottom. This is a stable system because there is a point at the bottom of the bowl (the attractor) toward which the marble rolls --- all points inside the wok allow the marble to find the lowest point (the attractor). For this reason, we call the collection of points on the inside surface of the wok the *basin of attraction*. The steeper the sides, the more quickly the marble moves toward the bottom. This rate is referred to as its *resilience*.
 
-To translate the notion of a basin into a population, let the position of marble inside the wok be the value of $N$ at any particular point (Fig. \@ref(fig:wok)). Let bumping the wok be any disturbance that causes a change in $N$. The slope of the sides of the wok reflects the biology and its mathematical representation that cause $N$ to move quickly or slowly back toward the bottom. For the logistic model, this rate is determined by $r$ and $\alpha$, and also by $N$ itself. The attractor at the very bottom of the bowl is the population's carrying capacity, $K=1/\alpha$.^[The marble's inertia, which contributes to its momentum, is analogous to a time lag in density dependence that we wil see in the discrete model; with a time lag, a population can overshoot the equilibrium.]
+To translate the notion of a basin into a population, let the position of marble inside the wok be the value of $N$ at any particular point (Fig. \@ref(fig:woklabel)). Let bumping the wok be any disturbance that causes a change in $N$. The slope of the sides of the wok reflects the biology and its mathematical representation that cause $N$ to move quickly or slowly back toward the bottom. For the logistic model, this rate is determined by $r$ and $\alpha$, and also by $N$ itself. The attractor at the very bottom of the bowl is the population's carrying capacity, $K=1/\alpha$.^[The marble's inertia, which contributes to its momentum, is analogous to a time lag in density dependence that we wil see in the discrete model; with a time lag, a population can overshoot the equilibrium.]
 
-```{r wok, fig.caption="One basin = one wok; a system can have more than one basin. For now, let the horizontal axis at the bottom of the figure be population size, and let $K$ be at A on the horizontal axis. Population size, $N$, will tend to settle down at $A=K$ (Type I), unless something prevents it (cf. Hastings 2011). Figure from Ross and Stevens, 2019, Am. J. Botany, 106:517-519.", out.width="75%"}
+```{r woklabel, echo=FALSE, fig.cap="One basin = one wok; a system can have more than one basin. For now, let the horizontal axis at the bottom of the figure be population size, and let $K$ be at A on the horizontal axis. Population size, $N$, will tend to settle down at $A=K$ (Type I), unless something prevents it (cf. Hastings 2011). Figure from Ross and Stevens, 2019, Am. J. Botany, 106:517-519.", out.width="75%"}
 include_graphics("figs/basinross.png")
 ```
 
@@ -93,7 +93,7 @@ Next, consider $N=0$, at point a; it cannot change on its own. However, if "pert
 
 *Linear stability analysis will calculate the degree of attraction or repulsion at a local point.*
 
-```{r FNN, fig.cap="*Population growth rate, $dN/dt$, as a function of $N$. This kind of graph is called a phase portrait or phase plane. Points a--e are labelled for convenience. At values of $N$ associated with points $a$ and $d$, population growth rate equals zero. At values of $N$ associated with $b$ and $c$ growth rate is positive, and for $e$ growth rate is negative. Note this is growth rate as a function of $N$ (time is not explicitly part of this graph)*"}
+```{r FNN, fig.cap="Population growth rate, $dN/dt$, as a function of $N$. This kind of graph is called a phase portrait or phase plane. Points a--e are labelled for convenience. At values of $N$ associated with points $a$ and $d$, population growth rate equals zero. At values of $N$ associated with $b$ and $c$ growth rate is positive, and for $e$ growth rate is negative. Note this is growth rate as a function of $N$ (time is not explicitly part of this graph)."}
 # Plot the phase portrait - use the phaseR package
 logisticPP <- phasePortrait(logistic, ylim = c(-5, 105), parameters = c(1, 100),
               ylab="Population Growth Rate (dN/dt)", xlab="N")
@@ -119,7 +119,7 @@ How fast will $N$ return to $N^*=K$, if perturbed? Let's start by imagining that
 
 Note also that this same population ($r=1$) has a negative growth rate of greater magnitude at $N^*+x$. Regardless of whether it gains or loses individuals, it will return to $N^*$ more quickly than the population with the lower $r$.
 
-```{r stab2, echo=FALSE, fig.cap="*Very close to an equilibrium, a population recovers from a perturbation, moving toward the equilibrium attractor, at rate $e^{-r}$. Left, slopes of population growth $vs.$ $N$ near the equilibrium; around the equilibrium attractor, small decreases in $N$ lead to positive growth rate, whereas small increases lead to negative growth rate; the population with the steeper slope changes faster. Right, regardless of the particular $r$ of a population, a population recovers from a perturbation, moving toward the equilibrium attractor, at rate $e^{-r}$*", fig.show="hold", out.width="50%"}
+```{r stab2, echo=FALSE, fig.cap="Very close to an equilibrium, a population recovers from a perturbation, moving toward the equilibrium attractor, at rate $e^{-r}$. Left, slopes of population growth $vs.$ $N$ near the equilibrium; around the equilibrium attractor, small decreases in $N$ lead to positive growth rate, whereas small increases lead to negative growth rate; the population with the steeper slope changes faster. Right, regardless of the particular $r$ of a population, a population recovers from a perturbation, moving toward the equilibrium attractor, at rate $e^{-r}$.", fig.show="hold", out.width="50%"}
 include_graphics(c("figs/Stability2.png", "figs/Stability3.png") )
 ```
 
@@ -153,7 +153,7 @@ Near $N^*$, population growth rate is $-rx$.^[Because $\Delta y/\Delta x = - r$,
 \end{equation}
 This allows us to pretend that the perturbation will diminish exponentially, because the growth rate is constant. We say "pretend," because we realize that this rate applies only in the small region where we can assume the slope is a straight line. We can describe the size of $x$ at any time $t$ by integrating this well-known differential equation with respect to time as
 \begin{equation}
-  (\#eq:8)
+  (\#eq:8stability)
   x_t = x_0e^{-r t}
 \end{equation}
 where $x_0$ is the size of the initial displacement relative to the equilibrium, and $x_t$ is the size of the displacement at time $t$ relative to the equilibrium.
@@ -250,7 +250,7 @@ out[1:5,]
 
 
 We can plot the output as well. The `deSolve` package directs R to use special methods to plot output from `ode`. 
-```{r odeplot, fig.cap="*Output from a numerical integration of logistic growth, where N0=10, r=1, alpha=0.001.*"}
+```{r odeplot, fig.cap="Output from a numerical integration of logistic growth, where N0=10, r=1, alpha=0.001."}
 plot(out)
 ```
 
@@ -263,7 +263,7 @@ Here we see the classic S-shaped curve of logistic growth. Regardless where we s
 
 
 Here we write code to test your ideas about the effects of $r$, $\alpha$, and $N_0$.
-```{r logisticVariety, echo=TRUE, fig.cap="*How variation in logistic growth parameters influence the dynamics.*", out.width="100%"}
+```{r logisticVariety, echo=TRUE, fig.cap="How variation in logistic growth parameters influence the dynamics.", out.width="100%"}
 t=seq(0, 20, by=0.01); 
 r <- c(.5, 1.5) # two values of r
 alpha <- c(0.002, 0.001); # two values of alpha
@@ -297,7 +297,7 @@ ggplot(outdf, aes(time, N, colour=N0, linetype=alpha) ) + geom_line() +
 We see that the  refer to $K$ as an *\index{attractor}attractor* because $N$ moves in a deterministic fashion toward $K$. We explore the meanings of *attractor* and related terms throughout the book.
 
 The `phaseR` package has some sweet plotting functions for systems of 1 or two ODEs. Here we use it for simple trajectories. 
-```{r phaserLogistic, fig.cap="*A velocity field is kind of like a magnetic field, showing what rate and direction of trajectories throughout this space. A nullcline is an isocline where the rate of change is zero (the straight horizontal lines in this figure). Here r = 1, and K=2.*"}
+```{r phaserLogistic, fig.cap="A velocity field is kind of like a magnetic field, showing what rate and direction of trajectories throughout this space. A nullcline is an isocline where the rate of change is zero (the straight horizontal lines in this figure). Here $r = 1$, and $K=2$."}
 # Plot the velocity field, nullclines and several trajectories
 
 ## These create arrows (vectors) whose length and direction
@@ -338,7 +338,7 @@ d &= d_0 + cN
 \end{align}
 which appear in Fig. \@ref(fig:bd). 
 
-```{r bd, echo=FALSE, fig.cap="*Per capita birth and death rates can be functions of density (dashed lines). The carrying capacity (K) occurs at the point where the per capita birth and death rates are equal. The solid line represents the per capita population growth rate, which is zero when N=K.*", out.width="75%"}
+```{r bd, echo=FALSE, fig.cap="Per capita birth and death rates can be functions of density (dashed lines). The carrying capacity (K) occurs at the point where the per capita birth and death rates are equal. The solid line represents the per capita population growth rate, which is zero when $N=K$.", out.width="75%"}
 dd = function(N, e, f){e + f*N} # create the function you want
 pgr <- function(N, b0, d0, a, c){ b0-a*N - (d0+c*N) }
 b0 <- 1; a=.0075; d0 <- 0.1; c=.0075
@@ -418,7 +418,7 @@ The effects of $\theta$ on density dependence controls the shape of relation bet
 We could speculate on biological meaning of $\theta$ and the shape of the denisty dependence. For instance, very high $\theta$ suggests a threshold, wherein the population exhibits little density dependence until very close to $K$. Perhaps this is related to territoriality, or a spatial refuge from predators. Alternatively, low $\theta$ might suggest resource preemption, wherein a small number of individuals can sequester large amounts of resources, but increasing $N$ results in reduced preemption. For organisms with very plastic body sizes (plants, fish), this could mean that at low $N$, average body size is large, but as $N\rightarrow K$, average body size decreases. While $\theta$, *per se*, is devoid of mechanism, discovering the magnitude of $\theta$ for different types of species [@sibly:2005ys] could lead to the generation of new testable hypotheses about what controls populations. 
 
 
-```{r ThetaDD, fig.cap="*Theta-logistic per capita rates, population growth rates, and dynamics for $\\theta<1$, $\\theta=1$, and $\\theta>1$. In a synthesis of population dynamics, Sibly et al. (2005) used theta-logistic density dependence to show that populations most frequently have a concave-up, $\\theta < 1$, pattern.*", fig.show="hold", out.width="33%"}
+```{r ThetaDD, fig.cap="Theta-logistic per capita rates, population growth rates, and dynamics for $\\theta<1$, $\\theta=1$, and $\\theta>1$. In a synthesis of population dynamics, Sibly et al. (2005) used theta-logistic density dependence to show that populations most frequently have a concave-up, $\\theta < 1$, pattern.", fig.show="hold", out.width="33%"}
 
 r <- .75; alpha <- 0.01; theta <- c(.5, 1, 2); N <- 0:110
 layout(matrix(c(1,2,3,3), nrow=2))
@@ -466,7 +466,7 @@ so that if the population size falls below the threshold, it cannot recover ($N<
  }
 ```
 
-```{r allee, fig.cap="*The Allee effect the a positive relation bewteen population growth rate and population size, often best envisioned as a negative consequence of small population size. Here, the threshold population size is 20, meaning that $dN/dt < 0$, when $N < 20$.*", out.width="75%"}
+```{r allee, fig.cap="The Allee effect the a positive relation bewteen population growth rate and population size, often best envisioned as a negative consequence of small population size. Here, the threshold population size is 20, meaning that $dN/dt < 0$, when $N < 20$.", out.width="75%"}
 ## for simplicity, we let r=1 so we can ignore it here.
 pgrA <- function(N, alpha, a, tau){ N*(1-alpha*N)*(1-(a+tau)/(N+tau)) }
 myData <- data.frame( N=c(0, 110) ) # ggplot requires a data frame
@@ -515,7 +515,7 @@ dlogistic <- function (t, y, p) {
 ```
 
 We then specify the parameters, the initial state or population size, and the time steps. Note that for a discrete time model the **time steps must be annual increments**, not fractions of a year. We then project the population using `ode()` with `method="euler"` to force discrete annual jumps. It is essential that you use `method="euler"` here for discrete time steps.
-```{r dlogistic, fig.cap="*Discrete growth can look a lot like continuous growth as long as the per capita growth rate is low.*"}
+```{r dlogistic, fig.cap="Discrete growth can look a lot like continuous growth as long as the per capita growth rate is low."}
 p <- c(rd=1, alpha=.01)
 y <- c(N=10)
 years <- 0:10
@@ -529,7 +529,7 @@ ggplot(outd, aes(x=time, N)) + geom_line() + geom_point() +
 ### Effects of $r_d$
 Changing $\alpha$ or $K$ does not change radically the dynamics of this model. However, increasing $r_d$ changes the dynamics a lot. This is in contrast to what happens in continuous logisitic growth. When we increase $r_d$ sufficiently, we get *stable limit cycles* and if we raise $r_d$ high enough, we get *chaos*.^[Not to be confused with KAOS, the evil spy agency featured in the 1960's US television show, *Get Smart*.].
 
-```{r dlogcycles, fig.cap="*How variation in $r_d$ influences dynamics of discrete logistic growth.*", out.width="75%"}
+```{r dlogcycles, fig.cap="How variation in $r_d$ influences dynamics of discrete logistic growth.", out.width="75%"}
 rd.v <- seq(1.3, 2.8, by=.3)
 N0 <- c(N=10); t = 0:20
 Ns <- sapply(rd.v, function(r) {
@@ -563,7 +563,7 @@ All of these points are *periodic attractors* because $N$ is drawn to these part
 
 Here we perform more comprehensive simulations, and plot the point and periodic attractors *vs.* $r_d$. First we pick some constraints for the simulation: the number of different $r_d$, the sequence of $r_d$ values, and the number of time steps.
 
-```{r bifurcation1, fig.cap="*Illustration of the long term dynamics of discrete logistic population growth. When a small change in a continuous parameter results in a change in the number of attractors (e.g. a single point equilibrium to a stable 2-point limit cycle), we call this a bifurcation.*", out.width="75%"}
+```{r bifurcation1, fig.cap="Illustration of the long term dynamics of discrete logistic population growth. When a small change in a continuous parameter results in a change in the number of attractors (e.g. a single point equilibrium to a stable 2-point limit cycle), we call this a bifurcation.", out.width="75%"}
 ## Iff you are interested....
 num.rd <- 1001 # the number of rd's you want
 rd.s <- seq(1.5,3, length=num.rd) # the actual rd values
@@ -593,7 +593,7 @@ ggplot(out.l, aes(rd, N)) + geom_point(pch=".") + theme_bw()
 ```
 
 
-```{r bifurcation2, fig.cap="*An expanded view showing more detail, from of a subset of the previous figure, where $r_d > 2.6. Note that we didn't run simulations long enough to show the infinite number of stable point attractors. That would kind of be impossible. However, what you can see is that a system can have regions of $r_d$ where attractors change density near different values of $N$.*", out.width="75%"}
+```{r bifurcation2, fig.cap="An expanded view showing more detail, from of a subset of the previous figure, where $r_d > 2.6. Note that we didn't run simulations long enough to show the infinite number of stable point attractors. That would kind of be impossible. However, what you can see is that a system can have regions of $r_d$ where attractors change density near different values of $N$.", out.width="75%"}
 out.l.chaotic <- subset( out.l, rd > 2.6 )
 ggplot(out.l.chaotic, aes(rd, N)) + geom_point(pch=".") + theme_bw()
 ```
@@ -608,7 +608,7 @@ Another very important feature of chaotic populations is that they are very sens
 If we generate simulations where we vary initial population size by a single individual, we find that this can have an enormous impact on the similarity of the dynamics of two populations, and on our ability to predict future population sizes (Fig. \@ref(fig:DDGChaosInitN)). Note how the populations start with similar trajectories, but soon diverge so that they experience different sequences of minima and maxima (Fig. \@ref(fig:DDGChaosInitN)). This is part of what was so upsetting to ecologists about May's 1974 paper --- perhaps even the simplest deterministic model could create dynamics so complex that we could not distinguish them from random [@may:1974fk]. Over time, however, we came to learn that (i) we could distinguish random dynamics from some chaos-like dynamics, and (ii) the hunt for chaos could be very exciting, if most frequently disappointing [@becks2005; @constantino1995; @kendall:1998ys].
 
 We start with three populations, all very close in initial abundance, $N_0 \in \{97,98,99\}$. We then project the population with a $r_d$ to generate chaos for 30 time steps.
-```{r DDGChaosInitN, fig.cap="*Effects of differences in initial population size on the short term and long term dynamics, and their correspondence, of three populations.*", out.width="75%"}
+```{r DDGChaosInitN, fig.cap="Effects of differences in initial population size on the short term and long term dynamics, and their correspondence, of three populations.", out.width="75%"}
 N.init <- c(97,98,99)
 t <- 0:30
 p <- c(rd=2.7, alpha=0.01)
@@ -630,7 +630,7 @@ ggplot(data=out, aes(time, N, colour=N0, linetype=N0)) + geom_line()
 One last issue that we should note is the extent to which our populations are *bounded*. A population may have complex dynamics, but we may be able to characterize a given population by its upper and lower bounds. In spite of the differences created by the initial conditions, the upper and lower bounds of our chaotic populations were very similar (Fig. \@ref(fig:DDGChaosInitN)). In contrast, a population undergoing a random walk, as in our sparrow simulations in Chapter 3, will be unbounded - the variance will increase with time.
 
 Note also as $r_d$ increases (Fig. \@ref(fig:bifurcation1)) the oscillations increase very systematically. One way to see the deterministic nature of chaos is to trace population size from each time point to the next time point. We put $N_t$ on the $x$-axis and $N_{t+1}$ on the $y$-axis, and connect all successive points.  
-```{r logweb, fig.cap="*A chaotic discrete logistic population shows certain highly predictable patterns including population sizes limited to a quadratic form revealed here.*", out.width="75%"}
+```{r logweb, fig.cap="A chaotic discrete logistic population shows certain highly predictable patterns including population sizes limited to a quadratic form revealed here.", out.width="75%"}
 N0 <- c(N=2); t <- 0:1000
 p <- c(rd = 2.8, alpha = 0.01)
 out <- ode(N0, t, dlogistic, p, method="euler")
@@ -742,7 +742,7 @@ where $FN=H$ harvest rate. In order to maximize our catch year after year, we wa
   F &= \frac{r}{2} (\#eq:F)
 \end{align}
 
-```{r msy1, fig.cap="*To find the predicted population growth rate with harvesting, we start with Logistic growth rate (solid line) and then substract harvest rate (dashed line) (left figire). This gives us population growth rate in the presence of harvesting (right figure).*", fig.show="hold", out.width="50%"}
+```{r msy1, fig.cap="To find the predicted population growth rate with harvesting, we start with Logistic growth rate (solid line) and then substract harvest rate (dashed line) (left figure). This gives us population growth rate in the presence of harvesting (right figure).", fig.show="hold", out.width="50%"}
 pgrlog <- function(N, r, alpha){ r*N*(1-alpha*N) }
 r <- 0.5; alpha <- 0.01
 myData <- data.frame( N=c(0, 110) ) # ggplot requires a data frame

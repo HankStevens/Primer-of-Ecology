@@ -7,7 +7,7 @@
 <title>9 Host-parasitoid relations | Primer of Ecology using R</title>
 <meta name="author" content="Hank Stevens">
 <meta name="description" content="A parasitoid is a ghastly thing. These animals, frequently small wasps, characteristically lay an egg on their hosts, often a caterpillar, the young hatch out, and then slowly consume the juicy...">
-<meta name="generator" content="bookdown 0.27 with bs4_book()">
+<meta name="generator" content="bookdown 0.29 with bs4_book()">
 <meta property="og:title" content="9 Host-parasitoid relations | Primer of Ecology using R">
 <meta property="og:type" content="book">
 <meta property="og:description" content="A parasitoid is a ghastly thing. These animals, frequently small wasps, characteristically lay an egg on their hosts, often a caterpillar, the young hatch out, and then slowly consume the juicy...">
@@ -16,7 +16,7 @@
 <meta name="twitter:description" content="A parasitoid is a ghastly thing. These animals, frequently small wasps, characteristically lay an egg on their hosts, often a caterpillar, the young hatch out, and then slowly consume the juicy...">
 <!-- JS --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://kit.fontawesome.com/6ecbd6c532.js" crossorigin="anonymous"></script><script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="libs/bootstrap-4.6.0/bootstrap.min.css" rel="stylesheet">
-<script src="libs/bootstrap-4.6.0/bootstrap.bundle.min.js"></script><script src="libs/bs3compat-0.3.1/transition.js"></script><script src="libs/bs3compat-0.3.1/tabs.js"></script><script src="libs/bs3compat-0.3.1/bs3compat.js"></script><link href="libs/bs4_book-1.0.0/bs4_book.css" rel="stylesheet">
+<script src="libs/bootstrap-4.6.0/bootstrap.bundle.min.js"></script><script src="libs/bs3compat-0.4.0/transition.js"></script><script src="libs/bs3compat-0.4.0/tabs.js"></script><script src="libs/bs3compat-0.4.0/bs3compat.js"></script><link href="libs/bs4_book-1.0.0/bs4_book.css" rel="stylesheet">
 <script src="libs/bs4_book-1.0.0/bs4_book.js"></script><script src="libs/kePrint-0.0.1/kePrint.js"></script><link href="libs/lightable-0.0.1/lightable.css" rel="stylesheet">
 <!-- Global site tag (gtag.js) - Google Analytics --><script async src="https://www.googletagmanager.com/gtag/js?id=G-VCV8MES4YY"></script><script>
       window.dataLayer = window.dataLayer || [];
@@ -146,26 +146,26 @@ If we recognize that in <a href="host-parasitoid-relations.html#eq:para2">(9.4)<
 </h3>
 <p>Here we motivate the Nicholson-Bailey model with a simulation of these dynamics. It may provide a more intuitive understanding than simply throwing a probability distribution at the problem. In the end, we wind up at the same place, and this should be reassuring.</p>
 <p>The Nicholson-Bailey model assumes that parasitoids search a fixed area, and each attacks hosts randomly and independently. We set the duration of the time series, the model parameters, and create an empty data frame to hold the results.</p>
-<div class="sourceCode" id="cb284"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb283"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">time</span> <span class="op">&lt;-</span> <span class="fl">20</span>; <span class="va">R</span> <span class="op">&lt;-</span> <span class="fl">3</span>; <span class="va">a</span> <span class="op">&lt;-</span> <span class="fl">.005</span></span>
 <span><span class="va">HPs</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span><span class="va">Hs</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html">numeric</a></span><span class="op">(</span><span class="va">time</span><span class="op">)</span>, <span class="va">Ps</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html">numeric</a></span><span class="op">(</span><span class="va">time</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p>Next we calculate the equilibrium, and use a nearby point for the initial abundances.</p>
-<div class="sourceCode" id="cb285"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb284"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">Pst</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html">log</a></span><span class="op">(</span><span class="va">R</span><span class="op">)</span><span class="op">/</span><span class="va">a</span>; <span class="va">Hst</span> <span class="op">&lt;-</span> <span class="va">Pst</span><span class="op">*</span><span class="va">R</span><span class="op">/</span><span class="op">(</span><span class="va">R</span><span class="op">-</span><span class="fl">1</span><span class="op">)</span> </span>
 <span><span class="va">HPs</span><span class="op">[</span><span class="fl">1</span>, <span class="op">]</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">Hst</span><span class="op">+</span><span class="fl">1</span>, <span class="va">Pst</span><span class="op">)</span></span></code></pre></div>
 <p>We then project the dynamics, one generation at a time, for each time step.</p>
-<div class="sourceCode" id="cb286"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb285"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw">for</span><span class="op">(</span><span class="va">t</span> <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span><span class="op">(</span><span class="va">time</span><span class="op">-</span><span class="fl">1</span><span class="op">)</span><span class="op">)</span>  <span class="va">HPs</span><span class="op">[</span><span class="va">t</span><span class="op">+</span><span class="fl">1</span>,<span class="op">]</span>  <span class="op">&lt;-</span> <span class="op">{</span><span class="va">H</span> <span class="op">&lt;-</span> <span class="va">R</span> <span class="op">*</span> <span class="va">HPs</span><span class="op">[</span><span class="va">t</span>,<span class="fl">1</span><span class="op">]</span> <span class="op">*</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html">exp</a></span><span class="op">(</span> <span class="op">-</span><span class="va">a</span> <span class="op">*</span> <span class="va">HPs</span><span class="op">[</span><span class="va">t</span>,<span class="fl">2</span><span class="op">]</span> <span class="op">)</span></span>
 <span>                                 <span class="va">P</span> <span class="op">&lt;-</span> <span class="va">HPs</span><span class="op">[</span><span class="va">t</span>,<span class="fl">1</span><span class="op">]</span><span class="op">*</span><span class="op">(</span><span class="fl">1</span><span class="op">-</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html">exp</a></span><span class="op">(</span><span class="op">-</span><span class="va">a</span><span class="op">*</span><span class="va">HPs</span><span class="op">[</span><span class="va">t</span>,<span class="fl">2</span><span class="op">]</span><span class="op">)</span><span class="op">)</span></span>
 <span>                               <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">H</span>,<span class="va">P</span><span class="op">)</span> <span class="op">}</span></span></code></pre></div>
 <p>Last we plot the trajectory, placing a point at the (unstable) equilibrium, and using arrows to highlight the direction and magnitude of the increment of change per time step.</p>
-<div class="sourceCode" id="cb287"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb286"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">HPs</span><span class="op">[</span>,<span class="fl">1</span><span class="op">]</span>, <span class="va">HPs</span><span class="op">[</span>,<span class="fl">2</span><span class="op">]</span>, type<span class="op">=</span><span class="st">"n"</span>, xlab<span class="op">=</span><span class="st">"H"</span>, ylab<span class="op">=</span><span class="st">"P"</span><span class="op">)</span>; <span class="fu"><a href="https://rdrr.io/r/graphics/points.html">points</a></span><span class="op">(</span><span class="va">Hst</span>, <span class="va">Pst</span><span class="op">)</span>;</span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/arrows.html">arrows</a></span><span class="op">(</span><span class="va">HPs</span><span class="op">[</span><span class="op">-</span><span class="va">time</span>,<span class="fl">1</span><span class="op">]</span>, <span class="va">HPs</span><span class="op">[</span><span class="op">-</span><span class="va">time</span>,<span class="fl">2</span><span class="op">]</span>, <span class="va">HPs</span><span class="op">[</span><span class="op">-</span><span class="fl">1</span>,<span class="fl">1</span><span class="op">]</span>, <span class="va">HPs</span><span class="op">[</span><span class="op">-</span><span class="fl">1</span>,<span class="fl">2</span><span class="op">]</span>, length<span class="op">=</span><span class="fl">.05</span><span class="op">)</span></span></code></pre></div>
 <div class="figure">
 <span style="display:block;" id="fig:unnamed-chunk-114"></span>
-<img src="figs/unnamed-chunk-114-1.png" alt="*Dynamics around the unstable equilibrium of the Nicholson-Bailey host--parasitoid model ($R=3$, $a=0.005$). Arrows indicate a single time step; the point is the equilibrium at the center.*" width="90%"><p class="caption">
-Figure 9.1: <em>Dynamics around the unstable equilibrium of the Nicholson-Bailey host–parasitoid model (<span class="math inline">\(R=3\)</span>, <span class="math inline">\(a=0.005\)</span>). Arrows indicate a single time step; the point is the equilibrium at the center.</em>
+<img src="figs/unnamed-chunk-114-1.png" alt="Dynamics around the unstable equilibrium of the Nicholson-Bailey host--parasitoid model ($R=3$, $a=0.005$). Arrows indicate a single time step; the point is the equilibrium at the center." width="90%"><p class="caption">
+Figure 9.1: Dynamics around the unstable equilibrium of the Nicholson-Bailey host–parasitoid model (<span class="math inline">\(R=3\)</span>, <span class="math inline">\(a=0.005\)</span>). Arrows indicate a single time step; the point is the equilibrium at the center.
 </p>
 </div>
 <div id="simulating-random-attacks" class="section level4" number="9.1.1.1">
@@ -173,48 +173,48 @@ Figure 9.1: <em>Dynamics around the unstable equilibrium of the Nicholson-Bailey
 <span class="header-section-number">9.1.1.1</span> Simulating Random Attacks<a class="anchor" aria-label="anchor" href="#simulating-random-attacks"><i class="fas fa-link"></i></a>
 </h4>
 <p>This model makes strong assumptions about the proportion of hosts that escape attacks, that depends on parasitoid attacks being random and independent. Therefore let us simulate parasitoid attacks that are random and independent and compare those data to field data. Let’s start with some field data collected by Mark Hassell <span class="citation">(<a href="references.html#ref-may:1978fk" role="doc-biblioref">R. M. May 1978</a>)</span>, which are the number of parasitoid larvae per host, either 0, 1, 2, 3, or 4 larvae.</p>
-<div class="sourceCode" id="cb288"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb287"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">totals</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1066</span>, <span class="fl">176</span>, <span class="fl">48</span>, <span class="fl">8</span>, <span class="fl">5</span><span class="op">)</span></span></code></pre></div>
 <p>Here, 1066 hosts have no larvae. We can recreate the data set, where we have one observation per host: the number of larvae in that host.</p>
-<div class="sourceCode" id="cb289"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb288"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">obs</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span><span class="op">(</span><span class="fl">0</span><span class="op">:</span><span class="fl">4</span>, <span class="va">totals</span><span class="op">)</span></span></code></pre></div>
 <p>To simulate random attacks, let’s use the same number of hosts, and the same number of attacks, and let the computer attack hosts at random. We calculate the total number of hosts, <span class="math inline">\(H\)</span>, and the total and mean number of attacks experienced by hosts.</p>
-<div class="sourceCode" id="cb290"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb289"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">H</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span> <span class="va">totals</span> <span class="op">)</span></span>
 <span><span class="va">No.attacks</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="va">obs</span><span class="op">)</span></span>
 <span><span class="va">mean.attacks</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">obs</span><span class="op">)</span></span></code></pre></div>
 <p>Next, the predators attack (or ‘sample’) the hosts at random and with
 equal probability. To code this, we identify the hosts by numbering
 them 1–<span class="math inline">\(H\)</span>. We then attack these hosts independently, that is, we <code>replace</code> each attacked host back into the pool of possible prey.</p>
-<div class="sourceCode" id="cb291"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb290"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">attack.events</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html">sample</a></span><span class="op">(</span>x<span class="op">=</span><span class="fl">1</span><span class="op">:</span><span class="va">H</span>, size<span class="op">=</span><span class="va">No.attacks</span>, replace<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
 <p>We then count the number times different hosts were attacked.</p>
-<div class="sourceCode" id="cb292"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb291"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">N.attacks.per.host</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/table.html">table</a></span><span class="op">(</span><span class="va">attack.events</span><span class="op">)</span></span></code></pre></div>
 <p>and then find count the number of hosts that were attacked once, twice, or more.</p>
-<div class="sourceCode" id="cb293"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb292"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="op">(</span><span class="va">tmp</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/table.html">table</a></span><span class="op">(</span> <span class="va">N.attacks.per.host</span> <span class="op">)</span> <span class="op">)</span></span></code></pre></div>
 <pre><code>## N.attacks.per.host
 ##   1   2   3 
 ## 252  29   2</code></pre>
 <p>We see, for instance, that hosts were attacked twice. This also allows us to know how many hosts were attacked,</p>
-<div class="sourceCode" id="cb295"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb294"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">not.att</span> <span class="op">&lt;-</span> <span class="va">H</span> <span class="op">-</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="va">tmp</span><span class="op">)</span></span></code></pre></div>
 <p>Let’s compare the observed data to the simulated data.</p>
-<div class="sourceCode" id="cb296"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb295"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">obs.sim</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span><span class="op">(</span><span class="fl">0</span><span class="op">:</span><span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">max</a></span><span class="op">(</span><span class="va">N.attacks.per.host</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">not.att</span>, <span class="va">tmp</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/table.html">table</a></span><span class="op">(</span><span class="va">obs</span><span class="op">)</span></span></code></pre></div>
 <pre><code>## obs
 ##    0    1    2    3    4 
 ## 1066  176   48    8    5</code></pre>
-<div class="sourceCode" id="cb298"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb297"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/table.html">table</a></span><span class="op">(</span><span class="va">obs.sim</span><span class="op">)</span></span></code></pre></div>
 <pre><code>## obs.sim
 ##    0    1    2    3 
 ## 1020  252   29    2</code></pre>
 <p><em>There seem to be fewer unattacked hosts and more attacked hosts in the random-attack simulation than in the observed data</em>. Is this simply a consequence of the observed values being one of many random possibilities? Or is it a systematic difference? How do we check this?</p>
 <p>One way to check whether the observed data differ from our model of random and independent attacks is to simulate many such observations, and compare the observed data (<code>rtotals[1]</code> unattacked hosts) to the distribution of the simulated results. Here we do this by performing <span class="math inline">\(n\)</span> simulations of the same steps we used above.</p>
-<div class="sourceCode" id="cb300"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb299"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">n</span> <span class="op">&lt;-</span> <span class="fl">1000</span></span>
 <span><span class="va">unatt.sim</span><span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html">sapply</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="va">n</span>, <span class="kw">function</span><span class="op">(</span><span class="va">j</span><span class="op">)</span> <span class="op">{</span> <span class="co">## Repeat n times...</span></span>
 <span>  <span class="co">## simulate the same number of attacks.</span></span>
@@ -228,24 +228,24 @@ them 1–<span class="math inline">\(H\)</span>. We then attack these hosts inde
 <span>  <span class="va">H</span> <span class="op">-</span> <span class="va">n.attd</span></span>
 <span>                         <span class="op">}</span> <span class="op">)</span></span></code></pre></div>
 <p>Next we just make a histogram (Fig. <a href="host-parasitoid-relations.html#fig:PoisSim">9.2</a>) of the number of unattacked hosts, adding a dotted line to show where the true data lie, and a dashed line for the prediction, under the assumption of random and independent attacks, based on the Poisson distribution.</p>
-<div class="sourceCode" id="cb301"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb300"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/hist.html">hist</a></span><span class="op">(</span><span class="va">unatt.sim</span>, xlab<span class="op">=</span><span class="st">"Simulated # of Unattacked Hosts"</span>, </span>
 <span>     prob<span class="op">=</span><span class="cn">TRUE</span>, xlim<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1000</span>, <span class="fl">1070</span><span class="op">)</span> <span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/abline.html">abline</a></span><span class="op">(</span>v<span class="op">=</span><span class="fl">1066</span>, lty<span class="op">=</span><span class="fl">3</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/abline.html">abline</a></span><span class="op">(</span>v<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html">exp</a></span><span class="op">(</span><span class="op">-</span><span class="va">mean.attacks</span><span class="op">)</span>, lty<span class="op">=</span><span class="fl">2</span><span class="op">)</span></span></code></pre></div>
 <div class="figure">
 <span style="display:block;" id="fig:PoisSim"></span>
-<img src="figs/PoisSim-1.png" alt="*Histogram of simulated host populations, attacked at a rate of ```r round(mean.attacks,2)``` mean attacks per host, assuming a attacks on hosts are random and independent of each other.*" width="90%"><p class="caption">
-Figure 9.2: <em>Histogram of simulated host populations, attacked at a rate of <code>r round(mean.attacks,2)</code> mean attacks per host, assuming a attacks on hosts are random and independent of each other.</em>
+<img src="figs/PoisSim-1.png" alt="Histogram of simulated host populations, attacked at a rate of ```r round(mean.attacks,2)``` mean attacks per host, assuming a attacks on hosts are random and independent of each other." width="90%"><p class="caption">
+Figure 9.2: Histogram of simulated host populations, attacked at a rate of <code>r round(mean.attacks,2)</code> mean attacks per host, assuming a attacks on hosts are random and independent of each other.
 </p>
 </div>
 <p>Our simulation results (Fig. <a href="host-parasitoid-relations.html#fig:PoisSim">9.2</a>) indicate that the observed data include far more unattacked hosts than expected by chance.</p>
 <p>Another, quicker way to evaluate the assumption of independent and random attacks is to compare the ratio of the variance of the observed larvae per host to the mean. If the data follow a Poisson distribution, this ratio is expected to equal to one.</p>
-<div class="sourceCode" id="cb302"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb301"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="op">(</span><span class="va">I</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/cor.html">var</a></span><span class="op">(</span><span class="va">obs</span><span class="op">)</span><span class="op">/</span><span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">obs</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <pre><code>## [1] 1.40413</code></pre>
 <p>This ratio is greater than one, but we do not know if this could be due to chance. We can test it, because under the null hypothesis, we expect that the product of the ratio and the number of hosts, <span class="math inline">\(H\)</span>, follows a <span class="math inline">\(\chi^2\)</span> distribution, with <span class="math inline">\(H-1\)</span> degrees of freedom. We can ask how likely this ratio, or a more extreme ratio, is, if attacks are random and independent. We compare it to the cumulative probability density function for the <span class="math inline">\(\chi^2\)</span> distribution.</p>
-<div class="sourceCode" id="cb304"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb303"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fl">1</span><span class="op">-</span><span class="fu"><a href="https://rdrr.io/r/stats/Chisquare.html">pchisq</a></span><span class="op">(</span><span class="va">I</span><span class="op">*</span><span class="va">H</span>, df<span class="op">=</span><span class="va">H</span><span class="op">-</span><span class="fl">1</span><span class="op">)</span></span></code></pre></div>
 <pre><code>## [1] 0</code></pre>
 <p>We find that, given this large number of observations, it is exceedingly unlikely to observe a ratio this large or larger. It is nice that this agrees with our simulation! We feel more confident when a parametric test agrees with a simulation of our ideas; perhaps both are not necessary, but working through both helps us to understand what we are doing.</p>
@@ -262,7 +262,7 @@ Figure 9.2: <em>Histogram of simulated host populations, attacked at a rate of <
 <p>May proposed the following logic for one reason we might observe more unattacked hosts than expected. Imagine that the distribution of parasitoids <em>among</em> patches in the landscape can be described with one probability distribution, with some particular mean and variance in the number of parasitoids per patch. Imagine next that their attacks on hosts <em>within</em> each patch are random and independent and thus described with the Poisson distribution. This will result in a compound distribution of attacks — a combination of the among-patch, and within-patch distributions.<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content='&lt;p&gt;This distribution is actually a mixture of Poisson distributions. The Poisson distribution is determined entirely by its mean, &lt;span class="math inline"&gt;\(\mu\)&lt;/span&gt;. If we let &lt;span class="math inline"&gt;\(\mu\)&lt;/span&gt; itself be a random variable drawn from the Gamma distribution, then we arrive at the negative binomial distribution.&lt;/p&gt;'><sup>63</sup></a> If we examine the distribution of larvae per host, for all hosts in the landscape, we will find a higher proportion of unattacked hosts, and a higher proportion of hosts that are attacked many times.</p>
 <p>The <em>negative binomial distribution</em> can describe aggregated data, such as the number of larvae per host. Such data are counts greater than or equal to zero, in which the variance is greater than the mean. Thus, the negative binomial distribution can describe greater aggregation than the Poisson distribution (where <span class="math inline">\(\mu=\sigma^2\)</span>), and thereby describe nature somewhat more accurately. May suggested that while the true distribution of larvae in hosts, in any particular case, was unlikely to truly be a negative binomial, it was nonetheless a useful approximation.</p>
 <p>Ecologists frequently use the negative binomial distribution for count data where the variance is greater than the mean. There are different derivations of the distribution, and therefore different parameterizations <span class="citation">(<a href="references.html#ref-bolker:2008rr" role="doc-biblioref">Bolker 2008</a>)</span>. In ecology, we typically use the mean, <span class="math inline">\(\mu\)</span>, and the <em>overdispersion parameter</em> <span class="math inline">\(k\)</span>. The variance, <span class="math inline">\(\sigma^2\)</span>, is a function of these, where <span class="math inline">\(\sigma^2 = \mu + \mu^2/k\)</span>; by overdispersion we mean that <span class="math inline">\(\sigma^2 &gt; \mu\)</span>. Large values of <span class="math inline">\(k\)</span> (<span class="math inline">\(k&gt;10\)</span>) indicate random and independent events rather than aggregation, and the distribution becomes indistinguishable from the Poisson. Small values (<span class="math inline">\(k&lt;2\)</span>) indicate aggregation.<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content='&lt;p&gt;Although &lt;span class="math inline"&gt;\(k\)&lt;/span&gt; is often referred to as a “clumping” or “aggregation” parameter, we might think of it as a “randomness” parameter, because larger values result in more random, Poisson-like distributions.&lt;/p&gt;'><sup>64</sup></a> Fig. <a href="host-parasitoid-relations.html#fig:negbin">9.3</a> shows examples. R has the negative binomial distribution built in (<code>nbinom</code>), but does not use <span class="math inline">\(k\)</span> as one of its arguments; rather, <code>size</code> <span class="math inline">\(=k\)</span>. Here we generate a graph showing the distribution with different values of <span class="math inline">\(k\)</span>.</p>
-<div class="sourceCode" id="cb306"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb305"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">nb.dat</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html">cbind</a></span><span class="op">(</span></span>
 <span>       Random <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/NegBinomial.html">dnbinom</a></span><span class="op">(</span><span class="fl">0</span><span class="op">:</span><span class="fl">5</span>, mu<span class="op">=</span><span class="fl">.5</span>, size<span class="op">=</span><span class="fl">10</span><span class="op">^</span><span class="fl">10</span><span class="op">)</span>,</span>
 <span>      <span class="st">"k=10"</span><span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/stats/NegBinomial.html">dnbinom</a></span><span class="op">(</span><span class="fl">0</span><span class="op">:</span><span class="fl">5</span>, mu<span class="op">=</span><span class="fl">.5</span>, size<span class="op">=</span><span class="fl">10</span><span class="op">)</span>,</span>
@@ -275,8 +275,8 @@ Figure 9.2: <em>Histogram of simulated host populations, attacked at a rate of <
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/mtext.html">mtext</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/substitute.html">quote</a></span><span class="op">(</span><span class="va">mu</span><span class="op">==</span> <span class="fl">0.5</span><span class="op">)</span>, padj<span class="op">=</span><span class="fl">2</span><span class="op">)</span></span></code></pre></div>
 <div class="figure">
 <span style="display:block;" id="fig:negbin"></span>
-<img src="figs/negbin-1.png" alt="*The negative binomial distribution, where the dispersion parameter $k$ controls variance or breadth the distribution. For a given mean, smaller $k$ causes a greater variance, and results in a higher proportion of zeroes. These $k$ are representative of values from @pacala1990.*" width="90%"><p class="caption">
-Figure 9.3: <em>The negative binomial distribution, where the dispersion parameter <span class="math inline">\(k\)</span> controls variance or breadth the distribution. For a given mean, smaller <span class="math inline">\(k\)</span> causes a greater variance, and results in a higher proportion of zeroes. These <span class="math inline">\(k\)</span> are representative of values from <span class="citation">Pacala, Hassell, and May (<a href="references.html#ref-pacala1990" role="doc-biblioref">1990</a>)</span>.</em>
+<img src="figs/negbin-1.png" alt="The negative binomial distribution, where the dispersion parameter $k$ controls variance or breadth the distribution. For a given mean, smaller $k$ causes a greater variance, and results in a higher proportion of zeroes. These $k$ are representative of values from @pacala1990." width="90%"><p class="caption">
+Figure 9.3: The negative binomial distribution, where the dispersion parameter <span class="math inline">\(k\)</span> controls variance or breadth the distribution. For a given mean, smaller <span class="math inline">\(k\)</span> causes a greater variance, and results in a higher proportion of zeroes. These <span class="math inline">\(k\)</span> are representative of values from <span class="citation">Pacala, Hassell, and May (<a href="references.html#ref-pacala1990" role="doc-biblioref">1990</a>)</span>.
 </p>
 </div>
 <p>The proportion of unattacked hosts expected under the negative binomial is <span class="math inline">\((1 + aP_t/k)^{-k}\)</span>. Therefore, we can write the analytical expressions for the population dynamics that are very similar to those of the Nicholson-Bailey model, but using the negative binomial distribution.
@@ -315,25 +315,25 @@ where <span class="math inline">\(P^*\)</span> is <a href="host-parasitoid-relat
 <span class="header-section-number">9.3</span> Dynamics of the May host–parasitoid model<a class="anchor" aria-label="anchor" href="#dynamics-of-the-may-hostparasitoid-model"><i class="fas fa-link"></i></a>
 </h2>
 <p>Here we simply play with May’s model. The following generates a phase plane diagram of the dynamics, although it is not shown. We set the duration of the time series, the model parameters, and create an empty data frame to hold the results.</p>
-<div class="sourceCode" id="cb307"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb306"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">time</span> <span class="op">&lt;-</span> <span class="fl">20</span>; <span class="va">R</span> <span class="op">&lt;-</span> <span class="fl">3</span>; <span class="va">a</span> <span class="op">&lt;-</span> <span class="fl">.005</span>; <span class="va">k</span> <span class="op">&lt;-</span> <span class="fl">.6</span></span>
 <span><span class="va">HP2s</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span>Hs <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html">numeric</a></span><span class="op">(</span><span class="va">time</span><span class="op">)</span>, Ps <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html">numeric</a></span><span class="op">(</span><span class="va">time</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p>Next we calculate the equilibrium, and use a nearby point for the initial abundances.</p>
-<div class="sourceCode" id="cb308"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb307"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">P2st</span> <span class="op">&lt;-</span> <span class="va">k</span><span class="op">*</span><span class="op">(</span><span class="va">R</span><span class="op">^</span><span class="op">(</span><span class="fl">1</span><span class="op">/</span><span class="va">k</span><span class="op">)</span> <span class="op">-</span> <span class="fl">1</span><span class="op">)</span><span class="op">/</span><span class="va">a</span>; <span class="va">H2st</span> <span class="op">&lt;-</span> <span class="va">P2st</span> <span class="op">*</span> <span class="va">R</span><span class="op">/</span><span class="op">(</span><span class="va">R</span><span class="op">-</span><span class="fl">1</span><span class="op">)</span></span>
 <span><span class="va">P2st</span>;<span class="va">H2st</span></span></code></pre></div>
 <pre><code>## [1] 628.8302</code></pre>
 <pre><code>## [1] 943.2453</code></pre>
-<div class="sourceCode" id="cb311"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb310"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">HP2s</span><span class="op">[</span><span class="fl">1</span>, <span class="op">]</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1000</span>,<span class="fl">500</span><span class="op">)</span></span></code></pre></div>
 <p>We then project the dynamics, one generation at a time, for each time step.</p>
-<div class="sourceCode" id="cb312"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb311"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw">for</span><span class="op">(</span><span class="va">t</span> <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span><span class="op">(</span><span class="va">time</span><span class="op">-</span><span class="fl">1</span><span class="op">)</span><span class="op">)</span>  <span class="va">HP2s</span><span class="op">[</span><span class="va">t</span><span class="op">+</span><span class="fl">1</span>,<span class="op">]</span>  <span class="op">&lt;-</span> <span class="op">{</span></span>
 <span>  <span class="va">H</span> <span class="op">&lt;-</span> <span class="va">R</span> <span class="op">*</span> <span class="va">HP2s</span><span class="op">[</span><span class="va">t</span>,<span class="fl">1</span><span class="op">]</span> <span class="op">*</span> <span class="op">(</span><span class="fl">1</span><span class="op">+</span><span class="va">a</span><span class="op">*</span><span class="va">HP2s</span><span class="op">[</span><span class="va">t</span>,<span class="fl">2</span><span class="op">]</span><span class="op">/</span><span class="va">k</span><span class="op">)</span><span class="op">^</span><span class="op">(</span><span class="op">-</span><span class="va">k</span><span class="op">)</span></span>
 <span>  <span class="va">P</span> <span class="op">&lt;-</span> <span class="va">HP2s</span><span class="op">[</span><span class="va">t</span>,<span class="fl">1</span><span class="op">]</span> <span class="op">-</span> <span class="va">HP2s</span><span class="op">[</span><span class="va">t</span>,<span class="fl">1</span><span class="op">]</span> <span class="op">*</span> <span class="op">(</span><span class="fl">1</span><span class="op">+</span><span class="va">a</span><span class="op">*</span><span class="va">HP2s</span><span class="op">[</span><span class="va">t</span>,<span class="fl">2</span><span class="op">]</span><span class="op">/</span><span class="va">k</span><span class="op">)</span><span class="op">^</span><span class="op">(</span><span class="op">-</span><span class="va">k</span><span class="op">)</span></span>
 <span>                               <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">H</span>,<span class="va">P</span><span class="op">)</span> <span class="op">}</span></span></code></pre></div>
 <p>Last we plot the trajectory, placing a point at the equilibrium, and using arrows to highlight the direction and magnitude of the increment of change per time step.</p>
-<div class="sourceCode" id="cb313"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb312"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="op">{</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">HP2s</span><span class="op">[</span>,<span class="fl">1</span><span class="op">]</span>, <span class="va">HP2s</span><span class="op">[</span>,<span class="fl">2</span><span class="op">]</span>, type<span class="op">=</span><span class="st">"l"</span>, xlab<span class="op">=</span><span class="st">"H"</span>, ylab<span class="op">=</span><span class="st">"P"</span><span class="op">)</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/graphics/points.html">points</a></span><span class="op">(</span><span class="va">H2st</span>, <span class="va">P2st</span><span class="op">)</span></span>
@@ -341,9 +341,9 @@ where <span class="math inline">\(P^*\)</span> is <a href="host-parasitoid-relat
 <span><span class="op">}</span></span></code></pre></div>
 <div class="inline-figure"><img src="figs/NBdynStable-1.png" width="90%"></div>
 </div>
-<div id="in-fine-3" class="section level2" number="9.4">
+<div id="in-fine-4" class="section level2" number="9.4">
 <h2>
-<span class="header-section-number">9.4</span> <em>In Fine</em><a class="anchor" aria-label="anchor" href="#in-fine-3"><i class="fas fa-link"></i></a>
+<span class="header-section-number">9.4</span> <em>In Fine</em><a class="anchor" aria-label="anchor" href="#in-fine-4"><i class="fas fa-link"></i></a>
 </h2>
 <ul>
 <li>Parasitoids are a wildly diverse set of taxa, but largely undescribed.</li>
@@ -369,7 +369,7 @@ where <span class="math inline">\(P^*\)</span> is <a href="host-parasitoid-relat
 <a class="nav-link" href="#aggregation-leads-to-coexistence"><span class="header-section-number">9.2</span> Aggregation leads to coexistence</a><ul class="nav navbar-nav"><li><a class="nav-link" href="#equilibria-for-a-discrete-time-model"><span class="header-section-number">9.2.1</span> Equilibria for a discrete-time model</a></li></ul>
 </li>
 <li><a class="nav-link" href="#dynamics-of-the-may-hostparasitoid-model"><span class="header-section-number">9.3</span> Dynamics of the May host–parasitoid model</a></li>
-<li><a class="nav-link" href="#in-fine-3"><span class="header-section-number">9.4</span> In Fine</a></li>
+<li><a class="nav-link" href="#in-fine-4"><span class="header-section-number">9.4</span> In Fine</a></li>
 </ul>
 
       <div class="book-extra">
@@ -386,7 +386,7 @@ where <span class="math inline">\(P^*\)</span> is <a href="host-parasitoid-relat
 <footer class="bg-primary text-light mt-5"><div class="container"><div class="row">
 
   <div class="col-12 col-md-6 mt-3">
-    <p>"<strong>Primer of Ecology using R</strong>" was written by Hank Stevens. It was last built on 2022-10-10.</p>
+    <p>"<strong>Primer of Ecology using R</strong>" was written by Hank Stevens. It was last built on 2022-10-25.</p>
   </div>
 
   <div class="col-12 col-md-6 mt-3">
@@ -399,7 +399,7 @@ where <span class="math inline">\(P^*\)</span> is <a href="host-parasitoid-relat
     var script = document.createElement("script");
     script.type = "text/javascript";
     var src = "true";
-    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
     if (location.protocol !== "file:")
       if (/^https?:/.test(src))
         src = src.replace(/^https?:/, '');

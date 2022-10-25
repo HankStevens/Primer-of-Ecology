@@ -17,7 +17,7 @@ where $S$ is background resource supply rate, and $r$ is resource renewal rate.
 Here we graph mass-specific or per capita growth rates as functions of resource concentrations. These curves are simply straight lines (Fig. \@ref{fig:dN}) described by,
 $$y = e_ia_i x - d_i$$
 where $y$ is the per capita or mass-specific growth rate (dN/Ndt), and $x$ is resource concentration or density ($R$).
-```{r dN, fig.cap="*Mass-specific growth rates of two species across a range of resource concentrations. Note that where growth rates equal death rates, consumer growth is zero (arrows) and this determines each species' $R^*$s.*", out.width="75%" }
+```{r dN, fig.cap="Mass-specific growth rates of two species across a range of resource concentrations. Note that where growth rates equal death rates, consumer growth is zero (arrows) and this determines each species' $R^*$s.", out.width="75%" }
 
 e1 <- 0.1; a1 <- 1; d1 <- 0.3
 e2 <- 0.1; a2 <- .5; d2 <- 0.1
@@ -88,7 +88,7 @@ It is clear from this expression that increasing the death rate ($d$) will drive
 
 In the above model, per capita growth rates were linear functions of resource concentration. It is more common to see a type II [functional response](#fr) for the consumers [@tilman1982] (Fig. \@ref(fig:monod)), which we described in Chapter 8.
 $$\frac{dN_i}{Ndt}= b_i\frac{R}{k_i + R} - d_i$$
-```{r monod, fig.cap="*The Monod function for per capita resource-dependent growth rates of two different populations. These are a type II functional responses.*", out.width="67%"}
+```{r monod, fig.cap="The Monod function for per capita resource-dependent growth rates of two different populations. These are a type II functional responses.", out.width="67%"}
 b <-c(1, .5); k=c(5, .1); d = 0.3
 {curve(b[1]*x/(k[1]+x) - d, 0, 10, ylab=bquote(dP/(Pdt)), xlab="R")
 curve(b[2]*x/(k[2] + x) - d, lty=2, add=TRUE)
@@ -142,7 +142,7 @@ parameters <- c(# the environment supplies slightly more of resources 1
                 d1=.1, d2=.1)
 ```
 
-```{r cr2by2, fig.cap="*Initial dynamics of two species competing for two shared substitutable resources. Species 1 uses resource 1 more efficiently than it does resource 2 and also consumes more of it, per capita. Conversely, species 2 uses resource 2 more efficiently than it does resource 1 and also consumes more of it per capita.*" }
+```{r cr2by2, fig.cap="Initial dynamics of two species competing for two shared substitutable resources. Species 1 uses resource 1 more efficiently than it does resource 2 and also consumes more of it, per capita. Conversely, species 2 uses resource 2 more efficiently than it does resource 1 and also consumes more of it per capita." }
 
 t <- seq(0, 200, by=.1); y.init <- c(N1=1, N2=1, R1=1.8, R2=1.2)
 out <- ode(y = y.init, times=t, func=cr_2substitutable, 
@@ -530,7 +530,7 @@ Bever states that (2003, p. 467, bottom of the second column) out that the inter
 $$\alpha_A + \beta_B < \alpha_B + \beta_A $$
 which means that the effects of the home floras own their home plants are less positive (or more negative) then on the other species. 
 
-Bever also argued that for either plant species to increase when rare (i.e. coexist), that the interspecific competition has to be less than the benefits of the interactions of the soil floras. However, his criterion in eqn 5 (p. 469) is not sufficient, and this is revealed by its lack of consistency with the parameter set and outcomes in Fig. 4. So, we will alter his equation a bit to reveal what probably would work. We use the parameterization from Chapter \@ref(Competition) so that it is consistent with others [@bolker2003a;@chesson2000a]. We reformulate the carrying capacities and $c_A$ and $c_B$ as 
+Bever also argued that for either plant species to increase when rare (i.e. coexist), that the interspecific competition has to be less than the benefits of the interactions of the soil floras. However, his criterion in eqn 5 (p. 469) is not sufficient, and this is revealed by its lack of consistency with the parameter set and outcomes in Fig. 4. So, we will alter his equation a bit to reveal what probably would work. We use a particular parameterization of Lotka-Volterra interactions so that it is consistent with others [@bolker2003a;@chesson2000a]. We reformulate the carrying capacities and $c_A$ and $c_B$ as 
 
 $$\alpha_{AA}=1/K_A;\,\alpha_{BB}=K_B;\,\alpha_{BA}= c_A/K_B;\,\alpha_{AB}=c_B/K_A$$
   If we recall our earlier work, we showed that each species $i$ can invade when 
@@ -653,7 +653,7 @@ a
 
 Now let's numerically integrate, or simulate, the model and plot the outcome. Comment your code to help remind you what is going on.
 
-```{r fig.cap="Dyanmics of a Lotka-Volterra mutualism. ", echo = TRUE, results='markup' }
+```{r fig.cap="Dyanmics of a Lotka-Volterra mutualism.", echo = TRUE, results='markup' }
 # Let r be the same fpor each species
 r <- c(1,1)
 parms <- list(r=r, a=a)
@@ -743,7 +743,7 @@ Notice also that values for $t$ indicate that the integration couldn't find valu
 
 What could we do to learn the emerging rules? What if we just plot the values of $\alpha_{ij},\,\alpha_{ji}$ where $N$ is really, really big?
 
-```{r echo = TRUE, results='markup', fig.cap="*Values of $alpha$ when N is extraordinarily large.*", fig.width=3, fig.height=2.5, out.width="50%"}
+```{r echo = TRUE, results='markup', fig.cap="Values of $\\alpha$ when N is extraordinarily large.*", fig.width=3, fig.height=2.5, out.width="50%"}
 ggplot(sim.N, aes(a12, a21)) + geom_point()
 ```
 
@@ -774,7 +774,7 @@ sim.check1 <- cbind(simdat, N1.eq, N2.eq)
 ```
 Let's find the subset with potential problems, such as for $N_1$ or $N_2$ less than than zero or really, really big ($>10000$).
 
-```{r echo = TRUE, results='markup', fig.cap="*Analytically calculated predictions for $N^*$* vs. observed simulated $N$.", out.width="50%", fig.width=3, fig.height=2.5}
+```{r echo = TRUE, results='markup', fig.cap="Analytically calculated predictions for $N^*$ vs. observed simulated $N$.", out.width="50%", fig.width=3, fig.height=2.5}
 problems1 <- subset(sim.check1, (N1 < 0 | N2 < 0 | N1 > 1e4 | N2 > 1e4 ) )
 # look at the subset
 ggplot(problems1, aes(N1, N1.eq)) + geom_point()
