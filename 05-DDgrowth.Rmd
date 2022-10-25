@@ -384,7 +384,7 @@ If we chose to, we can now say that the net negative effect of $N$ on per capita
 where the numerator is the total direct negative effect of $N$ on birth and death rates, and the denominator is $r$, the net maximum per capita growth rate which occurs as $N$ approaches zero. And we are back to logistic growth.
 
 ### Theta-logistic growth
-Here we explore a simple extension of the logistic model, the \index{logistic growth!theta-logistic}*theta-logistic* model, which adds a parameter to increase flexibility and generality.
+Here we explore a simple extension of the logistic model, the *theta-logistic* model, which adds a parameter to increase flexibility and generality.
 \begin{equation}
   (\#eq:11)
   \frac{dN}{dt} = rN\left(1 - \left(\alpha N\right)^\theta \right) 
@@ -410,15 +410,15 @@ thetalogistic  <- function(times, y, parms) {
 }
 ```
 
-By varying $\theta$, we can change the linear density dependence of the simple logistic model to curvilinear density dependence (Fig. \ref{th1}). 
+By varying $\theta$, we can change the linear density dependence of the simple logistic model to curvilinear density dependence (Fig. \@ref(fig:ThetaDD)). 
 When $\theta > 1$, this weakens density dependence at low $N$, because when $N < K$, $\alpha N < 1$ and so $(\alpha N)^\theta < \alpha N$. As a result, the population grows faster than logistic. When $N < K$ and $\theta < 1$, this strengthens density dependence, causing the population to grow more slowly than logistic, all else being equal.
 
-The effects of $\theta$ on density dependence controls the shape of relation between growth rate $vs$. $N$ (a.k.a. the production function, Fig. \@ref{fig:ThetaDD}). First, note that for a given $r$, growth rate for $N<K$ increases with $\theta$. Second, note that the position of peak of the production function shifts to the right as $\theta$ increases. That is, as $\theta$ increases, the $N$ at which the maximum growth rate occurs also increases. If we wanted to shift the peak growth rate to a higher $N$ without also increasing the height of the peak, we could decrease $r$ simultaneously. 
+The effects of $\theta$ on density dependence controls the shape of relation between growth rate $vs$. $N$ (a.k.a. the production function, Fig. \@ref(fig:ThetaDD)). First, note that for a given $r$, growth rate for $N<K$ increases with $\theta$. Second, note that the position of peak of the production function shifts to the right as $\theta$ increases. That is, as $\theta$ increases, the $N$ at which the maximum growth rate occurs also increases. If we wanted to shift the peak growth rate to a higher $N$ without also increasing the height of the peak, we could decrease $r$ simultaneously. 
 
 We could speculate on biological meaning of $\theta$ and the shape of the denisty dependence. For instance, very high $\theta$ suggests a threshold, wherein the population exhibits little density dependence until very close to $K$. Perhaps this is related to territoriality, or a spatial refuge from predators. Alternatively, low $\theta$ might suggest resource preemption, wherein a small number of individuals can sequester large amounts of resources, but increasing $N$ results in reduced preemption. For organisms with very plastic body sizes (plants, fish), this could mean that at low $N$, average body size is large, but as $N\rightarrow K$, average body size decreases. While $\theta$, *per se*, is devoid of mechanism, discovering the magnitude of $\theta$ for different types of species [@sibly:2005ys] could lead to the generation of new testable hypotheses about what controls populations. 
 
 
-```{r ThetaDD, fig.cap="Theta-logistic per capita rates, population growth rates, and dynamics for $\\theta<1$, $\\theta=1$, and $\\theta>1$. In a synthesis of population dynamics, Sibly et al. (2005) used theta-logistic density dependence to show that populations most frequently have a concave-up, $\\theta < 1$, pattern.", fig.show="hold", out.width="33%"}
+```{r ThetaDD, fig.cap="Theta-logistic per capita rates, population growth rates, and dynamics for $\\theta<1$, $\\theta=1$, and $\\theta>1$. In a synthesis of population dynamics, Sibly et al. (2005) used theta-logistic density dependence to show that populations most frequently have a concave-up, $\\theta < 1$, pattern.", fig.show="hold", out.width="90%"}
 
 r <- .75; alpha <- 0.01; theta <- c(.5, 1, 2); N <- 0:110
 layout(matrix(c(1,2,3,3), nrow=2))
@@ -769,12 +769,11 @@ h
 If harvesting occurs at a rate of $F<r/2$, the slope of the harvest line is shallower than in Fig. \@ref(fig:msy1), and we refer to this as *under-harvesting*. If the rate is $F>r/2$, then the slope is steeper than in Fig. \@ref(fig:msy1), and we refer to this as *over-harvesting*. @roughgarden:1996fr show that under-harvesting is the most ecologically stable, whereas over-harvesting is frequently thought to be the economically optimal approach if we don't care about the long-term wellbeing of the fishing industry.
 
 Typically the economically optimal approach leads to over-harvesting because the marginal income on a fishery is related to the interest rate on invested income,  $F= (r + \rho)/2$, where $\rho$ is the interest rate (usually $\rho$ is set to 0.05). We can substitute this into eq. \@ref(eq:FN) and solve for $N$ (ignoring $N=0$).
-\begin{align*}
-  (\#eq:ecopt)
+\begin{align}
   0&=rN(1-\frac{N}{K})-\frac{r + \rho}{2}N\\
    N\frac{r}{K}&=r -\frac{r}{2} -\frac{\rho}{2}\\
-  N &=\frac{K}{2}\left(1-\frac{\rho}{r}\right)
-\end{align*}
+  N &=\frac{K}{2}\left(1-\frac{\rho}{r}\right)   (\#eq:ecopt)
+\end{align}
 Thus, unless $\rho=0$, the typical economic optimum $N_{e}^*$ will be smaller than $N*=K/2$.  This makes intuitive economic sense if we consider income from invested profits. The margin of error, however, is much smaller, putting the fisheries population, and the investment of fishing fleets and associated economies at greater risk. @roughgarden:1996fr showed that ecological stability of a fishery is likely to beget economic and cultural stability. They show that the supposed "economic optimal" harvesting rate was so low that it increased the extinction risk of the harvested population to unacceptably high levels. The collapse of a fishery is, of course, both economically and culturally devastating.
 
 
