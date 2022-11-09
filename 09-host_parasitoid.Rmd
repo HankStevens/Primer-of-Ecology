@@ -88,9 +88,7 @@ H <- sum( totals )
 No.attacks <- sum(obs)
 mean.attacks <- mean(obs)
 ```
-Next, the predators attack (or 'sample') the hosts at random and with
-equal probability. To code this, we identify the hosts by numbering
-them 1--$H$. We then attack these hosts independently, that is, we ```replace``` each attacked host back into the pool of possible prey. 
+Next, the predators attack (or 'sample') the hosts at random and with equal probability. To code this, we identify the hosts by numbering them 1--$H$. We then attack these hosts independently, that is, we ```replace``` each attacked host back into the pool of possible prey. 
 ```{r}
 attack.events <- sample(x=1:H, size=No.attacks, replace=TRUE)
 ```
@@ -102,15 +100,14 @@ and then find count the number of hosts that were attacked once, twice, or more.
 ```{r}
 (tmp <- table( N.attacks.per.host ) )
 ```
-We see, for instance, that ````r tmp[2]``` hosts were attacked twice. This also allows us to know how many hosts were \emph{not} attacked,
+We see, for instance, that ```r tmp[2]``` hosts were attacked twice. This also allows us to know how many hosts were *not* attacked,
 ```{r}
-not.att <- H - sum(tmp)
+(not.att <- H - sum(tmp))
 ```
 Let's compare the observed data to the simulated data.
 ```{r}
 obs.sim <- rep(0:max(N.attacks.per.host), c(not.att, tmp))
-table(obs)
-table(obs.sim)
+table(obs) ; table(obs.sim)
 ```
 *There seem to be fewer unattacked hosts and more attacked hosts in the random-attack simulation than in the observed data*. Is this simply a consequence of the observed values being one of many random possibilities? Or is it a systematic difference? How do we check this?
 
@@ -130,11 +127,11 @@ unatt.sim<- sapply(1:n, function(j) { ## Repeat n times...
                          } )
 ``` 
 Next we just make a histogram (Fig. \@ref(fig:PoisSim)) of the number of unattacked hosts, adding a dotted line to show where the true data lie, and a dashed line for the prediction, under the assumption of random and independent attacks, based on the Poisson distribution.
-```{r PoisSim, fig.cap="Histogram of simulated host populations, attacked at a rate of ```r round(mean.attacks,2)``` mean attacks per host, assuming a attacks on hosts are random and independent of each other."}
+```{r PoisSim, fig.cap="Histogram of simulated host populations, assuming a attacks on hosts are random and independent of each other. The dashed line in the histogram is the expected number of unattacked hosts with random and independent attacxks, whereas the dotted line to the right is the observed number."}
 hist(unatt.sim, xlab="Simulated # of Unattacked Hosts", 
-     prob=TRUE, xlim=c(1000, 1070) )
+     prob=TRUE, xlim=c(1000, 1070), main="Simulated unattacked hosts" )
 abline(v=1066, lty=3)
-abline(v=exp(-mean.attacks), lty=2)
+abline(v=exp(-mean.attacks)*H, lty=2)
 ```
 
 Our simulation results (Fig. \@ref(fig:PoisSim)) indicate that the observed data include far more unattacked hosts than expected by chance.

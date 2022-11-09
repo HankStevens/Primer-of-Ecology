@@ -16,7 +16,7 @@
 <meta name="twitter:description" content="A parasitoid is a ghastly thing. These animals, frequently small wasps, characteristically lay an egg on their hosts, often a caterpillar, the young hatch out, and then slowly consume the juicy...">
 <!-- JS --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://kit.fontawesome.com/6ecbd6c532.js" crossorigin="anonymous"></script><script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="libs/bootstrap-4.6.0/bootstrap.min.css" rel="stylesheet">
-<script src="libs/bootstrap-4.6.0/bootstrap.bundle.min.js"></script><script src="libs/bs3compat-0.4.0/transition.js"></script><script src="libs/bs3compat-0.4.0/tabs.js"></script><script src="libs/bs3compat-0.4.0/bs3compat.js"></script><link href="libs/bs4_book-1.0.0/bs4_book.css" rel="stylesheet">
+<script src="libs/bootstrap-4.6.0/bootstrap.bundle.min.js"></script><script src="libs/bs3compat-0.4.1/transition.js"></script><script src="libs/bs3compat-0.4.1/tabs.js"></script><script src="libs/bs3compat-0.4.1/bs3compat.js"></script><link href="libs/bs4_book-1.0.0/bs4_book.css" rel="stylesheet">
 <script src="libs/bs4_book-1.0.0/bs4_book.js"></script><script src="libs/kePrint-0.0.1/kePrint.js"></script><link href="libs/lightable-0.0.1/lightable.css" rel="stylesheet">
 <!-- Global site tag (gtag.js) - Google Analytics --><script async src="https://www.googletagmanager.com/gtag/js?id=G-VCV8MES4YY"></script><script>
       window.dataLayer = window.dataLayer || [];
@@ -183,9 +183,7 @@ Figure 9.1: Dynamics around the unstable equilibrium of the Nicholson-Bailey hos
 <code class="sourceCode R"><span><span class="va">H</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span> <span class="va">totals</span> <span class="op">)</span></span>
 <span><span class="va">No.attacks</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="va">obs</span><span class="op">)</span></span>
 <span><span class="va">mean.attacks</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">obs</span><span class="op">)</span></span></code></pre></div>
-<p>Next, the predators attack (or ‘sample’) the hosts at random and with
-equal probability. To code this, we identify the hosts by numbering
-them 1–<span class="math inline">\(H\)</span>. We then attack these hosts independently, that is, we <code>replace</code> each attacked host back into the pool of possible prey.</p>
+<p>Next, the predators attack (or ‘sample’) the hosts at random and with equal probability. To code this, we identify the hosts by numbering them 1–<span class="math inline">\(H\)</span>. We then attack these hosts independently, that is, we <code>replace</code> each attacked host back into the pool of possible prey.</p>
 <div class="sourceCode" id="cb290"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">attack.events</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html">sample</a></span><span class="op">(</span>x<span class="op">=</span><span class="fl">1</span><span class="op">:</span><span class="va">H</span>, size<span class="op">=</span><span class="va">No.attacks</span>, replace<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
 <p>We then count the number times different hosts were attacked.</p>
@@ -197,18 +195,17 @@ them 1–<span class="math inline">\(H\)</span>. We then attack these hosts inde
 <pre><code>## N.attacks.per.host
 ##   1   2   3 
 ## 252  29   2</code></pre>
-<p>We see, for instance, that `<code>29</code> hosts were attacked twice. This also allows us to know how many hosts were attacked,</p>
+<p>We see, for instance, that <code>29</code> hosts were attacked twice. This also allows us to know how many hosts were <em>not</em> attacked,</p>
 <div class="sourceCode" id="cb294"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">not.att</span> <span class="op">&lt;-</span> <span class="va">H</span> <span class="op">-</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="va">tmp</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="op">(</span><span class="va">not.att</span> <span class="op">&lt;-</span> <span class="va">H</span> <span class="op">-</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="va">tmp</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<pre><code>## [1] 1020</code></pre>
 <p>Let’s compare the observed data to the simulated data.</p>
-<div class="sourceCode" id="cb295"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb296"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">obs.sim</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span><span class="op">(</span><span class="fl">0</span><span class="op">:</span><span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">max</a></span><span class="op">(</span><span class="va">N.attacks.per.host</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">not.att</span>, <span class="va">tmp</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/table.html">table</a></span><span class="op">(</span><span class="va">obs</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu"><a href="https://rdrr.io/r/base/table.html">table</a></span><span class="op">(</span><span class="va">obs</span><span class="op">)</span> ; <span class="fu"><a href="https://rdrr.io/r/base/table.html">table</a></span><span class="op">(</span><span class="va">obs.sim</span><span class="op">)</span></span></code></pre></div>
 <pre><code>## obs
 ##    0    1    2    3    4 
 ## 1066  176   48    8    5</code></pre>
-<div class="sourceCode" id="cb297"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/table.html">table</a></span><span class="op">(</span><span class="va">obs.sim</span><span class="op">)</span></span></code></pre></div>
 <pre><code>## obs.sim
 ##    0    1    2    3 
 ## 1020  252   29    2</code></pre>
@@ -230,13 +227,13 @@ them 1–<span class="math inline">\(H\)</span>. We then attack these hosts inde
 <p>Next we just make a histogram (Fig. <a href="host-parasitoid-relations.html#fig:PoisSim">9.2</a>) of the number of unattacked hosts, adding a dotted line to show where the true data lie, and a dashed line for the prediction, under the assumption of random and independent attacks, based on the Poisson distribution.</p>
 <div class="sourceCode" id="cb300"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/hist.html">hist</a></span><span class="op">(</span><span class="va">unatt.sim</span>, xlab<span class="op">=</span><span class="st">"Simulated # of Unattacked Hosts"</span>, </span>
-<span>     prob<span class="op">=</span><span class="cn">TRUE</span>, xlim<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1000</span>, <span class="fl">1070</span><span class="op">)</span> <span class="op">)</span></span>
+<span>     prob<span class="op">=</span><span class="cn">TRUE</span>, xlim<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1000</span>, <span class="fl">1070</span><span class="op">)</span>, main<span class="op">=</span><span class="st">"Simulated unattacked hosts"</span> <span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/abline.html">abline</a></span><span class="op">(</span>v<span class="op">=</span><span class="fl">1066</span>, lty<span class="op">=</span><span class="fl">3</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/graphics/abline.html">abline</a></span><span class="op">(</span>v<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html">exp</a></span><span class="op">(</span><span class="op">-</span><span class="va">mean.attacks</span><span class="op">)</span>, lty<span class="op">=</span><span class="fl">2</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/abline.html">abline</a></span><span class="op">(</span>v<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html">exp</a></span><span class="op">(</span><span class="op">-</span><span class="va">mean.attacks</span><span class="op">)</span><span class="op">*</span><span class="va">H</span>, lty<span class="op">=</span><span class="fl">2</span><span class="op">)</span></span></code></pre></div>
 <div class="figure">
 <span style="display:block;" id="fig:PoisSim"></span>
-<img src="figs/PoisSim-1.png" alt="Histogram of simulated host populations, attacked at a rate of ```r round(mean.attacks,2)``` mean attacks per host, assuming a attacks on hosts are random and independent of each other." width="90%"><p class="caption">
-Figure 9.2: Histogram of simulated host populations, attacked at a rate of <code>r round(mean.attacks,2)</code> mean attacks per host, assuming a attacks on hosts are random and independent of each other.
+<img src="figs/PoisSim-1.png" alt="Histogram of simulated host populations, assuming a attacks on hosts are random and independent of each other. The dashed line in the histogram is the expected number of unattacked hosts with random and independent attacxks, whereas the dotted line to the right is the observed number." width="90%"><p class="caption">
+Figure 9.2: Histogram of simulated host populations, assuming a attacks on hosts are random and independent of each other. The dashed line in the histogram is the expected number of unattacked hosts with random and independent attacxks, whereas the dotted line to the right is the observed number.
 </p>
 </div>
 <p>Our simulation results (Fig. <a href="host-parasitoid-relations.html#fig:PoisSim">9.2</a>) indicate that the observed data include far more unattacked hosts than expected by chance.</p>
@@ -386,7 +383,7 @@ where <span class="math inline">\(P^*\)</span> is <a href="host-parasitoid-relat
 <footer class="bg-primary text-light mt-5"><div class="container"><div class="row">
 
   <div class="col-12 col-md-6 mt-3">
-    <p>"<strong>Primer of Ecology using R</strong>" was written by Hank Stevens. It was last built on 2022-10-26.</p>
+    <p>"<strong>Primer of Ecology using R</strong>" was written by Hank Stevens. It was last built on 2022-11-09.</p>
   </div>
 
   <div class="col-12 col-md-6 mt-3">
