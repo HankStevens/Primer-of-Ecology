@@ -7,7 +7,7 @@
 <title>2 Optimal Foraging | Primer of Ecology using R</title>
 <meta name="author" content="Hank Stevens">
 <meta name="description" content="Figure 2.1: Optimal foraging theory (OFT) generates testable quantitative predictions that allow a less ambiguous description and explanation for observed patterns and processes. Here, a...">
-<meta name="generator" content="bookdown 0.29 with bs4_book()">
+<meta name="generator" content="bookdown 0.34 with bs4_book()">
 <meta property="og:title" content="2 Optimal Foraging | Primer of Ecology using R">
 <meta property="og:type" content="book">
 <meta property="og:description" content="Figure 2.1: Optimal foraging theory (OFT) generates testable quantitative predictions that allow a less ambiguous description and explanation for observed patterns and processes. Here, a...">
@@ -16,9 +16,10 @@
 <meta name="twitter:description" content="Figure 2.1: Optimal foraging theory (OFT) generates testable quantitative predictions that allow a less ambiguous description and explanation for observed patterns and processes. Here, a...">
 <!-- JS --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://kit.fontawesome.com/6ecbd6c532.js" crossorigin="anonymous"></script><script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="libs/bootstrap-4.6.0/bootstrap.min.css" rel="stylesheet">
-<script src="libs/bootstrap-4.6.0/bootstrap.bundle.min.js"></script><script src="libs/bs3compat-0.4.1/transition.js"></script><script src="libs/bs3compat-0.4.1/tabs.js"></script><script src="libs/bs3compat-0.4.1/bs3compat.js"></script><link href="libs/bs4_book-1.0.0/bs4_book.css" rel="stylesheet">
+<script src="libs/bootstrap-4.6.0/bootstrap.bundle.min.js"></script><script src="libs/bs3compat-0.5.0/transition.js"></script><script src="libs/bs3compat-0.5.0/tabs.js"></script><script src="libs/bs3compat-0.5.0/bs3compat.js"></script><link href="libs/bs4_book-1.0.0/bs4_book.css" rel="stylesheet">
 <script src="libs/bs4_book-1.0.0/bs4_book.js"></script><script src="libs/kePrint-0.0.1/kePrint.js"></script><link href="libs/lightable-0.0.1/lightable.css" rel="stylesheet">
-<!-- Global site tag (gtag.js) - Google Analytics --><script async src="https://www.googletagmanager.com/gtag/js?id=G-VCV8MES4YY"></script><script>
+<link href="libs/bsTable-3.3.7/bootstrapTable.min.css" rel="stylesheet">
+<script src="libs/bsTable-3.3.7/bootstrapTable.js"></script><!-- Global site tag (gtag.js) - Google Analytics --><script async src="https://www.googletagmanager.com/gtag/js?id=G-VCV8MES4YY"></script><script>
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date());
@@ -79,13 +80,14 @@
 <li><a class="" href="DDgrowth.html"><span class="header-section-number">5</span> Density-dependent growth</a></li>
 <li><a class="" href="meta.html"><span class="header-section-number">6</span> Populations in Space</a></li>
 <li><a class="" href="comp.html"><span class="header-section-number">7</span> Direct competition and mutualism</a></li>
-<li><a class="" href="cr.html"><span class="header-section-number">8</span> Consumer-resource Interactions</a></li>
-<li><a class="" href="host-parasitoid-relations.html"><span class="header-section-number">9</span> Host-parasitoid relations</a></li>
-<li><a class="" href="disease.html"><span class="header-section-number">10</span> Disease</a></li>
-<li><a class="" href="consumer-resource-competition-and-mutualisms.html"><span class="header-section-number">11</span> Consumer-resource Competition and Mutualisms</a></li>
-<li><a class="" href="food-webs-and-other-networks.html"><span class="header-section-number">12</span> Food webs and other networks</a></li>
-<li><a class="" href="diversity.html"><span class="header-section-number">13</span> Diversity</a></li>
-<li><a class="" href="references.html"><span class="header-section-number">14</span> References</a></li>
+<li><a class="" href="compcol.html"><span class="header-section-number">8</span> Coexistence via competition, dispersal, and storage</a></li>
+<li><a class="" href="cr.html"><span class="header-section-number">9</span> Consumer-resource Interactions</a></li>
+<li><a class="" href="host-parasitoid-relations.html"><span class="header-section-number">10</span> Host-parasitoid relations</a></li>
+<li><a class="" href="disease.html"><span class="header-section-number">11</span> Disease</a></li>
+<li><a class="" href="consumer-resource-competition-and-mutualisms.html"><span class="header-section-number">12</span> Consumer-resource Competition and Mutualisms</a></li>
+<li><a class="" href="food-webs-and-other-networks.html"><span class="header-section-number">13</span> Food webs and other networks</a></li>
+<li><a class="" href="diversity.html"><span class="header-section-number">14</span> Diversity</a></li>
+<li><a class="" href="references.html"><span class="header-section-number">15</span> References</a></li>
 </ul>
 
         <div class="book-extra">
@@ -105,14 +107,14 @@ Figure 2.1: Optimal foraging theory (OFT) generates testable quantitative predic
 </div>
 <p>It can be useful to think of natural selection as an optimizing process: phenotypes diversify, winners replicate and losers don’t, and the phenotypes of winners tend to get passed on to the replicants. Therefore, we often assume, as did Dr. Pangloss, that the species that exist now are the best of all possible species, that is, they are of optimal design. And like Dr. Pangloss, we would be woefully mistaken if we stopped there. Nonetheless, optimization, that is, the tendency toward an optimum, helps us generate testable hypotheses and we consider some of these below.</p>
 <p>Optimal Foraging Theory (OFT) helps us consider what organisms would do <em>if they foraged optimally.</em> All organisms–plants, fungi, archaea, and even animals–forage, and they are all subject to natural selection. Therefore, their phenotypes work pretty well, but probably not optimally and definitely not optimally for all times and places. Nonetheless, OFT is an efficient theory about the behavior of an organism, in the absence of other complications. Therefore, it allows us to study the relative importance of those “other complications.”</p>
-<p>Foraging is a key link between the individual, and communities and ecosystems <span class="citation">(<a href="references.html#ref-beckerman2010" role="doc-biblioref">Beckerman, Petchey, and Morin 2010</a>)</span>. All organisms interact with their environment via consumption, and the choices they make influence population dynamics, species interactions, nutrient cycling, and even the physical structures of terrestrial and aquatic habitats. The text and logic of this chapter rely heavily on <span class="citation">Stephens and Krebs (<a href="references.html#ref-stephens1986" role="doc-biblioref">1986</a>)</span> and <span class="citation">S. P. Ellner (<a href="references.html#ref-ellner2009" role="doc-biblioref">2009</a>)</span>.</p>
-<p>In Scheiner and Willig’s edited volume on <em>The Theory of Ecology</em>, Andy Sih <span class="citation">(<a href="references.html#ref-sih2011" role="doc-biblioref">Sih 2011</a>)</span> proposes that the following propositions form the basis of foraging theory:</p>
+<p>Foraging is a key link between the individual, and communities and ecosystems <span class="citation">(<a href="references.html#ref-beckerman2010">Beckerman, Petchey, and Morin 2010</a>)</span>. All organisms interact with their environment via consumption, and the choices they make influence population dynamics, species interactions, nutrient cycling, and even the physical structures of terrestrial and aquatic habitats. The text and logic of this chapter rely heavily on <span class="citation">Stephens and Krebs (<a href="references.html#ref-stephens1986">1986</a>)</span> and <span class="citation">S. P. Ellner (<a href="references.html#ref-ellner2009">2009</a>)</span>.</p>
+<p>In Scheiner and Willig’s edited volume on <em>The Theory of Ecology</em>, Andy Sih <span class="citation">(<a href="references.html#ref-sih2011">Sih 2011</a>)</span> proposes that the following propositions form the basis of foraging theory:</p>
 <ol style="list-style-type: decimal">
 <li>Foraging patterns maximize fitness or a correlate of fitness.</li>
 <li>Foraging patterns depend on the range of options available to the forager and on how each available option affects fitness or a correlate of fitness.</li>
 <li>Foraging behaviour balances conflicting demands–tradeoffs are important in shaping foraging behaviour.</li>
 </ol>
-<p>These properties are the outcome of natural selection operating on foraging behavior. Our understanding of foraging itself considers these three features <span class="citation">(<a href="references.html#ref-stephens1986" role="doc-biblioref">Stephens and Krebs 1986</a>)</span>:</p>
+<p>These properties are the outcome of natural selection operating on foraging behavior. Our understanding of foraging itself considers these three features <span class="citation">(<a href="references.html#ref-stephens1986">Stephens and Krebs 1986</a>)</span>:</p>
 <ul>
 <li>currency (what is being optimized),</li>
 <li>constraints (features of behaviour that limit optimality), and</li>
@@ -121,16 +123,16 @@ Figure 2.1: Optimal foraging theory (OFT) generates testable quantitative predic
 <p><em>Currency</em> is that quantity that is optimized by the forager. This currency is assumed to be a quantity that limits fitness, such as energy or a particular consumable resource. We measure it as a rate, for instance, as the energy gained per unit time (E/T) or the uptake of a critically limiting resource per unit time (R/T).</p>
 <p><em>Constraints</em> are limitations that we assume about organisms. These might include distances between resource patches, the time and costs associated with extracting a resource from a substrate or subduing prey. They also include constraints imposed by other species including competitors and predators. Constraints can get complicated quickly; however, simple quantitative theory makes predictions against which we can evaluate more complicated assumptions.</p>
 <p><em>Decision rules</em> are what we ascribed to a forager’s choices. A decision rule concerns the probability of attacking prey if encountered, or when to leave one resource patch in order to search for another.</p>
-<p>An additional way to think about all this is <em>where, when, and what.</em> A great deal of effort has focused on understanding patch use: <em>where</em> foragers should explore for resources, and <em>when</em> they should give up and go in search of another patch <span class="citation">(<a href="references.html#ref-charnov1976b" role="doc-biblioref">Charnov 1976</a>)</span>. These are <strong>patch use</strong> models, and are based on economic models and the marginal value theorem.</p>
+<p>An additional way to think about all this is <em>where, when, and what.</em> A great deal of effort has focused on understanding patch use: <em>where</em> foragers should explore for resources, and <em>when</em> they should give up and go in search of another patch <span class="citation">(<a href="references.html#ref-charnov1976b">Charnov 1976</a>)</span>. These are <strong>patch use</strong> models, and are based on economic models and the marginal value theorem.</p>
 <p>Another avenue of inquiry concerns <em>what</em> animals should eat. For instance, should they go after big prey that may be hard to catch and difficult to subdue, or just snack on what is easy? These are <strong>prey models</strong> or diet models, and attempt to explain why organisms consume <em>what</em> they do.</p>
-<p><em>A note on “prey”.</em> All organisms forage for resources. Plants extend branches toward the light, and proliferate leaves and roots into resource rich patches, and rhizomes grow longer faster through resource-poor soils. Bumblebees search for and learn where to find nectar-rich flowers, and wolves hunt in packs to take down large ungulates. Some bacterivorous nanoflagellates intercept particles selectively depending on the perceived nutritional value of particles <span class="citation">(<a href="references.html#ref-boenigk2002" role="doc-biblioref">Boenigk et al. 2002</a>)</span>. So, depending on the forager, its “prey” may be <span class="math inline">\(\mathrm{NO}_{3}^-\)</span> ions, nectar, moose, or bacteria. Therefore, we will refer to these resources variously as prey, prey items, resources, and resource items. Some of these ideas are best handled with patch-based models <span class="citation">(<a href="references.html#ref-charnov1976b" role="doc-biblioref">Charnov 1976</a>)</span> where a “resource patch” is a more intuitive and useful unit.</p>
+<p><em>A note on “prey”.</em> All organisms forage for resources. Plants extend branches toward the light, and proliferate leaves and roots into resource rich patches, and rhizomes grow longer faster through resource-poor soils. Bumblebees search for and learn where to find nectar-rich flowers, and wolves hunt in packs to take down large ungulates. Some bacterivorous nanoflagellates intercept particles selectively depending on the perceived nutritional value of particles <span class="citation">(<a href="references.html#ref-boenigk2002">Boenigk et al. 2002</a>)</span>. So, depending on the forager, its “prey” may be <span class="math inline">\(\mathrm{NO}_{3}^-\)</span> ions, nectar, moose, or bacteria. Therefore, we will refer to these resources variously as prey, prey items, resources, and resource items. Some of these ideas are best handled with patch-based models <span class="citation">(<a href="references.html#ref-charnov1976b">Charnov 1976</a>)</span> where a “resource patch” is a more intuitive and useful unit.</p>
 <p><em>A note on “handle”.</em> All organisms pays costs to consume resources. In OFT, “handle” typically means expending energy and time to attack and subdue prey (predators), proliferate into resource rich areas (plants), exude extra cellular enzymes (fungi); ingest the item(s), and then resume searching.</p>
 <div id="a-prey-model" class="section level2" number="2.1">
 <h2>
 <span class="header-section-number">2.1</span> A prey model<a class="anchor" aria-label="anchor" href="#a-prey-model"><i class="fas fa-link"></i></a>
 </h2>
 <p><em>…in which a forager asks, “should I eat this?”</em><a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;whether “I” is a sugar maple tree or a human, most of us do not make this decision conciously…&lt;/p&gt;"><sup>9</sup></a></p>
-<p>Let’s start where this field started, with a prey-centered model <span class="citation">(<a href="references.html#ref-macarthur1966" role="doc-biblioref">R. H. MacArthur and Pianka 1966</a>; <a href="references.html#ref-emlen1966" role="doc-biblioref">Emlen 1966</a>)</span>.</p>
+<p>Let’s start where this field started, with a prey-centered model <span class="citation">(<a href="references.html#ref-macarthur1966">R. H. MacArthur and Pianka 1966</a>; <a href="references.html#ref-emlen1966">Emlen 1966</a>)</span>.</p>
 <ul>
 <li>Currency - long-term energy gain per unit time, <span class="math inline">\(G/T\)</span>.</li>
 <li>Constraints
@@ -226,7 +228,7 @@ Figure 2.3: Selectivity increases with average encounter rates.
 </p>
 </div>
 <p><strong>Prediction 4</strong> Inclusion of type <span class="math inline">\(m+1\)</span> in the diet does not depend on its encounter rate. Thus, a particular type should be included if the instantaneous net gain of that type is greater than the <em>realized long term average</em> net gain of all the more profitable types. Note that encounter rate appears on the right hand side, but not the left.</p>
-<p>So how does this model fair in the real world? Well, the zero-one rule doesn’t work at all; it turns out that for a variety of reasons, foragers do not completely ignore low-profit prey. However, there is great support for the other predictions (above) <span class="citation">(<a href="references.html#ref-stephens1986" role="doc-biblioref">Stephens and Krebs 1986</a>)</span>. Most importantly, in all cases, the theory has provided a clear framework to generate testable predictions from unambiguous assumptions, and that is what we want from efficient theory. The model itself helped guide research, and inclusion of greater complexity has led to deeper understanding of behavior and its consequences for species interactions.</p>
+<p>So how does this model fair in the real world? Well, the zero-one rule doesn’t work at all; it turns out that for a variety of reasons, foragers do not completely ignore low-profit prey. However, there is great support for the other predictions (above) <span class="citation">(<a href="references.html#ref-stephens1986">Stephens and Krebs 1986</a>)</span>. Most importantly, in all cases, the theory has provided a clear framework to generate testable predictions from unambiguous assumptions, and that is what we want from efficient theory. The model itself helped guide research, and inclusion of greater complexity has led to deeper understanding of behavior and its consequences for species interactions.</p>
 </div>
 </div>
 <div id="the-patch-model" class="section level2" number="2.2">
@@ -235,7 +237,7 @@ Figure 2.3: Selectivity increases with average encounter rates.
 </h2>
 <p><em>…in which omniscient rationale agents roam free.</em></p>
 <p>Here the forager asks, “how long should I stay here?” In the simple <em>prey</em> model, a forager searches for and then encounters prey one at a time, makes a decision to consume or not, and then resumes searching. In a simple <em>patch</em> model, a forager searches for and encounters patches one at a time, first consumes resources and then makes a decision to leave or not. Perhaps the single most important prediction of the simple patch model is that a forager should leave a patch when its current rate of energy gain drops down to the average or expected rate of energy gain for the habitat at large.</p>
-<p>In what follows, we rely on <span class="citation">Charnov (<a href="references.html#ref-charnov1976b" role="doc-biblioref">1976</a>)</span>, who applies <em>the marginal-value theorem</em> to explain optimal behavior. Here, as in economics, “marginal value” refers to a rate - the slope of a function. In calculus, this is a derivative. Here, it is the derivative (i.e. slope) of the relation between energy gain and time.</p>
+<p>In what follows, we rely on <span class="citation">Charnov (<a href="references.html#ref-charnov1976b">1976</a>)</span>, who applies <em>the marginal-value theorem</em> to explain optimal behavior. Here, as in economics, “marginal value” refers to a rate - the slope of a function. In calculus, this is a derivative. Here, it is the derivative (i.e. slope) of the relation between energy gain and time.</p>
 <p>Let’s assume the simplest of all patch models: one patch type, all patches are the same, and they are distributed randomly in the habitat. Assume also that a forager uses time to travel between patches (travel time, <span class="math inline">\(t_t\)</span>) and time searching within a patch (residence time, <span class="math inline">\(t_r\)</span>). A forager encounters patches at random, with a rate of <span class="math inline">\(\lambda\)</span>, and as such, would have a mean time to next encounter of <span class="math inline">\(1/\lambda\)</span>.</p>
 The patch is characterisized by its <em>gain function</em> <span class="math inline">\(g(t_r)\)</span> (Fig. <a href="oft.html#fig:gain">2.4</a>) which is the expected<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;“expected” value of a variable is the mean of that variable, because that is what we expect given the absence of other knowledge&lt;/p&gt;"><sup>12</sup></a>
 <em>cumulative net energy gained</em>, given time <span class="math inline">\(t_r\)</span> spent in the patch. The gain function is a cumulative total net amount. We can imagine different types of gain functions.
@@ -251,7 +253,7 @@ Figure 2.4: Net energy gain as a function of patch residence time may take diffe
 <li>Draw a gain function where there is no cost to foraging, and where the forager eventually depletes all the prey.</li>
 <li>In one graph, draw two gain functions for a resource rich patch and for a resource poor patch.</li>
 </ol>
-<p>So, our <em>currency</em> is long-term average energy intake, <span class="math inline">\(R\)</span>, and we want to maximize this. The <em>decision</em> our forager needs to make is how long to stay in a patch. The forager’s <em>constraints</em> share some similarity with the prey model <span class="citation">(<a href="references.html#ref-stephens1986" role="doc-biblioref">Stephens and Krebs 1986</a>)</span>.</p>
+<p>So, our <em>currency</em> is long-term average energy intake, <span class="math inline">\(R\)</span>, and we want to maximize this. The <em>decision</em> our forager needs to make is how long to stay in a patch. The forager’s <em>constraints</em> share some similarity with the prey model <span class="citation">(<a href="references.html#ref-stephens1986">Stephens and Krebs 1986</a>)</span>.</p>
 <ul>
 <li>between-patch travel time and within-patch hunting time are distinct, and …</li>
 <li>… independent of each other,</li>
@@ -278,8 +280,8 @@ Figure 2.5: Energy gain vs. time: The origin is when the forager enters the pat
 </div>
 <p>The simple patch model predicts that when average travel time is greater, foragers will stay longer in a patch. Similarly, the model predicts that when patch quality is lower, foragers stay longer in each patch. Use Fig. <a href="oft.html#fig:marginal">2.5</a> to construct explanations for these predictions.</p>
 <p><strong>Just a starting point</strong></p>
-<p>The simple prey and patch models have been extended a great deal to help understand a broad range of foraging situations <span class="citation">(<a href="references.html#ref-sih2011" role="doc-biblioref">Sih 2011</a>)</span>. Simultaneous, rather than sequential, encounters can lead to different predictions. In these cases, energy alone, <span class="math inline">\(e_i\)</span>, rather than profitability, <span class="math inline">\(e_i/h_i\)</span>, may determine prey selection that maximizes the long term mean average rate. Travel time and encounter rates interact with this to explain contrasting situations.</p>
-<p>Central place foragers play by slightly different rules <span class="citation">(<a href="references.html#ref-stephens1986" role="doc-biblioref">Stephens and Krebs 1986</a>)</span>. Central place foragers are located in a single location, and remain there. For instance, a parent bird (or dinosaur) finds patches and returns repeatedly to the nest, bringing one or multiple prey items. With parent birds, their fitness depends on offspring viability, and so selection tends to optimize in a manner similar to an organism foraging for themselves. These cases have been built upon patch models, where the question is how to exploit patches that exist at different distances from the nest.</p>
+<p>The simple prey and patch models have been extended a great deal to help understand a broad range of foraging situations <span class="citation">(<a href="references.html#ref-sih2011">Sih 2011</a>)</span>. Simultaneous, rather than sequential, encounters can lead to different predictions. In these cases, energy alone, <span class="math inline">\(e_i\)</span>, rather than profitability, <span class="math inline">\(e_i/h_i\)</span>, may determine prey selection that maximizes the long term mean average rate. Travel time and encounter rates interact with this to explain contrasting situations.</p>
+<p>Central place foragers play by slightly different rules <span class="citation">(<a href="references.html#ref-stephens1986">Stephens and Krebs 1986</a>)</span>. Central place foragers are located in a single location, and remain there. For instance, a parent bird (or dinosaur) finds patches and returns repeatedly to the nest, bringing one or multiple prey items. With parent birds, their fitness depends on offspring viability, and so selection tends to optimize in a manner similar to an organism foraging for themselves. These cases have been built upon patch models, where the question is how to exploit patches that exist at different distances from the nest.</p>
 <p>Another example of a central place forager is a spider that acts as a ambush or sit-and-wait predator who remains stationary until a prey item gets close enough to attack. One approach to the spider problem is to consider the distance to the prey as a handling cost and search costs are negligible.</p>
 <p>These simple foraging models provide the starting points for a field of inquiry spanning many decades. The interplay between these models, the natural history of species, and experiments have led to greater appreciation of why organisms behave as they do, and the consequences for their evolution and the food webs and ecosystems in which they reside.</p>
 <div style="page-break-after: always;"></div>
@@ -411,15 +413,15 @@ Figure 2.5: Energy gain vs. time: The origin is when the forager enters the pat
 <code class="sourceCode R"><span><span class="va">myOut</span> <span class="op">&lt;-</span> <span class="fu">optimal.forager</span><span class="op">(</span>Total<span class="op">=</span><span class="fl">60</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/str.html">str</a></span><span class="op">(</span><span class="va">myOut</span><span class="op">)</span></span></code></pre></div>
 <pre><code>## List of 8
-##  $ N     : num 27
-##  $ G     : num 21.5
-##  $ Tt    : num 62.3
-##  $ id    : num [1:27] 2 1 2 1 1 1 1 2 2 1 ...
-##  $ R     : num 0.344
-##  $ prop1 : num 0.519
-##  $ series:'data.frame':  27 obs. of  2 variables:
-##   ..$ net.e      : num [1:27] -0.545 1.172 0.936 1.44 1.932 ...
-##   ..$ cycle.start: num [1:27] 0 4.36 6.93 7.59 9.49 ...
+##  $ N     : num 17
+##  $ G     : num 1.81
+##  $ Tt    : num 61.5
+##  $ id    : num [1:17] 2 2 2 2 1 2 1 1 1 2 ...
+##  $ R     : num 0.0294
+##  $ prop1 : num 0.353
+##  $ series:'data.frame':  17 obs. of  2 variables:
+##   ..$ net.e      : num [1:17] 0.529 0.35 0.286 -0.64 1.11 ...
+##   ..$ cycle.start: num [1:17] 0 1.68 3.8 6.09 10.69 ...
 ##  $ params:List of 9
 ##   ..$ e     : num [1:2] 2 1
 ##   ..$ h     : num [1:2] 0.5 0.5
@@ -511,7 +513,7 @@ Figure 2.7: The right hand side of our prediction
 <footer class="bg-primary text-light mt-5"><div class="container"><div class="row">
 
   <div class="col-12 col-md-6 mt-3">
-    <p>"<strong>Primer of Ecology using R</strong>" was written by Hank Stevens. It was last built on 2022-12-19.</p>
+    <p>"<strong>Primer of Ecology using R</strong>" was written by Hank Stevens. It was last built on 2023-08-10.</p>
   </div>
 
   <div class="col-12 col-md-6 mt-3">

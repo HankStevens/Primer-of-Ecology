@@ -1,0 +1,974 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<title>8 Coexistence via competition, dispersal, and storage | Primer of Ecology using R</title>
+<meta name="author" content="Hank Stevens">
+<meta name="description" content="In this chapter, we will explore and compare concepts in which transient dynamics at one spatial or temporal scale result in long-term coexistence at another. All these models assume that species...">
+<meta name="generator" content="bookdown 0.34 with bs4_book()">
+<meta property="og:title" content="8 Coexistence via competition, dispersal, and storage | Primer of Ecology using R">
+<meta property="og:type" content="book">
+<meta property="og:description" content="In this chapter, we will explore and compare concepts in which transient dynamics at one spatial or temporal scale result in long-term coexistence at another. All these models assume that species...">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="8 Coexistence via competition, dispersal, and storage | Primer of Ecology using R">
+<meta name="twitter:description" content="In this chapter, we will explore and compare concepts in which transient dynamics at one spatial or temporal scale result in long-term coexistence at another. All these models assume that species...">
+<!-- JS --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://kit.fontawesome.com/6ecbd6c532.js" crossorigin="anonymous"></script><script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<link href="libs/bootstrap-4.6.0/bootstrap.min.css" rel="stylesheet">
+<script src="libs/bootstrap-4.6.0/bootstrap.bundle.min.js"></script><script src="libs/bs3compat-0.5.0/transition.js"></script><script src="libs/bs3compat-0.5.0/tabs.js"></script><script src="libs/bs3compat-0.5.0/bs3compat.js"></script><link href="libs/bs4_book-1.0.0/bs4_book.css" rel="stylesheet">
+<script src="libs/bs4_book-1.0.0/bs4_book.js"></script><script src="libs/kePrint-0.0.1/kePrint.js"></script><link href="libs/lightable-0.0.1/lightable.css" rel="stylesheet">
+<link href="libs/bsTable-3.3.7/bootstrapTable.min.css" rel="stylesheet">
+<script src="libs/bsTable-3.3.7/bootstrapTable.js"></script><!-- Global site tag (gtag.js) - Google Analytics --><script async src="https://www.googletagmanager.com/gtag/js?id=G-VCV8MES4YY"></script><script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-VCV8MES4YY');
+    </script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- CSS --><style type="text/css">
+    
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  </style>
+<style type="text/css">
+    /* Used with Pandoc 2.11+ new --citeproc when CSL is used */
+    div.csl-bib-body { }
+    div.csl-entry {
+      clear: both;
+        }
+    .hanging div.csl-entry {
+      margin-left:2em;
+      text-indent:-2em;
+    }
+    div.csl-left-margin {
+      min-width:2em;
+      float:left;
+    }
+    div.csl-right-inline {
+      margin-left:2em;
+      padding-left:1em;
+    }
+    div.csl-indent {
+      margin-left: 2em;
+    }
+  </style>
+</head>
+<body data-spy="scroll" data-target="#toc">
+
+<div class="container-fluid">
+<div class="row">
+  <header class="col-sm-12 col-lg-3 sidebar sidebar-book"><a class="sr-only sr-only-focusable" href="#content">Skip to main content</a>
+
+    <div class="d-flex align-items-start justify-content-between">
+      <h1>
+        <a href="index.html" title="">Primer of Ecology using R</a>
+      </h1>
+      <button class="btn btn-outline-primary d-lg-none ml-2 mt-1" type="button" data-toggle="collapse" data-target="#main-nav" aria-expanded="true" aria-controls="main-nav"><i class="fas fa-bars"></i><span class="sr-only">Show table of contents</span></button>
+    </div>
+
+    <div id="main-nav" class="collapse-lg">
+      <form role="search">
+        <input id="search" class="form-control" type="search" placeholder="Search" aria-label="Search">
+</form>
+
+      <nav aria-label="Table of contents"><h2>Table of contents</h2>
+        <ul class="book-toc list-unstyled">
+<li><a class="" href="index.html">Preface</a></li>
+<li><a class="" href="theory.html"><span class="header-section-number">1</span> Theory in Ecology</a></li>
+<li><a class="" href="oft.html"><span class="header-section-number">2</span> Optimal Foraging</a></li>
+<li><a class="" href="expo.html"><span class="header-section-number">3</span> Simple density-independent growth</a></li>
+<li><a class="" href="DID.html"><span class="header-section-number">4</span> Density-independent Demography</a></li>
+<li><a class="" href="DDgrowth.html"><span class="header-section-number">5</span> Density-dependent growth</a></li>
+<li><a class="" href="meta.html"><span class="header-section-number">6</span> Populations in Space</a></li>
+<li><a class="" href="comp.html"><span class="header-section-number">7</span> Direct competition and mutualism</a></li>
+<li><a class="active" href="compcol.html"><span class="header-section-number">8</span> Coexistence via competition, dispersal, and storage</a></li>
+<li><a class="" href="cr.html"><span class="header-section-number">9</span> Consumer-resource Interactions</a></li>
+<li><a class="" href="host-parasitoid-relations.html"><span class="header-section-number">10</span> Host-parasitoid relations</a></li>
+<li><a class="" href="disease.html"><span class="header-section-number">11</span> Disease</a></li>
+<li><a class="" href="consumer-resource-competition-and-mutualisms.html"><span class="header-section-number">12</span> Consumer-resource Competition and Mutualisms</a></li>
+<li><a class="" href="food-webs-and-other-networks.html"><span class="header-section-number">13</span> Food webs and other networks</a></li>
+<li><a class="" href="diversity.html"><span class="header-section-number">14</span> Diversity</a></li>
+<li><a class="" href="references.html"><span class="header-section-number">15</span> References</a></li>
+</ul>
+
+        <div class="book-extra">
+          
+        </div>
+      </nav>
+</div>
+  </header><main class="col-sm-12 col-md-9 col-lg-7" id="content"><div id="compcol" class="section level1" number="8">
+<h1>
+<span class="header-section-number">8</span> Coexistence via competition, dispersal, and storage<a class="anchor" aria-label="anchor" href="#compcol"><i class="fas fa-link"></i></a>
+</h1>
+<p>In this chapter, we will explore and compare concepts in which transient dynamics at one spatial or temporal scale result in long-term coexistence at another. All these models assume that species coexist because there exists at least a brief window in time during which each species has an advantage.</p>
+<div class="figure">
+<span style="display:block;" id="fig:BSsuccFig"></span>
+<img src="figs/BSsuccFig-1.png" alt="Successional trajectory of annual and perennial herbaceous and woody plants in the Buell-Small Succession Study (http://www.ecostudies.org/bss/). These are mean percent cover from 480 plots across 10 fields, sampled ever 1--2 years." width="67%"><p class="caption">
+Figure 8.1: Successional trajectory of annual and perennial herbaceous and woody plants in the Buell-Small Succession Study (<a href="http://www.ecostudies.org/bss/" class="uri">http://www.ecostudies.org/bss/</a>). These are mean percent cover from 480 plots across 10 fields, sampled ever 1–2 years.
+</p>
+</div>
+<p>We begin with a simple model of the <em>competition–colonization tradeoff</em>, explore <em>habitat destruction and the extinction debt</em>, and then examine a model that adds an important subtlety: <em>finite rates of competitive exclusion</em>. We finish up with an introduction to a very important phenomenon, the <em>storage effect</em>.</p>
+<div id="competitioncolonization-tradeoff" class="section level2" number="8.1">
+<h2>
+<span class="header-section-number">8.1</span> Competition–colonization Tradeoff<a class="anchor" aria-label="anchor" href="#competitioncolonization-tradeoff"><i class="fas fa-link"></i></a>
+</h2>
+<p>Models of coexistence via this tradeoff have been around for over 70 years <span class="citation">(<a href="references.html#ref-skellam:1951vn">Skellam 1951</a>; <a href="references.html#ref-levins:1971ve">Levins and Culver 1971</a>; <a href="references.html#ref-horn:1972fk">Horn and MacArthur 1972</a>; <a href="references.html#ref-armstrong:1976ys">Armstrong 1976</a>; <a href="references.html#ref-hastings:1980kx">A. Hastings 1980</a>; <a href="references.html#ref-shmida1984">Shmida and Ellner 1984</a>; <a href="references.html#ref-levin:1984uq">Levin, Cohen, and Hastings 1984</a>)</span>. In this tradeoff, species coexist because all individuals die, and therefore all species have to have some ability to colonize new space. This implies that species may be good at colonizing open sites, or they may be good at displacing other species from an occupied site. These two extremes setup the basic tradeoff, wherein species coexist none of them have too good a combination of both traits.</p>
+<p>Here we provide the two-species model of this phenomenon <span class="citation">(<a href="references.html#ref-hastings:1980kx">A. Hastings 1980</a>)</span>. We explored the basis of this model back in our chapter on metapopulation dynamics, in which the state variable was a proportion of available sites. Similarly, here we focus on the case where the state variable is the proportion of available sites, rather than <span class="math inline">\(N\)</span>. We represent the proportion of sites, <span class="math inline">\(p\)</span>, occupied by each of two species,
+<span class="math display" id="eq:cc2">\[\begin{align}
+  \frac{d p_1}{d t} &amp;= c_1p_1\left(1-p_1\right) - m_1p_1   \tag{8.1}\\
+  \frac{d p_2}{d t} &amp;= c_2p_2\left(1-p_1-p_2\right) - m_2p_2 - c_1p_1p_2   \tag{8.2}
+\end{align}\]</span>
+where <span class="math inline">\(p_i\)</span> is the proportion of available sites occupied by species <span class="math inline">\(i\)</span>, and <span class="math inline">\(c_i\)</span> and <span class="math inline">\(m_i\)</span> are the per capita colonizing and mortality rates of species <span class="math inline">\(i\)</span>. Parameter <span class="math inline">\(m\)</span> is some combination of inherent senescence plus a background disturbance rate; we will refer to these simply as mortality.</p>
+<p>As represented in eq. <a href="compcol.html#eq:cc1a">(8.1)</a>, species 1 is the superior competitor. The rate of increase in <span class="math inline">\(p_1\)</span> is a function of the per site colonizing ability, <span class="math inline">\(c_i\)</span>, times the proportion of sites occupied by species 1, <span class="math inline">\(p_1\)</span>, times the space not already occupied by that species, <span class="math inline">\(1-p_1\)</span>. One could estimate <span class="math inline">\(c_1\)</span> by measuring the rate at which an open site is colonized, assuming one would also be able to measure <span class="math inline">\(p_1\)</span>. The rate of decrease is merely a density-independent per capita rate, <span class="math inline">\(m_1\)</span>, times the proportion of sites occupied by species 1, <span class="math inline">\(p_1\)</span>.</p>
+<p>Eq. <a href="compcol.html#eq:cc2">(8.2)</a> represents the inferior competitor. The first term includes only space that is unoccupied by <em>either</em> species 1 or 2 (<span class="math inline">\(1-p_1-p_2\)</span>). Note that species 1 does not have this handicap; rather, species 1 can colonize a site occupied by species 2. The second species also has an additional loss term, <span class="math inline">\(c_1p_1p_2\)</span> (eq. <a href="compcol.html#eq:cc2">(8.2)</a>). This term is the rate at which species 1, the superior competitor, colonizes sites occupied by species 2, and <em>immediately</em> displaces it. Note that species 1 is not influenced at all by species 2.</p>
+<p>Here is the R function of ODEs for eqs. <a href="compcol.html#eq:cc1a">(8.1)</a>, <a href="compcol.html#eq:cc2">(8.2)</a>, which is already implemented in <code>primer</code>.</p>
+<div class="sourceCode" id="cb265"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">compcol</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">t</span>, <span class="va">y</span>, <span class="va">params</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="va">p1</span> <span class="op">&lt;-</span> <span class="va">y</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>; <span class="va">p2</span> <span class="op">&lt;-</span> <span class="va">y</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/with.html">with</a></span><span class="op">(</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">as.list</a></span><span class="op">(</span><span class="va">params</span><span class="op">)</span>, <span class="op">{</span></span>
+<span>    <span class="va">dp1.dt</span> <span class="op">&lt;-</span> <span class="va">c1</span><span class="op">*</span><span class="va">p1</span><span class="op">*</span><span class="op">(</span><span class="fl">1</span><span class="op">-</span><span class="va">p1</span><span class="op">)</span> <span class="op">-</span> <span class="va">m1</span><span class="op">*</span><span class="va">p1</span></span>
+<span>    <span class="va">dp2.dt</span> <span class="op">&lt;-</span> <span class="va">c2</span><span class="op">*</span><span class="va">p2</span><span class="op">*</span><span class="op">(</span><span class="fl">1</span><span class="op">-</span><span class="va">p1</span><span class="op">-</span><span class="va">p2</span><span class="op">)</span> <span class="op">-</span><span class="va">m2</span><span class="op">*</span><span class="va">p2</span> <span class="op">-</span> <span class="va">c1</span><span class="op">*</span><span class="va">p1</span><span class="op">*</span><span class="va">p2</span></span>
+<span>    <span class="kw"><a href="https://rdrr.io/r/base/function.html">return</a></span><span class="op">(</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">dp1.dt</span>, <span class="va">dp2.dt</span><span class="op">)</span> <span class="op">)</span> <span class="op">)</span></span>
+<span>    <span class="op">}</span><span class="op">)</span></span>
+<span><span class="op">}</span></span></code></pre></div>
+<p>At equilibrium, species 1 has the same equilibrium as in the Levins single species metapopulation model.
+<span class="math display" id="eq:3">\[\begin{align}
+  \tag{6.5}
+  p_1^*&amp;=1-\frac{m_1}{c_1}
+\end{align}\]</span>
+The abundance of species 1 increases with its colonizing ability, and decreases with its mortality rate.</p>
+<p>At equilibrium, species 2 has an equilibrium that is influenced by species 1. Let’s solve for <span class="math inline">\(p_2^*\)</span> now.
+<span class="math display" id="eq:4">\[\begin{align}
+  \tag{8.3}
+  0 &amp;= c_2p_2\left(1-p_1-p_2\right) - m_2p_2 - c_1p_1p_2\notag\\
+  0 &amp;= p_2\left(c_2-c_2p_1 - c_2p_2 - m_2 - c_1p_1\right)\notag\\
+  0 &amp;= c_2 - c_2p_1 - c_2p_2 - m_2 - c_1p_1\notag\\
+  c_2p_2 &amp;= c_2  - c_2p_1 - m_2 - c_1p_1\notag\\
+  p_2^* &amp;= 1  - p_1^* -  \frac{m_2}{c_2} - \frac{c_1}{c_2}p_1^*\\
+\end{align}\]</span>
+In addition to the trivial equilibrium (<span class="math inline">\(p_2^*=0\)</span>), we see that the nontrivial equilibrium depends on the equilibrium of species 1. This equilibrium makes intuitive sense, in that species 2 cannot take over sites already occupied by species 1. In addition, and like species 1, it is limited by its own mortality and colonization rates (<span class="math inline">\(-m_2/c_2\)</span>). It is also reduced by a bit due to those occasions when both species colonize the same site (<span class="math inline">\((c_1/c_2)p_1\)</span>), but only species 1 wins.</p>
+<p>Substituting <span class="math inline">\(p_1^*\)</span> into that equilibrium, we have the following.
+<span class="math display" id="eq:eq2">\[\begin{align}
+  \tag{6.13}
+  p_2^* &amp;= 1  - \left(1-\frac{m_1}{c_1}\right) - \frac{m_2}{c_2} -  \frac{c_1}{c_2} \left(1 - \frac{m_1}{c_1} \right)\\
+  p_2^* &amp;= \frac{m_1}{c_1} - \frac{m_2 - m_1 + c_1}{c_2}\tag{8.4}
+\end{align}\]</span></p>
+<p>What parallels do you see between the equilibria for the two species?</p>
+<p>The form of the equilibria is quite similar, with two additions for species 2. The numerator of the correction term includes its own mortality, just like species 1, but its mortality is adjusted downward (reduced) by the mortality of species 1. Thus the greater the mortality rate of species 1, greater is the opportunity for species 2. This term is also adjusted upward by the colonizing ability of species 1; the greater species 1’s colonizing ability, the more frequently it lands on and excludes (immediately) species 2, causing a drop in species 2’s equilibrium abundance.</p>
+<p>In order to focus on the competition–colonization tradeoff, it is common to assume mortality is the same for both species. Tradeoffs with regard to martality are also important, especially if high mortality is correlated with high colonization rate, and negatively correlated with competitive ability.</p>
+<p>If we assume <span class="math inline">\(m_1=m_2\)</span>, perhaps to focus entirely on the competition–colonization tradeoff, we can simplify eq. <a href="compcol.html#eq:eq2">(8.4)</a> further to examine when species 2 can invade (i.e. <span class="math inline">\(p_2^* &gt;0\)</span>). Eq. <a href="compcol.html#eq:eq2">(8.4)</a> can simplify to either of these versions:
+<span class="math display" id="eq:cc7">\[\begin{align}
+    \frac{m}{c_1}  &amp;&gt; \frac{c_1}{c_2} \\
+    \frac{c_2}{c_1}  &amp;&gt; \frac{c_1}{m}
+    \tag{8.5}
+\end{align}\]</span>
+How can we interpret these? Species 2 can invade if the space <em>not</em> occupied by species 1 (<span class="math inline">\(m/c_1\)</span>) is greater than species 1’s relative colonization rate (<span class="math inline">\(c_1/c_2\)</span>). Another way to think about this is that species 2 can persist if its relative colonization rate is greater than species 1’s colonization rate relative to mortality.</p>
+<p>The equilibria also indicates something intuitive for most field ecologists: that increasing disturbance rates, and hence mortality of both species, will enhance the abundance of the species which can recolonize those disturbances. <em>More disturbed areas should have more of species 2.</em></p>
+<p>Thus, this model predicts that these species can coexist, even though one is a superior competitor. Further, it predicts that species 2 will become relatively more abundant as mortality increases.</p>
+<div id="what-is-a-site" class="section level4" number="8.1.0.1">
+<h4>
+<span class="header-section-number">8.1.0.1</span> What is a “site”?<a class="anchor" aria-label="anchor" href="#what-is-a-site"><i class="fas fa-link"></i></a>
+</h4>
+<p>Just exactly what corresponds to a <em>site</em> is not always defined in an operational manner. Nonetheless site-based models such as these have often been used in a qualitative manner to describe the dynamics plant communities <span class="citation">(<a href="references.html#ref-hurtt1995">Hurtt and Pacala 1995</a>; <a href="references.html#ref-tilman1994b">D. Tilman et al. 1994</a>; <a href="references.html#ref-pacala1997">S. W. Pacala 1997</a>; <a href="references.html#ref-pacala1998">S. W. Pacala and Rees 1998</a>)</span>. Such models could describe systems such as a single field or patch of grassland, where a <em>site</em> is a very small spot of ground, sufficient for the establishment of an individual <span class="citation">(<a href="references.html#ref-tilman1994">D. Tilman 1994</a>)</span>. Alternatively, a single <em>site</em> could be an entire field within a large region of mixed successional stages. For the time being, let us continue to focus on a single field (0.1 - 1 ha) as a collection of small plots (e.g., 1-5 cm<span class="math inline">\(^2\)</span>), each of which might hold a single potentially reproductive individuals.</p>
+</div>
+<div id="estimating-colonization-and-mortality-rates" class="section level4" number="8.1.0.2">
+<h4>
+<span class="header-section-number">8.1.0.2</span> Estimating colonization and mortality rates<a class="anchor" aria-label="anchor" href="#estimating-colonization-and-mortality-rates"><i class="fas fa-link"></i></a>
+</h4>
+<p>Here we estimate parameters for the two-species competition-colonization model, where the two “species” are annual and perennial plants. The proportion of sites they occupy will be <span class="math inline">\(p_1\)</span> (perennials), and <span class="math inline">\(p_2\)</span> (annuals).</p>
+<p>We may want to estimate these quantities for several reasons:</p>
+<ol style="list-style-type: decimal">
+<li>practice working with data and models,</li>
+<li>become more comfortable and familiar with <em>these</em> models in particular,</li>
+<li>become more accustomed to estimating ecologically relevant characteristics of populations or species other than their average abundances.</li>
+</ol>
+<p>All of these reasons will make us better prepared to (i) understand more mechanistic descriptions of ecological phenomena, (ii) test interesting hypotheses, and (iii) solve environmental problems.</p>
+<p>Consider secondary succession following a major disturbance in old-field or grassland (as in Fig. <a href="#fig:newBS"><strong>??</strong></a>). In the first year, we find that annuals (e.g., ragweed) show up in 55% of available space, and perennials (e.g. goldenrod, maple) show up in the 45% of the space, and in the second year, annuals make up only 35% while perennials now make up 65%. We might also know that at equilibrium, perennials take up about 95% of the space.</p>
+<p>We can make a back of the envelope calculation to estimate parameters, if we assume or hypothesis that our competition-colonization model is correct.</p>
+<p>Recall that the equilibrium for the dominant competitor is <span class="math inline">\(p^*_1 = 1-m/c_1\)</span>, and that <span class="math inline">\(p^*_1 = 0.95\)</span> in our data. That implies that for this “species” <em>perennials</em> <span class="math inline">\(m = 0.05 c_1\)</span>, that is, that the observed mortality rate is 5% of the colonization rate.</p>
+<p>Note from the data above that it achieves approximately equilibrium abundance quite quickly. If we make simply guess that <span class="math inline">\(c_1=0.9\)</span>, and that there is only 1% of free space available (<span class="math inline">\(1-p^*_1-p^*_2 = 0.01\)</span>), we can estimate <span class="math inline">\(c_2\)</span>.</p>
+<p>Thus,</p>
+<div class="sourceCode" id="cb266"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">c1</span> <span class="op">&lt;-</span> <span class="fl">.9</span></span>
+<span><span class="va">m</span> <span class="op">&lt;-</span> <span class="fl">0.05</span> <span class="op">*</span> <span class="va">c1</span></span>
+<span><span class="va">p2.eq</span> <span class="op">&lt;-</span> <span class="fl">1</span> <span class="op">-</span> <span class="fl">0.95</span> <span class="op">-</span> <span class="fl">0.01</span></span></code></pre></div>
+<p>Referring to the equation for <span class="math inline">\(p^*_2\)</span> above, we can rearrange to get
+<span class="math display">\[c_2 = \frac{m+c_1}{1 - p_1^* - p_2^*} p_1^*\]</span>
+and we calculate,</p>
+<div class="sourceCode" id="cb267"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">c2</span> <span class="op">&lt;-</span> <span class="op">(</span><span class="va">m</span><span class="op">+</span><span class="va">c1</span><span class="op">)</span> <span class="op">/</span> <span class="op">(</span><span class="fl">1</span><span class="op">-</span><span class="fl">0.95</span><span class="op">-</span><span class="fl">0.04</span><span class="op">)</span> <span class="op">*</span> <span class="fl">0.95</span></span>
+<span><span class="va">c2</span></span></code></pre></div>
+<pre><code>## [1] 89.775</code></pre>
+<p>Based on our back of the envelope calculations and guess-timates, the annuals are about 90 times as good as the perennials. Seems like a testable proposition.</p>
+<p>Note that we are assuming that both perennials and annuals have the same value of <span class="math inline">\(m\)</span>, mortality, and this is ridiculous. By definition, annuals have complete martality each year. I will use poetic license and define survival and mortality in a highly operational manner. For this purpose, <em>survival is the rate at which at which a species persists or replaces itself at a site</em> anbd mortality is <span class="math inline">\(m = 1-s\)</span>. Therefore, we are assume that <em>in the absence of competition</em> both types of species can persist at a site very well.</p>
+<p>Now let’s project the population through time by solving the differential equations for twenty years (Fig. <a href="compcol.html#fig:est-graph">8.2</a>).</p>
+<div class="sourceCode" id="cb269"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">t</span> <span class="op">&lt;-</span> <span class="fl">0</span><span class="op">:</span><span class="fl">20</span></span>
+<span><span class="va">parameters</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span>m1<span class="op">=</span><span class="va">m</span>, m2<span class="op">=</span><span class="va">m</span>, c1<span class="op">=</span><span class="va">c1</span>, c2<span class="op">=</span><span class="va">c2</span><span class="op">)</span></span>
+<span><span class="va">p.initial</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span>Perennials<span class="op">=</span><span class="fl">0.45</span>, Annuals<span class="op">=</span><span class="fl">0.55</span><span class="op">)</span></span>
+<span><span class="va">out</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/deSolve/man/ode.html">ode</a></span><span class="op">(</span>y <span class="op">=</span> <span class="va">p.initial</span>, times<span class="op">=</span><span class="va">t</span>, func<span class="op">=</span><span class="va">compcol</span>, parms<span class="op">=</span><span class="va">parameters</span><span class="op">)</span></span>
+<span><span class="co"># plot(out) #not shown</span></span></code></pre></div>
+<div class="figure">
+<span style="display:block;" id="fig:est-graph"></span>
+<img src="figs/est-graph-1.png" alt="Left, predicted trajectories of the two species in Levins competition-colonization model. Based on back of the envelope estimates of parameters (see text for details). Right, Buell-Small Succession data, combining both herbaceous and woody perennials into one group. Percent cover is weighted to sum to 100%." width="80%"><p class="caption">
+Figure 8.2: Left, predicted trajectories of the two species in Levins competition-colonization model. Based on back of the envelope estimates of parameters (see text for details). Right, Buell-Small Succession data, combining both herbaceous and woody perennials into one group. Percent cover is weighted to sum to 100%.
+</p>
+</div>
+<p>Our model results seem qualitatively consistent with what we know about successional trajectories. With a lot of open sites, perhaps early in primary or secondary succession, good colonizers get in quickly and fill the site. They are replaced subsequently by the competitively superior species. This is a classic view of succession, with pioneer, seral, and climax species. Note that our example focused on small plots within a single field, but we could apply it to a much larger scale.</p>
+<p>We could have used particular approaches to try to get a more precise match between model predictions and data. However, if we really wanted to use this model for a particular purpose, we would needto thinking much more deeply about</p>
+<ol style="list-style-type: decimal">
+<li>what our goals were, and/or</li>
+<li>how the model represents or misrepresents the traits of the species.</li>
+</ol>
+<p>Regardless, I hope you now have a little bit better sense of what this important model does. The competition-colonization tradeoff is generally considered an important natural history tradeoff among many groups of organisms.</p>
+</div>
+<div id="habitat-destruction-1" class="section level3" number="8.1.1">
+<h3>
+<span class="header-section-number">8.1.1</span> Habitat destruction<a class="anchor" aria-label="anchor" href="#habitat-destruction-1"><i class="fas fa-link"></i></a>
+</h3>
+<p><span class="citation">Nee and May (<a href="references.html#ref-nee:1992vn">1992</a>)</span> and <span class="citation">D. Tilman et al. (<a href="references.html#ref-tilman1994b">1994</a>)</span> showed that, given these tradeoffs, an interesting phenomenon arose. If species coexist via this competition–colonization tradeoff, destruction of habitat increases the abundance of the <em>inferior competitor</em>. How does it do this? First let’s derive this analytically, and then consider it from an intuitive point of view.</p>
+<p>We define habitat destruction, <span class="math inline">\(D\)</span>, as the loss or reduction of space available for colonization. In the absence of habitat destruction, this space varies in the interval <span class="math inline">\((0,1)\)</span>. With habitat destruction, <span class="math inline">\(D\)</span>, the maximum amount of space is no longer <span class="math inline">\(1\)</span> but is reduced to <span class="math inline">\(1-D\)</span>, or the interval <span class="math inline">\((0,1-D)\)</span>. We can alter the above equations to include habitat destruction, <span class="math inline">\(D\)</span>.
+<span class="math display">\[\begin{align*}
+  \frac{d p_1}{d t} &amp;= c_1p_1\left(1-D-p_1\right) - m_1p_1\\
+  \frac{d p_2}{d t} &amp;= c_2p_2\left(1-D-p_1 - p_2\right) - m_2p_2 - c_1p_1p_2
+\end{align*}\]</span></p>
+<p>We can then solve for the equilibria.
+<span class="math display" id="eq:9">\[\begin{align}
+  \tag{5.7}
+    p_1^*&amp;= 1 - D - \frac{m_1}{c_1}\\   
+  p_2^* &amp;= \frac{m_1}{c_1}  - \frac{m_2}{c_2} - \frac{c_1}{c_2}\left(1 - D - \frac{m_1}{c_1}\right)\\   
+   &amp;= \frac{m_1}{c_1}  - \frac{m_2}{c_2} - \frac{c_1}{c_2} + \frac{c_1}{c_2}D + \frac{m_1}{c_2}
+\end{align}\]</span></p>
+<p>If we compare these equilibria to those without equilibria (<span class="math inline">\(D=0\)</span>), We see a couple things. most importantly, habitat destruction has a simple and direct negative effect on the abundance of species 1. For species 2, we see the first two terms are unaltered by habitat destruction. The third and last term represents the proportion of colonization events won by the superior competitor, species 1, and thus depends on the abundance of species 1. Because habitat destruction has a direct negative effect on species 1, this term shows that habitat destruction <em>can increase the abundance of inferior competitors by negatively affecting the superior competitor</em>. The term containing <span class="math inline">\(D\)</span> is actually a positive term quantifying the benefit to the inferior competitor.</p>
+<p>We must also discuss what this does <em>not</em> mean. Typically, an ecologist might imagine that <em>disturbed habitat</em> favors the better colonizer, by,</p>
+<ul>
+<li>increasing the mortality rate,</li>
+<li>opening more sites for good colonizers, and</li>
+<li>perhaps creating environmental conditions that favor rapid growth.</li>
+</ul>
+<p>This differs from habitat <em>destruction</em>, which reduces the size of the available habitat in question. Imagine a parking lot is replacing a grassland, or suburban sprawl is replacing forest; the habitat is shrinking. This has a negative impact on the better competitor.</p>
+<div id="multispecies-competitioncolonization-tradeoff-and-habitat-destruction" class="section level4" number="8.1.1.1">
+<h4>
+<span class="header-section-number">8.1.1.1</span> Multispecies competition–colonization tradeoff and habitat destruction<a class="anchor" aria-label="anchor" href="#multispecies-competitioncolonization-tradeoff-and-habitat-destruction"><i class="fas fa-link"></i></a>
+</h4>
+<p>The work of David Tilman and his colleagues in grassland plant communities at the Cedar Creek Natural History Area (a NSF-LTER site) initially tested predictions from the <span class="math inline">\(R^*\)</span> model, and its two-resource version, the resource ratio model <span class="citation">(<a href="references.html#ref-tilman1982">D. Tilman 1982</a>, <a href="references.html#ref-tilman1988">1988</a>; <a href="references.html#ref-wedin1993">Wedin and Tilman 1993</a>; <a href="references.html#ref-wilson1995">Wilson and Tilman 1995</a>)</span>. They found that soil nitrogen was really the only resource for which the dominant plant species (prairie grasses) competed strongly. If this is true, then the single resource <span class="math inline">\(R^*\)</span> model of competition predicted that the best competitor would eliminate the other species, resulting in monocultures of the best competitor. The best competitors were little bluestem and big bluestem (<em>Schizachyrium scoparium</em> and <em>Andropogon gerardii</em>), widespread dominants of mixed and tall grass prairies, and <span class="math inline">\(R^*\)</span> predicted that they should exclude everything else. However, they observed that the control plots, although dominated by big and little bluestem, were also <em>the most diverse</em>. While big and little bluestem did dominate prairies, the high diversity of these communities directly contradicts the <span class="math inline">\(R^*\)</span> model of competition.<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content='&lt;p&gt;For contrasting views see &lt;span class="citation"&gt;Craine (&lt;a href="references.html#ref-craine:2005qy"&gt;2005&lt;/a&gt;)&lt;/span&gt; and &lt;span class="citation"&gt;David Tilman (&lt;a href="references.html#ref-tilman:2007yb"&gt;2007&lt;/a&gt;)&lt;/span&gt;&lt;/p&gt;'><sup>58</sup></a>. Another pattern they observed was that weaker competitors colonized and became abundant in abandoned fields sooner than the the better competitors. It turned out that variation in dispersal abilities might be the key to understanding both of these qualitative patterns <span class="citation">(<a href="references.html#ref-gross1982">Gross and Werner 1982</a>; <a href="references.html#ref-platt1977">Platt and Weis 1977</a>; <a href="references.html#ref-rabinowitz1981">Rabinowitz and Rapp 1981</a>)</span>.</p>
+<p>In an effort to understand how bluestem-dominated prairies could maintain high diversity in spite of single resource competition, Tilman generalized <span class="citation">(<a href="references.html#ref-hastings:1980kx">A. Hastings 1980</a>)</span> to include <span class="math inline">\(n\)</span> species <span class="citation">(<a href="references.html#ref-tilman1994">D. Tilman 1994</a>)</span>.
+<span class="math display" id="eq:cc10">\[\begin{align}
+  \tag{8.6}
+  \frac{dp_i}{dt} &amp;= c_ip_i\left(1-\sum_{j=1}^{i}{p_j}\right) - m_ip_i - \left(\sum_{j=1}^{i-1}{c_jp_jp_i}\right)
+\end{align}\]</span>
+where the last term describes the negative effect on species <span class="math inline">\(i\)</span> of all species of superior competitive ability.</p>
+<p><strong>Multispecies competition–colonization model</strong>
+Here is the R function in <code>primer</code> for eq. <a href="compcol.html#eq:cc10">(8.6)</a>:</p>
+<div class="sourceCode" id="cb270"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">compcolM</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">t</span>, <span class="va">y</span>, <span class="va">params</span><span class="op">)</span> <span class="op">{</span></span>
+<span><span class="co">## This models S species with a competition--colonization tradeoff</span></span>
+<span>  <span class="co">## This requires 'params' is a list with named elements</span></span>
+<span>  <span class="va">S</span> <span class="op">&lt;-</span> <span class="va">params</span><span class="op">[[</span><span class="st">"S"</span><span class="op">]</span><span class="op">]</span>; <span class="va">D</span> <span class="op">&lt;-</span> <span class="va">params</span><span class="op">[[</span><span class="st">"D"</span><span class="op">]</span><span class="op">]</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/with.html">with</a></span><span class="op">(</span><span class="va">params</span>,</span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span> <span class="va">dpi.dt</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html">sapply</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="va">S</span>, <span class="kw">function</span><span class="op">(</span><span class="va">i</span><span class="op">)</span> <span class="op">{</span></span>
+<span><span class="va">params</span><span class="op">[[</span><span class="st">"ci"</span><span class="op">]</span><span class="op">]</span><span class="op">[</span><span class="va">i</span><span class="op">]</span> <span class="op">*</span> <span class="va">y</span><span class="op">[</span><span class="va">i</span><span class="op">]</span> <span class="op">*</span> <span class="op">(</span> <span class="fl">1</span> <span class="op">-</span> <span class="va">D</span> <span class="op">-</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="va">y</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="va">i</span><span class="op">]</span><span class="op">)</span> <span class="op">)</span> <span class="op">-</span> </span>
+<span>   <span class="va">params</span><span class="op">[[</span><span class="st">"m"</span><span class="op">]</span><span class="op">]</span><span class="op">[</span><span class="va">i</span><span class="op">]</span> <span class="op">*</span> <span class="va">y</span><span class="op">[</span><span class="va">i</span><span class="op">]</span> <span class="op">-</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span> <span class="va">params</span><span class="op">[[</span><span class="st">"ci"</span><span class="op">]</span><span class="op">]</span><span class="op">[</span><span class="fl">0</span><span class="op">:</span><span class="op">(</span><span class="va">i</span><span class="op">-</span><span class="fl">1</span><span class="op">)</span><span class="op">]</span> <span class="op">*</span> <span class="va">y</span><span class="op">[</span><span class="fl">0</span><span class="op">:</span><span class="op">(</span><span class="va">i</span><span class="op">-</span><span class="fl">1</span><span class="op">)</span><span class="op">]</span> <span class="op">*</span> <span class="va">y</span><span class="op">[</span><span class="va">i</span><span class="op">]</span> <span class="op">)</span>  <span class="op">}</span></span>
+<span>                       <span class="op">)</span></span>
+<span>     <span class="op">)</span></span>
+<span>       <span class="op">)</span></span>
+<span><span class="op">}</span></span></code></pre></div>
+<p>The above code implements the strict hierarchy of eq. <a href="#eq:10">(<strong>??</strong>)</a>, and is inspired by a similar approach by <span class="citation">Roughgarden (<a href="references.html#ref-roughgarden1998">1998</a>)</span>. It also allows us to specify, on the fly, the number of species we want. We also sneak in a parameterization for habitat destruction, <span class="math inline">\(D\)</span>, and we will address that later.</p>
+<p>One goal was to explain the successional patterns of grasses in his study area, the low nutrient grassland/savanna of Minnesota sand plains. Following early succession, the common perennial prairie grass species seemed to form an abundance hierarchy based on competitive ability: the best competitors were the most abundant, and the worst competitors were least abundant. A caricature of a generic species abundance distribution is the geometric distribution, where each species, with rank <span class="math inline">\(i\)</span> makes up a constant, declining, fraction of the total density of all individuals (see Chapter 10 for more detail).<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;The most abundant species has rank equal to 1.&lt;/p&gt;"><sup>59</sup></a> Specifically, the proportional abundance of each species <span class="math inline">\(i\)</span> can be calculated as a function of proportional abundance of the most abundant species, <span class="math inline">\(d\)</span>, and the species rank, <span class="math inline">\(i\)</span>.
+<span class="math display" id="eq:cc11">\[\begin{align}
+  \tag{8.7}
+  p_i&amp;=d(1-d)^{i-1}
+\end{align}\]</span>
+Thus if the most abundant species makes up 20% of the assemblage (<span class="math inline">\(d=0.20\)</span>), the second most abundant species makes up 20% of the remaining 80%, or <span class="math inline">\(0.2(1-0.2)^1=0.16=16\%\)</span> of the community. <span class="citation">D. Tilman (<a href="references.html#ref-tilman1994">1994</a>)</span> showed that if all species experience the same loss rate, then species abundances will conform to a geometric distribution when colonization rates conform to this rule
+<span class="math display" id="eq:col">\[\begin{align}
+  \tag{8.8}
+  c_i&amp;=\frac{m}{\left(1-d\right)^{2i-1}}
+\end{align}\]</span></p>
+<!-- \begin{figure}[ht] -->
+<!--   \centering -->
+<!-- \subfloat[Equilibria and colonization rates]{\includegraphics[width=.48\textwidth]{ccM1.pdf}{#ranks}} -->
+<!-- \subfloat[Dynamics]{\includegraphics[width=.48\textwidth]{ccM2.pdf} {#ccdyn}} -->
+<!--   \caption[Equilibrium Properties]{\subref{ranks} Rank--abundance distribution and the colonization rates that create them ($m=0.04$). \subref{ccdyn} Successional dynamics with the competition--colonization tradeoff, from low initial abundances. Here, equilibrium abundance of the best competitor is 20\% ($d=0.2$), mortality is 4\% ($m=0.04$), and colonization rates are determined by eq. \@ref(eq:col), resulting, at equilibrium, in a geometric species rank--abundance distribution.} -->
+<!-- \end{figure} -->
+<p><strong>Calculating rank–abundance distributions and colonization rates (Fig. <a href="#ranks"><strong>??</strong></a>)</strong>
+Here we select 5 species, with the most abundant species equaling 20% of the biomass in the community, and specify a common mortality or disturbance rate <span class="math inline">\(m\)</span>. We then create <em>expressions</em> for eqs. <a href="compcol.html#eq:cc11">(8.7)</a> and <a href="compcol.html#eq:col">(8.8)</a>.</p>
+<div class="sourceCode" id="cb271"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">no.of.species</span> <span class="op">&lt;-</span> <span class="fl">5</span></span>
+<span><span class="va">ranks</span> <span class="op">&lt;-</span> <span class="fl">1</span><span class="op">:</span><span class="va">no.of.species</span></span>
+<span><span class="va">d</span> <span class="op">&lt;-</span> <span class="fl">.20</span> <span class="co"># relative abundance of dominant species</span></span>
+<span><span class="va">m</span> <span class="op">&lt;-</span> <span class="fl">0.04</span> <span class="co"># mortality</span></span>
+<span></span>
+<span><span class="va">geometric</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/expression.html">expression</a></span><span class="op">(</span><span class="va">d</span><span class="op">*</span><span class="op">(</span><span class="fl">1</span><span class="op">-</span><span class="va">d</span><span class="op">)</span><span class="op">^</span><span class="op">(</span><span class="va">ranks</span><span class="op">-</span><span class="fl">1</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">rel.abun</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/eval.html">eval</a></span><span class="op">(</span><span class="va">geometric</span><span class="op">)</span> <span class="co"># relative abundances</span></span>
+<span></span>
+<span><span class="co"># colonizing rates</span></span>
+<span><span class="va">c.i</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/expression.html">expression</a></span><span class="op">(</span><span class="va">m</span><span class="op">/</span><span class="op">(</span><span class="fl">1</span><span class="op">-</span><span class="va">d</span><span class="op">)</span><span class="op">^</span><span class="op">(</span><span class="fl">2</span><span class="op">*</span><span class="va">ranks</span><span class="op">-</span><span class="fl">1</span><span class="op">)</span> <span class="op">)</span></span>
+<span><span class="va">c.rates</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/eval.html">eval</a></span><span class="op">(</span><span class="va">c.i</span><span class="op">)</span></span></code></pre></div>
+<p>Next we create a plot with two <span class="math inline">\(y\)</span>-axes, using base R graphics.</p>
+<div class="sourceCode" id="cb272"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># graphics parameters</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/par.html">par</a></span><span class="op">(</span>mar<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">5</span>,<span class="fl">4</span>,<span class="fl">1</span>,<span class="fl">4</span><span class="op">)</span>, <span class="co"># margins</span></span>
+<span>    mgp<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">2</span>,<span class="fl">.75</span>,<span class="fl">0</span><span class="op">)</span> <span class="co"># space for axis title, labels, and line</span></span>
+<span>    <span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">ranks</span>, <span class="va">rel.abun</span>, type<span class="op">=</span><span class="st">"b"</span>, </span>
+<span>     ylab<span class="op">=</span><span class="st">"Proportional Abundance"</span>, xlab<span class="op">=</span><span class="st">"Rank"</span>, </span>
+<span>     xlim<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="va">no.of.species</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/par.html">par</a></span><span class="op">(</span>new<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span>; </span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">ranks</span>, <span class="va">c.rates</span>, type<span class="op">=</span><span class="st">"b"</span>, </span>
+<span>     axes<span class="op">=</span><span class="cn">FALSE</span>, ann<span class="op">=</span><span class="cn">FALSE</span>, lty<span class="op">=</span><span class="fl">2</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/axis.html">axis</a></span><span class="op">(</span><span class="fl">4</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/mtext.html">mtext</a></span><span class="op">(</span><span class="st">"Colonization Rates"</span>, side<span class="op">=</span><span class="fl">4</span>, line<span class="op">=</span><span class="fl">2</span><span class="op">)</span></span></code></pre></div>
+<div class="inline-figure"><img src="figs/ccM1-1.png" width="50%"></div>
+<p><strong>Successional dynamics of prairie grasses</strong>
+Here, we set all mortality rates to the same value, one per species, pool all the necessary parameters into a vector (<code>params</code>), and select initial abundances. The initial abundances are merely very low abundances as might be the case in early successional dynamics.</p>
+<div class="sourceCode" id="cb273"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">params</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>ci<span class="op">=</span><span class="va">c.rates</span>, <span class="co"># colonization rates</span></span>
+<span>               m<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span><span class="op">(</span><span class="va">m</span>, <span class="va">no.of.species</span><span class="op">)</span>, <span class="co"># mortalities</span></span>
+<span>               S<span class="op">=</span><span class="va">no.of.species</span>, </span>
+<span>               D<span class="op">=</span><span class="fl">0</span> <span class="co"># habitat destruction</span></span>
+<span>               <span class="op">)</span></span>
+<span><span class="va">init.N</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span><span class="op">(</span><span class="fl">0.1</span>, <span class="va">no.of.species</span><span class="op">)</span> <span class="co"># initial abundances</span></span>
+<span><span class="va">t</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">200</span>, <span class="fl">.1</span><span class="op">)</span>  <span class="co"># time</span></span>
+<span><span class="va">cc.out</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/deSolve/man/ode.html">ode</a></span><span class="op">(</span><span class="va">init.N</span>, <span class="va">t</span>, <span class="va">compcolM</span>, <span class="va">params</span><span class="op">)</span></span></code></pre></div>
+<div class="sourceCode" id="cb274"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">cc.df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html">as.data.frame</a></span><span class="op">(</span><span class="va">cc.out</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
+<span>  <span class="fu">pivot_longer</span><span class="op">(</span>cols<span class="op">=</span><span class="op">-</span><span class="va">time</span>, names_to<span class="op">=</span><span class="st">"Life_history"</span><span class="op">)</span></span>
+<span><span class="va">p</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span>data<span class="op">=</span><span class="va">cc.df</span>, </span>
+<span>            <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x<span class="op">=</span><span class="va">time</span>, y<span class="op">=</span><span class="va">value</span>, linetype<span class="op">=</span><span class="va">Life_history</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> </span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html">geom_line</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> </span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>y <span class="op">=</span> <span class="st">"Proportion of Habitat"</span>, x <span class="op">=</span> <span class="st">"Years"</span><span class="op">)</span></span>
+<span><span class="va">p</span></span></code></pre></div>
+<div class="inline-figure"><img src="figs/ccM2-1.png" width="90%"></div>
+<p><span class="citation">D. Tilman et al. (<a href="references.html#ref-tilman1994b">1994</a>)</span> startled folks when they showed that a common scenario of habitat destruction led to a perfectly counterintuitive result: that habitat destruction led to the very slow but deterministic <em>loss of the best competitor</em>. It was unsettling not only that the dominant species would be lost first <span class="citation">(<a href="references.html#ref-nee:1992vn">Nee and May 1992</a>)</span>, but also that the loss of dominant species will take a long time <span class="citation">(<a href="references.html#ref-tilman1994b">D. Tilman et al. 1994</a>)</span>. This implied that we would not realize the true cost of habitat destruction until long after the damage was done. These two conclusions posed a problem for conservationists:</p>
+<ul>
+<li>Species that were thought safe from extirpation at local scales — the best competitors — could actually be the ones most likely to become extinct, and further,</li>
+<li>That the process of extinction may take a long time to play out, and so the data demonstrating this loss might require a long time to collect (Fig. <a href="#fig:mhd"><strong>??</strong></a>).</li>
+</ul>
+<p>These two predictions constitute the original conception for <em>extinction debt</em>. However, the term has become more broadly used to described the latter phenomenon, that extinction due to habitat destruction may take a long time, and current patterns may be a function of past land use <span class="citation">(<a href="references.html#ref-helm2006">Helm, Hanski, and Pärtel 2006</a>; <a href="references.html#ref-lindborg2004">Lindborg and Eriksson 2004</a>)</span>.</p>
+<p>We see (Fig. <a href="#fig:mhd"><strong>??</strong></a>) the predictable, if counterintuitive, result: the most abundant species, the competitive dominant, becomes extinct over a long period of time, and the next best competitor replaces it as the most abundant species.</p>
+<p>Competition is a local phenomenon, and the better competitor can typically hold onto a given site; however, individuals of <em>all</em> species eventually die. Therefore, for two species to actually coexist in a landscape, even the best competitor must colonize some new space at some point. If habitat destruction reduces habitat availability too far, the worst colonizer (i.e., the best competitor) will be unable to disperse effectively to new habitat.</p>
+<p><strong>Demonstrating effects of habitat destruction</strong></p>
+<p>We use the same functions and parameters as above. We add habitat destruction for a quarter of the available habitat, which is greater that the equilibrium for the dominant species, and will result in the slow loss of the dominant species. We also start the species off at their equilibrium abundances, determined by the geometric distribution.</p>
+<div class="sourceCode" id="cb275"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">params</span><span class="op">[</span><span class="st">"D"</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fl">0.25</span></span>
+<span><span class="va">init.N</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/eval.html">eval</a></span><span class="op">(</span><span class="va">geometric</span><span class="op">)</span></span>
+<span><span class="va">t</span> <span class="op">&lt;-</span> <span class="fl">0</span><span class="op">:</span><span class="fl">1000</span></span>
+<span><span class="va">cchd.out</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/deSolve/man/ode.html">ode</a></span><span class="op">(</span><span class="va">init.N</span>, <span class="va">t</span>, <span class="va">compcolM</span>, <span class="va">params</span><span class="op">)</span></span>
+<span><span class="va">cchd.df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html">as.data.frame</a></span><span class="op">(</span><span class="va">cchd.out</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
+<span>  <span class="fu">pivot_longer</span><span class="op">(</span>cols<span class="op">=</span><span class="op">-</span><span class="va">time</span>, names_to<span class="op">=</span><span class="st">"Species"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">p</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span>data<span class="op">=</span><span class="va">cchd.df</span>, </span>
+<span>            <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x<span class="op">=</span><span class="va">time</span>, y<span class="op">=</span><span class="va">value</span>, linetype<span class="op">=</span><span class="va">Species</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> </span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html">geom_line</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/lims.html">lims</a></span><span class="op">(</span>y<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">.25</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>y <span class="op">=</span> <span class="st">"Proportion of Habitat"</span>, x <span class="op">=</span> <span class="st">"Years"</span><span class="op">)</span></span>
+<span><span class="va">p</span></span></code></pre></div>
+<div class="figure">
+<span style="display:block;" id="fig:MultiHD"></span>
+<img src="figs/MultiHD-1.png" alt="Extinction debt. Initial abundances are at equilibrium in the absence of habitat destruction. Destruction of 25% of the habitat causes the loss of the competitive dominant (wide solid line). The second best competitor eventually become the most common species." width="67%"><p class="caption">
+Figure 8.3: Extinction debt. Initial abundances are at equilibrium in the absence of habitat destruction. Destruction of 25% of the habitat causes the loss of the competitive dominant (wide solid line). The second best competitor eventually become the most common species.
+</p>
+</div>
+</div>
+</div>
+</div>
+<div id="adding-reality-finite-rates-of-competitive-exclusion" class="section level2" number="8.2">
+<h2>
+<span class="header-section-number">8.2</span> Adding Reality: Finite Rates of Competitive Exclusion<a class="anchor" aria-label="anchor" href="#adding-reality-finite-rates-of-competitive-exclusion"><i class="fas fa-link"></i></a>
+</h2>
+<p>While the competition–colonization tradeoff is undoubtedly important, it ignores a fundamental reality that may also be very important: <em>the models above assume competitive exclusion is instantaneous</em>. That assumption may be approximately or qualitatively correct, but on the other hand, it may be misleading. Given the implications of <em>extinction debt</em> for conservation, it is important to explore this further. Indeed, <span class="citation">S. W. Pacala and Rees (<a href="references.html#ref-pacala1998">1998</a>)</span> did so, and came to very different conclusions than did Tilman <em>et al.</em> <span class="citation">(<a href="references.html#ref-tilman1994">D. Tilman 1994</a>)</span>. This section explores the work of Pacala and Rees <span class="citation">(<a href="references.html#ref-pacala1998">S. W. Pacala and Rees 1998</a>)</span>.</p>
+<p>To add a little natural history to our thinking, we should recognize several issues. <em>First</em>, species often show correlated traits: good colonizers often have high maximum growth rates, and high metabolic rates and allocation to reproductive tissue. We refer to these species as <em>r-selected</em> species <span class="citation">(<a href="references.html#ref-macarthur1967">R. H. MacArthur and Wilson 1967</a>; <a href="references.html#ref-macarthur:1962lr">R. H. MacArthur 1962</a>)</span>. <em>Second</em>, when deaths of individuals free up resources, individuals with high maximum growth rates can take advantage of those high levels of resources to grow quickly and reproduce. <em>Third</em>, competitive exclusion takes <em>time</em>. The arrival of a propagule of a superior competitor next to a poor competitor doesn’t cause the instantaneous reduction of resources and exclusion of the poor competitor. Rather, the poor competitor may continue to grow and reproduce even in the presence of the superior competitor <em>prior to the reduction of resources to equilibrium levels</em>. It is only over time, and in the absence of disturbance, that better resource competitors will tend to displace individuals with good colonizing ability and high maximum growth rates.</p>
+<p><span class="citation">S. W. Pacala and Rees (<a href="references.html#ref-pacala1998">1998</a>)</span> examined the effect of <em>finite rates of competitive exclusion</em> on the competition–colonization tradeoff. Implicit in this is the role of maximum growth rate as a trait facilitating coexistence in the landscape. High growth rate can allow a species to reproduce prior to resource reduction and competitive exclusion. This creates an ephemeral or temporary opportunity, and Pacala and Rees referred to this as the <em>successional niche</em>. Species that can take good advantage of the successional niche are thus those with the ability to disperse to, and reproduce in, sites where resources have not yet been depleted by superior competitors. To facilitate their investigation, Pacala and Rees added <em>finite rates of succession</em> to a simple two species competition–colonization model.</p>
+<p><strong>Possible community states</strong></p>
+<p>They envisioned succession on an open site proceeding via three different pathways. They assumed that the following:</p>
+<ul>
+<li>late successional species
+<ul>
+<li>superior competitor,</li>
+<li>slow growth rate,</li>
+<li>low colonizing rate,</li>
+</ul>
+</li>
+<li>early successional species
+<ul>
+<li>inferior competitor,</li>
+<li>high growth rate,</li>
+<li>high colonizing rate.</li>
+</ul>
+</li>
+<li>competitive exclusion takes time.</li>
+</ul>
+<p>They identified five possible states of the successional community (Fig. <a href="compcol.html#fig:PR">8.4</a>).</p>
+<ol style="list-style-type: lower-alpha">
+<li>
+<em>Free</em> — Open, unoccupied space.</li>
+<li>
+<em>Early</em> — Occupied by only the early successional species.</li>
+<li>
+<em>Susceptible</em> — Occupied by only the late successional species and susceptible to invasion by the early successional species because resource levels have not yet been driven low enough to exclude the early successional species.</li>
+<li>
+<em>Mixed</em> — Occupied by both species, and in <em>transition</em> to competitive exclusion.</li>
+<li>
+<em>Resistant</em> — Occupied by only the late successional species and resistant to invasion because resource levels have been driven low enough to exclude early successional species.</li>
+</ol>
+<p>Given the five states, succession can then proceed along any of three pathways (Fig <a href="compcol.html#fig:PR">8.4</a>):</p>
+<ol style="list-style-type: decimal">
+<li>Free <span class="math inline">\(\rightarrow\)</span> Early <span class="math inline">\(\rightarrow\)</span> Mixed <span class="math inline">\(\rightarrow\)</span> Resistant,</li>
+<li>Free <span class="math inline">\(\rightarrow\)</span> Susceptible <span class="math inline">\(\rightarrow\)</span> Mixed <span class="math inline">\(\rightarrow\)</span> Resistant,</li>
+<li>Free <span class="math inline">\(\rightarrow\)</span> Susceptible <span class="math inline">\(\rightarrow\)</span> Resistant.</li>
+</ol>
+<div class="sourceCode" id="cb276"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/include_graphics.html">include_graphics</a></span><span class="op">(</span><span class="st">"figs/PandR.pdf"</span><span class="op">)</span></span></code></pre></div>
+<div class="figure">
+<span style="display:block;" id="fig:PR"></span>
+<embed src="figs/PandR.pdf" title="The state variables in the the successional niche model. Dashed lines indicate mortality; the larger size of the Mixed state merely reminds us that it contains two species instead of one. Each pathway is labelled with the per capita rate from one state to the other. For instance the rate at which Mixed sites are converted to Resistant sites is $g(M)$, and the rate at which Free sites are converted to Early sites is $ac(M+E)$" width="90%" type="application/pdf"></embed><p class="caption">
+Figure 8.4: The state variables in the the successional niche model. Dashed lines indicate mortality; the larger size of the Mixed state merely reminds us that it contains two species instead of one. Each pathway is labelled with the per capita rate from one state to the other. For instance the rate at which Mixed sites are converted to Resistant sites is <span class="math inline">\(g(M)\)</span>, and the rate at which Free sites are converted to Early sites is <span class="math inline">\(ac(M+E)\)</span>
+</p>
+</div>
+<p>In this context, Pacala and Rees reasoned that the competition–colonization tradeoff focuses on mutually exclusive states, and assumes there are only Free, Early, and Resistant states. In contrast, if species coexist exclusively via the competition–maximum growth rate tradeoff, then we would observe only Free, Mixed, and Resistant states. They showed that these two mechanisms are not mutually exclusive and that the roles of finite rates of competitive exclusion and the successional niche in maintaining diversity had been underestimated.</p>
+<p>Note that the interpretation of this model is thus a little different than other models that we have encountered. It is modeling the dynamics of <em>different community states</em>. It makes assumptions about species traits, but tracks the frequency of different community states. Technically speaking, any metapopulation model is doing this, but in the contexts we have seen, the states of different patches of the environment were considered to be completely correlated with the abundance of each species modeled. Here we have five different state variables, or possible states, and only two species.</p>
+<p>The traits of the two species that create these four states are embedded in this model with four parameters, <span class="math inline">\(c\)</span>, <span class="math inline">\(\alpha\)</span>, <span class="math inline">\(m\)</span>, and <span class="math inline">\(\gamma\)</span>. There is a base colonization rate, <span class="math inline">\(c\)</span>, relative colonization rate of the poor competitor, <span class="math inline">\(\alpha\)</span>, mortality (or disturbance rate), <span class="math inline">\(m\)</span>, and the rate of competitive exclusion, <span class="math inline">\(\gamma\)</span>. We could think of <span class="math inline">\(\gamma\)</span> as the rate at which the better competitor can grow and deplete resources within a small patch. We model the community states as follows, using <span class="math inline">\(F\)</span> to indicate a fifth state of Free (unoccupied) space.
+<span class="math display" id="eq:sn1">\[\begin{align}
+  \tag{8.9}
+  \frac{dS}{dt}&amp; = \left[ c\left(S+R+M\right)\right]F - \left[\alpha c\left(M+E\right)\right]S - \gamma S - mS\\
+\frac{dE}{dt}&amp; = \left[\alpha c\left(M+E\right)\right]F - \left[ c\left(S+R+M\right)\right]E - mE\\
+\frac{dM}{dt}&amp; = \left[\alpha c\left(M+E\right)\right]S + \left[ c\left(S+R+M\right)\right]E - \gamma M - mM\\
+\frac{dR}{dt}&amp; = \gamma\left( S + M\right) - mR\\
+          F&amp;= 1-S-E-M-R
+\end{align}\]</span></p>
+<div id="successional-niche-model" class="section level3" number="8.2.1">
+<h3>
+<span class="header-section-number">8.2.1</span> Successional niche model<a class="anchor" aria-label="anchor" href="#successional-niche-model"><i class="fas fa-link"></i></a>
+</h3>
+<p>In addition to representing the original successional niche model, the <code>primer</code> package also slips in a parameter for habitat destruction, <span class="math inline">\(D\)</span>. As with the above model, habitat destruction <span class="math inline">\(D\)</span> is simply a value between 0–1 that accounts for the proportion of the habitat destroyed. <span class="citation">S. W. Pacala and Rees (<a href="references.html#ref-pacala1998">1998</a>)</span> didn’t do that, but we can add it here. We also have to ensure that <span class="math inline">\(F\)</span> cannot be negative.</p>
+<div class="sourceCode" id="cb277"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">succniche</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">t</span>, <span class="va">y</span>, <span class="va">params</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="va">S</span> <span class="op">&lt;-</span> <span class="va">y</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>; <span class="va">E</span> <span class="op">&lt;-</span> <span class="va">y</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span>; <span class="va">M</span> <span class="op">&lt;-</span> <span class="va">y</span><span class="op">[</span><span class="fl">3</span><span class="op">]</span>; <span class="va">R</span> <span class="op">&lt;-</span> <span class="va">y</span><span class="op">[</span><span class="fl">4</span><span class="op">]</span></span>
+<span>    <span class="cn">F</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">max</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">1</span> <span class="op">-</span> <span class="va">params</span><span class="op">[</span><span class="st">"D"</span><span class="op">]</span> <span class="op">-</span> <span class="va">S</span> <span class="op">-</span> <span class="va">E</span> <span class="op">-</span> <span class="va">M</span> <span class="op">-</span> <span class="va">R</span><span class="op">)</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/with.html">with</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html">as.list</a></span><span class="op">(</span><span class="va">params</span><span class="op">)</span>, <span class="op">{</span></span>
+<span>    <span class="va">dS</span> <span class="op">=</span> <span class="va">c</span><span class="op">*</span><span class="op">(</span><span class="va">S</span><span class="op">+</span><span class="va">R</span><span class="op">+</span><span class="va">M</span><span class="op">)</span><span class="op">*</span><span class="cn">F</span> <span class="op">-</span> <span class="va">a</span><span class="op">*</span><span class="va">c</span><span class="op">*</span><span class="op">(</span><span class="va">M</span><span class="op">+</span><span class="va">E</span><span class="op">)</span><span class="op">*</span><span class="va">S</span> <span class="op">-</span> <span class="va">g</span><span class="op">*</span><span class="va">S</span> <span class="op">-</span> <span class="va">m</span><span class="op">*</span><span class="va">S</span></span>
+<span>    <span class="va">dR</span> <span class="op">=</span> <span class="va">g</span><span class="op">*</span><span class="op">(</span><span class="va">S</span><span class="op">+</span><span class="va">M</span><span class="op">)</span> <span class="op">-</span> <span class="va">m</span><span class="op">*</span><span class="va">R</span></span>
+<span>    <span class="va">dM</span> <span class="op">=</span> <span class="va">a</span><span class="op">*</span><span class="va">c</span><span class="op">*</span><span class="op">(</span><span class="va">M</span><span class="op">+</span><span class="va">E</span><span class="op">)</span><span class="op">*</span><span class="va">S</span> <span class="op">+</span> <span class="va">c</span><span class="op">*</span><span class="op">(</span><span class="va">S</span><span class="op">+</span><span class="va">R</span><span class="op">+</span><span class="va">M</span><span class="op">)</span><span class="op">*</span><span class="va">E</span> <span class="op">-</span> <span class="va">g</span><span class="op">*</span><span class="va">M</span> <span class="op">-</span> <span class="va">m</span><span class="op">*</span><span class="va">M</span></span>
+<span>    <span class="va">dE</span> <span class="op">=</span> <span class="va">a</span><span class="op">*</span><span class="va">c</span><span class="op">*</span><span class="op">(</span><span class="va">M</span><span class="op">+</span><span class="va">E</span><span class="op">)</span><span class="op">*</span><span class="cn">F</span> <span class="op">-</span> <span class="va">c</span><span class="op">*</span><span class="op">(</span><span class="va">S</span><span class="op">+</span><span class="va">R</span><span class="op">+</span><span class="va">M</span><span class="op">)</span><span class="op">*</span><span class="va">E</span> <span class="op">-</span> <span class="va">m</span><span class="op">*</span><span class="va">E</span></span>
+<span>    <span class="kw"><a href="https://rdrr.io/r/base/function.html">return</a></span><span class="op">(</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">dS</span>, <span class="va">dE</span>, <span class="va">dM</span>, <span class="va">dR</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="op">}</span><span class="op">)</span></span>
+<span><span class="op">}</span></span></code></pre></div>
+<p>Now we can examine the dynamics of this model. When we make the rate of competitive exclusion very high, the model approximates the simple competition–colonization tradeoff (Fig. <a href="compcol.html#fig:PR">8.4</a>)<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content='&lt;p&gt;When &lt;span class="math inline"&gt;\(\gamma=5\)&lt;/span&gt;, this means that in one year, exclusion will be 99.3% complete, because it is a pure negative exponential process, where &lt;span class="math inline"&gt;\(X_t=X_0e^{\gamma t}\)&lt;/span&gt;. Similarly, recall our calculation of doubling time, &lt;span class="math inline"&gt;\(t=log(X)/r\)&lt;/span&gt;, where &lt;span class="math inline"&gt;\(X\)&lt;/span&gt; is the relative size of the population (e.g., 2, if the population doubles); here &lt;span class="math inline"&gt;\(r&amp;lt;0\)&lt;/span&gt; and time is &lt;span class="math inline"&gt;\(&amp;lt; 1\)&lt;/span&gt;.&lt;/p&gt;'><sup>60</sup></a> The susceptible and mixed states are not apparent, and the better competitor slowly replaces the good colonizer.</p>
+</div>
+<div id="dynamics-of-the-successional-niche-model-with-a-high-rate-of-competitive-exclusion" class="section level3" number="8.2.2">
+<h3>
+<span class="header-section-number">8.2.2</span> Dynamics of the successional niche model with a high rate of competitive exclusion<a class="anchor" aria-label="anchor" href="#dynamics-of-the-successional-niche-model-with-a-high-rate-of-competitive-exclusion"><i class="fas fa-link"></i></a>
+</h3>
+<p>For no particular reason, we pretend that the poor competitor is <span class="math inline">\(7 \times\)</span> as fast at colonizing (<span class="math inline">\(\alpha=7\)</span>), and that the rate of competitive exclusion is very high, <span class="math inline">\(\gamma=5\)</span>. We assume mortality is low, and there is no habitat destruction.</p>
+<div class="sourceCode" id="cb278"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">params.suc</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span>a<span class="op">=</span><span class="fl">7</span>, <span class="co"># rel. colonizing rate of Early</span></span>
+<span>                c<span class="op">=</span><span class="fl">0.2</span>, <span class="co"># colonizing rate of Late</span></span>
+<span>                g<span class="op">=</span><span class="fl">5</span>, <span class="co"># rapid competitive exclusion</span></span>
+<span>                m<span class="op">=</span><span class="fl">0.04</span>, <span class="co"># background mortality</span></span>
+<span>                D<span class="op">=</span><span class="fl">0</span> <span class="co"># no habitat destruction</span></span>
+<span>                <span class="op">)</span></span></code></pre></div>
+<p>Next we let time be 50 y, and initial abundances reflect a competitive advantage to the early successional species, and run the model.</p>
+<div class="sourceCode" id="cb279"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">t</span><span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">50</span>,<span class="fl">.1</span><span class="op">)</span></span>
+<span><span class="va">init.suc</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span>S<span class="op">=</span><span class="fl">0.01</span>, E<span class="op">=</span><span class="fl">0.03</span>, M<span class="op">=</span><span class="fl">0.0</span>, R<span class="op">=</span><span class="fl">0.00</span><span class="op">)</span></span>
+<span><span class="va">init.suc</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span>S<span class="op">=</span><span class="fl">0.45</span>, E<span class="op">=</span><span class="fl">0.55</span>, M<span class="op">=</span><span class="fl">0.0</span>, R<span class="op">=</span><span class="fl">0.00</span><span class="op">)</span></span>
+<span><span class="va">ccg.out</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/deSolve/man/ode.html">ode</a></span><span class="op">(</span><span class="va">init.suc</span>, <span class="va">t</span>, <span class="va">succniche</span>, <span class="va">params.suc</span><span class="op">)</span></span></code></pre></div>
+<p>Last we plot our projections.</p>
+<div class="sourceCode" id="cb280"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">ccg.df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html">as.data.frame</a></span><span class="op">(</span><span class="va">ccg.out</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
+<span>  <span class="fu">pivot_longer</span><span class="op">(</span>cols<span class="op">=</span><span class="op">-</span><span class="va">time</span>, names_to<span class="op">=</span><span class="st">"State"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="va">ccg.df</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x<span class="op">=</span><span class="va">time</span>, y<span class="op">=</span><span class="va">value</span>, </span>
+<span>                   linetype<span class="op">=</span><span class="va">State</span>, color<span class="op">=</span><span class="va">State</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> </span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html">geom_line</a></span><span class="op">(</span><span class="op">)</span> </span></code></pre></div>
+<div class="figure">
+<span style="display:block;" id="fig:SNPR1"></span>
+<img src="figs/SNPR1-1.png" alt="Dynamics of the successional niche model with a high rate of competitive exclusion." width="65%"><p class="caption">
+Figure 8.5: Dynamics of the successional niche model with a high rate of competitive exclusion.
+</p>
+</div>
+</div>
+<div id="dynamics-of-the-successional-niche-model-with-a-low-rate-of-competitive-exclusion" class="section level3" number="8.2.3">
+<h3>
+<span class="header-section-number">8.2.3</span> Dynamics of the successional niche model with a low rate of competitive exclusion<a class="anchor" aria-label="anchor" href="#dynamics-of-the-successional-niche-model-with-a-low-rate-of-competitive-exclusion"><i class="fas fa-link"></i></a>
+</h3>
+<p>Now let’s slow down competitive exclusion, that is, we will slow the transition from <span class="math inline">\(M\)</span> to <span class="math inline">\(R\)</span>. We set <span class="math inline">\(\gamma\)</span> to be a small number, so that only 10% of the mixed plots become resistant plots over one year (<span class="math inline">\(\gamma=0.1\)</span>). When we slow down competitive exclusion, we see that we get persistence of both species (Fig. <a href="#fig:SPR2"><strong>??</strong></a>). First, we get greater frequency of the mixed state, where we always see a large fraction of the mixed habitat occupied by both species (state <span class="math inline">\(M\)</span>), relative to the case with rapid competitive exclusion (Fig. <a href="#fig:SPR1"><strong>??</strong></a>). In addition, we see a higher proportion of habitat in early succession phase (state <span class="math inline">\(E\)</span>).</p>
+<p>Here we slow down the rate of competitive exclusion, and 90% of the mixed sites stay mixed after a one year interval.</p>
+<div class="sourceCode" id="cb281"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">params.suc</span><span class="op">[</span><span class="st">"g"</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fl">.1</span>; <span class="fu"><a href="https://rdrr.io/r/base/Log.html">exp</a></span><span class="op">(</span><span class="op">-</span><span class="fl">.1</span><span class="op">)</span></span></code></pre></div>
+<pre><code>## [1] 0.9048374</code></pre>
+<div class="sourceCode" id="cb283"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">ccg.out</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/deSolve/man/ode.html">ode</a></span><span class="op">(</span><span class="va">init.suc</span>, <span class="va">t</span>, <span class="va">succniche</span>, <span class="va">params.suc</span><span class="op">)</span></span></code></pre></div>
+<p>We plot our projections.</p>
+<div class="sourceCode" id="cb284"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">ccg.df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html">as.data.frame</a></span><span class="op">(</span><span class="va">ccg.out</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
+<span>  <span class="fu">pivot_longer</span><span class="op">(</span>cols<span class="op">=</span><span class="op">-</span><span class="va">time</span>, names_to<span class="op">=</span><span class="st">"State"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="va">ccg.df</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x<span class="op">=</span><span class="va">time</span>, y<span class="op">=</span><span class="va">value</span>, </span>
+<span>                   linetype<span class="op">=</span><span class="va">State</span>, color<span class="op">=</span><span class="va">State</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> </span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html">geom_line</a></span><span class="op">(</span><span class="op">)</span> </span></code></pre></div>
+<div class="figure">
+<span style="display:block;" id="fig:SNPR2"></span>
+<img src="figs/SNPR2-1.png" alt="Dynamics of the successional niche model with a low rate of competitive exclusion." width="65%"><p class="caption">
+Figure 8.6: Dynamics of the successional niche model with a low rate of competitive exclusion.
+</p>
+</div>
+</div>
+<div id="dynamics-of-the-successional-niche-model-with-an-intermediate-disturbance-regime" class="section level3" number="8.2.4">
+<h3>
+<span class="header-section-number">8.2.4</span> Dynamics of the successional niche model with an intermediate disturbance regime<a class="anchor" aria-label="anchor" href="#dynamics-of-the-successional-niche-model-with-an-intermediate-disturbance-regime"><i class="fas fa-link"></i></a>
+</h3>
+<p>Now let’s imagine that mortality rate increases from 1% (Fig. <a href="#fig:SPR1"><strong>??</strong></a>) to 10% (Fig. <a href="#fig:SPR3"><strong>??</strong></a>). (<span class="math inline">\(m=0.04\)</span> <em>vs.</em> <span class="math inline">\(m=0.105\)</span>). With this moderate disturbance rate, the system takes longer to approach an equilibrium, and also has a higher frequency of sites with just the early sucessional species (Fig. <a href="#fig:SPR3"><strong>??</strong></a>). This reflects the mechanisms underlying the <em>intermediate disturbance hypothesis</em> <span class="citation">(<a href="references.html#ref-connell1978">Connell 1978</a>)</span>. At very low disturbance rates, the best competitor prevails. At moderate disturbance rates, however, we have far more habitat that supports both <em>pioneer</em> species (good colonizers) as well as <em>climax</em> species (superior competitor). Note that slowing down competitive exclusion (Fig. <a href="#fig:SPR2"><strong>??</strong></a>) or increasing the disturbance rate (Fig. <a href="#fig:SPR3"><strong>??</strong></a>) result in similar frequencies of both species, but via different mechanisms.</p>
+<p>Here we keep a low rate of competitive exclusion (as above), but higher disturbance rates (10% of the habitat is disturbed each year).</p>
+<div class="sourceCode" id="cb285"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">params.suc</span><span class="op">[</span><span class="st">"m"</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fl">0.105</span> <span class="co"># higher disturbance rate</span></span>
+<span><span class="va">ccg.out</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/deSolve/man/ode.html">ode</a></span><span class="op">(</span><span class="va">init.suc</span>, <span class="va">t</span>, <span class="va">succniche</span>, <span class="va">params.suc</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">ccg.df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html">as.data.frame</a></span><span class="op">(</span><span class="va">ccg.out</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
+<span>  <span class="fu">pivot_longer</span><span class="op">(</span>cols<span class="op">=</span><span class="op">-</span><span class="va">time</span>, names_to<span class="op">=</span><span class="st">"State"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="va">ccg.df</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x<span class="op">=</span><span class="va">time</span>, y<span class="op">=</span><span class="va">value</span>, </span>
+<span>                   linetype<span class="op">=</span><span class="va">State</span>, color<span class="op">=</span><span class="va">State</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> </span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html">geom_line</a></span><span class="op">(</span><span class="op">)</span> </span></code></pre></div>
+<div class="figure">
+<span style="display:block;" id="fig:SNPR3"></span>
+<img src="figs/SNPR3-1.png" alt="Dynamics of the successional niche model with an intermediate disturbance rate" width="65%"><p class="caption">
+Figure 8.7: Dynamics of the successional niche model with an intermediate disturbance rate
+</p>
+</div>
+</div>
+<div id="dynamics-of-the-pure-successional-niche-model" class="section level3" number="8.2.5">
+<h3>
+<span class="header-section-number">8.2.5</span> Dynamics of the pure successional niche model<a class="anchor" aria-label="anchor" href="#dynamics-of-the-pure-successional-niche-model"><i class="fas fa-link"></i></a>
+</h3>
+<p>Now let’s explore the pure successional niche. Imagine that there is no competition–colonization tradeoff: both species have high colonization rates, but the superior competitor retains its competitive edge. However, we also assume that the rate of competitive exclusion is finite (<span class="math inline">\(\gamma \ll \infty\)</span>). The pure competition–colonization model would predict that we do not get coexistence. <em>In contrast, we will find that the successional niche model allows coexistence</em>. Let’s set the relative competitive ability equal (<span class="math inline">\(\alpha=1\)</span>) and increase the base colonization rate to the higher of the two original rates (<span class="math inline">\(c=7\)</span>). We also let the rate of competitive exclusion be small (<span class="math inline">\(\gamma &lt; 1\)</span>).</p>
+<p>What do the dynamics of the pure successional niche model look like (Fig. <a href="#fig:SPR4"><strong>??</strong></a>)? We see that we achieve coexistence because the system retains both the mixed state and the resistant state. With both species colonizing everywhere (high <span class="math inline">\(c\)</span>), the successional niche allows coexistence because of the finite rate of competitive exclusion. Species 1 now occupies primarily the <em>successional niche</em>, persisting in only the mixed state <span class="math inline">\(M\)</span> (Fig. <a href="#fig:SPR4"><strong>??</strong></a>).</p>
+<p>Here we equal and high colonization rates, and a slow rate of competitive exclusion.</p>
+<div class="sourceCode" id="cb286"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">params.suc</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span>a<span class="op">=</span><span class="fl">1</span>, c<span class="op">=</span><span class="fl">.7</span>, g<span class="op">=</span><span class="fl">.1</span>, m<span class="op">=</span><span class="fl">0.04</span>, D<span class="op">=</span><span class="fl">0</span><span class="op">)</span></span>
+<span><span class="va">ccg.out</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/deSolve/man/ode.html">ode</a></span><span class="op">(</span><span class="va">init.suc</span>, <span class="va">t</span>, <span class="va">succniche</span>, <span class="va">params.suc</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">ccg.df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html">as.data.frame</a></span><span class="op">(</span><span class="va">ccg.out</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
+<span>  <span class="fu">pivot_longer</span><span class="op">(</span>cols<span class="op">=</span><span class="op">-</span><span class="va">time</span>, names_to<span class="op">=</span><span class="st">"State"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="va">ccg.df</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x<span class="op">=</span><span class="va">time</span>, y<span class="op">=</span><span class="va">value</span>, </span>
+<span>                   linetype<span class="op">=</span><span class="va">State</span>, color<span class="op">=</span><span class="va">State</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> </span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html">geom_line</a></span><span class="op">(</span><span class="op">)</span> </span></code></pre></div>
+<div class="figure">
+<span style="display:block;" id="fig:SNPR4"></span>
+<img src="figs/SNPR4-1.png" alt="Dynamics of the pure successional niche model" width="65%"><p class="caption">
+Figure 8.8: Dynamics of the pure successional niche model
+</p>
+</div>
+</div>
+<div id="an-analytical-solution" class="section level3" number="8.2.6">
+<h3>
+<span class="header-section-number">8.2.6</span> An analytical solution<a class="anchor" aria-label="anchor" href="#an-analytical-solution"><i class="fas fa-link"></i></a>
+</h3>
+<p>Let’s consider the successional niche analytically by effectively eliminating colonization limitation for either species (<span class="math inline">\(c&gt;&gt;1\)</span>, <span class="math inline">\(\alpha=1\)</span>). If there is no colonization limitation, then propagules of both species are everywhere, all the time. This means that states <span class="math inline">\(F\)</span>, <span class="math inline">\(E\)</span>, and <span class="math inline">\(S\)</span> no longer exist, because you never have free space or one species without the other. Therefore <span class="math inline">\(M\)</span> is one of the remaining states. The only monoculture that exists is <span class="math inline">\(R\)</span>, because in <span class="math inline">\(R\)</span>, both propagules may arrive, but the early successional species 1 cannot establish. Therefore the two states in the pure successional niche model are <span class="math inline">\(M\)</span> and <span class="math inline">\(R\)</span>.</p>
+<p>How does <span class="math inline">\(M\)</span> now behave? <span class="math inline">\(M\)</span> can increase when <span class="math inline">\(R\)</span> dies back, and <span class="math inline">\(M\)</span> will decrease through competitive exclusion. We might also imagine that <span class="math inline">\(M\)</span> would decrease through its own mortality; we have stipulated, however, that colonization is not limiting. Therefore, both species are always present, if only as propagules. The rate of change for <span class="math inline">\(M\)</span> is,
+<span class="math display">\[\frac{d M}{d t} = mR - \gamma M\]</span>
+while R uses the rest of the space, <span class="math inline">\(R = 1-M\)</span>.</p>
+<p>The equilibria for the two states can be found by first setting <span class="math inline">\(\dot{M}=0\)</span> and substituting <span class="math inline">\(1-M\)</span> in for <span class="math inline">\(R\)</span>, as
+<span class="math display">\[\begin{align*}
+  0 &amp;= m\left(1-M\right) - \gamma M\\
+  M^* &amp;= \frac{m}{\gamma + m}
+\end{align*}\]</span>
+making
+<span class="math display">\[R^* = \frac{\gamma}{\gamma+m}\]</span>.</p>
+<p>Up until now, we have focused on the frequencies of the four <em>states</em>, rather than the frequencies of the two types of species (early successional and competitive dominant). If we are interested in the relative abundances of the two types of species, we merely have to make assumptions about how abundant they are in each different state. If we assume that they are equally abundant in each state, then the abundance of the early successional species is <span class="math inline">\(E+M\)</span> and the abundance of the competitive dominant is <span class="math inline">\(S+M+R\)</span>.</p>
+</div>
+<div id="extinction-debt-with-the-successional-niche" class="section level3" number="8.2.7">
+<h3>
+<span class="header-section-number">8.2.7</span> Extinction debt with the successional niche?<a class="anchor" aria-label="anchor" href="#extinction-debt-with-the-successional-niche"><i class="fas fa-link"></i></a>
+</h3>
+<p>Let us finally investigate extinction debt under the assumption of the successional niche. First, we verify that we get extinction debt with the parameterization that represents the simple competition-colonizaiton tradeoff. Second, we reduce <span class="math inline">\(\gamma\)</span> and <span class="math inline">\(\alpha\)</span> to make the successional niche the primary mechanism, and see what happens to the pattern of extinction.</p>
+<div class="sourceCode" id="cb287"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">include_graphics</span><span class="op">(</span><span class="st">"figs/ED1.pdf"</span><span class="op">)</span></span>
+<span><span class="fu">include_graphics</span><span class="op">(</span><span class="st">"figs/ED2.pdf"</span><span class="op">)</span></span></code></pre></div>
+<div class="figure">
+<span style="display:block;" id="fig:ed"></span>
+<embed src="figs/ED1.pdf" title="[Dynamics of a successional community]{Extinction dynamics beginning equilibrium abundances. left: Relying on the competition--colonization tradeoff results in a loss of the competitive dominant; right: Relying on the successional niche tradeoff results in a persistance of the competitive dominant." width="48%" type="application/pdf"></embed><embed src="figs/ED2.pdf" title="[Dynamics of a successional community]{Extinction dynamics beginning equilibrium abundances. left: Relying on the competition--colonization tradeoff results in a loss of the competitive dominant; right: Relying on the successional niche tradeoff results in a persistance of the competitive dominant." width="48%" type="application/pdf"></embed><p class="caption">
+Figure 8.9: [Dynamics of a successional community]{Extinction dynamics beginning equilibrium abundances. left: Relying on the competition–colonization tradeoff results in a loss of the competitive dominant; right: Relying on the successional niche tradeoff results in a persistance of the competitive dominant.
+</p>
+</div>
+<p><strong>Dynamics of the extinction with the successional niche model</strong></p>
+<p>Here we approximate the competitive-colonization model with unequal colonization rates, and a very high rate of competitive exclusion. We then find, through brute force, the equlibria for our parameter set by integrating a long time and keeping the last observations as the equilibria.</p>
+<div class="sourceCode" id="cb288"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">params.1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span>a<span class="op">=</span><span class="fl">10</span>, c<span class="op">=</span><span class="fl">.1</span>, g<span class="op">=</span><span class="fl">10</span>, m<span class="op">=</span><span class="fl">0.04</span>, D<span class="op">=</span><span class="fl">0</span><span class="op">)</span></span>
+<span><span class="va">equilibria.CC</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/deSolve/man/ode.html">ode</a></span><span class="op">(</span><span class="va">init.suc</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">500</span>, <span class="va">succniche</span>, <span class="va">params.1</span><span class="op">)</span><span class="op">[</span><span class="fl">500</span>, <span class="op">-</span><span class="fl">1</span><span class="op">]</span></span></code></pre></div>
+<p>We then create enough habitat destruction to eliminate the late successional species, and plot the result.</p>
+<div class="sourceCode" id="cb289"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">params.1D</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span>a<span class="op">=</span><span class="fl">10</span>, c<span class="op">=</span><span class="fl">.1</span>, g<span class="op">=</span><span class="fl">10</span>, m<span class="op">=</span><span class="fl">0.04</span>, D <span class="op">=</span> <span class="fl">0.6</span><span class="op">)</span></span>
+<span><span class="va">t</span> <span class="op">&lt;-</span> <span class="fl">1</span><span class="op">:</span><span class="fl">1000</span></span>
+<span><span class="va">ccg.out1D</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/deSolve/man/ode.html">ode</a></span><span class="op">(</span><span class="va">equilibria.CC</span>, <span class="va">t</span>, <span class="va">succniche</span>, <span class="va">params.1D</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">ccg.df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html">as.data.frame</a></span><span class="op">(</span><span class="va">ccg.out1D</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
+<span>  <span class="fu">pivot_longer</span><span class="op">(</span>cols<span class="op">=</span><span class="op">-</span><span class="va">time</span>, names_to<span class="op">=</span><span class="st">"State"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="va">ccg.df</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x<span class="op">=</span><span class="va">time</span>, y<span class="op">=</span><span class="va">value</span>, </span>
+<span>                   linetype<span class="op">=</span><span class="va">State</span>, color<span class="op">=</span><span class="va">State</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> </span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html">geom_line</a></span><span class="op">(</span><span class="op">)</span> </span></code></pre></div>
+<div class="inline-figure"><img src="figs/ED1-1.png" width="90%"></div>
+<p>Next, we use the successional niche, by making colonization rates equal and high, and <span class="math inline">\(\gamma\)</span> small (i.e., competitive exclusion slow). We then find our equilibria, without habitat destruction.</p>
+<div class="sourceCode" id="cb290"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">params.2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span>a<span class="op">=</span><span class="fl">1</span>, c<span class="op">=</span><span class="fl">1</span>, g<span class="op">=</span><span class="fl">.1</span>, m<span class="op">=</span><span class="fl">0.04</span>, D<span class="op">=</span><span class="fl">0</span><span class="op">)</span></span>
+<span><span class="va">equilibria.SN</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/deSolve/man/ode.html">ode</a></span><span class="op">(</span><span class="va">init.suc</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">500</span>, <span class="va">succniche</span>, <span class="va">params.2</span><span class="op">)</span><span class="op">[</span><span class="fl">500</span>, <span class="op">-</span><span class="fl">1</span><span class="op">]</span></span></code></pre></div>
+<p>We then create habitat destruction, and plot the result.</p>
+<div class="sourceCode" id="cb291"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">params.2D</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span>a<span class="op">=</span><span class="fl">1</span>, c<span class="op">=</span><span class="fl">.7</span>, g<span class="op">=</span><span class="fl">.1</span>, m<span class="op">=</span><span class="fl">0.04</span>, D<span class="op">=</span><span class="fl">0.7</span><span class="op">)</span></span>
+<span><span class="va">ccg.out2D</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/deSolve/man/ode.html">ode</a></span><span class="op">(</span><span class="va">equilibria.SN</span>, <span class="va">t</span>, <span class="va">succniche</span>,</span>
+<span>                            <span class="va">params.2D</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">ccg.df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html">as.data.frame</a></span><span class="op">(</span><span class="va">ccg.out2D</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
+<span>  <span class="fu">pivot_longer</span><span class="op">(</span>cols<span class="op">=</span><span class="op">-</span><span class="va">time</span>, names_to<span class="op">=</span><span class="st">"State"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="va">ccg.df</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x<span class="op">=</span><span class="va">time</span>, y<span class="op">=</span><span class="va">value</span>, </span>
+<span>                   linetype<span class="op">=</span><span class="va">State</span>, color<span class="op">=</span><span class="va">State</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> </span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html">geom_line</a></span><span class="op">(</span><span class="op">)</span> </span></code></pre></div>
+<div class="inline-figure"><img src="figs/ED2-1.png" width="90%"></div>
+<p>We can compare patterns of extinction under these two scenarios (Fig. <a href="#fig:EDSN"><strong>??</strong></a>, without and with the successional niche). In doing so, we find <em>a complete reversal of our conclusions</em>: when the primary mechanism of coexistence is the successional niche, we find that the competitive dominant persists, rather than the early successional species.</p>
+<p>These opposing predictions regarding the extinction debt highlight the important of getting the mechanism right. They also illustrate the power of simplistic models to inform understanding.</p>
+</div>
+</div>
+<div id="storage-effect" class="section level2" number="8.3">
+<h2>
+<span class="header-section-number">8.3</span> Storage effect<a class="anchor" aria-label="anchor" href="#storage-effect"><i class="fas fa-link"></i></a>
+</h2>
+<p>What if all of this is wrong? What if none of these tradeoffs underlie coexistence? Jim Clark and his colleagues <span class="citation">(<a href="references.html#ref-clark:2004le">Clark, LaDeau, and Ibanez 2004</a>)</span> examined dispersal traits of co-occurring deciduous forest trees (fecundity, dispersal), and successional status, and found no evidence that early successional species had higher dispersal capacity. This suggests a lack of support for competition–colonization tradeoffs among coexisting species in a persistent community. Rather, they found evidence that <em>asynchronous success in reproduction</em> of these <em>long-lived organisms</em> allowed them to coexist. These traits helped generate a mechanism referred to as the <em>storage effect</em> <span class="citation">Warner and Chesson (<a href="references.html#ref-warner1985">1985</a>)</span>.</p>
+<p><em>The storage effect occurs when a species’ interspecific competitive ability varies with the environment and does so in a way that helps it persist</em> <span class="citation">(<a href="references.html#ref-barabas2018">Barabás, D’Andrea, and Stump 2018</a>; <a href="references.html#ref-ellner2019">Stephen P. Ellner et al. 2019</a>)</span>. It was first seen when competing species benefited from conditions that were uniquely good for it, but could also <em>store</em> energy for reproduction during bad times until favored conditions arise <span class="citation">Warner and Chesson (<a href="references.html#ref-warner1985">1985</a>)</span>. The storage effect is not a particular model as is the case with Lotka-Volterra competition models. Rather, it is a set of assumptions or conditions which allow persistence.</p>
+<p>Assumptions include:</p>
+<ul>
+<li>
+<em>Differential responses</em> Each species benefits from a different environment, such that each encounters both favorable and unfavorable periods for reproduction.</li>
+<li>
+<em>Environment–competition covariation</em> The same conditions that favor reproduction for a particular species also increase competition intensity for that species.</li>
+<li>
+<em>Buffered population growth</em> Each species has a resistant stage (e.g., long lived adults, seeds, spores, eggs) that prevents unfavorable times from being so bad as to drive the species extinct.</li>
+</ul>
+<p>All of this depends on an assumption about the environment, that it fluctuates in a manner to which species respond. Environmental fluctuation is common in nature, and is a necessary condition for this model.</p>
+<div class="figure">
+<span style="display:block;" id="fig:storage-figs"></span>
+<img src="figs/storage-figs-1.png" alt="Population growth rates and their differentional responses to competition and resource availability (Chesson 1994). A positive storage effect occurs with **differential responses and subadditive interaction** between of competition and resource availability. " width="90%"><p class="caption">
+Figure 8.10: Population growth rates and their differentional responses to competition and resource availability (Chesson 1994). A positive storage effect occurs with <strong>differential responses and subadditive interaction</strong> between of competition and resource availability.
+</p>
+</div>
+<p>Mathematically, the storage effect is often represented with the time-dependent per capita growth of a species as,</p>
+<p><span class="math display">\[r(t) = E(t) - C(t) + \gamma E(t) C(t)\]</span>
+and can also be represented by average<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;the bar over the variables indicates ‘average’.&lt;/p&gt;"><sup>61</sup></a> long term growth rates,</p>
+<p><span class="math display">\[\bar{r} = \bar{E} - \bar{C} + \gamma \left( \bar{E}\bar{C} - \mathrm{Cov}(\bar{E},\bar{C}) \right)\]</span></p>
+<p>where,
+- the bars over variables indicate long-term averages,
+- <span class="math inline">\(r_t\)</span> is the per capita growth rate at time <span class="math inline">\(t\)</span>,
+- <span class="math inline">\(E(t)\)</span> is the relative benefit or contribution of the environment to <span class="math inline">\(r(t)\)</span> at time <span class="math inline">\(t\)</span>,
+- <span class="math inline">\(C(t)\)</span> is the relative cost of competition to <span class="math inline">\(r(t)\)</span> at time <span class="math inline">\(t\)</span>,
+- <span class="math inline">\(\gamma\)</span> is the magnitude of the storage effect,
+- <span class="math inline">\(\gamma E(t) C(t)\)</span> is the storage effect, and
+- <span class="math inline">\(\mathrm{Cov()}\)</span> is the covariance operator.</p>
+<p>If, for instance, winter rains favor a particular desert annual, that desert annual will experience the greatest intraspecific competition following a wet winter precisely because of its large population size.</p>
+<p>One prediction of the storage effect is that small population sizes will be more variable (have higher <span class="math inline">\(CV\)</span>, coefficient of variation) than large populations of competing species. This was observed in phylogenetically controlled comparisons of tropical tree species <span class="citation">(<a href="references.html#ref-kelly2002">Kelly and Bowler 2002</a>)</span>.</p>
+<p>The temporal storage effect constitutes a temporal niche. The theory simply stipulates that different species succeed at different times. For rare species to coexist with common species, their relative success needs to be greater than the relative success of common species . In the absence of environmental variability, species would not coexist. For this kind of niche to ensure coexistence, all of the above assumptions must be met.</p>
+<p>A spatial storage effect can occur also occur, when responses to different locations in the environment and dispersal of individuals allows a population to experience both good and bad environments.</p>
+</div>
+<div id="an-example-of-the-temporal-storage-effect" class="section level2" number="8.4">
+<h2>
+<span class="header-section-number">8.4</span> An example of the temporal storage effect<a class="anchor" aria-label="anchor" href="#an-example-of-the-temporal-storage-effect"><i class="fas fa-link"></i></a>
+</h2>
+<p>The storage effect was first proposed as a special case of <em>lottery models</em> <span class="citation">(<a href="references.html#ref-morin1999a">Morin 1999</a>)</span>. Originally developed for reef fishes <span class="citation">(<a href="references.html#ref-sale1977">Sale 1977</a>)</span>, lottery models are considered general models for other systems with important spatial structure such as forest tree assemblages. Conditions associated with lottery systems include:</p>
+<ol style="list-style-type: decimal">
+<li>Juveniles (seedlings, larvae) establish territories in suitable locations and hold this territory for the remainder of their lives. Individuals in non-suitable sites do not survive to reproduce.</li>
+<li>Space is limiting; there are always far more juveniles than available sites.</li>
+<li>Juveniles are highly dispersed such that their relative abundances and their spatial distributions are independent of the distribution of parents.</li>
+</ol>
+<p>These conditions facilitate coexistence because the same amount of open space has a greater benefit for rare species than for common species. While the invulnerable nature of successful establishment slows competitive exclusion, permanent nonequilibrium coexistence does not occur unless there is a storage effect, such as with overlapping generations, where a reproductive stage (resting eggs, seeds, long lived adults) buffers the population during unfavorable environmental conditions, and negative environment–competition covariation.</p>
+<p>Here we provide an example of a two-species competition model that exhibits a temporal storage effect for each species <span class="math inline">\(i\)</span> in the community <span class="citation">(<a href="references.html#ref-chesson:1994pb">Chesson 1994</a>)</span>. You will notice that the model is a discrete-time model, like geometric growth or our demographic stage-based models.</p>
+<p><span class="math display">\[N_{i,t+1} = \left(1-d\right)N_{i,t} + R_{i,t}N_{i,t}\]</span>
+where <span class="math inline">\(N_{i,t}\)</span> is the abundance of species <span class="math inline">\(i\)</span> at time <span class="math inline">\(t\)</span>, <span class="math inline">\(d\)</span> is death or mortality rate. Rate <span class="math inline">\(R_{i,t}\)</span> is the total per capita reproduction of species <span class="math inline">\(i\)</span>, much like the finite rate of increase we saw in Chapters 3 &amp; 4.</p>
+<p>Next, we see that <span class="math inline">\(R_{i,t}\)</span> is a function of species <span class="math inline">\(i\)</span>’s response to the environment and competition.
+<span class="math display">\[R_{i,t} = e^{E_{i,t} - C_{i,t}}\]</span></p>
+<p>The species’ response to the environment, <span class="math inline">\(X\)</span>, is
+<span class="math display">\[ E_{i,t} = F\left( X_{i,t} \right)\]</span>
+is an unspecified function of the environment, <span class="math inline">\(X_{i,t}\)</span>, so that <span class="math inline">\(E_{i,t}\)</span> differs among species and across time. We can think of <span class="math inline">\(exp(E_{i,t})\)</span> (the first growth factor in <span class="math inline">\(R_{i,t}\)</span>) as the maximum per capita reproductive rate for species <span class="math inline">\(i\)</span>, at time <span class="math inline">\(t\)</span>, in the absence of competition. It is determined by the environment <span class="math inline">\(X\)</span> at time <span class="math inline">\(t\)</span>.</p>
+<p>The species’ response to competition depends specifically on the abundances, <span class="math inline">\(N_i\)</span>, of all species from <span class="math inline">\(i=1,\ldots,S\)</span>,
+<span class="math display">\[C_{i,t} = \sum_{i=1}^S\alpha_i e^{E_{i,t}}N_{i,t}\]</span>
+where <span class="math inline">\(e^{E_{i,t}}N_{i,t}\)</span> intensifies competition at large population sizes during favorable conditions, and lessen competition at low population sizes during poor conditions. This introduces the nonadditive responses required by the storage.</p>
+<p>There are many other representations of the storage effect <span class="citation">(<a href="references.html#ref-ellner2019">Stephen P. Ellner et al. 2019</a>)</span>, but this is a simple and convenient one <span class="citation">(<a href="references.html#ref-chesson:1994pb">Chesson 1994</a>)</span>.</p>
+<div id="building-a-simulation-of-the-storage-effect" class="section level3" number="8.4.1">
+<h3>
+<span class="header-section-number">8.4.1</span> Building a simulation of the storage effect<a class="anchor" aria-label="anchor" href="#building-a-simulation-of-the-storage-effect"><i class="fas fa-link"></i></a>
+</h3>
+<p>Here we simulate one rare and one common species, wherein the rare species persists only via the storage effect. We conclude with a simple function, <code>chesson</code>, that simplifies performing more elaborate simulations.</p>
+<p><strong>Fluctuating environment</strong></p>
+<p>First we create a variable environment. Environments are frequently noisy and also temporally autocorrelated — we refer to a special type of scale-independent autocorrelation as <em>red noise</em> or <em><span class="math inline">\(1/f\)</span> noise</em> (“one over <em>f</em> noise”) <span class="citation">(<a href="references.html#ref-halley1996">Halley 1996</a>)</span>. Here we use simply <em>white noise</em>, which is not temporally autocorrelated, but rather, completely random at the time scale we are examining.</p>
+<div class="sourceCode" id="cb292"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">years</span> <span class="op">&lt;-</span> <span class="fl">100</span></span>
+<span><span class="va">t</span> <span class="op">&lt;-</span> <span class="fl">1</span><span class="op">:</span><span class="va">years</span></span>
+<span><span class="va">variability</span> <span class="op">=</span> <span class="fl">4</span></span>
+<span><span class="va">env</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html">rnorm</a></span><span class="op">(</span><span class="va">years</span>, m<span class="op">=</span><span class="fl">0</span>, sd<span class="op">=</span><span class="va">variability</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">t</span>, <span class="va">env</span>, type<span class="op">=</span><span class="st">'l'</span><span class="op">)</span></span></code></pre></div>
+<div class="inline-figure"><img src="figs/env-1.png" width="90%"></div>
+<p><strong>Differential responses to the environment</strong></p>
+<p>A key part of the storage effect is that species have differential reproduction in response to a fluctuating environment (Fig. <a href="#fig:rho"><strong>??</strong></a>). However, species can differ for all sorts of reasons. Therefore, we will let our two species have different <em>average</em> fitness. We do this specifically because in the absence of the stochastic temporal niche of the storage effect, the species with the higher fitness would eventually replace the rare species. We want to show that the storage effect allows coexistance in spite of this difference. We will let these fitnesses be</p>
+<div class="sourceCode" id="cb293"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">w.rare</span> <span class="op">&lt;-</span> <span class="fl">.5</span></span>
+<span><span class="va">w.comm</span> <span class="op">&lt;-</span> <span class="fl">1</span></span></code></pre></div>
+<p>but as we will see in the simulation, competitive exclusion does not happen — the species coexist. For the example we are building (Fig. <a href="#fig:rho"><strong>??</strong></a>), we will pretend that</p>
+<ul>
+<li>our rare species grows best when the environment (maybe rainfall) is above average,</li>
+<li>our common species grows best when the environment is below average, and,</li>
+<li>both grow under average conditions; their niches overlap, and we will call the overlap rho, <span class="math inline">\(\rho\)</span>.</li>
+</ul>
+<p>As merely a starting point, we let overlap, <span class="math inline">\(\rho\)</span>, be equal to the standard deviation of our environmental variabiity.</p>
+<div class="sourceCode" id="cb294"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">rho</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/sd.html">sd</a></span><span class="op">(</span><span class="va">env</span><span class="op">)</span></span></code></pre></div>
+<div class="sourceCode" id="cb295"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">include_graphics</span><span class="op">(</span><span class="st">"figs/rho.pdf"</span><span class="op">)</span></span>
+<span><span class="co"># include_graphics("Buffered growth rates")</span></span></code></pre></div>
+<div class="figure">
+<span style="display:block;" id="fig:rho1"></span>
+<embed src="figs/rho.pdf" title="Environmental variability, niche overlap ($
+ho$)." width="48%" type="application/pdf"></embed><p class="caption">
+Figure 8.11: Environmental variability, niche overlap ($
+ho$).
+</p>
+</div>
+<p><strong>Code for a pretty histogram (Fig. <a href="#fig:rho"><strong>??</strong></a>)</strong></p>
+<p>Here we simply create a pretty histogram.</p>
+<div class="sourceCode" id="cb296"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">hist.env</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/graphics/hist.html">hist</a></span><span class="op">(</span><span class="va">env</span>,col<span class="op">=</span><span class="st">'lightgray'</span>,main<span class="op">=</span><span class="st">"Histogram of Environment"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/abline.html">abline</a></span><span class="op">(</span>v<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="op">-</span><span class="va">rho</span>, <span class="va">rho</span><span class="op">)</span><span class="op">/</span><span class="fl">2</span><span class="op">)</span>, lty<span class="op">=</span><span class="fl">3</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/arrows.html">arrows</a></span><span class="op">(</span>x0<span class="op">=</span><span class="op">-</span><span class="va">rho</span><span class="op">/</span><span class="fl">2</span>, y0<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">hist.env</span><span class="op">[[</span><span class="st">"counts"</span><span class="op">]</span><span class="op">]</span><span class="op">)</span>, </span>
+<span>       x1<span class="op">=</span><span class="va">rho</span><span class="op">/</span><span class="fl">2</span>, y1<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">hist.env</span><span class="op">[[</span><span class="st">"counts"</span><span class="op">]</span><span class="op">]</span><span class="op">)</span>, code<span class="op">=</span><span class="fl">3</span>, length<span class="op">=</span><span class="fl">.1</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/text.html">text</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">hist.env</span><span class="op">[[</span><span class="st">"counts"</span><span class="op">]</span><span class="op">]</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/substitute.html">quote</a></span><span class="op">(</span><span class="fu">italic</span><span class="op">(</span><span class="va">rho</span><span class="op">)</span><span class="op">)</span>, adj<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1.5</span>,<span class="fl">0</span><span class="op">)</span>, cex<span class="op">=</span><span class="fl">1.5</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/text.html">text</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">min</a></span><span class="op">(</span><span class="va">hist.env</span><span class="op">[[</span><span class="st">"breaks"</span><span class="op">]</span><span class="op">]</span><span class="op">)</span>,<span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">hist.env</span><span class="op">[[</span><span class="st">"counts"</span><span class="op">]</span><span class="op">]</span><span class="op">)</span>,</span>
+<span>     <span class="st">"Common sp.\ngrows best"</span>, adj<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">0</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/text.html">text</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">max</a></span><span class="op">(</span><span class="va">hist.env</span><span class="op">[[</span><span class="st">"breaks"</span><span class="op">]</span><span class="op">]</span><span class="op">)</span>,<span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">hist.env</span><span class="op">[[</span><span class="st">"counts"</span><span class="op">]</span><span class="op">]</span><span class="op">)</span>,</span>
+<span>     <span class="st">"Rare sp.\ngrows best"</span>, adj<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">0</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<div class="inline-figure"><img src="figs/rho2-1.png" width="90%"></div>
+<p>To quantitfy reproduction as a function of the environment, we will simply let each species growth rate be, in part, the product of its fitness and the environment, with the sign appropriate for each species.</p>
+<div class="sourceCode" id="cb297"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">a.rare</span> <span class="op">&lt;-</span>  <span class="op">(</span><span class="va">env</span><span class="op">+</span><span class="va">rho</span><span class="op">/</span><span class="fl">2</span><span class="op">)</span><span class="op">*</span><span class="va">w.rare</span></span>
+<span><span class="va">a.comm</span> <span class="op">&lt;-</span> <span class="op">-</span><span class="op">(</span><span class="va">env</span><span class="op">-</span><span class="va">rho</span><span class="op">/</span><span class="fl">2</span><span class="op">)</span><span class="op">*</span><span class="va">w.comm</span></span></code></pre></div>
+<p>This will allow the rare species to have highest reproduction when the environment variable is above average, and the common species to have high reproduction when the environmental variable is below average. It also allows them to share a zone of overlap, <span class="math inline">\(\rho\)</span>, when they can both reproduce (Fig. <a href="#rho"><strong>??</strong></a>).</p>
+<p><strong>Buffered population growth</strong></p>
+<p>A key feature of the storage effect is that each species has <em>buffered population growth</em>. That is, each species has a life history stage that is very resistant to poor environmental conditions. This allows the population to persist even in really bad times. In some cases, the resistant stage may be a long-lived adult, as with many tree species, or other large-bodied organisms. In other cases, species have very resistant resting stages, such as the eggs of zooplankton <span class="citation">(<a href="references.html#ref-caceres1997">Cáceres 1997</a>)</span>, or the seeds of annual plants <span class="citation">(<a href="references.html#ref-facelli:2005kc">Facelli, Chesson, and Barnes 2005</a>)</span>.</p>
+<p>To model this buffering effect, we will simply prevent the reproductive rates from falling below zero. (We will, however, create mortality (below) that is independent of the growth rate of each species). Let us impose this constraint of reproduction <span class="math inline">\(\ge 0\)</span> now.</p>
+<div class="sourceCode" id="cb298"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">Es</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html">matrix</a></span><span class="op">(</span><span class="cn">NA</span>, nrow<span class="op">=</span><span class="va">years</span>, ncol<span class="op">=</span><span class="fl">2</span><span class="op">)</span></span>
+<span><span class="va">Es</span><span class="op">[</span>,<span class="fl">1</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/ifelse.html">ifelse</a></span><span class="op">(</span><span class="va">a.rare</span> <span class="op">&gt;</span> <span class="fl">0</span>, <span class="va">a.rare</span>, <span class="fl">0</span><span class="op">)</span></span>
+<span><span class="va">Es</span><span class="op">[</span>,<span class="fl">2</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/ifelse.html">ifelse</a></span><span class="op">(</span><span class="va">a.comm</span> <span class="op">&gt;</span> <span class="fl">0</span>, <span class="va">a.comm</span>, <span class="fl">0</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/matplot.html">matplot</a></span><span class="op">(</span><span class="va">t</span>, <span class="va">Es</span>, type<span class="op">=</span><span class="st">'l'</span>, col<span class="op">=</span><span class="fl">1</span><span class="op">)</span></span></code></pre></div>
+<div class="inline-figure"><img src="figs/Etime-1.png" width="90%"></div>
+<div class="sourceCode" id="cb299"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/matplot.html">matplot</a></span><span class="op">(</span><span class="va">env</span>,<span class="va">Es</span>, col<span class="op">=</span><span class="fl">1</span><span class="op">)</span></span></code></pre></div>
+<p><img src="figs/Eenv-1.png" width="90%">
+As we said, however, organisms will die. Let us create a variable for community-wide mortality, <span class="math inline">\(\delta\)</span>, as if a disturbance kills a constant fraction of the community.</p>
+<div class="sourceCode" id="cb300"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">d</span> <span class="op">&lt;-</span> <span class="fl">0.1</span></span></code></pre></div>
+<p><strong>Covariance between competition and environment</strong></p>
+<p>We also want to assume that species compete for shared, limiting resources. Individuals have negative effects on each other. As a result, the more individuals of all species there are (increasing <span class="math inline">\(N_{total}\)</span>), the more negative the total effect is. To account for this, we will stipulate a per capita negative effect <span class="math inline">\(\alpha\)</span> of any individual on any other. Therefore, in good times (high <span class="math inline">\(N_{total}\)</span>), the effect of competition increases. In contrast, when times are bad, and <span class="math inline">\(N\)</span> is small, competition is low. This is what Chesson and colleagues mean by <em>covariation between competition and the environment</em>.</p>
+<p>Eq. (<a href="#eq:storage">(<strong>??</strong>)</a>) provides a reasonable way to represent the competitve effect <span class="math inline">\(C_{i,t}\)</span>. Here we simplify further, and assume that the per capita effect of competition on growth is constant through time. However, to emphasize that point that one species has higher average fitness, we let the rare species experience greater per capita effects of competition. For our example, let us set <span class="math inline">\(\alpha_{rare}=0.0002, \alpha_{comm}=0.0001\)</span>.</p>
+<div class="sourceCode" id="cb301"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">alpha</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">2</span><span class="op">*</span><span class="fl">1e-5</span>,<span class="fl">1e-5</span><span class="op">)</span></span></code></pre></div>
+<p>Thus, these <span class="math inline">\(\alpha\)</span> are the species-specific effects of all individuals on the rare and common species.</p>
+<div id="simulating-dynamics" class="section level4" number="8.4.1.1">
+<h4>
+<span class="header-section-number">8.4.1.1</span> Simulating dynamics<a class="anchor" aria-label="anchor" href="#simulating-dynamics"><i class="fas fa-link"></i></a>
+</h4>
+<p>Finally, we simulate these dynamics. We should create matrices to hold stuff as we simulate each year, for <span class="math inline">\(N\)</span>, <span class="math inline">\(C\)</span>, and <span class="math inline">\(R\)</span>. Unlike <span class="math inline">\(E\)</span>, these are simplest to collect as we simulate <span class="math inline">\(N\)</span>, year by year.</p>
+<div class="sourceCode" id="cb302"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">Ns</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html">matrix</a></span><span class="op">(</span><span class="cn">NA</span>, nrow<span class="op">=</span><span class="va">years</span><span class="op">+</span><span class="fl">1</span>, ncol<span class="op">=</span><span class="fl">2</span><span class="op">)</span></span>
+<span><span class="va">Cs</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html">matrix</a></span><span class="op">(</span><span class="cn">NA</span>, nrow<span class="op">=</span><span class="va">years</span>, ncol<span class="op">=</span><span class="fl">2</span><span class="op">)</span></span>
+<span><span class="va">Rs</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html">matrix</a></span><span class="op">(</span><span class="cn">NA</span>, nrow<span class="op">=</span><span class="va">years</span>, ncol<span class="op">=</span><span class="fl">2</span><span class="op">)</span></span></code></pre></div>
+<p>Next we initialize our populations at <span class="math inline">\(t_0\)</span>.</p>
+<div class="sourceCode" id="cb303"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">Ns</span><span class="op">[</span><span class="fl">1</span>,<span class="op">]</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1e3</span>,<span class="fl">1e5</span><span class="op">)</span></span></code></pre></div>
+<p>Finally, we run the for-loop</p>
+<div class="sourceCode" id="cb304"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw">for</span><span class="op">(</span><span class="va">i</span> <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span><span class="va">years</span><span class="op">)</span> <span class="va">Ns</span><span class="op">[</span><span class="va">i</span><span class="op">+</span><span class="fl">1</span>,<span class="op">]</span> <span class="op">&lt;-</span> <span class="op">{</span> </span>
+<span>  <span class="va">juveniles</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html">exp</a></span><span class="op">(</span><span class="va">Es</span><span class="op">[</span><span class="va">i</span>,<span class="op">]</span><span class="op">)</span> <span class="op">*</span> <span class="va">Ns</span><span class="op">[</span><span class="va">i</span>,<span class="op">]</span> <span class="op">)</span></span>
+<span>  <span class="va">Cs</span><span class="op">[</span><span class="va">i</span>,<span class="op">]</span>  <span class="op">&lt;-</span>  <span class="va">alpha</span><span class="op">*</span><span class="va">juveniles</span></span>
+<span>  <span class="co">#Cs[i,] &lt;- log(juveniles/sum(d*Ns[i,]))</span></span>
+<span>  <span class="va">Rs</span><span class="op">[</span><span class="va">i</span>,<span class="op">]</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html">exp</a></span><span class="op">(</span><span class="va">Es</span><span class="op">[</span><span class="va">i</span>,<span class="op">]</span><span class="op">-</span><span class="va">Cs</span><span class="op">[</span><span class="va">i</span>,<span class="op">]</span><span class="op">)</span></span>
+<span>  <span class="op">(</span><span class="fl">1</span><span class="op">-</span><span class="va">d</span><span class="op">)</span> <span class="op">*</span> <span class="va">Ns</span><span class="op">[</span><span class="va">i</span>,<span class="op">]</span> <span class="op">+</span> <span class="va">Rs</span><span class="op">[</span><span class="va">i</span>,<span class="op">]</span><span class="op">*</span><span class="va">Ns</span><span class="op">[</span><span class="va">i</span>,<span class="op">]</span></span>
+<span>                              <span class="op">}</span></span></code></pre></div>
+<p>and plot the populations.</p>
+<div class="sourceCode" id="cb305"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/matplot.html">matplot</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="va">t</span><span class="op">)</span>, <span class="va">Ns</span>, type<span class="op">=</span><span class="st">'b'</span>, log<span class="op">=</span><span class="st">'y'</span><span class="op">)</span></span></code></pre></div>
+<div class="inline-figure"><img src="figs/storepops-1.png" width="90%"></div>
+<div class="figure">
+<span style="display:block;" id="fig:chessonsim"></span>
+<img src="figs/chessonsim-1.png" alt="A simulation of coexistence via the storage effect. $E$ (middle panel) is maximum environment-mediated reproduction, in the absence of competition. See text for more information about species responses to the environment and average fitness." width="90%"><p class="caption">
+Figure 8.12: A simulation of coexistence via the storage effect. <span class="math inline">\(E\)</span> (middle panel) is maximum environment-mediated reproduction, in the absence of competition. See text for more information about species responses to the environment and average fitness.
+</p>
+</div>
+</div>
+<div id="examining-characteristics-of-the-storage-effect" class="section level4" number="8.4.1.2">
+<h4>
+<span class="header-section-number">8.4.1.2</span> Examining characteristics of the storage effect<a class="anchor" aria-label="anchor" href="#examining-characteristics-of-the-storage-effect"><i class="fas fa-link"></i></a>
+</h4>
+<p>Let us go back and examine a few of the characteristics that we should observe, if the storage effect is operating. First, note that above we showed differential responses to the environment, incomplete niche overlap, and buffered growth (Fig. <a href="#fig:rho"><strong>??</strong></a>).</p>
+<p>Next, we will try to examine the environment-competition covariation. This is not trivial, and papers are written about how to estimate this. For now, recall that in Chapter 3, we began with an examination of negative density-dependence. Here we quantify the magnitude of this negative effect, as our <em>effect of competition.</em> Let us invent a new value, <span class="math inline">\(\nu\)</span>, to measure how much the observed growth rate is affected by large population sizes,
+<span class="math display" id="eq:compnu">\[\begin{equation}
+  \tag{8.10}
+  \nu_{i,t} = \log\left(\frac{R_{max}}{R_{i,t}}\right)
+\end{equation}\]</span>
+where <span class="math inline">\(R_{i,t}\)</span> is the observed annual population growth rate, <span class="math inline">\(N_{t+1}/N_t\)</span>, for species <span class="math inline">\(i\)</span>, and <span class="math inline">\(R_{max}\)</span> is the maximum of these.</p>
+<p>To measure the covariation, we will find first <span class="math inline">\(N_{total,t}\)</span>, <span class="math inline">\(R_{i,t}\)</span>, and <span class="math inline">\(R_{i,max}\)</span>.</p>
+<div class="sourceCode" id="cb306"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">Nt1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/colSums.html">rowSums</a></span><span class="op">(</span><span class="va">Ns</span><span class="op">)</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="va">years</span><span class="op">]</span></span>
+<span><span class="va">R.obs</span> <span class="op">&lt;-</span> <span class="va">Ns</span><span class="op">[</span><span class="op">-</span><span class="fl">1</span>,<span class="op">]</span><span class="op">/</span><span class="va">Ns</span><span class="op">[</span><span class="op">-</span><span class="op">(</span><span class="va">years</span><span class="op">+</span><span class="fl">1</span><span class="op">)</span>,<span class="op">]</span></span>
+<span><span class="va">Rmax</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/apply.html">apply</a></span><span class="op">(</span><span class="va">R.obs</span>,<span class="fl">2</span>,<span class="va">max</span><span class="op">)</span></span></code></pre></div>
+<p>Now we calculate <span class="math inline">\(\nu_i\)</span>, and estimate the covariance.</p>
+<div class="sourceCode" id="cb307"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">nu</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html">log</a></span><span class="op">(</span> <span class="fu"><a href="https://rdrr.io/r/base/t.html">t</a></span><span class="op">(</span><span class="va">Rmax</span> <span class="op">/</span> <span class="fu"><a href="https://rdrr.io/r/base/t.html">t</a></span><span class="op">(</span><span class="va">R.obs</span><span class="op">)</span> <span class="op">)</span> <span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html">colnames</a></span><span class="op">(</span><span class="va">nu</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"nu.rare"</span>, <span class="st">"nu.comm"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/stats/cor.html">var</a></span><span class="op">(</span><span class="va">Nt1</span>,<span class="va">nu</span><span class="op">)</span></span></code></pre></div>
+<pre><code>##       nu.rare  nu.comm
+## [1,] 400.5833 567.3835</code></pre>
+<p>This illustrates that both populations exhibit positive covariation between the quality of the environment (defined operationally as <span class="math inline">\(N_{total}\)</span>) and the intensity of competition.</p>
+<p>Last, recall that we stated above that the <span class="math inline">\(CV\)</span> (coefficent of variation) should be greater for rare species than for common species. If we check that for our populations (eliminating the first half of the time series),</p>
+<div class="sourceCode" id="cb309"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/apply.html">apply</a></span><span class="op">(</span><span class="va">Ns</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/Round.html">round</a></span><span class="op">(</span><span class="va">years</span><span class="op">/</span><span class="fl">2</span><span class="op">)</span><span class="op">:</span><span class="va">years</span>,<span class="op">]</span>, <span class="fl">2</span>, <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/stats/sd.html">sd</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">/</span><span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">*</span> <span class="fl">100</span><span class="op">)</span></span></code></pre></div>
+<pre><code>## [1] 24.86956 25.08306</code></pre>
+<p>we see that, indeed, the rare species has a higher <span class="math inline">\(CV\)</span>. Examination of the time series (Fig. <a href="#fig:storedyns1"><strong>??</strong></a>) confirms this.</p>
+<p>To facilitate playing more games, the function <code>chesson</code> provides an easy wrapper for storage effect simulations (Fig. <a href="#fig:chess"><strong>??</strong></a>). Please try <code><a href="https://rdrr.io/pkg/primer/man/chesson.html">?chesson</a></code> at the R prompt.</p>
+<p>Here we run <code>chesson</code>, and calculate the overlap, <span class="math inline">\(\rho\)</span>, for each simulation.</p>
+<p>By specifying greater specialization and greater spread between the environmental optima of the species pair in the second model, we have reduced niche overlap (Fig. <a href="#beta1"><strong>??</strong></a>). Overlap in this model is the area under both species fitness-independent response curves. Note that large differences in overall fitness can alter effective overlap described by the density-independent reproductive rate, <span class="math inline">\(E_{i,t}\)</span> (Fig. <a href="#betaE"><strong>??</strong></a>).</p>
+<div class="sourceCode" id="cb311"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/matplot.html">matplot</a></span><span class="op">(</span><span class="va">outB</span><span class="op">[[</span><span class="st">'env'</span><span class="op">]</span><span class="op">]</span>, <span class="va">outB</span><span class="op">[[</span><span class="st">'Bs'</span><span class="op">]</span><span class="op">]</span>, pch<span class="op">=</span><span class="fl">1</span><span class="op">:</span><span class="fl">2</span>, xlim<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">.6</span>,<span class="fl">.6</span><span class="op">)</span>,</span>
+<span>        ylab<span class="op">=</span><span class="st">"Fitness-independent Response"</span>, xlab<span class="op">=</span><span class="st">"Environment"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/matplot.html">matplot</a></span><span class="op">(</span><span class="va">outA</span><span class="op">[[</span><span class="st">'env'</span><span class="op">]</span><span class="op">]</span>, <span class="va">outA</span><span class="op">[[</span><span class="st">'Bs'</span><span class="op">]</span><span class="op">]</span>, pch<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">19</span>,<span class="fl">17</span><span class="op">)</span>, add<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="va">bs</span> <span class="op">&lt;-</span> <span class="va">outB</span><span class="op">[[</span><span class="st">"Bs"</span><span class="op">]</span><span class="op">]</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/order.html">order</a></span><span class="op">(</span><span class="va">outB</span><span class="op">[[</span><span class="st">"env"</span><span class="op">]</span><span class="op">]</span><span class="op">)</span>,<span class="op">]</span></span>
+<span><span class="va">rho.y</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/apply.html">apply</a></span><span class="op">(</span><span class="va">bs</span>, <span class="fl">1</span>, <span class="va">min</span> <span class="op">)</span></span>
+<span><span class="va">envs</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sort.html">sort</a></span><span class="op">(</span><span class="va">outB</span><span class="op">[[</span><span class="st">"env"</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/polygon.html">polygon</a></span><span class="op">(</span><span class="va">envs</span>, <span class="va">rho.y</span>, col<span class="op">=</span><span class="st">'grey'</span>, border<span class="op">=</span><span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
+<div class="figure">
+<span style="display:block;" id="fig:chessonfunc1"></span>
+<img src="figs/chessonfunc1-1.png" alt="Species responses to the environment, using the `chesson` model. Relative to the pair of species represented by solid circles, the pair of species with open symbols shows greater difference between optimal environments (greater spread}), and narrower niches (greater specialization).  The underlying Beta probability density distributions; the grey *area* under the curves of the more differentiated species is rho, the degree of niche overlap." width="90%"><p class="caption">
+Figure 8.13: Species responses to the environment, using the <code>chesson</code> model. Relative to the pair of species represented by solid circles, the pair of species with open symbols shows greater difference between optimal environments (greater spread}), and narrower niches (greater specialization). The underlying Beta probability density distributions; the grey <em>area</em> under the curves of the more differentiated species is rho, the degree of niche overlap.
+</p>
+</div>
+<div class="sourceCode" id="cb312"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/matplot.html">matplot</a></span><span class="op">(</span><span class="va">outB</span><span class="op">[[</span><span class="st">'env'</span><span class="op">]</span><span class="op">]</span>, <span class="va">outB</span><span class="op">[[</span><span class="st">'Es'</span><span class="op">]</span><span class="op">]</span>, pch<span class="op">=</span><span class="fl">1</span><span class="op">:</span><span class="fl">2</span>, xlim<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">.6</span>,<span class="fl">.6</span><span class="op">)</span>,</span>
+<span>        ylab<span class="op">=</span><span class="st">"Density-independent Reproduction"</span>, xlab<span class="op">=</span><span class="st">"Environment"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/matplot.html">matplot</a></span><span class="op">(</span><span class="va">outA</span><span class="op">[[</span><span class="st">'env'</span><span class="op">]</span><span class="op">]</span>, <span class="va">outA</span><span class="op">[[</span><span class="st">'Es'</span><span class="op">]</span><span class="op">]</span>, pch<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">19</span>,<span class="fl">17</span><span class="op">)</span>, add<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
+<div class="figure">
+<span style="display:block;" id="fig:chessonfunc2"></span>
+<img src="figs/chessonfunc2-1.png" alt="Species responses to the environment, using the `chesson` model. Relative to the pair of species represented by solid circles, the pair of species with open symbols shows greater difference between optimal environments (greater spread}), and narrower niches (greater specialization).  The underlying Beta probability density distributions; the grey *area* under the curves of the more differentiated species is rho, the degree of niche overlap. Density-independent reproduction (the parameter E_[i,t]. (grey vs. red triangles - common species, black circles - rare species; open symbols - highly differentiated species, solid symbols - similar species)." width="90%"><p class="caption">
+Figure 8.14: Species responses to the environment, using the <code>chesson</code> model. Relative to the pair of species represented by solid circles, the pair of species with open symbols shows greater difference between optimal environments (greater spread}), and narrower niches (greater specialization). The underlying Beta probability density distributions; the grey <em>area</em> under the curves of the more differentiated species is rho, the degree of niche overlap. Density-independent reproduction (the parameter E_[i,t]. (grey vs. red triangles - common species, black circles - rare species; open symbols - highly differentiated species, solid symbols - similar species).
+</p>
+</div>
+</div>
+</div>
+</div>
+<div id="summary" class="section level2" number="8.5">
+<h2>
+<span class="header-section-number">8.5</span> Summary<a class="anchor" aria-label="anchor" href="#summary"><i class="fas fa-link"></i></a>
+</h2>
+<p>This chapter focused far more than previous chapters on the <em>biological importance of temporal dynamics</em>.</p>
+<ul>
+<li>In the framework of this chapter, the dynamics of succession result from the processes of mortality or disturbance, dispersal, and competitive exclusion. This framework can be applied over a broad range of spatial and temporal scales.</li>
+<li>Coexistence is possible via tradeoffs between competition, dispersal, and growth rate; the level of disturbance can influence the relative abundances of co-occuring species.</li>
+<li>The consequences of habitat destruction depend critically on the mechanisms underlying coexistence.</li>
+<li>The storage effect is an example of temporal niche differentiation. It depends on differential responses to the environment, buffered population growth, and covariation between competition intensity and population size.</li>
+</ul>
+</div>
+<div id="problems" class="section level2" number="8.6">
+<h2>
+<span class="header-section-number">8.6</span> Problems<a class="anchor" aria-label="anchor" href="#problems"><i class="fas fa-link"></i></a>
+</h2>
+<p><strong>Competition-colonization model</strong>\
+a. Define each of the parameters, and explain what each of the them does.</p>
+<p><strong>Sccessional niche model</strong>\
+a. Define each of the parameters, and explain what each of the them does.
+a. Explain which parameters you would manipulate and to what values you would set them to make it a pure competition–colonization model.
+a. Explain which parameters you would manipulate and to what values you would set them to make it a pure successional niche model.
+a. For each “pure” model, explain how transient dynamics at the local scale result in a steady state at the large scale.
+a. How would you evaluate the relative importance of these two mechanisms in maintaining biodiversity through successional trajectories and at equilibrium?</p>
+<p><strong>Storage effect</strong></p>
+<ol style="list-style-type: lower-alpha">
+<li>Define each of the parameters (<span class="math inline">\(C\)</span>, <span class="math inline">\(E\)</span>), and explain what each of the them does.</li>
+<li>Develop a two-species example of the storage effect, in which you manipulate both (i) fitness differences, and (ii) environmental variation. Show how these interact to determine relative abundances of the two species.</li>
+</ol>
+</div>
+</div>
+
+  <div class="chapter-nav">
+<div class="prev"><a href="comp.html"><span class="header-section-number">7</span> Direct competition and mutualism</a></div>
+<div class="next"><a href="cr.html"><span class="header-section-number">9</span> Consumer-resource Interactions</a></div>
+</div></main><div class="col-md-3 col-lg-2 d-none d-md-block sidebar sidebar-chapter">
+    <nav id="toc" data-toggle="toc" aria-label="On this page"><h2>On this page</h2>
+      <ul class="nav navbar-nav">
+<li><a class="nav-link" href="#compcol"><span class="header-section-number">8</span> Coexistence via competition, dispersal, and storage</a></li>
+<li>
+<a class="nav-link" href="#competitioncolonization-tradeoff"><span class="header-section-number">8.1</span> Competition–colonization Tradeoff</a><ul class="nav navbar-nav"><li><a class="nav-link" href="#habitat-destruction-1"><span class="header-section-number">8.1.1</span> Habitat destruction</a></li></ul>
+</li>
+<li>
+<a class="nav-link" href="#adding-reality-finite-rates-of-competitive-exclusion"><span class="header-section-number">8.2</span> Adding Reality: Finite Rates of Competitive Exclusion</a><ul class="nav navbar-nav">
+<li><a class="nav-link" href="#successional-niche-model"><span class="header-section-number">8.2.1</span> Successional niche model</a></li>
+<li><a class="nav-link" href="#dynamics-of-the-successional-niche-model-with-a-high-rate-of-competitive-exclusion"><span class="header-section-number">8.2.2</span> Dynamics of the successional niche model with a high rate of competitive exclusion</a></li>
+<li><a class="nav-link" href="#dynamics-of-the-successional-niche-model-with-a-low-rate-of-competitive-exclusion"><span class="header-section-number">8.2.3</span> Dynamics of the successional niche model with a low rate of competitive exclusion</a></li>
+<li><a class="nav-link" href="#dynamics-of-the-successional-niche-model-with-an-intermediate-disturbance-regime"><span class="header-section-number">8.2.4</span> Dynamics of the successional niche model with an intermediate disturbance regime</a></li>
+<li><a class="nav-link" href="#dynamics-of-the-pure-successional-niche-model"><span class="header-section-number">8.2.5</span> Dynamics of the pure successional niche model</a></li>
+<li><a class="nav-link" href="#an-analytical-solution"><span class="header-section-number">8.2.6</span> An analytical solution</a></li>
+<li><a class="nav-link" href="#extinction-debt-with-the-successional-niche"><span class="header-section-number">8.2.7</span> Extinction debt with the successional niche?</a></li>
+</ul>
+</li>
+<li><a class="nav-link" href="#storage-effect"><span class="header-section-number">8.3</span> Storage effect</a></li>
+<li>
+<a class="nav-link" href="#an-example-of-the-temporal-storage-effect"><span class="header-section-number">8.4</span> An example of the temporal storage effect</a><ul class="nav navbar-nav"><li><a class="nav-link" href="#building-a-simulation-of-the-storage-effect"><span class="header-section-number">8.4.1</span> Building a simulation of the storage effect</a></li></ul>
+</li>
+<li><a class="nav-link" href="#summary"><span class="header-section-number">8.5</span> Summary</a></li>
+<li><a class="nav-link" href="#problems"><span class="header-section-number">8.6</span> Problems</a></li>
+</ul>
+
+      <div class="book-extra">
+        <ul class="list-unstyled">
+          
+        </ul>
+</div>
+    </nav>
+</div>
+
+</div>
+</div> <!-- .container -->
+
+<footer class="bg-primary text-light mt-5"><div class="container"><div class="row">
+
+  <div class="col-12 col-md-6 mt-3">
+    <p>"<strong>Primer of Ecology using R</strong>" was written by Hank Stevens. It was last built on 2023-08-10.</p>
+  </div>
+
+  <div class="col-12 col-md-6 mt-3">
+    <p>This book was built by the <a class="text-light" href="https://bookdown.org">bookdown</a> R package.</p>
+  </div>
+
+</div></div>
+</footer><!-- dynamically load mathjax for compatibility with self-contained --><script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script><script type="text/x-mathjax-config">const popovers = document.querySelectorAll('a.footnote-ref[data-toggle="popover"]');
+for (let popover of popovers) {
+  const div = document.createElement('div');
+  div.setAttribute('style', 'position: absolute; top: 0, left:0; width:0, height:0, overflow: hidden; visibility: hidden;');
+  div.innerHTML = popover.getAttribute('data-content');
+
+  var has_math = div.querySelector("span.math");
+  if (has_math) {
+    document.body.appendChild(div);
+    MathJax.Hub.Queue(["Typeset", MathJax.Hub, div]);
+    MathJax.Hub.Queue(function() {
+      popover.setAttribute('data-content', div.innerHTML);
+      document.body.removeChild(div);
+    })
+  }
+}
+</script>
+</body>
+</html>
