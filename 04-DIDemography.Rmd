@@ -752,7 +752,7 @@ Next we tackle fecundity, **F**, which for us is estimated using
 
 Typically, bigger individuals have a greater chance of flowering, and smooth coneflower is no exception. We estimate that chance of flowering using logistic regression.
 ```{r flowering, fig.cap="Plants that are larger in the first year have a greater chance of flowering in the next year.", out.width="67%" }
-cff <- filter(cf, surv==1 )
+cff <- dplyr::filter(cf, surv==1 )
 eda_f <- ggplot(cfs, aes(logA, flower_p)) + 
   geom_jitter(height=.02, alpha=0.5) + 
   geom_smooth(method="glm", method.args = list(family = "binomial")) + labs(title="Flowering")
@@ -1003,7 +1003,7 @@ Here we use the functions we made above to fill out growth, survival and fecundi
 G=h*outer(y, y, FUN=g.zpz, params=params)   # 100 x 100 growth kernel
 
 ## Survival kernel
-S=s.z(y,params=params)   # 100 x 100 survival kernel
+S=s.z(y,params=params)   # 1 x 100 survival estimates
 
 ## Growth X Survival kernel
 P = G # placeholder;redefine P on the next line
