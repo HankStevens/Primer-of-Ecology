@@ -1044,7 +1044,7 @@ mod.nonlin <- nls(spp ~ a*area^z, start=list(a=1, z=.2),data=moths)
 ```
 
 Now to plot data and draw a fitted line.
-```{r eval=FALSE}
+```{r plot_data, eval=FALSE}
 plot(spp ~ area, data=moths, ylim=c(30,230), #log='y',
      xlab="Area (ha)", ylab="No. of Species (R)")
 curve(coef(mod.nonlin)[1] * x^coef(mod.nonlin)[2], 
@@ -1062,7 +1062,7 @@ area. We use our statistical model to find that.
 (MaxR <- predict(mod.nonlin, list(area=max(moths[['area']]) )) )
 ```
 We can now find $\beta_{area}$, $\beta_{eco}$ and $\beta_{geo}$.
-```{r }
+```{r find_beta}
 b.area <- MaxR - a1
 b.eco <- a2-(b.area+a1)
 b.geo <- g - a2
@@ -1075,7 +1075,7 @@ Now we have partitioned $\gamma$ a little bit more finely with a beastiary of $\
 * $\beta_{geo}$ is the average number of species not found in the samples from different ecoregions.
 
 Finally, we add lines to our graph to show the partitions.
-```{r eval=FALSE}
+```{r add_lines, eval=FALSE}
 abline(h=g, lty=3)
 abline(h=b.eco+b.area+a1, lty=3)
 abline(h=b.area+a1, lty=3)

@@ -586,7 +586,7 @@ dat <- expand.grid(B12=seq(0.0001, 1, by=0.05),
 dat$L <- apply(dat, 1, function(b) findL1(B=b)$domL)
 
 
-print(contourplot(L ~ B12 + B21, dat, cuts=10,
+print(lattice::contourplot(L ~ B12 + B21, dat, cuts=10,
           xlab=expression(beta[12]), ylab=expression(beta[21])))
 a <- matrix(c(  0.01, 0.005,
                   0.005, 0.01), ncol=2, byrow=TRUE)
@@ -634,7 +634,7 @@ dat2 <- expand.grid(B12=seq(1.01, 2.01, by=0.05),
                    B21=seq(1.01, 2.01, by=0.05))
 dat2$L <- apply(dat2, 1, function(b) findL1(B=b)$domL)
 
-print(contourplot(L ~ B12 + B21, dat2, cuts=10, ylim=c(.95,2.05), xlim=c(.95, 2.05),
+print(lattice::contourplot(L ~ B12 + B21, dat2, cuts=10, ylim=c(.95,2.05), xlim=c(.95, 2.05),
           xlab=expression(beta[12]), ylab=expression(beta[21])))
 a <- matrix(c(  0.01, 0.02,
                   0.02, 0.01), ncol=2, byrow=TRUE)
@@ -748,8 +748,8 @@ dat3$one <- dat3$B12*dat3$B21
 dat3$L <- apply(dat3, 1, function(b) findL1(B=b)$domL)
 dat3$RT <- dat3$L^(-1)
 
-trellis.device(col=FALSE, width=4, height=4)
-print(contourplot(L ~ B12 + B21, dat3, cuts=20, labels=T,
+lattice::trellis.device(col=FALSE, width=4, height=4)
+print(lattice::contourplot(L ~ B12 + B21, dat3, cuts=20, labels=T,
                   xlab=expression(beta[12]), ylab=expression(beta[21])))
 ```
 
@@ -810,17 +810,17 @@ dat3 <- expand.grid(B12=seq(.01, 2, by=0.05),
 dat3$one <- dat3$B12*dat3$B21
 dat3$L <- apply(dat3, 1, function(b) findL1(B=b)$domL)
 dat3$RT <- dat3$L^(-1)
-print(wireframe(L ~ B12 + B21, dat3, scales=list(arrows=FALSE),
+print(lattice::wireframe(L ~ B12 + B21, dat3, scales=list(arrows=FALSE),
           screen = list(z = 20,  x = -70), zlim=c(-1,.35),
           drape=TRUE, colorkey=F, zlab=expression(lambda[1]),
           xlab=expression(beta[12]), ylab=expression(beta[21])))
 
 dat3$L2 <- apply(dat3, 1, function(b) findL1(B=b, r1=.5, r2=.5)$domL)
 
-# print(contourplot(L2 ~ B12 + B21, dat3, cuts=20, labels=T,
+# print(lattice::contourplot(L2 ~ B12 + B21, dat3, cuts=20, labels=T,
 #                   xlab=expression(beta[12]), ylab=expression(beta[21])))
 
-print(wireframe(L2 ~ B12 + B21, dat3, scales=list(arrows=FALSE),
+print(lattice::wireframe(L2 ~ B12 + B21, dat3, scales=list(arrows=FALSE),
           screen = list(z = 20,  x = -70), zlim=c(-1,.35),
           drape=TRUE, colorkey=F, zlab=expression(lambda[1]),
           xlab=expression(beta[12]), ylab=expression(beta[21])))

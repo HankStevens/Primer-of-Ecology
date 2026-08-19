@@ -7,7 +7,7 @@
 <title>7 Direct competition and mutualism | Primer of Ecology using R</title>
 <meta name="author" content="Hank Stevens">
 <meta name="description" content="Different species frequently compete for limiting resources, and as a result have negative impacts on each other. For example, change in species composition during secondary succession (Fig. 7.1)...">
-<meta name="generator" content="bookdown 0.35 with bs4_book()">
+<meta name="generator" content="bookdown 0.43 with bs4_book()">
 <meta property="og:title" content="7 Direct competition and mutualism | Primer of Ecology using R">
 <meta property="og:type" content="book">
 <meta property="og:description" content="Different species frequently compete for limiting resources, and as a result have negative impacts on each other. For example, change in species composition during secondary succession (Fig. 7.1)...">
@@ -16,10 +16,9 @@
 <meta name="twitter:description" content="Different species frequently compete for limiting resources, and as a result have negative impacts on each other. For example, change in species composition during secondary succession (Fig. 7.1)...">
 <!-- JS --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://kit.fontawesome.com/6ecbd6c532.js" crossorigin="anonymous"></script><script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="libs/bootstrap-4.6.0/bootstrap.min.css" rel="stylesheet">
-<script src="libs/bootstrap-4.6.0/bootstrap.bundle.min.js"></script><script src="libs/bs3compat-0.5.1/transition.js"></script><script src="libs/bs3compat-0.5.1/tabs.js"></script><script src="libs/bs3compat-0.5.1/bs3compat.js"></script><link href="libs/bs4_book-1.0.0/bs4_book.css" rel="stylesheet">
+<script src="libs/bootstrap-4.6.0/bootstrap.bundle.min.js"></script><script src="libs/bs3compat-0.9.0/transition.js"></script><script src="libs/bs3compat-0.9.0/tabs.js"></script><script src="libs/bs3compat-0.9.0/bs3compat.js"></script><link href="libs/bs4_book-1.0.0/bs4_book.css" rel="stylesheet">
 <script src="libs/bs4_book-1.0.0/bs4_book.js"></script><script src="libs/kePrint-0.0.1/kePrint.js"></script><link href="libs/lightable-0.0.1/lightable.css" rel="stylesheet">
-<link href="libs/bsTable-3.3.7/bootstrapTable.min.css" rel="stylesheet">
-<script src="libs/bsTable-3.3.7/bootstrapTable.js"></script><!-- Global site tag (gtag.js) - Google Analytics --><script async src="https://www.googletagmanager.com/gtag/js?id=G-VCV8MES4YY"></script><script>
+<!-- Global site tag (gtag.js) - Google Analytics --><script async src="https://www.googletagmanager.com/gtag/js?id=G-VCV8MES4YY"></script><script>
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date());
@@ -34,6 +33,7 @@
     div.csl-bib-body { }
     div.csl-entry {
       clear: both;
+          margin-bottom: 0em;
         }
     .hanging div.csl-entry {
       margin-left:2em;
@@ -602,15 +602,15 @@ Figure 7.6: Unstable equilibria: as the relative strength of interspecific compe
 <span><span class="fu"><a href="https://rdrr.io/r/base/eigen.html">eigen</a></span><span class="op">(</span> <span class="fu"><a href="https://rdrr.io/r/base/eval.html">eval</a></span><span class="op">(</span><span class="va">J</span><span class="op">)</span> <span class="op">)</span><span class="op">[[</span><span class="st">"values"</span><span class="op">]</span><span class="op">]</span></span></code></pre></div>
 <pre><code>## [1]  0.04761905 -1.00000000</code></pre>
 <p>The dominant eigenvalue is now positive, while the other is negative, indicating a saddle (Table <a href="comp.html#tab:eiginterpret">7.2</a>.</p>
-<p><strong>Neutral equilibria — <span class="math inline">\(\beta_{ij} = \beta_{ji} = 1\)</span></strong>: What happens when the inter- and intraspecific effects of each species are equal? This puts the populations on a knife’s edge, between an unstable saddle and a stable attractor. Let’s think first about a geometric interpretation, where we shift between a bowl, representing a stable attractor, and a saddle, representing what we call a <em>neutral saddle</em>.</p>
+<p><strong>Neutral equilibria — <span class="math inline">\(\beta_{ij} =  \beta_{ji} = 1\)</span></strong>: What happens when the inter- and intraspecific effects of each species are equal? This puts the populations on a knife’s edge, between an unstable saddle and a stable attractor. Let’s think first about a geometric interpretation, where we shift between a bowl, representing a stable attractor, and a saddle, representing what we call a <em>neutral saddle</em>.</p>
 <p>Imagine that we begin with a stable attractor, represented by a bowl, where <span class="math inline">\(\alpha_{ij} &lt; \alpha_{ii}\)</span>. We drop a ball in a bowl, and the bowl rolls to the bottom — the global attractor. As we increase the interspecific competition coefficients, <span class="math inline">\(\alpha_{ij} \to \alpha_{ii}\)</span>, we are pressing down on just two points on opposite sides of the bowl. Our hands push down on two opposite sides, until the bowl is flat in one direction, but has two remaining sides that slope downward. Perhaps you think this looks like a taco shell? The same shape is easily replicated by just picking up a piece of paper by opposite edges, letting it sag in the middle. This is the neutral saddle. What would eigenanalysis tell us? Let’s find out.</p>
-<p>We could just charge ahead in R, and I encourage you to do so, repeating the steps above. You would find that doesn’t work because when <span class="math inline">\(\beta_{ij} = \beta_{ji} = 1\)</span>, our equilibria are undefined (numerator and denominator are zero in <a href="comp.html#eq:lvn1eq">(7.8)</a>, <a href="comp.html#eq:lvn2eq">(7.9)</a>. Hmmm. Perhaps we can simplify things by taking the <em>limit</em> of the equilibrium, as <span class="math inline">\(\alpha_{ij} \to \alpha_{jj}\)</span>. Let <span class="math inline">\(\alpha_{12}=a\)</span> and <span class="math inline">\(\alpha_{22}=a+h\)</span>, and let <span class="math inline">\(\alpha_{21}=b\)</span> and <span class="math inline">\(\alpha_{11}=b+h\)</span>. Then we want the limit of the equilibrium as <span class="math inline">\(h\)</span> goes to zero.
+<p>We could just charge ahead in R, and I encourage you to do so, repeating the steps above. You would find that doesn’t work because when <span class="math inline">\(\beta_{ij} =  \beta_{ji} = 1\)</span>, our equilibria are undefined (numerator and denominator are zero in <a href="comp.html#eq:lvn1eq">(7.8)</a>, <a href="comp.html#eq:lvn2eq">(7.9)</a>. Hmmm. Perhaps we can simplify things by taking the <em>limit</em> of the equilibrium, as <span class="math inline">\(\alpha_{ij} \to \alpha_{jj}\)</span>. Let <span class="math inline">\(\alpha_{12}=a\)</span> and <span class="math inline">\(\alpha_{22}=a+h\)</span>, and let <span class="math inline">\(\alpha_{21}=b\)</span> and <span class="math inline">\(\alpha_{11}=b+h\)</span>. Then we want the limit of the equilibrium as <span class="math inline">\(h\)</span> goes to zero.
 <span class="math display" id="eq:lim">\[\begin{align}
   \tag{7.17}
   \lim_{h \to 0}\frac{\left(a+h\right)-a}{\left(a+h\right)\left(b+h\right) - ab} &amp;=\frac{1}{a+b}
 \end{align}\]</span>
 Thus, <span class="math inline">\(N_1^* = 1/(\alpha_{11}+\alpha_{22})\)</span>, assuming <span class="math inline">\(\alpha_{12} = \alpha_{22}\)</span> and <span class="math inline">\(\alpha_{21}=\alpha_{11}\)</span>. Therefore, the equilibrium population size is simply the inverse of the sum of these coefficients.</p>
-<p><strong>Eigenanalysis in R of the Jacobian where <span class="math inline">\(\beta_{ij} = \beta_{ji} = 1\)</span></strong>: Here we create values for <span class="math inline">\(\mathbf{\alpha}\)</span> that create a neutral equilbrium.</p>
+<p><strong>Eigenanalysis in R of the Jacobian where <span class="math inline">\(\beta_{ij} =  \beta_{ji} = 1\)</span></strong>: Here we create values for <span class="math inline">\(\mathbf{\alpha}\)</span> that create a neutral equilbrium.</p>
 <div class="sourceCode" id="cb257"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">a11</span> <span class="op">&lt;-</span> <span class="va">a21</span> <span class="op">&lt;-</span> <span class="fl">0.01</span>; <span class="va">a22</span> <span class="op">&lt;-</span> <span class="va">a12</span> <span class="op">&lt;-</span> <span class="fl">0.015</span></span></code></pre></div>
 <p>We determine <span class="math inline">\(N^*\)</span> using <a href="comp.html#eq:lim">(7.17)</a> because the usual expression, <a href="comp.html#eq:lvn2eq">(7.9)</a>, fails because the denominator equals 0.</p>
@@ -632,7 +632,7 @@ Figure 7.7: Trajectories of N(1),N(2) for <span class="math inline">\(\beta_{12}
 </p>
 </div>
 <p>For example, if the populations start at low abundances, both populations will tend to increase at constant rates until they run into the isocline. Thus, both populations can increase when rare, but the relative abundances will never change, regardless of initial abundances.</p>
-<p>Recall the Lotka-Volterra isoclines, and what we originally stated about them. We stated that the equilibrium will be the point where the isoclines cross. When all <span class="math inline">\(\beta_{ij} = \beta_{ji} = 1\)</span>, the <em>isoclines completely overlap</em>, so we have an infinite number of equilibria—all the points along the line
+<p>Recall the Lotka-Volterra isoclines, and what we originally stated about them. We stated that the equilibrium will be the point where the isoclines cross. When all <span class="math inline">\(\beta_{ij} =  \beta_{ji} = 1\)</span>, the <em>isoclines completely overlap</em>, so we have an infinite number of equilibria—all the points along the line
 <span class="math display">\[\begin{equation}
   N_2= \frac{1}{\alpha_{22}} - \frac{\alpha_{11}}{\alpha_{22}}N_1
 \end{equation}\]</span>
@@ -842,7 +842,7 @@ where <span class="math inline">\(\alpha_{ij}, \alpha_{ji} &lt; 0\)</span> descr
 <footer class="bg-primary text-light mt-5"><div class="container"><div class="row">
 
   <div class="col-12 col-md-6 mt-3">
-    <p>"<strong>Primer of Ecology using R</strong>" was written by Hank Stevens. It was last built on 2023-09-17.</p>
+    <p>"<strong>Primer of Ecology using R</strong>" was written by Hank Stevens. It was last built on 2025-08-21.</p>
   </div>
 
   <div class="col-12 col-md-6 mt-3">

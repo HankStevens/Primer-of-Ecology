@@ -1,0 +1,956 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<script src="01-theory.qmd_files/libs/clipboard/clipboard.min.js"></script>
+<script src="01-theory.qmd_files/libs/quarto-html/tabby.min.js"></script>
+<script src="01-theory.qmd_files/libs/quarto-html/popper.min.js"></script>
+<script src="01-theory.qmd_files/libs/quarto-html/tippy.umd.min.js"></script>
+<link href="01-theory.qmd_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="01-theory.qmd_files/libs/quarto-html/light-border.css" rel="stylesheet">
+<link href="01-theory.qmd_files/libs/quarto-html/quarto-syntax-highlighting-2f5df379a58b258e96c21c0638c20c03.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+  <meta name="generator" content="quarto-1.6.42">
+
+  <meta name="author" content="Hank Stevens">
+  <title>Theory in Ecology</title>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+  <link rel="stylesheet" href="01-theory.qmd_files/libs/revealjs/dist/reset.css">
+  <link rel="stylesheet" href="01-theory.qmd_files/libs/revealjs/dist/reveal.css">
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+      vertical-align: middle;
+    }
+    /* CSS for syntax highlighting */
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      { color: #003b4f; background-color: #f1f3f5; }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span { color: #003b4f; } /* Normal */
+    code span.al { color: #ad0000; } /* Alert */
+    code span.an { color: #5e5e5e; } /* Annotation */
+    code span.at { color: #657422; } /* Attribute */
+    code span.bn { color: #ad0000; } /* BaseN */
+    code span.bu { } /* BuiltIn */
+    code span.cf { color: #003b4f; font-weight: bold; } /* ControlFlow */
+    code span.ch { color: #20794d; } /* Char */
+    code span.cn { color: #8f5902; } /* Constant */
+    code span.co { color: #5e5e5e; } /* Comment */
+    code span.cv { color: #5e5e5e; font-style: italic; } /* CommentVar */
+    code span.do { color: #5e5e5e; font-style: italic; } /* Documentation */
+    code span.dt { color: #ad0000; } /* DataType */
+    code span.dv { color: #ad0000; } /* DecVal */
+    code span.er { color: #ad0000; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #ad0000; } /* Float */
+    code span.fu { color: #4758ab; } /* Function */
+    code span.im { color: #00769e; } /* Import */
+    code span.in { color: #5e5e5e; } /* Information */
+    code span.kw { color: #003b4f; font-weight: bold; } /* Keyword */
+    code span.op { color: #5e5e5e; } /* Operator */
+    code span.ot { color: #003b4f; } /* Other */
+    code span.pp { color: #ad0000; } /* Preprocessor */
+    code span.sc { color: #5e5e5e; } /* SpecialChar */
+    code span.ss { color: #20794d; } /* SpecialString */
+    code span.st { color: #20794d; } /* String */
+    code span.va { color: #111111; } /* Variable */
+    code span.vs { color: #20794d; } /* VerbatimString */
+    code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
+    /* CSS for citations */
+    div.csl-bib-body { }
+    div.csl-entry {
+      clear: both;
+      margin-bottom: 0em;
+    }
+    .hanging-indent div.csl-entry {
+      margin-left:2em;
+      text-indent:-2em;
+    }
+    div.csl-left-margin {
+      min-width:2em;
+      float:left;
+    }
+    div.csl-right-inline {
+      margin-left:2em;
+      padding-left:1em;
+    }
+    div.csl-indent {
+      margin-left: 2em;
+    }  </style>
+  <link rel="stylesheet" href="01-theory.qmd_files/libs/revealjs/dist/theme/quarto-2f366650f320edcfcf53d73c80250a32.css">
+  <link href="01-theory.qmd_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
+  <link href="01-theory.qmd_files/libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
+  <link href="01-theory.qmd_files/libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
+  <link href="01-theory.qmd_files/libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
+  <style type="text/css">
+    .reveal div.sourceCode {
+      margin: 0;
+      overflow: auto;
+    }
+    .reveal div.hanging-indent {
+      margin-left: 1em;
+      text-indent: -1em;
+    }
+    .reveal .slide:not(.center) {
+      height: 100%;
+    }
+    .reveal .slide.scrollable {
+      overflow-y: auto;
+    }
+    .reveal .footnotes {
+      height: 100%;
+      overflow-y: auto;
+    }
+    .reveal .slide .absolute {
+      position: absolute;
+      display: block;
+    }
+    .reveal .footnotes ol {
+      counter-reset: ol;
+      list-style-type: none; 
+      margin-left: 0;
+    }
+    .reveal .footnotes ol li:before {
+      counter-increment: ol;
+      content: counter(ol) ". "; 
+    }
+    .reveal .footnotes ol li > p:first-child {
+      display: inline-block;
+    }
+    .reveal .slide ul,
+    .reveal .slide ol {
+      margin-bottom: 0.5em;
+    }
+    .reveal .slide ul li,
+    .reveal .slide ol li {
+      margin-top: 0.4em;
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide ul[role="tablist"] li {
+      margin-bottom: 0;
+    }
+    .reveal .slide ul li > *:first-child,
+    .reveal .slide ol li > *:first-child {
+      margin-block-start: 0;
+    }
+    .reveal .slide ul li > *:last-child,
+    .reveal .slide ol li > *:last-child {
+      margin-block-end: 0;
+    }
+    .reveal .slide .columns:nth-child(3) {
+      margin-block-start: 0.8em;
+    }
+    .reveal blockquote {
+      box-shadow: none;
+    }
+    .reveal .tippy-content>* {
+      margin-top: 0.2em;
+      margin-bottom: 0.7em;
+    }
+    .reveal .tippy-content>*:last-child {
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide > img.stretch.quarto-figure-center,
+    .reveal .slide > img.r-stretch.quarto-figure-center {
+      display: block;
+      margin-left: auto;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-left,
+    .reveal .slide > img.r-stretch.quarto-figure-left  {
+      display: block;
+      margin-left: 0;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-right,
+    .reveal .slide > img.r-stretch.quarto-figure-right  {
+      display: block;
+      margin-left: auto;
+      margin-right: 0; 
+    }
+  </style>
+</head>
+<body class="quarto-light">
+  <div class="reveal">
+    <div class="slides">
+
+<section id="title-slide" class="quarto-title-block center">
+  <h1 class="title">Theory in Ecology</h1>
+
+<div class="quarto-title-authors">
+<div class="quarto-title-author">
+<div class="quarto-title-author-name">
+Hank Stevens 
+</div>
+</div>
+</div>
+
+</section>
+<section class="slide level2">
+
+<p>In this chapter, we introduce a perspective on ecological theory, and provide two examples of efficient theory, metabolic scaling and maximum entropy theory.</p>
+<p>Theory is really, really important. Without theory of some sort to guide us, we are merely counting pebbles in a quarry. Good theory may be conceptual or mathematical, and helps us focus more clearly and in a less ambiguous manner on the systems we study. In this book, we explore mathematical models that provide special cases of theory.</p>
+<p><em>Scientific theory</em> is a body of knowledge that provides an organized and mechanistic view of how the world works <span class="citation" data-cites="scheiner2010">(<a href="#/in-fine" role="doc-biblioref" onclick=""><strong>scheiner2010?</strong></a>)</span>. Theories concerning gravity, general relativity, and evolution by natural selection provide structured ways of connecting observations, patterns, and processes that provide insight into why the world is the way it is. This stands in stark contrast to the colloquial use of <em>theory</em> that implies a lack of knowledge, as when someone says “oh, that’s just a theory”, referring to a guess without much evidence. Scientific theory is a set of explanations whose validity has been tested repeatedly by experiments and new data.</p>
+</section>
+<section id="examples-of-theories" class="slide level2">
+<h2>Examples of theories</h2>
+<p>Ecology has lots of theories, of all different types. Below I discuss some which may be prevalent, important, useful, or some combination.</p>
+</section>
+<section id="hierarchy-theory" class="slide level2">
+<h2>Hierarchy theory</h2>
+<p>An early and persistent organizing schema in ecology is based on <em>hierarchy theory</em> <span class="citation" data-cites="oneill1986 rose2017">(<a href="#/in-fine" role="doc-biblioref" onclick=""><strong>oneill1986?</strong></a>; <a href="#/in-fine" role="doc-biblioref" onclick=""><strong>rose2017?</strong></a>, and references therein)</span>. It posits that ecological systems are structured <em>hierachically</em>, such that each entity comprises subunits. For instance, an entity such as a population of big bluestem grass (<em>Andropogon gerardii</em>) is part of a larger ecology community of many species. The population of big bluestem comprises subpopulations separated in space, a subpopulation comprises separate individuals, that each individual comprises multiple ramets and a set of organ systems and tissues, which comprise different cell types. This theory posits that each entity gives rise to emergent properties to the hierarchical level above it, and influences processes within each smaller sub-entity in the hierachical level below it. As a disciplinary organizing principle, this approach structures nearly all of the ecology curriculum.</p>
+<p>Hierarchy theory gets more complicated when the levels of a hierarchy start to include fundamentally different types of entities. The big bluestem hierarchy above included only biotic components–a individual is part of a population which is part of a community of individuals of multiple species, and is made up of organ systems and tissues. Ecology, however, includes both the biotic and the abiotic parts of environments. An ecosystem includes a community of species, but also the nutrients, water, light, and other abiotic components, along with the spatial arrangement of all of these things.</p>
+<p>Different hierarchies are useful for different questions. An individual organism can play very different roles in different hierarchies. Consider and individual bunch grass. To understand how a population evolves, we need to count individuals within a population, because evolutionary fitness is tracked by the number of independent reproductive units. In contrast, to understand competitive interactions, it may be much more important to weigh the biomass of groups of individuals in a population, because biomass is more closely related of resource uptake.</p>
+</section>
+<section id="a-general-theory-of-ecology" class="slide level2">
+<h2>A general theory of ecology</h2>
+<p>Good scientific theories exist within a hierarchy of disciplinary knowledge <span class="citation" data-cites="scheiner2011">(<a href="#/in-fine" role="doc-biblioref" onclick=""><strong>scheiner2011?</strong></a>)</span>. They explain phenomena within a <em>domain</em> of knowledge which is organized around <em>principles</em> and <em>assumptions</em>. Scheiner and Willig posit a theory of biology that explains phenomena relating to the “diversity and complexity of living systems”. One of the ten principles on which this theory depends is that “the cell is the fundamental unit of life”. Subsumed within their theory of biology is the theory of cells whose domain is “cells and the causes of their structure, function, and variation.” This theory in turn is based on principles and has theories to organize our understanding of cells and what cells do.</p>
+<p><em>Models</em> are specific and explicit manifestations of more general theories. In this book, we focus on popular mathematical models that are specific manifestions of theories of ecology.</p>
+<p><span class="citation" data-cites="scheiner2011">(<a href="#/in-fine" role="doc-biblioref" onclick=""><strong>scheiner2011?</strong></a>)</span> propose a theory of ecology, some of which we cover in this book. Here is part of this theory:</p>
+<p><strong>The General Theory of Ecology</strong></p>
+<p><strong>Domain:</strong> The spatial and temporal pattern of the distribution and abundance of organisms, including causes and consequences.</p>
+<p><strong>Principles:</strong></p>
+<ol type="1">
+<li>Organisms are distributed in space and time in a heterogeneous manner.</li>
+<li>Organisms interact with their abiotic and biotic environments.</li>
+<li>Variation in the characteristics of organisms results in heterogeneity of ecological patterns and processes.</li>
+<li>The distributions of organisms and their interactions depend on contingencies.</li>
+<li>Environmental conditions as perceived by organisms are heterogeneous in space and time.</li>
+<li>Resources as perceived by organisms are finite and heterogeneous in space and time.</li>
+<li>Birth and death rates are a consequence of interactions with the abiotic and biotic environment.</li>
+<li>The ecological properties of species are the result of evolution.</li>
+</ol>
+<p>These principles constitute what we know is true about ecological systems. Some of these principles provide the focus for a single chapter while other principles apply broadly to many chapters in this book.</p>
+<p>Here is my own perspective on a general theory of ecology:</p>
+<p><em>Domain:</em> The house of life<sup>1</sup>: its constituent entities, causes, and consequences.</p>
+<p><em>Principles:</em></p>
+<ol type="1">
+<li>Entities<sup>2</sup> are open systems with inputs and outputs.</li>
+<li>Entities have internal complexity.</li>
+<li>Entities include self-replicating components (living elements).</li>
+<li>Entities interact via inputs, outputs, and behavior.</li>
+<li>Rates of change, including inputs and outputs, are influenced directly by physical factors: space, temperature, and concentration.</li>
+</ol>
+<p>You will see elements of these principles throughout this book as well.</p>
+<aside><ol class="aside-footnotes"><li id="fn1"><p>“ecology” derives from the Greek “oikos” which means the rules of the house</p></li><li id="fn2"><p>An entity may be an ecosystem, a community, a population, an individual, or some other system with operationally defined boundaries.</p></li></ol></aside></section>
+<section id="efficient-theory" class="slide level2">
+<h2>Efficient theory</h2>
+<p><span class="citation" data-cites="marquet2014">Marquet et al. (<a href="#/in-fine" role="doc-biblioref" onclick="">2014</a>)</span> argue that the best theories are those which are <em>efficient</em>. Such theories tend to be <em>based on first principles</em>, which are observations and laws that are fundamental assumptions in a scientific domain. In biology, such principles can include the laws of thermodynamics, and mathematical properties such as the central limit theorem. Theories built upon first principles are thus well-grounded in reality as we understand it and lead logically to refinements. Marquet and his colleagues also claim that efficient theory is <em>expressed in mathematics</em>. Mathematics is a universal language that is unamibiguous. It forces us to be as clear as possible about what we mean when we state a theory.<sup>1</sup> Last, efficient theories are those that make a <em>large number of predictions using only a small number of free parameters</em>.<sup>2</sup> Examples of efficient theories we cover in this book include metabolic scaling, exponential growth, density dependence, and ecological neutral theory.</p>
+<p>Marquet et al.&nbsp;and Scheiner and Willig emphasize slightly different features of the definition of “theory”. Scheiner and Willig emphasize relatively broad ideas that are well-supported by experiments and repeated observation. Marquet and colleagues tend to mean something fairly specific and narrow, typically something that can be expressed mathematically. Scheiner and Willig might refer to such theory as constitutive theory or even simply a model.</p>
+<p>Next, I describe the Metabolic Theory of Ecology. This theory is based on first principles, and its central tenets are expressed mathematically. It’s core equation has a very small number of free parameters (fitted constants) and makes a very large number of testable predictions. Parts of this theory are supported by a very large number of observations. It fits everyone’s definition of theory.</p>
+<aside><ol class="aside-footnotes"><li id="fn3"><p><span class="math inline">\(E=mc^2\)</span> - need I say more?</p></li><li id="fn4"><p>Variables are quantities we measure and which change through time (e.g., population size). <em>Parameters</em> are (usually) fixed constants that govern the rates of change of variables (e.g., per capita birth rate).</p></li></ol></aside></section>
+<section id="metabolic_scaling" class="slide level2">
+<h2>An example: Metabolic Theory of Ecology</h2>
+<p>Metabolic rate is central to how rapidly individuals forage for, consume and use resources, reproduce and die. The <em>metabolic theory of ecology</em> <span class="citation" data-cites="brown2004a">(<a href="#/in-fine" role="doc-biblioref" onclick=""><strong>brown2004a?</strong></a>)</span> is a well-supported body of knowledge about the underlying mechanisms, and the resulting profound and wide-ranging consequences for populations and ecosystems.</p>
+<p>Body size and temperature are fundamental properties of organisms and the environment. The study of how body shape and body processes scale with body size is <em>allometry</em>. Because body size affects metabolic rate, body size indirectly helps determine population growth rates and how species interact with each other. Temperature affects how molecules vigorously molecules vibrate and move, and so increasing temperature tends to speed up chemical reactions. As metabolism is really just a complex network of biochemical reactions, temperature influences metabolic rate.</p>
+<p>The core of this theory is expressed in a simple mathematical equation that describes how body size and temperature govern metabolic rate.</p>
+</section>
+<section id="body-size-dependence" class="slide level2">
+<h2>Body-size dependence</h2>
+<p>There is a profoundly simple and general rule describing the effect of interspecific variation in body size on metabolism.<sup>1</sup> This biological law is referred to as the Kleiber law <span class="citation" data-cites="kleiber1932">(<a href="#/in-fine" role="doc-biblioref" onclick=""><strong>kleiber1932?</strong></a>)</span>, or <em>quarter power scaling</em> <span class="citation" data-cites="brown2004a">(<a href="#/in-fine" role="doc-biblioref" onclick=""><strong>brown2004a?</strong></a>)</span>. When we compare the basal (i.e. resting) metabolic rates of different species, across a wide range of body sizes spanning many orders of magnitude, we find that</p>
+<p><em>whole-organism resting metabolic rate increases with organism mass raised to the three-quarter power</em>, or,</p>
+<p><span class="math display">\[
+B = aM^{z} \quad;\quad z = 3/4
+\]</span></p>
+<p>In this equation, <span class="math inline">\(B\)</span> is basal, or resting, metabolic rate, <span class="math inline">\(M\)</span> is body mass, <span class="math inline">\(a\)</span> is a proportionality constant, and <span class="math inline">\(z\)</span> is the <em>power law scaling coefficient</em>. The proportionality constant <span class="math inline">\(a\)</span> varies depending on the type of organism such as arthropods, fish, or mammals. Plants scale in the same manner <span class="citation" data-cites="niklas2001">(<a href="#/in-fine" role="doc-biblioref" onclick=""><strong>niklas2001?</strong></a>)</span>, although size or mass is a little trickier to measure. The scaling coefficient, <span class="math inline">\(z\)</span>, is the seemingly magical constant that many have argued does not vary substantially among different types of organisms.</p>
+<p>Ecologists typically describe metabolism-mass relations and other power law behavior using logarithmic scales. When we do that, power law relations become linear. Using our rules for exponents and logarithms, metabolic scaling becomes <span class="math display">\[ \log B = \log a + z\log M\]</span> so that <span class="math inline">\(\log B\)</span> increases linearly with <span class="math inline">\(\log M\)</span> with a slope of <span class="math inline">\(3/4\)</span>. Our brains can process and compare linear relations much more easily than curvilinear ones.</p>
+<p>Here we plot the curvilinear relation in R using <code>curve()</code> in the <code>graphics</code> package of R that is included in the base installation as one of the core packages. The function <code>curve()</code> can plot any curve that be expressed as a function of <code>x</code>. Below, we draw a curve of a dotted 1:1 line for comparison, and then <em>add</em> the power function <span class="math inline">\(x^{3/4}\)</span>.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="01-theory.qmd_files/figure-revealjs/MTE34-1.png" style="width:75.0%"></p>
+<figcaption>Metabolic rate increases predictably with species body sizes.</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>To help us grasp the implications of this, let’s consider <em>mass-specific</em> metabolic rates. “Mass-specific” means on a per-gram basis.<sup>2</sup> Mass-specific metabolic rate is basal metabolic rate of an individual divided by its mass, or <span class="math inline">\(B/M\)</span>.</p>
+<p>The mass-specific metabolic rate allows us to compare directly, for example, the metabolic rate of a cell in a shrew vs.&nbsp;a cell in an elephant. Which cell is burning fuel faster?</p>
+<p>We can estimate this from the above metabolic scaling principle and the using rules exponents <span class="math display">\[ \frac{B}{M} = a \frac{M^z}{M^1} = a M^{z-1} = aM^{-1/4}\]</span> From this, we now have the rule that</p>
+<p><em>mass-specific metabolic rate declines with organisms mass raised to the negative one quater power</em></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href=""></a>eq1 <span class="ot">=</span> <span class="cf">function</span>(M, a){a<span class="sc">*</span>M<span class="sc">^-</span><span class="fl">0.25</span>} <span class="co"># create the function, F(M)</span></span>
+<span id="cb1-2"><a href=""></a><span class="fu">ggplot</span>(<span class="at">data=</span><span class="fu">data.frame</span>(<span class="at">x=</span><span class="fu">c</span>(<span class="fl">0.1</span>, <span class="dv">100</span>)), <span class="fu">aes</span>(<span class="at">x=</span>x) ) <span class="sc">+</span> </span>
+<span id="cb1-3"><a href=""></a>  <span class="fu">stat_function</span>(<span class="at">fun=</span>eq1, <span class="at">geom=</span><span class="st">"line"</span>, <span class="at">args=</span><span class="fu">list</span>(<span class="at">a=</span><span class="dv">1</span>)) <span class="sc">+</span> </span>
+<span id="cb1-4"><a href=""></a>  <span class="fu">xlab</span>(<span class="st">"Mass (M)"</span>) <span class="sc">+</span> <span class="fu">ylab</span>(<span class="st">"Mass-specific metabolic rate (B/M)"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="01-theory.qmd_files/figure-revealjs/MTE-MS-1.png" style="width:75.0%"></p>
+<figcaption>Mass-specific metabolic rate declines predictably with species body sizes.</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>Over the years, there has been heated debate about (i) the precise value of the scaling coefficient <span class="math inline">\(z\)</span>, and (ii) the underlying mechanism. Early arguments suggested that <span class="math inline">\(z \approx 2/3\)</span> because the rate heat dissipation scales with the amount surface area. Why <span class="math inline">\(2/3\)</span>?</p>
+<p>Let’s envision the volume of an organism having three linear dimensions, so the volume scales to the cube of linear dimensions, while the surface area scales to the square of these linear dimensions,<sup>3</sup> <span class="math display">\[V \propto L^3\]</span> <span class="math display">\[A \propto L^2\]</span> The early explanation was that metabolic rate, <span class="math inline">\(B\)</span>, scales linearly with area, <span class="math display">\[B \propto A^1 \propto L^2\]</span>. With substitution we get, <span class="math display">\[L^2 \propto V^z \propto (L^3)^z\]</span> implying that the exponents <span class="math inline">\(2 = 3z\)</span> or <span class="math inline">\(z=2/3\)</span>, so we get, <span class="math display">\[B=V^{2/3}\]</span>, and, for the most part, mass scales linearly with volume for mammals or any other such group.</p>
+<p>This early theory was because it started with first principles (heat dissipation and geometry) and resulted in the prediction of a single parameter. It could then be used to make predictions about how metabolic rate scales with body mass. Metabolic rate governs a huge amount of biology and ecology, including resource consumption rates, lifespan, and maximum population growth rates. Therefore, this theory and this model could be powerful tools for understanding the world and making testable predictions.</p>
+<p>The above model is good because it could be tested. That is what has been done, and scientists found that there was a consistent mismatch between observations and the theory. Investigators showed that the value of the exponent appeared closer to 3/4 raher than 2/3. In the 1990s, a group including Jim Brown and Geoffrey West <span class="citation" data-cites="west1997">(<a href="#/in-fine" role="doc-biblioref" onclick=""><strong>west1997?</strong></a>)</span> proposed an underlying mechanism that explained why it should be 3/4. They assumed that organisms must</p>
+<ul>
+<li>distribute resources from a single source through a branching, fractal-like, space-filling network to all parts of the body,</li>
+<li>the size of the smallest branch ( a capillary) was the same for organisms of all sizes.</li>
+<li>the energy required to distribute the resources must be minimized, that less energy-efficient designs would be lost through natural selection.</li>
+</ul>
+<p>The prediction that resulted from these assumptions was that the exponent would be 3/4. This theory and model begin with different first principles and makes a different prediction.</p>
+<p>Soon Jayanth Banavar and his colleagues offered an alternative <span class="citation" data-cites="banavar1999 banavar2002">(<a href="#/in-fine" role="doc-biblioref" onclick=""><strong>banavar1999?</strong></a>; <a href="#/in-fine" role="doc-biblioref" onclick=""><strong>banavar2002?</strong></a>)</span>, arguing that the assumption of the fractal-like network was not correct, and in any event, was not necessary and did not apply to all organisms. They proposed different theory with less restrictive assumptions and found nonetheless that the exponent was also predicted to be 3/4.</p>
+<p>At the base of all these arguments is the geometry of the resource distribution system. All organisms take in limiting resources and have to distribute those resources to each part of each cell in the body. The key point is that <em>the larger the organism, the greater the portion of the resources are in transit at any instant in time</em>. This leads to an increasingly inefficient system, in which the metabolism of larger organisms has to run more slowly per unit resource:</p>
+<p><em>Larger organisms can process more resources per unit time (</em><span class="math inline">\(B=aM^{3/4}\)</span>), but do so less and less efficiently (<span class="math inline">\(\frac{B}{M}=aM^{-1/4}\)</span>) due to resources in transport.</p>
+<p>Banavar, Brown and others eventually collaborated to address quarter power scaling in animals in particular which led to additional novel predictions <span class="citation" data-cites="banavar2010">(<a href="#/in-fine" role="doc-biblioref" onclick=""><strong>banavar2010?</strong></a>)</span>.</p>
+<p>This theory remains a fertile and active area of research <span class="citation" data-cites="glazier2018">(<a href="#/in-fine" role="doc-biblioref" onclick=""><strong>glazier2018?</strong></a>)</span>. The interested reader should be careful to distinguish between patterns observed across many species of very different sizes, versus patterns observed in a single species with individuals of different sizes versus other types of patterns. Subtly different patterns may be driven be very different mechanisms.</p>
+<aside><ol class="aside-footnotes"><li id="fn5"><p>Metabolic rate may be measured by variables tied directly to metabolism, such as the rate of oxygen or energy consumption, or CO<span class="math inline">\(_2\)</span> production.</p></li><li id="fn6"><p>With plants, we often measure something called “specific leaf area”, SLA, which is the two dimensional area of a leaf divided by its mass.</p></li><li id="fn7"><p>A linear relation is one in which <span class="math inline">\(y\)</span> is proportional to <span class="math inline">\(x\)</span>, or <span class="math inline">\(y \propto x\)</span>.</p></li></ol></aside></section>
+<section id="temperature-dependence" class="slide level2">
+<h2>Temperature dependence</h2>
+<p>In addition to body size, temperature plays the other key role in regulating metabolic rate. The Arrhenius equation connects the macroscopic property of temperature to the kinetic energy of molecules and the rates they govern. Metabolic rate is proportional to these rate determining processes, <span class="math display">\[B  = a e^{\frac{-E_a}{kT}}\]</span> where <span class="math inline">\(a\)</span> is just a constant, <span class="math inline">\(e\)</span> is the exponential, <span class="math inline">\(E_a\)</span> is the average activation energy of rate-limiting enzymes (units, eV), <span class="math inline">\(k\)</span> is Boltzmann’s constant (units eV<span class="math inline">\(\,\)</span>K<span class="math inline">\(^{-1}\)</span>), and <span class="math inline">\(T\)</span> (units deg K). Bolztmann’s constant (<span class="math inline">\(\backsim 8.6 \times 10^-5\)</span><span class="math inline">\(\,\)</span>eV<span class="math inline">\(\,\)</span>K<span class="math inline">\(^{-1}\)</span>) converts the macroscopic property of temperature to kinetic energy of molecules.</p>
+<p>Individual biochemical reactions combine to determine basal metabolic rate, so <span class="citation" data-cites="gillooly2000">(<a href="#/in-fine" role="doc-biblioref" onclick=""><strong>gillooly2000?</strong></a>)</span> have taken this as a foundation for the metabolic theory of ecology <span class="citation" data-cites="brown2004a">(<a href="#/in-fine" role="doc-biblioref" onclick=""><strong>brown2004a?</strong></a>)</span>. In 2000, they suggested that the average activation energy is approximately <span class="math inline">\(E_a = 0.23\,\)</span>eV . Subsequent work has described this as “temperature sensitivity”, where larger numbers imply that organisms respond more strongly to temperature variation.</p>
+<p>The Arrhenius equation is a little more complicated that a simple power law, but not too much. Over the range of biologically relevant temperatures, it is dominated by a largely exponential increase in metabolic rate with increasing temperature (Fig @ref(fig:arrh)).</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href=""></a><span class="co"># with base R</span></span>
+<span id="cb2-2"><a href=""></a><span class="co"># base R: curve(10^4*exp(-0.23/(8.5 * 10^-5 *x)), 276, 316), ylab="B", xlab='T')</span></span>
+<span id="cb2-3"><a href=""></a><span class="co"># or ggplot2</span></span>
+<span id="cb2-4"><a href=""></a><span class="co"># the function, with default parameter values</span></span>
+<span id="cb2-5"><a href=""></a>eq.t <span class="ot">&lt;-</span> <span class="cf">function</span>(t,<span class="at">a=</span><span class="dv">10</span><span class="sc">^</span><span class="dv">4</span>,<span class="at">E=</span><span class="fl">0.23</span>,<span class="at">k=</span><span class="fl">8.6</span> <span class="sc">*</span> <span class="dv">10</span><span class="sc">^-</span><span class="dv">5</span>){a<span class="sc">*</span><span class="fu">exp</span>(<span class="sc">-</span>E<span class="sc">/</span>(k<span class="sc">*</span>t))}</span>
+<span id="cb2-6"><a href=""></a><span class="co"># the data used in our function</span></span>
+<span id="cb2-7"><a href=""></a>temps <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">t=</span><span class="dv">276</span><span class="sc">:</span><span class="dv">316</span>)</span>
+<span id="cb2-8"><a href=""></a><span class="fu">ggplot</span>(<span class="at">data=</span>temps, <span class="fu">aes</span>(<span class="at">x=</span>t)) <span class="sc">+</span> </span>
+<span id="cb2-9"><a href=""></a><span class="co"># set the basic properties of the plot</span></span>
+<span id="cb2-10"><a href=""></a>  <span class="fu">stat_function</span>(<span class="at">fun=</span>eq.t, <span class="at">geom=</span><span class="st">"line"</span>) <span class="sc">+</span> </span>
+<span id="cb2-11"><a href=""></a><span class="co"># set the function to plot</span></span>
+<span id="cb2-12"><a href=""></a>  <span class="fu">xlab</span>(<span class="st">"Temperature (K)"</span>) <span class="sc">+</span> <span class="fu">ylab</span>(<span class="st">"Metabolic rate (B)"</span>)  </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href=""></a><span class="co"># add labels</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<img data-src="01-theory.qmd_files/figure-revealjs/arrh-1.png" style="width:75.0%" class="r-stretch quarto-figure-center"><p class="caption">The effect of body temperature on ectothermic metabolic rates can be approximated with the Arrhenius function, <span class="math inline">\(B = a e^{-E_a/(kT)}\)</span>. Here <span class="math inline">\(a = 10^4\)</span>, and <span class="math inline">\(E_a = 0.23\)</span>. It is similar in shape to a power law with <span class="math inline">\(z &gt; 1\)</span>, over the range of biologically relevant temperatures.</p><p>When we linearize the relation between metabolic rate and temperature, we get <span class="math display">\[
+\begin{aligned}
+B &amp;= a e^{\frac{-E_a}{kT}}\\
+\log(B) &amp;= \log{a} - E_a\frac{1}{kT}\\
+\end{aligned}
+\]</span> where the dependent variable is <span class="math inline">\(1/(kT)\)</span>, <span class="math inline">\(-E_a\)</span> is the slope, and <span class="math inline">\(\log a\)</span> is the intercept. Thus, the negative slope of this relation describes theoretical prediction for the effect of temperature on metabolic rate.</p>
+<p><strong>So, there you have it.</strong> The metabolic theory ecology is the algebraic product of body size- and temperature-dependence: <span class="math display">\[B = a M^{3/4} e^{\frac{-E_a}{kT}}\]</span> This theory makes quantitative predictions regarding all kinds of ecology phenomena <span class="citation" data-cites="brown2004a">(<a href="#/in-fine" role="doc-biblioref" onclick=""><strong>brown2004a?</strong></a>)</span>, including</p>
+<ul>
+<li>home range size</li>
+<li>population growth</li>
+<li>population size</li>
+<li>resource uptake</li>
+<li>predation and other species interactions, and</li>
+<li>ecosystem cycling.</li>
+</ul>
+<p>Note that these relations are based on first principles of geometry and thermodynamics, and that they depend on only a small number of parameters (<span class="math inline">\(a\)</span>, <span class="math inline">\(-E_a\)</span>, and perhaps <span class="math inline">\(z=3/4\)</span>), and makes a tremendous number of predictions. Therefore, <span class="citation" data-cites="marquet2014">Marquet et al. (<a href="#/in-fine" role="doc-biblioref" onclick="">2014</a>)</span> propose that this is “good” theory, and very <em>efficient</em>.</p>
+</section>
+<section id="power-law-scaling-implies-constant-relative-differences" class="slide level2">
+<h2>Power law scaling implies constant relative differences</h2>
+<p>In power law scaling, relative change is constant. That is, a proportional change in one variable results in a proportional change in the other. For instance, when we compare a smaller species to a larger species with <span class="math inline">\(100 \times\)</span> the body mass, we can expect to see metabolic rate increase by <span class="math inline">\(31.6 \times\)</span>, <em>regardless of the mass of the smaller species.</em> For now, we will verify this numerically for some limited cases.</p>
+<p>Now we will divide each mass <span class="math inline">\(i\)</span> by the next smallest mass <span class="math inline">\(i-1\)</span>. We do that using a vector by dividing each mass except the first one, by each mass except the last one.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href=""></a><span class="co"># round(x, digits=0) rounds number to zero decimal places</span></span>
+<span id="cb4-2"><a href=""></a><span class="fu">round</span>( m[<span class="sc">-</span><span class="dv">1</span>]<span class="sc">/</span>m[<span class="sc">-</span><span class="fu">length</span>(m)], <span class="at">digits =</span> <span class="dv">0</span>)</span>
+<span id="cb4-3"><a href=""></a><span class="fu">round</span>( b[<span class="sc">-</span><span class="dv">1</span>]<span class="sc">/</span>b[<span class="sc">-</span><span class="fu">length</span>(b)], <span class="at">digits =</span> <span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>When we do these divisions, we see the constant relative change (Table @ref(tab:relativemb)).</p>
+<div class="cell">
+<div class="cell-output-display">
+<table class="caption-top">
+<caption>As we increase mass by a constant multiplier (10x), power law scaling results in a constant proportional change in basal metabolc rate.</caption>
+<thead>
+<tr class="header">
+<th style="text-align: left;"></th>
+<th style="text-align: right;">Small</th>
+<th style="text-align: right;">Med.</th>
+<th style="text-align: right;">Big</th>
+<th style="text-align: right;">Huge</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Mass</td>
+<td style="text-align: right;">0.01</td>
+<td style="text-align: right;">1.00</td>
+<td style="text-align: right;">100.00</td>
+<td style="text-align: right;">10000.00</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Basal.metabolic.rate</td>
+<td style="text-align: right;">0.03</td>
+<td style="text-align: right;">1.00</td>
+<td style="text-align: right;">31.62</td>
+<td style="text-align: right;">1000.00</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Relative.change.m</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">100.00</td>
+<td style="text-align: right;">100.00</td>
+<td style="text-align: right;">100.00</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">relative.change.b</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">31.62</td>
+<td style="text-align: right;">31.62</td>
+<td style="text-align: right;">31.62</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>We can verify this generally using algebra, not just in the particular case above. We will show that if mass increases by a constant multiplier, metabolic rate will also, regardless of the particular masses involved.</p>
+<p>Let mass <span class="math inline">\(m_2\)</span> be greater than mass <span class="math inline">\(m_1\)</span> by a factor of <span class="math inline">\(c\)</span>, so that <span class="math inline">\(m_2 = c m_1\)</span>, and <span class="math display">\[\frac{m_2}{m_1} = c\]</span>.</p>
+<p>We would like to show that the ratio of the metabolic rates <span class="math inline">\(b_2 / b_1\)</span> is also a constant. Since <span class="math inline">\(m_2 = cm_1\)</span>, we can say that <span class="math display">\[b_1 = a m_1^{3/4}\]</span> <span class="math display">\[b_2 = a (cm_1)^{3/4} = ac^{3/4}m_1^{3/4}\]</span> <span class="math display">\[\frac{b_2}{b_1} = \frac{ac^{3/4}m_1^{3/4}}{am_1^{3/4}}\]</span> When we reduce this fraction, we a left with <span class="math display">\[\frac{b_2}{b_1} = c^{3/4}\]</span></p>
+<p>This shows that with power law scaling, increasing <span class="math inline">\(x\)</span> by a constant <em>multipier</em> (or proportion), <span class="math inline">\(y\)</span> increases by the same proportion raised to that power.</p>
+<p>Let’s represent this graphically in a couple of ways, reusing data we made up previously in this chapter. First, we just change the axes themselves, so that the units of the scales are multiples of 10 (often in scientific notation).</p>
+
+<img data-src="01-theory.qmd_files/figure-revealjs/logscale-1.png" style="width:50.0%" class="r-stretch quarto-figure-center"><p class="caption">Changing the scales of the axes to linearize power law relations. Note scales are logarithmic, using the original linear values.</p></section>
+<section id="meet-mete-maximum-entropy-theory-of-ecology" class="slide level2">
+<h2>Meet METE: Maximum Entropy Theory of Ecology</h2>
+<p>The Maximum Entropy Theory of Ecology is best known for making predictions and elucidating patterns of species-area relations and species abundance distributions that emerge in relatively stable ecological communities and ecosystems <span class="citation" data-cites="harte2014">(<a href="#/in-fine" role="doc-biblioref" onclick=""><strong>harte2014?</strong></a>)</span>. However, it is an active area of research and Harte and others are extending the ideas into non-equilibrium systems as well <span class="citation" data-cites="harte2021mete">(<a href="#/in-fine" role="doc-biblioref" onclick=""><strong>harte2021mete?</strong></a>)</span>.</p>
+<p>Entropy is, basically, disorder. Less entropy means more order or structure. Maximum entropy is maximum disorder. The universe tends toward maximum entropy, although in some places and times, like parts of our world right now, entropy can decrease. Physicists are the folks most responsible for our understanding of entropy, and Edwin Jaynes is arguably the one most responsible our understanding and appreciation of its role in information and probability.</p>
+<p>MaxEnt, or the principle of maximization of information entropy, or the principle of maximum entropy is that, given a set of constraints on a system, the least-biased probability distribution that describes data arising from that system will be the one with maximum entropy.</p>
+<p>The principle of maximum entropy has show that maximal uncertainty arising from the flattest distribution, given known constraints, provides the least biased description of a system. It can provide the least biased probability distributions for these situations with these constraints:</p>
+<ul>
+<li>Consider a jar contains jelly beans, and contains at least one and no more than 1000. What is the least biased distribution of possible counts of jelly beans?</li>
+<li>Imagine a hectare of land that contains trees of different heights, and that the mean height is three meters. What is the least biased distribution of possible tree heights?</li>
+<li>Regarding this forest - what if you were told that the variance in height was two meters? What would be the least biased distribution of possible tree heights?</li>
+</ul>
+<p>The principle of maximum entropy could help us prove that, in the absence of other information, the least biased distributions for these sets of constraints would be the uniform, exponential, and Gaussian (or normal) probability distributions.</p>
+<p>The maximum entropy theory of ecology <span class="citation" data-cites="harte2014">(<a href="#/in-fine" role="doc-biblioref" onclick=""><strong>harte2014?</strong></a>)</span> can tell us what to expect when we know very little, or <em>when very little is going on aside from random noise.</em></p>
+<p>We will talk more about the METE in our chapter on diversity, but I mention it here to emphasize that patterns arise in ecology via random noise.</p>
+<p>The rank-abundance distribution is a famous ecological pattern. It is the log-abundance or relative abundance of species, arranged from the most abundant to the least abundant (Fig. @ref(fig:mete1)).</p>
+<div class="cell">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="01-theory.qmd_files/figure-revealjs/mete1-1.png" style="width:50.0%"></p>
+<figcaption>Rank abundance distribution of tree species in a 50 ha plot on Barro Colorado Island. Line is a best fit of the log-normal distribution.</figcaption>
+</figure>
+</div>
+</div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="01-theory.qmd_files/figure-revealjs/mete1-2.png" style="width:50.0%"></p>
+<figcaption>Rank abundance distribution of tree species in a 50 ha plot on Barro Colorado Island. Line is a best fit of the log-normal distribution.</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>The curve formed by these data points (left, Fig. @ref(fig:mete1)) is steep at first, among the most abundant species. The curve then flattens out a bit before getting a little bit steeper again. If we group species into logarithmic abundance categories, and make a histogram of abundances, we get the *species abundance distribution.” <span class="citation" data-cites="preston1962">(<a href="#/in-fine" role="doc-biblioref" onclick=""><strong>preston1962?</strong></a>)</span> noted that the distributions were remarkabling similar to a normal (Gaussian) distribution, when abundances were log-transformed (resulting in a lognormal-like distribution). It turns out that this curve is quite common and for decades ecologists argued about how we might infer the underlying ecological processes on the basis of the shape of the curve. This discussion died out once ecologists admitted that it was impossible to determined the processes on the basis of the pattern.</p>
+<p>The discussion of the shape of the rank-abundance distribution was revived in the late nineties when Steve Hubbell showed that if you pretend all individuals are equally likely to live or die, <em>independent of their species identity</em>, then you should expect this pattern <span class="citation" data-cites="hubbell2001">(<a href="#/in-fine" role="doc-biblioref" onclick=""><strong>hubbell2001?</strong></a>)</span>. Later, John Harte showed that the principle of maximum entropy was a more general approach to this question and could be extended into other realms and patters.</p>
+<p>As an example, consider a community of five individuals and three species. Those are our only constraints, <span class="math inline">\(N=5\)</span>, <span class="math inline">\(S=3\)</span>. How many different possible distributions of species abundances can we get if we assume maximum uncertainty, i.e., maximum entropy? Is there any way to know? Because we have so few, we can count them.</p>
+<p>Consider five individuals distributed among three species (rows) and list all possible community states (columns).</p>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>  [,1] [,2] [,3] [,4] [,5] [,6]
+A    3    1    1    2    2    1
+B    1    3    1    2    1    2
+C    1    1    3    1    2    2</code></pre>
+</div>
+</div>
+<p>A rank or species abundance distributions does care <em>which</em> species is most abundant, just that different species exist and can have different abundances. Maximum entropy would have us ask, “what is the average abundance of the most abundant species?” Let’s calculate that. We can see that the most abundant species has either 3 individuals or two individuals and each of these occurs three times. Therefore the average abundance of the most abundant species is calculated as</p>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 2.5</code></pre>
+</div>
+</div>
+<p>or two and half individuals out of five individuals in the whole community.</p>
+<p>How about the least abundant species? The least abundant species always has only one individual. Therefore, the second most abundant species has, on average, 1.5 individuals.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="01-theory.qmd_files/figure-revealjs/mete2-1.png" style="width:50.0%"></p>
+<figcaption>Expected rank abundance distribution, given five individuals and three species, under the maximum entropy theory of ecology.</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>This is one prediction of METE: given only the number of individuals and the number of species, it can predict a species abundance distribution.</p>
+</section>
+<section id="in-fine" class="slide level2 smaller scrollable">
+<h2><em>In fine</em></h2>
+<p>Useful theory helps us think more clearly and sometimes more imaginatively about how the world works. Good theory is usually <em>efficient</em> theory, making the greatest number of predictions with the fewest free parameters. It helps clarify our thinking and disentangle the myriad mechanisms at play in our ecological systems.</p>
+
+<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list">
+<div id="ref-marquet2014" class="csl-entry" role="listitem">
+Marquet, Pablo A., Andrew P. Allen, James H. Brown, Jennifer A. Dunne, Brian J. Enquist, James F. Gillooly, Patricia A. Gowaty, et al. 2014. <span>“On Theory in Ecology.”</span> <em>BioScience</em> 64 (8): 701710.
+</div>
+</div>
+</section>
+
+    </div>
+  <div class="quarto-auto-generated-content" style="display: none;">
+<div class="footer footer-default">
+
+</div>
+</div></div>
+
+  <script>window.backupDefine = window.define; window.define = undefined;</script>
+  <script src="01-theory.qmd_files/libs/revealjs/dist/reveal.js"></script>
+  <!-- reveal.js plugins -->
+  <script src="01-theory.qmd_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
+  <script src="01-theory.qmd_files/libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
+  <script src="01-theory.qmd_files/libs/revealjs/plugin/reveal-menu/menu.js"></script>
+  <script src="01-theory.qmd_files/libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
+  <script src="01-theory.qmd_files/libs/revealjs/plugin/quarto-support/support.js"></script>
+  
+
+  <script src="01-theory.qmd_files/libs/revealjs/plugin/notes/notes.js"></script>
+  <script src="01-theory.qmd_files/libs/revealjs/plugin/search/search.js"></script>
+  <script src="01-theory.qmd_files/libs/revealjs/plugin/zoom/zoom.js"></script>
+  <script src="01-theory.qmd_files/libs/revealjs/plugin/math/math.js"></script>
+  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script>
+
+  <script>
+
+      // Full list of configuration options available at:
+      // https://revealjs.com/config/
+      Reveal.initialize({
+'controlsAuto': true,
+'previewLinksAuto': false,
+'pdfSeparateFragments': false,
+'autoAnimateEasing': "ease",
+'autoAnimateDuration': 1,
+'autoAnimateUnmatched': true,
+'jumpToSlide': true,
+'menu': {"side":"left","useTextContentForMissingTitles":true,"markers":false,"loadIcons":false,"custom":[{"title":"Tools","icon":"<i class=\"fas fa-gear\"></i>","content":"<ul class=\"slide-menu-items\">\n<li class=\"slide-tool-item active\" data-item=\"0\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.fullscreen(event)\"><kbd>f</kbd> Fullscreen</a></li>\n<li class=\"slide-tool-item\" data-item=\"1\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.speakerMode(event)\"><kbd>s</kbd> Speaker View</a></li>\n<li class=\"slide-tool-item\" data-item=\"2\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\"><kbd>o</kbd> Slide Overview</a></li>\n<li class=\"slide-tool-item\" data-item=\"3\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.togglePdfExport(event)\"><kbd>e</kbd> PDF Export Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"4\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleScrollView(event)\"><kbd>r</kbd> Scroll View Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"5\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.keyboardHelp(event)\"><kbd>?</kbd> Keyboard Help</a></li>\n</ul>"}],"openButton":true},
+'smaller': false,
+ 
+        // Display controls in the bottom right corner
+        controls: false,
+
+        // Help the user learn the controls by providing hints, for example by
+        // bouncing the down arrow when they first encounter a vertical slide
+        controlsTutorial: false,
+
+        // Determines where controls appear, "edges" or "bottom-right"
+        controlsLayout: 'edges',
+
+        // Visibility rule for backwards navigation arrows; "faded", "hidden"
+        // or "visible"
+        controlsBackArrows: 'faded',
+
+        // Display a presentation progress bar
+        progress: true,
+
+        // Display the page number of the current slide
+        slideNumber: false,
+
+        // 'all', 'print', or 'speaker'
+        showSlideNumber: 'all',
+
+        // Add the current slide number to the URL hash so that reloading the
+        // page/copying the URL will return you to the same slide
+        hash: true,
+
+        // Start with 1 for the hash rather than 0
+        hashOneBasedIndex: false,
+
+        // Flags if we should monitor the hash and change slides accordingly
+        respondToHashChanges: true,
+
+        // Push each slide change to the browser history
+        history: true,
+
+        // Enable keyboard shortcuts for navigation
+        keyboard: true,
+
+        // Enable the slide overview mode
+        overview: true,
+
+        // Disables the default reveal.js slide layout (scaling and centering)
+        // so that you can use custom CSS layout
+        disableLayout: false,
+
+        // Vertical centering of slides
+        center: false,
+
+        // Enables touch navigation on devices with touch input
+        touch: true,
+
+        // Loop the presentation
+        loop: false,
+
+        // Change the presentation direction to be RTL
+        rtl: false,
+
+        // see https://revealjs.com/vertical-slides/#navigation-mode
+        navigationMode: 'linear',
+
+        // Randomizes the order of slides each time the presentation loads
+        shuffle: false,
+
+        // Turns fragments on and off globally
+        fragments: true,
+
+        // Flags whether to include the current fragment in the URL,
+        // so that reloading brings you to the same fragment position
+        fragmentInURL: false,
+
+        // Flags if the presentation is running in an embedded mode,
+        // i.e. contained within a limited portion of the screen
+        embedded: false,
+
+        // Flags if we should show a help overlay when the questionmark
+        // key is pressed
+        help: true,
+
+        // Flags if it should be possible to pause the presentation (blackout)
+        pause: true,
+
+        // Flags if speaker notes should be visible to all viewers
+        showNotes: false,
+
+        // Global override for autoplaying embedded media (null/true/false)
+        autoPlayMedia: null,
+
+        // Global override for preloading lazy-loaded iframes (null/true/false)
+        preloadIframes: null,
+
+        // Number of milliseconds between automatically proceeding to the
+        // next slide, disabled when set to 0, this value can be overwritten
+        // by using a data-autoslide attribute on your slides
+        autoSlide: 0,
+
+        // Stop auto-sliding after user input
+        autoSlideStoppable: true,
+
+        // Use this method for navigation when auto-sliding
+        autoSlideMethod: null,
+
+        // Specify the average time in seconds that you think you will spend
+        // presenting each slide. This is used to show a pacing timer in the
+        // speaker view
+        defaultTiming: null,
+
+        // Enable slide navigation via mouse wheel
+        mouseWheel: false,
+
+        // The display mode that will be used to show slides
+        display: 'block',
+
+        // Hide cursor if inactive
+        hideInactiveCursor: true,
+
+        // Time before the cursor is hidden (in ms)
+        hideCursorTime: 5000,
+
+        // Opens links in an iframe preview overlay
+        previewLinks: false,
+
+        // Transition style (none/fade/slide/convex/concave/zoom)
+        transition: 'none',
+
+        // Transition speed (default/fast/slow)
+        transitionSpeed: 'default',
+
+        // Transition style for full page slide backgrounds
+        // (none/fade/slide/convex/concave/zoom)
+        backgroundTransition: 'none',
+
+        // Number of slides away from the current that are visible
+        viewDistance: 3,
+
+        // Number of slides away from the current that are visible on mobile
+        // devices. It is advisable to set this to a lower number than
+        // viewDistance in order to save resources.
+        mobileViewDistance: 2,
+
+        // The "normal" size of the presentation, aspect ratio will be preserved
+        // when the presentation is scaled to fit different resolutions. Can be
+        // specified using percentage units.
+        width: 1050,
+
+        height: 700,
+
+        // Factor of the display size that should remain empty around the content
+        margin: 0.1,
+
+        math: {
+          mathjax: 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/MathJax.js',
+          config: 'TeX-AMS_HTML-full',
+          tex2jax: {
+            inlineMath: [['\\(','\\)']],
+            displayMath: [['\\[','\\]']],
+            balanceBraces: true,
+            processEscapes: false,
+            processRefs: true,
+            processEnvironments: true,
+            preview: 'TeX',
+            skipTags: ['script','noscript','style','textarea','pre','code'],
+            ignoreClass: 'tex2jax_ignore',
+            processClass: 'tex2jax_process'
+          },
+        },
+
+        // reveal.js plugins
+        plugins: [QuartoLineHighlight, PdfExport, RevealMenu, QuartoSupport,
+
+          RevealMath,
+          RevealNotes,
+          RevealSearch,
+          RevealZoom
+        ]
+      });
+    </script>
+    
+    <script>
+      // htmlwidgets need to know to resize themselves when slides are shown/hidden.
+      // Fire the "slideenter" event (handled by htmlwidgets.js) when the current
+      // slide changes (different for each slide format).
+      (function () {
+        // dispatch for htmlwidgets
+        function fireSlideEnter() {
+          const event = window.document.createEvent("Event");
+          event.initEvent("slideenter", true, true);
+          window.document.dispatchEvent(event);
+        }
+
+        function fireSlideChanged(previousSlide, currentSlide) {
+          fireSlideEnter();
+
+          // dispatch for shiny
+          if (window.jQuery) {
+            if (previousSlide) {
+              window.jQuery(previousSlide).trigger("hidden");
+            }
+            if (currentSlide) {
+              window.jQuery(currentSlide).trigger("shown");
+            }
+          }
+        }
+
+        // hookup for slidy
+        if (window.w3c_slidy) {
+          window.w3c_slidy.add_observer(function (slide_num) {
+            // slide_num starts at position 1
+            fireSlideChanged(null, w3c_slidy.slides[slide_num - 1]);
+          });
+        }
+
+      })();
+    </script>
+
+    <script id="quarto-html-after-body" type="application/javascript">
+    window.document.addEventListener("DOMContentLoaded", function (event) {
+      const toggleBodyColorMode = (bsSheetEl) => {
+        const mode = bsSheetEl.getAttribute("data-mode");
+        const bodyEl = window.document.querySelector("body");
+        if (mode === "dark") {
+          bodyEl.classList.add("quarto-dark");
+          bodyEl.classList.remove("quarto-light");
+        } else {
+          bodyEl.classList.add("quarto-light");
+          bodyEl.classList.remove("quarto-dark");
+        }
+      }
+      const toggleBodyColorPrimary = () => {
+        const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+        if (bsSheetEl) {
+          toggleBodyColorMode(bsSheetEl);
+        }
+      }
+      toggleBodyColorPrimary();  
+      const tabsets =  window.document.querySelectorAll(".panel-tabset-tabby")
+      tabsets.forEach(function(tabset) {
+        const tabby = new Tabby('#' + tabset.id);
+      });
+      const isCodeAnnotation = (el) => {
+        for (const clz of el.classList) {
+          if (clz.startsWith('code-annotation-')) {                     
+            return true;
+          }
+        }
+        return false;
+      }
+      const onCopySuccess = function(e) {
+        // button target
+        const button = e.trigger;
+        // don't keep focus
+        button.blur();
+        // flash "checked"
+        button.classList.add('code-copy-button-checked');
+        var currentTitle = button.getAttribute("title");
+        button.setAttribute("title", "Copied!");
+        let tooltip;
+        if (window.bootstrap) {
+          button.setAttribute("data-bs-toggle", "tooltip");
+          button.setAttribute("data-bs-placement", "left");
+          button.setAttribute("data-bs-title", "Copied!");
+          tooltip = new bootstrap.Tooltip(button, 
+            { trigger: "manual", 
+              customClass: "code-copy-button-tooltip",
+              offset: [0, -8]});
+          tooltip.show();    
+        }
+        setTimeout(function() {
+          if (tooltip) {
+            tooltip.hide();
+            button.removeAttribute("data-bs-title");
+            button.removeAttribute("data-bs-toggle");
+            button.removeAttribute("data-bs-placement");
+          }
+          button.setAttribute("title", currentTitle);
+          button.classList.remove('code-copy-button-checked');
+        }, 1000);
+        // clear code selection
+        e.clearSelection();
+      }
+      const getTextToCopy = function(trigger) {
+          const codeEl = trigger.previousElementSibling.cloneNode(true);
+          for (const childEl of codeEl.children) {
+            if (isCodeAnnotation(childEl)) {
+              childEl.remove();
+            }
+          }
+          return codeEl.innerText;
+      }
+      const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+        text: getTextToCopy
+      });
+      clipboard.on('success', onCopySuccess);
+      if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+        const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+          text: getTextToCopy,
+          container: window.document.getElementById('quarto-embedded-source-code-modal')
+        });
+        clipboardModal.on('success', onCopySuccess);
+      }
+        var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+        var mailtoRegex = new RegExp(/^mailto:/);
+          var filterRegex = new RegExp('/' + window.location.host + '/');
+        var isInternal = (href) => {
+            return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+        }
+        // Inspect non-navigation links and adorn them if external
+     	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+        for (var i=0; i<links.length; i++) {
+          const link = links[i];
+          if (!isInternal(link.href)) {
+            // undo the damage that might have been done by quarto-nav.js in the case of
+            // links that we want to consider external
+            if (link.dataset.originalHref !== undefined) {
+              link.href = link.dataset.originalHref;
+            }
+          }
+        }
+      function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+        const config = {
+          allowHTML: true,
+          maxWidth: 500,
+          delay: 100,
+          arrow: false,
+          appendTo: function(el) {
+              return el.closest('section.slide') || el.parentElement;
+          },
+          interactive: true,
+          interactiveBorder: 10,
+          theme: 'light-border',
+          placement: 'bottom-start',
+        };
+        if (contentFn) {
+          config.content = contentFn;
+        }
+        if (onTriggerFn) {
+          config.onTrigger = onTriggerFn;
+        }
+        if (onUntriggerFn) {
+          config.onUntrigger = onUntriggerFn;
+        }
+          config['offset'] = [0,0];
+          config['maxWidth'] = 700;
+        window.tippy(el, config); 
+      }
+      const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+      for (var i=0; i<noterefs.length; i++) {
+        const ref = noterefs[i];
+        tippyHover(ref, function() {
+          // use id or data attribute instead here
+          let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+          try { href = new URL(href).hash; } catch {}
+          const id = href.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note) {
+            return note.innerHTML;
+          } else {
+            return "";
+          }
+        });
+      }
+      const findCites = (el) => {
+        const parentEl = el.parentElement;
+        if (parentEl) {
+          const cites = parentEl.dataset.cites;
+          if (cites) {
+            return {
+              el,
+              cites: cites.split(' ')
+            };
+          } else {
+            return findCites(el.parentElement)
+          }
+        } else {
+          return undefined;
+        }
+      };
+      var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+      for (var i=0; i<bibliorefs.length; i++) {
+        const ref = bibliorefs[i];
+        const citeInfo = findCites(ref);
+        if (citeInfo) {
+          tippyHover(citeInfo.el, function() {
+            var popup = window.document.createElement('div');
+            citeInfo.cites.forEach(function(cite) {
+              var citeDiv = window.document.createElement('div');
+              citeDiv.classList.add('hanging-indent');
+              citeDiv.classList.add('csl-entry');
+              var biblioDiv = window.document.getElementById('ref-' + cite);
+              if (biblioDiv) {
+                citeDiv.innerHTML = biblioDiv.innerHTML;
+              }
+              popup.appendChild(citeDiv);
+            });
+            return popup.innerHTML;
+          });
+        }
+      }
+    });
+    </script>
+    
+
+</body></html>

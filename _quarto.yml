@@ -1,0 +1,62 @@
+project:
+  type: book
+  pre-render: scripts/build_refs.R
+
+book:
+  title: "Primer of Ecology"
+  author: "Hank Stevens"
+  chapters:
+    - index.qmd
+    - 01-theory.qmd
+    - references.qmd
+
+format:
+  html:
+    tufte: true
+    link-citations: true    # correct boolean syntax
+    grid:
+      margin-width: 350px
+    code-overflow: wrap
+    # Margin placement for HTML only: the tufte PDF class (below) already
+    # handles margin notes/figures natively. Also applying these to the
+    # PDF format loads Quarto's `sidenotes` package, which pulls in its
+    # own marginnote.sty and collides with tufte's built-in \marginnote,
+    # aborting the lualatex build ("Command \marginnote already defined").
+    # Keep these scoped to html.
+    reference-location: margin
+    citation-location: margin
+    figure-location: margin
+  pdf:
+    documentclass: tufte-book  # tufte-handout is article-based (no \chapter);
+                               # tufte-book supports the book/multi-chapter
+                               # structure this Quarto project uses.
+    classoption: nols  # works around a known tufte-latex bug where its
+                        # letterspacing code crashes \maketitle with
+                        # "Argument of \MakeTextUppercase has an extra }".
+                        # Trade-off: running headers on later pages render
+                        # in lowercase instead of letterspaced caps --
+                        # cosmetic only.
+    keep-tex: true  # TEMP: keeps index.tex/.log around after a successful
+                     # render so we can inspect exactly what LaTeX got
+                     # generated for chapter 1. Safe to remove once the
+                     # monospace issue is diagnosed.
+    fontsize: 10pt
+    mainfont: "Times New Roman"
+    sansfont: "Times New Roman"
+    grid:
+      margin-width: 350px
+    code-overflow: wrap
+    include-in-header:
+      - text: |
+          \usepackage{fvextra}
+          \DefineVerbatimEnvironment{Highlighting}{Verbatim}{
+            breaklines,
+            breakanywhere=true,
+            commandchars=\\\{\}
+          }
+
+warning: false
+
+bibliography:
+  - book-refs.bib    # auto-generated subset of tidy.bib; see scripts/build_refs.R
+  - packages.bib

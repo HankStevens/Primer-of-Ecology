@@ -10,7 +10,10 @@ qplot(NoS, CandG, geom="col",  ylab="No. of Species",
 Over relatively large spatial scales, it is not unusual to have some species that seem to occur everywhere, and many species that are found in only one or a few locations. For example, Scott Collins and Susan Glenn [@collins:1991fk] showed that in grasslands, each separated by up to 4$\,$km, there were more species occupying only one site (Fig. \@ref(fig:CandG), left-most bar) than two or more sites, and also that there are more species occupying all the sites than most intermediate numbers of sites (Fig. \@ref(fig:CandG), right-most bar), resulting in a U-shaped frequency distribution. Illke  Hanski [@hanski1982] coined the rare and common species "satellite" and "core" species, respectively, and proposed an explanation. Part of the answer seems to come from *the effects of immigration and emigration in a spatial context*. In this chapter we explore mathematical representations of individuals and populations in space, and we investigate the consequences for populations and collections of populations.
 
 ## Source-sink Dynamics
-In Chapters 3-5, we considered *closed* populations. In contrast, one could imagine a population governed by *b*irths plus *i*mmigration, and *d*eaths plus *e*migration (a *BIDE* model). Ron Pulliam [@pulliam:1988ez] proposed a simple model that includes all four components of *BIDE* which provides a foundation for thinking about connected subpopulations. We refer to the dynamics of these as *source-sink* models. Examples include subpopulations of birds inhabit low quality forest patches only because of immigration from high quality forest patches [@robinson1995; @donovan1995], or understory palms that inhabitat distinct microhabitats in which seeds move from high to low quality patches [@berry2008].
+In Chapters 3-5, we considered *closed* populations. In contrast, one could imagine a population governed by *b*irths plus *i*mmigration, and *d*eaths plus *e*migration (a *BIDE* model). Ron Pulliam [@pulliam:1988ez] proposed a simple model that includes all four components of *BIDE* which provides a foundation for thinking about connected subpopulations. We refer to these simple models as *source-sink* models. Among the many examples of real populations with characteristics of source-sink models are,
+
+* subpopulations of passerine birds that inhabit low quality forest patches in part because of immigration from high quality forest patches [@robinson1995; @donovan1995], and
+* understory palms that inhabit distinct microhabitats in which seeds move from high to low quality patches [@berry2008].
 ```{r ssmodel, echo=FALSE, fig.cap="The simplest source-sink model, where $m_{21} > m_{12}$ so that net movement of individuals is from the source to the sink.", fig.width=10, fig.height=5, out.width="75%"}
 ss <- matrix(c("lambda>1", "m[21]", "m[12]", "lambda<1"), nr=2)
 colnames(ss) <- c("Source", "Sink")
@@ -19,28 +22,28 @@ plotmat(ss, pos=2, curve=.3) # requires the diagram package
 ```
 
 
-The concept of source-sink populations begins with the assumption that spatially separated subpopulations occupy distinct patches, which each exhibit their own intrinisic dynamics due to births and deaths (Fig. \@ref(fig:ssmodel)). We can characterize each subpopulation with its own population growth rate, $\lambda_i$. In addition, individuals migrate between patches. Therefore, the number of individuals we observe in a particular patch is due to both internal dynamics of births and deaths, and also migration. 
+The concept of source-sink populations begins with the assumption that spatially separated subpopulations occupy distinct patches, which each have their own intrinisic dynamics due to births and deaths (Fig. \@ref(fig:ssmodel)). We can characterize each subpopulation, $i$ with its own population growth rate, $\lambda_i$. In addition, individuals migrate between patches. As a result, the number of individuals we observe in a particular patch is due to both internal dynamics of births and deaths, and also migration. 
 
 *Source populations* are those with more births than deaths ($\lambda > 1$) and with more emigration than immigration. *Sink populations* are those with fewer births than deaths ($\lambda < 1$) and with more immigration than emigration.
 
-When we consider causes of variation in $\lambda$, we often refer to the *quality* of patches or habitats. High quality patches have are those with high growth rates ($\lambda>1$), whereas low quality patches are those with low growth rates ($\lambda < 1$). We might also study factors associated with growth rate, such as the frequency of nesting sites, predator densities, or soil fertility, factors which we predict would regulate growth rates.  
+Because of the importance of $\lambda$, we often refer to the *quality* of a patch insofar as it influences $\lambda$. High quality patches have are those patches with high growth rates ($\lambda>1$), whereas low quality patches are those with low growth rates ($\lambda < 1$). We might also study factors associated with growth rate, such as the frequency of nesting sites, predator densities, soil fertility, or any factor that we believe would regulate growth rates.  
 
-Pulliam envisioned two linked bird populations where we track adult reproduction, adult and juvenile survival, and estimate $\lambda_i$ separately for each population. The size of the source population, at time $t+1$ is $n_{1,t+1}$ and is the result of survival and fecundity. Adult survival is  $P_A$, and fecundity results from reproduction by adults, $\beta_1 n_{1,t}$, times survival of the juveniles $P_J$. The sink population was modeled the same way.
+Pulliam [@pulliam:1988ez] envisioned two bird populations in which we can track adult reproduction, adult and juvenile survival, and estimate $\lambda_i$ separately for each population. If we model the two populations separately, *as if they are unconnected by dispersal*, the size of the source population at time $t+1$ is $n_{1,t+1}$, so it is the result of just survival and fecundity. Adult survival is  $P_A$, and fecundity results from reproduction by adults, $\beta_1 n_{1,t}$, times survival of the juveniles $P_J$. The sink population could be modeled the same way.
 \begin{align}
   (\#eq:ss1)
   n_{1, t+1} &= P_A n_{1,t} + \beta_1 n_{1,t}P_J = \lambda_1 n_1\\
   n_{2, t+1} &= P_A n_{2,t} + \beta_2 n_{2,t}P_J = \lambda_2 n_2
 \end{align}
 
-Pulliam then assumed that 
+When he connected this two population via dispersal, Pulliam then assumed that 
 
-* the two populations vary only in fecundity ($\beta$), which created differences in growth rates, such that $\lambda_1 > 1 > \lambda_2$. 
+* the two populations vary only in fecundity ($\beta$), which created differences in growth rates, such that $\lambda_1 > 1 > \lambda_2$, and critically,
 * birds in excess of the number of territories in the source population emigrated from the source habitat to the sink habitat, $m_{21} = \lambda_1 - 1$. 
 
-These assumptions result in the source population maintaining a constant density, while all the excess fecundity migrates to the sink population. 
+Key result: These assumptions result in the source population maintaining a constant density, while all the excess fecundity migrates to the sink population. 
 
 
-We can use a matrix model to investigate source-sink populations [e.g., @berry2008]. We place each rate in the respective element in a two-stage matrix model. We assume a pre-breeding census, in which we count only adults. The population dynamics would thus be governed by \textbf{A}.
+Here, we use a matrix to represent transitions between the two populations as well as changing abundance in each population [e.g., @berry2008]. We place each rate in the respective element in a two-stage projection matrix. We assume a pre-breeding census, in which we count only adults. The population dynamics would thus be governed by \textbf{A}:
 
 \begin{equation}
 (\#eq:SSBerry)
@@ -50,9 +53,9 @@ P_{A1} + P_{J1}\beta_1 &  M_{12} \\
 M_{21}  &  P_{A2} +P_{J2}\beta_2 
 \end{array} \right)
 \end{equation}
-where the upper left element (row 1, column 1) reflects the within-patch growth characteristics for patch 1. The lower right quadrant (row 2, and column 2) reflects the within-patch growth characteristics of patch 2. 
+where the upper left element (row 1, column 1) reflects the within-patch growth characteristics for patch 1. The lower right quadrant (row 2, and column 2) reflects the within-patch growth characteristics of patch 2. The anti-diagonal elements ($a_{1,2}$, $a_{2,1}$) represent migration. 
 
-Source-sink models assume net migration flows from the source to the sink ($M_{21}>M_{12}$). We will assume, for simplicity, that migration is exclusively from the source to the sink ($M_{21}>0$, $M_{12}=0$). We further assume that $\lambda_1 > 1$ but all excess individuals migrate to patch 2, so $M_{21} = \lambda_1 - 1>0$. Then \textbf{A} simplifies to 
+Source-sink models assume net migration flows from the source to the sink ($M_{21}>M_{12}$) -- hence the names. We will assume, for simplicity, that migration is exclusively from the source to the sink ($M_{21}>0$, $M_{12}=0$). We further assume that $\lambda_1 > 1$ but all excess individuals migrate to patch 2, so $M_{21} = \lambda_1 - 1>0$. Then \textbf{A} simplifies to 
 
 \begin{equation}
 (\#eq:SSPulliam)
@@ -63,7 +66,7 @@ Source-sink models assume net migration flows from the source to the sink ($M_{2
 \end{array} \right)
 \end{equation}
 
-We first assign $\lambda$ for the source and sink populations, and create a matrix.
+In this code, we first assign $\lambda$ for the source and sink populations, and create a matrix.
 ```{r }
 lambda1 <- 1.2; lambda2 <- .4
 A <- matrix(c(1,    0, 
@@ -77,9 +80,9 @@ eA$values
 # calculate the stable stage distr.
 (ssd <- eA$vectors[,1]/sum(eA$vectors[,1]) )
 ```
-From the dominant eigenvalue, we see Pulliam's working assumption that the total population growth (for the two popuations combined) is  $\lambda=1$. Upon calculating the stable distribution, we also see that the source population contains more individuals than the sink population. 
+From the dominant eigenvalue, we see Pulliam's working assumption that the total population growth (for the two popuations combined) is  $\lambda=1$. Upon calculating the stable distribution, we also see that the source population contains more individuals than the sink population. Remember also that the fraction in the sink population comes from both growth in the sink population and migration.
 
-Pulliam explored the consequences of these assumptions for the relative abundances in the two populations. He varied $\lambda_1$ over a range of values and calculated the relative abundance of the source population. We let `p1` be the proportion of the total population in the source. 
+Pulliam explored the consequences of these assumptions for the relative abundances in the two populations. He varied $\lambda_1$ over a range of values and calculated the relative abundance of the source population. Here, we let `p1` be the proportion of the total population in the source. 
 ```{r ssP, fig.cap="The declining relative abundance in the high quality habitat in a source-sink model. The proportion of the total population ($n_1/(n_1+n_2)$) in the source population may decline with increasing habitat quality and growth rate.", out.width="75%"}
 
 # a range of lambdas
@@ -96,23 +99,25 @@ p1 <- sapply(lambda1, function(l1) {
   })
 
 # plot the result
-qplot(x=lambda1, y=p1, geom="line", 
-      ylab="Fraction of total population\n in the source population",
-      xlab=expression(lambda[1]) ) 
+ggplot() + geom_line(aes(x=lambda1, y=p1) ) + 
+  labs(y="Fraction of total population\n in the source population",
+      x=expression(lambda[1]) ) 
 ```
 
-One of his main theoretical findings was that *relative abundance and population density can be misleading indicators of habitat quality* (Fig. \@ref(fig:ssP)). If we assume that excess individuals in the source migrate to the sink, then as habitat quality and reproduction increase in the source population, the source population comprises *an ever decreasing proportion* of the total population! That is, as $\lambda_1$ gets larger, $n_1/(n_1+n_2)$ gets smaller. Thus, density can be a very misleading predictor of long-term population viability, if the source population is both productive and exhibits a high degree of emigration.
+This illustrates one of his main theoretical findings, that *relative abundance and population density can be misleading indicators of habitat quality* (Fig. \@ref(fig:ssP)). If we assume that excess individuals in the source migrate to the sink, then as habitat quality and reproduction increase in the source population, the source population comprises *an ever decreasing proportion* of the total population! That is, as $\lambda_1$ gets larger, $n_1/(n_1+n_2)$ gets smaller. Thus, density can be a very misleading predictor of long-term population viability, if the source population is both productive and exhibits a high degree of emigration.
 
 
 ### Complications and cases
 
-Pseudosinks and ecological traps are special cases with counterintuitive dynamics. Pseudosinks are patches in which immigration is so high that it pushes the subpopulation over its carrying capacity and depresses growth rates [e.g., @breininger2004]. In the absence of immigration, population growth rates would sustain the population ($\lambda > 1$). Ecological traps are habitats that are preferred by animals, but are actually low quality ($\lambda < 1$). These can occur, espcially in the face of human-induced rapid environmental change. In many cases, there is a mismatch between sensory traits of organisms and novel environments [@robertson:2013tr]. Like a moth to a flame, as it were.
+Pseudosinks and ecological traps are special cases with counterintuitive dynamics. Pseudosinks are patches in which immigration is so high that it pushes the subpopulation over its carrying capacity and depresses growth rates [e.g., @breininger2004]. In the absence of immigration, population growth rates would sustain the population ($\lambda > 1$), but high immigration increases population size which suppresses lambda in a negative density-depndent manner. Ecological traps are habitats that are preferred by animals, but are actually low quality ($\lambda < 1$). These actually can occur, especially in the face of human-induced rapid environmental change. In many cases, there is a mismatch between sensory traits of organisms and novel environments [@robertson:2013tr]. Literally, like a moth to a flame.
 
-Ideal free and despotic are two types of distributions of individuals among patches. For both types, we assume that the quality of unoccupied habitats varies among patches. We also assume that individuals have negative effects on quality, for example, through territory occupation or resource use. This means that current habitat quality depends on the original quality of unoccupied habitat and the also the number of occupants. An ideal free distribution of individuals among patches results when individuals distribute themselves in perfect proportion to habitat quality. The net result is that all current patches have equal quality because high quality patches suffer from proportionally more individuals. 
+Ideal free and despotic distributions are two types of distributions of individuals among patches. For both types, we assume that the quality of unoccupied habitats varies among patches. We also assume that individuals have negative effects on quality, for example, through territory occupation or resource use -- a common example of negative density dependence. This means that current habitat quality depends on the original quality of unoccupied habitat and the also the number of occupants. 
+
+Under the above circumstances, an *ideal free distribution* of individuals among patches results when individuals distribute themselves in perfect proportion to habitat quality. The net result is that all current patches have equal quality because high quality patches suffer from proportionally more individuals. 
 
 In contrast, an ideal despotic distribution arises when individuals always prefer habitat that has higher original quality, *until the habitat is full*, at which point they use low quality habitat. This is thought to occur where animals are territorial, and prefer the better habitat as long as there is a single territory available.
 
-Balanced dispersal arises when migration occurs at similar rates among patches of similar quality ($\lambda \approx 1$) but where patches vary in size and population size. This results in the unexpected obervation that migration for small patches with few individuals into large patches occurs nearly as often as the reverse.  This means that *per capita* emigration rates are higher for small patches than large patches. It is not clear why this occurs, but it could could occur if the higher edge:area ratio of smaller patches boosts migration rate [@hamback:2007yj] and the evolution of dispersal characteristics in populations of different sizes [@legrand:2017aa; @mcpeek1992].
+As our last special case, *balanced dispersal* arises when migration occurs at similar rates among patches of similar quality ($\lambda \approx 1$) but where patches vary in size and population size. This results in the unexpected observation that migration from small patches with few individuals into large patches occurs nearly as often as the reverse.  This means that *per capita* emigration rates are higher for small patches than large patches. It is not clear why this occurs, but it could occur if the higher edge:area ratio of smaller patches boosts migration rate [@hamback:2007yj] and the evolution of dispersal characteristics in populations of different sizes [@legrand:2017aa; @mcpeek1992].
 
 
 ## Metapopulations

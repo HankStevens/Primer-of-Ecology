@@ -7,7 +7,7 @@
 <title>13 Food webs and other networks | Primer of Ecology using R</title>
 <meta name="author" content="Hank Stevens">
 <meta name="description" content="A food web is a real or a model of a set of feeding relations among species or functional groups. This chapter has two foci, (i) a very brief introduction to multi-species webs as networks, and...">
-<meta name="generator" content="bookdown 0.35 with bs4_book()">
+<meta name="generator" content="bookdown 0.43 with bs4_book()">
 <meta property="og:title" content="13 Food webs and other networks | Primer of Ecology using R">
 <meta property="og:type" content="book">
 <meta property="og:description" content="A food web is a real or a model of a set of feeding relations among species or functional groups. This chapter has two foci, (i) a very brief introduction to multi-species webs as networks, and...">
@@ -16,10 +16,9 @@
 <meta name="twitter:description" content="A food web is a real or a model of a set of feeding relations among species or functional groups. This chapter has two foci, (i) a very brief introduction to multi-species webs as networks, and...">
 <!-- JS --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://kit.fontawesome.com/6ecbd6c532.js" crossorigin="anonymous"></script><script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="libs/bootstrap-4.6.0/bootstrap.min.css" rel="stylesheet">
-<script src="libs/bootstrap-4.6.0/bootstrap.bundle.min.js"></script><script src="libs/bs3compat-0.5.1/transition.js"></script><script src="libs/bs3compat-0.5.1/tabs.js"></script><script src="libs/bs3compat-0.5.1/bs3compat.js"></script><link href="libs/bs4_book-1.0.0/bs4_book.css" rel="stylesheet">
+<script src="libs/bootstrap-4.6.0/bootstrap.bundle.min.js"></script><script src="libs/bs3compat-0.9.0/transition.js"></script><script src="libs/bs3compat-0.9.0/tabs.js"></script><script src="libs/bs3compat-0.9.0/bs3compat.js"></script><link href="libs/bs4_book-1.0.0/bs4_book.css" rel="stylesheet">
 <script src="libs/bs4_book-1.0.0/bs4_book.js"></script><script src="libs/kePrint-0.0.1/kePrint.js"></script><link href="libs/lightable-0.0.1/lightable.css" rel="stylesheet">
-<link href="libs/bsTable-3.3.7/bootstrapTable.min.css" rel="stylesheet">
-<script src="libs/bsTable-3.3.7/bootstrapTable.js"></script><!-- Global site tag (gtag.js) - Google Analytics --><script async src="https://www.googletagmanager.com/gtag/js?id=G-VCV8MES4YY"></script><script>
+<!-- Global site tag (gtag.js) - Google Analytics --><script async src="https://www.googletagmanager.com/gtag/js?id=G-VCV8MES4YY"></script><script>
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date());
@@ -34,6 +33,7 @@
     div.csl-bib-body { }
     div.csl-entry {
       clear: both;
+          margin-bottom: 0em;
         }
     .hanging div.csl-entry {
       margin-left:2em;
@@ -336,7 +336,7 @@ of omnivory, but hold the number of species constant.</li>
 ##  Median :-1.498e-02   Median :0.6342   Median :0.2456105   Median :2.8509  
 ##  Mean   :-2.916e-02   Mean   :0.5916   Mean   :0.2464662   Mean   :2.7665  
 ##  3rd Qu.:-3.534e-03   3rd Qu.:0.8813   3rd Qu.:0.3761273   3rd Qu.:3.3695  
-##  Max.   :-7.000e-08   Max.   :1.3732   Max.   :0.4997094   Max.   :4.7617</code></pre>
+##  Max.   :-7.200e-08   Max.   :1.3732   Max.   :0.4997094   Max.   :4.7617</code></pre>
 <p>We see that out of 2000 random food chains, the largest dominant eigenvalue is still less than zero (<span class="math inline">\(\lambda_1&lt;0\)</span>). What does that mean? It means that all of the chains are qualitatively stable, and that the return times are greater than zero (<span class="math inline">\(-1/\lambda_1&gt;0\)</span>).<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;Recall that a negative return time indicates that any ``perturbation’’ at the equilibrium would have been closer to zero at some time in the past, i.e., that the perturbation is growing.&lt;/p&gt;"><sup>80</sup></a></p>
 <p>May’s work showed that stability is related to interaction strength. Let’s examine how the dominant eigenvalue is related to interaction strength.<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;Recall that if we think of stability analysis as the analysis of a small perturbation at the equilibrium, then the dominant eigenvalue is the growth rate of that perturbation.&lt;/p&gt;"><sup>81</sup></a></p>
 <p>May’s work showed that stability is related to interaction strength. Let’s examine how the dominant eigenvalue is related to interaction strength.<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;Recall that if we think of stability analysis as the analysis of a small perturbation at the equilibrium, then the dominant eigenvalue is the growth rate of that perturbation.&lt;/p&gt;"><sup>82</sup></a></p>
@@ -359,8 +359,8 @@ Figure 13.5: Perturbations at the equilibrium tend to dissipate more rapidly (mo
 <div class="sourceCode" id="cb475"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span>  <span class="va">RT.A</span> <span class="op">&lt;-</span> <span class="op">-</span><span class="fl">1</span><span class="op">/</span><span class="va">out.A</span><span class="op">[[</span><span class="st">"DomEig"</span><span class="op">]</span><span class="op">]</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">RT.A</span><span class="op">)</span></span></code></pre></div>
-<pre><code>##     Min.  1st Qu.   Median     Mean  3rd Qu.     Max. 
-##        4       23       67    11698      283 13909682</code></pre>
+<pre><code>##      Min.   1st Qu.    Median      Mean   3rd Qu.      Max. 
+## 4.400e+00 2.320e+01 6.680e+01 1.170e+04 2.830e+02 1.391e+07</code></pre>
 <p>We find that the maximum return time is a very large number, and even the median is fairly large (<code>67</code>). In an ever-changing world, is there any meaningful difference between a return time of 1000 generations <em>vs.</em> being unstable or neutrally stable?</p>
 <p>Pimm and Lawton addressed this by picking an arbitrarily large number (150) and recording the percentage of return times greater than that. This percentage will tell us the percentage of webs that are not effectively stable.</p>
 <div class="sourceCode" id="cb477"><pre class="downlit sourceCode r">
@@ -398,7 +398,7 @@ Figure 13.6: A linear four-species food chain has is only somewhat likely to hav
 <span><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">out.E</span><span class="op">)</span></span></code></pre></div>
 <pre><code>##      DomEig                Im            IntraDD              I        
 ##  Min.   :-0.486312   Min.   :0.0000   Min.   :0.04714   Min.   :0.206  
-##  1st Qu.:-0.284289   1st Qu.:0.1425   1st Qu.:0.38941   1st Qu.:2.301  
+##  1st Qu.:-0.284290   1st Qu.:0.1425   1st Qu.:0.38941   1st Qu.:2.301  
 ##  Median :-0.201512   Median :0.6742   Median :0.49014   Median :2.861  
 ##  Mean   :-0.208653   Mean   :0.5832   Mean   :0.48049   Mean   :2.799  
 ##  3rd Qu.:-0.124729   3rd Qu.:0.8967   3rd Qu.:0.58144   3rd Qu.:3.372  
@@ -446,12 +446,12 @@ Figure 13.8: One predator and three prey, each with negative density dependence 
 <pre><code>##      DomEig              Im             IntraDD               I        
 ##  Min.   :-0.1879   Min.   :0.00000   Min.   :0.000291   Min.   :0.174  
 ##  1st Qu.: 0.3012   1st Qu.:0.00000   1st Qu.:0.125840   1st Qu.:2.266  
-##  Median : 0.6625   Median :0.00000   Median :0.245659   Median :2.849  
+##  Median : 0.6625   Median :0.00000   Median :0.245658   Median :2.849  
 ##  Mean   : 0.6889   Mean   :0.03929   Mean   :0.248152   Mean   :2.781  
 ##  3rd Qu.: 1.0336   3rd Qu.:0.00000   3rd Qu.:0.371943   3rd Qu.:3.336  
 ##  Max.   : 1.9895   Max.   :0.99803   Max.   :0.499965   Max.   :4.887  
 ##      I.omni        
-##  Min.   :0.001468  
+##  Min.   :0.001469  
 ##  1st Qu.:0.343668  
 ##  Median :0.691801  
 ##  Mean   :0.700981  
@@ -668,24 +668,24 @@ Figure 13.12: Illustrations of a hypothetical plant-pollinator network. The two 
 <p>Here we use it to generate 1000 random webs. We will then use those to examine the relations between various emergent properties of the networks.</p>
 <div class="sourceCode" id="cb508"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">#library(primer)</span></span>
-<span><span class="va">b</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/primer/man/bip_stability.html">bip_stability</a></span><span class="op">(</span>Spp.a <span class="op">=</span> <span class="fl">16</span><span class="op">:</span><span class="fl">60</span>, Spp.p <span class="op">=</span> <span class="fl">8</span><span class="op">:</span><span class="fl">30</span>, C<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">.05</span>, <span class="fl">0.5</span><span class="op">)</span>, reps<span class="op">=</span><span class="fl">5000</span>, quant<span class="op">=</span><span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
+<span><span class="va">b</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/primer/man/bip_stability.html">bip_stability</a></span><span class="op">(</span>Spp.a <span class="op">=</span> <span class="fl">16</span><span class="op">:</span><span class="fl">60</span>, Spp.p <span class="op">=</span> <span class="fl">8</span><span class="op">:</span><span class="fl">30</span>, C<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">.05</span>, <span class="fl">0.5</span><span class="op">)</span>, reps<span class="op">=</span><span class="fl">1000</span>, quant<span class="op">=</span><span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
 <p>We can get a summary of the output of the 1000 simulated webs here.</p>
 <div class="sourceCode" id="cb509"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">b</span><span class="op">)</span></span></code></pre></div>
-<pre><code>##        S               C             modularity        nestedness    
-##  Min.   :13.00   Min.   :0.06491   Min.   :0.00000   Min.   : 0.000  
-##  1st Qu.:42.00   1st Qu.:0.17867   1st Qu.:0.00000   1st Qu.: 9.158  
-##  Median :54.00   Median :0.27190   Median :0.09162   Median :14.362  
-##  Mean   :54.56   Mean   :0.28361   Mean   :0.19515   Mean   :14.465  
-##  3rd Qu.:67.00   3rd Qu.:0.38816   3rd Qu.:0.37102   3rd Qu.:19.855  
-##  Max.   :90.00   Max.   :0.56818   Max.   :0.85802   Max.   :32.335  
+<pre><code>##        S               C             modularity       nestedness     
+##  Min.   :15.00   Min.   :0.06605   Min.   :0.0000   Min.   : 0.8889  
+##  1st Qu.:42.00   1st Qu.:0.17854   1st Qu.:0.0000   1st Qu.: 9.3863  
+##  Median :53.00   Median :0.27539   Median :0.0827   Median :14.4551  
+##  Mean   :54.33   Mean   :0.28377   Mean   :0.1958   Mean   :14.4619  
+##  3rd Qu.:67.00   3rd Qu.:0.38866   3rd Qu.:0.3771   3rd Qu.:20.0213  
+##  Max.   :90.00   Max.   :0.54483   Max.   :0.8550   Max.   :28.2314  
 ##   resilience.m       resilience.h     
-##  Min.   :0.003216   Min.   :0.001893  
-##  1st Qu.:0.019222   1st Qu.:0.013289  
-##  Median :0.026624   Median :0.019060  
-##  Mean   :0.027845   Mean   :0.020408  
-##  3rd Qu.:0.035156   3rd Qu.:0.026141  
-##  Max.   :0.069583   Max.   :0.057484</code></pre>
+##  Min.   :0.005726   Min.   :0.003649  
+##  1st Qu.:0.018987   1st Qu.:0.013296  
+##  Median :0.026642   Median :0.019065  
+##  Mean   :0.027650   Mean   :0.020214  
+##  3rd Qu.:0.035107   3rd Qu.:0.026028  
+##  Max.   :0.068288   Max.   :0.055629</code></pre>
 <p>Are these webs stable? What are the means, medians and ranges of each of the web properties? What is the percent differences in the resiliences of the two interaction types?</p>
 <p>We can also graph the pairwise relations.</p>
 <div class="sourceCode" id="cb511"><pre class="downlit sourceCode r">
@@ -717,17 +717,17 @@ Figure 13.12: Illustrations of a hypothetical plant-pollinator network. The two 
 <span><span class="va">mod.m.fit</span> <span class="op">&lt;-</span> <span class="fu">sem</span><span class="op">(</span><span class="va">model.m</span>, data<span class="op">=</span><span class="va">dat</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/stats/coef.html">coef</a></span><span class="op">(</span><span class="va">mod.m.fit</span><span class="op">)</span></span></code></pre></div>
 <pre><code>##    resilience.m~nestedness    resilience.m~modularity 
-##                      0.095                      0.129 
+##                      0.047                      0.165 
 ##             resilience.m~S             resilience.m~C 
-##                      0.621                      0.684 
+##                      0.662                      0.743 
 ##               nestedness~S               nestedness~C 
-##                      0.062                      0.959 
+##                      0.062                      0.957 
 ##               modularity~S               modularity~C 
-##                     -0.324                     -0.828 
+##                     -0.343                     -0.821 
 ## resilience.m~~resilience.m     nestedness~~nestedness 
-##                      0.125                      0.064 
+##                      0.118                      0.067 
 ##     modularity~~modularity 
-##                      0.152</code></pre>
+##                      0.149</code></pre>
 <p>These are the estimates of the pairwise regressions. Those are the path coefficients that tell us the strengths of the relations among the network properties. Below we make a path diagram using these.</p>
 <p>Next, do the same thing for herbivory.</p>
 <div class="sourceCode" id="cb516"><pre class="downlit sourceCode r">
@@ -820,7 +820,7 @@ Figure 13.14: Example of a random graph using the same number of vertices and li
 <p>We can compare the observed average node clustering coefficient (<span class="math inline">\(0.84 \pm 0.37\)</span>) to that of the random graph we created above. Note that transivity is node clustering.</p>
 <div class="sourceCode" id="cb522"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="fu">transitivity</span><span class="op">(</span><span class="va">gr</span>, type <span class="op">=</span> <span class="st">"local"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<pre><code>## [1] 0.7959873</code></pre>
+<pre><code>## [1] 0.8003995</code></pre>
 <p>We find that these differ. The observed can then be compared to 1000s of simulated random networks to see how unusual the observed value is. Here we use a toy example with 100 simulations to compare the node clustering coefficient observed in plot 1 to what we would expect in a random network.</p>
 <div class="sourceCode" id="cb524"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">ncc.sims</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html">replicate</a></span><span class="op">(</span><span class="fl">100</span>, <span class="op">{</span> </span>
@@ -969,7 +969,7 @@ Figure 13.17: Emergent relations between node clustering and node degree in scal
 <footer class="bg-primary text-light mt-5"><div class="container"><div class="row">
 
   <div class="col-12 col-md-6 mt-3">
-    <p>"<strong>Primer of Ecology using R</strong>" was written by Hank Stevens. It was last built on 2023-09-17.</p>
+    <p>"<strong>Primer of Ecology using R</strong>" was written by Hank Stevens. It was last built on 2025-08-21.</p>
   </div>
 
   <div class="col-12 col-md-6 mt-3">
