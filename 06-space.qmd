@@ -1,4 +1,4 @@
-# Populations in Space {#meta}
+# Populations in Space {#sec-meta}
 
 ```{r include=FALSE}
 source("scripts/setup.R")
@@ -13,7 +13,7 @@ qplot(NoS, CandG, geom="col",  ylab="No. of Species",
 
 Over relatively large spatial scales, it is not unusual to have some species that seem to occur everywhere, and many species that are found in only one or a few locations. For example, Scott Collins and Susan Glenn [@collins1991ist] showed that in grasslands, each separated by up to 4$\,$km, there were more species occupying only one site (Fig. @fig-CandG, left-most bar) than two or more sites, and also that there are more species occupying all the sites than most intermediate numbers of sites (Fig. @fig-CandG, right-most bar), resulting in a U-shaped frequency distribution. Illke  Hanski [@hanski1982drd] coined the rare and common species "satellite" and "core" species, respectively, and proposed an explanation. Part of the answer seems to come from *the effects of immigration and emigration in a spatial context*. In this chapter we explore mathematical representations of individuals and populations in space, and we investigate the consequences for populations and collections of populations.
 
-## Source-sink Dynamics
+## Source-sink Dynamics {#sec-source-sink-model}
 In Chapters 3-5, we considered *closed* populations. In contrast, one could imagine a population governed by *b*irths plus *i*mmigration, and *d*eaths plus *e*migration (a *BIDE* model). Ron Pulliam [@pulliam:1988ez] proposed a simple model that includes all four components of *BIDE* which provides a foundation for thinking about connected subpopulations. We refer to these simple models as *source-sink* models. Among the many examples of real populations with characteristics of source-sink models are,
 
 * subpopulations of passerine birds that inhabit low quality forest patches in part because of immigration from high quality forest patches [@robinson1995rff; @dononvan1995rsm], and
@@ -76,7 +76,7 @@ A <- matrix(c(1,    0,
               lambda1-1, lambda2), nrow=2, byrow=TRUE)
 A
 ``` 
-We can then use eigenanalysis, as we did in Chapter 4 for stage structured populations. The dominant eigenvalue will provide the long term asymptotic total population growth. We can calculate the stable stage distribution, which in this case is the distribution of individuals between the two habitats. 
+We can then use eigenanalysis, as we did in @sec-eigenanalysis for stage structured populations. The dominant eigenvalue will provide the long term asymptotic total population growth. We can calculate the stable stage distribution, which in this case is the distribution of individuals between the two habitats. 
 ```{r }
 eA <- eigen(A)
 eA$values
@@ -124,7 +124,7 @@ As our last special case, *balanced dispersal* arises when migration occurs at s
 
 
 ## Metapopulations
-The logistic model (Chapter 5) is all well and good, but it has no concept of *space* built into it. In many, and perhaps most circumstances in ecology, space has the potential to influence the dynamics of populations and ecosystem fluxes [@lehman1997;@leibold2004mcv;@loreau:2003hb]. The logistic equation represents a *closed* population, with no clear accounting for emigration or immigration. In particular cases, however, consideration of space may be essential. What will we learn if we start considering space, such that sites are open to receive immigrants and lose emigrants?
+The logistic model (@sec-logistic-growth) is all well and good, but it has no concept of *space* built into it. In many, and perhaps most circumstances in ecology, space has the potential to influence the dynamics of populations and ecosystem fluxes [@lehman1997;@leibold2004mcv;@loreau:2003hb]. The logistic equation represents a *closed* population, with no clear accounting for emigration or immigration. In particular cases, however, consideration of space may be essential. What will we learn if we start considering space, such that sites are open to receive immigrants and lose emigrants?
 
 ```{r fig-metapop, echo=FALSE, fig.hold=TRUE, fig.cap = "Collections of sites, where each site (A-F) may be a spot of ground potentially occupied by a single plant, or it may be an oceanic island potentially occupied by a butterfly population. Sites may also be colonized via both internal and external sources.", fig.subcap= c("Closed metapopulation", "Open metapopulation"), out.width="49%", fig.ncol = 2, fig.height=5, fig.width=5}
 # requires the igraph package
@@ -160,7 +160,7 @@ The most relevant underlying biology concerns colonization and extinction in our
 $$\frac{dp}{dt}=C-E.$$
 We will consider below, in a somewhat orderly fashion, several permutations of how we represent colonization and extinction of sites [@gotelli1993; @gotelli1991]. 
 
-### The classic Levins model
+### The classic Levins model {#sec-levins-model}
 \index{metapopulation!Levins}@levins1969dgc proposed what has become the classic metapopulation model,
 $$
   \frac{dp}{dt} = c_{i}p\left(1-p\right) - ep
@@ -313,7 +313,7 @@ where $\dot{p}$ is the time derivative @eq-CoreSat1. A little puzzling and rearr
 $$
   \frac{\partial \dot{p}}{\partial p} = \left(c_i - e\right)\left(1-2p\right)
 $$ {#eq-CoreSatPD2}
-Recall our rules with regard to stability (Chapter 5). If the partial derivative (the slope of the time derivative) is negative at an equilibrium, it means the the growth rate approaches zero following a perturbation, meaning that it is stable. If the partial derivative is positive, it means that the change accelerates away from zero  following the perturbation, meaning that the equilibrium is unstable. So, we find the following guidelines: 
+Recall our rules with regard to stability (@sec-stability-analysis). If the partial derivative (the slope of the time derivative) is negative at an equilibrium, it means the the growth rate approaches zero following a perturbation, meaning that it is stable. If the partial derivative is positive, it means that the change accelerates away from zero  following the perturbation, meaning that the equilibrium is unstable. So, we find the following guidelines: 
 
 * $c_i>e$
     * $p=1$, $\partial \dot{p}/ \partial p < 0$, stable equilibrium.   
@@ -329,7 +329,7 @@ What if $c_i=e$?  In that case, both the time derivative ($d p / dt$) and the pa
 \index{metapopulation!parallels~with~logistic~growth}
 It may have already occurred to you that the closed spatial population described here sounds a lot like simple logistic growth. A closed  population, spatial or not, reproduces in proportion to its density, and is limited by its own density. Here we will make the connection a little more clear. It turns out that a simple rearrangement of @eq-intcol will provide the explicit connection between logistic growth and the spatial population model with internal colonization [@roughgarden1998]. 
 
-Imagine for a moment that you are an avid birder following a population of Song Sparrows in Darrtown, OH, USA (Ch. 5). If Song Sparrows are limited by the number of territories, and males are competing for territories, then you could think about male Song Sparrows as "filling up" some proportion, $p$, of the available habitat. Each territory is thus like a local population, but where a pair of sparrows either occupies a site, or not, and the proportion of all territories that are occupied is $p$. You therefore decide that you would like to use Levins' spatially-implicit metapopulation model instead @eq-intcol. How will you do it? You do it by *rescaling* logistic growth, $dN/dt = rN(1-\alpha N)$\index{scaling~(logistic~growth)}.
+Imagine for a moment that you are an avid birder following a population of Song Sparrows in Darrtown, OH, USA (@sec-ddgrowth). If Song Sparrows are limited by the number of territories, and males are competing for territories, then you could think about male Song Sparrows as "filling up" some proportion, $p$, of the available habitat. Each territory is thus like a local population, but where a pair of sparrows either occupies a site, or not, and the proportion of all territories that are occupied is $p$. You therefore decide that you would like to use Levins' spatially-implicit metapopulation model instead @eq-intcol. How will you do it? You do it by *rescaling* logistic growth, $dN/dt = rN(1-\alpha N)$\index{scaling~(logistic~growth)}.
 
 Let us start by defining our logistic model variables in other terms. First we define $N$ as
 \begin{equation*}
@@ -337,7 +337,7 @@ Let us start by defining our logistic model variables in other terms. First we d
 \end{equation*}
 where $N$ is the number of males defending territories, $H$ is the total number of possible territories, and $p$ is the proportion of possible territories occupied at any one time. At equilibrium, $N^*=K=Hp^*$, and $\alpha=1/(Hp^*)$. Recall that for the Levins model, $p^*=(c_i-e)/c_i$, so therefore,
 $$\alpha = \frac{c_i}{H\left(c_i - e\right)}$$
-We now have $N$, $\alpha$, and $K$ in terms of $p$, $H$, $c_i$ and $e$, so what about $r$? Recall that for logistic growth, the per capita growth rate goes to $r$ as $N \to 0$ (Chapter 3). For the Levins metapopulation model, the per patch growth rate is 
+We now have $N$, $\alpha$, and $K$ in terms of $p$, $H$, $c_i$ and $e$, so what about $r$? Recall that for logistic growth, the per capita growth rate goes to $r$ as $N \to 0$ (@sec-expo). For the Levins metapopulation model, the per patch growth rate is 
 \begin{align}
   \frac{1}{p}\frac{dp}{dt}&=c_{i}\left(1-p\right) - e.
 \end{align}
