@@ -1,0 +1,1698 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.11.1">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>4&nbsp; Simple density-independent growth – Primer of Ecology</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: 1.5em;}
+div.column{flex: auto;}
+@media screen {
+div.columns{gap: min(4vw, 1.5em);}
+div.column{overflow-x: auto;}
+}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./04-DIDemography.html" rel="next">
+<link href="./02-optimal_foraging.html" rel="prev">
+<script src="site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-d5b4e69c7e37b49c6591bcc5116dd748.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap-5427321e8325850a4c7c83abd15fbf15.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-chtml.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+</head>
+
+<body class="nav-sidebar floating slimcontent quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./03-Expo-growth.html"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Simple density-independent growth</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">Primer of Ecology</a> 
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Primer of Ecology using R</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./01-theory.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Theory in Ecology</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./02-optimal_foraging.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Optimal Foraging</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./03-Expo-growth.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Simple density-independent growth</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./04-DIDemography.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Density-independent Demography</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./05-DDgrowth.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Density-dependent growth</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./06-space.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Populations in Space</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./07-direct_comp_mut.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Direct competition and mutualism</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./07b-compcolstorage.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Coexistence via competition, dispersal, and storage</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./08-consumerResource.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Consumer-resource Interactions</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./09-host_parasitoid.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Host-parasitoid relations</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./10-disease.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Disease</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./11-consumer-resource-comp-mut.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Consumer-resource Competition and Mutualisms</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./13-simplefoodwebs.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Food webs and other networks</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./14-diversity.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Diversity</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./references.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">References</span></span></a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
+    </div>
+<!-- main -->
+<main class="content page-columns page-full" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title"><span id="expo" class="quarto-section-identifier"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Simple density-independent growth</span></span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<div class="cell">
+<div class="cell-output-display">
+<div id="fig-Melospiza1" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-Melospiza1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="03-Expo-growth_files/figure-html/fig-Melospiza1-1.png" class="img-fluid figure-img" style="width:70.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-Melospiza1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;4.1: Song Sparrow (<em>Melospiza melodia</em>) counts in Darrtown, OH, USA. From Sauer, J. R., J.E. Hines, and J. Fallon. 2005. The North American Breeding Bird Survey, Results and Analysis 1966–2004. Version 2005.2. USGS Patuxent Wildlife Research Center, Laurel, MD.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="cell-output-display">
+<div id="fig-Melospiza2" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-Melospiza2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="03-Expo-growth_files/figure-html/fig-Melospiza2-1.png" class="img-fluid figure-img" style="width:70.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-Melospiza2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;4.2: Song Sparrow (<em>Melospiza melodia</em>) annual changes in population size as a function of population size.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>Between 1966 and 1971, Song Sparrow (<em>Melospiza melodia</em>) abundance in Darrtown, OH, USA, seemed to increase very quickly, perhaps unimpeded by any particular factor (Fig. <a href="#fig-Melospiza1" class="quarto-xref">Figure&nbsp;<span>4.1</span></a>, <a href="#fig-Melospiza2" class="quarto-xref">Figure&nbsp;<span>4.2</span></a>). In an effort to manage this population, we may want to predict its future population size. We may also want to describe its growth rate and population size in terms of mechanisms that could influence its growth rate. We may want to compare its growth and relevant mechanisms to those of other Song Sparrow populations or to other passerine populations. To do this, we start with the simplest of all population phenomena, geometric and exponential growth.</p>
+<p>Geometric and exponential growth are examples of <em>density-independent growth</em>. This captures the fundamental process of reproduction (e.g., making seeds or babies) results in a <em>geometric series</em>.<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> For instance, one cell divides to make two, those two cells each divide to make four, and so on, where reproduction for each cell results in two cells, <em>regardless of how many other cells are in the population</em>—that is what we mean by <em>density-independent</em>. This myopically observed event of reproduction, whether one cell into two, or one plant producing many seeds, is the genesis of a geometric series. Therefore, most models of populations include this fundamental process of geometric increase. Second, populations can grow in a density-independent fashion when resources are plentiful. It behooves us to start with this simple model because most, more complex population models include this process.</p>
+<div class="no-row-height column-margin column-container"><div id="fn1"><p><sup>1</sup>&nbsp;A constatnt ratio between successive numbers.</p></div><div id="fn2"><p><sup>2</sup>&nbsp;A zen koan, if there ever was one.</p></div></div><p><span class="citation" data-cites="hastings2011ssp">Hastings (<a href="references.html#ref-hastings2011ssp" role="doc-biblioref">2011</a>)</span> proposes that we can approach single species poulation growth from either a microscopic or macroscopic point of view. The microscopic approach begins with two propositions. The first is that if we know the location, timing, and traits of all individuals, we can predict perfectly population dynamics; the second is that we can never predict dynamics perfectly because births and deaths are fundamentally random and can be described only with probabilities.<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a> With this microscopic approach, we would seek a very detailed description of individuals and build a complex model to understand the consequences of the characteristics of all these interacting individuals, including the growth of the population.</p>
+<p>In this chapter, I choose to start with Hastings’ macroscopic approach. These propositions appear simpler.</p>
+<ol type="1">
+<li>A population grows exponentially in the absence of other forces.</li>
+<li>There are forces that can prevent a population from growing exponentially.</li>
+</ol>
+<p>These are the consequences of the following assumptions.</p>
+<ol type="a">
+<li>all individuals in a population are identical.</li>
+<li>there is no migration in or out of the population.</li>
+<li><ol type="i">
+<li>the number of offspring per individual (or the per capita birth and death rates) are constant through time, and (ii) independent of the number of individuals in the population.</li>
+</ol></li>
+</ol>
+<p>Deviations from these assumptions lead to all of the most interesting parts of single species population dynamics <span class="citation" data-cites="hastings2011ssp">(<a href="references.html#ref-hastings2011ssp" role="doc-biblioref">Hastings 2011</a>)</span>. The only deviation we play with in this chapter concerns assumption c; we model stochastic variation in population growth rate to investigate extinction risk. It is also worth mentioning that, although propositions 1 and 2 follow from assumptions a-d, they are not strictly necessary <span class="citation" data-cites="hastings2011ssp">(<a href="references.html#ref-hastings2011ssp" role="doc-biblioref">Hastings 2011</a>)</span>. For instance, individuals need not be identical, and we deal with a big exception in the next chapter where we introduce structured population growth. Also, migration is admissable, provided immigration = emigration and it does not alter growth rates. Nonetheless, other deviations from a. and b. can have very important consequences for single species population dynamics.</p>
+<p>Here we define Density-independence in a real population as a lack of a statistical relation between the density of a population, and its <em>per capita</em> growth rate<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a>. The power to detect a significant relation between any two continuous variables depends on those factors which govern statistical power, such as the number of observations, the range of the predictor variable, and the strength of the underlying relation. Therefore, our conclusion, that a particular population exhibits density-independent growth, may be trivial if our sample size is small, with few generations sampled, or if we sampled the population over a very narrow range of densities. Nonetheless, it behooves us to come back to this definition if, or when, we get caught up in the biology of a particular organism.</p>
+<div class="no-row-height column-margin column-container"><div id="fn3"><p><sup>3</sup>&nbsp;No observed relation between <span class="math inline">\(\frac{\Delta N}{N}\)</span> vs.&nbsp;<span class="math inline">\(N\)</span></p></div></div><p>In this chapter, we’ll introduce density-independent population <em>projection</em>, <em>growth</em>, and <em>per capita growth</em>, for populations with synchronous reproduction (discrete models), and continuous reproduction (continuous models).</p>
+<section id="discrete-growth-rates-of-fruit-flies-in-my-kitchen" class="level2 page-columns page-full" data-number="4.1">
+<h2 data-number="4.1" class="anchored" data-anchor-id="discrete-growth-rates-of-fruit-flies-in-my-kitchen"><span class="header-section-number">4.1</span> Discrete growth rates of fruit flies in my kitchen</h2>
+<p>Summertime, and the living is easy. Fruit flies in my kitchen, and their number’s quite high. Flies love my ripe fruit, and my red wine. They drown in the wine–I am not sure if that is good or bad.</p>
+<p>For now, we’ll treat fruit flies as if they grow in discrete generations. This is very common for populatilons that live in seasonal habitats - their reproduction is timed to the season, and they breed altogether in one bout.<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a></p>
+<div class="no-row-height column-margin column-container"><div id="fn4"><p><sup>4</sup>&nbsp;discrete generations are common in nature.</p></div></div><p>I count the number of flies every week, and I find these numbers:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>t <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>N <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">4</span>, <span class="dv">8</span>, <span class="dv">16</span>)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">qplot</span>(<span class="at">x=</span>t, <span class="at">y=</span>N, <span class="at">geom=</span><span class="fu">c</span>(<span class="st">"line"</span>, <span class="st">"point"</span>) )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="03-Expo-growth_files/figure-html/flies-1.png" class="img-fluid figure-img" style="width:60.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>There are several ways we can describe fruit fly population growth. Here, we choose to begin by considering the proximate causes of change to population size per unit time: the numbers of births, immigration, death and emigration (Fig. <a href="#fig-fliesi" class="quarto-xref">Figure&nbsp;<span>4.3</span></a>). Those are the only options, and we state it thus: <span class="math display">\[\frac{\Delta N}{\Delta t} = \frac{B + I - D - E}{\Delta t}\]</span> that is, the change in numbers of individuals per unit time<a href="#fn5" class="footnote-ref" id="fnref5" role="doc-noteref"><sup>5</sup></a> is determined by the numbers of births, deaths, and migrants per unit time.</p>
+<div class="no-row-height column-margin column-container"><div id="fn5"><p><sup>5</sup>&nbsp;“Delta” N is the change in N.</p></div></div><p>Over the past month, I suspect the fruit flies are increasing primarily through reproduction in my kitchen. Clearly, at some point in the past, a fly or two (or three) must have immigrated into my kitchen, either as adults or as eggs or larvae in fruit I brought home (<span class="math inline">\(I&gt;0\)</span>). For now, I will assume fruit fly population dynamics in my kitchen are governed by only births and deaths (<span class="math inline">\(I=E=0\)</span>). We refer to a population like this as <em>closed</em>, because it is closed to migration in or out.</p>
+<p>If I counted the number of flies last week and again this week, I can calculate the change over one month. We have <span class="math display">\[ \frac{N_{t+1} - N_t}{(t+1) - t}=\frac{\Delta N}{\Delta t}=\frac{B+D}{\Delta t}\]</span> In this equation, <span class="math inline">\(t\)</span> has a particular time unit, one week, so <span class="math inline">\(t+1\)</span> is one additional week.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div id="fig-fliesi" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-fliesi-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="03-Expo-growth_files/figure-html/fig-fliesi-1.png" class="img-fluid figure-img" style="width:100.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-fliesi-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;4.3: The number of fruit flies in my kitchen depends on immigration and emigration, and births and deaths. In the text, we assume that immigration and emigration are zero. All rates are individuals per unit time.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>Because adults give rise to offspring, we can represent births and deaths as proportions of existing adults. That is, as per capita rates of birth and death, as <span class="math display">\[B = bN;\quad D=dN\]</span> This reflects the biological realities that adults produce offspring, and everyone has some chance of dying. The parameter <span class="math inline">\(b\)</span> could be any positive real number, <span class="math inline">\(b \ge 0\)</span>. This model of births reflects the geometric property of reproduction: over a specified time interval <span class="math inline">\(\Delta t\)</span>, an average parent makes <span class="math inline">\(b\)</span> babies. Parameter <span class="math inline">\(d\)</span> is any real number between zero and one, <span class="math inline">\(0 \le d \le 1\)</span>. Both <span class="math inline">\(b\)</span> and <span class="math inline">\(d\)</span> have units of individuals per individual per unit time. They depend on that unit of time.</p>
+<p><em>What if offspring die before the next census?</em></p>
+<p>Fig. <a href="#fig-fliesi" class="quarto-xref">Figure&nbsp;<span>4.3</span></a> helps us think about these things. Simplifying, we’ll assume births occur first, and then death comes to offspring and adults.</p>
+<p>Let’s define a few terms.</p>
+<ul>
+<li><span class="math inline">\(N_0\)</span>, <span class="math inline">\(N_1\)</span> - the number of flies at the start and after the first time interval.</li>
+<li><span class="math inline">\(N^\prime\)</span>, <span class="math inline">\(N^{\prime\prime}\)</span> - distinct values of <span class="math inline">\(N\)</span>, after births, but before <span class="math inline">\(N_1\)</span>.</li>
+<li><span class="math inline">\(\Delta N\)</span> - the <em>change</em> in <span class="math inline">\(N\)</span> from one point in time to another.</li>
+<li><span class="math inline">\(t\)</span> is time, so <span class="math inline">\(\Delta t\)</span> is the time interval over which <span class="math inline">\(N\)</span> may change.</li>
+</ul>
+<p>Let’s match these numbers to what is going on in my kitchen. For my first census count, at <span class="math inline">\(t=0\)</span>, I counted the adults and label that number <span class="math inline">\(N_0\)</span>. These adults lay eggs which hatch, and then larvae and pupae develop, and become adults, giving us a population of <span class="math display">\[N^\prime = N_0 + bN\]</span></p>
+<p>Some of the eggs fail to hatch, and some of the larvae die before maturing. Many of the adults die as well. If we assume the eggs, larvae, and adults all die at the same rate, then by the end of one generation we have <span class="math display">\[N_1 = N^\prime - dN^\prime\]</span></p>
+<p>Substituting, we get <span class="math display">\[ N_1 = N_0 + bN_0 - d\left(N_0 + bN_0\right)\]</span></p>
+<p>We see that by the next time point, <span class="math inline">\(t=1\)</span>, the number of fruit flies should be equal to the number we started with, <span class="math inline">\(N_0\)</span>, plus the number of new individuals, <span class="math inline">\(bN_0\)</span>, minus the number of original adults that die, <span class="math inline">\(dN_0\)</span>, and minus the number of new individuals that die, <span class="math inline">\(dbN_0\)</span>.</p>
+<p>We can pull all of these parameters together, <span class="math display">\[ N_1 = N_0 + bN_0 - dN_0 - dbN_0 \]</span> <span id="eq-bddb"><span class="math display">\[ N_1 - N_0 =  N_0 \left(b - d - db\right) = N_0r_d \tag{4.1}\]</span></span></p>
+<p>where $r_d = b - d - db $.</p>
+<p>The <em>growth rate</em> of the population is <span class="math inline">\(\Delta N / \Delta t\)</span>, or, at <span class="math inline">\(t=0\)</span>, is <span class="math display">\[\frac{\Delta N}{\Delta t} = \frac{N_1 - N_0}{t_1-t_0} = \frac{(N_0 + r_dN_0) - N_0}{t_1-t_0} = r_d N_0 \]</span> If we generalize, we drop the zero, to get <span class="math inline">\(r_dN\)</span>. The <em>per capita</em> population growth rate is <span class="math inline">\(r_dN/N =r_d\)</span>. If our time step were something other than 1, we would also divide by <span class="math inline">\(\Delta t\)</span>.</p>
+<p>With the simple census data above, we can estimate <span class="math inline">\(r_d\)</span> for the first time step. <span class="math display">\[N_1 = N_0 + r_dN_0=  2 + r_d (2) \implies r_d=1\]</span> If we know that <span class="math inline">\(r_d\)</span> is constant over time, we can infer a general rule to project the population forward in time an arbitrary number of time steps. We will let <span class="math inline">\(\lambda = 1+r_d\)</span>. <span class="math display">\[N_1 = N_0 + r_dN_0 = N_0(1 + r_d) = N_0\lambda\]</span> <span class="math display">\[N_2 = N_1\lambda=  (N_0 \lambda)\lambda\]</span> <span class="math display">\[N_3 = N_2\lambda=  (N_0 \lambda)\lambda\lambda\]</span> or simply, <span class="math display">\[N_t = N_0\lambda^t\]</span></p>
+<p>To summarize our model of discrete population growth, we have the following statements:</p>
+<p><strong>Projection:</strong> <span class="math display">\[N_t = N_0\lambda^t\]</span></p>
+<p><strong>Population growth rate:</strong> <span class="math display">\[\frac{\Delta N}{\Delta t} = r_dN; \quad \mathrm{where~} \lambda=1+r_d\]</span></p>
+<p><strong>Per capita opulation growth rate:</strong> <span class="math display">\[\frac{\Delta N}{N\Delta t} = r_d\]</span></p>
+<p>At last, we see how this is a model of density-independent growth: per capita growth rate does not include <span class="math inline">\(N\)</span>.</p>
+</section>
+<section id="fruit-flies-with-continuous-overlapping-generations" class="level2" data-number="4.2">
+<h2 data-number="4.2" class="anchored" data-anchor-id="fruit-flies-with-continuous-overlapping-generations"><span class="header-section-number">4.2</span> Fruit flies with continuous overlapping generations</h2>
+<p>In the reality that is my kitchen, individual fruit flies are having sex and reproducing on their own schedules. As a population, they breed continuously, so the cohorts are not synchronous. For populations like that, we need to describe instantaneous growth rates, where <span class="math inline">\(\Delta t\)</span> is no longer a fixed period of time, but is an instant, or infinity small.</p>
+<p>We return to our example above (Fig. <a href="#fig-fliesi" class="quarto-xref">Figure&nbsp;<span>4.3</span></a>), which we summarize in <a href="#eq-bddb" class="quarto-xref">Equation&nbsp;<span>4.1</span></a>. Please take a look at that equation. In what follows, we make time more explicit so that it appears in the equation. We begin by remembering that <span class="math inline">\(b\)</span> and <span class="math inline">\(d\)</span> have time units.</p>
+<ul>
+<li>Let <span class="math inline">\(\Delta t\)</span> be a small fraction of <span class="math inline">\(1\)</span>, so that the time step goes from <span class="math inline">\(t\)</span> to <span class="math inline">\(t + \Delta t\)</span>.</li>
+<li>As <span class="math inline">\(\Delta t\)</span>, shrinks, <span class="math inline">\(b\)</span> and <span class="math inline">\(d\)</span> need to shrink as well, to <span class="math inline">\(\Delta t  b\)</span> and <span class="math inline">\(\Delta t d\)</span>.</li>
+<li><span class="math inline">\(dN/dt\)</span> is how we symbolize the instantaneous rate of population growth, with lower case <span class="math inline">\(d\)</span> symbolizing infinitesimally small change; it is a <em>differential equation.</em></li>
+</ul>
+<p>We now have to solve for the limit of <span class="math inline">\(\Delta N /\Delta t\)</span> as <span class="math inline">\(\Delta t\)</span> goes to zero. <span class="math display">\[\frac{dN}{dt}=\lim_{\Delta t \rightarrow 0} \frac{N_{t+\Delta t} - N_t}{\Delta t}  \]</span> This means that the instantaneous rate of change of <span class="math inline">\(N\)</span> is equal to the limit (as delta t approaches zero) of the difference in <span class="math inline">\(N\)</span>’s of the time interval, delta t.</p>
+<p>Substituting, we get, <span class="math display">\[\frac{dN}{dt} = \lim_{\Delta t \rightarrow 0} \frac{\Delta t\,bN_t - \Delta t \,dN_t - \Delta t\, d (\Delta t\, b)N_t}{\Delta t} \]</span></p>
+<p>If we divide through by <span class="math inline">\(\Delta t\)</span> and then let <span class="math inline">\(\Delta t \rightarrow 0\)</span>, we get <span class="math display">\[\frac{dN}{dt}=\lim_{\Delta t \rightarrow 0} bN_t - dN_t - \Delta t\, d bN_t = bN_t - dN_t=rN\]</span></p>
+<p>To arrive at the projection equation for a continuously growing population, we integrate <span class="math inline">\(rN\)</span> with respect to time. Integration is the cumulative summing of <span class="math inline">\(y\)</span> across a range of <span class="math inline">\(x\)</span>. It even uses an exagerated “S” to indicate summation, <span class="math inline">\(\int\)</span>. Here we integrate population growth across time. We start by rearranging <span class="math display">\[\frac{dN}{dt} = rN \Rightarrow \frac{dN}{N} = r dt\]</span></p>
+<p>Now we integrate <span class="math inline">\(N\)</span> and <span class="math inline">\(r\)</span> with respect to their start and end points: <span class="math inline">\(N\)</span> from <span class="math inline">\(N_0\)</span> to <span class="math inline">\(N_t\)</span>, and, correspondingly, <span class="math inline">\(r\)</span> from <span class="math inline">\(t=0\)</span> to <span class="math inline">\(t=t\)</span>, <span class="math display">\[\int_{N_0}^{N_t} \frac{1}{N}dN = \int_{0}^{t}rdt\]</span> <span class="math display">\[\ln(N_t) - \ln(N_0) = rt - r\,0\]</span> <span class="math display">\[\ln(N_t) = \ln(N_0) + rt\]</span> We now exponentiate (<span class="math inline">\(e^x\)</span>) both sides to arrive at our projection equation. <span class="math display">\[N_t = e^{\ln(N_0) + rt} = N_0 e^{rt}\]</span></p>
+<p>To summarize our model of continuous population growth, we have the following statements.</p>
+<p><strong>Projection:</strong> <span class="math display">\[N_t = N_0 e^{rt}\]</span></p>
+<p><strong>Population growth rate:</strong> <span class="math display">\[\frac{dN}{dt} = rN\]</span></p>
+<p><strong>Per capita population growth rate:</strong> <span class="math display">\[\frac{dN}{Ndt} = r\]</span> Once again, we see why we refer to exponential growth as density-independent: the per capita growth rate does not depend on <span class="math inline">\(N\)</span>.</p>
+</section>
+<section id="properties-of-geometric-and-exponential-growth" class="level2" data-number="4.3">
+<h2 data-number="4.3" class="anchored" data-anchor-id="properties-of-geometric-and-exponential-growth"><span class="header-section-number">4.3</span> Properties of geometric and exponential growth</h2>
+<p>Compare the projection equations for geometric and exponential growth. We find that <span class="math display">\[\lambda = e^{r} \quad ; \quad \ln \lambda = r\]</span> This gives us a few useful rules of thumb.</p>
+<ul>
+<li>No change: <span class="math inline">\(r = 0\quad;\quad\lambda =1\)</span></li>
+<li>Growing population: <span class="math inline">\(r &gt; 0 \quad;\quad \lambda &gt; 1\)</span></li>
+<li>Shrinking population: <span class="math inline">\(r &lt; 0 \quad;\quad \lambda &lt; 1\)</span></li>
+</ul>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Let r take on three values</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>r <span class="ot">&lt;-</span> <span class="fu">c</span>( <span class="sc">-</span><span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">1</span>)</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Convert to lambda</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="fu">exp</span>(r)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.3678794 1.0000000 2.7182818</code></pre>
+</div>
+</div>
+<p><em>Time scaling</em> This is a useful property if we ever want to change time units in a discrete model. We must first <span class="math inline">\(\lambda\)</span> to <span class="math inline">\(r\)</span>, change units in <span class="math inline">\(r\)</span> and convert back to <span class="math inline">\(\lambda\)</span>. For instance, if we find that the annual finite rate of increase for a population of crickets is <span class="math inline">\(\lambda = 1.2\)</span>, we cannot convert that to a monthly rate of <span class="math inline">\(1.2/12 = 0.1\)</span>. Instead we convert to <span class="math inline">\(r\)</span> and back to <span class="math inline">\(\lambda\)</span>.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>lambda <span class="ot">&lt;-</span> <span class="fl">1.2</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Convert lambda to r </span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>r <span class="ot">&lt;-</span> <span class="fu">log</span>(lambda); r</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.1823216</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Scale r from year to month</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>r2 <span class="ot">&lt;-</span> r<span class="sc">/</span><span class="dv">12</span>; r2</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.01519346</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Convert back to lambda (per month)</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>lambda2 <span class="ot">&lt;-</span> <span class="fu">exp</span>(r2); lambda2</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 1.015309</code></pre>
+</div>
+</div>
+<p>This is very, very different than <span class="math inline">\(\lambda/12\)</span>.</p>
+<p><em>Doubling time</em> Sometimes we gain a more intuitive grasp of an idea when we convert to a different form of the same relationship. Exponential growth is one of those ideas that can be hard to grasp. A more intuitive way to compare or express exponential growth rate is through <em>doubling time</em>, the time required for the population to double in size. For instance, a per capita growth rate of <span class="math inline">\(r = 0.14\,\mathrm{inds}\cdot \mathrm{ind}^{-1} \mathrm{y}^{-1}\)</span> means that the population will double in less than 5 years.</p>
+<p>We determine this by letting <span class="math inline">\(N_t = 2N_0\)</span>. <span class="math display">\[2N_0 = N_0 e^{rt}\]</span> <span class="math display">\[\ln 2 = rt\]</span> <span class="math display">\[t =\frac{\ln 2}{r}\]</span></p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># let r be a sequence from </span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>r <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fl">0.01</span>, <span class="fl">0.05</span>, <span class="fl">0.1</span>, <span class="fl">0.5</span>)</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="co">#doubling time will be</span></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="fu">log</span>(<span class="dv">2</span>)<span class="sc">/</span>r</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 69.314718 13.862944  6.931472  1.386294</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># and a picture</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mgp=</span><span class="fu">c</span>(<span class="fl">1.2</span>, .<span class="dv">2</span>, <span class="dv">0</span>), <span class="at">mar=</span><span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">2</span>, <span class="dv">1</span>, <span class="dv">1</span>), <span class="at">tcl=</span><span class="sc">-</span>.<span class="dv">2</span>)</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="fu">curve</span>( <span class="fu">log</span>(<span class="dv">2</span>)<span class="sc">/</span>x, <span class="at">xlab=</span><span class="st">"r"</span>, <span class="at">ylab=</span><span class="st">"Doubling time"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="03-Expo-growth_files/figure-html/doubling-1.png" class="img-fluid figure-img" style="width:60.0%"></p>
+<figcaption>Doubling time is inversely related to the intrinsic rate of increase, r.</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<section id="average-growth-rate" class="level3" data-number="4.3.1">
+<h3 data-number="4.3.1" class="anchored" data-anchor-id="average-growth-rate"><span class="header-section-number">4.3.1</span> Average growth rate</h3>
+<p>In any real data set, such as from a real population of fruit flies or Song Sparrows, <span class="math inline">\(N_{t+1}/N_t\)</span> will vary from year to year. How do we calculate an average growth rate for a fluctuating population?</p>
+<p>Let’s consider the case where a population increases and then decreases. For each year, we will calculate the annual rate of increase <span class="math inline">\(R = N_{t+1}/N_t\)</span>, and take the arithmetic average of those rates to see if it makes sense.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>N <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">20</span>, <span class="dv">30</span>, <span class="dv">15</span>, <span class="dv">15</span>)</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>R <span class="ot">&lt;-</span> N[<span class="dv">2</span><span class="sc">:</span><span class="dv">4</span>]<span class="sc">/</span>N[<span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>]; R</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 1.5 0.5 1.0</code></pre>
+</div>
+</div>
+<p>The arithmetic average of those rates is <span class="math inline">\((1.5 + 0.5 + 1.0)/3=1.0\)</span>. If <span class="math inline">\(R=1.0\)</span>, then, on average, the population should stay the same, but it decreased. Why is that?</p>
+<p>Let us do the annual time steps explicitly to see what is going on. <span class="math display">\[N_3 = (N_0 R_0) R_1 R_2\]</span></p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Remember that we call the first time t=0 and N0, but</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="co"># when coding, these values are the first in a series, so </span></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="co"># N0 is N[1]</span></span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Now we do the annual changes which should equal N3</span></span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>N[<span class="dv">1</span>]<span class="sc">*</span>R[<span class="dv">1</span>]<span class="sc">*</span>R[<span class="dv">2</span>]<span class="sc">*</span>R[<span class="dv">3</span>]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 15</code></pre>
+</div>
+</div>
+<p>From this calculation, we see that when we start with <span class="math inline">\(N_0=20\)</span> and do the annual steps, we wind up with a smaller population, even though the arithmetic average is <span class="math inline">\(R_{\mathrm{ave}} = 1\)</span>. How do we calculate an average of numbers that we multiply together?</p>
+<p>We want a number <span class="math inline">\(\bar{R}\)</span> such that <span class="math display">\[\bar{R}^t = R_1R_2\ldots R_t\]</span></p>
+<p>To find that, we simply solve for <span class="math inline">\(\bar{R}\)</span> <span class="math display">\[(\bar{R}^t)^{1/t} =\bar{R} = \left(R_1R_2\ldots R_t\right)^{1/t}\]</span> We take the <span class="math inline">\(t\)</span>-th root of the product of all the <span class="math inline">\(R\)</span>. This is called the <em>geometric average.</em> Another way of writing this would be to use the product symbol, as in <span class="math display">\[\bar{R} = \left(\prod_{i=1}^t R_i\right)^{1/t}\]</span></p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>R</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 1.5 0.5 1.0</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="co">#arithmetic average</span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(R)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 1</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="co"># geometric average</span></span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>t <span class="ot">&lt;-</span> <span class="fu">length</span>(R); t</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 3</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="fu">prod</span>(R)<span class="sc">^</span>(<span class="dv">1</span><span class="sc">/</span>t)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.9085603</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="co"># shows the population should decline</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>Another way to do the same thing is to take the arithmethic mean of the log-growth rates, and back-transform,</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="fu">exp</span>( <span class="fu">mean</span>( <span class="fu">log</span>(R) ) )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.9085603</code></pre>
+</div>
+</div>
+<p>Now we see the effect of calculating the average growth rate correctly. This leads to a useful rule of thumb: <em>random variation in growth rate suppresses population growth.</em> Here we illustrate that. We start with a growing population.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>lambda <span class="ot">&lt;-</span> <span class="fl">1.01</span> <span class="co"># positive growth rate</span></span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>N0 <span class="ot">&lt;-</span> <span class="dv">100</span> <span class="co"># starting N</span></span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>t <span class="ot">&lt;-</span> <span class="dv">20</span> <span class="co"># 20 years</span></span>
+<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a>Nt1 <span class="ot">&lt;-</span> N0<span class="sc">*</span>lambda<span class="sc">^</span>t; Nt1</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 122.019</code></pre>
+</div>
+</div>
+<p>Here <span class="math inline">\(\lambda &gt; 1\)</span>, so the population grows.</p>
+<p>Now we do a simulation in which we let <span class="math inline">\(\lambda\)</span> have a mean of 1.01 but allow it to vary randomly.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="co"># create a vector to hold all N</span></span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>N <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="dv">0</span>, t); N[<span class="dv">1</span>] <span class="ot">&lt;-</span> N0</span>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a><span class="co"># create t-1 random lambdas with a mean of 1.01 </span></span>
+<span id="cb30-5"><a href="#cb30-5" aria-hidden="true" tabindex="-1"></a><span class="co"># ranging from 0.41 to 1.61</span></span>
+<span id="cb30-6"><a href="#cb30-6" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">3</span>) <span class="co"># makes the radnom sequence repeatable</span></span>
+<span id="cb30-7"><a href="#cb30-7" aria-hidden="true" tabindex="-1"></a>random.lambda <span class="ot">&lt;-</span> <span class="fu">runif</span>(<span class="at">n=</span>(t<span class="dv">-1</span>), <span class="at">min=</span><span class="fl">0.41</span>, <span class="at">max=</span><span class="fl">1.61</span>)</span>
+<span id="cb30-8"><a href="#cb30-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-9"><a href="#cb30-9" aria-hidden="true" tabindex="-1"></a><span class="co"># the geometric mean</span></span>
+<span id="cb30-10"><a href="#cb30-10" aria-hidden="true" tabindex="-1"></a><span class="fu">prod</span>(random.lambda)<span class="sc">^</span>(<span class="dv">1</span><span class="sc">/</span><span class="fu">length</span>(random.lambda))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 1.00105</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="co"># actual simulated projection</span></span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>(t<span class="dv">-1</span>)) { </span>
+<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a>  N[i<span class="sc">+</span><span class="dv">1</span>] <span class="ot">&lt;-</span> N[i] <span class="sc">*</span> random.lambda[i]</span>
+<span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb32-5"><a href="#cb32-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-6"><a href="#cb32-6" aria-hidden="true" tabindex="-1"></a><span class="fu">qplot</span>(<span class="at">x=</span><span class="dv">0</span><span class="sc">:</span>(t<span class="dv">-1</span>), N, <span class="at">geom=</span><span class="fu">c</span>(<span class="st">"line"</span>, <span class="st">"point"</span>), <span class="at">xlab=</span><span class="st">"Time (y)"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="03-Expo-growth_files/figure-html/randomLambda-1.png" class="img-fluid figure-img" width="672"></p>
+<figcaption>Random variation in growth rate alters the long term average growth rate.</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>Sometimes the arithmetic average is close to the correct average, but it is never the correct approach.</p>
+</section>
+</section>
+<section id="modeling-with-data-simulated-dynamics" class="level2 page-columns page-full" data-number="4.4">
+<h2 data-number="4.4" class="anchored" data-anchor-id="modeling-with-data-simulated-dynamics"><span class="header-section-number">4.4</span> Modeling with Data: Simulated Dynamics</h2>
+<p>Science strives to make predictions about the behavior of systems. Ecologists and conservation biologists frequently strive to predict the fate of populations, that is, determine the probability that a population will persist. This is referred to as <em>population viability analysis</em> (PVA) and is a large field of endeavor that is vital to managing threatened populations. Here we put into practice ideas about population biology to make informed predictions about the fate of the Song Sparrow population in Darrtown, OH. We also illustrate simple computational methods for doing so.</p>
+<p>The preceding sections (the bulk of the chapter) emphasized understanding the deterministic underpinnings of simple forms of density independent growth: geometric and exponential growth. This section explores the stochastic simulation of density independent growth. Our simulation makes most of the same assumptions we made at the beginning of the chapter. In addition, we assume that the observed annual growth rates (<span class="math inline">\(N_{t+1}/N_t\)</span>) are representative of future growth rates, and that the growth rate in one year is entirely independent of any other year.</p>
+<p>To make meaningful projections of future population size, we should quantify the uncertainty with our guess. Simulation is one way we can project populations and quantify the uncertainty. The way one often does that is to use the original data and sample it randomly to calculate model parameters. This way, the simulations are random, but based on our best available knowledge, i.e., the real data. The re-use of observed data occurs in many guises, and it is known often as bootstrapping or resampling.</p>
+<p>In a highly influential paper on miminmum population sizes in conservation, <span class="citation" data-cites="shaffer1981mps">Shaffer (<a href="references.html#ref-shaffer1981mps" role="doc-biblioref">1981</a>)</span> identifies four different types of noise or stochasticity that are important in driving variability in populations. The first of these is <em>demographic stochasticity</em>. This is the random-like or stochastic nature of individual births and deaths. Due to this element of random chance, individuals may live or die, produce offspring or not. As a result, population size will fluctuation randomly. This is very important in small populations, and becomes increasingly unimportant in larger and larger populations. This is the same process that underlies genetic drift in small populations.</p>
+<p>Another source of variation <span class="citation" data-cites="shaffer1981mps">Shaffer (<a href="references.html#ref-shaffer1981mps" role="doc-biblioref">1981</a>)</span> identifies is <em>environmental stochasticity</em>. This is temporal variation in birth or death rates that affects all individuals to a similar degree, due to variation in the population’s biotic or abiotic environment.</p>
+<p>The last sources of variation are <em>genetic stochasticity</em> and <em>natural catastrophes</em>. Perhaps the latter of these is the most difficult to deal with, because catastrophes are, by definition, enormously consequential and unpredictable.</p>
+<p>Given these sources of uncertainty, <span class="citation" data-cites="shaffer1981mps">Shaffer (<a href="references.html#ref-shaffer1981mps" role="doc-biblioref">1981</a>)</span> defines <em>minimum viable population</em> size (MVP) thus,</p>
+<p>“<em>A minimum viable population for any given species in any given habitat is the smallest isolated population having a 99% chance of remaining extant for 1000 y despite foreseeable effects of demographic, environmental and genetic stochasticity, and natural catastrophes.</em>”</p>
+<p>In our simulations, we take one approach to simulating a population of Song Sparrows. The computational approaches includes a variety of tricks that you could use in a more serious approach to population projection and determining probabilities of extinction. In their supplemental documentation, <span class="citation" data-cites="chaudhary_2019">Chaudhary and Oli (<a href="references.html#ref-chaudhary_2019" role="doc-biblioref">2019</a>)</span> provide an excellent list of criteria to evaluate your own or someone else’s approach to PVA.</p>
+<section id="data-based-approaches" class="level3" data-number="4.4.1">
+<h3 data-number="4.4.1" class="anchored" data-anchor-id="data-based-approaches"><span class="header-section-number">4.4.1</span> Data-based approaches</h3>
+<p>We will use the observed <em>changes</em> in population counts <span class="math inline">\(R_t=N_{t+1}/N_t\)</span> as our data. We draw an <span class="math inline">\(R_t\)</span> at random from among the many observed values, and project the population one year forward. We then repeat this into the future, say, for ten years. Each simulation of a ten year period will result in a different ten year trajectory because we draw <span class="math inline">\(R_t\)</span> at random from among the observed <span class="math inline">\(R_t\)</span>. However, if we do many such simulations, we will have a <em>distribution</em> of outcomes that we can describe with simple statistics (e.g., median, mean, quantiles).</p>
+<p>A different approach would be to estimate the individual probabilities of births and deaths in the entire Darrtown population, and use those probabilities and birth rates to simulate the entire population into the future. In such an <em>individual-based simulation</em>, we would simulate the fates of individuals, keeping track of all individual births and deaths.</p>
+<p>There are myriad other approaches, but these give you a taste of what might be possible. In this section we focus on the first of these alternatives, in which we use observed <span class="math inline">\(R_t\)</span> to simulate the dynamics of Song Sparrow counts. We do so, in part, because we have those data, while we do not have any estimates of birth rates or death rates.</p>
+<p>Here we investigate Song Sparrow (<em>Melospize melodia</em>) dynamics using data from the annual U.S. Breeding Bird Survey (http://www.mbr-pwrc.usgs.gov/ bbs/). Below we will</p>
+<ol type="1">
+<li>create and examine visually the data (annual <span class="math inline">\(R\)</span>’s),</li>
+<li>simulate one projection,</li>
+<li>scale up to multiple simulations,</li>
+<li>simplify simulations and perform them 1000s of times, and</li>
+<li>analyze the output.</li>
+</ol>
+</section>
+<section id="creating-and-visualizing-the-data" class="level3 page-columns page-full" data-number="4.4.2">
+<h3 data-number="4.4.2" class="anchored" data-anchor-id="creating-and-visualizing-the-data"><span class="header-section-number">4.4.2</span> Creating and visualizing the data</h3>
+<p>Let’s start by graphing the data<a href="#fn6" class="footnote-ref" id="fnref6" role="doc-noteref"><sup>6</sup></a>. <em>Graphing the data is always a good idea — it is a principle of working with data</em>. We first load the data from the <code>primer</code> R package, and look at the names of the data frame. We then choose to <code>attach</code> the data frame, because it makes the code easier to read.<a href="#fn7" class="footnote-ref" id="fnref7" role="doc-noteref"><sup>7</sup></a></p>
+<div class="no-row-height column-margin column-container"><div id="fn6"><p><sup>6</sup>&nbsp;I’ve come to abhor my use of the expression “look at”; I use it when I don’t say what I mean. “Look at” can mean almost anything, but it rarely means only “looking at”…</p></div><div id="fn7"><p><sup>7</sup>&nbsp;Don’t use <code>attach</code> for anything important</p></div></div><div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(primer) <span class="co"># load the primer package</span></span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(sparrows) <span class="co"># load a built-in data set</span></span>
+<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(sparrows) <span class="co"># extract the names of the columns in the data frame</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "Year"           "Count"          "ObserverNumber"</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="fu">attach</span>(sparrows) <span class="co"># put the columns in R's search path</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>Now we plot these counts through time (Fig. <a href="#fig-cts" class="quarto-xref">Figure&nbsp;<span>4.4</span></a>).</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span>sparrows, <span class="fu">aes</span>(<span class="at">x=</span>Year, <span class="at">y=</span>Count)) <span class="sc">+</span> <span class="fu">geom_line</span>() <span class="sc">+</span> <span class="fu">geom_point</span>(<span class="at">pch=</span><span class="dv">1</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div id="fig-cts" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-cts-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="03-Expo-growth_files/figure-html/fig-cts-1.png" class="img-fluid figure-img" style="width:75.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-cts-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;4.4: Observations of Song Sparrows in Darrtown, OH (http://www.mbr-pwrc.usgs.gov/bbs/).
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>We see that Song Sparrow counts at this site (the DARRTOWN transect, OH, USA) fluctuated a fair bit between 1966 and 2003. They never were completely absent and never exceeded <span class="math inline">\(\sim 120\)</span> individuals.</p>
+<p>Next we calculate annual <span class="math inline">\(R_t=N_{t+1}/N_t\)</span>, that is, the observed growth rate for each year <span class="math inline">\(t\)</span>.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="co"># the use of [-1] in the index tells R to exclude the first element.</span></span>
+<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a><span class="co"># length() is the length of a vector, so [-length(X)] means exclude the last</span></span>
+<span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a>obs.R <span class="ot">&lt;-</span> Count[<span class="sc">-</span><span class="dv">1</span>]<span class="sc">/</span>Count[<span class="sc">-</span><span class="fu">length</span>(Count)]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>Thus our <em>data</em> are the observed <span class="math inline">\(R_t\)</span>, not the counts <em>per se</em>. These <span class="math inline">\(R\)</span> form the basis of everything else we do. Because they are so important, let’s plot these as well. Let’s also indicate <span class="math inline">\(R=1\)</span> with a horizontal dotted line as a visual cue for zero population growth. Note that we exclude the last year because each <span class="math inline">\(R_t\)</span> is associated with <span class="math inline">\(N_t\)</span> rather than <span class="math inline">\(N_{t+1}\)</span>.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="fu">qplot</span>(<span class="at">x=</span>Year[<span class="sc">-</span><span class="fu">length</span>(Count)], <span class="at">y=</span>obs.R, <span class="at">geom=</span><span class="st">"point"</span>) <span class="sc">+</span> <span class="fu">geom_hline</span>(<span class="at">yintercept=</span><span class="dv">1</span>, <span class="at">lty=</span><span class="dv">3</span>) <span class="sc">+</span> </span>
+<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">y=</span><span class="fu">bquote</span>(N[t<span class="sc">+</span><span class="dv">1</span>]<span class="sc">/</span>N[t]), <span class="at">x=</span><span class="st">"Year (t)"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div id="fig-Rrates" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-Rrates-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="03-Expo-growth_files/figure-html/fig-Rrates-1.png" class="img-fluid figure-img" style="width:75.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-Rrates-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;4.5: Annual growth rates (R=N[t+1]/N[t]) for Song Sparrows
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>One thing that emerges in our graphic data display (Fig. <a href="#fig-Rrates" class="quarto-xref">Figure&nbsp;<span>4.5</span></a>) is we have an unusually high growth rate in the early 1990’s, with the rest of the data clustered around 0.5–1.5. We may want to remember that.</p>
+</section>
+<section id="one-simulation" class="level3" data-number="4.4.3">
+<h3 data-number="4.4.3" class="anchored" data-anchor-id="one-simulation"><span class="header-section-number">4.4.3</span> One simulation</h3>
+<p>Our simulation will,</p>
+<ol type="1">
+<li>determine the number of years we wish to simulate,</li>
+<li>create an empty vector, <code>N</code>, to hold our simulated <span class="math inline">\(N\)</span>, which is <code>years + 1</code> long,</li>
+<li>draw a random sample of <span class="math inline">\(R_t\)</span>, one for each year (<code>R</code>),</li>
+<li>select a starting abundance <span class="math inline">\(N_0\)</span> and put it in <code>N[1]</code>.</li>
+<li>multiply our first random <span class="math inline">\(R\)</span>, <code>R[1]</code>, times <code>N[1]</code> to generate the next, <code>N[2]</code>.</li>
+<li>repeat step 5 for each year to simulate each <code>N[t+1]</code> from <code>R[t]</code> and <code>N[t]</code>.</li>
+</ol>
+<p>First, we decide how many years we want to simulate growth, and create an empty vector that will hold our data.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb39"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a>years <span class="ot">&lt;-</span> <span class="dv">10</span></span>
+<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a>N <span class="ot">&lt;-</span> <span class="fu">numeric</span>(years<span class="sc">+</span><span class="dv">1</span>) <span class="co"># rep(0,years+1) would do the same thing.</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>Our vector of <span class="math inline">\(N\)</span> has to be one longer than the number of <span class="math inline">\(R\)</span> we use. This is because each <span class="math inline">\(R\)</span> is the change <em>from one year to the next</em> and there will always be one more <em>next</em> than there is <span class="math inline">\(R\)</span>.</p>
+<p>Next we draw 10 <span class="math inline">\(R\)</span> at random with replacement. This is just like having all 35 observed <span class="math inline">\(R\)</span> written down on slips of paper and dropped into a paper bag. We then draw one slip of paper out of the bag, write the number down, and put the slip of paper back in the bag, and then repeat this 9 more times. This is <em>resampling with replacement</em>. In that case, we would be assuming that all of these <span class="math inline">\(R_t\)</span> are important and will occur at some point, but we just don’t know when—they constitute the entire universe of possibilities. The R function <em>sample</em> will do this.</p>
+<p>Terminology: A random process occurs only in our imagination, or perhaps at the quantum level. A stochastic process is one which we treat operationally as random while acknowledging that there are complex underlying deterministic drivers. A pseudorandom process is a completely deterministic and hidden process used by computers and their programmers to generate numbers that cannot be distinguished from random; we can repeat a pseudorandom process by stipulating a key hidden starting point.</p>
+<p>We can use <code>set.seed()</code> to make your pseudorandom process the same as mine, i.e., repeatable.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">3</span>)</span>
+<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Draw a sample of our observed R with replacement, "years" times.</span></span>
+<span id="cb40-3"><a href="#cb40-3" aria-hidden="true" tabindex="-1"></a>(rRs <span class="ot">&lt;-</span> <span class="fu">sample</span>(<span class="at">x=</span>obs.R, <span class="at">size=</span>years, <span class="at">replace =</span> <span class="cn">TRUE</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> [1] 1.4489796 0.8125000 1.0714286 1.2857143 0.7727273 0.4805195 1.2857143
+ [8] 1.0500000 0.7204301 1.4489796</code></pre>
+</div>
+</div>
+<p>Now that we have these 10 <span class="math inline">\(R\)</span>, all we have to do is use them to generate the population sizes through time. For this, we need to use what programmers call a <em>for-loop</em>. In brief, a for-loop repeats a series of steps for a predetermined number of times.</p>
+<p>Let’s start our simulated N with the sparrow count we had in the last year.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb42"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a>N[<span class="dv">1</span>] <span class="ot">&lt;-</span> Count[<span class="fu">length</span>(Count)]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>Now we are ready to use the for-loop to project the population. For each year <span class="math inline">\(t\)</span>, we multiply <span class="math inline">\(N_t\)</span> by the randomly selected <span class="math inline">\(R_t\)</span> to get <span class="math inline">\(N_{t+1}\)</span> and put it into the <span class="math inline">\(t +1\)</span> element of <code>N</code>.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb43"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>( t <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>years) { </span>
+<span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a><span class="co"># starting with year = 1, and for each subsequent year, do... </span></span>
+<span id="cb43-3"><a href="#cb43-3" aria-hidden="true" tabindex="-1"></a>N[t<span class="sc">+</span><span class="dv">1</span>] <span class="ot">&lt;-</span> N[t] <span class="sc">*</span> rRs[t]</span>
+<span id="cb43-4"><a href="#cb43-4" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>Let’s graph the result.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb44"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a><span class="fu">qplot</span>(<span class="dv">0</span><span class="sc">:</span>years, N, <span class="at">geom=</span><span class="fu">c</span>(<span class="st">"point"</span>,<span class="st">"line"</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div id="fig-simten" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-simten-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="03-Expo-growth_files/figure-html/fig-simten-1.png" class="img-fluid figure-img" width="672">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-simten-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;4.6: A single simulated population projection.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>It appears to work (Fig. <a href="#fig-simten" class="quarto-xref">Figure&nbsp;<span>4.6</span></a>).</p>
+<p>Let’s review what we have done. We</p>
+<ul>
+<li>had a bird count each year for 36 years. From this we calculated 35 <span class="math inline">\(R\)</span> (for all years except the very last).</li>
+<li>decided how many years we wanted to project the population (10,y).</li>
+<li>drew at random and with replacement the observed <span class="math inline">\(R\)</span>—one <span class="math inline">\(R\)</span> for each year we want to project forward.</li>
+<li>we created an empty vector and put in an initial value.</li>
+<li>performed each year’s calculation, and put it into the vector we made.</li>
+</ul>
+<p>So what does Fig. <a href="#fig-simten" class="quarto-xref">Figure&nbsp;<span>4.6</span></a> represent? It represents one possible outcome of a trajectory, if we assume that <span class="math inline">\(R\)</span> has an equal probability of being any of the observed <span class="math inline">\(R_t\)</span>. This <em>particular</em> trajectory is very unlikely, because it would require one particular sequence of randomly selected <span class="math inline">\(R\)</span>s. However, we assume that it is <em>no less likely</em> than any other particular trajectory.</p>
+<p>As only one realization of a set of randomly selected <span class="math inline">\(R\)</span>, Fig. <a href="#fig-simten" class="quarto-xref">Figure&nbsp;<span>4.6</span></a> tells us very little. What we need to do now is to replicate this process a very large number of times, and examine the <em>distribution</em> of outcomes, including moments of the distribution such as the mean, median, and the uncertainty of eventual outcomes.</p>
+</section>
+<section id="multiple-simulations" class="level3 page-columns page-full" data-number="4.4.4">
+<h3 data-number="4.4.4" class="anchored" data-anchor-id="multiple-simulations"><span class="header-section-number">4.4.4</span> Multiple simulations</h3>
+<p>Next we create a way to perform the above simulation several times. There are a couple tricks we use to do this. We still want to start small so we can figure out the steps as we go. Here is what we would do next.</p>
+<ol type="1">
+<li>We start by creating a function that will do the steps we did above.</li>
+<li>We then perform replicate, independent simulations, using <code>replicate()</code>.</li>
+</ol>
+<p>Here we write a function to combine several steps. Our function has three arguments: the observed <span class="math inline">\(R\)</span>, the number of years that we want to simulate, and the initial population size.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb45"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a>myForLoop <span class="ot">&lt;-</span> <span class="cf">function</span>(obs.R, years, initial.N) {</span>
+<span id="cb45-2"><a href="#cb45-2" aria-hidden="true" tabindex="-1"></a>  <span class="do">## obs.R - observed annual growth rates, </span></span>
+<span id="cb45-3"><a href="#cb45-3" aria-hidden="true" tabindex="-1"></a>  <span class="do">## years - the number of years that we want to simulate,</span></span>
+<span id="cb45-4"><a href="#cb45-4" aria-hidden="true" tabindex="-1"></a>  <span class="do">## initial.N - the initial population size.</span></span>
+<span id="cb45-5"><a href="#cb45-5" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb45-6"><a href="#cb45-6" aria-hidden="true" tabindex="-1"></a>  <span class="co"># select all R at random</span></span>
+<span id="cb45-7"><a href="#cb45-7" aria-hidden="true" tabindex="-1"></a>  rR <span class="ot">&lt;-</span> <span class="fu">sample</span>(obs.R, <span class="at">size=</span>years, <span class="at">replace=</span><span class="cn">TRUE</span>)</span>
+<span id="cb45-8"><a href="#cb45-8" aria-hidden="true" tabindex="-1"></a>  <span class="co"># create a vector to hold N</span></span>
+<span id="cb45-9"><a href="#cb45-9" aria-hidden="true" tabindex="-1"></a>  N <span class="ot">&lt;-</span> <span class="fu">numeric</span>(years<span class="sc">+</span><span class="dv">1</span>)</span>
+<span id="cb45-10"><a href="#cb45-10" aria-hidden="true" tabindex="-1"></a>  <span class="co"># give it an initial population size</span></span>
+<span id="cb45-11"><a href="#cb45-11" aria-hidden="true" tabindex="-1"></a>  N[<span class="dv">1</span>] <span class="ot">&lt;-</span> initial.N</span>
+<span id="cb45-12"><a href="#cb45-12" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Do the for-loop</span></span>
+<span id="cb45-13"><a href="#cb45-13" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb45-14"><a href="#cb45-14" aria-hidden="true" tabindex="-1"></a>  <span class="co"># For each year...</span></span>
+<span id="cb45-15"><a href="#cb45-15" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span>( t <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>years ) {</span>
+<span id="cb45-16"><a href="#cb45-16" aria-hidden="true" tabindex="-1"></a>    <span class="co"># project the population one time step</span></span>
+<span id="cb45-17"><a href="#cb45-17" aria-hidden="true" tabindex="-1"></a>      N[t<span class="sc">+</span><span class="dv">1</span>] <span class="ot">&lt;-</span>  N[t] <span class="sc">*</span> rR[t]</span>
+<span id="cb45-18"><a href="#cb45-18" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb45-19"><a href="#cb45-19" aria-hidden="true" tabindex="-1"></a>  <span class="co"># return the vector of N</span></span>
+<span id="cb45-20"><a href="#cb45-20" aria-hidden="true" tabindex="-1"></a>  N</span>
+<span id="cb45-21"><a href="#cb45-21" aria-hidden="true" tabindex="-1"></a>} </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>After running the above code, try it out with different hypothetical <span class="math inline">\(R\)</span>.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb46"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a><span class="fu">myForLoop</span>(<span class="at">obs.R=</span><span class="fu">c</span>(<span class="fl">0.5</span>, <span class="dv">1</span>, <span class="fl">1.5</span>), <span class="at">years=</span><span class="dv">5</span>, <span class="at">initial.N=</span><span class="dv">43</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 43.000 21.500 10.750  5.375  5.375  5.375</code></pre>
+</div>
+</div>
+<p>Our function seems to work.</p>
+<p>Next we do ten such projection simulations, each for 50 time steps, using the sparrow data.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb48"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a><span class="co"># specify the number of simulations and for how long</span></span>
+<span id="cb48-2"><a href="#cb48-2" aria-hidden="true" tabindex="-1"></a>sims<span class="ot">=</span><span class="dv">10</span>; years<span class="ot">=</span><span class="dv">50</span></span>
+<span id="cb48-3"><a href="#cb48-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-4"><a href="#cb48-4" aria-hidden="true" tabindex="-1"></a><span class="co"># make the randomizations repeatable</span></span>
+<span id="cb48-5"><a href="#cb48-5" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">3</span>)</span>
+<span id="cb48-6"><a href="#cb48-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-7"><a href="#cb48-7" aria-hidden="true" tabindex="-1"></a>outmat <span class="ot">&lt;-</span> <span class="fu">replicate</span>(sims,   </span>
+<span id="cb48-8"><a href="#cb48-8" aria-hidden="true" tabindex="-1"></a>             <span class="at">expr=</span><span class="fu">myForLoop</span>(<span class="at">obs.R=</span>obs.R, <span class="at">years=</span>years, <span class="at">initial.N=</span><span class="dv">43</span>)</span>
+<span id="cb48-9"><a href="#cb48-9" aria-hidden="true" tabindex="-1"></a>                    )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>Now let’s peek at the results (Fig. <a href="#fig-tensimfig" class="quarto-xref">Figure&nbsp;<span>4.7</span></a>). It is fun to graph our output, but also helps us make sure we are not making a heinous mistake in our code. Note we use log scale to help us see the small populations.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb49"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a><span class="fu">matplot</span>(<span class="dv">0</span><span class="sc">:</span>years, outmat, <span class="at">type=</span><span class="st">"l"</span>, <span class="at">log=</span><span class="st">"y"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div id="fig-tensimfig" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-tensimfig-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="03-Expo-growth_files/figure-html/fig-tensimfig-1.png" class="img-fluid figure-img" style="width:75.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-tensimfig-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;4.7: Using matplot() to plot a matrix vs.&nbsp;a single variable. Our simulated populations sometimes increase and sometimes decrease.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb50"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a><span class="co"># combine columns years, and our output</span></span>
+<span id="cb50-2"><a href="#cb50-2" aria-hidden="true" tabindex="-1"></a>junk <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">years =</span> <span class="dv">1</span><span class="sc">:</span>(years<span class="sc">+</span><span class="dv">1</span>), outmat)</span>
+<span id="cb50-3"><a href="#cb50-3" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(junk)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> [1] "years" "X1"    "X2"    "X3"    "X4"    "X5"    "X6"    "X7"    "X8"   
+[10] "X9"    "X10"  </code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb52"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a><span class="co"># make sure to load 'tidyr' if you did not already load it or tidyverse</span></span>
+<span id="cb52-2"><a href="#cb52-2" aria-hidden="true" tabindex="-1"></a><span class="co"># library(tidyr)</span></span>
+<span id="cb52-3"><a href="#cb52-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Take the wide data frame with many columns and turn it into </span></span>
+<span id="cb52-4"><a href="#cb52-4" aria-hidden="true" tabindex="-1"></a><span class="co"># a long data frame with one column to ID each simulation, and one to hold values.</span></span>
+<span id="cb52-5"><a href="#cb52-5" aria-hidden="true" tabindex="-1"></a>out.long <span class="ot">&lt;-</span> <span class="fu">pivot_longer</span>(junk, <span class="at">cols=</span>X1<span class="sc">:</span>X10, <span class="at">names_to=</span><span class="st">"Run"</span>, <span class="at">values_to=</span><span class="st">"N"</span>)</span>
+<span id="cb52-6"><a href="#cb52-6" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span>out.long, <span class="fu">aes</span>(<span class="at">x=</span>years, <span class="at">y=</span>N, <span class="at">group=</span>Run)) <span class="sc">+</span> <span class="fu">geom_line</span>() <span class="sc">+</span>  </span>
+<span id="cb52-7"><a href="#cb52-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_log10</span>() </span>
+<span id="cb52-8"><a href="#cb52-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb52-9"><a href="#cb52-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Or for colorful lines</span></span>
+<span id="cb52-10"><a href="#cb52-10" aria-hidden="true" tabindex="-1"></a><span class="co"># ggplot(data=out.long, aes(x=years, y=N,  linetype=Run, colour=Run)) + </span></span>
+<span id="cb52-11"><a href="#cb52-11" aria-hidden="true" tabindex="-1"></a><span class="co">#    geom_line(show.legend=FALSE) + scale_y_log10() </span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div id="fig-tensimfig2" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-tensimfig2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="03-Expo-growth_files/figure-html/fig-tensimfig2-1.png" class="img-fluid figure-img" style="width:75.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-tensimfig2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;4.8: Using ggplot() to plot one variable against vs.&nbsp;a single variable, organized by a grouping variable. Our simulated populations sometimes increase and sometimes decrease.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>What does it mean that the simulation has an approximately even distribution of final population sizes (Fig. <a href="#fig-tensimfig2" class="quarto-xref">Figure&nbsp;<span>4.8</span></a>? If we plotted it on a linear scale, what would it look like?<a href="#fn8" class="footnote-ref" id="fnref8" role="doc-noteref"><sup>8</sup></a></p>
+<div class="no-row-height column-margin column-container"><div id="fn8"><p><sup>8</sup>&nbsp;Plotting it on the log scale reveals that the relative change is independent of population size; this is true because the rate of change is geometric. If we plotted it on a linear scale, we would see that many trajectories result in small counts, and only a few get really big. That is, the median size is pretty small, but a few populations get huge.</p></div></div><p>Rerunning this simulation, with new <span class="math inline">\(R\)</span> each time, will show different dynamics every time, and that is the point of simulations. Simulations are a way to make a few key assumptions, and then leave the rest to chance. In that sense it is a null model of population dynamics.</p>
+</section>
+<section id="a-distribution-of-possible-futures" class="level3" data-number="4.4.5">
+<h3 data-number="4.4.5" class="anchored" data-anchor-id="a-distribution-of-possible-futures"><span class="header-section-number">4.4.5</span> A distribution of possible futures</h3>
+<p>Now we are in a position to make an informed prediction, given our assumptions. We will predict the range of possible outcomes and the most likely outcomes, given our set of assumptions.</p>
+<p>We will simulate the population for 50 years 10,000 times and describe the distribution of final population sizes. We use <code>system.time</code> to tell me how long it takes on my computer.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb53"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb53-1"><a href="#cb53-1" aria-hidden="true" tabindex="-1"></a>sims<span class="ot">=</span><span class="fl">1e4</span>; years<span class="ot">=</span><span class="dv">50</span></span>
+<span id="cb53-2"><a href="#cb53-2" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">3</span>)</span>
+<span id="cb53-3"><a href="#cb53-3" aria-hidden="true" tabindex="-1"></a><span class="do">## system.time keeps track of how long processes take.</span></span>
+<span id="cb53-4"><a href="#cb53-4" aria-hidden="true" tabindex="-1"></a><span class="fu">system.time</span>(</span>
+<span id="cb53-5"><a href="#cb53-5" aria-hidden="true" tabindex="-1"></a>outmat <span class="ot">&lt;-</span> <span class="fu">replicate</span>(sims,   </span>
+<span id="cb53-6"><a href="#cb53-6" aria-hidden="true" tabindex="-1"></a>                    <span class="at">expr=</span><span class="fu">myForLoop</span>(<span class="at">obs.R=</span>obs.R, <span class="at">years=</span>years, <span class="at">initial.N=</span><span class="dv">43</span>)</span>
+<span id="cb53-7"><a href="#cb53-7" aria-hidden="true" tabindex="-1"></a>                    )</span>
+<span id="cb53-8"><a href="#cb53-8" aria-hidden="true" tabindex="-1"></a>            )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   user  system elapsed 
+  0.075   0.001   0.075 </code></pre>
+</div>
+</div>
+<p>This tells me how long it took to complete 10,000 simulations. We also check the dimensions of the output, and they make sense.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb55"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb55-1"><a href="#cb55-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dim</span>(outmat)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1]    51 10000</code></pre>
+</div>
+</div>
+<p>We see that we have an object that is the size we think it should be. We shall assume that everything worked way we think it should.</p>
+</section>
+<section id="analyzing-results" class="level3 page-columns page-full" data-number="4.4.6">
+<h3 data-number="4.4.6" class="anchored" data-anchor-id="analyzing-results"><span class="header-section-number">4.4.6</span> Analyzing results</h3>
+<p>We extract the last year of the simulations (last row), and summarize it with quartiles (0%, 25%, 50%, 75%, 100%, and also the mean).</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb57"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb57-1"><a href="#cb57-1" aria-hidden="true" tabindex="-1"></a>N<span class="fl">.2053</span> <span class="ot">&lt;-</span> outmat[<span class="dv">51</span>,]</span>
+<span id="cb57-2"><a href="#cb57-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(N<span class="fl">.2053</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>     Min.   1st Qu.    Median      Mean   3rd Qu.      Max. 
+0.000e+00 1.210e+01 6.074e+01 1.306e+03 2.977e+02 2.299e+06 </code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb59"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb59-1"><a href="#cb59-1" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(<span class="fu">log10</span>(N<span class="fl">.2053</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="03-Expo-growth_files/figure-html/unnamed-chunk-15-1.png" class="img-fluid figure-img" style="width:75.0%"></p>
+<figcaption>Distribution of the 10000 final base-10 log population sizes. Note the approximately Normal distribution.</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>The <code>quantile()</code> function allows us to find a form of empirical confidence interval, including, approximately, the central 90% of the observations.<a href="#fn9" class="footnote-ref" id="fnref9" role="doc-noteref"><sup>9</sup></a></p>
+<div class="no-row-height column-margin column-container"><div id="fn9"><p><sup>9</sup>&nbsp;Note that there are many ways to estimate quantiles (R has nine ways), but they are approximately similar to percentiles.</p></div></div><div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb60"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb60-1"><a href="#cb60-1" aria-hidden="true" tabindex="-1"></a><span class="fu">quantile</span>(N<span class="fl">.2053</span>, <span class="at">prob=</span><span class="fu">c</span>(<span class="fl">0.05</span>, .<span class="dv">95</span>) )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>         5%         95% 
+   1.331579 2862.940808 </code></pre>
+</div>
+</div>
+<p>These quantiles provide an estimate of the most likely range of possible population sizes, given our assumptions.</p>
+</section>
+<section id="extinction-probability-expectation-and-uncertainty" class="level3 page-columns page-full" data-number="4.4.7">
+<h3 data-number="4.4.7" class="anchored" data-anchor-id="extinction-probability-expectation-and-uncertainty"><span class="header-section-number">4.4.7</span> Extinction probability: expectation and uncertainty</h3>
+<p>What is the chance that the sparrow would become extinct in this region, due to these inherent processes? As one answer to this question, we can calculate the fraction of times that the population fell below 1.0 (or <span class="math inline">\(\log N = 0\)</span>). Based on the above summaries, it will be a fairly small number.</p>
+<p>First, we convert persisting populations (<span class="math inline">\(N \ge 1\)</span>) to 1, and extinct populations (<span class="math inline">\(N&lt;1\)</span>) to zero. We then sum the ones and divide by the total number of all simulated populations. This gives us the fraction surviving, and that is the fraction we <em>expect</em>; it is our <em>expectation</em>…the <em>expected</em> survival probability.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb62"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb62-1"><a href="#cb62-1" aria-hidden="true" tabindex="-1"></a>persisting <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>( N<span class="fl">.2053</span> <span class="sc">&gt;=</span> <span class="dv">1</span> )</span>
+<span id="cb62-2"><a href="#cb62-2" aria-hidden="true" tabindex="-1"></a>(p <span class="ot">&lt;-</span> <span class="fu">sum</span>(persisting)<span class="sc">/</span><span class="fu">length</span>(persisting))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.9607</code></pre>
+</div>
+</div>
+<p>Next we ask, what is the <em>uncertainty</em> associated with that? We will find an intuitive Bayesian answer to the question: What is the probability that the sparrow would become extinct in this region, due to these inherent processes?</p>
+<p>We will gain an intuition into Bayesian probability elsewhere<a href="#fn10" class="footnote-ref" id="fnref10" role="doc-noteref"><sup>10</sup></a>. For now, we will simply rely on well-established relationship between the binomial probability distribution and the beta distribution.</p>
+<div class="no-row-height column-margin column-container"><div id="fn10"><p><sup>10</sup>&nbsp;Bayesian analysis allows us to estimate the probabiility that our hypothesis is true, as opposed to the probability of our data given our hypothesis (Pr(H|D) vs.&nbsp;Pr(D|H)).</p></div></div><p>A Bayesian approach forces us to use what we already know. For us, we will start with expert opinion of whether Song Sparrows are likely to maintain a self-replacing population (a ‘source’ population - Ch. 6) and avoid extinction over our time interval. In other words, we ask Dr.&nbsp;Dave Russell. He says “Probably, but you can’t be sure.” Let’s represent “probably” with the beta distribution. The <strong>beta distribution</strong> generates probability densities for a random variable between [0,1], perfect for representing probabilities which always lie between zero and one. The beta distribution has two parameters, often called shape 1 (<span class="math inline">\(\alpha\)</span>) and shape 2 (<span class="math inline">\(\beta\)</span>). The mean of the beta distribution is, <span class="math display">\[\mu = \frac{\alpha}{\alpha + \beta}\]</span></p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb64"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb64-1"><a href="#cb64-1" aria-hidden="true" tabindex="-1"></a>base <span class="ot">&lt;-</span> <span class="fu">ggplot</span>() <span class="sc">+</span> <span class="fu">xlim</span>(<span class="dv">0</span>, <span class="dv">1</span>)</span>
+<span id="cb64-2"><a href="#cb64-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb64-3"><a href="#cb64-3" aria-hidden="true" tabindex="-1"></a>base <span class="sc">+</span> </span>
+<span id="cb64-4"><a href="#cb64-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_function</span>(<span class="at">fun =</span> dbeta, <span class="at">args =</span> <span class="fu">list</span>(<span class="at">shape1 =</span> <span class="dv">3</span>, <span class="at">shape =</span> <span class="dv">2</span>)) <span class="sc">+</span> </span>
+<span id="cb64-5"><a href="#cb64-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">y=</span><span class="st">"Probability density of surviving"</span>,</span>
+<span id="cb64-6"><a href="#cb64-6" aria-hidden="true" tabindex="-1"></a>       <span class="at">x=</span><span class="st">"Probability of surviving (p)"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div id="fig-survivalPrior" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-survivalPrior-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="03-Expo-growth_files/figure-html/fig-survivalPrior-1.png" class="img-fluid figure-img" style="width:67.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-survivalPrior-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;4.9: Our prior belief on the probability that the Song Sparrow population in Darrtown will replace itself over our time interval. We call this the <em>prior probability distribution.</em>
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>Fig. <a href="#fig-survivalPrior" class="quarto-xref">Figure&nbsp;<span>4.9</span></a> shows our <em>prior beliefs</em>. That is, before we look at our data, we think there is about a 3/5’s chance (60%) that Song Sparrows in Darrtown won’t become extinct over our time interval. How will we update our beliefs using our data?</p>
+<p>First, our “data” are really just 36 years of counts and 35 estimates of annual growth (<span class="math inline">\(N_{t+1}/N_{t}\)</span>). We can do as many simulations as we like, but they are still based on only 35 annual growth estimates. Therefore, if we combine our survival estimate with the amount of data, we multiply the survival probability by the sample size and think of it as evidence in favor of surviving. Weight of evidence not in favor is the difference.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb65"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb65-1"><a href="#cb65-1" aria-hidden="true" tabindex="-1"></a><span class="co"># number of observations</span></span>
+<span id="cb65-2"><a href="#cb65-2" aria-hidden="true" tabindex="-1"></a>nR <span class="ot">&lt;-</span> <span class="fu">length</span>(obs.R); nR </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 35</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb67"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb67-1"><a href="#cb67-1" aria-hidden="true" tabindex="-1"></a>p <span class="co"># probability of persisting</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.9607</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb69"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb69-1"><a href="#cb69-1" aria-hidden="true" tabindex="-1"></a><span class="co"># evidence in favor of survival</span></span>
+<span id="cb69-2"><a href="#cb69-2" aria-hidden="true" tabindex="-1"></a>nR.surv <span class="ot">&lt;-</span> nR <span class="sc">*</span> p; nR.surv</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 33.6245</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb71"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb71-1"><a href="#cb71-1" aria-hidden="true" tabindex="-1"></a><span class="co"># evidence in favor of extinction</span></span>
+<span id="cb71-2"><a href="#cb71-2" aria-hidden="true" tabindex="-1"></a>nR.ext <span class="ot">&lt;-</span> nR <span class="sc">-</span> nR.surv; nR.ext</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 1.3755</code></pre>
+</div>
+</div>
+<p>Next, we update our belief about Song Sparrow persistence, using the beta distribution. It turns out that we just add the evidence in favor of and not in favor of survival to the alpha and beta parameters (shape1, shape2) to get updated values that will generate our updated beliefs.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb73"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb73-1"><a href="#cb73-1" aria-hidden="true" tabindex="-1"></a>updated.alpha <span class="ot">=</span> <span class="dv">3</span> <span class="sc">+</span> nR.surv</span>
+<span id="cb73-2"><a href="#cb73-2" aria-hidden="true" tabindex="-1"></a>updated.beta <span class="ot">=</span> <span class="dv">2</span> <span class="sc">+</span> nR.ext</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>Now we plot our <em>updated</em> beliefs, with what we call the <em>posterior distribution.</em></p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb74"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb74-1"><a href="#cb74-1" aria-hidden="true" tabindex="-1"></a>base <span class="sc">+</span> </span>
+<span id="cb74-2"><a href="#cb74-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_function</span>(<span class="at">fun =</span> dbeta, </span>
+<span id="cb74-3"><a href="#cb74-3" aria-hidden="true" tabindex="-1"></a>                <span class="at">args =</span> <span class="fu">list</span>(<span class="at">shape1 =</span> <span class="dv">3</span>, </span>
+<span id="cb74-4"><a href="#cb74-4" aria-hidden="true" tabindex="-1"></a>                            <span class="at">shape2 =</span> <span class="dv">2</span>), <span class="at">linetype=</span><span class="dv">2</span>) <span class="sc">+</span></span>
+<span id="cb74-5"><a href="#cb74-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_function</span>(<span class="at">fun =</span> dbeta, </span>
+<span id="cb74-6"><a href="#cb74-6" aria-hidden="true" tabindex="-1"></a>                <span class="at">args =</span> <span class="fu">list</span>(<span class="at">shape1 =</span> updated.alpha, </span>
+<span id="cb74-7"><a href="#cb74-7" aria-hidden="true" tabindex="-1"></a>                            <span class="at">shape2 =</span> updated.beta)) <span class="sc">+</span></span>
+<span id="cb74-8"><a href="#cb74-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">y=</span><span class="st">"Probability density of surviving"</span>,</span>
+<span id="cb74-9"><a href="#cb74-9" aria-hidden="true" tabindex="-1"></a>       <span class="at">x=</span><span class="st">"Probability of surviving (p)"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="03-Expo-growth_files/figure-html/survivalpost-1.png" class="img-fluid figure-img" style="width:67.0%"></p>
+<figcaption>Our updated beliefs (solid line) about the probability that the Song Sparrows will replace themselves over our time interval. The solid line is the posterior distribution. The dashed line was our prior beliefs or prior distribution.</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>A Bayesian approach to probability and learning</p>
+<ol type="1">
+<li>start with what we believe prior to collecting data,</li>
+<li>collect some data, and then</li>
+<li>update our beliefs according to the data.</li>
+</ol>
+</section>
+<section id="inferring-processes-underlying-growth-rate" class="level3 page-columns page-full" data-number="4.4.8">
+<h3 data-number="4.4.8" class="anchored" data-anchor-id="inferring-processes-underlying-growth-rate"><span class="header-section-number">4.4.8</span> Inferring processes underlying growth rate</h3>
+<p>The above approach relies only on the observed data. That means that the growth rates, while representative, can never be different than what was observed. A different approach would be to assume that the growth rates can be different than observed, <em>but drawn from the same underlying process</em> that caused the observed rates.</p>
+<p>The observed rates are simply a visible manifestation of unseen processes. We might summarize these by asserting that the observed growth rates were samples from a continuous distribution distribution, whose properties we can infer from the sample. For instance, it may be that these processes cause annual rates to follow a normal<a href="#fn11" class="footnote-ref" id="fnref11" role="doc-noteref"><sup>11</sup></a>, or perhaps log-normal distribution.<a href="#fn12" class="footnote-ref" id="fnref12" role="doc-noteref"><sup>12</sup></a></p>
+<div class="no-row-height column-margin column-container"><div id="fn11"><p><sup>11</sup>&nbsp;Gaussian</p></div><div id="fn12"><p><sup>12</sup>&nbsp;The R package fitdistplus has great capabilities for fitting distributions to data, and estimating distribution parameters.</p></div></div><p>We can fit a normal distribution to the logarithms of our observed <span class="math inline">\(R\)</span>, and we see that it doesn’t do too bad a job (Fig. <a href="#fig-fitln" class="quarto-xref">Figure&nbsp;<span>4.10</span></a>).</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb75"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb75-1"><a href="#cb75-1" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(<span class="fu">log</span>(obs.R), <span class="at">breaks=</span><span class="dv">10</span>, <span class="at">ylab=</span><span class="st">"Frequency"</span>)</span>
+<span id="cb75-2"><a href="#cb75-2" aria-hidden="true" tabindex="-1"></a><span class="fu">lines</span>(lR, rdR)</span>
+<span id="cb75-3"><a href="#cb75-3" aria-hidden="true" tabindex="-1"></a><span class="fu">qqnorm</span>(<span class="fu">log</span>(obs.R)); <span class="fu">qqline</span>(<span class="fu">log</span>(obs.R))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="fig-fitln" class="quarto-layout-panel">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-fitln-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="quarto-layout-row">
+<div class="cell quarto-layout-cell" style="flex-basis: 50.0%;justify-content: flex-start;">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="03-Expo-growth_files/figure-html/unnamed-chunk-21-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell quarto-layout-cell" style="flex-basis: 50.0%;justify-content: flex-start;">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="03-Expo-growth_files/figure-html/unnamed-chunk-22-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-fitln-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;4.10: The logarithms of the observed R arrayed in a histogram (left) and a quantile-quantile plot comparing our log-growth rates to the normal distribution (right). Our data seem somewhat approximated by a Normal distribution whose mean and standard deviation are derived from the log-transformed data. The probability distribution has been rescaled to be visible on this graph. However, the q-q plot shows that the sample (y-axis) includes values that are smaller and larger than predicted by the normal distribution.
+</figcaption>
+</figure>
+</div>
+<p>Now we will simulate populations just like before, but instead of random draws from the observed data, we do random draws from the inferred distribution.</p>
+<p>Our new function.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb76"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb76-1"><a href="#cb76-1" aria-hidden="true" tabindex="-1"></a>myForLoop2 <span class="ot">&lt;-</span> <span class="cf">function</span>(mu, sigma, years, initial.N) {</span>
+<span id="cb76-2"><a href="#cb76-2" aria-hidden="true" tabindex="-1"></a>  <span class="co"># select all R at random from a normal distribution</span></span>
+<span id="cb76-3"><a href="#cb76-3" aria-hidden="true" tabindex="-1"></a>  <span class="co"># where the mean and variance are the same as our data</span></span>
+<span id="cb76-4"><a href="#cb76-4" aria-hidden="true" tabindex="-1"></a>  lrR <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(years, <span class="at">m=</span>mu, <span class="at">sd=</span>sigma)</span>
+<span id="cb76-5"><a href="#cb76-5" aria-hidden="true" tabindex="-1"></a>  <span class="co"># exponentiate to backtransform to raw growth rate units</span></span>
+<span id="cb76-6"><a href="#cb76-6" aria-hidden="true" tabindex="-1"></a>  rR <span class="ot">&lt;-</span> <span class="fu">exp</span>(lrR)</span>
+<span id="cb76-7"><a href="#cb76-7" aria-hidden="true" tabindex="-1"></a>  <span class="co"># create a vector to hold N</span></span>
+<span id="cb76-8"><a href="#cb76-8" aria-hidden="true" tabindex="-1"></a>  N <span class="ot">&lt;-</span> <span class="fu">numeric</span>(years<span class="sc">+</span><span class="dv">1</span>)</span>
+<span id="cb76-9"><a href="#cb76-9" aria-hidden="true" tabindex="-1"></a>  <span class="co"># give it an initial population size</span></span>
+<span id="cb76-10"><a href="#cb76-10" aria-hidden="true" tabindex="-1"></a>  N[<span class="dv">1</span>] <span class="ot">&lt;-</span> initial.N</span>
+<span id="cb76-11"><a href="#cb76-11" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Do the for-loop</span></span>
+<span id="cb76-12"><a href="#cb76-12" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span>( t <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>years ) {</span>
+<span id="cb76-13"><a href="#cb76-13" aria-hidden="true" tabindex="-1"></a>    <span class="co"># project the population one time step</span></span>
+<span id="cb76-14"><a href="#cb76-14" aria-hidden="true" tabindex="-1"></a>      N[t<span class="sc">+</span><span class="dv">1</span>] <span class="ot">&lt;-</span>  N[t] <span class="sc">*</span> rR[t]</span>
+<span id="cb76-15"><a href="#cb76-15" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb76-16"><a href="#cb76-16" aria-hidden="true" tabindex="-1"></a>  <span class="co"># return the vector of N</span></span>
+<span id="cb76-17"><a href="#cb76-17" aria-hidden="true" tabindex="-1"></a>  N</span>
+<span id="cb76-18"><a href="#cb76-18" aria-hidden="true" tabindex="-1"></a>} </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>Our new simulations.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb77"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb77-1"><a href="#cb77-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 10,000 simulations, each over 50 years</span></span>
+<span id="cb77-2"><a href="#cb77-2" aria-hidden="true" tabindex="-1"></a>sims<span class="ot">=</span><span class="fl">1e4</span>; years<span class="ot">=</span><span class="dv">50</span></span>
+<span id="cb77-3"><a href="#cb77-3" aria-hidden="true" tabindex="-1"></a><span class="co"># set the pseudorandom seed to 3 (for repeatability)</span></span>
+<span id="cb77-4"><a href="#cb77-4" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">3</span>)</span>
+<span id="cb77-5"><a href="#cb77-5" aria-hidden="true" tabindex="-1"></a><span class="co"># do the replications</span></span>
+<span id="cb77-6"><a href="#cb77-6" aria-hidden="true" tabindex="-1"></a>outmat2 <span class="ot">&lt;-</span> <span class="fu">replicate</span>(sims,</span>
+<span id="cb77-7"><a href="#cb77-7" aria-hidden="true" tabindex="-1"></a>                    <span class="at">expr=</span><span class="fu">myForLoop2</span>(<span class="at">mu=</span>mu, </span>
+<span id="cb77-8"><a href="#cb77-8" aria-hidden="true" tabindex="-1"></a>                                    <span class="at">sigma=</span>sigma, </span>
+<span id="cb77-9"><a href="#cb77-9" aria-hidden="true" tabindex="-1"></a>                                    <span class="at">years=</span>years,</span>
+<span id="cb77-10"><a href="#cb77-10" aria-hidden="true" tabindex="-1"></a>                                    <span class="at">initial.N=</span><span class="dv">43</span></span>
+<span id="cb77-11"><a href="#cb77-11" aria-hidden="true" tabindex="-1"></a>                                    )</span>
+<span id="cb77-12"><a href="#cb77-12" aria-hidden="true" tabindex="-1"></a>                    )</span>
+<span id="cb77-13"><a href="#cb77-13" aria-hidden="true" tabindex="-1"></a><span class="do">## save the last year for each of the 10,000 simulations</span></span>
+<span id="cb77-14"><a href="#cb77-14" aria-hidden="true" tabindex="-1"></a>N2<span class="fl">.2053</span> <span class="ot">&lt;-</span> outmat2[<span class="dv">51</span>,]</span>
+<span id="cb77-15"><a href="#cb77-15" aria-hidden="true" tabindex="-1"></a><span class="co"># compare the 90th quantiles for our two approaches to simulations</span></span>
+<span id="cb77-16"><a href="#cb77-16" aria-hidden="true" tabindex="-1"></a>drawn.from.normal <span class="ot">&lt;-</span> <span class="fu">quantile</span>(N2<span class="fl">.2053</span>, <span class="at">prob=</span><span class="fu">c</span>(<span class="fl">0.05</span>, .<span class="dv">95</span>) )</span>
+<span id="cb77-17"><a href="#cb77-17" aria-hidden="true" tabindex="-1"></a>bootstrapped <span class="ot">&lt;-</span> <span class="fu">quantile</span>(N<span class="fl">.2053</span>, <span class="at">prob=</span><span class="fu">c</span>(<span class="fl">0.05</span>, .<span class="dv">95</span>) )</span>
+<span id="cb77-18"><a href="#cb77-18" aria-hidden="true" tabindex="-1"></a><span class="fu">list</span>(<span class="at">drawn.from.normal=</span>drawn.from.normal, <span class="at">bootstrapped=</span>bootstrapped)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>$drawn.from.normal
+         5%         95% 
+   1.205509 3089.819907 
+
+$bootstrapped
+         5%         95% 
+   1.331579 2862.940808 </code></pre>
+</div>
+</div>
+<p>The results are fairly similar to those based on only the observed <span class="math inline">\(R\)</span>. If they were markedly different, we might ask whether our choice of distribution was appropriate.</p>
+<p>Our conclusions are based on a model of discrete density-independent population growth.</p>
+<ul>
+<li>what assumptions are we making and are they valid?</li>
+<li>Are our unrealistic assumptions perhaps nonetheless a good approximation of reality?</li>
+<li>what would you like to add next to make the model a better approximation?</li>
+</ul>
+</section>
+</section>
+<section id="f-environmental-noise" class="level2" data-number="4.5">
+<h2 data-number="4.5" class="anchored" data-anchor-id="f-environmental-noise"><span class="header-section-number">4.5</span> 1/<span class="math inline">\(f\)</span> environmental noise</h2>
+<p>Perhaps we can explain some of the variation in annual growth rates of sparrows to weather patterns in the sampling area (Darrtown, Ohio). In doing so, we might be assuming the <em>environmental stochasticity</em> is worth modeling which might allow us to separate demographic effects from environmental effects. That would give us a better model we might use for explanation and prediction.</p>
+<p>When we model or simulate a time series, we often find it essential to account for patterns that arise on different time scales and have different magnitudes. For instance, air temperature (and its consequences) varies diurnally, from day to day, week to week, and across seasons. We often refer to this as “one over f-noise” (<span class="math inline">\(1/f\)</span>-noise), that is, random variation of multiple overlapping asynchronous patterns of variation. This can be characterized with <em>spectral analysis</em> <span class="citation" data-cites="shumway2019tsd halley1996ee1">(<a href="references.html#ref-shumway2019tsd" role="doc-biblioref">Shumway and Stoffer 2019</a>; <a href="references.html#ref-halley1996ee1" role="doc-biblioref">Halley 1996</a>)</span>. Spectral analysis allows us to detect cyclic repeating patterns in strongly cyclic data, such as El Niño Southern Oscillations, small mammal population cycles, tree masting dynamics, disease outbreaks. In fact, nearly all environmental variability typically shows some degree of structure that is nonrandom.</p>
+<p>In addition to detecting the particular frequencies of some cycles, we can also describe multivariate emergent spectral patterns with reference to a color spectrum. When variation at all time scales is equally important, we refer to this as white noise, analogous to white light, which includes all visible frequencies. When lower frequencies are more important, we refer to this as red noise. This results from low-frequency long-wavelength patterns having greater amplitude than high-frequency, short-wavelength patterns. We refer to this as <em>reddened noise</em>.</p>
+<p>Environmental variables typically have a reddened color that we often call pink noise <span class="citation" data-cites="halley1996ee1">(<a href="references.html#ref-halley1996ee1" role="doc-biblioref">Halley 1996</a>)</span>.This type of environmental variation as <em>environmental color</em>, whether white, pink, brown, or even, in the other direction, blue.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb79"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb79-1"><a href="#cb79-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1</span>)</span>
+<span id="cb79-2"><a href="#cb79-2" aria-hidden="true" tabindex="-1"></a>time.series.r <span class="ot">&lt;-</span> <span class="fu">one_over_f</span>(<span class="at">gamma=</span><span class="dv">1</span>, <span class="at">N=</span><span class="dv">50</span>)</span>
+<span id="cb79-3"><a href="#cb79-3" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">50</span>, time.series.r, <span class="at">type=</span><span class="st">'l'</span>, <span class="at">main=</span><span class="st">"Pink noise"</span>)</span>
+<span id="cb79-4"><a href="#cb79-4" aria-hidden="true" tabindex="-1"></a>time.series.w <span class="ot">&lt;-</span> <span class="fu">one_over_f</span>(<span class="at">gamma=</span><span class="dv">0</span>, <span class="at">N=</span><span class="dv">50</span>)</span>
+<span id="cb79-5"><a href="#cb79-5" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">50</span>, time.series.w, <span class="at">type=</span><span class="st">'l'</span>, <span class="at">main=</span><span class="st">"White noise"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="03-Expo-growth_files/figure-html/colorex-1.png" class="img-fluid figure-img" style="width:67.0%"></p>
+<figcaption>Examples of reddened (left) and white (right) time series.</figcaption>
+</figure>
+</div>
+</div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="03-Expo-growth_files/figure-html/colorex-2.png" class="img-fluid figure-img" style="width:67.0%"></p>
+<figcaption>Examples of reddened (left) and white (right) time series.</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>Experimental studies of environmental variation require us to isolate different features of the variability while holding other features constant. For instance, we may want to hold the mean temperature constant but add different amounts of variation. We may want to hold the mean and the variance constant, but vary the spectral environment color. <em>Spectral mimicry</em> <span class="citation" data-cites="cohen1999">(<a href="references.html#ref-cohen1999" role="doc-biblioref">Cohen et al. 1999</a>)</span> is a technique to helps us do that. It takes a string of numbers and arranges them into a sequence whose spectral signature mimics a designated spectral pattern. This imbues the original numbers with a different spectral pattern. Thus, the two sequences retain exactly the same data and therefore the same means and variances, but differ only in their sequences and spectral properties.</p>
+<p>Below, we use spectral mimicry to simulate Song Sparrow population dynamics. We first investigate spectral mimicry by creating</p>
+<ul>
+<li>a string of uniform random numbers between [0,1],</li>
+<li>a template that has pink (slightly reddened) sequence,</li>
+<li>a rearrangement of the original string to match the spectral properties of the template.</li>
+</ul>
+<p>We then plot the three vectors, showing the original data, the reddened template, and then the data rearranged to approximate the template.</p>
+<div class="cell" data-outwidth="67%">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb80"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb80-1"><a href="#cb80-1" aria-hidden="true" tabindex="-1"></a>N <span class="ot">=</span> <span class="dv">50</span> <span class="co"># number of data points in one string</span></span>
+<span id="cb80-2"><a href="#cb80-2" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1</span>) <span class="co"># set the pseudorandomization seed</span></span>
+<span id="cb80-3"><a href="#cb80-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb80-4"><a href="#cb80-4" aria-hidden="true" tabindex="-1"></a><span class="do">## create uniform random numbers</span></span>
+<span id="cb80-5"><a href="#cb80-5" aria-hidden="true" tabindex="-1"></a>N.random <span class="ot">&lt;-</span> <span class="fu">runif</span>(N)</span>
+<span id="cb80-6"><a href="#cb80-6" aria-hidden="true" tabindex="-1"></a><span class="do">## Pink noise template</span></span>
+<span id="cb80-7"><a href="#cb80-7" aria-hidden="true" tabindex="-1"></a>one.over.f.template <span class="ot">&lt;-</span> <span class="fu">one_over_f</span>(<span class="at">gamma=</span><span class="dv">1</span>, <span class="at">N=</span>N)</span>
+<span id="cb80-8"><a href="#cb80-8" aria-hidden="true" tabindex="-1"></a><span class="do">## Rearrangement (mimicry)</span></span>
+<span id="cb80-9"><a href="#cb80-9" aria-hidden="true" tabindex="-1"></a>N.f <span class="ot">&lt;-</span> <span class="fu">spec_mimic</span>(N.random, one.over.f.template)</span>
+<span id="cb80-10"><a href="#cb80-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb80-11"><a href="#cb80-11" aria-hidden="true" tabindex="-1"></a><span class="do">## combine and plot</span></span>
+<span id="cb80-12"><a href="#cb80-12" aria-hidden="true" tabindex="-1"></a>series <span class="ot">&lt;-</span> <span class="fu">cbind</span>(N.random, one.over.f.template, N.f)</span>
+<span id="cb80-13"><a href="#cb80-13" aria-hidden="true" tabindex="-1"></a><span class="fu">matplot</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">50</span>, series, <span class="at">type=</span><span class="st">'l'</span>, </span>
+<span id="cb80-14"><a href="#cb80-14" aria-hidden="true" tabindex="-1"></a>        <span class="at">col=</span><span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">2</span>), <span class="at">lty=</span><span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">1</span>), <span class="at">lwd=</span><span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">2</span>))</span>
+<span id="cb80-15"><a href="#cb80-15" aria-hidden="true" tabindex="-1"></a><span class="fu">legend</span>(<span class="st">"bottomright"</span>, </span>
+<span id="cb80-16"><a href="#cb80-16" aria-hidden="true" tabindex="-1"></a>       <span class="at">legend=</span><span class="fu">colnames</span>(series), <span class="at">bty=</span><span class="st">'n'</span>, </span>
+<span id="cb80-17"><a href="#cb80-17" aria-hidden="true" tabindex="-1"></a>        <span class="at">col=</span><span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">2</span>), <span class="at">lty=</span><span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">1</span>), <span class="at">lwd=</span><span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">2</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div id="fig-specex" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-specex-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="03-Expo-growth_files/figure-html/fig-specex-1.png" class="img-fluid figure-img" width="672">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-specex-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;4.11: Example of spectral mimicry, showing the original random data points (solid black line), the template (‘one.over.f.template’, red dashed line), and the rearranged, reddened data points (solid red line).
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>In Fig. <a href="#fig-specex" class="quarto-xref">Figure&nbsp;<span>4.11</span></a>, the solid lines refer to the uniform data (black) and the reddened (red).</p>
+<section id="reddened-song-sparrow-growth" class="level3" data-number="4.5.1">
+<h3 data-number="4.5.1" class="anchored" data-anchor-id="reddened-song-sparrow-growth"><span class="header-section-number">4.5.1</span> Reddened Song Sparrow growth</h3>
+<p>Imagine that the Ohio (USA) environment of our Song Sparrows reveals <em>environmnetal stochasticity</em>, that is, random-like fluctuations that we do not understand. Next imagine that this environmental stochasticity affects Song Sparrow growth rate. If we want to simulate future sparrow population dynamics, we may want to mimic the type and magnitude of this underlying variation. We might do that by using our original annual growth data, but arranged in a reddened series.</p>
+<p>Let us first examine whether the sparrow growth rates show evidence of reddened population dynamics. We can use the <code>plot_f()</code> in <code>primer</code> to evaluate that. It plots the time series, and then the power spectra. It fits a line to the log(power) vs.&nbsp;log(frequency) and calculates a frequentist confidence interval.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb81"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb81-1"><a href="#cb81-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_f</span>(Count)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="03-Expo-growth_files/figure-html/plotf-1.png" class="img-fluid figure-img" width="672"></p>
+<figcaption>Sparrow population dynamics seems to show reddened flutuations. On the left, sparrow counts over time, and on the right, the log-log plot of the power spectrum (power vs.&nbsp;frequency). The frequentist confidence interval on the slope of the fitted line suggests that we shouldn’t rule out the possibility of a reddened series.</figcaption>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>     2.5 %     97.5 % 
+-2.4033940 -0.6872647 </code></pre>
+</div>
+</div>
+<p>Not surprisingly, we see the possibility of reddened population dynamics. You could also investigate the observed annual growth rates the same way.</p>
+<p>To resample the sparrow growth rates and also create a reddened sequences of them, we could do two things, depending on our goals. We could create a large number of different reddened templates and mimic them using only the observed data. Alternatively, we can draw annual growth rates at random, and match each random draw to the same reddened sequence.</p>
+<p>Below, we simply rearrange the observed annual growths into a single reddened sequence. For the reddened template, we will assume moderate reddening, or pink noise, for which <span class="math inline">\(\gamma = 1\)</span>.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb83"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb83-1"><a href="#cb83-1" aria-hidden="true" tabindex="-1"></a>R.n <span class="ot">=</span> <span class="fu">length</span>(obs.R) <span class="co"># number of observations</span></span>
+<span id="cb83-2"><a href="#cb83-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb83-3"><a href="#cb83-3" aria-hidden="true" tabindex="-1"></a><span class="do">## A random pink noise template</span></span>
+<span id="cb83-4"><a href="#cb83-4" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">2</span>)</span>
+<span id="cb83-5"><a href="#cb83-5" aria-hidden="true" tabindex="-1"></a>one.over.f.template <span class="ot">&lt;-</span> <span class="fu">one_over_f</span>(<span class="at">gamma=</span><span class="dv">1</span>, <span class="at">N=</span>R.n)</span>
+<span id="cb83-6"><a href="#cb83-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb83-7"><a href="#cb83-7" aria-hidden="true" tabindex="-1"></a><span class="do">## Rearrange the observed R</span></span>
+<span id="cb83-8"><a href="#cb83-8" aria-hidden="true" tabindex="-1"></a>R.f <span class="ot">&lt;-</span> <span class="fu">spec_mimic</span>(obs.R, one.over.f.template)</span>
+<span id="cb83-9"><a href="#cb83-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb83-10"><a href="#cb83-10" aria-hidden="true" tabindex="-1"></a><span class="do">## combine and plot</span></span>
+<span id="cb83-11"><a href="#cb83-11" aria-hidden="true" tabindex="-1"></a>series <span class="ot">&lt;-</span> <span class="fu">cbind</span>(obs.R, one.over.f.template, R.f)</span>
+<span id="cb83-12"><a href="#cb83-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb83-13"><a href="#cb83-13" aria-hidden="true" tabindex="-1"></a><span class="fu">matplot</span>(<span class="dv">1</span><span class="sc">:</span>R.n, series, <span class="at">type=</span><span class="st">'l'</span>, </span>
+<span id="cb83-14"><a href="#cb83-14" aria-hidden="true" tabindex="-1"></a>        <span class="at">col=</span><span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">2</span>), <span class="at">lty=</span><span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">1</span>), <span class="at">lwd=</span><span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">2</span>))</span>
+<span id="cb83-15"><a href="#cb83-15" aria-hidden="true" tabindex="-1"></a><span class="fu">legend</span>(<span class="st">"bottomright"</span>, </span>
+<span id="cb83-16"><a href="#cb83-16" aria-hidden="true" tabindex="-1"></a>       <span class="at">legend=</span><span class="fu">colnames</span>(series), <span class="at">bty=</span><span class="st">'n'</span>,</span>
+<span id="cb83-17"><a href="#cb83-17" aria-hidden="true" tabindex="-1"></a>        <span class="at">col=</span><span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">2</span>), <span class="at">lty=</span><span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">1</span>), <span class="at">lwd=</span><span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">2</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="03-Expo-growth_files/figure-html/Rred-1.png" class="img-fluid figure-img" width="672"></p>
+<figcaption>Original and rearranged annual growth rates.</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>Now we can project a simulated sparrow population</p>
+<div class="cell" data-outwidth="67%">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb84"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb84-1"><a href="#cb84-1" aria-hidden="true" tabindex="-1"></a>N.f <span class="ot">&lt;-</span> <span class="fu">numeric</span>( <span class="fu">length</span>(R.f) <span class="sc">+</span> <span class="dv">1</span> )</span>
+<span id="cb84-2"><a href="#cb84-2" aria-hidden="true" tabindex="-1"></a><span class="co"># give it an initial population size</span></span>
+<span id="cb84-3"><a href="#cb84-3" aria-hidden="true" tabindex="-1"></a>N.f[<span class="dv">1</span>] <span class="ot">&lt;-</span> <span class="dv">43</span></span>
+<span id="cb84-4"><a href="#cb84-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb84-5"><a href="#cb84-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Do the for-loop</span></span>
+<span id="cb84-6"><a href="#cb84-6" aria-hidden="true" tabindex="-1"></a>  <span class="co"># For each year...</span></span>
+<span id="cb84-7"><a href="#cb84-7" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span>( t <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(R.f) ) {</span>
+<span id="cb84-8"><a href="#cb84-8" aria-hidden="true" tabindex="-1"></a>    <span class="co"># project the population one time step</span></span>
+<span id="cb84-9"><a href="#cb84-9" aria-hidden="true" tabindex="-1"></a>      N.f[t<span class="sc">+</span><span class="dv">1</span>] <span class="ot">&lt;-</span>  N.f[t] <span class="sc">*</span> R.f[t]</span>
+<span id="cb84-10"><a href="#cb84-10" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb84-11"><a href="#cb84-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb84-12"><a href="#cb84-12" aria-hidden="true" tabindex="-1"></a><span class="do">## Graph N, and R</span></span>
+<span id="cb84-13"><a href="#cb84-13" aria-hidden="true" tabindex="-1"></a><span class="fu">layout</span>(<span class="fu">matrix</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>, <span class="at">nrow=</span><span class="dv">2</span>))</span>
+<span id="cb84-14"><a href="#cb84-14" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mar=</span><span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">4</span>,<span class="dv">1</span>,<span class="dv">1</span>))</span>
+<span id="cb84-15"><a href="#cb84-15" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(N.f), N.f, <span class="at">type=</span><span class="st">'l'</span>); <span class="fu">text</span>(<span class="dv">27</span>,<span class="dv">90</span>, <span class="st">"Pop. size"</span>)</span>
+<span id="cb84-16"><a href="#cb84-16" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(R.f), R.f, <span class="at">type=</span><span class="st">'l'</span>); <span class="fu">text</span>(<span class="dv">17</span>, <span class="dv">2</span>, <span class="st">"Randomized Pink Annual R"</span>)</span>
+<span id="cb84-17"><a href="#cb84-17" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">h=</span><span class="dv">1</span>, <span class="at">lty=</span><span class="dv">2</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="03-Expo-growth_files/figure-html/fdyn-1.png" class="img-fluid figure-img" width="672"></p>
+<figcaption>Example of a simulated sparrow projection using reddened annual growth rates.</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>Can you make predictions about how environmental noise might alter the risk of extinction?</p>
+</section>
+</section>
+<section id="in-fine" class="level2" data-number="4.6">
+<h2 data-number="4.6" class="anchored" data-anchor-id="in-fine"><span class="header-section-number">4.6</span> <em>In fine</em></h2>
+<p>In this chapter, we have explored the meaning of density-independent population growth. It is a statistically demonstrable phenomenon, wherein the per capita growth rate exhibits no relation with population density. It is a useful starting point for conceptualizing population growth. We derived discrete geometric and continuous exponential growth and have seen how they are related. We calculated doubling times. We have discussed the assumptions that different people might make regarding these growth models. We introduced a characteristic of environmental variability, <span class="math inline">\(1/f\)</span>-noise. We have used simulation to explore prediction and inference in a density-independent context. Our simulations included those with and without <span class="math inline">\(1/f\)</span>-noise.</p>
+
+
+<div id="refs" class="references csl-bib-body hanging-indent" role="list" style="display: none">
+<div id="ref-chaudhary_2019" class="csl-entry" role="listitem">
+Chaudhary, Vratika, and Madan K. Oli. 2019. <span>“A <span>Critical Appraisal</span> of <span>Population Viability Analysis</span>.”</span> <em>Conservation Biology</em> 34 (1): 26–40.
+</div>
+<div id="ref-cohen1999" class="csl-entry" role="listitem">
+Cohen, J E, C M Newman, A E Cohen, O L Petchey, and A Gonzalez. 1999. <span>“Spectral <span>Mimicry</span>: <span>A Method</span> of <span>Synthesizing Matching Time Series</span> with <span>Different</span> {\Vphantom}<span>F</span>\vphantom{}ourier <span>Spectra</span>.”</span> <em>Circuits, Systems and Signal Processing</em> 18: 431–42.
+</div>
+<div id="ref-halley1996ee1" class="csl-entry" role="listitem">
+Halley, J M. 1996. <span>“Ecology, <span>Evolution</span> and 1/f-<span>Noise</span>.”</span> <em>Trends in Ecology &amp; Evolution</em> 11: 33–37.
+</div>
+<div id="ref-hastings2011ssp" class="csl-entry" role="listitem">
+Hastings, A. 2011. <em>Single <span>Species Population Dynamics</span> and <span>Its Theoretical Underpinnings</span></em>. Edited by S. M. Scheiner and M. R. Willig. University of Chicago Press.
+</div>
+<div id="ref-shaffer1981mps" class="csl-entry" role="listitem">
+Shaffer, Mark L. 1981. <span>“Minimum <span>Population Sizes</span> for <span>Species Conservation</span>.”</span> <em>BioScience</em> 31 (2): 131–34. <a href="https://doi.org/10.2307/1308256">https://doi.org/10.2307/1308256</a>.
+</div>
+<div id="ref-shumway2019tsd" class="csl-entry" role="listitem">
+Shumway, Robert H., and David S. Stoffer. 2019. <em>Time <span>Series</span>: <span>A Data Analysis Approach</span></em>. CRC Press, Taylor &amp; Francis Group, Boca Raton, FL.
+</div>
+</div>
+</section>
+
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./02-optimal_foraging.html" class="pagination-link" aria-label="Optimal Foraging">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Optimal Foraging</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./04-DIDemography.html" class="pagination-link" aria-label="Density-independent Demography">
+        <span class="nav-page-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Density-independent Demography</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

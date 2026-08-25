@@ -2,44 +2,40 @@ project:
   type: book
   pre-render: scripts/build_refs.R
 
+execute:
+  freeze: auto   # only re-run a chapter's R code when that chapter's .qmd changes
+
 book:
   title: "Primer of Ecology"
   author: "Hank Stevens"
   chapters:
     - index.qmd
     - 01-theory.qmd
+    - 02-optimal_foraging.qmd
+    - 03-Expo-growth.qmd
+    - 04-DIDemography.qmd
+    - 05-DDgrowth.qmd
+    - 06-space.qmd
+    - 07-direct_comp_mut.qmd
+    - 07b-compcolstorage.qmd
+    - 08-consumerResource.qmd
+    - 09-host_parasitoid.qmd
+    - 10-disease.qmd
+    - 11-consumer-resource-comp-mut.qmd
+    - 13-simplefoodwebs.qmd
+    - 14-diversity.qmd
     - references.qmd
 
 format:
   html:
     tufte: true
     link-citations: true    # correct boolean syntax
+    toc: false    # hides the auto-generated "on this page" chapter-contents
+                  # panel that Quarto book HTML shows in the right margin
     grid:
       margin-width: 350px
     code-overflow: wrap
-    # Margin placement for HTML only: the tufte PDF class (below) already
-    # handles margin notes/figures natively. Also applying these to the
-    # PDF format loads Quarto's `sidenotes` package, which pulls in its
-    # own marginnote.sty and collides with tufte's built-in \marginnote,
-    # aborting the lualatex build ("Command \marginnote already defined").
-    # Keep these scoped to html.
-    reference-location: margin
-    citation-location: margin
-    figure-location: margin
   pdf:
-    documentclass: tufte-book  # tufte-handout is article-based (no \chapter);
-                               # tufte-book supports the book/multi-chapter
-                               # structure this Quarto project uses.
-    classoption: nols  # works around a known tufte-latex bug where its
-                        # letterspacing code crashes \maketitle with
-                        # "Argument of \MakeTextUppercase has an extra }".
-                        # Trade-off: running headers on later pages render
-                        # in lowercase instead of letterspaced caps --
-                        # cosmetic only.
-    keep-tex: true  # TEMP: keeps index.tex/.log around after a successful
-                     # render so we can inspect exactly what LaTeX got
-                     # generated for chapter 1. Safe to remove once the
-                     # monospace issue is diagnosed.
     fontsize: 10pt
     mainfont: "Times New Roman"
     sansfont: "Times New Roman"
@@ -54,6 +50,22 @@ format:
             breakanywhere=true,
             commandchars=\\\{\}
           }
+
+# Margin placement for BOTH html and pdf. Deliberately NOT combined with
+# documentclass: tufte-book: that class defines its own \marginnote and
+# collides with the `sidenotes` package Quarto loads to implement
+# column: margin / these -location settings for PDF ("Command
+# \marginnote already defined"). Quarto's own tests use the plain
+# default PDF class with exactly this setup for that reason -- see
+# quarto-dev/quarto-cli tests/docs/page-layout/tufte-pdf.qmd.
+reference-location: margin
+# citation-location: margin  -- disabled: crashes the current Quarto 1.10.x
+# pre-release ("attempt to call a nil value (global
+# 'marginCitePlaceholderInlineWithProtection')") in main.lua. Looks like an
+# upstream bug in that build's margin-citation filter, not a content issue.
+# Re-enable once a newer Quarto build fixes it. Citations fall back to
+# normal (non-margin) placement in the meantime.
+figure-location: margin
 
 warning: false
 

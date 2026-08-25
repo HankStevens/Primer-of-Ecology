@@ -1,0 +1,1203 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.11.1">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>2&nbsp; Theory in Ecology – Primer of Ecology</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: 1.5em;}
+div.column{flex: auto;}
+@media screen {
+div.columns{gap: min(4vw, 1.5em);}
+div.column{overflow-x: auto;}
+}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./02-optimal_foraging.html" rel="next">
+<link href="./index.html" rel="prev">
+<script src="site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-d5b4e69c7e37b49c6591bcc5116dd748.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap-5427321e8325850a4c7c83abd15fbf15.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-chtml.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+</head>
+
+<body class="nav-sidebar floating slimcontent quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./01-theory.html"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Theory in Ecology</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">Primer of Ecology</a> 
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Primer of Ecology using R</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./01-theory.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Theory in Ecology</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./02-optimal_foraging.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Optimal Foraging</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./03-Expo-growth.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Simple density-independent growth</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./04-DIDemography.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Density-independent Demography</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./05-DDgrowth.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Density-dependent growth</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./06-space.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Populations in Space</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./07-direct_comp_mut.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Direct competition and mutualism</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./07b-compcolstorage.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Coexistence via competition, dispersal, and storage</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./08-consumerResource.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Consumer-resource Interactions</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./09-host_parasitoid.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Host-parasitoid relations</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./10-disease.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Disease</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./11-consumer-resource-comp-mut.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Consumer-resource Competition and Mutualisms</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./13-simplefoodwebs.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Food webs and other networks</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./14-diversity.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Diversity</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./references.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">References</span></span></a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
+    </div>
+<!-- main -->
+<main class="content page-columns page-full" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Theory in Ecology</span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dagitty)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(primer)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>In this chapter, we introduce a perspective on ecological theory, and provide two examples of efficient theory, metabolic scaling and maximum entropy theory.</p>
+<p>Theory is really, really important (<a href="#fig-theorydatanathist" class="quarto-xref">Figure&nbsp;<span>2.1</span></a>). Without theory of some sort to guide us, we are merely counting pebbles in a quarry. Good theory may be conceptual or mathematical, and helps us focus more clearly and in a less ambiguous manner on the systems we study. In this book, we explore mathematical models that provide special cases of theory.</p>
+<div class="cell page-columns page-full" data-fig_width="2">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>g <span class="ot">&lt;-</span> <span class="fu">dagitty</span>(</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  <span class="st">"dag{</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="st">  Theory -&gt; Natural_History -&gt; Data;</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="st">  Data -&gt; Theory;</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="st">  Theory &lt;- Natural_History &lt;- Data;</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="st">  Data &lt;- Theory</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="st">  }"</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="fu">coordinates</span>(g) <span class="ot">&lt;-</span> <span class="fu">list</span>(</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">x=</span><span class="fu">c</span>(<span class="at">Theory=</span><span class="dv">1</span>, <span class="at">Natural_History=</span><span class="dv">2</span>, <span class="at">Data =</span> <span class="dv">0</span>),</span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>  <span class="at">y=</span><span class="fu">c</span>(<span class="at">Theory=</span><span class="dv">0</span>, <span class="at">Natural_History=</span><span class="fu">sqrt</span>(<span class="dv">3</span>), <span class="at">Data =</span> <span class="fu">sqrt</span>(<span class="dv">3</span>))</span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(g)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+
+<div class="no-row-height column-margin column-container"><div class="cell-output-display">
+<div id="fig-theorydatanathist" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-theorydatanathist-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="01-theory_files/figure-html/fig-theorydatanathist-1.png" class="img-fluid figure-img" width="672">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-theorydatanathist-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2.1: Ecology and evolutionary biology require all of these to advance.
+</figcaption>
+</figure>
+</div>
+</div></div></div>
+<p><em>Scientific theory</em> is a body of knowledge that provides an organized and mechanistic view of how the world works <span class="citation" data-cites="scheiner2010cfb">(<a href="references.html#ref-scheiner2010cfb" role="doc-biblioref">Scheiner 2010</a>)</span>. Theories concerning gravity, general relativity, and evolution by natural selection provide structured ways of connecting observations, patterns, and processes that provide insight into why the world is the way it is. This stands in stark contrast to the colloquial use of <em>theory</em> that implies a lack of knowledge, as when someone says “oh, that’s just a theory”, referring to a guess without much evidence. Scientific theory is a set of explanations whose validity has been tested repeatedly by experiments and new data.</p>
+<section id="examples-of-theories" class="level2 page-columns page-full" data-number="2.1">
+<h2 data-number="2.1" class="anchored" data-anchor-id="examples-of-theories"><span class="header-section-number">2.1</span> Examples of theories</h2>
+<p>Ecology has lots of theories, of all different types. Below I discuss some which may be prevalent, important, useful, or some combination.</p>
+<section id="hierarchy-theory" class="level3" data-number="2.1.1">
+<h3 data-number="2.1.1" class="anchored" data-anchor-id="hierarchy-theory"><span class="header-section-number">2.1.1</span> Hierarchy theory</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="figs/Rose_et_al_2017_fig_1.png" class="img-fluid figure-img" style="width:80.0%"></p>
+<figcaption>A hierarchical perspective called Macrosystems Theory (Rose et al. (2017))</figcaption>
+</figure>
+</div>
+<p>An early and persistent organizing schema in ecology is based on <em>hierarchy theory</em> <span class="citation" data-cites="oneill1986 rose2017hff">(<a href="references.html#ref-oneill1986" role="doc-biblioref"><span class="nocase">O’Neill et al.</span> 1986</a>; <a href="references.html#ref-rose2017hff" role="doc-biblioref">Rose et al. 2017</a>, and references therein)</span>. It posits that ecological systems are structured <em>hierachically</em>, such that each entity comprises subunits. For instance, an entity such as a population of big bluestem grass (<em>Andropogon gerardii</em>) is part of a larger ecology community of many species. The population of big bluestem comprises subpopulations separated in space, a subpopulation comprises separate individuals, that each individual comprises multiple ramets and a set of organ systems and tissues, which comprise different cell types. This theory posits that each entity gives rise to emergent properties to the hierarchical level above it, and influences processes within each smaller sub-entity in the hierachical level below it. As a disciplinary organizing principle, this approach structures nearly all of the ecology curriculum.</p>
+<p>Hierarchy theory gets more complicated when the levels of a hierarchy start to include fundamentally different types of entities. The big bluestem hierarchy above included only biotic components–a individual is part of a population which is part of a community of individuals of multiple species, and is made up of organ systems and tissues. Ecology, however, includes both the biotic and the abiotic parts of environments. An ecosystem includes a community of species, but also the nutrients, water, light, and other abiotic components, along with the spatial arrangement of all of these things.</p>
+<p>Different hierarchies are useful for different questions. An individual organism can play very different roles in different hierarchies. Consider and individual bunch grass. To understand how a population evolves, we need to count individuals within a population, because evolutionary fitness is tracked by the number of independent reproductive units. In contrast, to understand competitive interactions, it may be much more important to weigh the biomass of groups of individuals in a population, because biomass is more closely related of resource uptake.</p>
+</section>
+<section id="a-general-theory-of-ecology" class="level3 page-columns page-full" data-number="2.1.2">
+<h3 data-number="2.1.2" class="anchored" data-anchor-id="a-general-theory-of-ecology"><span class="header-section-number">2.1.2</span> A general theory of ecology</h3>
+<p>Good scientific theories exist within a hierarchy of disciplinary knowledge <span class="citation" data-cites="scheiner2011">(<a href="references.html#ref-scheiner2011" role="doc-biblioref">Scheiner and Willig 2011</a>)</span>. They explain phenomena within a <em>domain</em> of knowledge which is organized around <em>principles</em> and <em>assumptions</em>. Scheiner and Willig posit a theory of biology that explains phenomena relating to the “diversity and complexity of living systems”. One of the ten principles on which this theory depends is that “the cell is the fundamental unit of life”. Subsumed within their theory of biology is the theory of cells whose domain is “cells and the causes of their structure, function, and variation.” This theory in turn is based on principles and has theories to organize our understanding of cells and what cells do.</p>
+<p><em>Models</em> are specific and explicit manifestations of more general theories. In this book, we focus on popular mathematical models that are specific manifestions of theories of ecology.</p>
+<p><span class="citation" data-cites="scheiner2011">Scheiner and Willig (<a href="references.html#ref-scheiner2011" role="doc-biblioref">2011</a>)</span> propose a theory of ecology, some of which we cover in this book. Here is part of this theory:</p>
+<p><strong>The General Theory of Ecology</strong></p>
+<p><strong>Domain:</strong> The spatial and temporal pattern of the distribution and abundance of organisms, including causes and consequences.</p>
+<p><strong>Principles:</strong></p>
+<ol type="1">
+<li>Organisms are distributed in space and time in a heterogeneous manner.</li>
+<li>Organisms interact with their abiotic and biotic environments.</li>
+<li>Variation in the characteristics of organisms results in heterogeneity of ecological patterns and processes.</li>
+<li>The distributions of organisms and their interactions depend on contingencies.</li>
+<li>Environmental conditions as perceived by organisms are heterogeneous in space and time.</li>
+<li>Resources as perceived by organisms are finite and heterogeneous in space and time.</li>
+<li>Birth and death rates are a consequence of interactions with the abiotic and biotic environment.</li>
+<li>The ecological properties of species are the result of evolution.</li>
+</ol>
+<p>These principles constitute what we know is true about ecological systems. Some of these principles provide the focus for a single chapter while other principles apply broadly to many chapters in this book.</p>
+<p>Here is my own perspective on a general theory of ecology:</p>
+<p><em>Domain:</em> The house of life<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>: its constituent entities, causes, and consequences.</p>
+<div class="no-row-height column-margin column-container"><div id="fn1"><p><sup>1</sup>&nbsp;“ecology” derives from the Greek “oikos” which means the rules of the house</p></div></div><p><em>Principles:</em></p>
+<ol type="1">
+<li>Entities<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a> are open systems with inputs and outputs.</li>
+<li>Entities have internal complexity.</li>
+<li>Entities include self-replicating components (living elements).</li>
+<li>Entities interact via inputs, outputs, and behavior.</li>
+<li>Rates of change, including inputs and outputs, are influenced directly by physical factors: space, temperature, and concentration.</li>
+</ol>
+<div class="no-row-height column-margin column-container"><div id="fn2"><p><sup>2</sup>&nbsp;An entity may be an ecosystem, a community, a population, an individual, or some other system with operationally defined boundaries.</p></div></div><p>You will see elements of these principles throughout this book as well.</p>
+</section>
+<section id="efficient-theory" class="level3 page-columns page-full" data-number="2.1.3">
+<h3 data-number="2.1.3" class="anchored" data-anchor-id="efficient-theory"><span class="header-section-number">2.1.3</span> Efficient theory</h3>
+<p><span class="citation" data-cites="marquet2014">Marquet et al. (<a href="references.html#ref-marquet2014" role="doc-biblioref">2014</a>)</span> argue that the best theories are those which are <em>efficient</em>. Such theories tend to be <em>based on first principles</em>, which are observations and laws that are fundamental assumptions in a scientific domain. In biology, such principles can include the laws of thermodynamics, and mathematical properties such as the central limit theorem. Theories built upon first principles are thus well-grounded in reality as we understand it and lead logically to refinements. Marquet and his colleagues also claim that efficient theory is <em>expressed in mathematics</em>. Mathematics is a universal language that is unamibiguous. It forces us to be as clear as possible about what we mean when we state a theory.<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a> Last, efficient theories are those that make a <em>large number of predictions using only a small number of free parameters</em>.<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a> Examples of efficient theories we cover in this book include metabolic scaling, exponential growth, density dependence, and ecological neutral theory.</p>
+<div class="no-row-height column-margin column-container"><div id="fn3"><p><sup>3</sup>&nbsp;<span class="math inline">\(E=mc^2\)</span> - need I say more?</p></div><div id="fn4"><p><sup>4</sup>&nbsp;Variables are quantities we measure and which change through time (e.g., population size). <em>Parameters</em> are (usually) fixed constants that govern the rates of change of variables (e.g., per capita birth rate).</p></div></div><p>Marquet et al.&nbsp;and Scheiner and Willig emphasize slightly different features of the definition of “theory”. Scheiner and Willig emphasize relatively broad ideas that are well-supported by experiments and repeated observation. Marquet and colleagues tend to mean something fairly specific and narrow, typically something that can be expressed mathematically. Scheiner and Willig might refer to such theory as constitutive theory or even simply a model.</p>
+<p>Next, I describe the Metabolic Theory of Ecology. This theory is based on first principles, and its central tenets are expressed mathematically. It’s core equation has a very small number of free parameters (fitted constants) and makes a very large number of testable predictions. Parts of this theory are supported by a very large number of observations. It fits everyone’s definition of theory.</p>
+</section>
+</section>
+<section id="metabolic_scaling" class="level2 page-columns page-full" data-number="2.2">
+<h2 data-number="2.2" class="anchored" data-anchor-id="metabolic_scaling"><span class="header-section-number">2.2</span> An example: Metabolic Theory of Ecology</h2>
+<p>Metabolic rate is central to how rapidly individuals forage for, consume and use resources, reproduce and die. The <em>metabolic theory of ecology</em> <span class="citation" data-cites="brown2004mte">(<a href="references.html#ref-brown2004mte" role="doc-biblioref">Brown et al. 2004</a>)</span> is a well-supported body of knowledge about the underlying mechanisms, and the resulting profound and wide-ranging consequences for populations and ecosystems.</p>
+<p>Body size and temperature are fundamental properties of organisms and the environment. The study of how body shape and body processes scale with body size is <em>allometry</em>. Because body size affects metabolic rate, body size indirectly helps determine population growth rates and how species interact with each other. Temperature affects how molecules vigorously molecules vibrate and move, and so increasing temperature tends to speed up chemical reactions. As metabolism is really just a complex network of biochemical reactions, temperature influences metabolic rate.</p>
+<p>The core of this theory is expressed in a simple mathematical equation that describes how body size and temperature govern metabolic rate.</p>
+<section id="body-size-dependence" class="level3 page-columns page-full" data-number="2.2.1">
+<h3 data-number="2.2.1" class="anchored" data-anchor-id="body-size-dependence"><span class="header-section-number">2.2.1</span> Body-size dependence</h3>
+<p>There is a profoundly simple and general rule describing the effect of interspecific variation in body size on metabolism.<a href="#fn5" class="footnote-ref" id="fnref5" role="doc-noteref"><sup>5</sup></a> This biological law is referred to as the Kleiber law <span class="citation" data-cites="kleiber1932">(<a href="references.html#ref-kleiber1932" role="doc-biblioref">Kleiber 1932</a>)</span>, or <em>quarter power scaling</em> <span class="citation" data-cites="brown2004mte">(<a href="references.html#ref-brown2004mte" role="doc-biblioref">Brown et al. 2004</a>)</span>. When we compare the basal (i.e. resting) metabolic rates of different species, across a wide range of body sizes spanning many orders of magnitude, we find that</p>
+<div class="no-row-height column-margin column-container"><div id="fn5"><p><sup>5</sup>&nbsp;Metabolic rate may be measured by variables tied directly to metabolism, such as the rate of oxygen or energy consumption, or CO<span class="math inline">\(_2\)</span> production.</p></div></div><p><em>whole-organism resting metabolic rate increases with organism mass raised to the three-quarter power</em>, or,</p>
+<p><span class="math display">\[
+B = aM^{z} \quad;\quad z = 3/4
+\]</span></p>
+<p>In this equation, <span class="math inline">\(B\)</span> is basal, or resting, metabolic rate, <span class="math inline">\(M\)</span> is body mass, <span class="math inline">\(a\)</span> is a proportionality constant, and <span class="math inline">\(z\)</span> is the <em>power law scaling coefficient</em>. The proportionality constant <span class="math inline">\(a\)</span> varies depending on the type of organism such as arthropods, fish, or mammals. Plants scale in the same manner <span class="citation" data-cites="niklas2001isr">(<a href="references.html#ref-niklas2001isr" role="doc-biblioref">Niklas and Enquist 2001</a>)</span>, although size or mass is a little trickier to measure. The scaling coefficient, <span class="math inline">\(z\)</span>, is the seemingly magical constant that many have argued does not vary substantially among different types of organisms.</p>
+<p>Ecologists typically describe metabolism-mass relations and other power law behavior using logarithmic scales. When we do that, power law relations become linear. Using our rules for exponents and logarithms, metabolic scaling becomes <span class="math display">\[ \log B = \log a + z\log M\]</span> so that <span class="math inline">\(\log B\)</span> increases linearly with <span class="math inline">\(\log M\)</span> with a slope of <span class="math inline">\(3/4\)</span>. Our brains can process and compare linear relations much more easily than curvilinear ones.</p>
+<p>Here we plot the curvilinear relation in R using <code>curve()</code> in the <code>graphics</code> package of R that is included in the base installation as one of the core packages. The function <code>curve()</code> can plot any curve that be expressed as a function of <code>x</code>. Below, we draw a curve of a dotted 1:1 line for comparison, and then <em>add</em> the power function <span class="math inline">\(x^{3/4}\)</span>.</p>
+<div class="cell page-columns page-full">
+
+<div class="no-row-height column-margin column-container"><div class="cell-output-display">
+<div id="fig-MTE34" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-MTE34-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="01-theory_files/figure-html/fig-MTE34-1.png" class="img-fluid figure-img" width="672">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-MTE34-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2.2: Metabolic rate increases predictably with species body sizes.
+</figcaption>
+</figure>
+</div>
+</div></div></div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="do">## using curve, let your variable be 'x'.</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">curve</span>(<span class="dv">1</span><span class="sc">*</span>x, <span class="at">from =</span> .<span class="dv">01</span>, <span class="at">to=</span><span class="dv">100</span>, <span class="at">ylab =</span> <span class="st">"Metabolic rate (B)"</span>,</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>      <span class="at">xlab=</span><span class="st">"Body mass (M)"</span>, <span class="at">lty=</span><span class="dv">3</span>)</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="fu">curve</span>(x<span class="sc">^</span>(<span class="dv">3</span><span class="sc">/</span><span class="dv">4</span>), <span class="at">from =</span> .<span class="dv">01</span>, <span class="at">to =</span> <span class="dv">100</span>, <span class="at">add=</span><span class="cn">TRUE</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>To help us grasp the implications of this, let’s consider <em>mass-specific</em> metabolic rates. “Mass-specific” means on a per-gram basis.<a href="#fn6" class="footnote-ref" id="fnref6" role="doc-noteref"><sup>6</sup></a> Mass-specific metabolic rate is basal metabolic rate of an individual divided by its mass, or <span class="math inline">\(B/M\)</span>.</p>
+<div class="no-row-height column-margin column-container"><div id="fn6"><p><sup>6</sup>&nbsp;With plants, we often measure something called “specific leaf area”, SLA, which is the two dimensional area of a leaf divided by its mass.</p></div></div><p>The mass-specific metabolic rate allows us to compare directly, for example, the metabolic rate of a cell in a shrew vs.&nbsp;a cell in an elephant. Which cell is burning fuel faster?</p>
+<p>We can estimate this from the above metabolic scaling principle and the using rules exponents <span class="math display">\[ \frac{B}{M} = a \frac{M^z}{M^1} = a M^{z-1} = aM^{-1/4}\]</span> From this, we now have the rule that</p>
+<p><em>mass-specific metabolic rate declines with organisms mass raised to the negative one quater power</em></p>
+<div class="cell page-columns page-full">
+
+<div class="no-row-height column-margin column-container"><div class="cell-output-display">
+<div id="fig-MTE-MS" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-MTE-MS-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="01-theory_files/figure-html/fig-MTE-MS-1.png" class="img-fluid figure-img" width="672">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-MTE-MS-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2.3: Mass-specific metabolic rate decreases predictably with species body sizes.
+</figcaption>
+</figure>
+</div>
+</div></div></div>
+<p>Over the years, there has been heated debate about (i) the precise value of the scaling coefficient <span class="math inline">\(z\)</span>, and (ii) the underlying mechanism. Early arguments suggested that <span class="math inline">\(z \approx 2/3\)</span> because the rate heat dissipation scales with the amount surface area. Why <span class="math inline">\(2/3\)</span>?</p>
+<p>Let’s envision the volume of an organism having three linear dimensions, so the volume scales to the cube of linear dimensions, while the surface area scales to the square of these linear dimensions,<a href="#fn7" class="footnote-ref" id="fnref7" role="doc-noteref"><sup>7</sup></a> <span class="math display">\[V \propto L^3\]</span> <span class="math display">\[A \propto L^2\]</span> The early explanation was that metabolic rate, <span class="math inline">\(B\)</span>, scales linearly with area, <span class="math display">\[B \propto A^1 \propto L^2\]</span>. With substitution we get, <span class="math display">\[L^2 \propto V^z \propto (L^3)^z\]</span> implying that the exponents <span class="math inline">\(2 = 3z\)</span> or <span class="math inline">\(z=2/3\)</span>, so we get, <span class="math display">\[B=V^{2/3}\]</span>, and, for the most part, mass scales linearly with volume for mammals or any other such group.</p>
+<div class="no-row-height column-margin column-container"><div id="fn7"><p><sup>7</sup>&nbsp;A linear relation is one in which <span class="math inline">\(y\)</span> is proportional to <span class="math inline">\(x\)</span>, or <span class="math inline">\(y \propto x\)</span>.</p></div></div><p>This early theory was because it started with first principles (heat dissipation and geometry) and resulted in the prediction of a single parameter. It could then be used to make predictions about how metabolic rate scales with body mass. Metabolic rate governs a huge amount of biology and ecology, including resource consumption rates, lifespan, and maximum population growth rates. Therefore, this theory and this model could be powerful tools for understanding the world and making testable predictions.</p>
+<p>The above model is good because it could be tested. That is what has been done, and scientists found that there was a consistent mismatch between observations and the theory. Investigators showed that the value of the exponent appeared closer to 3/4 raher than 2/3. In the 1990s, a group including Jim Brown and Geoffrey West <span class="citation" data-cites="west1997gmo">(<a href="references.html#ref-west1997gmo" role="doc-biblioref">West et al. 1997</a>)</span> proposed an underlying mechanism that explained why it should be 3/4. They assumed that organisms must</p>
+<ul>
+<li>distribute resources from a single source through a branching, fractal-like, space-filling network to all parts of the body,</li>
+<li>the size of the smallest branch ( a capillary) was the same for organisms of all sizes.</li>
+<li>the energy required to distribute the resources must be minimized, that less energy-efficient designs would be lost through natural selection.</li>
+</ul>
+<p>The prediction that resulted from these assumptions was that the exponent would be 3/4. This theory and model begin with different first principles and makes a different prediction.</p>
+<p>Soon Jayanth Banavar and his colleagues offered an alternative <span class="citation" data-cites="banavar1999sfe banavar2002mus">(<a href="references.html#ref-banavar1999sfe" role="doc-biblioref"><span class="nocase">Banavar et al.</span> 1999</a>; <a href="references.html#ref-banavar2002mus" role="doc-biblioref">Banavar et al. 2002</a>)</span>, arguing that the assumption of the fractal-like network was not correct, and in any event, was not necessary and did not apply to all organisms. They proposed different theory with less restrictive assumptions and found nonetheless that the exponent was also predicted to be 3/4.</p>
+<p>At the base of all these arguments is the geometry of the resource distribution system. All organisms take in limiting resources and have to distribute those resources to each part of each cell in the body. The key point is that <em>the larger the organism, the greater the portion of the resources are in transit at any instant in time</em>. This leads to an increasingly inefficient system, in which the metabolism of larger organisms has to run more slowly per unit resource:</p>
+<p><em>Larger organisms can process more resources per unit time (</em><span class="math inline">\(B=aM^{3/4}\)</span>), but do so less and less efficiently (<span class="math inline">\(\frac{B}{M}=aM^{-1/4}\)</span>) due to resources in transport.</p>
+<p>Banavar, Brown and others eventually collaborated to address quarter power scaling in animals in particular which led to additional novel predictions <span class="citation" data-cites="banavar2010gbq">(<a href="references.html#ref-banavar2010gbq" role="doc-biblioref">Banavar et al. 2010</a>)</span>.</p>
+<p>This theory remains a fertile and active area of research <span class="citation" data-cites="glazier2018">(<a href="references.html#ref-glazier2018" role="doc-biblioref">Glazier 2018</a>)</span>. The interested reader should be careful to distinguish between patterns observed across many species of very different sizes, versus patterns observed in a single species with individuals of different sizes versus other types of patterns. Subtly different patterns may be driven be very different mechanisms.</p>
+</section>
+<section id="temperature-dependence" class="level3 page-columns page-full" data-number="2.2.2">
+<h3 data-number="2.2.2" class="anchored" data-anchor-id="temperature-dependence"><span class="header-section-number">2.2.2</span> Temperature dependence</h3>
+<p>In addition to body size, temperature plays the other key role in regulating metabolic rate. The Arrhenius equation connects the macroscopic property of temperature to the kinetic energy of molecules and the rates they govern. Metabolic rate is proportional to these rate determining processes, <span class="math display">\[B  = a e^{\frac{-E_a}{kT}}\]</span> where <span class="math inline">\(a\)</span> is just a constant, <span class="math inline">\(e\)</span> is the exponential, <span class="math inline">\(E_a\)</span> is the average activation energy of rate-limiting enzymes (units, eV), <span class="math inline">\(k\)</span> is Boltzmann’s constant (units eV<span class="math inline">\(\,\)</span>K<span class="math inline">\(^{-1}\)</span>), and <span class="math inline">\(T\)</span> (units deg K). Bolztmann’s constant (<span class="math inline">\(\backsim 8.6 \times 10^-5\)</span><span class="math inline">\(\,\)</span>eV<span class="math inline">\(\,\)</span>K<span class="math inline">\(^{-1}\)</span>) converts the macroscopic property of temperature to kinetic energy of molecules.</p>
+<p>Individual biochemical reactions combine to determine basal metabolic rate, so <span class="citation" data-cites="gillooly2000">Gillooly (<a href="references.html#ref-gillooly2000" role="doc-biblioref">2000</a>)</span> have taken this as a foundation for the metabolic theory of ecology <span class="citation" data-cites="brown2004mte">(<a href="references.html#ref-brown2004mte" role="doc-biblioref">Brown et al. 2004</a>)</span>. In 2000, they suggested that the average activation energy is approximately <span class="math inline">\(E_a = 0.23\,\)</span>eV . Subsequent work has described this as “temperature sensitivity”, where larger numbers imply that organisms respond more strongly to temperature variation.</p>
+<p>The Arrhenius equation is a little more complicated that a simple power law, but not too much. Over the range of biologically relevant temperatures, it is dominated by a largely exponential increase in metabolic rate with increasing temperature (Fig. <a href="#fig-arrh" class="quarto-xref">Figure&nbsp;<span>2.4</span></a>).</p>
+<div class="cell page-columns page-full">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># with base R</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="co"># base R: curve(10^4*exp(-0.23/(8.5 * 10^-5 *x)), 276, 316), ylab="B", xlab='T')</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="co"># or ggplot2</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="co"># the function, with default parameter values</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>eq.t <span class="ot">&lt;-</span> <span class="cf">function</span>(t,<span class="at">a=</span><span class="dv">10</span><span class="sc">^</span><span class="dv">4</span>,<span class="at">E=</span><span class="fl">0.23</span>,<span class="at">k=</span><span class="fl">8.6</span> <span class="sc">*</span> <span class="dv">10</span><span class="sc">^-</span><span class="dv">5</span>){a<span class="sc">*</span><span class="fu">exp</span>(<span class="sc">-</span>E<span class="sc">/</span>(k<span class="sc">*</span>t))}</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="co"># the data used in our function</span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>temps <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">t=</span><span class="dv">276</span><span class="sc">:</span><span class="dv">316</span>)</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span>temps, <span class="fu">aes</span>(<span class="at">x=</span>t)) <span class="sc">+</span> </span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a><span class="co"># set the basic properties of the plot</span></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_function</span>(<span class="at">fun=</span>eq.t, <span class="at">geom=</span><span class="st">"line"</span>) <span class="sc">+</span> </span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a><span class="co"># set the function to plot</span></span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">"Temperature (K)"</span>) <span class="sc">+</span> <span class="fu">ylab</span>(<span class="st">"Metabolic rate (B)"</span>)  </span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a><span class="co"># add labels</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+
+<div class="no-row-height column-margin column-container"><div class="cell-output-display">
+<div id="fig-arrh" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-arrh-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="01-theory_files/figure-html/fig-arrh-1.png" class="img-fluid figure-img" width="672">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-arrh-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2.4: The effect of body temperature on ectothermic metabolic rates can be approximated with the Arrhenius function, <span class="math inline">\(B = a e^{-E_a/(kT)}\)</span>. Here <span class="math inline">\(a = 10^4\)</span>, and <span class="math inline">\(E_a = 0.23\)</span>. It is similar in shape to a power law with <span class="math inline">\(z &gt; 1\)</span>, over the range of biologically relevant temperatures.
+</figcaption>
+</figure>
+</div>
+</div></div></div>
+<p>When we linearize the relation between metabolic rate and temperature, we get <span class="math display">\[
+\begin{aligned}
+B &amp;= a e^{\frac{-E_a}{kT}}\\
+\log(B) &amp;= \log{a} - E_a\frac{1}{kT}\\
+\end{aligned}
+\]</span> where the dependent variable is <span class="math inline">\(1/(kT)\)</span>, <span class="math inline">\(-E_a\)</span> is the slope, and <span class="math inline">\(\log a\)</span> is the intercept. Thus, the negative slope of this relation describes theoretical prediction for the effect of temperature on metabolic rate.</p>
+<p><strong>So, there you have it.</strong> The metabolic theory ecology is the algebraic product of body size- and temperature-dependence: <span class="math display">\[B = a M^{3/4} e^{\frac{-E_a}{kT}}\]</span> This theory makes quantitative predictions regarding all kinds of ecology phenomena <span class="citation" data-cites="brown2004mte">(<a href="references.html#ref-brown2004mte" role="doc-biblioref">Brown et al. 2004</a>)</span>, including</p>
+<ul>
+<li>home range size</li>
+<li>population growth</li>
+<li>population size</li>
+<li>resource uptake</li>
+<li>predation and other species interactions, and</li>
+<li>ecosystem cycling.</li>
+</ul>
+<p>Note that these relations are based on first principles of geometry and thermodynamics, and that they depend on only a small number of parameters (<span class="math inline">\(a\)</span>, <span class="math inline">\(-E_a\)</span>, and perhaps <span class="math inline">\(z=3/4\)</span>), and makes a tremendous number of predictions. Therefore, <span class="citation" data-cites="marquet2014">Marquet et al. (<a href="references.html#ref-marquet2014" role="doc-biblioref">2014</a>)</span> propose that this is “good” theory, and very <em>efficient</em>.</p>
+</section>
+</section>
+<section id="power-law-scaling-implies-constant-relative-differences" class="level2 page-columns page-full" data-number="2.3">
+<h2 data-number="2.3" class="anchored" data-anchor-id="power-law-scaling-implies-constant-relative-differences"><span class="header-section-number">2.3</span> Power law scaling implies constant relative differences</h2>
+<p>In power law scaling, relative change is constant. That is, a proportional change in one variable results in a proportional change in the other. For instance, when we compare a smaller species to a larger species with <span class="math inline">\(100 \times\)</span> the body mass, we can expect to see metabolic rate increase by <span class="math inline">\(31.6 \times\)</span>, <em>regardless of the mass of the smaller species.</em> For now, we will verify this numerically for some limited cases.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># define body mass and metabolic rate</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>m <span class="ot">&lt;-</span> <span class="fu">c</span>(.<span class="dv">01</span>, <span class="dv">1</span>, <span class="dv">100</span>, <span class="dv">10000</span>)</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>b <span class="ot">&lt;-</span> m<span class="sc">^</span>.<span class="dv">75</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>Now we will divide each mass <span class="math inline">\(i\)</span> by the next smallest mass <span class="math inline">\(i-1\)</span>. We do that using a vector by dividing each mass except the first one, by each mass except the last one.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># round(x, digits=0) rounds number to zero decimal places</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>( m[<span class="sc">-</span><span class="dv">1</span>]<span class="sc">/</span>m[<span class="sc">-</span><span class="fu">length</span>(m)], <span class="at">digits =</span> <span class="dv">0</span>)</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>( b[<span class="sc">-</span><span class="dv">1</span>]<span class="sc">/</span>b[<span class="sc">-</span><span class="fu">length</span>(b)], <span class="at">digits =</span> <span class="dv">1</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>When we do these divisions, we see the constant relative change (Table @ref(tab:relativemb)).</p>
+<div class="cell">
+<div class="cell-output-display">
+<table class="caption-top table table-sm table-striped small">
+<caption>As we increase mass by a constant multiplier (10x), power law scaling results in a constant proportional change in basal metabolc rate.</caption>
+<thead>
+<tr class="header">
+<th style="text-align: left;"></th>
+<th style="text-align: right;">Small</th>
+<th style="text-align: right;">Med.</th>
+<th style="text-align: right;">Big</th>
+<th style="text-align: right;">Huge</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Mass</td>
+<td style="text-align: right;">0.01</td>
+<td style="text-align: right;">1.00</td>
+<td style="text-align: right;">100.00</td>
+<td style="text-align: right;">10000.00</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Basal.metabolic.rate</td>
+<td style="text-align: right;">0.03</td>
+<td style="text-align: right;">1.00</td>
+<td style="text-align: right;">31.62</td>
+<td style="text-align: right;">1000.00</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Relative.change.m</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">100.00</td>
+<td style="text-align: right;">100.00</td>
+<td style="text-align: right;">100.00</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">relative.change.b</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">31.62</td>
+<td style="text-align: right;">31.62</td>
+<td style="text-align: right;">31.62</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>We can verify this generally using algebra, not just in the particular case above. We will show that if mass increases by a constant multiplier, metabolic rate will also, regardless of the particular masses involved.</p>
+<p>Let mass <span class="math inline">\(m_2\)</span> be greater than mass <span class="math inline">\(m_1\)</span> by a factor of <span class="math inline">\(c\)</span>, so that <span class="math inline">\(m_2 = c m_1\)</span>, and <span class="math display">\[\frac{m_2}{m_1} = c\]</span>.</p>
+<p>We would like to show that the ratio of the metabolic rates <span class="math inline">\(b_2 / b_1\)</span> is also a constant. Since <span class="math inline">\(m_2 = cm_1\)</span>, we can say that <span class="math display">\[b_1 = a m_1^{3/4}\]</span> <span class="math display">\[b_2 = a (cm_1)^{3/4} = ac^{3/4}m_1^{3/4}\]</span> <span class="math display">\[\frac{b_2}{b_1} = \frac{ac^{3/4}m_1^{3/4}}{am_1^{3/4}}\]</span> When we reduce this fraction, we a left with <span class="math display">\[\frac{b_2}{b_1} = c^{3/4}\]</span></p>
+<p>This shows that with power law scaling, increasing <span class="math inline">\(x\)</span> by a constant <em>multipier</em> (or proportion), <span class="math inline">\(y\)</span> increases by the same proportion raised to that power.</p>
+<p>Let’s represent this graphically in a couple of ways, reusing data we made up previously in this chapter. First, we just change the axes themselves, so that the units of the scales are multiples of 10 (often in scientific notation).</p>
+<div class="cell page-columns page-full">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># using base R</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mar=</span><span class="fu">c</span>(<span class="dv">5</span>,<span class="dv">4</span>,<span class="dv">0</span>,<span class="dv">0</span>), <span class="at">mgp=</span><span class="fu">c</span>(<span class="fl">1.5</span>,.<span class="dv">4</span>,<span class="dv">0</span>) )<span class="co"># set figure margins in "lines"</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="fu">curve</span>(x<span class="sc">^</span>(<span class="dv">3</span><span class="sc">/</span><span class="dv">4</span>), <span class="at">from =</span> .<span class="dv">01</span>, <span class="at">to =</span> <span class="dv">100</span>, <span class="at">log=</span><span class="st">"xy"</span>, <span class="at">ylab=</span><span class="st">"Basal metabolic rate"</span>, <span class="at">xlab=</span><span class="st">"Mass"</span>)</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="fu">text</span>(<span class="dv">10</span>, <span class="dv">80</span><span class="sc">^</span>.<span class="dv">7</span>, <span class="fu">expression</span>(M<span class="sc">^</span><span class="fl">0.75</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+
+<div class="no-row-height column-margin column-container"><div class="cell-output-display">
+<div id="fig-logscale" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-logscale-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="01-theory_files/figure-html/fig-logscale-1.png" class="img-fluid figure-img" width="672">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-logscale-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2.5: Changing the scales of the axes to linearize power law relations. Note scales are logarithmic, using the original linear values.
+</figcaption>
+</figure>
+</div>
+</div></div></div>
+</section>
+<section id="meet-mete-maximum-entropy-theory-of-ecology" class="level2 page-columns page-full" data-number="2.4">
+<h2 data-number="2.4" class="anchored" data-anchor-id="meet-mete-maximum-entropy-theory-of-ecology"><span class="header-section-number">2.4</span> Meet METE: Maximum Entropy Theory of Ecology</h2>
+<p>The Maximum Entropy Theory of Ecology is best known for making predictions and elucidating patterns of species-area relations and species abundance distributions that emerge in relatively stable ecological communities and ecosystems <span class="citation" data-cites="harte2014">(<a href="references.html#ref-harte2014" role="doc-biblioref">Harte and Newman 2014</a>)</span>. However, it is an active area of research and Harte and others are extending the ideas into non-equilibrium systems as well <span class="citation" data-cites="harte2021mete">(<a href="references.html#ref-harte2021mete" role="doc-biblioref">Harte et al. 2021</a>)</span>.</p>
+<p>Entropy is, basically, disorder. Less entropy means more order or structure. Maximum entropy is maximum disorder. The universe tends toward maximum entropy, although in some places and times, like parts of our world right now, entropy can decrease. Physicists are the folks most responsible for our understanding of entropy, and Edwin Jaynes is arguably the one most responsible our understanding and appreciation of its role in information and probability.</p>
+<p>MaxEnt, or the principle of maximization of information entropy, or the principle of maximum entropy is that, given a set of constraints on a system, the least-biased probability distribution that describes data arising from that system will be the one with maximum entropy.</p>
+<p>The principle of maximum entropy has show that maximal uncertainty arising from the flattest distribution, given known constraints, provides the least biased description of a system. It can provide the least biased probability distributions for these situations with these constraints:</p>
+<ul>
+<li>Consider a jar contains jelly beans, and contains at least one and no more than 1000. What is the least biased distribution of possible counts of jelly beans?</li>
+<li>Imagine a hectare of land that contains trees of different heights, and that the mean height is three meters. What is the least biased distribution of possible tree heights?</li>
+<li>Regarding this forest - what if you were told that the variance in height was two meters? What would be the least biased distribution of possible tree heights?</li>
+</ul>
+<p>The principle of maximum entropy could help us prove that, in the absence of other information, the least biased distributions for these sets of constraints would be the uniform, exponential, and Gaussian (or normal) probability distributions.</p>
+<p>The maximum entropy theory of ecology <span class="citation" data-cites="harte2014">(<a href="references.html#ref-harte2014" role="doc-biblioref">Harte and Newman 2014</a>)</span> can tell us what to expect when we know very little, or <em>when very little is going on aside from random noise.</em></p>
+<p>We will talk more about the METE in our chapter on diversity, but I mention it here to emphasize that patterns arise in ecology via random noise.</p>
+<p>The rank-abundance distribution is a famous ecological pattern. It is the log-abundance or relative abundance of species, arranged from the most abundant to the least abundant (Fig. @ref(fig:mete1)).</p>
+<div class="cell page-columns page-full">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(vegan)</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(BCI)</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>abun <span class="ot">&lt;-</span> <span class="fu">colSums</span>(BCI)</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>mod <span class="ot">&lt;-</span> <span class="fu">rad.lognormal</span>(abun)</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(mod, <span class="at">main=</span><span class="st">"Rank-abundance distribution"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+
+<div class="no-row-height column-margin column-container"><div class="cell-output-display">
+<div id="fig-mete1a" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-mete1a-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="01-theory_files/figure-html/fig-mete1a-1.png" class="img-fluid figure-img" width="672">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-mete1a-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2.6: Rank abundance distribution of tree species in a 50 ha plot on Barro Colorado Island. Line is a best fit of the log-normal distribution.
+</figcaption>
+</figure>
+</div>
+</div></div></div>
+<p>The curve formed by these data points (Fig. <a href="#fig-mete1a" class="quarto-xref">Figure&nbsp;<span>2.6</span></a>) is steep at first, among the most abundant species. The curve then flattens out a bit before getting a little bit steeper again.</p>
+<div class="cell page-columns page-full">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>mod.oct <span class="ot">&lt;-</span> <span class="fu">prestonfit</span>(<span class="fu">colSums</span>(BCI))</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(mod.oct, <span class="at">main=</span><span class="st">"Species abundance distribution"</span>)  </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+
+<div class="no-row-height column-margin column-container"><div class="cell-output-display">
+<div id="fig-mete1b" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-mete1b-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="01-theory_files/figure-html/fig-mete1b-1.png" class="img-fluid figure-img" width="672">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-mete1b-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2.7: Species abundance distribution of tree species in a 50 ha plot on Barro Colorado Island. Line is a best fit of the log-normal distribution.
+</figcaption>
+</figure>
+</div>
+</div></div></div>
+<p>If we group species into logarithmic abundance categories, and make a histogram of abundances, we get the *species abundance distribution (Fig. <a href="#fig-mete1b" class="quarto-xref">Figure&nbsp;<span>2.7</span></a>). <span class="citation" data-cites="preston1962cdc">Preston (<a href="references.html#ref-preston1962cdc" role="doc-biblioref">1962</a>)</span> noted that the distributions were remarkabling similar to a normal (Gaussian) distribution, when abundances were log-transformed (resulting in a lognormal-like distribution). It turns out that this curve is quite common and for decades ecologists argued about how we might infer the underlying ecological processes on the basis of the shape of the curve. This discussion died out once ecologists admitted that it was impossible to determined the processes on the basis of the pattern.</p>
+<p>The discussion of the shape of the rank-abundance distribution was revived in the late nineties when Steve Hubbell showed that if you pretend all individuals are equally likely to live or die, <em>independent of their species identity</em>, then you should expect this pattern <span class="citation" data-cites="hubbell2001vvv">(<a href="references.html#ref-hubbell2001vvv" role="doc-biblioref">Hubbell 2001</a>)</span>. Later, John Harte showed that the principle of maximum entropy was a more general approach to this question and could be extended into other realms and patters.</p>
+<p>As an example, consider a community of five individuals and three species. Those are our only constraints, <span class="math inline">\(N=5\)</span>, <span class="math inline">\(S=3\)</span>. How many different possible distributions of species abundances can we get if we assume maximum uncertainty, i.e., maximum entropy? Is there any way to know? Because we have so few, we can count them.</p>
+<p>Consider five individuals distributed among three species (rows) and list all possible community states (columns).</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># by default, R fills matrices by columns.</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>states <span class="ot">&lt;-</span> <span class="fu">matrix</span>(</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">c</span>(<span class="dv">3</span>,<span class="dv">1</span>,<span class="dv">1</span>, <span class="co"># column 1,</span></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>    <span class="dv">1</span>,<span class="dv">3</span>,<span class="dv">1</span>, <span class="co"># column 2, etc.</span></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>    <span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">3</span>,</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>    <span class="dv">2</span>,<span class="dv">2</span>,<span class="dv">1</span>,</span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>    <span class="dv">2</span>,<span class="dv">1</span>,<span class="dv">2</span>,</span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>    <span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">2</span>),</span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">nrow =</span> <span class="dv">3</span> )</span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a><span class="co"># label species</span></span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a><span class="fu">rownames</span>(states) <span class="ot">&lt;-</span> LETTERS[<span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>]</span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a>states <span class="co"># each column is a possible configuration.</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  [,1] [,2] [,3] [,4] [,5] [,6]
+A    3    1    1    2    2    1
+B    1    3    1    2    1    2
+C    1    1    3    1    2    2</code></pre>
+</div>
+</div>
+<p>A rank or species abundance distributions does care <em>which</em> species is most abundant, just that different species exist and can have different abundances. Maximum entropy would have us ask, “what is the average abundance of the most abundant species?” Let’s calculate that. We can see that the most abundant species has either 3 individuals or two individuals and each of these occurs three times. Therefore the average abundance of the most abundant species is calculated as</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>(<span class="dv">3</span><span class="sc">+</span><span class="dv">3</span><span class="sc">+</span><span class="dv">3</span><span class="sc">+</span><span class="dv">2</span><span class="sc">+</span><span class="dv">2</span><span class="sc">+</span><span class="dv">2</span>)<span class="sc">/</span><span class="dv">6</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 2.5</code></pre>
+</div>
+</div>
+<p>or two and half individuals out of five individuals in the whole community.</p>
+<p>How about the least abundant species? The least abundant species always has only one individual. Therefore, the second most abundant species has, on average, 1.5 individuals.</p>
+<div class="cell page-columns page-full">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>d <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">x=</span><span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>, <span class="at">y=</span><span class="fu">c</span>(<span class="fl">2.5</span>, <span class="fl">1.5</span>, <span class="dv">1</span>) )</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(d, <span class="fu">aes</span>(x, y) ) <span class="sc">+</span></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a> <span class="fu">geom_line</span>() <span class="sc">+</span>  <span class="fu">geom_point</span>() <span class="sc">+</span> </span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">y=</span><span class="st">"Expected abundance"</span>) </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+
+<div class="no-row-height column-margin column-container"><div class="cell-output-display">
+<div id="fig-mete2" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-mete2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="01-theory_files/figure-html/fig-mete2-1.png" class="img-fluid figure-img" width="672">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-mete2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2.8: Expected rank abundance distribution, given five individuals and three species, under the maximum entropy theory of ecology.
+</figcaption>
+</figure>
+</div>
+</div></div></div>
+<p>This is one prediction of METE: given only the number of individuals and the number of species, it can predict a species abundance distribution.</p>
+</section>
+<section id="in-fine" class="level2" data-number="2.5">
+<h2 data-number="2.5" class="anchored" data-anchor-id="in-fine"><span class="header-section-number">2.5</span> <em>In fine</em></h2>
+<p>Useful theory helps us think more clearly and sometimes more imaginatively about how the world works. Good theory is usually <em>efficient</em> theory, making the greatest number of predictions with the fewest free parameters. It helps clarify our thinking and disentangle the myriad mechanisms at play in our ecological systems.</p>
+
+
+<div id="refs" class="references csl-bib-body hanging-indent" role="list" style="display: none">
+<div id="ref-banavar1999sfe" class="csl-entry" role="listitem">
+<span class="nocase">Banavar, J R, a Maritan, and a Rinaldo</span>. 1999. <span>“Size and <span>Form</span> in <span>Efficient Transportation Networks</span>.”</span> <em>Nature</em> 399 (6732): 130–32. <a href="https://www.ncbi.nlm.nih.gov/pubmed/10335841">https://www.ncbi.nlm.nih.gov/pubmed/10335841</a>.
+</div>
+<div id="ref-banavar2010gbq" class="csl-entry" role="listitem">
+Banavar, J. R., M. E. Moses, J. H. Brown, et al. 2010. <span>“A <span>General Basis</span> for <span>Quarter-Power Scaling</span> in <span>Animals</span>.”</span> <em>Proceedings of the National Academy of Sciences</em> 107 (36): 15816–20. <a href="https://www.ncbi.nlm.nih.gov/pubmed/20724663">https://www.ncbi.nlm.nih.gov/pubmed/20724663</a>.
+</div>
+<div id="ref-banavar2002mus" class="csl-entry" role="listitem">
+Banavar, Jayanth R, John Damuth, Amos Maritan, Andrea Rinaldo, Geoffrey B West, and Brian J. Enquist. 2002. <span>“Modelling <span>Universality</span> and <span>Scaling</span> - <span>Communications Arising</span>.”</span> <em>Nature</em> 420: 626–27.
+</div>
+<div id="ref-brown2004mte" class="csl-entry" role="listitem">
+Brown, James H., James F. Gillooly, Andrew P. Allen, Van M. Savage, and Geoffrey B. West. 2004. <span>“Toward a <span>Metabolic Theory</span> of <span>Eology</span>.”</span> <em>Ecology</em> 85 (7): 1771–89. <a href="https://doi.org/10.1890/03-9000">https://doi.org/10.1890/03-9000</a>.
+</div>
+<div id="ref-gillooly2000" class="csl-entry" role="listitem">
+Gillooly, James F. 2000. <em>Effect of <span>Body Size</span> and <span>Temperature</span> on <span>Generation Time</span> in <span>Zooplankton</span></em>. 22 (2): 241–51.
+</div>
+<div id="ref-glazier2018" class="csl-entry" role="listitem">
+Glazier, Douglas S. 2018. <span>“Rediscovering and <span>Reviving Old Observations</span> and <span>Explanations</span> of <span>Metabolic Scaling</span> in <span>Living Systems</span>.”</span> <em>Systems</em> 6 (4).
+</div>
+<div id="ref-harte2014" class="csl-entry" role="listitem">
+Harte, John, and Erica A. Newman. 2014. <span>“Maximum <span>Information Entropy</span>: <span>A Foundation</span> for <span>Ecological Theory</span>.”</span> <em>Trends in Ecology &amp; Evolution</em> 29 (7): 384–89. <a href="https://doi.org/10.1016/j.tree.2014.04.009">https://doi.org/10.1016/j.tree.2014.04.009</a>.
+</div>
+<div id="ref-harte2021mete" class="csl-entry" role="listitem">
+Harte, John, Kaito Umemura, and Micah Brush. 2021. <span>“<span>DynaMETE</span>: <span class="nocase">A Hybrid MaxEnt-plus-mechanism Theory</span> of <span>Dynamic Macroecology</span>.”</span> <em>ECOLOGY LETTERS</em> 24 (5): 935–49. <a href="https://doi.org/10.1111/ele.13714">https://doi.org/10.1111/ele.13714</a>.
+</div>
+<div id="ref-hubbell2001vvv" class="csl-entry" role="listitem">
+Hubbell, S P. 2001. <em>A {\Vphantom}<span>U</span>\vphantom{}nified {\Vphantom}<span>T</span>\vphantom{}heory of {\Vphantom}<span>B</span>\vphantom{}iodiversity and {\Vphantom}<span>B</span>\vphantom{}iogeography</em>. Monographs in <span>Population Biology</span>. Princeton University Press.
+</div>
+<div id="ref-kleiber1932" class="csl-entry" role="listitem">
+Kleiber, M. 1932. <span>“Body <span>Size</span> and <span>Metabolism</span>.”</span> <em>Hilgardia</em>, 315–32.
+</div>
+<div id="ref-marquet2014" class="csl-entry" role="listitem">
+Marquet, Pablo A., Andrew P. Allen, James H. Brown, et al. 2014. <span>“On <span>Theory</span> in <span>Ecology</span>.”</span> <em>BioScience</em> 64 (8): 701–10.
+</div>
+<div id="ref-niklas2001isr" class="csl-entry" role="listitem">
+Niklas, Karl J., and Brian J. Enquist. 2001. <span>“Invariant <span>Scaling Relationships</span> for <span>Interspecific Plant Biomass Production Rates</span> and <span>Body Size</span>.”</span> <em>Proceedings of the National Academy of Sciences of the United States of America</em> 98 (5): 2922–27. <a href="https://www.ncbi.nlm.nih.gov/pubmed/11226342">https://www.ncbi.nlm.nih.gov/pubmed/11226342</a>.
+</div>
+<div id="ref-oneill1986" class="csl-entry" role="listitem">
+<span class="nocase">O’Neill, \relax RV, \relax DL De Angelis, \relax JB Waide, and \relax TFH Allen</span>. 1986. <em>A <span>Hierarchical Concept</span> of <span>Ecosystems</span>.</em> Vol. 23. Monographs in <span>Population Biology</span>. Princeton University Press, Princeton, New Jersey, USA.
+</div>
+<div id="ref-preston1962cdc" class="csl-entry" role="listitem">
+Preston, F W. 1962. <span>“The <span>Canonical Distribution</span> of <span>Commonness</span> and <span>Rarity</span>: <span>Part</span> {\Vphantom}<span>I</span>\vphantom{}.”</span> <em>Ecology</em> 43: 185–215.
+</div>
+<div id="ref-rose2017hff" class="csl-entry" role="listitem">
+Rose, Kevin C., Rose A. Graves, Winslow D. Hansen, et al. 2017. <span>“Historical <span>Foundations</span> and <span>Future Directions</span> in <span>Macrosystems Ecology</span>.”</span> <em>Ecology Letters</em> 20 (2): 147–57. <a href="https://doi.org/10.1111/ele.12717">https://doi.org/10.1111/ele.12717</a>.
+</div>
+<div id="ref-scheiner2011" class="csl-entry" role="listitem">
+Scheiner, S. M., and M. R. Willig, eds. 2011. <em>The <span>Theory</span> of <span>Ecology</span></em>. University of Chicago Press, Chicago.
+</div>
+<div id="ref-scheiner2010cfb" class="csl-entry" role="listitem">
+Scheiner, Samuel M. 2010. <span>“Toward a <span>Conceptual Framework</span> for <span>Biology</span>.”</span> <em>Quarterly Review of Biology</em> 85 (3): 293–318.
+</div>
+<div id="ref-west1997gmo" class="csl-entry" role="listitem">
+West, G B, J H Brown, and B J Enquist. 1997. <span>“A <span>General Model</span> for the <span>Origin</span> of <span>Allometric Scaling Laws</span> in <span>Biology</span>.”</span> <em>Science (New York, N.Y.)</em> 276: 122–26.
+</div>
+</div>
+</section>
+
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./index.html" class="pagination-link" aria-label="Primer of Ecology using R">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Primer of Ecology using R</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./02-optimal_foraging.html" class="pagination-link" aria-label="Optimal Foraging">
+        <span class="nav-page-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Optimal Foraging</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

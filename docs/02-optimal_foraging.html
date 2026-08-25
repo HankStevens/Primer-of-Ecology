@@ -1,0 +1,1152 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.11.1">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>3&nbsp; Optimal Foraging – Primer of Ecology</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: 1.5em;}
+div.column{flex: auto;}
+@media screen {
+div.columns{gap: min(4vw, 1.5em);}
+div.column{overflow-x: auto;}
+}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./03-Expo-growth.html" rel="next">
+<link href="./01-theory.html" rel="prev">
+<script src="site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-d5b4e69c7e37b49c6591bcc5116dd748.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap-5427321e8325850a4c7c83abd15fbf15.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-chtml.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+</head>
+
+<body class="nav-sidebar floating slimcontent quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./02-optimal_foraging.html"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Optimal Foraging</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">Primer of Ecology</a> 
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Primer of Ecology using R</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./01-theory.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Theory in Ecology</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./02-optimal_foraging.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Optimal Foraging</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./03-Expo-growth.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Simple density-independent growth</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./04-DIDemography.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Density-independent Demography</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./05-DDgrowth.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Density-dependent growth</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./06-space.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Populations in Space</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./07-direct_comp_mut.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Direct competition and mutualism</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./07b-compcolstorage.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Coexistence via competition, dispersal, and storage</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./08-consumerResource.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Consumer-resource Interactions</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./09-host_parasitoid.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Host-parasitoid relations</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./10-disease.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Disease</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./11-consumer-resource-comp-mut.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Consumer-resource Competition and Mutualisms</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./13-simplefoodwebs.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Food webs and other networks</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./14-diversity.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Diversity</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./references.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">References</span></span></a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
+    </div>
+<!-- main -->
+<main class="content page-columns page-full" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title"><span id="oft" class="quarto-section-identifier"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Optimal Foraging</span></span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<div class="cell">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="figs/CowieF3.png" class="img-fluid figure-img" style="width:75.0%"></p>
+<figcaption>Optimal foraging theory (OFT) generates testable quantitative predictions that allow a less ambiguous description and explanation for observed patterns and processes. Here, a simplistic model of Great Tit (Parus major) foraging that includes only gross energy intake underestimates the time spent in patches (dashed). In contrast, a model that includes energetic costs of traveling and searching matches predictions far better (solid). From Cowie (1977).</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>It can be useful to think of natural selection as an optimizing process: phenotypes diversify, winners replicate and losers don’t, and the phenotypes of winners tend to get passed on to the replicants. Therefore, we often assume, as did Dr.&nbsp;Pangloss, that the species that exist now are the best of all possible species, that is, they are of optimal design. And like Dr.&nbsp;Pangloss, we would be woefully mistaken if we stopped there. Nonetheless, optimization, that is, the tendency toward an optimum, helps us generate testable hypotheses and we consider some of these below.</p>
+<p>Optimal Foraging Theory (OFT) helps us consider what organisms would do <em>if they foraged optimally.</em> All organisms–plants, fungi, archaea, and even animals–forage, and they are all subject to natural selection. Therefore, their phenotypes work pretty well, but probably not optimally and definitely not optimally for all times and places. Nonetheless, OFT is an efficient theory about the behavior of an organism, in the absence of other complications. Therefore, it allows us to study the relative importance of those “other complications.”</p>
+<p>Foraging is a key link between the individual, and communities and ecosystems <span class="citation" data-cites="beckerman2010">(<a href="references.html#ref-beckerman2010" role="doc-biblioref">Beckerman et al. 2010</a>)</span>. All organisms interact with their environment via consumption, and the choices they make influence population dynamics, species interactions, nutrient cycling, and even the physical structures of terrestrial and aquatic habitats. The text and logic of this chapter rely heavily on <span class="citation" data-cites="stephens1986ft">Stephens and Krebs (<a href="references.html#ref-stephens1986ft" role="doc-biblioref">1986</a>)</span> and <span class="citation" data-cites="ellner2009">Ellner (<a href="references.html#ref-ellner2009" role="doc-biblioref">2009</a>)</span>.</p>
+<p>In Scheiner and Willig’s edited volume on <em>The Theory of Ecology</em>, Andy Sih <span class="citation" data-cites="sih2011ft">(<a href="references.html#ref-sih2011ft" role="doc-biblioref">Sih 2011</a>)</span> proposes that the following propositions form the basis of foraging theory:</p>
+<ol type="1">
+<li>Foraging patterns maximize fitness or a correlate of fitness.</li>
+<li>Foraging patterns depend on the range of options available to the forager and on how each available option affects fitness or a correlate of fitness.</li>
+<li>Foraging behaviour balances conflicting demands–tradeoffs are important in shaping foraging behaviour.</li>
+</ol>
+<p>These properties are the outcome of natural selection operating on foraging behavior. Our understanding of foraging itself considers these three features <span class="citation" data-cites="stephens1986ft">(<a href="references.html#ref-stephens1986ft" role="doc-biblioref">Stephens and Krebs 1986</a>)</span>:</p>
+<ul>
+<li>currency (what is being optimized),</li>
+<li>constraints (features of behaviour that limit optimality), and</li>
+<li>the resulting decision rules.</li>
+</ul>
+<p><em>Currency</em> is that quantity that is optimized by the forager. This currency is assumed to be a quantity that limits fitness, such as energy or a particular consumable resource. We measure it as a rate, for instance, as the energy gained per unit time (E/T) or the uptake of a critically limiting resource per unit time (R/T).</p>
+<p><em>Constraints</em> are limitations that we assume about organisms. These might include distances between resource patches, the time and costs associated with extracting a resource from a substrate or subduing prey. They also include constraints imposed by other species including competitors and predators. Constraints can get complicated quickly; however, simple quantitative theory makes predictions against which we can evaluate more complicated assumptions.</p>
+<p><em>Decision rules</em> are what we ascribed to a forager’s choices. A decision rule concerns the probability of attacking prey if encountered, or when to leave one resource patch in order to search for another.</p>
+<p>An additional way to think about all this is <em>where, when, and what.</em> A great deal of effort has focused on understanding patch use: <em>where</em> foragers should explore for resources, and <em>when</em> they should give up and go in search of another patch <span class="citation" data-cites="charnov1976b">(<a href="references.html#ref-charnov1976b" role="doc-biblioref">Charnov 1976</a>)</span>. These are <strong>patch use</strong> models, and are based on economic models and the marginal value theorem.</p>
+<p>Another avenue of inquiry concerns <em>what</em> animals should eat. For instance, should they go after big prey that may be hard to catch and difficult to subdue, or just snack on what is easy? These are <strong>prey models</strong> or diet models, and attempt to explain why organisms consume <em>what</em> they do.</p>
+<p><em>A note on “prey”.</em> All organisms forage for resources. Plants extend branches toward the light, and proliferate leaves and roots into resource rich patches, and rhizomes grow longer faster through resource-poor soils. Bumblebees search for and learn where to find nectar-rich flowers, and wolves hunt in packs to take down large ungulates. Some bacterivorous nanoflagellates intercept particles selectively depending on the perceived nutritional value of particles <span class="citation" data-cites="boenigk2002">(<a href="references.html#ref-boenigk2002" role="doc-biblioref">Boenigk et al. 2002</a>)</span>. So, depending on the forager, its “prey” may be <span class="math inline">\(\mathrm{NO}_{3}^-\)</span> ions, nectar, moose, or bacteria. Therefore, we will refer to these resources variously as prey, prey items, resources, and resource items. Some of these ideas are best handled with patch-based models <span class="citation" data-cites="charnov1976b">(<a href="references.html#ref-charnov1976b" role="doc-biblioref">Charnov 1976</a>)</span> where a “resource patch” is a more intuitive and useful unit.</p>
+<p><em>A note on “handle”.</em> All organisms pays costs to consume resources. In OFT, “handle” typically means expending energy and time to attack and subdue prey (predators), proliferate into resource rich areas (plants), exude extra cellular enzymes (fungi); ingest the item(s), and then resume searching.</p>
+<section id="a-prey-model" class="level2 page-columns page-full" data-number="3.1">
+<h2 data-number="3.1" class="anchored" data-anchor-id="a-prey-model"><span class="header-section-number">3.1</span> A prey model</h2>
+<p><em>…in which a forager asks, “should I eat this?”</em><a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a></p>
+<div class="no-row-height column-margin column-container"><div id="fn1"><p><sup>1</sup>&nbsp;whether “I” is a sugar maple tree or a human, most of us do not make this decision conciously…</p></div></div><p>Let’s start where this field started, with a prey-centered model <span class="citation" data-cites="macarthur1966 emlen1966">(<a href="references.html#ref-macarthur1966" role="doc-biblioref">MacArthur and Pianka 1966</a>; <a href="references.html#ref-emlen1966" role="doc-biblioref">Emlen 1966</a>)</span>.</p>
+<ul>
+<li>Currency - long-term energy gain per unit time, <span class="math inline">\(G/T\)</span>.</li>
+<li>Constraints
+<ul>
+<li>forager can consume only what it encounters.</li>
+<li>forager uses time and energy searching for items and handling items.</li>
+<li>if the forager chooses to pursue an item, searching stops and handling starts.</li>
+</ul></li>
+<li>Decision rules - the probability that a forager pauses from searching to handle an item.</li>
+</ul>
+<p>The goal is to optimize the currency.</p>
+<section id="our-intuition" class="level3" data-number="3.1.1">
+<h3 data-number="3.1.1" class="anchored" data-anchor-id="our-intuition"><span class="header-section-number">3.1.1</span> Our intuition</h3>
+<div class="cell">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="figs/foraging_ant2.jpg" class="img-fluid figure-img" style="width:100.0%"></p>
+<figcaption>The amount of energy, E (y-axis), that is lost and gained by a foraging ant–it may decline slowly over time (x-axis) while searching, and decline quickly while handling a food item. Our ant gains energy when it consumes an item. Below: Our ant. She expends energy while searching for food. Upon encountering a food item, she may choose to ‘handle’ it (encounters 1 and 3) and gain energy, or not handle it (encounter 2) and save the added cost of handling it.</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>It seems reasonable that if a forager encounters food, it should eat it. However, if handling it costs more than the forager gets back in energy, then it isn’t worth it. We might think of this as the ratio as <em>profitability</em>, <span class="math display">\[\frac{e_i}{h_i}\]</span> where <span class="math inline">\(e_i\)</span> is the energy in an item of type <span class="math inline">\(i\)</span>, and <span class="math inline">\(h_i\)</span> is the cost of handling said item. If <span class="math inline">\(e_i/h_i&lt;1\)</span>, then it doesn’t make sense to select the item. Further, handling an item means that the forager is <em>not</em> looking for a better food item. This suggests that even if <span class="math inline">\(e_i/h_i&gt;1\)</span>, a forager may not want to handle it if it is likely to soon encounter food items of higher energy content. On top of this, the act of searching may expose a forager to a risk of running into competing foragers, or even being eaten by a bigger forager. Clearly, a forager faces tradeoffs as it searches and when it encounters resources.</p>
+</section>
+<section id="mathematical-support" class="level3 page-columns page-full" data-number="3.1.2">
+<h3 data-number="3.1.2" class="anchored" data-anchor-id="mathematical-support"><span class="header-section-number">3.1.2</span> Mathematical support</h3>
+<p>One of the reasons to represent ideas mathematically is that we make concrete assumptions, and then the math can tell us what the predictions are. That is what we will do here.</p>
+<p>Let’s assume that natural selection tends to maximize the currency as Gain per unit Time, <span class="math inline">\(G/T\)</span>. Our model will use these parameters and variables:</p>
+<ul>
+<li><span class="math inline">\(i =\)</span> index for prey type</li>
+<li><span class="math inline">\(S =\)</span> total time spent <strong>searching</strong> (units = seconds, <span class="math inline">\(s\)</span>).</li>
+<li><span class="math inline">\(\lambda_i =\)</span> rate of encounter with prey of type <span class="math inline">\(i\)</span> (units = # encountered/s = <span class="math inline">\(\#/s\)</span>; note this can also be #/area × area/s, if we like)<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a></li>
+<li><span class="math inline">\(p_i =\)</span> probability that a forager attacks prey if encountered (units are number handled per number encountered, or #/#; this is a dimensionless parameter)</li>
+<li><span class="math inline">\(h_i =\)</span> handling time for an item of type <span class="math inline">\(i\)</span>, (units = s/#).</li>
+<li><span class="math inline">\(T =\)</span> <strong>total</strong> elapsed time (units = s)</li>
+</ul>
+<div class="no-row-height column-margin column-container"><div id="fn2"><p><sup>2</sup>&nbsp;A forager encounters prey at random, and this is known as a “Poisson process”, where the number of encounters in a specified time interval is a random variable drawn from the Poisson probability distribution. It turns out that the <em>time between events</em> of a Poisson process follows the Exponential distribution. The Poisson distribution is determined by a single parameter, its mean. The Exponential distribution is also described by a single parameter, its <em>rate</em>. It turns out that we use the same <span class="math inline">\(\lambda\)</span> for both. }</p></div></div><p>From these definitions we can calculate other important quantities.</p>
+<p><strong>Total number of items</strong> encountered of type <span class="math inline">\(i\)</span> is <span class="math display">\[S \lambda_i\]</span></p>
+<p>The units are <span class="math inline">\(s\, \#\,s^{-1} = \#\)</span>.</p>
+<p><strong>Total number of type <span class="math inline">\(i\)</span> items handled</strong> is the proportion, <span class="math inline">\(p_i\)</span>, of those encountered that the foragers chooses to go after, or <span class="math display">\[S\lambda_i p_i\]</span> The units are <span class="math inline">\(\#\)</span>.</p>
+<p><strong>Total time spent handling</strong> all items of type <span class="math inline">\(i\)</span> is <span class="math display">\[H=S\lambda_i p_i h_i\]</span> The units are <span class="math inline">\(s\)</span>.<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a></p>
+<div class="no-row-height column-margin column-container"><div id="fn3"><p><sup>3</sup>&nbsp;We can check units for total handling time, <span class="math inline">\(H = S\lambda_i p_i h_i\)</span> by replacing the variables and parameters with their units. The units for <span class="math inline">\(H\)</span> are seconds, so we have <span class="math inline">\(\mathrm{s = s \frac{\#}{s} \frac{\#}{\#} \frac{s}{\#}}\)</span>. When we multiply these fractions, we find that the <span class="math inline">\(\#\)</span>s and two of the s’s cancel out and we are left with <span class="math inline">\(s=s\)</span>.</p></div></div><p><strong>Total elapsed time</strong> is time spent searching plus time spent handling, which is<br>
+<span class="math display">\[T=S + \sum_i^n S\lambda_i h_i p_i\]</span> where we use the summation to add together the total handling times for each prey or resource type <span class="math inline">\(i = \{1,\,2, \ldots ,\,n\}\)</span>.</p>
+<p>Let</p>
+<ul>
+<li><span class="math inline">\(e_i =\)</span> net energetic gain from catching and consuming a single type-i prey item (units = Joules, J). This includes the gross energy of the item minus handling costs plus energy not lost by searching during that time.</li>
+<li><span class="math inline">\(c =\)</span> energy cost per unit of time while searching (units = J).</li>
+</ul>
+<p><strong>Total energy gain</strong> from eating all the items is the number of items of each type <span class="math inline">\(i\)</span> handled times the net amount of energy per item of type <span class="math inline">\(i\)</span>, <span class="math inline">\(e_i\)</span>, <span class="math display">\[\sum_{i=1}^n S\lambda_i p_i e_i\]</span> where units are <span class="math inline">\(\# (\mathrm{J}/ \#) = \mathrm{J}\)</span>.</p>
+<p>Therefore, <strong>rate</strong> of energy intake (J/<span class="math inline">\(s\)</span>) while handling and eating is <span class="math display">\[\mathrm{intake} = \frac{\sum_{i=1}^n S\lambda_i p_i e_i}{S + \sum_{i=1}^n S\lambda_i h_i p_i}\]</span> If we then subtract the cost of searching, we arrive at the quantity we want to maximize, <span class="math display">\[G/T=\frac{\sum_{i=1}^n \lambda_i p_i e_i}{1 + \sum_{i=1}^n \lambda_i p_i h_i}-c\]</span> A major question in OFT is whether a forager should include a particular prey type. Say we rank the prey types, <span class="math inline">\(i=\{1,2,...,m,...,n\}\)</span>, in terms of energy content, where type <span class="math inline">\(i=1\)</span> has the most energy per item, <span class="math inline">\(i=m\)</span> is intermediate, and type <span class="math inline">\(i=n\)</span> has the least. <em>Which items should a forager include in her diet?</em> Should it be only the most energy-dense, or should it include the second as well, or should it be all of them? Part of the answer rests on the ratio of energy gain versus handling costs, or profitability, <span class="math inline">\(e_i/h_i\)</span>.</p>
+<p>If we maximized <span class="math inline">\(G/T\)</span> with respect to <span class="math inline">\(p_j\)</span>, we would be able to determine whether to include item <span class="math inline">\(j\)</span>. Doing so leads to several predictions.</p>
+<p><strong>Prediction 1</strong> <em>A less energy-dense item should be added if its net energy content is greater than the realized energy gain from all the other items,</em></p>
+<p><span id="eq-preypred1"><span class="math display">\[
+\frac{e_{m+1}}{h_{m+1}} &gt; \frac{\sum_{i=1}^m \lambda_i e_i}{1 + \sum_{i=1}^{m} \lambda_i h_i}
+\tag{3.1}\]</span></span></p>
+<p>where the diet already includes items 1-<span class="math inline">\(m\)</span>, and the <em>realized</em> energy content of the diet takes into account average encounter rates of each item type. It means that a foraging will always select a particular type (<span class="math inline">\(p_j =1\)</span>), or never select it (<span class="math inline">\(p_j=0\)</span>); this is known as the “zero-one rule”.</p>
+<p><strong>Prediction 2</strong> Foragers will rank prey types by their profitability, <span class="math inline">\(e/h\)</span>.</p>
+<p><strong>Prediction 3</strong> When encounter rates increase (as with increasing abundances), selectivity increases. Note that encounter rates are in the right hand side, so as they increase, so will that fraction on the right. That will make it harder for the above inequality to be true, and a forager will be pickier. If you don’t believe it, try this simplified version (Fig. <a href="#fig-selectivity" class="quarto-xref">Figure&nbsp;<span>3.1</span></a>).</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>G.T <span class="ot">=</span> <span class="cf">function</span>(lambda, <span class="at">h=</span><span class="dv">1</span>, <span class="at">e=</span><span class="dv">1</span>){lambda<span class="sc">*</span>e<span class="sc">/</span>(<span class="dv">1</span><span class="sc">+</span>lambda<span class="sc">*</span>h)} <span class="co"># create the function you want</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>myData <span class="ot">&lt;-</span> <span class="fu">data.frame</span>( <span class="at">lambda=</span><span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">10</span>) ) <span class="co"># data you need</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span>myData, <span class="fu">aes</span>(<span class="at">x=</span>lambda)) <span class="sc">+</span> <span class="co"># set the basic properties of the plot</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>  <span class="co"># in the stat_function, we indicate the parameters in our equation.</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_function</span>(<span class="at">fun=</span>G.T, <span class="at">geom=</span><span class="st">"line"</span>) <span class="sc">+</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="fu">bquote</span>(<span class="fu">over</span>(lambda<span class="sc">*</span>e, <span class="dv">1</span> <span class="sc">+</span> lambda<span class="sc">*</span>h))) <span class="sc">+</span> <span class="fu">xlab</span>(<span class="fu">bquote</span>(lambda))  <span class="co"># add labels</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div id="fig-selectivity" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-selectivity-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="02-optimal_foraging_files/figure-html/fig-selectivity-1.png" class="img-fluid figure-img" style="width:60.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-selectivity-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;3.1: Selectivity increases with average encounter rates.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p><strong>Prediction 4</strong> Inclusion of type <span class="math inline">\(m+1\)</span> in the diet does not depend on its encounter rate. Thus, a particular type should be included if the instantaneous net gain of that type is greater than the <em>realized long term average</em> net gain of all the more profitable types. Note that encounter rate appears on the right hand side, but not the left.</p>
+<p>So how does this model fair in the real world? Well, the zero-one rule doesn’t work at all; it turns out that for a variety of reasons, foragers do not completely ignore low-profit prey. However, there is great support for the other predictions (above) <span class="citation" data-cites="stephens1986ft">(<a href="references.html#ref-stephens1986ft" role="doc-biblioref">Stephens and Krebs 1986</a>)</span>. Most importantly, in all cases, the theory has provided a clear framework to generate testable predictions from unambiguous assumptions, and that is what we want from efficient theory. The model itself helped guide research, and inclusion of greater complexity has led to deeper understanding of behavior and its consequences for species interactions.</p>
+</section>
+</section>
+<section id="the-patch-model" class="level2 page-columns page-full" data-number="3.2">
+<h2 data-number="3.2" class="anchored" data-anchor-id="the-patch-model"><span class="header-section-number">3.2</span> The patch model</h2>
+<p><em>…in which omniscient rationale agents roam free.</em></p>
+<p>Here the forager asks, “how long should I stay here?” In the simple <em>prey</em> model, a forager searches for and then encounters prey one at a time, makes a decision to consume or not, and then resumes searching. In a simple <em>patch</em> model, a forager searches for and encounters patches one at a time, first consumes resources and then makes a decision to leave or not. Perhaps the single most important prediction of the simple patch model is that a forager should leave a patch when its current rate of energy gain drops down to the average or expected rate of energy gain for the habitat at large.</p>
+<p>In what follows, we rely on <span class="citation" data-cites="charnov1976b">Charnov (<a href="references.html#ref-charnov1976b" role="doc-biblioref">1976</a>)</span>, who applies <em>the marginal-value theorem</em> to explain optimal behavior. Here, as in economics, “marginal value” refers to a rate - the slope of a function. In calculus, this is a derivative. Here, it is the derivative (i.e.&nbsp;slope) of the relation between energy gain and time.</p>
+<p>Let’s assume the simplest of all patch models: one patch type, all patches are the same, and they are distributed randomly in the habitat. Assume also that a forager uses time to travel between patches (travel time, <span class="math inline">\(t_t\)</span>) and time searching within a patch (residence time, <span class="math inline">\(t_r\)</span>). A forager encounters patches at random, with a rate of <span class="math inline">\(\lambda\)</span>, and as such, would have a mean time to next encounter of <span class="math inline">\(1/\lambda\)</span>.</p>
+<p>The patch is characterisized by its <em>gain function</em> <span class="math inline">\(g(t_r)\)</span> (Fig. <a href="#fig-gain" class="quarto-xref">Figure&nbsp;<span>3.2</span></a>) which is the expected<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a> <em>cumulative net energy gained</em>, given time <span class="math inline">\(t_r\)</span> spent in the patch. The gain function is a cumulative total net amount. We can imagine different types of gain functions.</p>
+<div class="no-row-height column-margin column-container"><div id="fn4"><p><sup>4</sup>&nbsp;“expected” value of a variable is the mean of that variable, because that is what we expect given the absence of other knowledge</p></div></div><div class="cell">
+<div class="cell-output-display">
+<div id="fig-gain" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-gain-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="02-optimal_foraging_files/figure-html/fig-gain-1.png" class="img-fluid figure-img" style="width:75.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-gain-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;3.2: Net energy gain as a function of patch residence time may take different forms. Net energy gain increases through time but slows (decelerates) as a greater fraction of the resources in the patch are consumed. The top line (solid) assumes that there are diminishing returns as a patch is depleted, but the forager continues to find resources in excess of metabolic losses. The lower line (dashed) represents the net energy gain that could arise as a patch is depleted more fully and the costs continue unabated.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p><strong>Try this:</strong></p>
+<ol type="1">
+<li>Draw a gain function where the prey remain well hidden at first, but the forager becomes increasingly able to find more and more prey.</li>
+<li>Draw a gain function where there is no cost to foraging, and where the forager eventually depletes all the prey.</li>
+<li>In one graph, draw two gain functions for a resource rich patch and for a resource poor patch.</li>
+</ol>
+<p>So, our <em>currency</em> is long-term average energy intake, <span class="math inline">\(R\)</span>, and we want to maximize this. The <em>decision</em> our forager needs to make is how long to stay in a patch. The forager’s <em>constraints</em> share some similarity with the prey model <span class="citation" data-cites="stephens1986ft">(<a href="references.html#ref-stephens1986ft" role="doc-biblioref">Stephens and Krebs 1986</a>)</span>.</p>
+<ul>
+<li>between-patch travel time and within-patch hunting time are distinct, and …</li>
+<li>… independent of each other,</li>
+<li>a forager encounters patches sequentially and randomly,</li>
+<li>in a given patch, net expected energy gain is a function of time spent in the patch…</li>
+<li>…that is zero when <span class="math inline">\(t=0\)</span>, and</li>
+<li>…increases with time, but then decelerates</li>
+<li>the forager is omniscient - it knows everything about available patches and does not learn anything new as it forages (because it already knows everything).</li>
+</ul>
+<p>The forager must decide how long to stay in the patch to maximize <span class="math inline">\(R\)</span>. Let <span class="math display">\[R=\frac{g(t_r)}{t_t + t_r}\]</span> where <span class="math inline">\(t_t + t_r\)</span> is the total time from leaving one patch, traveling to the next patch, foraging in the second patch, and then leaving the second patch. Think of this as benefit (<span class="math inline">\(g(t)\)</span>) per unit time. This fraction is the slope of the straight line in Fig. <a href="#fig-marginal" class="quarto-xref">Figure&nbsp;<span>3.3</span></a>.</p>
+<p>Intuitively, we can imagine that the long term average rate of energy gain <span class="math inline">\(R\)</span> is unimodal (hump-shaped) in the following scenario (Fig. <a href="#fig-gain" class="quarto-xref">Figure&nbsp;<span>3.2</span></a>). Upon encountering a patch the forager has no resources and thus <span class="math inline">\(R\)</span> is actually negative due to the costs of traveling to the new patch. As <span class="math inline">\(t_r\)</span> passes and and the forager gains energy (<span class="math inline">\(g(t_r)\)</span> increases), <span class="math inline">\(R\)</span> will increase and become positive. An assumption of the theory (and reality) is that the gain function, <span class="math inline">\(g(t_r)\)</span>, decelerates–the rate of energy intake declines as the patch is depleted. With increasing time in the patch and lower rate of energy intake, <span class="math inline">\(R\)</span> starts to decline.</p>
+<p>When <span class="math inline">\(t_r\)</span> is too short, <span class="math inline">\(R\)</span> is not yet maximized. When <span class="math inline">\(t_r\)</span> is too long, <span class="math inline">\(R\)</span> begins to decline. Because <span class="math inline">\(R\)</span> is hump-shaped, we can use calculus to find its maximum. This will occur when its slope is zero, and the slope of a function, <span class="math inline">\(F\)</span>, is its derivative, <span class="math inline">\(F^\prime\)</span>. If we asssume that travel time is constant, then we can take the partial derivative of <span class="math inline">\(R\)</span> with respect to just the residence time, <span class="math inline">\(t_r\)</span>, <span class="math inline">\(\delta R / \delta t_r\)</span>. First, recall the product rule of differentiation: <span class="math display">\[F(x) = g(x)f(x)\quad ; \quad F^\prime(x) =f^\prime(x)g(x) +  f(x)g^\prime(x)\]</span> With that we can find the necessary derivative. <span class="math display">\[\frac{\delta R}{\delta t_r} = - \frac{1}{(t_t+t_r)^2} g(t_r) + \frac{1}{t_t+t_r}g^\prime(t_r)= g^\prime(t_r) - \frac{g(t_r)}{t_t+t_r}=0\]</span> Because this derivative equals zero when the slope of the gain function (<span class="math inline">\(g^\prime(t_r)\)</span>) equals <span class="math inline">\(R\)</span>, that tells use that <span class="math inline">\(R\)</span> is maximized at that point. Therefore, it predicts that in order to maximize the long-term average rate, we should stay in a patch until the instantaneous rate, <span class="math inline">\(g^\prime(t_r)\)</span> drops to the long term average rate, <span class="math inline">\(R\)</span> (Fig. <a href="#fig-marginal" class="quarto-xref">Figure&nbsp;<span>3.3</span></a>).</p>
+<div class="cell">
+<div class="cell-output-display">
+<div id="fig-marginal" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-marginal-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="figs/marginal-value.jpg" class="img-fluid figure-img" style="width:100.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-marginal-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;3.3: Energy gain vs.&nbsp;time: The origin is when the forager enters the patch; to the left is time spent traveling from one patch to the next, and to the right is time spent in the patch. The graph represents two different habitats, one in which the patches are easy to get to (habitat 1), and another where it takes more time to get from patch to patch (habitat 2). In all cases, the patches are identical, having the same gain function. The curved line is the gain function, the net energy gain as a function of time spent in the patch. The slope of that curve is the derivative of the gain function. Its slope at any single time point is the instantaneous rate of gain. The two straight lines are the expected gains averaged over time for each habitat as a whole. Lambda is the rate at which a forager randomly encounters patches - because it is a Poisson process, the mean or expected time is 1/lambda. The forager should leave the patch when the instantaneous rate of gain in the patch equals the long term average rate of gain for the habitat as a whole.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>The simple patch model predicts that when average travel time is greater, foragers will stay longer in a patch. Similarly, the model predicts that when patch quality is lower, foragers stay longer in each patch. Use Fig. <a href="#fig-marginal" class="quarto-xref">Figure&nbsp;<span>3.3</span></a> to construct explanations for these predictions.</p>
+<p><strong>Just a starting point</strong></p>
+<p>The simple prey and patch models have been extended a great deal to help understand a broad range of foraging situations <span class="citation" data-cites="sih2011ft">(<a href="references.html#ref-sih2011ft" role="doc-biblioref">Sih 2011</a>)</span>. Simultaneous, rather than sequential, encounters can lead to different predictions. In these cases, energy alone, <span class="math inline">\(e_i\)</span>, rather than profitability, <span class="math inline">\(e_i/h_i\)</span>, may determine prey selection that maximizes the long term mean average rate. Travel time and encounter rates interact with this to explain contrasting situations.</p>
+<p>Central place foragers play by slightly different rules <span class="citation" data-cites="stephens1986ft">(<a href="references.html#ref-stephens1986ft" role="doc-biblioref">Stephens and Krebs 1986</a>)</span>. Central place foragers are located in a single location, and remain there. For instance, a parent bird (or dinosaur) finds patches and returns repeatedly to the nest, bringing one or multiple prey items. With parent birds, their fitness depends on offspring viability, and so selection tends to optimize in a manner similar to an organism foraging for themselves. These cases have been built upon patch models, where the question is how to exploit patches that exist at different distances from the nest.</p>
+<p>Another example of a central place forager is a spider that acts as a ambush or sit-and-wait predator who remains stationary until a prey item gets close enough to attack. One approach to the spider problem is to consider the distance to the prey as a handling cost and search costs are negligible.</p>
+<p>These simple foraging models provide the starting points for a field of inquiry spanning many decades. The interplay between these models, the natural history of species, and experiments have led to greater appreciation of why organisms behave as they do, and the consequences for their evolution and the food webs and ecosystems in which they reside.</p>
+<div style="page-break-after: always;"></div>
+</section>
+<section id="a-simulation-of-a-prey-model" class="level2" data-number="3.3">
+<h2 data-number="3.3" class="anchored" data-anchor-id="a-simulation-of-a-prey-model"><span class="header-section-number">3.3</span> A simulation of a prey model</h2>
+<p>Next, we embark on a simulation of the simple prey model. We will start with these assumptions:</p>
+<ul>
+<li>two prey types, <span class="math inline">\(i = {1,2}\)</span></li>
+<li>ranked effective energy contents, <span class="math inline">\(e_1 &gt; e_2\)</span></li>
+<li>equal handling times, <span class="math inline">\(h_1=h_2=1\)</span></li>
+<li>equal relative abundances, <span class="math inline">\(r_1=r_2=0.5\)</span></li>
+<li>encounter rates determined by an overall prey encounter rate, <span class="math inline">\(\lambda\)</span>, and the relative abundances where <span class="math inline">\(\lambda_i = \lambda r_i\)</span>.</li>
+<li>probability of attack, <span class="math inline">\(p\)</span>, <span class="math inline">\(p_1=1\)</span>. Probability of type 2 depends on the model. In the standard (all or nothing) model <span class="math inline">\(p_2=1\)</span> if <span class="math inline">\(\frac{e_{2}}{h_{2}} / \frac{\lambda e_1}{1 + \lambda h_1} &gt; 1\)</span>, zero otherwise. In a proportion model, <span class="math inline">\(p_2\)</span> is proportional to the ratio.</li>
+<li>risk, <span class="math inline">\(k\)</span>: varies between [0-1] (including 0, 1). Reduces <span class="math inline">\(p\)</span> by <span class="math inline">\(p (1-k)\)</span></li>
+<li>search cost is constant, <span class="math inline">\(c_s=0.01\)</span></li>
+</ul>
+<p>In addition to these properties, our simulation needs several bookkeeping parameters and variables in order to track the forager energy content. It will need to run for a finite amount of time; we’ll control that with the total search time, <code>Total</code>. Remember that encounter rates are means but that actual encounters are random or stochastic. As a result, our forager may go through lean periods in which their net energy intake is negative.</p>
+<p>We need to keep track of total elapsed time, and for each cycle, the search time, search cost, handling time, and energy gain.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>optimal.forager <span class="ot">&lt;-</span> <span class="cf">function</span>(</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">e =</span> <span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">1</span>), <span class="co"># energy content of the prey types</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">h =</span> <span class="fu">c</span>(.<span class="dv">5</span>, .<span class="dv">5</span>), <span class="co"># handling times</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">r =</span> <span class="fu">c</span>(.<span class="dv">5</span>, .<span class="dv">5</span>), <span class="co"># relative abundance of prey types: sum(r) = 1</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">lambda =</span> .<span class="dv">4</span>, <span class="co"># overal encounter rate, for all prey combined</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">p =</span> <span class="dv">1</span>, <span class="co"># prob. of attack if encountered</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">type=</span><span class="dv">0</span>, <span class="co"># 0 = all or nothing</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">risk =</span> <span class="dv">0</span>,</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">cs =</span> <span class="fl">0.4</span>, <span class="co"># cost of searching per unit time</span></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">Total =</span> <span class="dv">10</span> <span class="co"># limit to foraging time</span></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>  ) {</span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a><span class="do">###############</span></span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>  <span class="co"># rate of encounter PER PREY TYPE based on relative abundance</span></span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>  (lambda.r <span class="ot">&lt;-</span> lambda <span class="sc">*</span> r)</span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>  <span class="do">## relative profitability of item 2</span></span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>  <span class="co"># raw varies (0, big)</span></span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a>  (raw.profit <span class="ot">&lt;-</span> (e[<span class="dv">2</span>]<span class="sc">/</span>h[<span class="dv">2</span>]) <span class="sc">/</span> </span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a>    (lambda.r[<span class="dv">1</span>]<span class="sc">*</span>e[<span class="dv">1</span>]<span class="sc">/</span>(<span class="dv">1</span><span class="sc">+</span>lambda.r[<span class="dv">1</span>]<span class="sc">*</span>h[<span class="dv">1</span>]) ) )</span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a><span class="co"># rel.profit varies (0,1)</span></span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a>  ( rel.profit <span class="ot">&lt;-</span> <span class="fu">min</span>( <span class="fu">c</span>(raw.profit, <span class="dv">1</span>) ) )</span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a><span class="do">### begin foraging</span></span>
+<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a>ec <span class="ot">&lt;-</span> <span class="cn">NULL</span> <span class="co"># an object to tally energy gains and costs.</span></span>
+<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a>id <span class="ot">&lt;-</span> <span class="cn">NULL</span> <span class="co"># an object to tally which species is actually selected</span></span>
+<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a>cycle <span class="ot">&lt;-</span> <span class="dv">0</span> <span class="co"># the cycle count (= search, choose and maybe attack and eat)</span></span>
+<span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a>ct <span class="ot">&lt;-</span> <span class="dv">0</span> <span class="co"># start time of the cycles; an object to tally cycle times.</span></span>
+<span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a>elapsed.time <span class="ot">&lt;-</span> <span class="dv">0</span> <span class="co"># total time spent foraging</span></span>
+<span id="cb2-31"><a href="#cb2-31" aria-hidden="true" tabindex="-1"></a><span class="cf">while</span>( elapsed.time <span class="sc">&lt;</span> Total ) {</span>
+<span id="cb2-32"><a href="#cb2-32" aria-hidden="true" tabindex="-1"></a>  <span class="co"># count which search cycle we're on</span></span>
+<span id="cb2-33"><a href="#cb2-33" aria-hidden="true" tabindex="-1"></a>  (cycle <span class="ot">&lt;-</span> cycle <span class="sc">+</span> <span class="dv">1</span>)</span>
+<span id="cb2-34"><a href="#cb2-34" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb2-35"><a href="#cb2-35" aria-hidden="true" tabindex="-1"></a>  <span class="co"># # a random amount of search time, t.s, until it finds one prey type or the other</span></span>
+<span id="cb2-36"><a href="#cb2-36" aria-hidden="true" tabindex="-1"></a>  (ts <span class="ot">&lt;-</span> <span class="fu">rexp</span>(<span class="dv">2</span>, <span class="at">rate=</span>lambda.r))</span>
+<span id="cb2-37"><a href="#cb2-37" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb2-38"><a href="#cb2-38" aria-hidden="true" tabindex="-1"></a>  <span class="co"># if the time to find prey type 1 &lt; than the other type is 1 other wise type 2.</span></span>
+<span id="cb2-39"><a href="#cb2-39" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span>(ts[<span class="dv">1</span>] <span class="sc">&lt;</span> ts[<span class="dv">2</span>]) i <span class="ot">&lt;-</span> <span class="dv">1</span> <span class="cf">else</span> i <span class="ot">&lt;-</span> <span class="dv">2</span></span>
+<span id="cb2-40"><a href="#cb2-40" aria-hidden="true" tabindex="-1"></a>  i</span>
+<span id="cb2-41"><a href="#cb2-41" aria-hidden="true" tabindex="-1"></a>  <span class="co"># cost of searching for that time</span></span>
+<span id="cb2-42"><a href="#cb2-42" aria-hidden="true" tabindex="-1"></a>  (cost.s <span class="ot">&lt;-</span> ts[i] <span class="sc">*</span> cs)</span>
+<span id="cb2-43"><a href="#cb2-43" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-44"><a href="#cb2-44" aria-hidden="true" tabindex="-1"></a>  <span class="co"># choose with probability p to attack the encountered item </span></span>
+<span id="cb2-45"><a href="#cb2-45" aria-hidden="true" tabindex="-1"></a>  <span class="co"># depends on e_2/h_2</span></span>
+<span id="cb2-46"><a href="#cb2-46" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span>(i <span class="sc">==</span> <span class="dv">2</span>){</span>
+<span id="cb2-47"><a href="#cb2-47" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span>(type<span class="sc">==</span><span class="dv">0</span>) {</span>
+<span id="cb2-48"><a href="#cb2-48" aria-hidden="true" tabindex="-1"></a>      <span class="cf">if</span>(raw.profit <span class="sc">&gt;</span> <span class="dv">1</span> ) {p <span class="ot">&lt;-</span> <span class="dv">1</span>} <span class="cf">else</span>{ p <span class="ot">&lt;-</span> <span class="dv">0</span>}</span>
+<span id="cb2-49"><a href="#cb2-49" aria-hidden="true" tabindex="-1"></a>    } <span class="cf">else</span> {</span>
+<span id="cb2-50"><a href="#cb2-50" aria-hidden="true" tabindex="-1"></a>      p <span class="ot">&lt;-</span> rel.profit</span>
+<span id="cb2-51"><a href="#cb2-51" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb2-52"><a href="#cb2-52" aria-hidden="true" tabindex="-1"></a>  } </span>
+<span id="cb2-53"><a href="#cb2-53" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb2-54"><a href="#cb2-54" aria-hidden="true" tabindex="-1"></a>  <span class="co"># track prey item type</span></span>
+<span id="cb2-55"><a href="#cb2-55" aria-hidden="true" tabindex="-1"></a>  this.id <span class="ot">&lt;-</span> i</span>
+<span id="cb2-56"><a href="#cb2-56" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span>(this.id<span class="sc">==</span><span class="dv">2</span> <span class="sc">&amp;</span> p<span class="sc">==</span><span class="dv">0</span>) this.id <span class="ot">&lt;-</span> <span class="cn">NA</span></span>
+<span id="cb2-57"><a href="#cb2-57" aria-hidden="true" tabindex="-1"></a>  (id <span class="ot">&lt;-</span> <span class="fu">c</span>(id, this.id))</span>
+<span id="cb2-58"><a href="#cb2-58" aria-hidden="true" tabindex="-1"></a>  p</span>
+<span id="cb2-59"><a href="#cb2-59" aria-hidden="true" tabindex="-1"></a>  p2 <span class="ot">&lt;-</span> p <span class="sc">*</span> (<span class="dv">1</span><span class="sc">-</span>risk)</span>
+<span id="cb2-60"><a href="#cb2-60" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb2-61"><a href="#cb2-61" aria-hidden="true" tabindex="-1"></a>  (gain <span class="ot">&lt;-</span> <span class="cf">if</span>(p2 <span class="sc">&gt;</span> <span class="fu">runif</span>(<span class="dv">1</span>)){e[i]} <span class="cf">else</span> {<span class="dv">0</span>} )</span>
+<span id="cb2-62"><a href="#cb2-62" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb2-63"><a href="#cb2-63" aria-hidden="true" tabindex="-1"></a>  <span class="co"># reset </span></span>
+<span id="cb2-64"><a href="#cb2-64" aria-hidden="true" tabindex="-1"></a>  <span class="co"># observed handling time </span></span>
+<span id="cb2-65"><a href="#cb2-65" aria-hidden="true" tabindex="-1"></a>  <span class="co"># if something is eaten...</span></span>
+<span id="cb2-66"><a href="#cb2-66" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span>(gain <span class="sc">&gt;</span> <span class="dv">0</span> ){</span>
+<span id="cb2-67"><a href="#cb2-67" aria-hidden="true" tabindex="-1"></a>    <span class="co"># then observed handling time is h_i</span></span>
+<span id="cb2-68"><a href="#cb2-68" aria-hidden="true" tabindex="-1"></a>    h.obs <span class="ot">&lt;-</span> h[i]</span>
+<span id="cb2-69"><a href="#cb2-69" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb2-70"><a href="#cb2-70" aria-hidden="true" tabindex="-1"></a>  } <span class="cf">else</span> {</span>
+<span id="cb2-71"><a href="#cb2-71" aria-hidden="true" tabindex="-1"></a>    <span class="co"># otherwise there is no handling</span></span>
+<span id="cb2-72"><a href="#cb2-72" aria-hidden="true" tabindex="-1"></a>    h.obs <span class="ot">&lt;-</span> <span class="dv">0</span></span>
+<span id="cb2-73"><a href="#cb2-73" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb2-74"><a href="#cb2-74" aria-hidden="true" tabindex="-1"></a>   </span>
+<span id="cb2-75"><a href="#cb2-75" aria-hidden="true" tabindex="-1"></a>  <span class="co"># cycle time increases if there is handling</span></span>
+<span id="cb2-76"><a href="#cb2-76" aria-hidden="true" tabindex="-1"></a> (cycle.time <span class="ot">&lt;-</span> ts[i] <span class="sc">+</span> h.obs )</span>
+<span id="cb2-77"><a href="#cb2-77" aria-hidden="true" tabindex="-1"></a>  <span class="co"># combine the vector of times with the new cycle time. </span></span>
+<span id="cb2-78"><a href="#cb2-78" aria-hidden="true" tabindex="-1"></a> ct <span class="ot">&lt;-</span> <span class="fu">c</span>(ct, cycle.time)</span>
+<span id="cb2-79"><a href="#cb2-79" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb2-80"><a href="#cb2-80" aria-hidden="true" tabindex="-1"></a> <span class="co"># total time spent foraging increases </span></span>
+<span id="cb2-81"><a href="#cb2-81" aria-hidden="true" tabindex="-1"></a> (elapsed.time <span class="ot">&lt;-</span> elapsed.time <span class="sc">+</span> cycle.time)</span>
+<span id="cb2-82"><a href="#cb2-82" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb2-83"><a href="#cb2-83" aria-hidden="true" tabindex="-1"></a> <span class="co"># # combine vector of energies with new observed net energy</span></span>
+<span id="cb2-84"><a href="#cb2-84" aria-hidden="true" tabindex="-1"></a> (ec <span class="ot">&lt;-</span> <span class="fu">c</span>(ec, gain <span class="sc">-</span> cost.s))</span>
+<span id="cb2-85"><a href="#cb2-85" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb2-86"><a href="#cb2-86" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-87"><a href="#cb2-87" aria-hidden="true" tabindex="-1"></a><span class="do">## organize and output</span></span>
+<span id="cb2-88"><a href="#cb2-88" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">net.e =</span> ec, <span class="at">cycle.start =</span> <span class="fu">cumsum</span>(ct[<span class="dv">1</span><span class="sc">:</span>cycle]))</span>
+<span id="cb2-89"><a href="#cb2-89" aria-hidden="true" tabindex="-1"></a>params <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="at">e=</span>e, <span class="at">h=</span>h, <span class="at">r=</span>r, <span class="at">lambda=</span>lambda, <span class="at">type=</span>type, <span class="at">p=</span>p, <span class="at">risk=</span>risk, <span class="at">cs=</span>cs, <span class="at">Total=</span>Total)</span>
+<span id="cb2-90"><a href="#cb2-90" aria-hidden="true" tabindex="-1"></a>id.rmna <span class="ot">&lt;-</span> id[<span class="sc">!</span><span class="fu">is.na</span>(id)]</span>
+<span id="cb2-91"><a href="#cb2-91" aria-hidden="true" tabindex="-1"></a>  out <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="at">N =</span> cycle, <span class="at">G =</span> <span class="fu">sum</span>(ec), <span class="at">Tt =</span> <span class="fu">sum</span>(ct), </span>
+<span id="cb2-92"><a href="#cb2-92" aria-hidden="true" tabindex="-1"></a>              <span class="at">id=</span>id,</span>
+<span id="cb2-93"><a href="#cb2-93" aria-hidden="true" tabindex="-1"></a>              <span class="at">R =</span> <span class="fu">sum</span>(ec)<span class="sc">/</span><span class="fu">sum</span>(ct),</span>
+<span id="cb2-94"><a href="#cb2-94" aria-hidden="true" tabindex="-1"></a>              <span class="at">prop1 =</span> <span class="fu">sum</span>(id.rmna<span class="sc">==</span><span class="dv">1</span>)<span class="sc">/</span><span class="fu">length</span>(id.rmna),</span>
+<span id="cb2-95"><a href="#cb2-95" aria-hidden="true" tabindex="-1"></a>              <span class="at">series =</span> df,</span>
+<span id="cb2-96"><a href="#cb2-96" aria-hidden="true" tabindex="-1"></a>              <span class="at">params =</span> params)</span>
+<span id="cb2-97"><a href="#cb2-97" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(out)</span>
+<span id="cb2-98"><a href="#cb2-98" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>Here we let the forager forage for 60 minutes and then examine the structure of the output object.</p>
+<div class="cell" data-keep.source="true">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>myOut <span class="ot">&lt;-</span> <span class="fu">optimal.forager</span>(<span class="at">Total=</span><span class="dv">60</span>)</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(myOut)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>List of 8
+ $ N     : num 24
+ $ G     : num 12.8
+ $ Tt    : num 65
+ $ id    : num [1:24] 2 1 2 2 2 1 1 2 1 2 ...
+ $ R     : num 0.197
+ $ prop1 : num 0.417
+ $ series:'data.frame': 24 obs. of  2 variables:
+  ..$ net.e      : num [1:24] -0.23 1.766 -0.359 0.759 0.883 ...
+  ..$ cycle.start: num [1:24] 0 3.57 4.66 8.56 9.66 ...
+ $ params:List of 9
+  ..$ e     : num [1:2] 2 1
+  ..$ h     : num [1:2] 0.5 0.5
+  ..$ r     : num [1:2] 0.5 0.5
+  ..$ lambda: num 0.4
+  ..$ type  : num 0
+  ..$ p     : num 1
+  ..$ risk  : num 0
+  ..$ cs    : num 0.4
+  ..$ Total : num 60</code></pre>
+</div>
+</div>
+<ul>
+<li>N is the number of foraging cycles</li>
+<li>G is net energy gain</li>
+<li>Tt is total elapsed time</li>
+<li>series is a dataframe with two variables: net.e is energy gain minus search costs for each cycle, and cycle.start is the elapsed time at which each cycle starts</li>
+<li>params is a list that includes all the parameters we used in this run</li>
+</ul>
+<p>Now let’s graph something, because graphs are fun.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(myOut<span class="sc">$</span>series, <span class="fu">aes</span>(<span class="at">x=</span>cycle.start, <span class="at">y=</span><span class="fu">cumsum</span>(net.e))) <span class="sc">+</span> <span class="fu">geom_line</span>() </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="02-optimal_foraging_files/figure-html/oft1-1.png" class="img-fluid figure-img" width="672"></p>
+<figcaption>The cumulative energy capital of a forager goes down while searching and handling resource items, but increases each time the prey is assimilated.</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p><em>Use this simulation</em> to help solidify in your own mind predictions of the simple prey model. How should we do that?</p>
+<p>What is the prediction we are interested in?</p>
+<p>Prediction: Include type 2 if <span id="eq-prediction"><span class="math display">\[
+\frac{e_2}{h_2} &gt; \frac{\lambda_1 e_1 }{1 + \lambda_1 h_1}
+\tag{3.2}\]</span></span></p>
+<div class="cell" data-fig.hold="true">
+<div class="cell-output-display">
+<div id="fig-preypred" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-preypred-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="02-optimal_foraging_files/figure-html/fig-preypred-1.png" class="img-fluid figure-img" style="width:100.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-preypred-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;3.4: The right hand side of our prediction
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>To get a sense of what our prediction <a href="#eq-prediction" class="quarto-xref">Equation&nbsp;<span>3.2</span></a> means, we should graph the righthand quantity as a function of one relevant variable, such as energy content of type 1, or the encounter rate (Fig. <a href="#fig-preypred" class="quarto-xref">Figure&nbsp;<span>3.4</span></a>). The parameters that determined these curves are:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">unlist</span>( myOut<span class="sc">$</span>params )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>    e1     e2     h1     h2     r1     r2 lambda   type      p   risk     cs 
+   2.0    1.0    0.5    0.5    0.5    0.5    0.4    0.0    1.0    0.0    0.4 
+ Total 
+  60.0 </code></pre>
+</div>
+</div>
+<section id="lab-exercise" class="level3" data-number="3.3.1">
+<h3 data-number="3.3.1" class="anchored" data-anchor-id="lab-exercise"><span class="header-section-number">3.3.1</span> Lab exercise</h3>
+<ol type="1">
+<li>Do these parameter values suggest that our forager should or should not include prey type 1 in her diet?</li>
+<li>Create parameter combinations for which the forager (i) should and (ii) should not include prey type 2.</li>
+<li>Use the simulation <code>optimal.forager()</code> to confirm your predictions.</li>
+</ol>
+
+
+<div id="refs" class="references csl-bib-body hanging-indent" role="list" style="display: none">
+<div id="ref-beckerman2010" class="csl-entry" role="listitem">
+Beckerman, Andrew, Owen L. Petchey, and Peter J. Morin. 2010. <span>“Adaptive <span>Foragers</span> and <span>Community Ecology</span>: <span>Linking Individuals</span> to <span>Communities</span> and <span>Ecosystems</span>.”</span> <em>Functional Ecology</em> 24 (1): 1–6.
+</div>
+<div id="ref-boenigk2002" class="csl-entry" role="listitem">
+Boenigk, J., C. Metz, K. Jürgens, and H. Arndt. 2002. <span>“Food <span>Concentration-Dependent Regulation</span> of <span>Food Selectivity</span> of <span>Interception Feeding Bacterivorous Nanoflagellates</span>.”</span> <em>Aquatic Microbial Ecology</em> 27: 195–202.
+</div>
+<div id="ref-charnov1976b" class="csl-entry" role="listitem">
+Charnov, E. L. 1976. <span>“Optimal <span>Foraging Theory</span>: <span>The Marginal Value Theorem</span>.”</span> <em>Theoretical Population Biology</em> 9: 129–36. <a href="https://www.ncbi.nlm.nih.gov/pubmed/1273796">https://www.ncbi.nlm.nih.gov/pubmed/1273796</a>.
+</div>
+<div id="ref-ellner2009" class="csl-entry" role="listitem">
+Ellner, S. P. 2009. <span>“Lecture <span>Notes</span>, <span>BioEE</span> 4600 <span>Theoretical Ecology</span> , <span>Cornell University</span>.”</span> Unpublished manuscript.
+</div>
+<div id="ref-emlen1966" class="csl-entry" role="listitem">
+Emlen, J. M. 1966. <span>“The <span>Role</span> of <span>Time</span> and <span>Energy</span> in <span>Food Preference</span>.”</span> <em>The American Naturalist</em> 100: 611–17.
+</div>
+<div id="ref-macarthur1966" class="csl-entry" role="listitem">
+MacArthur, R H, and E R Pianka. 1966. <span>“On <span>Optimal Use</span> of a <span>Patchy Environment</span>.”</span> <em>The American Naturalist</em> 100: 603–9.
+</div>
+<div id="ref-sih2011ft" class="csl-entry" role="listitem">
+Sih, A. 2011. <em>Foraging <span>Theory</span></em>. Edited by S. M. Scheiner and M. R. Willig. University of Chicago Press.
+</div>
+<div id="ref-stephens1986ft" class="csl-entry" role="listitem">
+Stephens, D W, and J R Krebs. 1986. <em>Foraging <span>Theory</span></em>. Edited by J. R. Krebs and T. H. Clutton-Brock. Monographs in <span>Behavior</span> and <span>Ecology</span>. Princeton University Press.
+</div>
+</div>
+</section>
+</section>
+
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./01-theory.html" class="pagination-link" aria-label="Theory in Ecology">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Theory in Ecology</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./03-Expo-growth.html" class="pagination-link" aria-label="Simple density-independent growth">
+        <span class="nav-page-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Simple density-independent growth</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
