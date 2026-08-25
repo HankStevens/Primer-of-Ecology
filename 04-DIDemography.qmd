@@ -1,4 +1,4 @@
-# Density-independent Demography {#DID}
+# Density-independent Demography {#sec-did}
 ```{r include=FALSE}
 source("scripts/setup.R")
 ```
@@ -40,7 +40,7 @@ The *structure* to which we refer is simply the organization of populations by s
 
 Structured population models allow us to intertwine species-specific natural history and quantitative methods. This makes the approach especially appealing for the conservation biology of threatened and endangered species. We use structured population models to improve our understanding of a population or improve predictions of its future dynamics, or guide the management of the population. We might learn a lot about what controls the abundance of a species if we can test ideas related to different stages, ages, or sizes. What limits the population growth of the Western toad -- is it egg survival, or overwintering survival of juveniles? Where should we invest our efforts to control garlic mustard (*Alliaria petiolata*) -- killing the first year rosettes, or the second year adults? Why are cacti generally endangered [@goettsch2015hpc]---is the smallest size or the largest size more important for long-term survival? We can use structured population models to address such questions.
 
-## A two stage matrix model
+## A two stage matrix model {#sec-transition-matrix}
 
 ```{r fig-toadlh, echo=FALSE, fig.cap="Like all amphibians, the Western toad (*Anaxyrus boreas*) has a complex life cycle, with several life history stages. Adults breed in early spring, laying eggs in water. The larvae (tadpoles) hatch and develop over the spring and summer, and then metamorphose (become metamorphs), and then juveniles. Juveniles require more than a year to mature. Adults can live up to about a decade. American toads (*A. americanus*) do the same thing.", out.width='65%', fig.show='hold'}
 include_graphics("figs/VoneshF1.png")
@@ -397,7 +397,7 @@ Once you have obtained the transition matrix, $\mathbf{A}$, we can analysis it u
 
 Below, we explain each of these quantities.
 
-### Eigenanalysis
+### Eigenanalysis {#sec-eigenanalysis}
 
 Eigenanalysis is a mathematical technique that summarizes multivariate data. Ecologists use \index{eigenanalysis!demographic matrix}eigenanalysis frequently, for (i) multivariate statistics such as ordination, (ii) local stability analyses with two or more species, and (iii) analyzing population transition matrices. Eigenanalysis is simply a method to transform a square matrix into independent, or orthogonal, pieces. These pieces are *eigenvectors* and their corresponding *eigenvalues.* There are the same number of eigenvalues (and eigenvectors) as there are columns in a matrix. In demography, the two of the most useful pieces are the *dominant right eigenvalue* and its *corresponding right eigenvector*. 
 
@@ -460,7 +460,7 @@ In this book, we will not delve into details of eigenanalysis beyond this. Here 
 
 What is important for us is how we use the results. Below, we describe how we use eigenanalysis to find (i) the long term asymptotic finite rate of increase $\lambda$, (ii) the *stable stage distribution*, and the *reproductive values* of each stage.
 
-### Finite rate of increase 
+### Finite rate of increase {#sec-lambda1}
 The asymptotic annual growth rate or finite rate of increase\index{lambda!dominant eigenvalue} is the dominant eigenvalue of the transition matrix. It has the same meaning as in geometric growth of an unstructured population. 
 
 Eigenvalues are always referred to with the Greek symbol $\lambda$, and provide a solution to @eq-eigsol. The dominant eigenvalue of any matrix, $\lambda_{1}$, is the eigenvalue with the largest magnitude, and it is frequently a complex number. When we perform eigenanalysis, it is common to get complex numbers, with real and imaginary parts. The magnitude is the sum of the squared parts. With population transition matrices, $\lambda_{1}$ will always be positive and real. This will not be the case with other types of matrices we examine in later chapters.
@@ -476,7 +476,7 @@ We use that index to extract the largest eigenvalue. We keep the real part, usin
 ```
 `L1` is $\lambda_1$, the asymptotic finite rate of increase. This finite rate of increase has the same biological meaning as $\lambda$ in the previous chapter.
 
-### Stable stage distribution
+### Stable stage distribution {#sec-stable-stage-distribution}
 The predicted long term average relative abundance of the different life history stages or ages is called the *stage distribution*, that is, the distribution of individuals among the stages. A property of a stage structured population is that, if all the demographic rates (elements of the transition matrix) remain constant, its stage structure will approach a \index{stage distribution!stable}*stable* stage distribution, a stage distribution in which the relative number of individuals in each stage is constant. Note that a population can grow, so that the absolute number of individuals increases, but the relative abundances of the stages is constant; this is the stable stage distribution. If the population is not actually growing (i.e. $\lambda=1$) and demographic parameters remain constant, then the population is *stationary* and will achieve a \index{stage distribution!stationary}*stationary stage distribution*, where neither absolute nor relative abundances change.
 
 How do we find the stable stage distribution? It also turns out that $w_1$ provides the necessary information. We scale the eigenvector $w_1$ by the sum of its elements because we are interested in the *distribution*, which is defined by all stages summing to one. Therefore the stable stage distribution is 
@@ -532,7 +532,7 @@ qplot(x=1:steps, y=lambda.t, geom=c("line", "point")) +
 
 Iterating the transition matrix to approximate $\lambda_1$ and $w_1$ is actually called the *power iteration method* for eigenanalysis. 
 
-### Reproductive value
+### Reproductive value {#sec-reproductive-value}
 
 If the stage structure gives us one measure of the importance of a stage (its relative abundance), then the *reproductive value* gives us one measure of the importance of an *individual* in each stage. Reproductive value is the expected contribution of each individual to future reproduction. We characterize all individuals in a stage using the same expected reproductive value.
 
@@ -554,7 +554,7 @@ v1 <- Re(etA$vectors[,dom.pos])
 ```
 Here we see that reproductive value, `rv`, increases with age or stage. This means that the expected reproductive value of an individual in the second stage is ```r round(rv[2]/rv[1],1)``` times as great as that of an individual in the first stage. In general, reproductive value of individuals in a stage increases with increasing probability of reaching fecund stages. 
 
-### Sensitivity and elasticity
+### Sensitivity and elasticity {#sec-sensitivity-elasticity}
 \index{sensitivity}Sensitivity and elasticity tell us the relative importance of each transition (i.e. each arrow of the life cycle graph or element of the matrix) in determining $\lambda$. They do so by combining information on the stable stage structure and reproductive values. 
 
 The stage structure and reproductive values each in their own way contribute to the importance of each stage in determining $\lambda$. The stable stage distribution provides the relative abundance of individuals in each stage. Reproductive value provides the expected contribution to future population growth of individuals in each stage. Sensitivity and elasticity combine these to tell us the relative importance of each transition in determining $\lambda_1$.

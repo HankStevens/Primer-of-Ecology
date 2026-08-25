@@ -1,4 +1,4 @@
-# Coexistence via competition, dispersal, and storage {#compcol}
+# Coexistence via competition, dispersal, and storage {#sec-compcol}
 
 ```{r include=FALSE}
 source("scripts/setup.R")
@@ -34,7 +34,7 @@ ggplot(data=db,
 
  We begin with a simple model of the *competition--colonization tradeoff*, explore *habitat destruction and the extinction  debt*, and then examine a model that adds an important subtlety: *finite rates of competitive exclusion*. We finish up with an introduction to a very important phenomenon, the *storage effect*.
 
-## Competition--colonization Tradeoff
+## Competition--colonization Tradeoff {#sec-comp-col-tradeoff}
 
 Models of coexistence via this tradeoff have been around for over 70 years [@skellam1951rdt; @levins1971rcs; @horn:1972fk; @armstrong1976fsv; @hastings1980dch; @shmida1984cps; @levin:1984uq]. In this tradeoff, species coexist because all individuals die, and therefore all species have to have some ability to colonize new space. This implies that species may be good at colonizing open sites, or they may be good at displacing other species from an occupied site. These two extremes setup the basic tradeoff, wherein species coexist none of them have too good a combination of both traits. 
 
@@ -279,7 +279,7 @@ params[["ci"]][i] * y[i] * ( 1 - D - sum(y[1:i]) ) -
 ``` 
 The above code  implements the strict hierarchy of eq. @eq-cc10, and is inspired by a similar approach by @roughgarden1998. It also allows us to specify, on the fly, the number of species  we want. We also sneak in a parameterization for habitat destruction, $D$, and we will address that later. 
 
-One goal was to explain the successional patterns of grasses in his study area, the low nutrient grassland/savanna of Minnesota sand plains. Following early succession, the common perennial prairie grass species seemed to form an abundance hierarchy based on competitive ability: the best competitors were the most abundant, and the worst competitors were least abundant. A caricature of a generic species abundance distribution is the geometric distribution, where each species, with rank $i$ makes up a constant, declining, fraction of the total density of all individuals (see Chapter 10 for more detail).^[The most abundant species has rank equal to 1.] Specifically, the proportional abundance of each species $i$ can be calculated as a function of proportional abundance of the most abundant species, $d$, and the species rank, $i$.
+One goal was to explain the successional patterns of grasses in his study area, the low nutrient grassland/savanna of Minnesota sand plains. Following early succession, the common perennial prairie grass species seemed to form an abundance hierarchy based on competitive ability: the best competitors were the most abundant, and the worst competitors were least abundant. A caricature of a generic species abundance distribution is the geometric distribution, where each species, with rank $i$ makes up a constant, declining, fraction of the total density of all individuals (see @sec-species-abundance-distributions for more detail).^[The most abundant species has rank equal to 1.] Specifically, the proportional abundance of each species $i$ can be calculated as a function of proportional abundance of the most abundant species, $d$, and the species rank, $i$.
 $$
 \begin{aligned}
   p_i&=d(1-d)^{i-1}
@@ -632,7 +632,7 @@ We can compare patterns of extinction under these two scenarios (Fig. @fig-EDSN,
 These opposing predictions regarding the extinction debt highlight the important of getting the mechanism right. They also illustrate the power of simplistic models to inform understanding.
 
 
-## Storage effect
+## Storage effect {#sec-storage-effect}
 
 What if all of this is wrong? What if none of these tradeoffs underlie coexistence? Jim Clark and his colleagues [@clark2004ftc] examined dispersal traits of co-occurring deciduous forest trees (fecundity, dispersal), and  successional status, and found no evidence that early successional species had higher dispersal capacity. This suggests a lack of support for competition--colonization tradeoffs among coexisting species in a persistent community.  Rather, they found evidence that *asynchronous success in reproduction* of these *long-lived organisms* allowed them to coexist. These traits helped generate a mechanism referred to as the *storage effect* [@chesson2000gtc,@warner1985].
 
@@ -955,7 +955,7 @@ matplot(c(t,years+1), Ns,  log='y', type='l', col=1, xlab="Time",
 #### Examining characteristics of the storage effect
 Let us go back and examine a few of the characteristics that we should observe, if the storage effect is operating. First, note that above we showed differential responses to the environment, incomplete niche overlap, and buffered growth (Fig. @fig-rho). 
 
-Next, we will try to examine the environment-competition covariation. This is not trivial, and papers are written about how to estimate this. For now, recall that in Chapter 3, we began with an examination of negative density-dependence. Here we quantify the magnitude of this negative effect, as our *effect of competition.* Let us invent a new value, $\nu$, to measure how much the observed growth rate is affected by large population sizes,
+Next, we will try to examine the environment-competition covariation. This is not trivial, and papers are written about how to estimate this. For now, recall that in @sec-logistic-growth, we began with an examination of negative density-dependence. Here we quantify the magnitude of this negative effect, as our *effect of competition.* Let us invent a new value, $\nu$, to measure how much the observed growth rate is affected by large population sizes,
 $$
   \nu_{i,t} = \log\left(\frac{R_{max}}{R_{i,t}}\right)
 $$ {#eq-compnu}

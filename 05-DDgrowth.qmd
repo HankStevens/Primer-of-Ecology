@@ -1,4 +1,4 @@
-# Density-dependent growth {#DDgrowth}
+# Density-dependent growth {#sec-ddgrowth}
 ```{r include=FALSE}
 source("scripts/setup.R")
 ```
@@ -28,7 +28,7 @@ labs(y=bquote(italic(r[t])),
 s2
 ```
 
-Song Sparrow *Melospiza melodia* counts, $N$, from 1966--2003 and the relation between observed counts ($N_t$) and annual growth rate ($r_t = N_{t+1}/N_t - 1$) determined from those counts, fit with ordinary least squares regression. See Chapter 3 for data source.
+Song Sparrow *Melospiza melodia* counts, $N$, from 1966--2003 and the relation between observed counts ($N_t$) and annual growth rate ($r_t = N_{t+1}/N_t - 1$) determined from those counts, fit with ordinary least squares regression. See @sec-expo for data source.
 :::
 
 ```{r secondorder, echo=FALSE, eval=FALSE}
@@ -48,7 +48,7 @@ What might limit the population growth of these sparrows? Space available for ma
 
 Density-dependent population growth is the case where the per capita population growth rate depends statistically on the density of the population. When the slope of that relation is negative as it is in Fig. @fig-sparrowDD, we call this *negative density-dependence*. Negative density dependence a characteristic of a population undergoing *intraspecific competition*, where individuals of the same species compete for shared resources and have negative effects on their demographic rates. So, \ldots how would we represent this algebraically?^[root: Arabic. *Al-jabr*]
 
-## Continuous logistic growth
+## Continuous logistic growth {#sec-logistic-growth}
 
 When it was originally introduced to ecology by Verlhurst in the late 1800s, he described the limits to population growth in terms of an upper limit $K$, 
 $$
@@ -98,7 +98,7 @@ When we imagine a marble in a wok, it becomes easy to envision $K$ as an attract
 
 The equilibrium we have focused on has been $K$, but recall that $N=0$ is also an equilibrium. This equilibrium is actually the edge of the wok --- the slightest jiggle, and the marble falls in and moves toward the center of the wok, $K$.  The biological analog of this "jiggle" is the additional of one or a very small numbers of individuals to an otherwise extinct population. For example, consider that a sterile Petri dish with nutrient agar has an *E. coli* population size of zero. If that *E. coli* $N=0$ gets "perturbed" with a single added cell, the population will move quickly toward its carrying capacity $K$. In this sense, $N=0$ is an equilibrium, but it is an *unstable* equilibrium. We also call such an unstable equilibrium a *repellor*.
 
-### Analytical linear stability analysis
+### Analytical linear stability analysis {#sec-stability-analysis}
 We are interested in the dynamics or stability of $N$ at each of the equilibria, $N^*$. Here we use *analytical linear stability analysis* to show mathematically what we described above with the marble and the wok. While somewhat limited in its scope, linear stability is nonetheless a powerful technique for dynamic model analysis.
 
 In a nutshell, what we do is determine whether the growth rate, which is zero at each equilibrium, becomes positive or negative in response to a small change in $N$. That is, if $N$ takes a tiny step away from the equilibrium, does that tiny step shrink, or grow? If a tiny step results in a shrinking of the next step, back toward the equilibrium, that demonstrates a tendency to return, and indicates a stable equilibrium. If a tiny step results in a bigger next step, that demonstrates movement away from the equilibrium and instability. That is what analytical stability analysis tells us.
@@ -355,7 +355,7 @@ logistic_trajectory    <- trajectory(logistic,
 
 There are many mathematical forms of density-dependent growth, some of which will we describe below. Let's start by decoupling the density-dependence of birth and death rates in logistic growth [@gotelli2001vv]. 
 
-Recall from chapter 3 (density-independent growth) that $r=b-d$. Now we will let $b$ and $d$ be functions of population size $N$ ($b=F(N)$, $d=G(N)$). We could let $F(N)$ and $G(N)$ take a wide variety of different forms. For now, however, let's say that $N$ has *linear* effects on these rates so that 
+Recall from @sec-expo (density-independent growth) that $r=b-d$. Now we will let $b$ and $d$ be functions of population size $N$ ($b=F(N)$, $d=G(N)$). We could let $F(N)$ and $G(N)$ take a wide variety of different forms. For now, however, let's say that $N$ has *linear* effects on these rates so that 
 \begin{align}
 b &=b_0 - aN\\
 d &= d_0 + cN
@@ -513,7 +513,7 @@ N_{t}=\frac{N_{0}e^{rt}}{1+\alpha N_{0}\left(e^{rt}-1\right)}.
 \end{equation}
 Note the resemblance to the exponential equation. We have the exponential equation in the numerator, divided by a correction factor which starts at 1 when $t=0$. The correction factor then grows with time, at a rate which is virtually the same as exponential growth but adjusted by $\alpha$ and scaled by $N_{0}$. Thus when $t=0$, and if $N_0$ is small, we have near-exponential growth, decreased merely by a factor of $\alpha N_0$. 
 
-## Discrete Density-dependent Growth
+## Discrete Density-dependent Growth {#sec-discrete-logistic-growth}
 The continuous logistic equation is probably our simplest example of population growth, aside from pure exponential growth. Here we describe the discrete-time version. Recall that the definition of discrete population growth rate is 
 $$\frac{\Delta N}{\Delta t}=\frac{N_{t+1}-N_t}{(t+1) - t}=N_{t+1}-N_t$$
 because our time step is one (1) entire time unit (typically a year). The discrete time logistic function is therefore
@@ -521,7 +521,7 @@ $$
   N_{t+1} - N_t = r_d N_t\left(1-\alpha N_t\right)
 $$ {#eq-3dd}
 
-Here $r_d$ has the same meaning it did in chapter 3, where $r_d = b-d-bd$. When $r_d$ is quite small in a slow growing population, this is very similar to the continuous form. However, as $r_d$ becomes larger in a faster growing population, the dynamics can get quite exciting.
+Here $r_d$ has the same meaning it did in @sec-expo, where $r_d = b-d-bd$. When $r_d$ is quite small in a slow growing population, this is very similar to the continuous form. However, as $r_d$ becomes larger in a faster growing population, the dynamics can get quite exciting.
 
 Let's explore the dynamics of this numerically by writing a function to project discrete logistic growth. A pre-written function is available in `primer` by the same name. 
 
@@ -649,7 +649,7 @@ ggplot(data=out, aes(time, N, colour=N0, linetype=N0)) + geom_line()
 ```
 
 #### Boundedness, and other descriptors
-One last issue that we should note is the extent to which our populations are *bounded*. A population may have complex dynamics, but we may be able to characterize a given population by its upper and lower bounds. In spite of the differences created by the initial conditions, the upper and lower bounds of our chaotic populations were very similar (Fig. @fig-DDGChaosInitN). In contrast, a population undergoing a random walk, as in our sparrow simulations in Chapter 3, will be unbounded - the variance will increase with time.
+One last issue that we should note is the extent to which our populations are *bounded*. A population may have complex dynamics, but we may be able to characterize a given population by its upper and lower bounds. In spite of the differences created by the initial conditions, the upper and lower bounds of our chaotic populations were very similar (Fig. @fig-DDGChaosInitN). In contrast, a population undergoing a random walk, as in our sparrow simulations in @sec-expo, will be unbounded - the variance will increase with time.
 
 Note also as $r_d$ increases (Fig. @fig-bifurcation1) the oscillations increase very systematically. One way to see the deterministic nature of chaos is to trace population size from each time point to the next time point. We put $N_t$ on the $x$-axis and $N_{t+1}$ on the $y$-axis, and connect all successive points.  
 ```{r logweb, fig.cap="A chaotic discrete logistic population shows certain highly predictable patterns including population sizes limited to a quadratic form revealed here.", out.width="75%"}
@@ -736,7 +736,7 @@ legend('topright', legend=paste("alpha = ", c(0.1, 1, 10)), lty=c(3,1,2), bty='n
 
 
 
-## Maximum Sustainable Yield
+## Maximum Sustainable Yield {#sec-msy-k2}
 The classical model of harvesting fisheries and wildlife populations is based on a particular conceptualization of *maximum sustainable yield* (MSY). Maximum sustainable yield is  defined historically as the population size where both population growth rate and harvest rate are at a maximum. For the logistic growth model, this is half the carrying capacity. We can solve this by finding the maximum of the production function. To do this we use calculus (differentiation) to find where the slope of the production function equals zero. Starting with the partial derivative with respect to $N$ (eq. @eq-pdlog), we solve for zero.
 $$
 \begin{aligned}
