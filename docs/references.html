@@ -95,6 +95,7 @@ div.csl-indent {
 }</script>
 
 
+<link rel="stylesheet" href="sidebar-outline.css">
 </head>
 
 <body class="nav-sidebar floating fullcontent quarto-light">
@@ -582,6 +583,12 @@ Publishers.
 <div id="ref-delacruz:2019" class="csl-entry" role="listitem">
 Cruz, Marcelino de la. 2019. <em>Rramas: <span>Matrix Population
 Models</span></em>. Manual.
+</div>
+<div id="ref-dennis2006edd" class="csl-entry" role="listitem">
+Dennis, Brian, José Miguel Ponciano, Subhash R. Lele, Mark L. Taper, and
+David F. Staples. 2006. <span>“Estimating Density Dependence, Process
+Noise, and Observation Error.”</span> <em>Ecological Monographs</em> 76
+(3): 323–41. <a href="https://doi.org/10.1890/0012-9615(2006)76[323:EDDPNA]2.0.CO;2">https://doi.org/10.1890/0012-9615(2006)76[323:EDDPNA]2.0.CO;2</a>.
 </div>
 <div id="ref-dononvan1995rsm" class="csl-entry" role="listitem">
 Dononvan, T. M., F. R. Thompson III, J. Faaborg, and J. R. Probst. 1995.
@@ -1460,7 +1467,7 @@ Blackwell Science, Ltd.
 <div id="ref-tokeshi1990nar" class="csl-entry" role="listitem">
 Tokeshi, Mutsunori. 1990. <span>“Niche <span>Apportionment</span> or
 <span>Random Assortment</span>: <span>Species Abundance Patterns
-Revisited</span>.”</span> <em>Journal of Animal Ecology</em> 59 (3):
+Revisited</span>.���</span> <em>Journal of Animal Ecology</em> 59 (3):
 1129–46. <a href="https://www.ncbi.nlm.nih.gov/pubmed/19009">https://www.ncbi.nlm.nih.gov/pubmed/19009</a>.
 </div>
 <div id="ref-vandermeer2006opb" class="csl-entry" role="listitem">
@@ -1558,6 +1565,86 @@ Wootton, J T. 2005. <span>“Field <span>Parameterization</span> and
 
 
 </main> <!-- /main -->
+<script>
+(function () {
+  function initSidebarChapterOutline() {
+    var main = document.querySelector("main#quarto-document-content");
+    var sidebar = document.querySelector("#quarto-sidebar");
+    if (!main || !sidebar) return;
+
+    var activeLink = sidebar.querySelector("a.sidebar-link.active");
+    if (!activeLink) return;
+
+    var activeItem = activeLink.closest("li.sidebar-item");
+    if (!activeItem || activeItem.querySelector(".sidebar-chapter-outline")) return;
+
+    // H2-level sections only, wherever they sit in the content
+    // (top-level for chapters, or nested one level for index.qmd's
+    // unnumbered "Preface" wrapper).
+    var sections = main.querySelectorAll("section.level2[id]");
+    if (!sections.length) return;
+
+    var outline = document.createElement("ul");
+    outline.className = "sidebar-chapter-outline list-unstyled";
+
+    var entries = [];
+    sections.forEach(function (sec) {
+      var h2 = sec.querySelector("h2");
+      if (!h2) return;
+      var li = document.createElement("li");
+      var a = document.createElement("a");
+      a.href = "#" + sec.id;
+      a.textContent = h2.textContent.trim().replace(/\s+/g, " ");
+      li.appendChild(a);
+      outline.appendChild(li);
+      entries.push({ target: sec, link: a });
+    });
+
+    if (!entries.length) return;
+    activeItem.appendChild(outline);
+
+    // Highlight whichever section is currently in view, mirroring
+    // Quarto's own "on this page" scrollspy but pointed at this list.
+    var headerOffset = 90;
+    function updateActive() {
+      var current = null;
+      for (var i = 0; i < entries.length; i++) {
+        var top = entries[i].target.getBoundingClientRect().top;
+        if (top - headerOffset <= 0) {
+          current = entries[i];
+        } else {
+          break;
+        }
+      }
+      entries.forEach(function (entry) {
+        entry.link.classList.toggle("outline-active", entry === current);
+      });
+    }
+
+    var ticking = false;
+    window.addEventListener(
+      "scroll",
+      function () {
+        if (ticking) return;
+        ticking = true;
+        window.requestAnimationFrame(function () {
+          updateActive();
+          ticking = false;
+        });
+      },
+      { passive: true }
+    );
+
+    updateActive();
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", initSidebarChapterOutline);
+  } else {
+    initSidebarChapterOutline();
+  }
+})();
+</script>
 <script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
     const icon = "";

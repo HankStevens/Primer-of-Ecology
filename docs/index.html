@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Hank Stevens">
-<meta name="dcterms.date" content="2026-08-25">
+<meta name="dcterms.date" content="2026-08-30">
 <meta name="description" content="A primer of R and of population and community ecology.">
 
 <title>Primer of Ecology</title>
@@ -79,6 +79,7 @@ ul.task-list li input[type="checkbox"] {
 }</script>
 
 
+<link rel="stylesheet" href="sidebar-outline.css">
 </head>
 
 <body class="nav-sidebar floating slimcontent quarto-light">
@@ -245,7 +246,7 @@ ul.task-list li input[type="checkbox"] {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">August 25, 2026</p>
+      <p class="date">August 30, 2026</p>
     </div>
   </div>
   
@@ -260,7 +261,16 @@ ul.task-list li input[type="checkbox"] {
 <section id="preface" class="level1 unnumbered page-columns page-full">
 <h1 class="unnumbered">Preface</h1>
 <p>Update: 2026-08-23</p>
-<p>Lots starting to change. Stay tuned.</p>
+<p>Buyer beware.</p>
+<p>Lots starting to change, for the better, I hope. Forthcoming changes include the following.</p>
+<ul>
+<li>Chapter learning outcomes and goals.</li>
+<li>Streamlined content; increased consolidated content, while maintaining a conversational narrative.</li>
+<li>Parallel presentation of base R and tidyverse syntax.</li>
+<li>Greater chapter independence. That is, when something in chapter 8 depends specifically on previous content in chapter 4, chapter 8 will provide a reasonably specific reference to that content.</li>
+<li>Select appendices for particular content, including causal inference and DAGs.</li>
+<li>Hand written activities that allow for better embodied and AI-resistant learning.</li>
+</ul>
 <p>Update: 2023-08-10</p>
 <p>Chapter numbers have changed, starting after Lotka-Volterra competition.</p>
 <p>Updated original, but long absent, material on the competition-colonization tradeoff, extinction debt (sensu Tilman 1994), and especially the <strong>storage effect</strong>.</p>
@@ -306,6 +316,86 @@ pak::pak("HankStevens/primer")</code></pre>
 
 
 </main> <!-- /main -->
+<script>
+(function () {
+  function initSidebarChapterOutline() {
+    var main = document.querySelector("main#quarto-document-content");
+    var sidebar = document.querySelector("#quarto-sidebar");
+    if (!main || !sidebar) return;
+
+    var activeLink = sidebar.querySelector("a.sidebar-link.active");
+    if (!activeLink) return;
+
+    var activeItem = activeLink.closest("li.sidebar-item");
+    if (!activeItem || activeItem.querySelector(".sidebar-chapter-outline")) return;
+
+    // H2-level sections only, wherever they sit in the content
+    // (top-level for chapters, or nested one level for index.qmd's
+    // unnumbered "Preface" wrapper).
+    var sections = main.querySelectorAll("section.level2[id]");
+    if (!sections.length) return;
+
+    var outline = document.createElement("ul");
+    outline.className = "sidebar-chapter-outline list-unstyled";
+
+    var entries = [];
+    sections.forEach(function (sec) {
+      var h2 = sec.querySelector("h2");
+      if (!h2) return;
+      var li = document.createElement("li");
+      var a = document.createElement("a");
+      a.href = "#" + sec.id;
+      a.textContent = h2.textContent.trim().replace(/\s+/g, " ");
+      li.appendChild(a);
+      outline.appendChild(li);
+      entries.push({ target: sec, link: a });
+    });
+
+    if (!entries.length) return;
+    activeItem.appendChild(outline);
+
+    // Highlight whichever section is currently in view, mirroring
+    // Quarto's own "on this page" scrollspy but pointed at this list.
+    var headerOffset = 90;
+    function updateActive() {
+      var current = null;
+      for (var i = 0; i < entries.length; i++) {
+        var top = entries[i].target.getBoundingClientRect().top;
+        if (top - headerOffset <= 0) {
+          current = entries[i];
+        } else {
+          break;
+        }
+      }
+      entries.forEach(function (entry) {
+        entry.link.classList.toggle("outline-active", entry === current);
+      });
+    }
+
+    var ticking = false;
+    window.addEventListener(
+      "scroll",
+      function () {
+        if (ticking) return;
+        ticking = true;
+        window.requestAnimationFrame(function () {
+          updateActive();
+          ticking = false;
+        });
+      },
+      { passive: true }
+    );
+
+    updateActive();
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", initSidebarChapterOutline);
+  } else {
+    initSidebarChapterOutline();
+  }
+})();
+</script>
 <script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
     const icon = "";

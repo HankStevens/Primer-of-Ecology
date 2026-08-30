@@ -160,6 +160,7 @@ window.Quarto = {
 };
 </script>
 
+<link rel="stylesheet" href="sidebar-outline.css">
 </head>
 
 <body class="nav-sidebar floating slimcontent quarto-light">
@@ -1151,7 +1152,7 @@ Figure&nbsp;9.13: A simulation of coexistence via the storage effect. <span clas
 <section id="examining-characteristics-of-the-storage-effect" class="level4" data-number="9.4.1.2">
 <h4 data-number="9.4.1.2" class="anchored" data-anchor-id="examining-characteristics-of-the-storage-effect"><span class="header-section-number">9.4.1.2</span> Examining characteristics of the storage effect</h4>
 <p>Let us go back and examine a few of the characteristics that we should observe, if the storage effect is operating. First, note that above we showed differential responses to the environment, incomplete niche overlap, and buffered growth (Fig. <a href="#fig-rho" class="quarto-xref">Figure&nbsp;<span>9.10</span></a>).</p>
-<p>Next, we will try to examine the environment-competition covariation. This is not trivial, and papers are written about how to estimate this. For now, recall that in <a href="05-DDgrowth.html#sec-logistic-growth" class="quarto-xref"><span>Section 6.1</span></a>, we began with an examination of negative density-dependence. Here we quantify the magnitude of this negative effect, as our <em>effect of competition.</em> Let us invent a new value, <span class="math inline">\(\nu\)</span>, to measure how much the observed growth rate is affected by large population sizes, <span id="eq-compnu"><span class="math display">\[
+<p>Next, we will try to examine the environment-competition covariation. This is not trivial, and papers are written about how to estimate this. For now, recall that in <a href="05-DDgrowth.html#sec-logistic-growth" class="quarto-xref"><span>Section 6.2</span></a>, we began with an examination of negative density-dependence. Here we quantify the magnitude of this negative effect, as our <em>effect of competition.</em> Let us invent a new value, <span class="math inline">\(\nu\)</span>, to measure how much the observed growth rate is affected by large population sizes, <span id="eq-compnu"><span class="math display">\[
   \nu_{i,t} = \log\left(\frac{R_{max}}{R_{i,t}}\right)
 \tag{9.14}\]</span></span> where <span class="math inline">\(R_{i,t}\)</span> is the observed annual population growth rate, <span class="math inline">\(N_{t+1}/N_t\)</span>, for species <span class="math inline">\(i\)</span>, and <span class="math inline">\(R_{max}\)</span> is the maximum of these.</p>
 <p>To measure the covariation, we will find first <span class="math inline">\(N_{total,t}\)</span>, <span class="math inline">\(R_{i,t}\)</span>, and <span class="math inline">\(R_{i,max}\)</span>.</p>
@@ -1372,6 +1373,86 @@ Wilson, S D, and D Tilman. 1995. <span>“Competitive <span>Responses</span> of 
 
 
 </main> <!-- /main -->
+<script>
+(function () {
+  function initSidebarChapterOutline() {
+    var main = document.querySelector("main#quarto-document-content");
+    var sidebar = document.querySelector("#quarto-sidebar");
+    if (!main || !sidebar) return;
+
+    var activeLink = sidebar.querySelector("a.sidebar-link.active");
+    if (!activeLink) return;
+
+    var activeItem = activeLink.closest("li.sidebar-item");
+    if (!activeItem || activeItem.querySelector(".sidebar-chapter-outline")) return;
+
+    // H2-level sections only, wherever they sit in the content
+    // (top-level for chapters, or nested one level for index.qmd's
+    // unnumbered "Preface" wrapper).
+    var sections = main.querySelectorAll("section.level2[id]");
+    if (!sections.length) return;
+
+    var outline = document.createElement("ul");
+    outline.className = "sidebar-chapter-outline list-unstyled";
+
+    var entries = [];
+    sections.forEach(function (sec) {
+      var h2 = sec.querySelector("h2");
+      if (!h2) return;
+      var li = document.createElement("li");
+      var a = document.createElement("a");
+      a.href = "#" + sec.id;
+      a.textContent = h2.textContent.trim().replace(/\s+/g, " ");
+      li.appendChild(a);
+      outline.appendChild(li);
+      entries.push({ target: sec, link: a });
+    });
+
+    if (!entries.length) return;
+    activeItem.appendChild(outline);
+
+    // Highlight whichever section is currently in view, mirroring
+    // Quarto's own "on this page" scrollspy but pointed at this list.
+    var headerOffset = 90;
+    function updateActive() {
+      var current = null;
+      for (var i = 0; i < entries.length; i++) {
+        var top = entries[i].target.getBoundingClientRect().top;
+        if (top - headerOffset <= 0) {
+          current = entries[i];
+        } else {
+          break;
+        }
+      }
+      entries.forEach(function (entry) {
+        entry.link.classList.toggle("outline-active", entry === current);
+      });
+    }
+
+    var ticking = false;
+    window.addEventListener(
+      "scroll",
+      function () {
+        if (ticking) return;
+        ticking = true;
+        window.requestAnimationFrame(function () {
+          updateActive();
+          ticking = false;
+        });
+      },
+      { passive: true }
+    );
+
+    updateActive();
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", initSidebarChapterOutline);
+  } else {
+    initSidebarChapterOutline();
+  }
+})();
+</script>
 <script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
     const icon = "";
