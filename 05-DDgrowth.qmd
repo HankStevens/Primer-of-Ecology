@@ -8,30 +8,42 @@ Let's go back to our Song Sparrow (*Melospiza melodia*) data that we used to ill
 ```{r}
 #| include: false
 data(sparrows)
-sparrows$Rt <- with(sparrows, log(c(Count[-1]/Count[-length(Count)],NA) ))
+sparrows2 <- sparrows |>
+  mutate(
+    Rt = log(c(Count[-1]/Count[-length(Count)],NA) ),
+    Yr = substr(as.character(Year), 3, 4 ) 
+    )
+
+
 ```
 
 ::: {#fig-sparrowDD layout-ncol="2"}
 
 ```{r}
 #| echo: false
-s1 <- ggplot(sparrows, aes(Year,Count)) + geom_point() + geom_line()
+s1 <- ggplot(sparrows, aes(Year, Count)) + geom_point() + geom_line()
 s1
 ```
 
 ```{r}
 #| echo: false
-s2 <- ggplot(sparrows, aes(Count, Rt, label=substr(as.character(Year), 3, 4 ))) + geom_text() +
+  
+  
+s2 <- sparrows2 |> drop_na() %>%
+  ggplot(aes(Count, Rt)) + geom_text(aes(label=Yr)) +
 geom_smooth(method="lm", se=FALSE) +
 labs(y=bquote(italic(r[t])),
-     x=expression("Sparrow Count ("*italic(N[t])*")"), type="n")
+     x=expression("Sparrow Count ("*italic(N[t])*")"))
 s2
 ```
 
 Song Sparrow *Melospiza melodia* counts, $N$, from 1966--2003 and the relation between observed counts ($N_t$) and annual growth rate ($r_t = N_{t+1}/N_t - 1$) determined from those counts, fit with ordinary least squares regression. See @sec-expo for data source.
 :::
 
-```{r secondorder, echo=FALSE, eval=FALSE}
+```{r}
+#| label: secondorder
+#| echo: false
+#| eval: false
 m1 <- lm(Rt~Count, sparrows)
 summary(m1)
 Rt2 <- sparrows$Rt[2:35]
@@ -47,6 +59,59 @@ When we plot the annual per capita growth rate, $r_t = \log (N_{t+1}/N_t)$, as a
 What might limit the population growth of these sparrows? Space available for male territories in their successional-scrub type habitat? Availability of seeds, fruits and invertebrates? We don't necessarily know precisely what limits it, but if it is something related to their own abundance, then we can treat density as a proxy for the amount of limitation.
 
 Density-dependent population growth is the case where the per capita population growth rate depends statistically on the density of the population. When the slope of that relation is negative as it is in Fig. @fig-sparrowDD, we call this *negative density-dependence*. Negative density dependence a characteristic of a population undergoing *intraspecific competition*, where individuals of the same species compete for shared resources and have negative effects on their demographic rates. So, \ldots how would we represent this algebraically?^[root: Arabic. *Al-jabr*]
+
+## Overthinking: is that regression trustworthy? {#sec-dd-test}
+
+::: {.callout-note collapse="true" title="Overthinking it"}
+
+The regression in Fig. @fig-sparrowDD is a good first look, but it has two problems that undermine its $p$-value. First, $N_t, N_{t+1}, N_{t+2}, \ldots$ are not independent draws -- they are successive states of one stochastic trajectory, so the "observations" going into the regression are serially correlated. Second, if $N_t$ is measured with any sampling error (nearly always true of field counts), that error appears on both sides of the fitted relationship and can, by itself, manufacture an apparent negative slope even with zero true density dependence -- a version of *regression to the mean*.
+
+Current practice replaces the simple regression with a **state-space model** that separates the true population process from the observation error on top of it, then tests density dependence as a comparison of two nested models: a pure random walk (no density dependence, $b=1$) against a model pulled back toward some equilibrium (density dependence, $b<1$),
+$$
+x_{t+1} = u + b\, x_t + w_t, \qquad w_t \sim N(0, q)
+$$
+$$
+y_t = x_t + v_t, \qquad v_t \sim N(0, r)
+$$
+where $x_t = \log N_t$ is the true (unobserved) log population size, $y_t$ is the log of what we counted, $w_t$ is real year-to-year process noise, and $v_t$ is observation error. This is a *Gompertz state-space model* [@dennis2006edd], and it fits easily in R with the **MARSS** package.
+
+```{r}
+#| message: false
+y <- matrix(log(sparrows$Count), nrow = 1)
+
+mod.dd <- list(B = matrix("b"), U = matrix("u"), Q = matrix("q"),
+               Z = matrix(1), A = matrix(0), R = matrix("r"),
+               x0 = matrix("pi"), tinitx = 0)
+mod.di <- mod.dd
+mod.di$B <- matrix(1)                     # null: density-independent random walk
+
+fit.dd <- MARSS(y, model = mod.dd, silent = TRUE)
+fit.di <- MARSS(y, model = mod.di, silent = TRUE)
+
+coef(fit.dd)$B                            # estimated b
+LRT <- 2 * (fit.dd$logLik - fit.di$logLik)
+pchisq(LRT, df = 1, lower.tail = FALSE)   # naive chi-square p-value
+```
+
+For the sparrow data, $\hat b \approx 0.68$ (below 1, consistent with density dependence), and the likelihood-ratio test gives $p \approx 0.013$ -- not so different from the naive regression's $p \approx 0.012$. That similarity is itself instructive: near the $b=1$ boundary the usual chi-square approximation to the likelihood-ratio statistic is unreliable, for exactly the reason you suspected -- the data are not independent. Dennis and Taper (1994) fixed this with a **parametric bootstrap**: simulate many new time series from the fitted null model ($b=1$), refit both models to each simulated series, and see how often a random-walk population produces an apparent LRT as large as the one we actually observed.
+
+```{r}
+#| label: bootMARSS
+#| cache: true
+set.seed(42)
+nboot <- 100    # ~4 minutes to run once; cached thereafter by `freeze: auto`
+LRT.boot <- replicate(nboot, {
+  ysim <- matrix(MARSSsimulate(fit.di, nsim = 1, tSteps = ncol(y))$sim.data[, , 1], nrow = 1)
+  f.dd <- MARSS(ysim, model = mod.dd, silent = TRUE)
+  f.di <- MARSS(ysim, model = mod.di, silent = TRUE)
+  max(2 * (f.dd$logLik - f.di$logLik), 0)
+})
+mean(LRT.boot >= LRT)                     # bootstrap p-value
+```
+
+The bootstrap $p$-value, $\approx 0.1$, is noticeably larger than either naive answer -- once the null model is allowed to generate data with the same autocorrelation structure as the real thing, an LRT this large is no longer so surprising. For this 38-year series, the honest conclusion is "suggestive, but not strong evidence" of density dependence, not the fairly confident "yes" that OLS implied. This is the general pattern to expect: non-independence inflates apparent significance, so a naive regression's $p$-value usually *overstates* the evidence for density dependence, and a bootstrap-corrected test is the more defensible one to report.
+
+:::
 
 ## Continuous logistic growth {#sec-logistic-growth}
 
