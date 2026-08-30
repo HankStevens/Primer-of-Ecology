@@ -16,131 +16,193 @@ qplot(Count, ssgr, data=sparrows[1:5,], ylab=bquote(N[t+1]/N[t]), geom="point")
 
 Between 1966 and 1971,\index{Song Sparrow} Song Sparrow (*Melospiza melodia*) abundance in Darrtown, OH, USA, seemed to increase very quickly, perhaps unimpeded by any particular factor (Fig. @fig-Melospiza1,  @fig-Melospiza2). In an effort to manage this population, we may want to predict its future population size. We may also want to describe its growth rate and population size in terms of mechanisms that could influence its growth rate. We may want to compare its growth and relevant mechanisms to those of other Song Sparrow populations or to other passerine populations. To do this, we start with the simplest of all population phenomena, geometric and exponential growth.
 
-Geometric and exponential growth are examples of *density-independent growth*. This captures the fundamental process of reproduction (e.g., making seeds or babies) results in a *geometric series*.^[A constatnt ratio between successive numbers.] For instance, one cell divides to make two, those two cells each divide to make four, and so on, where reproduction for each cell results in two cells, *regardless of how many other cells are in the population*---that is what we mean by *density-independent*. This myopically observed event of reproduction, whether one cell into two, or one plant producing many seeds, is the genesis of a geometric series. Therefore, most models of populations include this
-fundamental process of geometric increase. Second, populations can grow in a density-independent fashion when resources are plentiful. It behooves us to start with this simple model because most, more complex population models include this process.
+[In this chapter]{.small-caps}, we'll introduce density-independent population *projection*, *growth*, and *per capita growth*, for populations with synchronous reproduction and non-overlapping generations (discrete models of geometric growth), and continuous reproduction with overlapping generations (continuous models of exponential growth). 
 
-@hastings2011ssp proposes that we can approach single species poulation growth from either a microscopic or macroscopic point of view. The microscopic approach begins with two propositions. The first is that if we know the location, timing, and traits of all individuals, we can predict perfectly population dynamics; the second is that we can never predict dynamics perfectly because births and deaths are fundamentally random and can be described only with probabilities.^[A zen koan, if there ever was one.] With this microscopic approach, we would seek a very detailed description of individuals and build a complex model to understand the consequences of the characteristics of all these interacting individuals, including the growth of the population.
+## Learning goals
+
+- recite and explain the provided theoretical principles of population growth.
+- derive geometric and exponential per capita population growth, population growth, and the projection equations.
+- define and illustrate density-independence.
+- describe an algorithm to generate a stochasticly fluctuating population.
+- explain $1/f$ noise (colored environmental variation), its relevance for natural populations, and its implications for population dynamics.
+
+## Principles and assumptions
+
+Geometric and exponential growth are examples of *density-independent growth*. We define *density-independent population growth* as growth that results in a population that lacks a statistical relation between the density of a population, and its *per capita* growth rate^[No observed relation between $\frac{\Delta N_i}{N_i}$ vs. $N_i$]. This is an operational and practical definition that we can apply easily to empirical data. We demonstrate actually testing for it in @sec-dd-test.
+
+Geometric^[A geometric series is one with a constant ratio between successive numbers.] and exponential^[An exponential series is one described by $\exp^{a}$ where $a$ is constant.] growth capture the fundamental process of biological reproduction. For instance, one cell divides to make two, those two cells each divide to make four, and so on, where reproduction for each cell results in two cells, *regardless of how many other cells are in the population*---that is what we mean by *density-independent*. This myopically observed event of reproduction, whether one cell into two, or one plant producing many seeds, is the genesis of a geometric series. With overlapping generations, this series becomes exponential. Therefore, most models of populations include this fundamental process of increase. 
+
+While density-independent growth can't be maintained for long periods of time, populations can grow this way while resources are plentiful and nothing else limits their growth. It behooves us to start with this simple model because more complex population models almost always include this process.
+
+@hastings2011ssp proposes that we approach single species poulation growth from either a microscopic or macroscopic point of view. The microscopic approach begins with two propositions. The first is that if we know the location, timing, and traits of all individuals, we can predict perfectly population dynamics; the second is that we can never predict dynamics perfectly because births and deaths are fundamentally random and can be described only with probabilities.^[A zen koan, if there ever was one.] With this microscopic approach, we would seek a very detailed description of individuals and build a complex model to understand the consequences of the characteristics of all these interacting individuals, including the growth of the population.
 
 In this chapter, I choose to start with Hastings' macroscopic approach. These propositions appear simpler.
 
 1. A population grows exponentially in the absence of other forces.
-2. There are forces that can prevent a population from growing exponentially.
+1. There are forces that can prevent a population from growing exponentially.
 
-These are the consequences of the following assumptions.
+The first of these is the subject of *this* chapter.
+
+These are consequences of the following assumptions.
 
 a. all individuals in a population are identical.
 b. there is no migration in or out of the population.
-c. (i) the number of offspring per individual (or the per capita birth and death rates) are constant through time, and (ii) independent of the number of individuals in the population.
+c. the number of offspring per individual (or the per capita birth and death rates) are constant through time, and independent of the number of individuals in the population.^[We might also assume that a. implies c.]
 
-Deviations from these assumptions lead to all of the most interesting parts of single species population dynamics [@hastings2011ssp]. The only deviation we play with in this chapter concerns assumption c; we model stochastic variation in population growth rate to investigate extinction risk. It is also worth mentioning that, although propositions 1 and 2 follow from assumptions a-d, they are not strictly necessary [@hastings2011ssp]. For instance, individuals need not be identical, and we deal with a big exception in the next chapter where we introduce structured population growth. Also, migration is admissable, provided immigration = emigration and it does not alter growth rates. Nonetheless, other deviations from a. and b. can have very important consequences for single species population dynamics.
+These conditions are sufficient^[$X$ is sufficient to cause $Y$ if $Y$ always follows $X$, even if $Y$ also has other causes.] to cause exponential growth, and they are widely described as *the* assumptions underlying exponential growth. However, they are not actually necessary^[$X$ is necessary for $Y$ if $Y$ never occurs without $X$]. For example, the following conditions are sufficient to generate exponential growth.
 
-Here we define Density-independence in a real population as a lack of a statistical relation between the density of a population, and its *per capita* growth rate^[No observed relation between $\frac{\Delta N}{N}$ vs. $N$]. The power to detect a significant relation between any two continuous variables depends on those factors which govern statistical power, such as the number of observations, the range of the predictor variable, and the strength of the underlying relation. Therefore, our conclusion, that a particular population exhibits density-independent growth, may be trivial if our sample size is small, with few generations sampled, or if we sampled the population over a very narrow range of densities. Nonetheless, it behooves us to come back to this definition if, or when, we get caught up in the biology of a particular organism. 
+- individuals are identical and immigration is equal to emigration, or
+- individuals differ, but if the relative abundance of different types remains constant (@sec-did), and immigration is equal to emigration.
 
-In this chapter, we'll introduce density-independent population *projection*, *growth*, and *per capita growth*, for populations with synchronous reproduction (discrete models), and continuous reproduction (continuous models). 
+Regardless of any underlying conditions, we say that a population is growing exponentially if it follows an exponential trajectory. It can be as simple as that.
 
-## Discrete growth rates of fruit flies in my kitchen
+Nonetheless, deviations from underlying assumptions lead to all of the most interesting parts of single species population dynamics [@hastings2011ssp]. 
+
+At the end of the chapter, we relax assumption c. We will model stochastic variation in population growth rate to investigate extinction risk. 
+
+
+
+## Discrete growth
+This section covers models models of discrete non-overlapping generations.
+
+### A story of fruit flies in my kitchen
 Summertime, and the living is easy. Fruit flies in my kitchen, and their number's quite high. Flies love my ripe fruit, and my red wine. They drown in the wine--I am not sure if that is good or bad. 
 
-For now, we'll treat fruit flies as if they grow in discrete generations. This is very common for populatilons that live in seasonal habitats - their reproduction is timed to the season, and they breed altogether in one bout.^[discrete generations are common in nature.]
+For now, we'll treat fruit flies as if they grow in discrete generations. This is very common for populations that live in seasonal habitats - their reproduction is timed to the season, and they breed altogether in one bout.^[discrete generations are common in nature.]
 
-I count the number of flies every week, and I find these numbers:
-```{r flies, echo=TRUE, out.width="60%"}
+I count the number of flies every week, and I find these numbers [@tbl-flies].
+
+```{r}
+#| label: tbl-flies
+#| echo: true
+#| tbl-cap: "The number of fruitflies in my kitchen increased over four weeks."
 t <- c(0, 1, 2, 3)
 N <- c(2, 4, 8, 16)
-qplot(x=t, y=N, geom=c("line", "point") )
+d <- tibble(t, N)
+d |>
+  tt(width=.8) |>
+  style_tt(align = "cc")
 ```
 
 
-There are several ways we can describe fruit fly population growth.  Here, we choose to begin by considering the proximate causes of change to population size per unit time: the numbers of births, immigration, death and emigration (Fig. @fig-fliesi). Those are the only options, and we state it thus:
+```{r}
+#| label: fig-flies
+#| echo: true
+#| fig-cap: "The number of fruitflies in my kitchen increased geometrically."
+#| column: margin
+
+# base graphics assumes R sees t, N
+# plot(x = t, y = N, type = "b" ) 
+
+## ggplot graphics uses dataframes
+ggplot(data=d, aes(x=t, y=N) ) +
+  geom_line() + geom_point() + theme_bw()
+```
+
+
+There are several ways we can describe fruit fly population growth (@fig-flies-model).  Here, we choose to begin by considering the proximate causes of change to population size per unit time: the numbers of births, immigration, death and emigration. Those are the only options, and we state it thus:
 $$\frac{\Delta N}{\Delta t} = \frac{B + I - D - E}{\Delta t}$$
-that is, the change in numbers of individuals per unit time^[“Delta” N is the change in N.] is determined by the numbers of births, deaths, and migrants per unit time. 
+that is, the change in numbers of individuals per unit time^["Delta" N is the change in N.] is determined by the numbers of births, deaths, and migrants per unit time. We refer to this as an *open* population because it includes migration into or out of the population.
 
 Over the past month, I suspect the fruit flies are increasing primarily through reproduction in my kitchen. Clearly, at some point in the past, a fly or two (or three) must have immigrated into my kitchen, either as adults or as eggs or larvae in fruit I brought home ($I>0$). For now, I will assume fruit fly population dynamics in my kitchen are governed by only births and deaths ($I=E=0$). We refer to a population like this as *closed*, because it is closed to migration in or out.
+$$\frac{\Delta N}{\Delta t} = \frac{B - D}{\Delta t}$$
 
-If I counted the number of flies last week and again this week, I can calculate the change over one month. We have 
+If I counted the number of flies last week and again this week, I can calculate the change ($\Delta N$) over one week We have 
 $$ \frac{N_{t+1} - N_t}{(t+1) - t}=\frac{\Delta N}{\Delta t}=\frac{B+D}{\Delta t}$$
-In this equation, $t$ has a particular time unit, one week, so $t+1$ is one additional week. 
+In this equation, $t$ is an arbitrary week, so $t+1$ is one additional week. 
 
-```{r fig-fliesi, echo=FALSE, fig.cap="The number of fruit flies in my kitchen depends on immigration and emigration, and births and deaths. In the text, we assume that immigration and emigration are zero. All rates are individuals per unit time.", out.width="100%", fig.width=5, fig.height=5}
+```{r}
+#| label: fig-flies-model
+#| echo: false
+#| fig-cap: The number of fruit flies in my kitchen depends on immigration and emigration, and births and deaths. All rates are individuals per unit time. If $I,\,E = 0$, this would be a closed population.
+#| out-width: "100%"
+#| fig-width: 5
+#| fig-height: 5
 nodes <- c("I", "F", "D", "E")
-g1 <- graph( edges=c(1,2, 2,3, 2,2), n=3, directed=TRUE ) 
-l <- cbind(c(-1, 0, 1), rep(0,3))
-V(g1)$name <- c("pool", "F", "pool2")
-V(g1)$size <- 50
-V(g1)$shape <- c("none", "circle", "none")
-E(g1)$label <- c("I", "E+D", "B")
- E(g1)$label.y <- c(.05, .05, .4 )
-# E(g1)$label.y <- .5
+g1 <- make_graph( edges=c(1,2, 2,3, 2,2, 2,4), n=4, directed=TRUE ) 
+l <- cbind(c(-1, 0, 1, .83), c(0, 0, 0, -.4))
+V(g1)$name <- c("pool 1", "Flies", "pool 2", "pool 3")
+V(g1)$size <- 40
+V(g1)$shape <- c("none", "circle", "none", "none")
+E(g1)$label <- c("I", "E", "B", "D")
+E(g1)$label.y <- c(.05, .05, -.4, -.1)
 
-plot(g1, layout=l, edge.loop.angle=3*pi/2, margin=c(0,0,0,0), rescale=FALSE, 
-     main="Single species population model") 
+plot(g1, layout=l, loop.size = 1, edge.loop.angle=3*pi/2, 
+     margin=c(0,0,0,0), rescale=FALSE) 
 ```
-Because adults give rise to offspring, we can represent births and deaths as proportions of existing adults.  That is, as per capita rates of birth and death, as
-$$B = bN;\quad D=dN$$
-This reflects the biological realities that adults produce offspring, and everyone has some chance of dying. The parameter $b$ could be any positive real number, $b \ge 0$. This model of births reflects the geometric property of reproduction: over a specified time interval $\Delta t$, an average parent makes $b$ babies. Parameter $d$ is any real number between zero and one, $0 \le d \le 1$. Both $b$ and $d$ have units of individuals per individual per unit time. They depend on that unit of time.
+### From story to model
 
-*What if offspring die before the next census?*
+From numbers of flies, we derive per capita rates, and then we apply those rates sequentially for births and deaths.
 
-Fig. @fig-fliesi helps us think about these things. Simplifying, we'll assume births occur first, and then death comes to offspring and adults.
+Because adults give rise to offspring, we can represent births and deaths as proportions of existing adults. We calculate the average per capita birth and death rates as,
+$$\frac{B}{N} = b;\quad \frac{D}{N}=d$$
+This reflects the biological realities that adults produce offspring, or $bN = B$. Also, everyone has some chance of dying $dN = D$. The per capita birth rate $b$ can be any non-negative real number, $b \ge 0$. This model of births reflects the geometric property of reproduction: over a specified time interval $\Delta t$, an average parent makes $b$ babies. Per capita death rate $d$ is any real number between zero and one, $0 \le d \le 1$. Both $b$ and $d$ have units of individuals per individual per unit time. They depend on that unit of time.
+
+From @fig-flies-model, we create an algorithm for creating a model of density dependent growth:
+
+1. A proportion flies in the starting population reproduce, and thereby increase the size of the population, and then
+1. A proportion of flies from both the starting population and newly hatched flies die, decreasing the size of the population.
+
+Let,
+
+* $N_0$: size of the original population; the number of flies in the first week.
+* $N^\prime$: size of the population immediately after births, 
+* $N_1$: size of the population after births *and* deaths; the number of flies in the second week.
+
+We can symbolize our algorithm thus:
+
+1. $N^\prime = N_0 + bN_0 \quad \text{number of adults plus births}$
+1. $N_1 = N^\prime - dN^\prime \quad \text{(number of adults plus new flies) minus deaths}$
 
 
-Let's define a few terms.
+We see that by the next time point, $t=1$, the number of fruit flies is predicted to be equal to the number we started with, $N_0$, plus the number of new individuals, $bN_0$, minus the number of original adults that die, $dN_0$, and minus the number of new individuals that die, $dbN_0$.
 
-* $N_0$, $N_1$ - the number of flies at the start and after the first time interval.
-* $N^\prime$, $N^{\prime\prime}$ - distinct values of $N$,  after births, but before $N_1$.
-* $\Delta N$ - the *change* in $N$ from one point in time to another.
-* $t$ is time, so $\Delta t$ is the time interval over which $N$ may change.
+To get from one year to the next in a single step, we combine the above two equations into one through substitution and simplify:
 
-Let's match these numbers to what is going on in my kitchen. For my first census count, at $t=0$, I counted the adults and label that number $N_0$. These adults lay eggs which hatch, and then larvae and pupae develop, and become adults, giving us a population of 
-$$N^\prime = N_0 + bN$$
+\begin{align*}
+N_1 &= N^\prime - dN^\prime\\
+ & = N_0 + bN_0 - d\left(N_0 + bN_0\right)\\
+ & = N_0 + bN_0 - dN_0 - dbN_0 \\
+ & = N_0 \left(1+b - d - db\right)\\
+ & = N_0 \left(1+b - d - db\right)\\
+ & = N_0 \left(1+r_d \right) = N_0 + r_d N_0\\
+ & = N_0 \lambda
+\end{align*}
 
-Some of the eggs fail to hatch, and some of the larvae die
-before maturing. Many of the adults die as well. If we assume the eggs, larvae, and adults all die at the same rate, then by the end of one generation we have 
-$$N_1 = N^\prime - dN^\prime$$
+where $\lambda$ is the standard symbol for this rate.  We refer to $\lambda$ as the *finite rate of increase* and $r_d$ as the *discrete growth increment*.
 
-Substituting, we get
-$$ N_1 = N_0 + bN_0 - d\left(N_0 + bN_0\right)$$
+**Recapping**, we now have the machinery to describe the rate of change, and proven that it can be derived from per capita birth and death rates.
 
-We see that by the next time point, $t=1$, the number of fruit flies should be equal to the number we started with, $N_0$, plus the number of new individuals, $bN_0$, minus the number of original adults that die, $dN_0$, and minus the number of new individuals that die, $dbN_0$.
+### Growth rate equations
 
-We can pull all of these parameters together,
-$$ N_1 = N_0 + bN_0 - dN_0 - dbN_0 $$
-$$ N_1 - N_0 =  N_0 \left(b - d - db\right) = N_0r_d$$ {#eq-bddb}
+The *population growth rate* is $\Delta N / \Delta t$, where, in our case $\Delta t = 1\,\text{wk}$. At $t=0$, we can derive it as,
 
-where $r_d = b - d - db $. 
+$$\frac{\Delta N}{\Delta t} = \frac{N_1 - N_0}{t_1-t_0} = \frac{(N_0 + r_dN_0) - N_0}{t_1-t_0} = \frac{r_d N_0}{1}=r_d N_0$$
 
-The *growth rate* of the population is $\Delta N / \Delta t$, or, at $t=0$, is
-$$\frac{\Delta N}{\Delta t} = \frac{N_1 - N_0}{t_1-t_0} = \frac{(N_0 + r_dN_0) - N_0}{t_1-t_0} = r_d N_0 $$
-If we generalize, we drop the zero, to get $r_dN$. The *per capita* population growth rate is $r_dN/N =r_d$. If our time step were something other than 1, we would also divide by $\Delta t$.
+If we generalize, we drop the zero, to get $r_dN$. The *per capita* population growth rate is $r_dN/N =r_d$.
 
-With the simple census data above, we can
-estimate $r_d$ for the first time step.
-$$N_1 = N_0 + r_dN_0=  2 + r_d (2) \implies r_d=1$$ 
-If we know that $r_d$ is constant over time, we can infer a general rule to project the population forward in time an arbitrary number of time steps. We will let $\lambda = 1+r_d$.
-$$N_1 = N_0 + r_dN_0 = N_0(1 + r_d) = N_0\lambda$$
+### Projection equation
+
+In this simple model with a constant rate of increase, we can project the population *size* directly. Let's derive the equation via induction (i.e. generalizing from a pattern).
+
+Consider that we know that 
+
+$$N_1 = N_0\lambda$$
+regardless what $N_0$ is. Therefore, we extend this logic to another year,
+
 $$N_2 = N_1\lambda=  (N_0 \lambda)\lambda$$
+and then another,
 $$N_3 = N_2\lambda=  (N_0 \lambda)\lambda\lambda$$
-or simply,
+in which we keep multiplying by $\lambda$ successive times.
+
+You probably notice, then, that to get from $t=0$ to an arbitrary time $t$ in the future, we infer,
+
 $$N_t = N_0\lambda^t$$
+where $t$ is some number of years after $t=0$.
 
-To summarize our model of discrete population growth, we have the following statements:
+## Continuous growth 
 
-**Projection:**
-$$N_t = N_0\lambda^t$$
-
-**Population growth rate:**
-$$\frac{\Delta N}{\Delta t} = r_dN; \quad \mathrm{where~} \lambda=1+r_d$$
-
-**Per capita opulation growth rate:**
-$$\frac{\Delta N}{N\Delta t} = r_d$$
-
-At last, we see how this is a model of density-independent growth: per capita growth rate does not include $N$. 
-
-## Fruit flies with continuous overlapping generations
-
-In the reality that is my kitchen, individual fruit flies are having sex and reproducing on their own schedules. As a population, they breed continuously, so the cohorts are not synchronous. For populations like that, we need to describe instantaneous growth rates, where $\Delta t$ is no longer a fixed period of time, but is an instant, or infinity small.
-
-We return to our example above (Fig. @fig-fliesi), which we summarize in @eq-bddb. Please take a look at that equation. In what follows, we make time more explicit so that it appears in the equation. We begin by remembering that $b$ and $d$ have time units. 
+In the reality that is my kitchen, individual fruit flies are having sex and reproducing on their own schedules. As a population, they breed continuously, so the cohorts are *not synchronous* and *generations overlap*. For populations like that, we should describe *instantaneous* growth rates, rather than $b$ and $d$ being annual increments as in the previous section. We estimate these as $t$ gets really small, that is, $t \rightarrow 0$---this allows us to estimate an *instantaneous* rate.
 
 * Let $\Delta t$ be a small fraction of $1$, so that the time step goes from $t$ to $t + \Delta t$. 
 * As $\Delta t$, shrinks, $b$ and $d$ need to shrink as well, to $\Delta t  b$ and $\Delta t d$.
@@ -161,28 +223,34 @@ $$\frac{dN}{dt}=\lim_{\Delta t \rightarrow 0} bN_t - dN_t - \Delta t\, d bN_t = 
 To arrive at the projection equation for a continuously growing population, we integrate $rN$ with respect to time. Integration is the cumulative summing of $y$ across a range of $x$. It even uses an exagerated "S" to indicate summation, $\int$. Here we integrate population growth across time. We start by rearranging
 $$\frac{dN}{dt} = rN \Rightarrow \frac{dN}{N} = r dt$$
 
-Now we integrate $N$ and $r$ with respect to their start and end points: $N$ from $N_0$ to $N_t$, and, correspondingly, $r$ from $t=0$ to $t=t$,
-$$\int_{N_0}^{N_t} \frac{1}{N}dN = \int_{0}^{t}rdt$$
-$$\ln(N_t) - \ln(N_0) = rt - r\,0$$
+Now we integrate both sides of the separated equation. On the left, the variable of integration is $N$, running from $N_0$ to $N_t$. On the right, we integrate with respect to time -- but $t$ is already doing double duty as the *upper limit* of that interval, so using it as the integration variable too would mean the same symbol names both a fixed endpoint and a value that varies as it's summed over. To avoid that clash, we introduce a dummy variable $\tau$ ("tau") for time as it runs from $0$ up to $t$; $\tau$ is just a placeholder that disappears once the integral is evaluated. This is the method of *separation of variables*.
+$$\int_{N_0}^{N_t} \frac{1}{N}\,dN = \int_{0}^{t} r\,d\tau$$
+Evaluating each side's antiderivative at its bounds (the Fundamental Theorem of Calculus),
+$$\Big[\ln|N|\Big]_{N_0}^{N_t} = \Big[r\tau\Big]_{0}^{t}$$
+$$\ln|N_t| - \ln|N_0| = rt - r(0) = rt$$
+Since $N$ is a population size, $N > 0$ always, so the absolute value bars are unnecessary and we can drop them:
+$$\ln(N_t) - \ln(N_0) = rt$$
 $$\ln(N_t) = \ln(N_0) + rt$$
 We now exponentiate ($e^x$) both sides to arrive at our projection equation.
 $$N_t = e^{\ln(N_0) + rt} = N_0 e^{rt}$$
 
-To summarize our model of continuous population growth, we have the following statements.
 
-**Projection:**
-$$N_t = N_0 e^{rt}$$
+## Properties of geometric vs. exponential growth {#sec-lambda-r-relation}
 
-**Population growth rate:**
-$$\frac{dN}{dt} = rN$$
+Compare the projection equations for geometric and exponential growth: discrete growth is described in terms of $\lambda$, continuous growth in terms of $r$.
 
-**Per capita population growth rate:**
-$$\frac{dN}{Ndt} = r$$
-Once again, we see why we refer to exponential growth as density-independent: the per capita growth rate does not depend on $N$.
+| | Discrete (geometric) | Continuous (exponential) |
+|:--|:--:|:--:|
+| **Projection** | $N_t = N_0\lambda^t$ | $N_t = N_0 e^{rt}$ |
+| **Population growth rate** | $\dfrac{\Delta N}{\Delta t} = r_dN$ | $\dfrac{dN}{dt} = rN$ |
+| **Per capita population growth rate** | $\dfrac{\Delta N}{N\Delta t} = r_d$ | $\dfrac{dN}{N\,dt} = r$ |
 
-## Properties of geometric and exponential growth {#sec-lambda-r-relation}
+: Discrete vs. continuous population growth {#tbl-lambda-r}
 
-Compare the projection equations for geometric and exponential growth. We find that 
+where $\lambda = 1 + r_d$. In both cases, the per capita growth rate does not include $N$ -- this is what makes both of these models of *density-independent* growth.
+
+
+We find that 
 $$\lambda = e^{r} \quad ; \quad \ln \lambda = r$$
 This gives us a few useful rules of thumb. 
 
@@ -236,12 +304,15 @@ In any real data set, such as from a real population of fruit flies or Song Spar
 Let's consider the case where a population increases and then decreases. For each year, we will calculate the annual rate of increase $R = N_{t+1}/N_t$, and take the arithmetic average of those rates to see if it makes sense. 
 ```{r echo=TRUE}
 N <- c(20, 30, 15, 15)
+# R where is the ratio of successive population sizes, i.e.,
+# the realized $\lambda$ for just one year
 R <- N[2:4]/N[1:3]; R
 ```
 The arithmetic average of those rates is $(1.5 + 0.5 + 1.0)/3=1.0$. If $R=1.0$, then, on average, the population should stay the same, but it decreased. Why is that?
 
-Let us do the annual time steps explicitly to see what is going on.
+Let us do the annual time steps explicitly to see what is going on,
 $$N_3 = (N_0 R_0) R_1 R_2$$
+where $R_t$ is the realized $\lambda$ for just one year.
 ```{r product1, echo=TRUE}
 # Remember that we call the first time t=0 and N0, but
 # when coding, these values are the first in a series, so 
@@ -250,13 +321,17 @@ $$N_3 = (N_0 R_0) R_1 R_2$$
 # Now we do the annual changes which should equal N3
 N[1]*R[1]*R[2]*R[3]
 ```
-From this calculation, we see that when we start with $N_0=20$ and do the annual steps, we wind up with a smaller population, even though the arithmetic average is $R_{\mathrm{ave}} = 1$. How do we calculate an average of numbers that we multiply together?
+From this calculation, we see that when we start with $N_0=20$ and do the annual steps, we wind up with a smaller population, even though the arithmetic average is $R_{\mathrm{ave}} = 1$. How do we calculate an average of numbers that we multiply together, rather than add?
 
 We want a number $\bar{R}$ such that 
 $$\bar{R}^t = R_1R_2\ldots R_t$$
 
-To find that, we simply solve for $\bar{R}$
+What value of $\bar{R}$ will give us that result?
+
+To find that, we simply solve for $\bar{R}$, where
+
 $$(\bar{R}^t)^{1/t} =\bar{R} = \left(R_1R_2\ldots R_t\right)^{1/t}$$
+
 We take the $t$-th root of the product of all the $R$. This is called the *geometric average.* Another way of writing this would be to use the product symbol, as in
 $$\bar{R} = \left(\prod_{i=1}^t R_i\right)^{1/t}$$
 ```{r prod2, echo=TRUE}
@@ -271,6 +346,8 @@ prod(R)^(1/t)
 
 Another way to do the same thing is to take the arithmethic mean of the log-growth rates, and back-transform,
 ```{r meanlog, echo=TRUE}
+log(R)
+mean( log(R) )
 exp( mean( log(R) ) )
 ```
 
@@ -283,30 +360,26 @@ Nt1 <- N0*lambda^t; Nt1
 ```
 Here $\lambda > 1$, so the population grows.
 
-Now we do a simulation in which we let $\lambda$ have a mean of 1.01 but allow it to vary randomly.
-```{r randomLambda, echo=TRUE, fig.cap="Random variation in growth rate alters the long term average growth rate."}
-# create a vector to hold all N
-N <- rep(0, t); N[1] <- N0
+Now imagine that rate varies each year, around the average of 1.01, and a standard deviation of 0.3.
+```{r}
+#| label: fig-lvary
+#| fig-cap: "Random lambda"
+#| column: margin
 
-# create t-1 random lambdas with a mean of 1.01 
-# ranging from 0.41 to 1.61
-set.seed(3) # makes the radnom sequence repeatable
-random.lambda <- runif(n=(t-1), min=0.41, max=1.61)
-
-# the geometric mean
-prod(random.lambda)^(1/length(random.lambda))
-
-# actual simulated projection
-for(i in 1:(t-1)) { 
-  N[i+1] <- N[i] * random.lambda[i]
-}
-
-qplot(x=0:(t-1), N, geom=c("line", "point"), xlab="Time (y)")
+set.seed(5)
+n.lambdas <- 100
+lambda_varying <- rnorm(n.lambdas, m=lambda, sd=0.3)
+hist(lambda_varying)
 ```
 
-Sometimes the arithmetic average is close to the correct average, but it is never the correct approach.
+Now let's compare the arithmetic and geometric means of these random values.
+```{r}
+mean(lambda_varying)
+prod(lambda_varying)^(1/n.lambdas)
+```
+The geometric mean will always be less than the arithmetic mean.
 
-## Modeling with Data: Simulated Dynamics
+## Simulating dynamics, with environmental noise
 Science strives to make predictions about the behavior of systems. Ecologists and conservation biologists frequently strive to predict the fate of populations, that is, determine the probability that a population will persist. This is referred to as *population viability analysis* (PVA) and is a large field of endeavor that is vital to managing threatened populations. Here we  put into practice ideas about population biology to make informed predictions about the fate of the Song Sparrow population in Darrtown, OH. We also illustrate simple computational methods for doing so.
  
 The preceding sections (the bulk of the chapter) emphasized understanding the deterministic underpinnings of simple forms of density independent growth: geometric and exponential growth. This section explores the stochastic simulation of density independent growth. Our simulation makes most of the same assumptions we made at the beginning of the chapter. In addition, we assume that the observed annual growth rates ($N_{t+1}/N_t$) are representative of future growth rates, and that the growth rate in one year is entirely independent of any other year. 
@@ -702,7 +775,7 @@ Our conclusions are based on a model of discrete density-independent population 
 * what would you like to add next to make the model a better approximation? 
 
 
-## 1/$f$ environmental noise
+### 1/$f$ environmental noise
 Perhaps we can explain some of the variation in annual growth rates of sparrows to weather patterns in the sampling area (Darrtown, Ohio). In doing so, we might be assuming the *environmental stochasticity* is worth modeling which might allow us to separate demographic effects from environmental effects. That would give us a better model we might use for explanation and prediction.
 
 When we model or simulate a time series, we often find it essential to account for patterns that arise on different time scales and have different magnitudes. For instance, air temperature (and its consequences) varies diurnally, from day to day, week to week, and across seasons. We often refer to this as "one over f-noise" ($1/f$-noise), that is, random variation of multiple overlapping asynchronous patterns of variation. This can be characterized with *spectral analysis* [@shumway2019tsd; @halley1996ee1]. Spectral analysis allows us to detect cyclic repeating patterns in strongly cyclic data, such as El Niño Southern Oscillations, small mammal population cycles, tree masting dynamics, disease outbreaks. In fact, nearly all environmental variability typically shows some degree of structure that is nonrandom.

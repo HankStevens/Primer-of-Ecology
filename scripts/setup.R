@@ -11,10 +11,10 @@
 
 x <- c("bbmle", "bipartite", "data.table", "dagitty", "diagram", "DiagrammeR", "DiagrammeRsvg",
        "igraph", "kableExtra", "knitr", "lattice",
-       "lavaan", "magrittr", "patchwork", "phaseR",
+       "lavaan", "magrittr", "MARSS", "patchwork", "phaseR",
        "pracma",
        "primer", "reshape2", "rARPACK", "rsvg", "scatterplot3d", "semPlot",
-       "tidyverse", "tufte", "untb", "vegan", "xtable")
+       "tidyverse", "tinytable", "tufte", "untb", "vegan", "xtable")
 
 invisible(lapply(x, library, character.only = TRUE))
 
