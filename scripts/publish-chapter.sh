@@ -24,10 +24,8 @@
 # chapter at once). The `git checkout dev -- "$CHAPTER"` step below pulls
 # in exactly one file, by design -- anything else you changed on dev stays
 # on dev and quietly does NOT reach master through this script. For that
-# kind of change, publish by hand instead:
-#   git checkout master && git merge dev && quarto render --output-dir docs \
-#     && git add -A && git commit -m "..." && git push origin master \
-#     && git checkout dev
+# kind of change, use scripts/publish-global.sh instead (see that file,
+# or Primer_github_workflow.txt, for the full path).
 #
 # Usage:
 #   scripts/publish-chapter.sh 07-direct_comp_mut.qmd
@@ -172,7 +170,13 @@ git push origin "$MAIN_BRANCH"
 # rendered output (docs/*.html, docs/*_files/) back onto dev too, so a
 # `git status` on dev doesn't show a phantom docs/ diff next time you
 # render there, and so dev and master never quietly diverge over time.
+#
+# --no-edit: if this ever isn't a clean fast-forward (e.g. dev picked up
+# other commits since you started), git needs a merge-commit message and
+# would otherwise open $EDITOR (Vim) here. --no-edit accepts the
+# auto-generated message instead so this never blocks on an interactive
+# prompt.
 git checkout "$DEV_BRANCH"
-git merge "$MAIN_BRANCH"
+git merge "$MAIN_BRANCH" --no-edit
 
 echo "== Done. $CHAPTER is published on $MAIN_BRANCH and $DEV_BRANCH is back in sync. =="
