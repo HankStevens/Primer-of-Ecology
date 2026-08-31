@@ -1,48 +1,66 @@
 # For an ordinary chapter edit
-# stay on dev, commit as often,
+# stay on dev, commit as often as you like -- a plain `git commit` here
+# is expected to open your editor for the message; that's normal, not
+# the Vim problem described below (which is specific to merges).
 
 git branch --show-current # OR
 git checkout dev
 # edit
 git commit
 
-# if I get to a clear stopping point…
+# if I get to a clear stopping point...
 quarto render                      # confirm it looks right
 git commit 					# to save snapshot again
 
 
 # and when the chapter's ready, run
-scripts/publish-chapter.sh "chap-name'" e.g. 07-direct_comp_mut.qmd # from the repo root.
+scripts/publish-chapter.sh 07-direct_comp_mut.qmd   # from the repo root
 
-//** It checks you're on a clean dev, warns you to glance at that chapter's recent commit log for anything that touches shared files (bib entries, _quarto.yml, scripts/) before proceeding, pulls just that one .qmd into master, renders the full book into docs/ using master's current state for every other chapter, shows you the diff, and waits for you to hit Enter before it commits, pushes, and merges master back into dev to keep them in sync. That's your doc's pattern, just automated and pointed at the right branch and output directory. **//
+# It checks you're on a clean dev, warns you to glance at that chapter's
+# recent commit log for anything that touches shared files (bib entries,
+# _quarto.yml, scripts/) before proceeding, pulls just that one .qmd into
+# master, renders the full book into docs/ using master's current state
+# for every other chapter, shows you the diff, and waits for you to hit
+# Enter before it commits, pushes, and merges master back into dev to
+# keep them in sync.
 
 ### For a global change
 
-# e.g.  anything touching _quarto.yml, book-refs.bib, scripts/build_refs.R, or more than one chapter at once — skip the single-file trick entirely, since it only carries the one file you name and would silently leave the rest of the change behind. Instead do the plain full-book path: render and sanity-check on dev, commit there:
+# e.g. anything touching _quarto.yml, book-refs.bib,
+# scripts/build_refs.R, or more than one chapter at once -- skip the
+# single-file trick entirely, since it only carries the one file you
+# name and would silently leave the rest of the change behind. Instead:
 
-# on dev, working tree should already be clean from your recent edits
-git branch --show-current        # confirm: dev
-
-# full-book preview render — no --output-dir flag, so this goes to the
-# default, gitignored _book/, not the live docs/ folder
-quarto render
-
-# sanity-check the render before trusting it
-open _book/index.html            # eyeball it — nav, cross-refs, new content look right?
-                                  # (or: quarto preview, if you want it live-reloading)
-
-# check what actually changed at the source level before committing
+# 1. On dev, make the change and render a full-book preview to
+#    sanity-check it before committing:
+quarto render                      # no --output-dir -> gitignored _book/, not the live docs/
+open _book/index.html              # eyeball it: nav, cross-refs, new content
+                                    # (or: quarto preview, if you want it live-reloading)
 git status
 git diff --stat
-
-# commit the source changes on dev
 git add -A
 git commit -m "describe the global change here"
 
-# then
-git checkout master && git merge dev && quarto render --output-dir docs && git add -A && git commit -m "..." && git push origin master && git checkout dev
+# 2. Then hand off the master-side publish to the script:
+scripts/publish-global.sh "describe the change again, for the publish commit"
 
-//** That's the "submit the whole thing" half of your original doc, and it's exactly what today's pending changes should go through — right now dev is sitting on a real mix of that infrastructure work (the freeze setting, the output-dir move, the publish script, plus the older half-finished migration cleanup from before) that's a good candidate to land as one deliberate commit through this path rather than trickling out chapter by chapter. 88//
+# It merges dev into master, renders the full book into docs/, shows you
+# the diff, and waits for you to hit Enter before it commits, pushes,
+# and merges master back into dev.
 
-The one habit worth building on top of both paths: after any full merge into master, git diff docs/ before you push, the same sanity check your doc already does for single chapters — with docs/ now being the literal live site instead of a gitignored scratch folder, that diff is your last look before the public copy changes.
+## Why you used to get dropped into Vim
+# Any `git merge` between two branches that have each moved forward on
+# their own is not a fast-forward, so git needs a commit message for the
+# merge and opens $EDITOR (Vim, by default) to ask for one -- even when
+# the merge itself is conflict-free. Both scripts pass --no-edit on
+# every merge so that never happens. If you ever write a merge by hand,
+# do the same:
+#   git merge dev --no-edit
+# or supply your own message directly instead of opening an editor:
+#   git merge dev -m "your message"
 
+## One habit worth keeping for both paths
+# After any full merge into master, `git diff docs/` before you push --
+# docs/ is the literal live site now, so that diff is your last look
+# before the public copy changes. Both scripts already show you the
+# full diff and pause for Enter before committing, which covers this.
