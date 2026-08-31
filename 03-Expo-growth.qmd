@@ -7,9 +7,12 @@ source("scripts/setup.R")
 data(sparrows)
 ggplot(data=sparrows[1:6,], aes(x=Year, y=Count)) + geom_line() + geom_point()
 ``` 
+
 ```{r fig-Melospiza2, echo=FALSE,  fig.cap="Song Sparrow (*Melospiza melodia*) annual changes in population size as a function of population size.", out.width="70%"}
+spar1 <- tibble(Count = sparrows$Count[1:5], ssgr= with(sparrows[1:6,], Count[2:6]/Count[1:5]))
 ssgr <- with(sparrows[1:6,], Count[2:6]/Count[1:5])
-qplot(Count, ssgr, data=sparrows[1:5,], ylab=bquote(N[t+1]/N[t]), geom="point")
+ggplot( data=spar1, aes(Count, ssgr) ) + geom_point() +
+         labs(y=bquote(N[t+1]/N[t]) )
 ``` 
 
 
@@ -377,6 +380,12 @@ Now let's compare the arithmetic and geometric means of these random values.
 mean(lambda_varying)
 prod(lambda_varying)^(1/n.lambdas)
 ```
+
+Another way to calculate the geometric mean is to take the arithmetic mean of the log-lambdas, and then exponentiate the result.
+```{r}
+exp( mean( log( lambda_varying)))
+```
+
 The geometric mean will always be less than the arithmetic mean.
 
 ## Simulating dynamics, with environmental noise
@@ -420,7 +429,6 @@ Let's start by graphing the data^[I've come to abhor my use of the expression "l
 library(primer) # load the primer package
 data(sparrows) # load a built-in data set
 names(sparrows) # extract the names of the columns in the data frame
-attach(sparrows) # put the columns in R's search path
 ```
 
 Now we plot these counts through time (Fig. @fig-cts).  
@@ -432,13 +440,16 @@ We see that Song Sparrow counts at this site (the DARRTOWN transect, OH, USA) fl
 
 Next we calculate annual $R_t=N_{t+1}/N_t$, that is, the observed growth rate for each year $t$.
 ```{r}
-# the use of [-1] in the index tells R to exclude the first element.
-# length() is the length of a vector, so [-length(X)] means exclude the last
-obs.R <- Count[-1]/Count[-length(Count)]
+sparrows2 <- sparrows |>
+  mutate( # change variables
+    obs.R = lead(Count)/Count # groovy way to calculate N[t+1] / N[t]
+    # Count / lag(Count) would give us N[t] / N[t-1]
+    )
 ```
 Thus our *data* are the observed $R_t$, not the counts *per se*. These $R$ form the basis of everything else we do. Because they are so important, let's plot these as well. Let's also indicate $R=1$ with a horizontal dotted line as a visual cue for zero population growth. Note that we exclude the last year because each $R_t$ is associated with $N_t$ rather than $N_{t+1}$. 
 ```{r fig-Rrates, fig.cap="Annual growth rates (R=N[t+1]/N[t]) for Song Sparrows", out.width="75%"}
-qplot(x=Year[-length(Count)], y=obs.R, geom="point") + geom_hline(yintercept=1, lty=3) + 
+ggplot(data=sparrows2, aes(x=Year, y=obs.R) ) + geom_point() + 
+  geom_hline(yintercept=1, lty=3) + 
   labs(y=bquote(N[t+1]/N[t]), x="Year (t)")
 ```
 One thing that emerges in our graphic data display (Fig. @fig-Rrates) is we have an unusually high growth rate in the early 1990's, with the rest of the data clustered around 0.5--1.5. We may want to remember that.
@@ -488,7 +499,11 @@ N[t+1] <- N[t] * rRs[t]
 ``` 
 Let's graph the result.
 ```{r fig-simten, fig.cap="A single simulated population projection."}
-qplot(0:years, N, geom=c("point","line"))
+plot(0:years, N, type="b") # base graphics
+d <- tibble(Year=0:years, N)
+d |>
+  ggplot(aes(x=Year, y=N)) + 
+  geom_line() + geom_point()
 ```
 
 It appears to work (Fig. @fig-simten). 
