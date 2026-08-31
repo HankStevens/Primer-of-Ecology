@@ -440,13 +440,15 @@ We see that Song Sparrow counts at this site (the DARRTOWN transect, OH, USA) fl
 
 Next we calculate annual $R_t=N_{t+1}/N_t$, that is, the observed growth rate for each year $t$.
 ```{r}
+#| label: sim-obsR
 # create a new dataframe that contains everything in sparrows and the 
 # new variable, obs.R
 sparrows2 <- sparrows |>
   mutate( # change variables
     obs.R = lead(Count)/Count # groovy way to calculate N[t+1] / N[t]
     # Count / lag(Count) would give us N[t] / N[t-1]
-    )
+    ) |>
+  drop_na() # remove the row with obs.R equal NA (last row)
 ```
 Thus our *data* are the observed $R_t$, not the counts *per se*. These $R$ form the basis of everything else we do. Because they are so important, let's plot these as well. Let's also indicate $R=1$ with a horizontal dotted line as a visual cue for zero population growth. Note that we exclude the last year because each $R_t$ is associated with $N_t$ rather than $N_{t+1}$. 
 ```{r fig-Rrates, fig.cap="Annual growth rates (R=N[t+1]/N[t]) for Song Sparrows", out.width="75%"}
@@ -480,16 +482,19 @@ Terminology: A random process occurs only in our imagination, or perhaps at the 
 
 We can use `set.seed()` to make your pseudorandom process the same as mine, i.e., repeatable.
 ```{r}
+#| label: resample1
 set.seed(3)
 # Draw a sample of our observed R with replacement, "years" times.
-(rRs <- sample(x=obs.R, size=years, replace = TRUE))
+
+(rRs <- sample(x=sparrows2$obs.R, size=years, replace = TRUE))
 ```
 Now that we have these 10 $R$, all we have to do is use them to generate the population sizes through time. For this, we need to use what programmers call a *for-loop*. In brief, a for-loop repeats a series of steps for a predetermined number of times. 
 
 
 Let's start our simulated N with the sparrow count we had in the last year.
 ```{r}
-N[1] <- Count[length(Count)]
+#| label: lastcount
+N[1] <- sparrows$Count[length(sparrows$Count)]
 ```
 
 Now we are ready to use the for-loop to project the population. For each year $t$, we multiply $N_t$ by the randomly selected $R_t$ to get $N_{t+1}$ and put it into the $t +1$ element of `N`. 
@@ -500,7 +505,11 @@ N[t+1] <- N[t] * rRs[t]
 }
 ``` 
 Let's graph the result.
-```{r fig-simten, fig.cap="A single simulated population projection."}
+```{r }
+#| label: fig-simten
+#| fig-cap: "A single simulated population projection."
+
+
 plot(0:years, N, type="b") # base graphics
 d <- tibble(Year=0:years, N)
 d |>
@@ -568,7 +577,7 @@ sims=10; years=50
 set.seed(3)
 
 outmat <- replicate(sims,   
-             expr=myForLoop(obs.R=obs.R, years=years, initial.N=43)
+             expr=myForLoop(obs.R=sparrows2$obs.R, years=years, initial.N=43)
                     )
 ```
 Now let's peek at the results (Fig. @fig-tensimfig). It is fun to graph our output, but also helps us make sure we are not making a heinous mistake in our code. Note we use log scale to help us see the small populations.
@@ -604,12 +613,13 @@ Now we are in a position to make an informed prediction, given our assumptions. 
 
 We will simulate the population for 50 years 10\,000 times and describe the distribution of final population sizes. We use `system.time` to tell me how long it takes on my computer.
 ```{r}
-sims=1e4; years=50
+sims=1e4
+years=50
 set.seed(3)
 ## system.time keeps track of how long processes take.
 system.time(
 outmat <- replicate(sims,   
-                    expr=myForLoop(obs.R=obs.R, years=years, initial.N=43)
+                    expr=myForLoop(obs.R=sparrows2$obs.R, years=years, initial.N=43)
                     )
             )
 ```
@@ -668,7 +678,7 @@ Fig. @fig-survivalPrior shows our *prior beliefs*. That is, before we look at ou
 First, our "data" are really just 36 years of counts and 35 estimates of annual growth ($N_{t+1}/N_{t}$). We can do as many simulations as we like, but they are still based on only 35 annual growth estimates. Therefore, if we combine our survival estimate with the amount of data, we multiply the survival probability by the sample size and think of it as evidence in favor of surviving. Weight of evidence not in favor is the difference.
 ```{r}
 # number of observations
-nR <- length(obs.R); nR 
+nR <- length(sparrows2$obs.R); nR 
 
 p # probability of persisting
 
@@ -714,8 +724,8 @@ We can fit a normal distribution to the logarithms of our observed $R$, and we s
 
 ```{r}
 #| include: false
-mu <- mean( log(obs.R) )
-sigma <- sd( log(obs.R) )
+mu <- mean( log(sparrows2$obs.R) )
+sigma <- sd( log(sparrows2$obs.R) )
 # a regular sequence for log-R
 lR <- seq(-1, 1.1, by=0.01)
 # the probability densities for the log-R
@@ -727,12 +737,12 @@ rdR <- dR*10
 ::: {#fig-fitln layout-ncol="2"}
 
 ```{r}
-hist(log(obs.R), breaks=10, ylab="Frequency")
+hist(log(sparrows2$obs.R), breaks=10, ylab="Frequency")
 lines(lR, rdR)
 ```
 
 ```{r}
-qqnorm(log(obs.R)); qqline(log(obs.R))
+qqnorm(log(sparrows2$obs.R)); qqline(log(sparrows2$obs.R))
 ```
 
 The logarithms of the observed R arrayed in a histogram (left) and a quantile-quantile plot comparing our log-growth rates to the normal distribution (right). Our data seem somewhat approximated by a Normal distribution whose mean and standard deviation are derived from the log-transformed data. The probability distribution has been rescaled to be visible on this graph. However, the q-q plot shows that the sample (y-axis) includes values that are smaller and larger than predicted by the normal distribution.
@@ -845,7 +855,7 @@ Imagine that the Ohio (USA) environment of our Song Sparrows reveals *environmne
 
 Let us first examine whether the sparrow growth rates show evidence of reddened population dynamics. We can use the `plot_f()` in `primer` to evaluate that. It plots the time series, and then the power spectra. It fits a line to the log(power) vs. log(frequency) and calculates a frequentist confidence interval.
 ```{r plotf, fig.cap="Sparrow population dynamics seems to show reddened flutuations. On the left, sparrow counts over time, and on the right, the log-log plot of the power spectrum (power vs. frequency). The frequentist confidence interval on the slope of the fitted line suggests that we shouldn't rule out the possibility of a reddened series."}
-plot_f(Count)
+plot_f(sparrows$Count)
 ```
 
 Not surprisingly, we see the possibility of reddened population dynamics. You could also investigate the observed annual growth rates the same way.
@@ -854,17 +864,17 @@ To resample the sparrow growth rates and also create a reddened sequences of the
 
 Below, we simply rearrange the observed annual growths into a single reddened sequence. For the reddened template, we will assume moderate reddening, or pink noise, for which $\gamma = 1$.
 ```{r Rred, fig.cap="Original and rearranged annual growth rates."}
-R.n = length(obs.R) # number of observations
+R.n = length(sparrows2$obs.R) # number of observations
 
 ## A random pink noise template
 set.seed(2)
 one.over.f.template <- one_over_f(gamma=1, N=R.n)
 
 ## Rearrange the observed R
-R.f <- spec_mimic(obs.R, one.over.f.template)
+R.f <- spec_mimic(sparrows2$obs.R, one.over.f.template)
 
 ## combine and plot
-series <- cbind(obs.R, one.over.f.template, R.f)
+series <- cbind(sparrows2$obs.R, one.over.f.template, R.f)
 
 matplot(1:R.n, series, type='l', 
         col=c(1,2,2), lty=c(1,2,1), lwd=c(1,2,2))
