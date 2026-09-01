@@ -483,7 +483,7 @@ Figure&nbsp;2.3: Mass-specific metabolic rate decreases predictably with species
 <h3 data-number="2.2.2" class="anchored" data-anchor-id="temperature-dependence"><span class="header-section-number">2.2.2</span> Temperature dependence</h3>
 <p>In addition to body size, temperature plays the other key role in regulating metabolic rate. The Arrhenius equation connects the macroscopic property of temperature to the kinetic energy of molecules and the rates they govern. Metabolic rate is proportional to these rate determining processes, <span class="math display">\[B  = a e^{\frac{-E_a}{kT}}\]</span> where <span class="math inline">\(a\)</span> is just a constant, <span class="math inline">\(e\)</span> is the exponential, <span class="math inline">\(E_a\)</span> is the average activation energy of rate-limiting enzymes (units, eV), <span class="math inline">\(k\)</span> is Boltzmann’s constant (units eV<span class="math inline">\(\,\)</span>K<span class="math inline">\(^{-1}\)</span>), and <span class="math inline">\(T\)</span> (units deg K). Bolztmann’s constant (<span class="math inline">\(\backsim 8.6 \times 10^-5\)</span><span class="math inline">\(\,\)</span>eV<span class="math inline">\(\,\)</span>K<span class="math inline">\(^{-1}\)</span>) converts the macroscopic property of temperature to kinetic energy of molecules.</p>
 <p>Individual biochemical reactions combine to determine basal metabolic rate, so <span class="citation" data-cites="gillooly2000">Gillooly (<a href="references.html#ref-gillooly2000" role="doc-biblioref">2000</a>)</span> have taken this as a foundation for the metabolic theory of ecology <span class="citation" data-cites="brown2004mte">(<a href="references.html#ref-brown2004mte" role="doc-biblioref">Brown et al. 2004</a>)</span>. In 2000, they suggested that the average activation energy is approximately <span class="math inline">\(E_a = 0.23\,\)</span>eV . Subsequent work has described this as “temperature sensitivity”, where larger numbers imply that organisms respond more strongly to temperature variation.</p>
-<p>The Arrhenius equation is a little more complicated that a simple power law, but not too much. Over the range of biologically relevant temperatures, it is dominated by a largely exponential increase in metabolic rate with increasing temperature (Fig. <a href="#fig-arrh" class="quarto-xref">Figure&nbsp;<span>2.4</span></a>).</p>
+<p>The Arrhenius equation is a little more complicated that a simple power law, but not too much. Over the range of biologically relevant temperatures, it is dominated by a largely exponential increase in metabolic rate with increasing temperature (<a href="#fig-arrh" class="quarto-xref">Figure&nbsp;<span>2.4</span></a>).</p>
 <div class="cell page-columns page-full">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># with base R</span></span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="co"># base R: curve(10^4*exp(-0.23/(8.5 * 10^-5 *x)), 276, 316), ylab="B", xlab='T')</span></span>
@@ -543,11 +543,16 @@ B &amp;= a e^{\frac{-E_a}{kT}}\\
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>( m[<span class="sc">-</span><span class="dv">1</span>]<span class="sc">/</span>m[<span class="sc">-</span><span class="fu">length</span>(m)], <span class="at">digits =</span> <span class="dv">0</span>)</span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>( b[<span class="sc">-</span><span class="dv">1</span>]<span class="sc">/</span>b[<span class="sc">-</span><span class="fu">length</span>(b)], <span class="at">digits =</span> <span class="dv">1</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<p>When we do these divisions, we see the constant relative change (Table @ref(tab:relativemb)).</p>
+<p>When we do these divisions, we see the constant relative change (Table <a href="#tbl-relativemb" class="quarto-xref">Table&nbsp;<span>2.1</span></a>).</p>
 <div class="cell">
+<div id="tbl-relativemb" class="cell quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-relativemb-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;2.1: As we increase mass by a constant multiplier (10x), power law scaling results in a constant proportional change in basal metabolc rate.
+</figcaption>
+<div aria-describedby="tbl-relativemb-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="cell-output-display">
-<table class="caption-top table table-sm table-striped small">
-<caption>As we increase mass by a constant multiplier (10x), power law scaling results in a constant proportional change in basal metabolc rate.</caption>
+<table class="cell caption-top table table-sm table-striped small">
 <thead>
 <tr class="header">
 <th style="text-align: left;"></th>
@@ -590,6 +595,9 @@ B &amp;= a e^{\frac{-E_a}{kT}}\\
 </table>
 </div>
 </div>
+</figure>
+</div>
+</div>
 <p>We can verify this generally using algebra, not just in the particular case above. We will show that if mass increases by a constant multiplier, metabolic rate will also, regardless of the particular masses involved.</p>
 <p>Let mass <span class="math inline">\(m_2\)</span> be greater than mass <span class="math inline">\(m_1\)</span> by a factor of <span class="math inline">\(c\)</span>, so that <span class="math inline">\(m_2 = c m_1\)</span>, and <span class="math display">\[\frac{m_2}{m_1} = c\]</span>.</p>
 <p>We would like to show that the ratio of the metabolic rates <span class="math inline">\(b_2 / b_1\)</span> is also a constant. Since <span class="math inline">\(m_2 = cm_1\)</span>, we can say that <span class="math display">\[b_1 = a m_1^{3/4}\]</span> <span class="math display">\[b_2 = a (cm_1)^{3/4} = ac^{3/4}m_1^{3/4}\]</span> <span class="math display">\[\frac{b_2}{b_1} = \frac{ac^{3/4}m_1^{3/4}}{am_1^{3/4}}\]</span> When we reduce this fraction, we a left with <span class="math display">\[\frac{b_2}{b_1} = c^{3/4}\]</span></p>
@@ -628,7 +636,7 @@ Figure&nbsp;2.5: Changing the scales of the axes to linearize power law relation
 <p>The principle of maximum entropy could help us prove that, in the absence of other information, the least biased distributions for these sets of constraints would be the uniform, exponential, and Gaussian (or normal) probability distributions.</p>
 <p>The maximum entropy theory of ecology <span class="citation" data-cites="harte2014">(<a href="references.html#ref-harte2014" role="doc-biblioref">Harte and Newman 2014</a>)</span> can tell us what to expect when we know very little, or <em>when very little is going on aside from random noise.</em></p>
 <p>We will talk more about the METE in our chapter on diversity, but I mention it here to emphasize that patterns arise in ecology via random noise.</p>
-<p>The rank-abundance distribution is a famous ecological pattern. It is the log-abundance or relative abundance of species, arranged from the most abundant to the least abundant (Fig. @ref(fig:mete1)).</p>
+<p>The rank-abundance distribution is a famous ecological pattern. It is the log-abundance or relative abundance of species, arranged from the most abundant to the least abundant (<a href="#fig-mete1a" class="quarto-xref">Figure&nbsp;<span>2.6</span></a>).</p>
 <div class="cell page-columns page-full">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(vegan)</span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(BCI)</span>
@@ -648,7 +656,7 @@ Figure&nbsp;2.6: Rank abundance distribution of tree species in a 50 ha plot on 
 </figure>
 </div>
 </div></div></div>
-<p>The curve formed by these data points (Fig. <a href="#fig-mete1a" class="quarto-xref">Figure&nbsp;<span>2.6</span></a>) is steep at first, among the most abundant species. The curve then flattens out a bit before getting a little bit steeper again.</p>
+<p>The curve formed by these data points (<a href="#fig-mete1a" class="quarto-xref">Figure&nbsp;<span>2.6</span></a>) is steep at first, among the most abundant species. The curve then flattens out a bit before getting a little bit steeper again.</p>
 <div class="cell page-columns page-full">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>mod.oct <span class="ot">&lt;-</span> <span class="fu">prestonfit</span>(<span class="fu">colSums</span>(BCI))</span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(mod.oct, <span class="at">main=</span><span class="st">"Species abundance distribution"</span>)  </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -665,7 +673,7 @@ Figure&nbsp;2.7: Species abundance distribution of tree species in a 50 ha plot 
 </figure>
 </div>
 </div></div></div>
-<p>If we group species into logarithmic abundance categories, and make a histogram of abundances, we get the *species abundance distribution (Fig. <a href="#fig-mete1b" class="quarto-xref">Figure&nbsp;<span>2.7</span></a>). <span class="citation" data-cites="preston1962cdc">Preston (<a href="references.html#ref-preston1962cdc" role="doc-biblioref">1962</a>)</span> noted that the distributions were remarkabling similar to a normal (Gaussian) distribution, when abundances were log-transformed (resulting in a lognormal-like distribution). It turns out that this curve is quite common and for decades ecologists argued about how we might infer the underlying ecological processes on the basis of the shape of the curve. This discussion died out once ecologists admitted that it was impossible to determined the processes on the basis of the pattern.</p>
+<p>If we group species into logarithmic abundance categories, and make a histogram of abundances, we get the *species abundance distribution (<a href="#fig-mete1b" class="quarto-xref">Figure&nbsp;<span>2.7</span></a>). <span class="citation" data-cites="preston1962cdc">Preston (<a href="references.html#ref-preston1962cdc" role="doc-biblioref">1962</a>)</span> noted that the distributions were remarkabling similar to a normal (Gaussian) distribution, when abundances were log-transformed (resulting in a lognormal-like distribution). It turns out that this curve is quite common and for decades ecologists argued about how we might infer the underlying ecological processes on the basis of the shape of the curve. This discussion died out once ecologists admitted that it was impossible to determined the processes on the basis of the pattern.</p>
 <p>The discussion of the shape of the rank-abundance distribution was revived in the late nineties when Steve Hubbell showed that if you pretend all individuals are equally likely to live or die, <em>independent of their species identity</em>, then you should expect this pattern <span class="citation" data-cites="hubbell2001vvv">(<a href="references.html#ref-hubbell2001vvv" role="doc-biblioref">Hubbell 2001</a>)</span>. Later, John Harte showed that the principle of maximum entropy was a more general approach to this question and could be extended into other realms and patters.</p>
 <p>As an example, consider a community of five individuals and three species. Those are our only constraints, <span class="math inline">\(N=5\)</span>, <span class="math inline">\(S=3\)</span>. How many different possible distributions of species abundances can we get if we assume maximum uncertainty, i.e., maximum entropy? Is there any way to know? Because we have so few, we can count them.</p>
 <p>Consider five individuals distributed among three species (rows) and list all possible community states (columns).</p>
