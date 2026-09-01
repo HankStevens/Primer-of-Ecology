@@ -497,27 +497,29 @@ Let's start our simulated N with the sparrow count we had in the last year.
 N[1] <- sparrows$Count[length(sparrows$Count)]
 ```
 
-Now we are ready to use the for-loop to project the population. For each year $t$, we multiply $N_t$ by the randomly selected $R_t$ to get $N_{t+1}$ and put it into the $t +1$ element of `N`. 
-```{r forloop}
+Now we are ready to use the for-loop to project the population. For each year $t$, we multiply $N_t$ by the randomly selected $R_t$ to get $N_{t+1}$ and put it into the $t +1$ element of `N`.
+```{r }
+#| label: forloop
 for( t in 1:years) { 
 # starting with year = 1, and for each subsequent year, do... 
 N[t+1] <- N[t] * rRs[t]
 }
 ``` 
+
 Let's graph the result.
-```{r }
+```{r}
 #| label: fig-simten
 #| fig-cap: "A single simulated population projection."
 
+# plot(0:years, N, type="b") # base graphics, quick check
 
-plot(0:years, N, type="b") # base graphics
 d <- tibble(Year=0:years, N)
 d |>
   ggplot(aes(x=Year, y=N)) + 
-  geom_line() + geom_point()
+  geom_line() + geom_point() 
 ```
 
-It appears to work (Fig. @fig-simten). 
+It appears to work (@fig-simten). 
 
 Let's review what we have done. We
 
@@ -527,7 +529,7 @@ Let's review what we have done. We
 * we created an empty vector and put in an initial value.
 * performed each year's calculation, and put it into the vector we made.
 
-So what does Fig. @fig-simten represent? It represents one possible outcome of a trajectory, if we assume that $R$ has an equal probability of being any of the observed $R_t$. This *particular* trajectory is very unlikely, because it would require one particular sequence of randomly selected $R$s. However, we assume that it is *no less likely* than any other particular trajectory.
+So what does @fig-simten represent? It represents one possible outcome of a trajectory, if we assume that $R$ has an equal probability of being any of the observed $R_t$. This *particular* trajectory is very unlikely, because it would require one particular sequence of randomly selected $R$s. However, we assume that it is *no less likely* than any other particular trajectory.
 
 As only one realization of a set of randomly selected $R$, Fig. @fig-simten tells us very little. What we need to do now is to replicate this process a very large number of times, and examine the *distribution* of outcomes, including moments of the distribution such as the mean, median, and the uncertainty of eventual outcomes. 
 
@@ -580,8 +582,11 @@ outmat <- replicate(sims,
              expr=myForLoop(obs.R=sparrows2$obs.R, years=years, initial.N=43)
                     )
 ```
-Now let's peek at the results (Fig. @fig-tensimfig). It is fun to graph our output, but also helps us make sure we are not making a heinous mistake in our code. Note we use log scale to help us see the small populations.
-```{r fig-tensimfig, fig.cap="Using matplot() to plot a matrix vs. a single variable. Our simulated populations sometimes increase and sometimes decrease.", out.width="75%"}
+Now let's peek at the results (@fig-tensimfig). It is fun to graph our output, but also helps us make sure we are not making a heinous mistake in our code. Note we use log scale to help us see the small populations.
+```{r}
+#| label: fig-tensimfig
+#| fig.cap: "Using matplot() to plot a matrix vs. a single variable. Our simulated populations sometimes increase and sometimes decrease."
+#| out-width: "75%"
 matplot(0:years, outmat, type="l", log="y")
 ```
 
