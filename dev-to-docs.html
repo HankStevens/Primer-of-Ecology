@@ -1,0 +1,638 @@
+<title>Dev to Docs</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Work+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap');
+
+  :root{
+    --paper: #eceee3;
+    --paper-raised: #f6f7f0;
+    --ink: #202a20;
+    --ink-soft: #4b564a;
+    --line: #cdd2c2;
+    --dev: #a3661a;
+    --dev-ink: #7a4d13;
+    --dev-soft: #f1e2c8;
+    --master: #2f5f3d;
+    --master-soft: #dbe8dd;
+    --code-bg: #1a1f18;
+    --code-ink: #dce6da;
+    --code-line: #333c30;
+    --code-accent: #e0a94f;
+    --shadow: 0 1px 2px rgba(32,42,32,0.06), 0 6px 20px rgba(32,42,32,0.06);
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --paper: #141912;
+      --paper-raised: #1c231a;
+      --ink: #e7ebe0;
+      --ink-soft: #a9b3a2;
+      --line: #313a2e;
+      --dev: #d99a3f;
+      --dev-ink: #f0c07f;
+      --dev-soft: #362a15;
+      --master: #7cbd8f;
+      --master-soft: #1c3324;
+      --shadow: 0 1px 2px rgba(0,0,0,0.3), 0 8px 24px rgba(0,0,0,0.35);
+    }
+  }
+  :root[data-theme="dark"]{
+    --paper: #141912;
+    --paper-raised: #1c231a;
+    --ink: #e7ebe0;
+    --ink-soft: #a9b3a2;
+    --line: #313a2e;
+    --dev: #d99a3f;
+    --dev-ink: #f0c07f;
+    --dev-soft: #362a15;
+    --master: #7cbd8f;
+    --master-soft: #1c3324;
+    --shadow: 0 1px 2px rgba(0,0,0,0.3), 0 8px 24px rgba(0,0,0,0.35);
+  }
+
+  *{ box-sizing: border-box; }
+  body{
+    background: var(--paper);
+    color: var(--ink);
+    font-family: 'Work Sans', system-ui, -apple-system, sans-serif;
+    font-size: 16px;
+    line-height: 1.6;
+  }
+  ::selection{ background: var(--dev-soft); }
+
+  h1,h2,h3{
+    font-family: 'Fraunces', Georgia, 'Times New Roman', serif;
+    font-weight: 600;
+    text-wrap: balance;
+    color: var(--ink);
+    letter-spacing: -0.01em;
+  }
+  code, .mono{ font-family: 'IBM Plex Mono', ui-monospace, Consolas, monospace; }
+
+  a{ color: var(--master); }
+  a:hover{ color: var(--dev); }
+
+  .wrap{ max-width: 760px; margin: 0 auto; padding: 0 24px 96px; }
+
+  /* ---------- Header ---------- */
+  header.hero{
+    padding: 56px 24px 40px;
+    max-width: 760px;
+    margin: 0 auto;
+  }
+  .eyebrow{
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12.5px;
+    text-transform: uppercase;
+    letter-spacing: 0.09em;
+    color: var(--ink-soft);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 14px;
+  }
+  .eyebrow .dot{ width: 6px; height: 6px; border-radius: 50%; background: var(--dev); }
+  .eyebrow .dot2{ background: var(--master); }
+  h1{ font-size: clamp(2rem, 5vw, 2.6rem); margin: 0 0 14px; line-height: 1.12; }
+  header.hero p{
+    font-size: 1.08rem;
+    color: var(--ink-soft);
+    max-width: 58ch;
+    margin: 0;
+  }
+  header.hero .repo-line{
+    margin-top: 18px;
+    font-size: 13.5px;
+    color: var(--ink-soft);
+  }
+  header.hero .repo-line code{
+    background: var(--paper-raised);
+    border: 1px solid var(--line);
+    border-radius: 5px;
+    padding: 1px 7px;
+    font-size: 12.5px;
+  }
+
+  /* ---------- Sticky nav ---------- */
+  nav.toc{
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background: color-mix(in srgb, var(--paper) 92%, transparent);
+    backdrop-filter: blur(6px);
+    border-bottom: 1px solid var(--line);
+  }
+  nav.toc .inner{
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 0 24px;
+    display: flex;
+    gap: 4px;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  nav.toc .inner::-webkit-scrollbar{ display: none; }
+  nav.toc a{
+    flex: none;
+    font-size: 13px;
+    color: var(--ink-soft);
+    text-decoration: none;
+    padding: 12px 10px;
+    border-bottom: 2px solid transparent;
+    white-space: nowrap;
+  }
+  nav.toc a:hover{ color: var(--ink); }
+
+  /* ---------- Sections ---------- */
+  section{ padding-top: 52px; scroll-margin-top: 52px; }
+  section > .kicker{
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    margin-bottom: 8px;
+  }
+  h2{ font-size: 1.5rem; margin: 0 0 6px; }
+  section > .dek{
+    color: var(--ink-soft);
+    max-width: 62ch;
+    margin: 0 0 26px;
+    font-size: 15.5px;
+  }
+  h3{ font-size: 1.08rem; margin: 30px 0 10px; }
+  p{ margin: 0 0 15px; }
+  p.tight{ margin-bottom: 8px; }
+
+  .branch-tag{
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    font-weight: 500;
+    padding: 2px 9px 2px 7px;
+    border-radius: 20px;
+    white-space: nowrap;
+  }
+  .branch-tag.dev{ background: var(--dev-soft); color: var(--dev-ink); }
+  .branch-tag.master{ background: var(--master-soft); color: var(--master); }
+  .branch-tag::before{ content:""; width:6px; height:6px; border-radius:50%; background: currentColor; }
+
+  /* ---------- Diagram ---------- */
+  figure.diagram{
+    margin: 8px 0 30px;
+    background: var(--paper-raised);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    padding: 18px 18px 14px;
+    box-shadow: var(--shadow);
+  }
+  figure.diagram svg{ width: 100%; height: auto; display: block; }
+  figure.diagram figcaption{
+    margin-top: 10px;
+    font-size: 13px;
+    color: var(--ink-soft);
+    text-align: center;
+  }
+  .svg-label{ font-family: 'IBM Plex Mono', monospace; font-size: 11.5px; }
+  .svg-title{ font-family: 'Work Sans', sans-serif; font-size: 13px; font-weight: 600; }
+
+  /* ---------- Glossary ---------- */
+  .glossary{ display: grid; gap: 14px; }
+  .gterm{
+    display: grid;
+    grid-template-columns: 108px 1fr;
+    gap: 16px;
+    padding-bottom: 14px;
+    border-bottom: 1px solid var(--line);
+  }
+  .gterm:last-child{ border-bottom: none; }
+  .gterm dt{
+    font-family: 'IBM Plex Mono', monospace;
+    font-weight: 500;
+    font-size: 13.5px;
+    color: var(--ink);
+    padding-top: 2px;
+  }
+  .gterm dd{ margin: 0; color: var(--ink-soft); font-size: 14.5px; }
+  .gterm dd b{ color: var(--ink); font-weight: 500; }
+
+  /* ---------- Steps ---------- */
+  ol.steps{
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    counter-reset: step;
+    border-left: 2px solid var(--line);
+  }
+  ol.steps > li{
+    position: relative;
+    padding: 0 0 30px 26px;
+    counter-increment: step;
+  }
+  ol.steps > li::before{
+    content: counter(step);
+    position: absolute;
+    left: -13px;
+    top: 0;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: var(--paper);
+    border: 2px solid var(--line);
+    color: var(--ink-soft);
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  ol.steps > li.on-master::before{ border-color: var(--master); color: var(--master); }
+  ol.steps > li.on-dev::before{ border-color: var(--dev); color: var(--dev); }
+  ol.steps > li.checkpoint::before{ content: "!"; background: var(--dev-soft); border-color: var(--dev); color: var(--dev-ink); }
+  ol.steps > li:last-child{ padding-bottom: 4px; }
+  ol.steps h4{
+    font-family: 'Work Sans', sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+    margin: 2px 0 6px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+  ol.steps p{ font-size: 14.5px; color: var(--ink-soft); margin: 0 0 10px; max-width: 60ch; }
+
+  pre{
+    background: var(--code-bg);
+    color: var(--code-ink);
+    border: 1px solid var(--code-line);
+    border-radius: 10px;
+    padding: 13px 15px;
+    overflow-x: auto;
+    font-size: 13px;
+    line-height: 1.55;
+    margin: 0 0 4px;
+  }
+  pre code{ font-family: 'IBM Plex Mono', monospace; background: none; padding: 0; }
+  .flag{ color: var(--code-accent); }
+  .cmt{ color: #7c8a76; }
+  code.inline{
+    background: var(--paper-raised);
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    padding: 1px 6px;
+    font-size: 13px;
+  }
+
+  /* ---------- Callout ---------- */
+  .callout{
+    background: var(--dev-soft);
+    border: 1px solid color-mix(in srgb, var(--dev) 35%, var(--line));
+    border-radius: 12px;
+    padding: 16px 18px;
+    margin: 22px 0;
+  }
+  .callout .callout-label{
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11.5px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--dev-ink);
+    margin-bottom: 6px;
+    font-weight: 500;
+  }
+  .callout p{ margin: 0; font-size: 14.5px; color: var(--ink); }
+  .callout p + p{ margin-top: 8px; }
+
+  /* ---------- Cheat table ---------- */
+  .table-wrap{ overflow-x: auto; border: 1px solid var(--line); border-radius: 12px; }
+  table{ width: 100%; border-collapse: collapse; font-size: 13.5px; min-width: 620px; }
+  thead th{
+    text-align: left;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11.5px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--ink-soft);
+    font-weight: 500;
+    background: var(--paper-raised);
+    padding: 10px 14px;
+    border-bottom: 1px solid var(--line);
+    white-space: nowrap;
+  }
+  tbody td{
+    padding: 11px 14px;
+    border-bottom: 1px solid var(--line);
+    vertical-align: top;
+    color: var(--ink);
+  }
+  tbody tr:last-child td{ border-bottom: none; }
+  tbody td.cmd code{ font-family: 'IBM Plex Mono', monospace; font-size: 12.5px; white-space: nowrap; }
+  tbody td.desc{ color: var(--ink-soft); }
+
+  footer{
+    max-width: 760px;
+    margin: 60px auto 0;
+    padding: 24px 24px 0;
+    border-top: 1px solid var(--line);
+    font-size: 13px;
+    color: var(--ink-soft);
+  }
+
+  @media (max-width: 560px){
+    .gterm{ grid-template-columns: 1fr; gap: 4px; }
+    header.hero{ padding: 40px 20px 28px; }
+  }
+</style>
+
+<nav class="toc">
+  <div class="inner">
+    <a href="#big-picture">Big picture</a>
+    <a href="#glossary">Git words</a>
+    <a href="#branches">Your branches</a>
+    <a href="#everyday">Everyday editing</a>
+    <a href="#chapter">Publish a chapter</a>
+    <a href="#global">Publish a global change</a>
+    <a href="#vim">The Vim trap</a>
+    <a href="#cheatsheet">Cheat sheet</a>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="eyebrow"><span class="dot"></span><span class="dot dot2"></span> Primer of Ecology &middot; publishing workflow</div>
+  <h1>How your book gets from a draft edit to the live site</h1>
+  <p>A walk-through of every step in your two publish scripts &mdash; what each git command actually does, why the branches are shaped the way they are, and why you sometimes got dropped into an editor you didn't ask for.</p>
+  <p class="repo-line">Repo: <code>HankStevens/Primer-of-Ecology</code> &nbsp;&middot;&nbsp; branches: <code>dev</code> (where you work) and <code>master</code> (what's live)</p>
+</header>
+
+<div class="wrap">
+
+<section id="big-picture">
+  <div class="kicker">01 &middot; Mental model</div>
+  <h2>Two branches, one live site</h2>
+  <p class="dek">Everything below is really just this picture, worked out in detail. Keep it in your head and the individual git commands stop feeling arbitrary.</p>
+
+  <figure class="diagram">
+    <svg viewBox="0 0 680 460" role="img" aria-label="Diagram showing the dev branch feeding master through two different publish paths, master rendering into the docs folder, and master merging back into dev to keep them in sync.">
+      <defs>
+        <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+          <path d="M0,0 L10,5 L0,10 z" fill="currentColor"/>
+        </marker>
+      </defs>
+
+      <!-- dev node -->
+      <rect x="220" y="16" width="240" height="54" rx="10" fill="none" stroke="var(--dev)" stroke-width="2"/>
+      <text x="340" y="38" text-anchor="middle" class="svg-title" fill="var(--dev)">dev</text>
+      <text x="340" y="57" text-anchor="middle" class="svg-label" fill="currentColor">where every edit happens</text>
+
+      <!-- path A: chapter -->
+      <path d="M240,70 C120,110 90,140 90,175" fill="none" stroke="currentColor" stroke-width="1.6" stroke-dasharray="5 4" marker-end="url(#arrow)"/>
+      <rect x="15" y="178" width="240" height="46" rx="8" fill="var(--paper)" stroke="currentColor" stroke-opacity="0.35"/>
+      <text x="135" y="196" text-anchor="middle" class="svg-label" fill="currentColor">publish-chapter.sh</text>
+      <text x="135" y="212" text-anchor="middle" class="svg-label" fill="currentColor" opacity="0.75">checkout dev -- chapter.qmd (1 file)</text>
+      <path d="M135,224 C135,250 200,255 260,258" fill="none" stroke="currentColor" stroke-width="1.6" stroke-dasharray="5 4" marker-end="url(#arrow)"/>
+
+      <!-- path B: global -->
+      <path d="M440,70 C560,110 590,140 590,175" fill="none" stroke="currentColor" stroke-width="2.2" marker-end="url(#arrow)"/>
+      <rect x="425" y="178" width="240" height="46" rx="8" fill="var(--paper)" stroke="currentColor" stroke-opacity="0.35"/>
+      <text x="545" y="196" text-anchor="middle" class="svg-label" fill="currentColor">publish-global.sh</text>
+      <text x="545" y="212" text-anchor="middle" class="svg-label" fill="currentColor" opacity="0.75">merge dev --no-edit (everything)</text>
+      <path d="M545,224 C545,250 480,255 420,258" fill="none" stroke="currentColor" stroke-width="2.2" marker-end="url(#arrow)"/>
+
+      <!-- master node -->
+      <rect x="220" y="260" width="240" height="54" rx="10" fill="none" stroke="var(--master)" stroke-width="2"/>
+      <text x="340" y="282" text-anchor="middle" class="svg-title" fill="var(--master)">master</text>
+      <text x="340" y="301" text-anchor="middle" class="svg-label" fill="currentColor">what GitHub actually publishes</text>
+
+      <!-- master -> docs -->
+      <path d="M340,314 L340,352" fill="none" stroke="var(--master)" stroke-width="2" marker-end="url(#arrow)"/>
+      <text x="352" y="335" class="svg-label" fill="var(--master)">quarto render --output-dir docs</text>
+      <rect x="190" y="358" width="300" height="50" rx="10" fill="var(--master-soft)" stroke="var(--master)" stroke-width="1.4"/>
+      <text x="340" y="380" text-anchor="middle" class="svg-title" fill="var(--master)">docs/</text>
+      <text x="340" y="397" text-anchor="middle" class="svg-label" fill="currentColor" opacity="0.8">the live GitHub Pages site</text>
+
+      <!-- master -> dev resync -->
+      <path d="M220,278 C130,278 70,180 70,90 C70,55 150,40 220,40" fill="none" stroke="currentColor" stroke-width="1.6" marker-end="url(#arrow)"/>
+      <text x="40" y="165" class="svg-label" fill="currentColor" transform="rotate(-90 40 165)" text-anchor="middle">merge master --no-edit (resync)</text>
+    </svg>
+    <figcaption>Two ways to get dev's work onto master &mdash; pull one chapter, or merge everything &mdash; but docs/ only ever changes on master, and master always flows back into dev afterward so the two never quietly drift apart.</figcaption>
+  </figure>
+
+  <p>The whole system exists to solve one problem: you need somewhere to work on a chapter mid-sentence without the half-finished version going live. <span class="branch-tag dev">dev</span> is that workspace. <span class="branch-tag master">master</span> is the one branch GitHub Pages actually serves &mdash; specifically, the <code class="inline">docs/</code> folder inside it. Nothing you do on <code class="inline">dev</code> is visible to a reader until it has gone through one of the two publish paths above.</p>
+</section>
+
+<section id="glossary">
+  <div class="kicker">02 &middot; Vocabulary</div>
+  <h2>Five words worth actually understanding</h2>
+  <p class="dek">Most git confusion isn't about your repo &mdash; it's that these words get used loosely. Pinned down once, the rest gets much easier to follow.</p>
+
+  <dl class="glossary">
+    <div class="gterm">
+      <dt>commit</dt>
+      <dd>A saved snapshot of every file in the project, plus a message describing what changed. Not a save of one file &mdash; the whole project, as it stood at that moment. Every commit points back to the commit before it, so the full history is a chain.</dd>
+    </div>
+    <div class="gterm">
+      <dt>branch</dt>
+      <dd>A name pointing at one commit in that chain. <b>dev</b> and <b>master</b> are two different names pointing at two different (often overlapping) points in the same history. "Switching branches" just moves which chain you're adding new commits to &mdash; and rewrites the files on disk to match wherever that name currently points.</dd>
+    </div>
+    <div class="gterm">
+      <dt>merge</dt>
+      <dd>Taking the commits that exist on one branch but not another, and folding them in. If the branches haven't diverged, this is trivial (a <b>fast-forward</b>). If both branches gained commits independently &mdash; which is normal for you &mdash; git has to combine them and creates one new commit to record how. That new commit needs a message, which is the entire reason <a href="#vim">Vim used to appear</a>.</dd>
+    </div>
+    <div class="gterm">
+      <dt>remote / origin</dt>
+      <dd>Your laptop has the whole repo, but so does GitHub's server &mdash; that copy is called <code class="inline">origin</code>. Committing only changes your local copy. <code class="inline">push</code> sends your commits to <code class="inline">origin</code>; that's the moment anything becomes visible to GitHub Pages or a collaborator.</dd>
+    </div>
+    <div class="gterm">
+      <dt>working tree</dt>
+      <dd>The actual files on disk right now, as opposed to what's committed. <b>"Clean"</b> means the files on disk exactly match the last commit &mdash; nothing edited, nothing new. Both of your publish scripts refuse to run on a dirty tree, because switching branches with uncommitted changes sitting around is how work gets lost or tangled into the wrong branch.</dd>
+    </div>
+  </dl>
+</section>
+
+<section id="branches">
+  <div class="kicker">03 &middot; This repo, specifically</div>
+  <h2>What <code class="inline">dev</code> and <code class="inline">master</code> are for here</h2>
+  <p class="dek">Generic git advice says "use branches." Yours are shaped around one specific fact: <code class="inline">quarto render</code> writes different places depending on a flag, and only one of those places is the live site.</p>
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr><th>&nbsp;</th><th><span class="branch-tag dev">dev</span></th><th><span class="branch-tag master">master</span></th></tr>
+      </thead>
+      <tbody>
+        <tr><td class="desc">What it's for</td><td>Every edit, every draft, every "let me just check this renders"</td><td>Only ever updated by a publish script</td></tr>
+        <tr><td class="desc">Plain <code class="inline">quarto render</code></td><td>Goes to gitignored <code class="inline">_book/</code> &mdash; a private preview, invisible to git and GitHub</td><td>Never run plain here &mdash; always with <code class="inline">--output-dir docs</code>, deliberately</td></tr>
+        <tr><td class="desc">Commit habits</td><td>Commit often, plain <code class="inline">git commit</code> is fine &mdash; that's a normal editor prompt, not a bug</td><td>Only ever committed by a script, with a fixed message</td></tr>
+        <tr><td class="desc">Who reads it</td><td>Nobody but you</td><td>Anyone at your GitHub Pages URL, via <code class="inline">docs/</code></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="callout">
+    <div class="callout-label">Why not render straight to docs/ on dev?</div>
+    <p>Because <code class="inline">docs/</code> is the live site. A render on dev reflects whatever you're mid-edit on &mdash; possibly broken, possibly half a chapter. If that ever landed in <code class="inline">docs/</code>, it would already be public the moment you committed. Keeping the flag off by default on dev, and only ever adding it deliberately on master inside a script, is what makes that impossible by accident.</p>
+  </div>
+</section>
+
+<section id="everyday">
+  <div class="kicker">04 &middot; Day to day</div>
+  <h2>Editing, with no publishing involved</h2>
+  <p class="dek">This is most of your time in the repo, and it's the simplest part &mdash; you never leave <span class="branch-tag dev">dev</span>.</p>
+
+  <ol class="steps">
+    <li class="on-dev">
+      <h4>Confirm where you are <code class="inline">git branch --show-current</code></h4>
+      <p>Prints the one branch name you're currently on. A cheap habit before editing, since every step below assumes you're on dev.</p>
+    </li>
+    <li class="on-dev">
+      <h4>Edit, then <code class="inline">git commit</code></h4>
+      <p>A plain commit with no <code class="inline">-m</code> opens your editor so you can write a message by hand. That's expected here &mdash; you're not merging anything, just describing your own change.</p>
+    </li>
+    <li class="on-dev">
+      <h4>Preview with <code class="inline">quarto render</code></h4>
+      <p>No <code class="inline">--output-dir</code> flag, so it lands in <code class="inml">_book/</code> and nothing git-tracked changes. Open <code class="inline">_book/index.html</code> to eyeball it, or run <code class="inline">quarto preview</code> for live reload.</p>
+    </li>
+    <li class="on-dev">
+      <h4>Commit again to snapshot the checkpoint</h4>
+      <p>Cheap, local, reversible. There's no cost to committing often on dev &mdash; nothing becomes public until a publish script runs.</p>
+    </li>
+  </ol>
+</section>
+
+<section id="chapter">
+  <div class="kicker">05 &middot; <code class="inline">scripts/publish-chapter.sh</code></div>
+  <h2>Publishing one finished chapter</h2>
+  <p class="dek">For an edit contained entirely inside one <code class="inline">.qmd</code> file. Run as <code class="inline">scripts/publish-chapter.sh 07-direct_comp_mut.qmd</code> from the repo root, while on a clean dev.</p>
+
+  <ol class="steps">
+    <li class="on-dev">
+      <h4>Guard checks</h4>
+      <p>Refuses to continue unless: a filename was given and exists, you're actually on <span class="branch-tag dev">dev</span>, and the working tree is clean. Each check exists to stop a specific accident &mdash; wrong branch, uncommitted changes riding along, a typo'd filename.</p>
+    </li>
+    <li class="checkpoint">
+      <h4>Checkpoint &mdash; does this chapter touch anything shared?</h4>
+      <p>Shows the chapter's recent commit log and waits for Enter. The single-file pull two steps from now is narrow by design: if this chapter's edits also touched <code class="inline">book-refs.bib</code> or <code class="inline">_quarto.yml</code>, those changes will <b>not</b> come along, silently. This pause is your one chance to notice and back out.</p>
+    </li>
+    <li class="on-master">
+      <h4><code class="inline">git checkout master</code></h4>
+      <p>Switches branches. Every file on disk now reflects master's last published state, not dev's.</p>
+    </li>
+    <li class="on-master">
+      <h4><code class="inline">git checkout dev -- chapter.qmd</code></h4>
+      <p>Pulls the content of <b>exactly that one file</b> from dev, staged as a change on top of master. Not a merge &mdash; no other file moves, no dev history comes along.</p>
+    </li>
+    <li class="on-master">
+      <h4><code class="inline">quarto render --output-dir docs</code></h4>
+      <p>Rebuilds the <em>whole</em> book &mdash; this chapter's new content next to master's already-published version of every other chapter, cross-references and all. This is what makes the result the book exactly as it will actually look once live.</p>
+    </li>
+    <li class="checkpoint">
+      <h4>Checkpoint &mdash; does the diff match what you expect?</h4>
+      <p><code class="inline">git status</code> and <code class="inline">git diff --stat</code>, then wait for Enter. Your last look before anything is permanent; Ctrl-C here backs out cleanly, since nothing has been committed yet.</p>
+    </li>
+    <li class="on-master">
+      <h4>Commit, then <code class="inline">git push origin master</code></h4>
+      <p>This is the moment the chapter actually goes live &mdash; push is what sends the commit to GitHub.</p>
+    </li>
+    <li class="on-dev">
+      <h4><code class="inline">git checkout dev</code> &rarr; <code class="inline">git merge master --no-edit</code></h4>
+      <p>Brings master's freshly-rendered <code class="inline">docs/*.html</code> back onto dev, so dev doesn't show a phantom docs/ diff next time you render there. <code class="inline">--no-edit</code> accepts git's automatic merge message instead of opening an editor.</p>
+    </li>
+  </ol>
+</section>
+
+<section id="global">
+  <div class="kicker">06 &middot; <code class="inline">scripts/publish-global.sh</code></div>
+  <h2>Publishing a change that isn't one chapter</h2>
+  <p class="dek">For <code class="inline">_quarto.yml</code>, <code class="inline">book-refs.bib</code>, a shared script, or more than one chapter at once &mdash; anything the single-file trick above would silently leave behind. You commit the change on dev yourself first; the script picks up from there.</p>
+
+  <ol class="steps">
+    <li class="on-dev">
+      <h4>Make the change, preview, commit &mdash; on dev, by hand</h4>
+      <p><code class="inline">quarto render</code> (no flag, previews to <code class="inline">_book/</code>) &rarr; eyeball <code class="inline">_book/index.html</code> &rarr; <code class="inline">git add -A</code> &rarr; <code class="inline">git commit -m "..."</code>. The script assumes this is already done; it refuses to run on a dirty tree.</p>
+    </li>
+    <li class="on-dev">
+      <h4>Run <code class="inline">scripts/publish-global.sh</code></h4>
+      <p>Same guard checks as the chapter script: clean tree, correct branch.</p>
+    </li>
+    <li class="checkpoint">
+      <h4>Checkpoint &mdash; last few commits, one look before merging</h4>
+      <p>Shows <code class="inline">git log --oneline -5</code> and waits. Unlike the chapter script, everything currently on dev is about to move &mdash; this is your chance to confirm dev doesn't have some unrelated half-finished thing sitting on it.</p>
+    </li>
+    <li class="on-master">
+      <h4><code class="inline">git checkout master</code> &rarr; <code class="inline">git merge dev --no-edit</code></h4>
+      <p>A real merge, not a single-file pull &mdash; every commit currently on dev moves onto master. This is very likely <em>not</em> a fast-forward, which is exactly why <code class="inline">--no-edit</code> matters: without it, git stops here for an editor.</p>
+    </li>
+    <li class="on-master">
+      <h4><code class="inline">quarto render --output-dir docs</code></h4>
+      <p>Full rebuild into the live folder, same as the chapter path.</p>
+    </li>
+    <li class="checkpoint">
+      <h4>Checkpoint &mdash; diff, then confirm</h4>
+      <p><code class="inline">git status</code> / <code class="inline">git diff --stat</code>, then a prompt for the publish commit message (typed in your terminal, not an editor) before commit and push.</p>
+    </li>
+    <li class="on-master">
+      <h4>Commit, <code class="inline">git push origin master</code></h4>
+    </li>
+    <li class="on-dev">
+      <h4><code class="inline">git checkout dev</code> &rarr; <code class="inline">git merge master --no-edit</code></h4>
+      <p>Same resync as the chapter path, keeping the two branches from drifting apart.</p>
+    </li>
+  </ol>
+</section>
+
+<section id="vim">
+  <div class="kicker">07 &middot; The thing that kept happening</div>
+  <h2>Why you landed in Vim, and what actually fixes it</h2>
+  <p class="dek">Not a bug in your repo &mdash; a gap in the original commands, now closed in both scripts.</p>
+
+  <p>Any <code class="inline">git merge</code> between two branches that have each gained commits on their own isn't a fast-forward. Git has to create one new commit to represent the merge, and that commit needs a message &mdash; so git opens whatever <code class="inline">$EDITOR</code> is configured (Vim, by default on most systems) and waits. This happens even when the merge itself is entirely conflict-free; the prompt is only ever about the message, never about a problem.</p>
+
+  <p>The fix is to stop leaving that message unspecified:</p>
+
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Command</th><th>What happens</th></tr></thead>
+      <tbody>
+        <tr><td class="cmd"><code>git merge dev</code></td><td class="desc">Opens Vim if the merge isn't a fast-forward &mdash; the trap.</td></tr>
+        <tr><td class="cmd"><code>git merge dev <span class="flag">--no-edit</span></code></td><td class="desc">Accepts git's auto-generated message ("Merge branch 'dev'"). What both scripts now use everywhere.</td></tr>
+        <tr><td class="cmd"><code>git merge dev -m "..."</code></td><td class="desc">Supplies your own message directly, no editor either way.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>If you land in Vim anyway</h3>
+  <p>You'll see <code class="inline">-- INSERT --</code> at the bottom if you start typing &mdash; that means anything you type is going into the commit message. To get out cleanly:</p>
+  <pre><code><span class="cmt"># press Esc first, always, before any of these</span>
+:wq          <span class="cmt"># save the message as-is and finish the commit</span>
+ZZ           <span class="cmt"># same thing, two keystrokes</span>
+:q!          <span class="cmt"># quit without saving (only if nothing needs keeping)</span></code></pre>
+</section>
+
+<section id="cheatsheet">
+  <div class="kicker">08 &middot; Reference</div>
+  <h2>Cheat sheet</h2>
+  <p class="dek">Everything above, flattened into one table for when you just need the command.</p>
+
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Situation</th><th>Command</th></tr></thead>
+      <tbody>
+        <tr><td class="desc">Which branch am I on?</td><td class="cmd"><code>git branch --show-current</code></td></tr>
+        <tr><td class="desc">Anything uncommitted?</td><td class="cmd"><code>git status</code></td></tr>
+        <tr><td class="desc">Preview a render (dev only)</td><td class="cmd"><code>quarto render</code></td></tr>
+        <tr><td class="desc">Publish one chapter</td><td class="cmd"><code>scripts/publish-chapter.sh &lt;file&gt;.qmd</code></td></tr>
+        <tr><td class="desc">Publish everything on dev</td><td class="cmd"><code>scripts/publish-global.sh "message"</code></td></tr>
+        <tr><td class="desc">Merge without an editor</td><td class="cmd"><code>git merge &lt;branch&gt; <span class="flag">--no-edit</span></code></td></tr>
+        <tr><td class="desc">Send commits to GitHub</td><td class="cmd"><code>git push origin &lt;branch&gt;</code></td></tr>
+        <tr><td class="desc">Escape an editor prompt</td><td class="cmd"><code>Esc</code> then <code>:wq</code></td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<footer>
+  Written to match <code class="inline">Primer_github_workflow.txt</code>, <code class="inline">scripts/publish-chapter.sh</code>, and <code class="inline">scripts/publish-global.sh</code> as they stand in the repo. If the scripts change, this page will drift &mdash; ask for an update.
+</footer>
+
+</div>
