@@ -17,7 +17,7 @@ ggplot( data=spar1, aes(Count, ssgr) ) + geom_point() +
 
 
 
-Between 1966 and 1971,\index{Song Sparrow} Song Sparrow (*Melospiza melodia*) abundance in Darrtown, OH, USA, seemed to increase very quickly, perhaps unimpeded by any particular factor (Fig. @fig-Melospiza1,  @fig-Melospiza2). In an effort to manage this population, we may want to predict its future population size. We may also want to describe its growth rate and population size in terms of mechanisms that could influence its growth rate. We may want to compare its growth and relevant mechanisms to those of other Song Sparrow populations or to other passerine populations. To do this, we start with the simplest of all population phenomena, geometric and exponential growth.
+Between 1966 and 1971,\index{Song Sparrow} Song Sparrow (*Melospiza melodia*) abundance in Darrtown, OH, USA, seemed to increase very quickly, perhaps unimpeded by any particular factor (@fig-Melospiza1,  @fig-Melospiza2). In an effort to manage this population, we may want to predict its future population size. We may also want to describe its growth rate and population size in terms of mechanisms that could influence its growth rate. We may want to compare its growth and relevant mechanisms to those of other Song Sparrow populations or to other passerine populations. To do this, we start with the simplest of all population phenomena, geometric and exponential growth.
 
 [In this chapter]{.small-caps}, we'll introduce density-independent population *projection*, *growth*, and *per capita growth*, for populations with synchronous reproduction and non-overlapping generations (discrete models of geometric growth), and continuous reproduction with overlapping generations (continuous models of exponential growth). 
 
@@ -431,7 +431,7 @@ data(sparrows) # load a built-in data set
 names(sparrows) # extract the names of the columns in the data frame
 ```
 
-Now we plot these counts through time (Fig. @fig-cts).  
+Now we plot these counts through time (@fig-cts).  
 ```{r fig-cts, fig.cap="Observations of Song Sparrows in Darrtown, OH (http://www.mbr-pwrc.usgs.gov/bbs/).", out.width="75%"}
 ggplot(data=sparrows, aes(x=Year, y=Count)) + geom_line() + geom_point(pch=1)
 ```
@@ -456,7 +456,7 @@ ggplot(data=sparrows2, aes(x=Year, y=obs.R) ) + geom_point() +
   geom_hline(yintercept=1, lty=3) + 
   labs(y=bquote(N[t+1]/N[t]), x="Year (t)")
 ```
-One thing that emerges in our graphic data display (Fig. @fig-Rrates) is we have an unusually high growth rate in the early 1990's, with the rest of the data clustered around 0.5--1.5. We may want to remember that.
+One thing that emerges in our graphic data display (@fig-Rrates) is we have an unusually high growth rate in the early 1990's, with the rest of the data clustered around 0.5--1.5. We may want to remember that.
 
 ### One simulation
 Our simulation will,
@@ -531,7 +531,7 @@ Let's review what we have done. We
 
 So what does @fig-simten represent? It represents one possible outcome of a trajectory, if we assume that $R$ has an equal probability of being any of the observed $R_t$. This *particular* trajectory is very unlikely, because it would require one particular sequence of randomly selected $R$s. However, we assume that it is *no less likely* than any other particular trajectory.
 
-As only one realization of a set of randomly selected $R$, Fig. @fig-simten tells us very little. What we need to do now is to replicate this process a very large number of times, and examine the *distribution* of outcomes, including moments of the distribution such as the mean, median, and the uncertainty of eventual outcomes. 
+As only one realization of a set of randomly selected $R$, @fig-simten tells us very little. What we need to do now is to replicate this process a very large number of times, and examine the *distribution* of outcomes, including moments of the distribution such as the mean, median, and the uncertainty of eventual outcomes. 
 
 ### Multiple simulations
 Next we create a way to perform the above simulation several times. There are a couple tricks we use to do this. We still want to start small so we can figure out the steps as we go. Here is what we would do next. 
@@ -609,7 +609,7 @@ ggplot(data=out.long, aes(x=years, y=N, group=Run)) + geom_line() +
 ```
 
 
-What does it mean that the simulation has an approximately even distribution of final population sizes \emph{on the log scale} (Fig. @fig-tensimfig2? If we plotted it on a linear scale, what would it look like?^[Plotting it on the log scale reveals that the relative change is independent of population size; this is true because the rate of change is geometric. If we plotted it on a linear scale, we would see that many trajectories result in small counts, and only a few get really big. That is, the median size is pretty small, but a few populations get huge.]
+What does it mean that the simulation has an approximately even distribution of final population sizes \emph{on the log scale} (@fig-tensimfig2? If we plotted it on a linear scale, what would it look like?^[Plotting it on the log scale reveals that the relative change is independent of population size; this is true because the rate of change is geometric. If we plotted it on a linear scale, we would see that many trajectories result in small counts, and only a few get really big. That is, the median size is pretty small, but a few populations get huge.]
 
 Rerunning this simulation, with new $R$ each time, will show different dynamics every time, and that is the point of simulations. Simulations are a way to make a few key assumptions, and then leave the rest to chance. In that sense it is a null model of population dynamics.
 
@@ -678,7 +678,7 @@ base +
 
 ```
 
-Fig. @fig-survivalPrior shows our *prior beliefs*. That is, before we look at our data, we think there is about a 3/5's chance (60%) that Song Sparrows in Darrtown won't become extinct over our time interval. How will we update our beliefs using our data? 
+@fig-survivalPrior shows our *prior beliefs*. That is, before we look at our data, we think there is about a 3/5's chance (60%) that Song Sparrows in Darrtown won't become extinct over our time interval. How will we update our beliefs using our data? 
 
 First, our "data" are really just 36 years of counts and 35 estimates of annual growth ($N_{t+1}/N_{t}$). We can do as many simulations as we like, but they are still based on only 35 annual growth estimates. Therefore, if we combine our survival estimate with the amount of data, we multiply the survival probability by the sample size and think of it as evidence in favor of surviving. Weight of evidence not in favor is the difference.
 ```{r}
@@ -725,7 +725,7 @@ The above approach relies only on the observed data. That means that the growth 
 
 The observed rates are simply a visible manifestation of unseen processes. We might summarize these by asserting that the observed growth rates were samples from a continuous distribution distribution, whose properties we can infer from the sample. For instance, it may be that these processes cause annual rates to follow a normal^[Gaussian], or perhaps log-normal distribution.^[The R package fitdistplus has great capabilities for fitting distributions to data, and estimating distribution parameters.]
 
-We can fit a normal distribution to the logarithms of our observed $R$, and we see that it doesn't do too bad a job (Fig. @fig-fitln).
+We can fit a normal distribution to the logarithms of our observed $R$, and we see that it doesn't do too bad a job (@fig-fitln).
 
 ```{r}
 #| include: false
@@ -853,7 +853,7 @@ legend("bottomright",
         col=c(1,2,2), lty=c(1,2,1), lwd=c(1,2,2))
 ```
 
-In Fig. @fig-specex, the solid lines refer to the uniform data (black) and the reddened (red).
+In @fig-specex, the solid lines refer to the uniform data (black) and the reddened (red).
 
 ### Reddened Song Sparrow growth
 Imagine that the Ohio (USA) environment of our Song Sparrows reveals *environmnetal stochasticity*, that is, random-like fluctuations that we do not understand. Next imagine that this environmental stochasticity affects Song Sparrow growth rate. If we want to simulate future sparrow population dynamics, we may want to mimic the type and magnitude of this underlying variation. We might do that by using our original annual growth data, but arranged in a reddened series. 
