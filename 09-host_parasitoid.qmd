@@ -131,7 +131,7 @@ unatt.sim<- sapply(1:n, function(j) { ## Repeat n times...
   H - n.attd
                          } )
 ``` 
-Next we just make a histogram (Fig. @fig-PoisSim) of the number of unattacked hosts, adding a dotted line to show where the true data lie, and a dashed line for the prediction, under the assumption of random and independent attacks, based on the Poisson distribution.
+Next we just make a histogram (@fig-PoisSim) of the number of unattacked hosts, adding a dotted line to show where the true data lie, and a dashed line for the prediction, under the assumption of random and independent attacks, based on the Poisson distribution.
 ```{r fig-PoisSim, fig.cap="Histogram of simulated host populations, assuming a attacks on hosts are random and independent of each other. The dashed line in the histogram is the expected number of unattacked hosts with random and independent attacxks, whereas the dotted line to the right is the observed number."}
 hist(unatt.sim, xlab="Simulated # of Unattacked Hosts", 
      prob=TRUE, xlim=c(1000, 1070), main="Simulated unattacked hosts" )
@@ -139,7 +139,7 @@ abline(v=1066, lty=3)
 abline(v=exp(-mean.attacks)*H, lty=2)
 ```
 
-Our simulation results (Fig. @fig-PoisSim) indicate that the observed data include far more unattacked hosts than expected by chance.
+Our simulation results (@fig-PoisSim) indicate that the observed data include far more unattacked hosts than expected by chance.
 
 Another, quicker way to evaluate the assumption of independent and random attacks is to compare the ratio of the variance of the observed larvae per host to the mean. If the data follow a Poisson distribution, this ratio is expected to equal to one.
 ```{r}
@@ -162,7 +162,7 @@ May proposed the following logic for one reason we might observe more unattacked
 
 The *negative binomial distribution* can describe aggregated data, such as the number of larvae per host. Such data are counts greater than or equal to zero, in which the variance is greater than the mean. Thus, the negative binomial distribution can describe greater aggregation than the Poisson distribution (where $\mu=\sigma^2$), and thereby describe nature somewhat more accurately. May suggested that while the true distribution of larvae in hosts, in any particular case, was unlikely to truly be a negative binomial, it was nonetheless a useful approximation.
 
-Ecologists frequently use the negative binomial distribution for count data where the variance is greater than the mean. There are different derivations of the distribution, and therefore different parameterizations [@bolker:2008rr]. In ecology, we typically use the mean, $\mu$, and the *overdispersion parameter* $k$. The variance, $\sigma^2$, is a function of these, where $\sigma^2 = \mu + \mu^2/k$; by overdispersion we mean that $\sigma^2 > \mu$. Large values of $k$ ($k>10$) indicate random and independent events rather than aggregation, and the distribution becomes indistinguishable from the Poisson. Small values ($k<2$) indicate aggregation.^[Although $k$ is often referred to as a "clumping" or "aggregation" parameter, we might think of it as a "randomness" parameter, because larger values result in more random, Poisson-like distributions.] Fig. @fig-negbin shows examples. R has the negative binomial distribution built in (`nbinom`), but does not use $k$ as one of its arguments; rather, `size` $=k$. Here we generate a graph showing the distribution with different values of $k$.
+Ecologists frequently use the negative binomial distribution for count data where the variance is greater than the mean. There are different derivations of the distribution, and therefore different parameterizations [@bolker:2008rr]. In ecology, we typically use the mean, $\mu$, and the *overdispersion parameter* $k$. The variance, $\sigma^2$, is a function of these, where $\sigma^2 = \mu + \mu^2/k$; by overdispersion we mean that $\sigma^2 > \mu$. Large values of $k$ ($k>10$) indicate random and independent events rather than aggregation, and the distribution becomes indistinguishable from the Poisson. Small values ($k<2$) indicate aggregation.^[Although $k$ is often referred to as a "clumping" or "aggregation" parameter, we might think of it as a "randomness" parameter, because larger values result in more random, Poisson-like distributions.] @fig-negbin shows examples. R has the negative binomial distribution built in (`nbinom`), but does not use $k$ as one of its arguments; rather, `size` $=k$. Here we generate a graph showing the distribution with different values of $k$.
 ```{r eval=FALSE, echo=FALSE}
 getk <- function(CV2, mu){mu/(mu*CV2-1)}
 getk(7.33, -.24)

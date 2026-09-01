@@ -120,7 +120,7 @@ where the diet already includes items 1-$m$, and the *realized* energy content o
 
 **Prediction 2** Foragers will rank prey types by their profitability, $e/h$. 
 
-**Prediction 3** When encounter rates increase (as with increasing abundances), selectivity increases. Note that encounter rates are in the right hand side, so as they increase, so will that fraction on the right. That will make it harder for the above inequality to be true, and a forager will be pickier. If you don't believe it, try this simplified version (Fig. @fig-selectivity).
+**Prediction 3** When encounter rates increase (as with increasing abundances), selectivity increases. Note that encounter rates are in the right hand side, so as they increase, so will that fraction on the right. That will make it harder for the above inequality to be true, and a forager will be pickier. If you don't believe it, try this simplified version (@fig-selectivity).
 
 ```{r fig-selectivity, echo=TRUE, fig.cap="Selectivity increases with average encounter rates.", out.width="60%"}
 
@@ -145,7 +145,7 @@ In what follows, we rely on @charnov1976b, who applies *the marginal-value theor
 
 Let's assume the simplest of all patch models: one patch type, all patches are the same, and they are distributed randomly in the habitat. Assume also that a forager uses time to travel between patches (travel time, $t_t$) and time searching within a patch (residence time, $t_r$). A forager encounters patches at random, with a rate of $\lambda$, and as such, would have a mean time to next encounter of $1/\lambda$. 
 
-The patch is characterisized by its *gain function* $g(t_r)$ (Fig. @fig-gain) which is the expected^["expected" value of a variable is the mean of that variable, because that is what we expect given the absence of other knowledge]
+The patch is characterisized by its *gain function* $g(t_r)$ (@fig-gain) which is the expected^["expected" value of a variable is the mean of that variable, because that is what we expect given the absence of other knowledge]
 *cumulative net energy gained*, given time $t_r$ spent in the patch. The gain function is a cumulative total net amount. We can imagine different types of gain functions.
 ```{r fig-gain, echo=FALSE, fig.cap="Net energy gain as a function of patch residence time may take different forms. Net energy gain increases through time but slows (decelerates) as a greater fraction of the resources in the patch are consumed. The top line (solid) assumes that there are diminishing returns as a patch is depleted, but the forager continues to find resources in excess of metabolic losses. The lower line (dashed) represents the net energy gain that could arise as a patch is depleted more fully and the costs continue unabated.", out.width='75%'}
 eq1 <- function(tr) {.7 * tr/(.1+tr)}
@@ -177,21 +177,21 @@ So, our *currency* is long-term average energy intake, $R$, and we want to maxim
 
 The forager must decide how long to stay in the patch to maximize $R$. Let 
 $$R=\frac{g(t_r)}{t_t + t_r}$$
-where $t_t + t_r$ is the total time from leaving one patch, traveling to the next patch, foraging in the second patch, and then leaving the second patch. Think of this as benefit ($g(t)$) per unit time. This fraction is the slope of the straight line in Fig. @fig-marginal.
+where $t_t + t_r$ is the total time from leaving one patch, traveling to the next patch, foraging in the second patch, and then leaving the second patch. Think of this as benefit ($g(t)$) per unit time. This fraction is the slope of the straight line in @fig-marginal.
 
-Intuitively, we can imagine that the long term average rate of energy gain $R$ is unimodal (hump-shaped) in the following scenario (Fig. @fig-gain). Upon encountering a patch the forager has no resources and thus $R$ is actually negative due to the costs of traveling to the new patch. As $t_r$ passes and and the forager gains energy ($g(t_r)$ increases), $R$ will increase and become positive. An assumption of the theory (and reality) is that the gain function, $g(t_r)$, decelerates--the rate of energy intake declines as the patch is depleted. With increasing time in the patch and lower rate of energy intake, $R$ starts to decline. 
+Intuitively, we can imagine that the long term average rate of energy gain $R$ is unimodal (hump-shaped) in the following scenario (@fig-gain). Upon encountering a patch the forager has no resources and thus $R$ is actually negative due to the costs of traveling to the new patch. As $t_r$ passes and and the forager gains energy ($g(t_r)$ increases), $R$ will increase and become positive. An assumption of the theory (and reality) is that the gain function, $g(t_r)$, decelerates--the rate of energy intake declines as the patch is depleted. With increasing time in the patch and lower rate of energy intake, $R$ starts to decline. 
 
 When $t_r$ is too short, $R$ is not yet maximized. When $t_r$ is too long, $R$ begins to decline. Because $R$ is hump-shaped, we can use calculus to find its maximum. This will occur when its slope is zero, and the slope of a function, $F$, is its derivative, $F^\prime$. If we asssume that travel time is constant, then we can take the partial derivative of $R$ with respect to just the residence time, $t_r$, $\delta R / \delta t_r$. First, recall the product rule of differentiation: 
 $$F(x) = g(x)f(x)\quad ; \quad F^\prime(x) =f^\prime(x)g(x) +  f(x)g^\prime(x)$$
 With that we can find the necessary derivative.
 $$\frac{\delta R}{\delta t_r} = - \frac{1}{(t_t+t_r)^2} g(t_r) + \frac{1}{t_t+t_r}g^\prime(t_r)= g^\prime(t_r) - \frac{g(t_r)}{t_t+t_r}=0$$
-Because this derivative equals zero when the slope of the gain function ($g^\prime(t_r)$) equals $R$, that tells use that $R$ is maximized at that point. Therefore, it  predicts that in order to maximize the long-term average rate, we should stay in a patch until the instantaneous rate, $g^\prime(t_r)$ drops to the long term average rate, $R$ (Fig. @fig-marginal).
+Because this derivative equals zero when the slope of the gain function ($g^\prime(t_r)$) equals $R$, that tells use that $R$ is maximized at that point. Therefore, it  predicts that in order to maximize the long-term average rate, we should stay in a patch until the instantaneous rate, $g^\prime(t_r)$ drops to the long term average rate, $R$ (@fig-marginal).
 
 ```{r fig-marginal, echo=FALSE, fig.cap="Energy gain vs. time: The origin is when the forager enters the patch; to the left is time spent traveling from one patch to the next, and to the right is time spent in the patch. The graph represents two different habitats, one in which the patches are easy to get to (habitat 1), and another where it takes more time to get from patch to patch (habitat 2). In all cases, the patches are identical, having the same gain function. The curved line is the gain function, the net energy gain as a function of time spent in the patch. The slope of that curve is the derivative of the gain function. Its slope at any single time point is the instantaneous rate of gain. The two straight lines are the expected gains averaged over time for each habitat as a whole. Lambda is the rate at which a forager randomly encounters patches - because it is a Poisson process, the mean or expected time is 1/lambda. The forager should leave the patch when the instantaneous rate of gain in the patch equals the long term average rate of gain for the habitat as a whole.", out.width="100%" }
 knitr::include_graphics("figs/marginal-value.jpg")
 ```
 
-The simple patch model predicts that when average travel time is greater, foragers will stay longer in a patch. Similarly, the model predicts that when patch quality is lower, foragers stay longer in each patch. Use Fig. @fig-marginal to construct explanations for these predictions.
+The simple patch model predicts that when average travel time is greater, foragers will stay longer in a patch. Similarly, the model predicts that when patch quality is lower, foragers stay longer in each patch. Use @fig-marginal to construct explanations for these predictions.
 
 **Just a starting point**  
 
@@ -376,7 +376,7 @@ abline(h=e[2]/h[2], lty=2); text(0, e[2]/h[2], bquote(e[2]/h[2]), adj=c(0,-.1))
 } )
 
 ```
-To get a sense of what our prediction @eq-prediction means, we should graph the righthand quantity as a function of one relevant variable, such as energy content of type 1, or the encounter rate (Fig. @fig-preypred).  The parameters that determined these curves are:
+To get a sense of what our prediction @eq-prediction means, we should graph the righthand quantity as a function of one relevant variable, such as energy content of type 1, or the encounter rate (@fig-preypred).  The parameters that determined these curves are:
 ```{r echo=TRUE, results='verbatim'}
 unlist( myOut$params )
 ```

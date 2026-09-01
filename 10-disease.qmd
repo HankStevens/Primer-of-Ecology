@@ -172,9 +172,9 @@ $$
 $$ {#eq-19}
 As we did above, let's consider the pre-outbreak situation where $S \approx N$, so that $S/N \approx 1$. In that case, the basic reproductive rate is $R_0=\beta/\gamma$, which is *independent of $N$*. An outbreak will occur as long as $\beta > \gamma$, regardless of population density. This is in direct contrast to the density-dependent transmission model (@eq-SIRfd1, @eq-SIRfd2), where outbreak could be prevented if we simply reduce the population, $N$, to a sufficently low density. Both modes of transmission are observed in human and non-human populations, so it is important to understand how the disease is spread in order to predict its dynamics.
 
-Another interesting phenomenon with frequency--dependent transmission is that prevalence ($I/N$) can decline with increasing population size (Fig. @fig-SIRfprev). Two phenomena contribute to this pattern. First, outbreak in a completely susceptible population typically begins with a single individual, and so initial prevalence is always $I/N=1/N$. Second, as a consequence of this, the transmission rate is lower in larger populations because $\beta SI/N$ is small. As a consequence, prevalence remains low for a relatively long time. In a seasonal population, most individuals in large populations remain uninfected after four months. Depending upon the organism, this could be long enough to reproduce. In contrast, a density--dependent model typically shows the opposite, pattern, with more rapid, extreme outbreaks and greater prevalence in more dense populations (Fig. @fig-SIRfprev).
+Another interesting phenomenon with frequency--dependent transmission is that prevalence ($I/N$) can decline with increasing population size (@fig-SIRfprev). Two phenomena contribute to this pattern. First, outbreak in a completely susceptible population typically begins with a single individual, and so initial prevalence is always $I/N=1/N$. Second, as a consequence of this, the transmission rate is lower in larger populations because $\beta SI/N$ is small. As a consequence, prevalence remains low for a relatively long time. In a seasonal population, most individuals in large populations remain uninfected after four months. Depending upon the organism, this could be long enough to reproduce. In contrast, a density--dependent model typically shows the opposite, pattern, with more rapid, extreme outbreaks and greater prevalence in more dense populations (@fig-SIRfprev).
 
-**SIR** dynamics with frequency--dependent transmission (Fig. @fig-SIRfprev). 
+**SIR** dynamics with frequency--dependent transmission (@fig-SIRfprev). 
 
 Here we demonstrate that prevalence can vary with population size (e.g.,  a smut on plant [@antonovics1992eai]).  Let us assume that resistance cannot be acquired, so $\gamma=0$, and $R = 0$. We can investigate the SIR model by pretending that, as is often the case, we begin with a largely uninfected population and $t=0$, so $I_0=1$ and $S_0\approx N$.  We first set parameters.
 
@@ -199,7 +199,7 @@ ggplot(outf.tl, aes(Months, Prevalence, colour=N)) + geom_line()
 ```
 
 ## Open epidemics
-The above model assumes a constant population size. Here expand this to include population growth and death unrelated to disease (Fig. @fig-sirmod). 
+The above model assumes a constant population size. Here expand this to include population growth and death unrelated to disease (@fig-sirmod). 
 ```{r fig-sirmod, fig.cap="Conceptual model of an open epidemic. We'll let lambda be migration and births, and mu be mortality. Births may come from any group."}
 A <- matrix(NA, nrow=7, ncol=7)
 a <- matrix(c( 2,1, 3,2, 4,3, 5,2, 6,3, 7,4), ncol=2, byrow=TRUE)
@@ -270,7 +270,7 @@ Finally, we can integrate the population and its states. We create a named vecto
 parms <- c(B = B, g = g, b = b, mu=b, z=0)
 years <- seq(0,30, by=.1)
 ```
-It turns out that because of the relatively extreme dynamics (Fig. @fig-sirbd), we want to tell the ODE solver to take baby steps, so as to properly capture the dynamics---we use the `hmax` argument to make sure that the maximum step it takes is relatively small.
+It turns out that because of the relatively extreme dynamics (@fig-sirbd), we want to tell the ODE solver to take baby steps, so as to properly capture the dynamics---we use the `hmax` argument to make sure that the maximum step it takes is relatively small.
 ```{r fig-sirbd, fig.cap="Epidemic for a nonlethal disease, with an SIR model which includes births and deaths, and a constant population size.", out.width="70%"}
 out <- data.frame(ode(c(S=S,I=I,R=R), years, SIRmod, parms, hmax=.01)) 
 SIRbd.out <- pivot_longer(out, cols=2:4, names_to="Populations", values_to="Density")
@@ -279,7 +279,7 @@ ggplot(SIRbd.out, aes(time, Density+1, colour=Populations)) +
 ```
 
 
-Note that the population quickly becomes resistant (Fig. @fig-sirbd). Note also that we have oscillations, albeit damped oscillations. An analytical treatment of the model, including eigenanalysis of the Jacobian matrix could show us precisely the predicted periodicity [@ellner2006dmb]. It depends on the the age at onset, and the duration of the disease. 
+Note that the population quickly becomes resistant (@fig-sirbd). Note also that we have oscillations, albeit damped oscillations. An analytical treatment of the model, including eigenanalysis of the Jacobian matrix could show us precisely the predicted periodicity [@ellner2006dmb]. It depends on the the age at onset, and the duration of the disease. 
 
 
 ## Modeling data from Bombay
@@ -347,7 +347,7 @@ fit2 <- mle2(sirLL, start=as.list(coef(fit)[1:2]),
 summary(fit2)
 ```
 
-Next we want to find confidence intervals for $\beta$ and $\gamma$. This can take more than several minutes, but it results in a likelihood profile for these parameters, which show the confidence regions for these parameters (Fig. @fig-profile). 
+Next we want to find confidence intervals for $\beta$ and $\gamma$. This can take more than several minutes, but it results in a likelihood profile for these parameters, which show the confidence regions for these parameters (@fig-profile). 
 ```{r eval=FALSE}
 pr2 <- profile(fit2)
 ```
@@ -373,7 +373,7 @@ params <- c(B=p[1], g=p[2])
 outdf <- data.frame( ode(inits, ross$Week, SIRd, params) )
 ```
 
-Last, we plot the model and the data (Fig. \ref{fig:sir2}).
+Last, we plot the model and the data (@fig-sir2).
 ```{r}
 sir.Bombay <- pivot_longer(data=outdf, 2:4, names_to="Populations", values_to="Density")
 ggplot(sir.Bombay, aes(time, Density, colour=Populations)) + geom_line() + 
@@ -382,7 +382,7 @@ ggplot(sir.Bombay, aes(time, Density, colour=Populations)) + geom_line() +
              inherit.aes=FALSE )
 # inherit.aes=FALSE tells geom_point not color by "Populations" 
 ```
-So, what does this mean (Fig. @fig-sir2? We might check what these values mean, against what we know about the reality. Our model predicts that logit of $\gamma$ was a confidence interval,
+So, what does this mean (@fig-sir2)? We might check what these values mean, against what we know about the reality. Our model predicts that logit of $\gamma$ was a confidence interval,
 ```{r}
 (CIs <- confint(pr2))
 ```

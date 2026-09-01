@@ -31,11 +31,11 @@ dens <- data.frame(Salwho=c(1,0,2,3), Fravir=c(21,8,13,5))
 row.names(dens) <- LETTERS[1:4]
 dens
 ```
-Next, we plot the abundances of both species; the plotted points then are the sites (Fig. @fig-dens).
+Next, we plot the abundances of both species; the plotted points then are the sites (@fig-dens).
 ```{r fig-dens, fig.cap="Hypothetical species composition for four sites (A--D)"}
 plot(dens, type='n'); text(dens, row.names(dens))
 ```
-In Fig. @fig-dens, we see that the species composition in site A is most different from the composition of site D. That is, the distance between site A and D is greater than between any other sites. The next question, then, is *how* far apart are any two sites? Clearly, this depends on the scale of the measurement (e.g., the values on the axes), and also on how we measure distance through multivariate space. 
+In @fig-dens, we see that the species composition in site A is most different from the composition of site D. That is, the distance between site A and D is greater than between any other sites. The next question, then, is *how* far apart are any two sites? Clearly, this depends on the scale of the measurement (e.g., the values on the axes), and also on how we measure distance through multivariate space. 
 
 ### Measures of abundance
 Above we pretended that the abundances were absolute densities (i.e., 1 = one stem per sample). We could of course represent all the abundances differently. For instance, we could calculate relative density, where each species in a sample is represented by the proportion of the sample comprised of that species. For site A, we divide each species by the sum of all species.
@@ -70,7 +70,7 @@ where $x_i$ is the abundance of $i$. For sites A and B, this would be,
 $$J_{AB} = \frac{0+8}{1+21}=4/11 = 0.\overline{36}$$
 and so dissimilarity would again be $1-J_{AB}$.
 
-*Euclidean distance* is another important way to measure differences between sites. With two species, we have two dimensional space, which is Fig. @fig-dens. The Euclidean distance between two sites is merely the length of the vector connecting those sites. We calculate this as $\sqrt{x^2+y^2}$, where $x$ and $y$ are the $(x,y)$ distances between a pair of sites. The $x$ distance between sites B and C is the difference in *Salix* abundance between the two sites,
+*Euclidean distance* is another important way to measure differences between sites. With two species, we have two dimensional space, which is @fig-dens. The Euclidean distance between two sites is merely the length of the vector connecting those sites. We calculate this as $\sqrt{x^2+y^2}$, where $x$ and $y$ are the $(x,y)$ distances between a pair of sites. The $x$ distance between sites B and C is the difference in *Salix* abundance between the two sites,
 ```{r}
 x <- dens[2,1] - dens[3,1]
 ```
@@ -106,7 +106,7 @@ Of course, it is difficult (impossible?) to visualize arrangements of sites with
 There are many ways, in addition to Euclidean distances, to calculate differences. Among the most commonly used in ecology is
 *Bray--Curtis* dissimilarity, which goes by other names, including Sørenson dissimilarity 
 $$D_{BC} = \frac{\sum_{i=1}^S\left| x_{ai} - x_{bi}\right|}{\sum_{i=1}^S (x_{ai} + x_{bi})}$$
-where $S$ is the number of species in all samples. Bray--Curtis dissimilarity is merely the total difference in species abundances between two sites, divided by the total abundances at each site. Bray--Curtis dissimilarity (and a couple others) tends to result in more intuitively pleasing distances in which both common and rare species have relatively similar weights, whereas Euclidean distance depends more strongly on the most abundant species. This happens because Euclidean distances are based on squared differences, whereas Bray--Curtis uses absolute differences. Squaring always amplifies the importance of larger values. Fig. @fig-mds compares graphs based on Euclidean and Bray--Curtis differences of the same raw data.
+where $S$ is the number of species in all samples. Bray--Curtis dissimilarity is merely the total difference in species abundances between two sites, divided by the total abundances at each site. Bray--Curtis dissimilarity (and a couple others) tends to result in more intuitively pleasing distances in which both common and rare species have relatively similar weights, whereas Euclidean distance depends more strongly on the most abundant species. This happens because Euclidean distances are based on squared differences, whereas Bray--Curtis uses absolute differences. Squaring always amplifies the importance of larger values. @fig-mds compares graphs based on Euclidean and Bray--Curtis differences of the same raw data.
 
 [Add note on distance vs. dissimilarity, and the triangle inequality]
 
@@ -115,7 +115,7 @@ A simple way to display distances for three or more species is to create a plot 
 ```{r}
 dens$Acolyc <- c(16, 0, 9,4)
 ```
-The non-metric multidimensional scaling function is in the \texttt{vegan} package. It calculates distances for us using the original data. Here we display Euclidean distances among sites (Fig. @fig-mds).
+The non-metric multidimensional scaling function is in the \texttt{vegan} package. It calculates distances for us using the original data. Here we display Euclidean distances among sites (@fig-mds).
 
 ::: {#fig-mds layout-ncol="2"}
 
@@ -137,7 +137,7 @@ Nonmetric multidimensional (NMDS) plots showing approximate distances between si
 To my mind, there is no more urgent or interesting goal in ecology and evolutionary biology than understanding the determinants of biodiversity. Biodiversity is many things to many people, but we typically think of it as a measure of the variety of biological life present, perhaps taking into account the relative abundances. For ecologists, we most often think of *species diversity* as some quantitative measure of the variety or number of different species.  This has direct analogues to the genetic diversity within a population [@crow1970; @vellend2017], and the connections between species and genetic diversity include both shared patterns and shared mechanisms. Here we confine ourselves entirely to a discussion of species diversity, the variety of different species present.
 
 ## Species diversity
-Species diversity represents the variety of species in a community or a sample of a community. Fig. @fig-BSsuc shows us at a glance the distributions of species abundances, and thus the diversities, of a plant community at different points in time as it undergoes secondary succession. In the figure we see the number of different species that are present (*x*-axis), and the relative abundances (*y*-axis). This image gives us an intuition about the variety of species we might encounter. It shows us whether we might expect to encounter many different species, or whether the community might be dominated by one or just a few species. The sense is what we try to capture in a single number that we call a "diversity index".
+Species diversity represents the variety of species in a community or a sample of a community. @fig-BSsuc shows us at a glance the distributions of species abundances, and thus the diversities, of a plant community at different points in time as it undergoes secondary succession. In the figure we see the number of different species that are present (*x*-axis), and the relative abundances (*y*-axis). This image gives us an intuition about the variety of species we might encounter. It shows us whether we might expect to encounter many different species, or whether the community might be dominated by one or just a few species. The sense is what we try to capture in a single number that we call a "diversity index".
 
 Species diversity is closely allied with mechanisms of coexistence. When two areas differ in their diversity, we are likely to ask why this is so. The number and variety of species present will depend on how many species are available to colonize an area, and also on the mechanisms that allow them to coexist locally. @macarthur1963 envisioned this in terms of ecology, where the number of species in an area is s function of rates of immigration and local extinction,
 $$S = \Delta I - \Delta E$$
@@ -196,7 +196,7 @@ X[11:13,2] <- 1
 X[14,3] <- 1
 t(X)
 ```
-We transposed the matrix, so that individuals are columns and species membership or identity is in rows. The first individual belongs to species A, etc. We can plot these individuals in community space, if we like (Fig. @fig-Xvar).
+We transposed the matrix, so that individuals are columns and species membership or identity is in rows. The first individual belongs to species A, etc. We can plot these individuals in community space, if we like (@fig-Xvar).
 ```{r fig-Xvar, fig.cap="Each of 14 individuals in a three species community, plotted in 'compsition space'. The large black dot is the multivariate mean, or centroid, which is the center of gravity in this composition space. Simpson's diversity is the variance of species composition of individuals (Lande 1996)."}
 library(scatterplot3d)
 X3D <- scatterplot3d(jitter(X, .1), type='h', angle=60, pch=rep(1:3, c(10,3,1)) )
@@ -296,7 +296,7 @@ Typically the use of these estimators is accompanied by some form of rarefaction
 no.of.inds <- c(seq(500, 4500, by=500), sum(N))
 rar3 <- rarefy(N, sample=no.of.inds, se=T, MARG=2)
 ``` 
-Next we want to graph it, with a few bells and whistles. We set up the graph of the 10 plot, individual-based rarefaction, and leave room to graph total richness estimators as well (Fig. @fig-estS). 
+Next we want to graph it, with a few bells and whistles. We set up the graph of the 10 plot, individual-based rarefaction, and leave room to graph total richness estimators as well (@fig-estS). 
 ```{r fig-estS, fig.cap="Baseline tree species richness estimation based on ten 1 ha plots, using individual-based rarefaction. We also include the Chao 2 total richness estimators and the observed total tree richness in the 50 ha plot for comparison (black dot)."}
 plot(no.of.inds , rar3[1,],  ylab="Species Richness", axes=FALSE,
      xlab="No. of Individuals", type='n',  ylim=c(0,250), 
@@ -318,7 +318,7 @@ text(5500, 150, "Chao 2 estimate", srt=90, adj=c(1,.5) )
 points(5800, dim(BCI)[2], pch=19, cex=1.2)
 text(5800, 150, "Obs. S in 50 ha", srt=90, adj=c(1,.5) )
 ``` 
-This shows us that the total richness estimator did not overestimate the total number of species within the extent of this relatively homogenous sample area (Fig. @fig-estS). In that sense, these estimators are estimating the minimum total number of species and are thus conservative.
+This shows us that the total richness estimator did not overestimate the total number of species within the extent of this relatively homogenous sample area (@fig-estS). In that sense, these estimators are estimating the minimum total number of species and are thus conservative.
 
 Simpson's diversity provides an interesting description of a rarifcation curve. The expected number of species in a sample of $N$ individuals drawn from a community with total species richness $S$, is 
 $$\mathrm{E}[\hat{S}] = S-\sum_{i=1}^S (1-p_i)^N$$
@@ -339,7 +339,7 @@ So, all else being equal, Simpson's diversity is an important part of the shape 
 ## Distributions {#sec-species-abundance-distributions}
 The above estimators for total species richness each assume that species abundances follow some sort of distribution where some species are common, and most are rare. Here we explore some particular types of distributions that have been used to quantify this aspect of community structure.
 
-Like any other vector of numbers, we can make a histogram of species abundances. As an example, here we make a histogram of bci tree densities, where each species has its own density (left, Fig. @fig-bci). This shows us what is patently true for nearly all ecological communities, that *most species are rare*. 
+Like any other vector of numbers, we can make a histogram of species abundances. As an example, here we make a histogram of bci tree densities, where each species has its own density (left, @fig-bci). This shows us what is patently true for nearly all ecological communities, that *most species are rare*. 
 
 ::: {#fig-bci layout-ncol="3"}
 
@@ -354,7 +354,7 @@ Three related types of distributions of tree species densities from Barro Colora
 
 
 ### Log-normal distribution
-Given general empirical patterns, that most species are rare, Frank Preston [@preston1948crs; @preston1962cdc] proposed that we describe communities using the logarithms of species abundances (center, Fig. @fig-bci).^[Preston used base 2 logs to make his histogram bins, and his practice remains standard; we use the natural log.] This often reveals that a community can be described approximately with the normal distribution applied to the log-transformed data, or the *log-normal ditribution*.  We can also display this as a *rank--abundance distribution* (right, Fig. @fig-bci). To do this, we assign the most abundant species as rank = 1, and the least abundant has rank = $S$, in a sample of $S$ species, and plot log-abundance *vs.* rank.
+Given general empirical patterns, that most species are rare, Frank Preston [@preston1948crs; @preston1962cdc] proposed that we describe communities using the logarithms of species abundances (center, @fig-bci).^[Preston used base 2 logs to make his histogram bins, and his practice remains standard; we use the natural log.] This often reveals that a community can be described approximately with the normal distribution applied to the log-transformed data, or the *log-normal ditribution*.  We can also display this as a *rank--abundance distribution* (right, @fig-bci). To do this, we assign the most abundant species as rank = 1, and the least abundant has rank = $S$, in a sample of $S$ species, and plot log-abundance *vs.* rank.
 
 @may1975 described several ways in which common processes may drive log-normal distributions, and cause them to be common in data sets. Most commonly cited is to note that log-normal distributions arise when each observation (i.e., each random variable) results from the product of independent factors. That is, if each species' density is determined by largely independent factors which act multiplicatively on each species, the resulting densities would be log-normally distributed. In the process known as *ecological drift*, pure demographic stochasticity where all species have equal fitness will drive a log-normal-like distribution (see later section on neutral theory).
 
@@ -448,7 +448,7 @@ matplot(1:1000,species.table(out), type='l', lwd=1.5,
 **Left:** A local community of forest canopy trees (small box) nested inside part of the metacommunity of a tropical forest. The true metaccommunity would extend far beyond the boundaries of this figure to include the true potential source of propagules. Shades of grey indicate different species. The local community is a sample of the larger community (such as the 50 ha forest dynamics plot on BCI) and receives migrants from the metacommunity. Mutation gives rise to new species in the metacommunity. For a particular local community, such as a 50 ha plot on an island in the Panama canal, the metacommunity will include not only the surrounding forest on the island, but also Panama, and perhaps much of the neotropics. **Right:** Neutral ecological drift. Ten species, each of 90 individuals, undergo random walks within a finite local community, with no immigration. Here, one generation is equal to nine deaths and nine births. Note the slow decline in unevenness --- after 1000 deaths, no species has become extinct.
 :::
 
-The relevant world of the NTBB is a metacommunity (left, Fig. @fig-meta), that is, a collection of local communities connected by dispersal [@leibold2004mcv].^[The metacommunity concept is quite general, and a neutral metacommunity is but one caricature.] The metacommunity is populated entirely by individuals that are functionally identical. The NTBB is a theory of the dynamics of individuals, modeling individual births, deaths, migration and mutation. It assumes that within a guild, such as late successional tropical trees, species are essentially neutral with respect to their fitness, that is, they exhibit *fitness equivalence*. This means that the probabilities of birth, death, mutation and migration are identical for all individuals. Therefore, changes in population sizes occur via random walks, that is, via stochastic increases and decreases with time step (right, Fig. @fig-meta). Random walks do not imply an absence of competition or other indirect enemy mediated negative density dependence. Rather, competition is thought to be diffuse, and equal among individuals. We discuss details of this in the context of simulation. Negative density dependence arises either through a specific constraint on the total number of individuals in a community [@hubbell2001vvv], or as traits of individuals related to the probabilities of births, deaths, and speciation [@volkov:2005rt].
+The relevant world of the NTBB is a metacommunity (left, @fig-meta), that is, a collection of local communities connected by dispersal [@leibold2004mcv].^[The metacommunity concept is quite general, and a neutral metacommunity is but one caricature.] The metacommunity is populated entirely by individuals that are functionally identical. The NTBB is a theory of the dynamics of individuals, modeling individual births, deaths, migration and mutation. It assumes that within a guild, such as late successional tropical trees, species are essentially neutral with respect to their fitness, that is, they exhibit *fitness equivalence*. This means that the probabilities of birth, death, mutation and migration are identical for all individuals. Therefore, changes in population sizes occur via random walks, that is, via stochastic increases and decreases with time step (right, @fig-meta). Random walks do not imply an absence of competition or other indirect enemy mediated negative density dependence. Rather, competition is thought to be diffuse, and equal among individuals. We discuss details of this in the context of simulation. Negative density dependence arises either through a specific constraint on the total number of individuals in a community [@hubbell2001vvv], or as traits of individuals related to the probabilities of births, deaths, and speciation [@volkov:2005rt].
 
 A basic paradox of the NTBB, is that in the absence of migration or mutation, diversity gradually declines to zero, or monodominance. A random walk due to fitness equivalence will eventually result in the loss of all species except one. However, the loss of diversity in any single local community is predicted to be very, very slow, and is countered by immigration and speciation (we discuss more details below). Thus, species do not increase deterministically when rare --- this makes the concept of coexistence different than the stable coexistance criteria discussed in previous chapters. Coexistance here *is not stable* but rather only a stochastic event with a limited time horizon which is balanced by the emergence of new species.
 
@@ -469,7 +469,7 @@ kbl(df, align = c("l","c","c"), escape=FALSE)
 
 It turns out that the abundance distribution of an infinitely large
 metacommunity is Fisher's log-series distribution, and that $\theta$
-of neutral theory is $\alpha$ of Fisher's log-series [@alonso2006mnt; @leighe.g.1999tfe; @volkov:2003ly].  However, in any one local community, random walks of rare species are likely to include zero, and thus become extinct in the local community by chance alone. This causes a deviation from Fisher's log-series in any *local community* by reducing the number of the the rarest species below that predicted by Fisher's log-series. In particular, it tends to create a log-normal--like distribution, much as we often see in real data (Fig. @fig-bci). These theoretical findings and their match with observed data are thus consistent with the hypothesis that communities may be governed, in some substantive part, by neutral drift and migration.
+of neutral theory is $\alpha$ of Fisher's log-series [@alonso2006mnt; @leighe.g.1999tfe; @volkov:2003ly].  However, in any one local community, random walks of rare species are likely to include zero, and thus become extinct in the local community by chance alone. This causes a deviation from Fisher's log-series in any *local community* by reducing the number of the the rarest species below that predicted by Fisher's log-series. In particular, it tends to create a log-normal--like distribution, much as we often see in real data (@fig-bci). These theoretical findings and their match with observed data are thus consistent with the hypothesis that communities may be governed, in some substantive part, by neutral drift and migration.
 
 Both theory and empirical data show that species which coexist may be more similar than predicted by chance alone  [@leibold:2006ey], and that similarity (i.e., fitness equality) among species helps maintain higher diversity than would otherwise be possible [@chesson2000mms]. Chesson makes an important distinction between *stabilizing mechanisms*, which create attractors, and *equalizing mechanisms*, which reduce differences among species, slow competitive exclusion and facilitate stabilization [@chesson2000mms]. 
 
@@ -537,7 +537,7 @@ related to the local community, which happen with probability $1-m$. The second 
 
 Eq. @eq-b,  $b_{n,k}$, is the probability that an individual will be added to the population of species $k$.  The first term is the joint probability that an addition to the population comes from within the local community ($1-m$) *and* the birth comes from species $k$ ($n/J_L$) *and* there is a death  of an individual of any other species ($(J_L-n)/(J_L-1)$).^[The denominator of the death probability is $J_L-1$ instead of $J_L$ because  we have already selected the first individual who will do the reproduction, so the total number of remaining individuals is $J_L-1$ rather than $J_L$; the number of non-$k$ individuals remains $J_L-n$] The second term is the joint probability that the addition to the population comes from the metacommunity via immigration ($m$) *and* that the immigrant is of species $k$ ($\mu_k/J_M$) *and* is not accompanied by a death of an individual of its species ($n/J_L$).
 
-An individual may be subtracted from the population following similar logic. Eq. \ref{eq:d}, $d_{n.k}$, is the probability that a death will remove an individual from the population of species $k$. The first term is the joint probability that the death occurs in species $k$ ($n/J_L$) and the replacement comes from the local community ($1-m$) and is some species other than $k$ ($(J_L-n)/(J_L-1)$). The second term is the joint probability that the death occurs in species $k$ ($n/J_L$), and that it is replaced by an immigrant  ($m$)  *and* the immigrant is any species in the metacommunity other than $k$ ($1-\mu_k/J_M$).
+An individual may be subtracted from the population following similar logic. Eq. @eq-d, $d_{n.k}$, is the probability that a death will remove an individual from the population of species $k$. The first term is the joint probability that the death occurs in species $k$ ($n/J_L$) and the replacement comes from the local community ($1-m$) and is some species other than $k$ ($(J_L-n)/(J_L-1)$). The second term is the joint probability that the death occurs in species $k$ ($n/J_L$), and that it is replaced by an immigrant  ($m$)  *and* the immigrant is any species in the metacommunity other than $k$ ($1-\mu_k/J_M$).
 
 ### Investigating neutral communities
 Here we explore neutral communities using the `untb` package, which contains a variety of functions for teaching and research on neutral theory. 
@@ -611,10 +611,10 @@ barplot(bins[i,], ylim=c(0,20), xlim=c(0,8), ylab="No. of Species", xlab="Abunda
 }
 ```
 
-Bottom line: drift causes the slow loss of species from local communities (Fig. @fig-comms).  What is not illustrated here is that without dispersal, drift will cause different species to become abundant in different places because the variation is random. In that way, drift maintains diversity at large scales, in the metacommunity. Last, low rates of dispersal among local communities maintains some diversity in local communities without changing the entire metacommunity into a single large local community. Thus dispersal limitiation, but not its absence, maintains diversity.
+Bottom line: drift causes the slow loss of species from local communities (@fig-comms).  What is not illustrated here is that without dispersal, drift will cause different species to become abundant in different places because the variation is random. In that way, drift maintains diversity at large scales, in the metacommunity. Last, low rates of dispersal among local communities maintains some diversity in local communities without changing the entire metacommunity into a single large local community. Thus dispersal limitiation, but not its absence, maintains diversity.
 
-Next, let's examine the dynamics through time. We will plot individual species trajectories (Fig. \ref{spptable}).
-```{r spptable}
+Next, let's examine the dynamics through time. We will plot individual species trajectories (@fig-spptable).
+```{r fig-spptable, fig.cap="Population trajectories of individual species through time under neutral drift; all species begin at the same abundance."}
 sppmat <- species.table(a)
 matplot(1:times[3], sppmat[1:times[3],], type='l', ylab="Population Density")
 ```
@@ -632,8 +632,8 @@ CV.within <- sapply(cvtimes, function(i) {# Use sapply with i as a row counter
   } )
 #popvar.among <- apply(sppmat, 1, var)
 ```
-Now plot the average $CV$ through time. The average observed $CV$ should increase (Fig. \ref{vartime}). 
-```{r}
+Now plot the average $CV$ through time. The average observed $CV$ should increase (@fig-vartime). 
+```{r fig-vartime, fig.cap="Average coefficient of variation (CV) of population size, calculated cumulatively through time, under neutral drift."}
 plot( cvtimes, CV.within, type='l' )
 ```
 This shows us that the populations never approach an equilibrium, but wander aimlessly. 
@@ -641,7 +641,7 @@ This shows us that the populations never approach an equilibrium, but wander aim
 
 **Real data**
 
-Last, we examine the BCI data set [@oksanen2026vce]. We load the data (data from 50 1\,ha plots $\times$ 225 species, from the `vegan` package), and sum species abundances to get each species total for the entire 50\,h plot (Fig. @fig-bcipreston).
+Last, we examine the BCI data set [@oksanen2026vce]. We load the data (data from 50 1\,ha plots $\times$ 225 species, from the `vegan` package), and sum species abundances to get each species total for the entire 50\,h plot (@fig-bcipreston).
 ```{r}
 n <- colSums(BCI)
 par(las=2, mar=c(7,4,1,1))
@@ -651,7 +651,7 @@ We would like to estimate $\theta$ and $m$ from these data, but that
 requires specialized software for any data set with a realistic number
 of individuals. Specialized software would provide maximum likelihood
 estimates (in a reasonable amount of computing time) for $m$ and
-$\theta$ for large communities [@alonso2006mnt;@hankin:2007zm; @jabot:2009mi]. The BCI data have been used repeatedly, so we rely on estimates from the literature ($\theta \approx 48$, $m \approx 0.1$) [@etienne2007;@volkov:2003ly]. We use the approach of @volkov:2003ly to generate expected species abundances (Fig. @fig-bcipreston).
+$\theta$ for large communities [@alonso2006mnt;@hankin:2007zm; @jabot:2009mi]. The BCI data have been used repeatedly, so we rely on estimates from the literature ($\theta \approx 48$, $m \approx 0.1$) [@etienne2007;@volkov:2003ly]. We use the approach of @volkov:2003ly to generate expected species abundances (@fig-bcipreston).
 ```{r fig-bcipreston, echo=FALSE, fig.cap="Observed (open circles) and predicted (Fisher/Volkov log-series, connected points) species-abundance distributions for the Barro Colorado Island 50-ha forest plot data."}
 v1 <- volkov(sum(n), c(48, 0.1), bins=TRUE)
 plot(preston(rep(1:225,n), n=12, original=TRUE))
@@ -659,7 +659,7 @@ points(xs, v1[1:12], type='b')
 ```
 @jabot:2009mi arrived at estimates that differed from previous estimates by orders of magnitude. Their novel approach estimated  $\theta$ and $m$ were derived from *both* species abundance data and from phylogenetic data ($\theta \approx 571$, $m \approx 0.002$). This is possible because neutral theory makes a rich array of predictions, based on both ecological and evolutionary processes. Their data were only a little bit different (due to a later census), but their analyses revealed radically different estimates, with a much greater diversity and larger metacommunity (greater $\theta$), and much lower immigration rates (smaller $m$). 
 
-Here we derive expected species abundance distributions. The first is based solely on census data, and is similar to previous expections. However, when they also included phylogenetic data, they found very different expected species abundance distributions (Fig. @fig-bciJabot).
+Here we derive expected species abundance distributions. The first is based solely on census data, and is similar to previous expections. However, when they also included phylogenetic data, they found very different expected species abundance distributions (@fig-bciJabot).
 
 ```{r fig-bciJabot, fig.cap="Jabot and Chave found that when they used only species abundances (as did previous investigators) their pattern was similar to previous findings (solid line). However, adding phylogenetic information led to very different expectations (dashed line)."}
 # Census data only
@@ -686,7 +686,7 @@ The number of species we observe clearly depends on the number of individuals we
 
 The relation between the number of species found in samples of different area has a long tradition [@arrhenius1921sa; @macarthur1972; @macarthur1963; @macarthur1967tib; @preston1960tsv; @rosenzweig1995svv], and is now an important part of the subdiscipline of *macroecology* [@brown1995; @harte:2008nq].
 
-Most generally, the species--area relation (SAR) is simply an empirical pattern of the number of species found in patches of different size, plotted as a function of the sizes of the respective patches. These patches may be isolated from each other, as islands in the South Pacific [@macarthur1963] (Fig. @fig-sarsMW), or mountaintops covered in coniferous forest surrounded by a sea of desert [@brown1977tri], or calcareous grasslands in an agricultural landscape [@hambaack2007hsb]. On the other hand, these patches might be nested sets, where each larger patch contains all others [@crawley2001sdp].
+Most generally, the species--area relation (SAR) is simply an empirical pattern of the number of species found in patches of different size, plotted as a function of the sizes of the respective patches. These patches may be isolated from each other, as islands in the South Pacific [@macarthur1963] (@fig-sarsMW), or mountaintops covered in coniferous forest surrounded by a sea of desert [@brown1977tri], or calcareous grasslands in an agricultural landscape [@hambaack2007hsb]. On the other hand, these patches might be nested sets, where each larger patch contains all others [@crawley2001sdp].
 ```{r fig-sarsMW, echo=FALSE, out.width="85%", fig.cap="The numbers of land and freshwater bird species on islands in Melanesia, Micronesia, and Polynesia. From MacArthur and Wilson (1963) An equilibrium theory of insular zoogeography. *Evolution* 17:373-387."}
 include_graphics("figs/macAndWil_1963.png")
 ```
@@ -721,7 +721,7 @@ curve(log(coef(mod.nonlin)[1],10) +  x*coef(mod.nonlin)[2],
       0, 3, add=TRUE, lty=2)
 ```
 
-Note that in Figure @fig-sarsfit, the fits differ slightly between the two methods.  Let's compare the confidence intervals of the slopes --- we certainly expect them to be similar, given the picture we just drew.
+Note that in @fig-sarsfit, the fits differ slightly between the two methods.  Let's compare the confidence intervals of the slopes --- we certainly expect them to be similar, given the picture we just drew.
 ```{r}
 # linear fit to transformed data
 confint(mod)
@@ -738,18 +738,18 @@ Preston posited that, given the log-normal species abundance distributions (see 
 
 
 ### Island biogeography
-MacArthur and Wilson proposed a simple theory wherein the number of species on an oceanic island was a function of the immigration rate of new species, and extinction rate of existing species (Fig. @fig-IE). The number of species at any one time was a *dynamic equilibrium*, resulting from both slow inevitable extinction and slow continual arrival of replacements. Thus species composition on the island was predicted to change over time, that is, to undergo turnover. Our appreciation of the ecological and evolution processes that govern the number and variety of species on islands continues to grow [@whittaker2017ibt].
+MacArthur and Wilson proposed a simple theory wherein the number of species on an oceanic island was a function of the immigration rate of new species, and extinction rate of existing species (@fig-IE). The number of species at any one time was a *dynamic equilibrium*, resulting from both slow inevitable extinction and slow continual arrival of replacements. Thus species composition on the island was predicted to change over time, that is, to undergo turnover. Our appreciation of the ecological and evolution processes that govern the number and variety of species on islands continues to grow [@whittaker2017ibt].
 
-Let us imagine immigration rate, $y$, as a function of the number of species already on an island, $x$ (Fig. @fig-IE). This relation will have a negative slope, because as the number of species rises, that chance that a new individual actually represents a new species will decline. The immigration rate will be highest when there are no species on the island, $x=0$, and will fall to zero when every conceivable species is already there. In addition, the slope should be decelerating (concave up) because some species will be much more likely than others to immigrate. This means that the immigration rate drops steeply as the most likely immigrants arrive, and only the unlikely immigrants are missing. Immigrants may colonize quickly for two reasons. First, as Preston noted, some species are simply much more common than others. Second, some species are much better dispersers than others.
+Let us imagine immigration rate, $y$, as a function of the number of species already on an island, $x$ (@fig-IE). This relation will have a negative slope, because as the number of species rises, that chance that a new individual actually represents a new species will decline. The immigration rate will be highest when there are no species on the island, $x=0$, and will fall to zero when every conceivable species is already there. In addition, the slope should be decelerating (concave up) because some species will be much more likely than others to immigrate. This means that the immigration rate drops steeply as the most likely immigrants arrive, and only the unlikely immigrants are missing. Immigrants may colonize quickly for two reasons. First, as Preston noted, some species are simply much more common than others. Second, some species are much better dispersers than others.
 
-Now let us imagine extinction rate, $y$, as a function of the number of species, $x$ (Fig. @fig-IE). This relation will have a positive slope, such that the probability of extinction increases with the number of species. This is predicted to have an accelerating slope (concave-up), for essentially the same sorts of reasons governing the shape of the immigration curve: Some species are less common than others, and therefore more likely to become extinct due to demographic and environmental stochasticity, and second, some species will have lower fitness for any number of reasons. As the number of species accumulates, the more likely it will become that these extinction-prone species (rare and/or lower fitness) will be present, and therefore able to become extinct.
+Now let us imagine extinction rate, $y$, as a function of the number of species, $x$ (@fig-IE). This relation will have a positive slope, such that the probability of extinction increases with the number of species. This is predicted to have an accelerating slope (concave-up), for essentially the same sorts of reasons governing the shape of the immigration curve: Some species are less common than others, and therefore more likely to become extinct due to demographic and environmental stochasticity, and second, some species will have lower fitness for any number of reasons. As the number of species accumulates, the more likely it will become that these extinction-prone species (rare and/or lower fitness) will be present, and therefore able to become extinct.
 
 The *rate of change* of the number of species on the island,
 $\Delta S$, will be the difference between immimigration, $I$, and extinction, $E$, or
 $$
    \Delta S = I - E.
 $$ {#eq-deltaS}
-When $\Delta S = 0$, we have an equilibrium. If we knew the quantitative form of immigration and extinction, we could solve for the equilibrium. That equilibrium would be the point on the $x$ axis, $S$, where the two rates cross (Fig. @fig-IE).
+When $\Delta S = 0$, we have an equilibrium. If we knew the quantitative form of immigration and extinction, we could solve for the equilibrium. That equilibrium would be the point on the $x$ axis, $S$, where the two rates cross (@fig-IE).
 
 In MacArthur and Wilson's theory of island biogeography, these rates could be driven by the *sizes* of the islands, where
 
@@ -770,7 +770,7 @@ continue to influence community ecologists.
 
 **Drawing immigration and extinction curves**
 
-It would be fun to derive a model of immigration and extinction rates from first principles [@macarthur1963], but here we can illustrate these relations with some simple phenomenological graphs. The code that follows recreates Fig. @fig-IE, and also estimates $S$.
+It would be fun to derive a model of immigration and extinction rates from first principles [@macarthur1963], but here we can illustrate these relations with some simple phenomenological graphs. The code that follows recreates @fig-IE, and also estimates $S$.
 ```{r fig-IE, echo=FALSE, fig.cap="Immigration and extinction curves for the theory of island biogeography. The declining curves represent immigration rates as functions of the number of species present on an island. The increasing curves represent extinction rates, also as functions of island richness. See text for discussion of the heights of these curves, i.e.,  controls on these rates. Here the dashed lines represent an island that is shrinking in size."}
 I0 <- log(1)
 b <- .1
@@ -975,7 +975,7 @@ text(x3,y3, mothswap[['spp']], adj=c(.75,0.5))
 
 Let us examine the limits of $\beta$ diversity in extremely small and extremely large samples. Imagine that our sample units each contain, on average,  one individual (and therefore one species)  and we have 10$^6$ samples. If richness is our measure of diversity, then $\bar{\alpha}=1$. Now imagine that in all of our samples we find a total of 100 species, or $\gamma=100$. Our additive and multiplicative partitions would then be $\beta_{A}=99$, and $\beta_{M}=100$, respectively. If the size of the sample unit increases, each sample will include more and more individuals and therefore more of the diversity, and by definition, $\beta$ will decline. If each sample gets large enough, then each sample will capture more and more of the species until a sample gets so large that it includes all of the species (i.e., $\bar{\alpha} \to \gamma$). At this point, $\beta_A \to 0$ and $\beta_M \to 1$.  
 
-```{r beta, fig.cap="Relations of $\\beta_A$ (with additive partitioning) and $\\beta_M$ (with multiplicative partitioning) to $\\bar{\\alpha}$, for a fixed $\\gamma=500$ species. In our example, we defined diversityas species richness, so the units of $\\beta_A$ and $\\alpha$ are number of species per sample, and $\\bar{\\alpha}$ is the mean number of species in a sample. In contrast, in a multiplicative partition, $\\beta$ is the number of communities."}
+```{r fig-beta, fig.cap="Relations of $\\beta_A$ (with additive partitioning) and $\\beta_M$ (with multiplicative partitioning) to $\\bar{\\alpha}$, for a fixed $\\gamma=500$ species. In our example, we defined diversityas species richness, so the units of $\\beta_A$ and $\\alpha$ are number of species per sample, and $\\bar{\\alpha}$ is the mean number of species in a sample. In contrast, in a multiplicative partition, $\\beta$ is the number of communities."}
 a <- seq(1,100, by=.1)
 g <- max(a)
 bA <- g-a
@@ -983,7 +983,7 @@ bM <- g/a
 matplot(a, cbind(bA, bM), type='l', xlab=quote(bar(italic(alpha))), ylab=quote(italic(beta)), col=1)
 ```
 
-Note that $\beta_A$ and $\beta_M$ do not change at the same rates (Fig. \ref{fig:beta}). When we increase sample size so that each sample includes an average of two species ($\bar{\alpha} = 2$), then  $\beta_A = 98$ and $\beta_M =50$. If each sample were big enough to have on average 50 species  ($\bar{\alpha} = 50$), then  $\beta_A = 50$ and $\beta_M =2$. 
+Note that $\beta_A$ and $\beta_M$ do not change at the same rates (@fig-beta). When we increase sample size so that each sample includes an average of two species ($\bar{\alpha} = 2$), then  $\beta_A = 98$ and $\beta_M =50$. If each sample were big enough to have on average 50 species  ($\bar{\alpha} = 50$), then  $\beta_A = 50$ and $\beta_M =2$. 
 
 Multiplicative $\beta_M$ is sometimes thought of as the number of independent "communities" in a set of samples. This would make sense if our sampling regime were designed to capture representative parts of different communities. For example, if we sampled an elevational gradient, or a productivity gradient, and our smallest sample was sufficiently large so as to be representative of that point along the gradient^[One type of sample that attempts to do this is a relev\'e.] then $\beta_M$ could provide a measure of the relative turnover in composition or "number of different communities." However, we know that, all else being equal, composition is also predicted to vary randomly across the landscape. Therefore, if each sample is small, and not really representative of a community, then the small size of the samples will inflate $\beta_M$ and change the interpretation.
 
@@ -1006,7 +1006,7 @@ For other meanings of $\beta$-diversity, linked to neutral theory, see [@morlon2
 
 You may already be wondering if there is a link between island biogeography and $\beta$-diversity. After all, as we move from island to island, and as we move from small islands to large islands, we typically encounter additional species, and that is what we mean by $\beta$-diversity. Sure enough, there are connections [@crist2006apra], and the older edition of this primer walks you through them.
 
-Let us consider a study of moth diversity (Fig. @fig-moths) by Keith Summerville and Thomas Crist [@summerville2003dlc; @summerville2004ceh]. The subset of their data presented here consists of woody plant feeding moths collected in southwest Ohio, USA. Thousands of individuals were trapped in 21 forest patches, distributed in two adjacent ecoregions (12 sites - North Central Tillplain [NCT], and 9 sites - Western Allegheny Plateau [WAP], Fig. @fig-moths). This data set includes a total of 230 species, with 179 species present in the NCT ecoregion and 173 species present in the WAP ecoregion. From these subtotals, we can already see that each ecoregion had most of the combined total species ($\gamma$).
+Let us consider a study of moth diversity (@fig-moths) by Keith Summerville and Thomas Crist [@summerville2003dlc; @summerville2004ceh]. The subset of their data presented here consists of woody plant feeding moths collected in southwest Ohio, USA. Thousands of individuals were trapped in 21 forest patches, distributed in two adjacent ecoregions (12 sites - North Central Tillplain [NCT], and 9 sites - Western Allegheny Plateau [WAP], @fig-moths). This data set includes a total of 230 species, with 179 species present in the NCT ecoregion and 173 species present in the WAP ecoregion. From these subtotals, we can already see that each ecoregion had most of the combined total species ($\gamma$).
 
 We will partition richness at three spatial scales: sites within ecoregions ($\bar{\alpha}_1$), ecoregions  ($\bar{\alpha}_2$), and overall ($\gamma$). This will result in two $\beta$-diversities: $\beta_1$ among sites within each ecoregion, and $\beta_2$ between ecoregions. The relations among these are straightforward. 
 $$
@@ -1018,7 +1018,7 @@ $$
 $$ {#eq-part2}
 
 To do this in R, we merely implement the above equations using the
-data in Fig. @fig-moths.  First, we get
+data in @fig-moths.  First, we get
 the average site richness, $\bar{\alpha}_1$. Because we have different
 numbers of individuals from different site, and richness depends strongly on the number of individuals in our sample, we may want to weight the sites by the number of individuals. However, I will make the perhaps questionable argument for the moment that because trapping effort was similar at all sites, we will not adjust for numbers of individuals. We will assume that different numbers of individuals reflect different population sizes, and let number of individuals be one of the local determinants of richness.
 ```{r}
@@ -1048,25 +1048,25 @@ text(abg[4]/2, bp[3], c("Species not\nin ecoregions"), cex=.8)
 text(abg[5]/2, bp[4], c("Regional richness (all sampled species)"), cex=.8)
 ```
 
-The partitioning reveals that $\beta_1$ is the largest fraction of overall $\gamma$-richness (Fig. @fig-partplot). This indicates that in spite of the large distance between sampling areas located in different ecoregions, and the different soil types and associated flora, most of the variation occurs *among sites within regions*. If there had been a greater difference in moth community composition among ecoregions, then $\beta_2$-richness would have made up a greater proportion of the total.
+The partitioning reveals that $\beta_1$ is the largest fraction of overall $\gamma$-richness (@fig-partplot). This indicates that in spite of the large distance between sampling areas located in different ecoregions, and the different soil types and associated flora, most of the variation occurs *among sites within regions*. If there had been a greater difference in moth community composition among ecoregions, then $\beta_2$-richness would have made up a greater proportion of the total.
 
 These calculations show us how simple  this additive partition can be, although more complicated analyses are certainly possible. It can be very important to weight appropriately the various measures of diversity (e.g., the number of individuals in each sample, or number of samples per hierarchical level). The number of  individuals in particular has a tremendous influence on richness, but has less influence on Simpson's diversity partitioning. The freely available PARTITION software will perform this additive partitioning (with sample sizes weights) and perform statistical tests (https://ecology.wp.txstate.edu/diversity-partitioning/).
 
 **Connecting to the species--area curve**
 
-The total number of moth species in all of the patches is, as before, $\gamma$.  The average richness of these patches is $\bar{\alpha}$, and also note that *part of what determines that average is the area of the patch*. That is, when a species is missing from a patch, part of the reason might be that the patch is smaller than it could be. We will therefore partition $\beta$ into yet one more category: species missing due to patch size, $\beta_{area}$. This new quantity is the average difference between $\bar{\alpha}$ and the diversity *predicted* for the largest patch (Fig. @fig-SARpart). In general then, 
+The total number of moth species in all of the patches is, as before, $\gamma$.  The average richness of these patches is $\bar{\alpha}$, and also note that *part of what determines that average is the area of the patch*. That is, when a species is missing from a patch, part of the reason might be that the patch is smaller than it could be. We will therefore partition $\beta$ into yet one more category: species missing due to patch size, $\beta_{area}$. This new quantity is the average difference between $\bar{\alpha}$ and the diversity *predicted* for the largest patch (@fig-SARpart). In general then, 
 $$
   \beta = \beta_{area} + \beta_{replace}
 $$ {#eq-partSAR}
 where $\beta_{replace}$ is the average number of species missing that are not explained by patch size. 
 
-In the context of these data (Fig. @fig-SARpart), we now realize that $\beta_1 = \beta_{area} + \beta_{ecoregion}$, so the full partition becomes
+In the context of these data (@fig-SARpart), we now realize that $\beta_1 = \beta_{area} + \beta_{ecoregion}$, so the full partition becomes
 $$
 \gamma = \bar{\alpha}_1 + \beta_{area} + \beta_{ecoregion} + \beta_{geogr.region}
 $$ {#eq-partfull}
 where $\beta_{replace} =  \beta_{ecoregion} + \beta_{geogr.region}$. Note that earlier in the chapter, we did not explore the effect of area. In that case, $\beta_{ecoregion}$ included both the effect of area and the effect of ecoregion; here we have further partitioned this variation into variation due to patch size, as well as variation due to ecoregion. This reduces the amount of unexplained variation among sites within each ecoregion.
 
-Let's calculate those differences now.  We will use quantities we calculated above for $\bar{\alpha}_1$, $\bar{\alpha}_2$, $\gamma$, and a nonlinear species--area model from above. We can start to create a graph similar to Fig. @fig-SARpart. We'll start with fitting again a model we used above.
+Let's calculate those differences now.  We will use quantities we calculated above for $\bar{\alpha}_1$, $\bar{\alpha}_2$, $\gamma$, and a nonlinear species--area model from above. We can start to create a graph similar to @fig-SARpart. We'll start with fitting again a model we used above.
 ```{r}
 mod.nonlin <- nls(spp ~ a*area^z, start=list(a=1, z=.2),data=moths)
 ```

@@ -3,7 +3,7 @@
 source("scripts/setup.R")
 ```
 
-Different species frequently compete for limiting resources, and as a result have negative impacts on each other. For example, change in species composition during secondary succession (Fig. @fig-weeds) appears mediated by, among other things, a species' ability to intercept light, grow, and cast shade over other species. This chapter addresses very simple ways to represent such interactions between species. Unless I specify otherwise, "competition" in this chapter will refer to competition between species, or *inter*specific competition. 
+Different species frequently compete for limiting resources, and as a result have negative impacts on each other. For example, change in species composition during secondary succession (@fig-weeds) appears mediated by, among other things, a species' ability to intercept light, grow, and cast shade over other species. This chapter addresses very simple ways to represent such interactions between species. Unless I specify otherwise, "competition" in this chapter will refer to competition between species, or *inter*specific competition. 
 
 ```{r fig-weeds, echo=FALSE, fig.cap="Changes in abundances of six species of asters during early secondary succession. This turnover of perennial weeds appears mediated by competition for light, among other factors (data from the long-term Buell-Small Succession study [http://www.ecostudies.org/bss/]).", out.width="75%"}
     
@@ -12,7 +12,7 @@ ggplot(weeds, aes(Age, Cover, colour=Species, linetype=Species)) +
 geom_smooth(se=FALSE) 
 ```
 
-In this chapter we introduce *direct* interspecific competition and mutualism (Fig. @fig-DandID). Direct competition is an interaction in which individuals experience a direct negative effect of another individual through aggressive interaction via contact or signaling.  Indirect competition are negative interactions mediated by another factor, such as a limiting resource. When grass species compete for nitrate and ammonium, it is the shortage of those nutrients that causes the negative effects, and that shortage results from their consumption by competing species. However, regardless of the biological complexity of indirect competition, we can learn a lot by modeling it as a simplified direct interaction.
+In this chapter we introduce *direct* interspecific competition and mutualism (@fig-DandID). Direct competition is an interaction in which individuals experience a direct negative effect of another individual through aggressive interaction via contact or signaling.  Indirect competition are negative interactions mediated by another factor, such as a limiting resource. When grass species compete for nitrate and ammonium, it is the shortage of those nutrients that causes the negative effects, and that shortage results from their consumption by competing species. However, regardless of the biological complexity of indirect competition, we can learn a lot by modeling it as a simplified direct interaction.
 
 Direct mutualisms are described mathematically in a manner that is identical to direct competition, but with signs reversed. Many pairwise mutualisms are direct insofar as they do not involve a third species or element. Think bumblebees and partridge peas, or mycorrhizae, or *Rhizobium* and legumes. 
 
@@ -122,11 +122,11 @@ $$ {#eq-N2iso}
 Recall that the formula for a straight line is $y=mx + b$ where $m$ is
 the slope and $b$ is the intercept on the $y$ axis. We can see that the
 expression for $N_2$ in @eq-N2iso is a straight line, where
-$y=N_2$, $m= -\alpha_{21}/\alpha_{22}$, and $b=1/\alpha_{22}$ (Fig. @fig-Niso1). When $N_1$ is zero, $N_2=1/\alpha_{22}$. This is precisely what we saw in @sec-logistic-growth, that a single species logistic population has an equilibrium at its carrying capacity, $K=1/\alpha$.
+$y=N_2$, $m= -\alpha_{21}/\alpha_{22}$, and $b=1/\alpha_{22}$ (@fig-Niso1). When $N_1$ is zero, $N_2=1/\alpha_{22}$. This is precisely what we saw in @sec-logistic-growth, that a single species logistic population has an equilibrium at its carrying capacity, $K=1/\alpha$.
 
-The isocline (Fig. @fig-Niso1) shows that as the competitor's population size, $N_1$, becomes larger, $N_2$ declines by $\alpha_{21}/\alpha_{22}$ for each additional individual of the competing species 1, until finally $N_2=0$ when $N_1=1/\alpha_{21}$.
+The isocline (@fig-Niso1) shows that as the competitor's population size, $N_1$, becomes larger, $N_2$ declines by $\alpha_{21}/\alpha_{22}$ for each additional individual of the competing species 1, until finally $N_2=0$ when $N_1=1/\alpha_{21}$.
 
-**Graphing an isocline** isn't too hard, so let's graph something similar  to Fig. @fig-Niso1. First, we define a new matrix of competition coefficients, where
+**Graphing an isocline** isn't too hard, so let's graph something similar  to @fig-Niso1. First, we define a new matrix of competition coefficients, where
 $\alpha_{11}=\alpha_{22} > \alpha_{12}=\alpha_{21}$.
 ```{r}
 a <- matrix(c(  0.01, 0.005,
@@ -147,11 +147,11 @@ arrows(x0=90, y0=150, x1=90, y1=80, length=0.1)
 arrows(x0=75, y0=0, x1=75, y1=50, length=0.1)
 ```
  
-The isocline for $N_2$ (Fig. @fig-Niso1) is the line at which
+The isocline for $N_2$ (@fig-Niso1) is the line at which
 $d N_2/d t =0$ *for a fixed value of $N_1$*. Just as in the
 single species logistic growth model, if $N_2$ exceeds its
 equilibrium, it declines, and if $N_2$ is less than its equilibrium,
-it grows. The isocline (Fig. @fig-Niso1 is the set of balance points between positive and negative growth. This is reflected in the arrows in Fig. @fig-Niso1 --- if the $N_2$ is ever above this isocline, it declines and if it is ever below this isocline, it rises. This isocline shows that whether $N_2$ increases or decreases depends on $N_1$.
+it grows. The isocline (@fig-Niso1 is the set of balance points between positive and negative growth. This is reflected in the arrows in @fig-Niso1 --- if the $N_2$ is ever above this isocline, it declines and if it is ever below this isocline, it rises. This isocline shows that whether $N_2$ increases or decreases depends on $N_1$.
 
 ```{r}
 #| include: false
@@ -222,7 +222,7 @@ $$ {#eq-N1iso}
 Note that these isoclines are merely equations for straight lines, and it is easy to do nonsensical things, such as specify coefficients that result in negative population sizes. Therefore, let us proceed with some thoughtfulness and care.
 
 #### Finding equilibria
-By themselves, the isoclines tell us that if species 2 becomes extinct ($N_2=0$), then species 1 reaches its carrying capacity ($N_1=1/\alpha_{11}$) (Fig. @fig-Niso1). Similarly, if $N_1=0$, then $N_2=1/\alpha_{22}$. These are important equilibria, because they verify the internal consistency of our logical, and they provide end-points on our isoclines. 
+By themselves, the isoclines tell us that if species 2 becomes extinct ($N_2=0$), then species 1 reaches its carrying capacity ($N_1=1/\alpha_{11}$) (@fig-Niso1). Similarly, if $N_1=0$, then $N_2=1/\alpha_{22}$. These are important equilibria, because they verify the internal consistency of our logical, and they provide end-points on our isoclines. 
 
 *If the species coexist ($N_1,\,N_2 >0$) it means that they must share one or more points on their isoclines* --- such an equilibrium is the point
 where the lines cross. We find these equilibria by solving the isoclines simultaneously. A simple way to do this is to substitute the right hand side of the $N_2$ isocline  @eq-N2iso in for $N_2$ in the $N_1$ isocline @eq-N1iso.  That is, we substitute an isocline of one species in for that species' abundance in another species' isocline. Combining eqs. @eq-N2iso and @eq-N1iso, we get
@@ -244,7 +244,7 @@ $$
 \end{aligned}
 $$ {#eq-lvn2eq}
 
-We now have the values for $N_1^*$ and $N_2^*$ at the point at which their isoclines cross (Fig. @fig-LVIsoclines, upper left). These equilibria apply only when isoclines cross within feasible state space.  
+We now have the values for $N_1^*$ and $N_2^*$ at the point at which their isoclines cross (@fig-LVIsoclines, upper left). These equilibria apply only when isoclines cross within feasible state space.  
 
 The expressions for $N_1^*$ and $N_2^*$ look pretty complicated, but can we use them to discern an intuitive understanding for species 1? First, we see that $r_i$ is not in the expressions for the equilibria --- they do not depend on $r_i$ in this two-species model. Second, we can confirm that as interspecific competition intensity falls to zero ($\alpha_{12}=\alpha_{21}=0$), each species reaches its own carrying capacity. That is, when putative competitors occupy sufficiently different niches and no longer compete, then they both reach their own carrying capacities.
 
@@ -300,24 +300,24 @@ $$
 \alpha_{12}<\alpha_{22} \quad , \quad \alpha_{21}<\alpha_{11} .
 $$ {#eq-N1criterion}
 
-Simply put, *for species to coexist stably, their effects on themselves must be greater than their effects on each other* (Fig. @fig-LVIsoclines, upper left).
+Simply put, *for species to coexist stably, their effects on themselves must be greater than their effects on each other* (@fig-LVIsoclines, upper left).
 
 #### Other equilibria
-Given our isoclines and equilibria above, what other logical combinations might we see, other than coexistence? Here we list others, and provide graphical interpretations (Fig. @fig-LVIsoclines). 
+Given our isoclines and equilibria above, what other logical combinations might we see, other than coexistence? Here we list others, and provide graphical interpretations (@fig-LVIsoclines). 
 
-**Species 1 can invade when rare, but species 2 cannot (Fig. @fig-LVIsoclines, lower left)**
+**Species 1 can invade when rare, but species 2 cannot (@fig-LVIsoclines, lower left)**
 \begin{equation*}
 \alpha_{12} < \alpha_{22} \quad,\quad \alpha_{21}>\alpha_{11} 
 \end{equation*}
 This leads to competitive exclusion by species 1 --- species 1 wins. This is referred to as a *boundary equilibrium*, because it is on the boundary of the state space for one species. Equilibria where all $N_i>0$ are referred to as *internal equilibria*.
 
-**Species 2 can invade when rare, but species 1 cannot (Fig. @fig-LVIsoclines, upper right)**
+**Species 2 can invade when rare, but species 1 cannot (@fig-LVIsoclines, upper right)**
 \begin{equation*}
 \alpha_{12}>\alpha_{22} \quad,\quad \alpha_{21}<\alpha_{11} 
 \end{equation*}
 This leads to competitive exclusion by species 2 --- species 2 wins. This is the other boundary equilibrium. Note that for both this and the previous boundary equilibrium, the equilibrium equations, @eq-lvn1eq & @eq-lvn2eq, can return $N^*$ that are negative or too large ($>K$). Recall that these equations derive from simple equations of straight lines, and do not guarantee that they are used sensibly --- equations aren't dangerous, theoreticians who misuse equations are dangerous. 
 
-**Neither species can invade when rare (Fig. @fig-LVIsoclines, lower right).**
+**Neither species can invade when rare (@fig-LVIsoclines, lower right).**
 
 \begin{equation*}
 \alpha_{12} > \alpha_{22} \quad,\quad \alpha_{21} > \alpha_{11}
@@ -603,7 +603,7 @@ dt2 %>%
 ```{r}
 eigStable <- eigen(J1); eigStable[["values"]]
 ```
-The dominant eigenvalue is negative (the larger of the two: $\lambda_1$ = ```r round(max(eigStable[["values"]]), 3)```) indicating a globally stable equilibrium (Table @tbl-eiginterpret. Both eigenvalues are real, not complex, indicating that there would be no oscillations (Table @tbl-eiginterpret).
+The dominant eigenvalue is negative (the larger of the two: $\lambda_1$ = ```r round(max(eigStable[["values"]]), 3)```) indicating a globally stable equilibrium (Table @tbl-eiginterpret). Both eigenvalues are real, not complex, indicating that there would be no oscillations (Table @tbl-eiginterpret).
 
 #### Three interesting equilbria
 
@@ -617,7 +617,7 @@ where, if $\beta_{ij}<1$, species $i$ can invade. This ratio is the relative str
 
 **Stable equilibrium -- $\beta_{ij},\, \beta_{ji} <1$**: These criteria correspond to $\alpha_{12}<\alpha_{22}\, , \, \alpha_{21}<\alpha_{11}$. As the relative strength of interspecific effects increases toward 1.0, $\lambda_1$ approaches zero, at which point the system would no longer have a single global point attractor.
 
-When $\beta_{ij},\, \beta_{ji} <1$, then both species can invade each other. We find that all of the eigenvalues of the Jacobian are negative and real (Fig. @fig-LVeig, demonstrating that these populations will reach a stable equilibrium (Table @tbl-eiginterpret. When we plot these eigenvalues for these combinations of $\beta$, we see that the dominant eigenvalue increases from negative values toward zero as either $\beta_{12}$ or $\beta_{21}$ approaches 1 (Fig. @fig-LVeig). 
+When $\beta_{ij},\, \beta_{ji} <1$, then both species can invade each other. We find that all of the eigenvalues of the Jacobian are negative and real (@fig-LVeig), demonstrating that these populations will reach a stable equilibrium (Table @tbl-eiginterpret). When we plot these eigenvalues for these combinations of $\beta$, we see that the dominant eigenvalue increases from negative values toward zero as either $\beta_{12}$ or $\beta_{21}$ approaches 1 (@fig-LVeig). 
 
 ```{r echo=FALSE, results='hide'}
 findL1 <- function(B, r1=1, r2=1, a11=.01, a22=.01) {
@@ -701,10 +701,10 @@ Stable equilibria: as the relative strength of interspecific competition increas
 
 **Unstable equilibria -- $\beta_{ij}, \, \beta_{ji} > 1$**
   
-These criteria correspond to  $\alpha_{12}>\alpha_{22} ,\, \alpha_{21}>\alpha_{11}$ (Fig. @fig-LVeigU). 
+These criteria correspond to  $\alpha_{12}>\alpha_{22} ,\, \alpha_{21}>\alpha_{11}$ (@fig-LVeigU). 
 As we saw above, the Lotka-Volterra competition model has not only stable equilibria, but also unstable equilibria, when both populations are greater than zero. Although an unstable equilibrium cannot persist, $\beta_{ij}, \, \beta_{ji} > 1$ creates interesting and probably important dynamics[@hastings2004tkl]. One of the results is referred to as *founder control*, where either species can colonize a patch, and whichever species  gets there first (i.e. the founder) can resist any invader [@bolker2003sdm].
 
-Another interesting phenomenon is the *saddle* itself; this unstable equilibrium is an *attractor-repeller*, that is, it attracts from some directions and repels from others (Fig. @fig-LVeigU). This implies that the final outcome of dynamics may be difficult to predict from initial trajectories.
+Another interesting phenomenon is the *saddle* itself; this unstable equilibrium is an *attractor-repeller*, that is, it attracts from some directions and repels from others (@fig-LVeigU). This implies that the final outcome of dynamics may be difficult to predict from initial trajectories.
 
 ::: {#fig-LVeigU layout-ncol="2"}
 
@@ -763,7 +763,7 @@ a12 <- a21 <- 0.011
 N1 <- eval(N1Star); N2 <- eval(N2Star)
 eigen( eval(J) )[["values"]]
 ```
-The dominant eigenvalue is now positive, while the other is negative,  indicating a saddle (Table @tbl-eiginterpret.
+The dominant eigenvalue is now positive, while the other is negative,  indicating a saddle (Table @tbl-eiginterpret).
 
 **Neutral equilibria --- $\beta_{ij} =  \beta_{ji} = 1$**: What happens when the inter- and intraspecific effects of each species are equal? This puts the populations on a knife's edge, between an unstable saddle and a stable attractor. Let's think first about a geometric interpretation, where we shift between a bowl, representing a stable attractor, and a saddle, representing what we call a *neutral saddle*. 
 
@@ -786,7 +786,7 @@ We determine $N^*$ using @eq-lim because the usual expression, @eq-lvn2eq, fails
 N1 <- N2 <- 1/(a11+a22)
 eigen( eval(J) )[["values"]]
 ```
-The dominant eigenvalue is now zero, indicating a neutral equilibrium (Table @tbl-eiginterpret. The neutral nature of this equilibrium results in more than one equilibrium. Let's try a different one, also on the isocline.
+The dominant eigenvalue is now zero, indicating a neutral equilibrium (Table @tbl-eiginterpret). The neutral nature of this equilibrium results in more than one equilibrium. Let's try a different one, also on the isocline.
 ```{r}
 N1 <- 1/(a11); N2<-0
 eigen( eval(J) )[["values"]]
@@ -847,7 +847,7 @@ Recall the Lotka-Volterra isoclines, and what we originally stated about them. W
 \begin{equation}
   N_2= \frac{1}{\alpha_{22}} - \frac{\alpha_{11}}{\alpha_{22}}N_1
 \end{equation}
-and the initial abundances determine the trajectory and the equilibrium (Fig. @fig-lvstabneut).
+and the initial abundances determine the trajectory and the equilibrium (@fig-lvstabneut).
 
 
 ### Return Time and the Effect of $r$ {#sec-return-time}
@@ -855,13 +855,13 @@ Above, we referred to $\lambda_1$ as the perturbation growth rate. More commonly
 $$
   RT = -\frac{1}{\lambda_1}.
 $$ {#eq-rt4}
-It is the time required to return a fraction of the distance^[This fraction is about 63\% or $1/e$; thus the hypothetical initial perturbation $x_0$ shrinks to $0.37x_0$.] back toward an equilibrium. Negative return times ($\lambda_1>0$) refer to "backward time," or time into the past when this population would have been this far away  (Fig. @fig-RT.
+It is the time required to return a fraction of the distance^[This fraction is about 63\% or $1/e$; thus the hypothetical initial perturbation $x_0$ shrinks to $0.37x_0$.] back toward an equilibrium. Negative return times ($\lambda_1>0$) refer to "backward time," or time into the past when this population would have been this far away  (@fig-RT).
 
 If we envision the populations sitting at an equilibrium, we can then envision a small perturbation that shifts them away from that point in state space. Let's call this displacement $x_0$. The rate of change of in $x$ is approximately the exponential rate,
 $$
   \frac{d x}{d t} \approx c\lambda_1 t.
 $$ {#eq-3}
-where $c$ is a constant, so the distance traveled, $x$, is given by @eq-2x. Therefore, a negative $\lambda_1$ indicates an exponential decline in the disturbance, back toward the equilibrium (Fig. @fig-RT. The units of return time are the same as for $r$. Recall that all of this depends on the linearization of the curved surface around an equilibrium; it therefore applies exactly to only an infinitesimally small region around the equilibrium. It also usually provides the average, regardless of whether the perturbation is a population decline or a population increase.
+where $c$ is a constant, so the distance traveled, $x$, is given by @eq-2x. Therefore, a negative $\lambda_1$ indicates an exponential decline in the disturbance, back toward the equilibrium (@fig-RT). The units of return time are the same as for $r$. Recall that all of this depends on the linearization of the curved surface around an equilibrium; it therefore applies exactly to only an infinitesimally small region around the equilibrium. It also usually provides the average, regardless of whether the perturbation is a population decline or a population increase.
 ```{r fig-RT, echo=FALSE, fig.cap="*For $\\beta_{ij} < 1$, return time is positive because some time will lapse before the system returns toward to its equilibrium.  For $\\beta_{ij}>1$, return time is negative, because the system was closer to the (unstable) equilibrium in the past.*", fig.width=4, fig.height=4, out.width="75%"}
 par(mar=c(5,4,.5,1))
 aij <- seq(0.0001, 0.009, length=30)
@@ -884,10 +884,10 @@ abline(h=0)
 
 **Effect of $r$ on stability and return time**
 
-Consider the Jacobian matrix @eq-jac, and note that $-r_i$ appears in each Jacobian element. Therefore, the larger the $r$, the greater the magnitude of the Jacobian elements. This causes $\lambda_1$ to increase in magnitude, reflecting greater responsiveness to perturbation at the equilibrium (Fig. @fig-LVeigR.
+Consider the Jacobian matrix @eq-jac, and note that $-r_i$ appears in each Jacobian element. Therefore, the larger the $r$, the greater the magnitude of the Jacobian elements. This causes $\lambda_1$ to increase in magnitude, reflecting greater responsiveness to perturbation at the equilibrium (@fig-LVeigR).
 
 
-If we consider return time for continuous models where $\beta_{12},\,\beta_{21} < 1$, greater $r$ shortens return time, increasing stability (Fig. @fig-LVeigR. For continuous models where $\beta_{12},\,\beta_{21} > 1$, greater $r$ increases perturbation growth rate, decreasing stability  (Fig. @fig-LVeigR. For discrete models, which we have not discussed in this context, recall that increasing $r_d$ of discrete logistic growth can destabilize the population because of the built-in lag. The same is true for discrete competition models --- increasing $r_d$ too much destabilizes the interaction.
+If we consider return time for continuous models where $\beta_{12},\,\beta_{21} < 1$, greater $r$ shortens return time, increasing stability (@fig-LVeigR). For continuous models where $\beta_{12},\,\beta_{21} > 1$, greater $r$ increases perturbation growth rate, decreasing stability  (@fig-LVeigR). For discrete models, which we have not discussed in this context, recall that increasing $r_d$ of discrete logistic growth can destabilize the population because of the built-in lag. The same is true for discrete competition models --- increasing $r_d$ too much destabilizes the interaction.
 
 ```{r}
 #| include: false
@@ -937,7 +937,7 @@ Mutualisms occur in a wide variety of different species. Mutualisms form the fou
 * Symbiotic *vs.* independent
 
 One of the most common of these is
-*indirect mutualism* (Fig. @fig-mut3). In this case, a series of negative direct interactions can yield net positive indirect interactions, as in the classic
+*indirect mutualism* (@fig-mut3). In this case, a series of negative direct interactions can yield net positive indirect interactions, as in the classic
 case where "the enemy of my enemy is my friend." For instance,
 consider a three plant species that all compete for the same limiting
 resource. When species A suppresses species B, it is indirectly
@@ -969,7 +969,7 @@ $$N_i^* = \frac{\alpha_{jj} + \alpha_{ij}}{\alpha_{ii}\alpha_{jj} - \alpha_{ij}\
 
 Note this assumes that both $\alpha_{jj}$ and $\alpha_{ji}$, per se, are greater than zero, because our equation assumed it was so. 
 
-Let's use this to describe a facultative mutualism, that is, one in which neither species needs the other to persist, but in which they each do better. What we mean by that is that let $r>0$. For now, we will also assume that the mutualism provides only a modest benefit, where species benefits to each is smaller than the negative effects on themselves ($\alpha_{ii} > \alpha_{ij}$). The dynamics are stable (Fig. @fig-LVmut)
+Let's use this to describe a facultative mutualism, that is, one in which neither species needs the other to persist, but in which they each do better. What we mean by that is that let $r>0$. For now, we will also assume that the mutualism provides only a modest benefit, where species benefits to each is smaller than the negative effects on themselves ($\alpha_{ii} > \alpha_{ij}$). The dynamics are stable (@fig-LVmut)
 
 
 ```{r fig=TRUE, fig.width=2.5, fig.height=2.5, echo=FALSE, eval=FALSE}
