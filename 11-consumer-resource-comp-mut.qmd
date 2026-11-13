@@ -1,5 +1,6 @@
 # Consumer-resource Competition and Mutualisms
-```{r include=FALSE}
+```{r}
+#| include: false
 source("scripts/setup.R")
 ```
 
@@ -20,7 +21,10 @@ where $S$ is background resource supply rate, and $r$ is resource renewal rate.
 Here we graph mass-specific or per capita growth rates as functions of resource concentrations. These curves are simply straight lines (@fig-dN) described by,
 $$y = e_ia_i x - d_i$$
 where $y$ is the per capita or mass-specific growth rate (dN/Ndt), and $x$ is resource concentration or density ($R$).
-```{r fig-dN, fig.cap="Mass-specific growth rates of two species across a range of resource concentrations. Note that where growth rates equal death rates, consumer growth is zero (arrows) and this determines each species' $R^*$s.", out.width="75%" }
+```{r }
+#| label: fig-dN
+#| fig-cap: Mass-specific growth rates of two species across a range of resource concentrations. Note that where growth rates equal death rates, consumer growth is zero (arrows) and this determines each species' $R^*$s.
+#| out-width: 75%
 
 e1 <- 0.1; a1 <- 1; d1 <- 0.3
 e2 <- 0.1; a2 <- .5; d2 <- 0.1
@@ -56,7 +60,8 @@ Both species (@fig-dN) increase in biomass as long as resources are high enough 
 We refer to this type of resource competition as **$R^*$ competition**.
 
 We can create a model to integrate the dynamics of these three components.
-```{r cr2}
+```{r}
+#| label: cr2
 cr_2plants  <- function(t,y,p){
   N1 <- y[1]; N2 <- y[2]; R <- y[3]
   with(as.list(p),{
@@ -91,7 +96,10 @@ It is clear from this expression that increasing the death rate ($d$) will drive
 
 In the above model, per capita growth rates were linear functions of resource concentration. It is more common to see a type II [functional response](#sec-fr) for the consumers [@tilman1982] (@fig-monod), which we described in @sec-cr.
 $$\frac{dN_i}{Ndt}= b_i\frac{R}{k_i + R} - d_i$$
-```{r fig-monod, fig.cap="The Monod function for per capita resource-dependent growth rates of two different populations. These are a type II functional responses.", out.width="67%"}
+```{r}
+#| label: fig-monod
+#| fig-cap: The Monod function for per capita resource-dependent growth rates of two different populations. These are a type II functional responses.
+#| out-width: 67%
 b <-c(1, .5); k=c(5, .1); d = 0.3
 {curve(b[1]*x/(k[1]+x) - d, 0, 10, ylab=bquote(dP/(Pdt)), xlab="R")
 curve(b[2]*x/(k[2] + x) - d, lty=2, add=TRUE)
@@ -132,7 +140,8 @@ cr_2substitutable <- function(t, y, parameters){
 ```
 
 Next we create a parameter set in which species 1 grows more with each unit of $R_1$ and also consumes more of it than $R_2$.
-```{r cr_2}
+```{r}
+#| label: cr_2
 parameters <- c(# the environment supplies slightly more of resources 1
                 r1 = 1, r2=1, S1=1.8, S2=1.2, 
                 # sp 1 grows more with each unit of R1
@@ -145,7 +154,9 @@ parameters <- c(# the environment supplies slightly more of resources 1
                 d1=.1, d2=.1)
 ```
 
-```{r cr2by2, fig.cap="Initial dynamics of two species competing for two shared substitutable resources. Species 1 uses resource 1 more efficiently than it does resource 2 and also consumes more of it, per capita. Conversely, species 2 uses resource 2 more efficiently than it does resource 1 and also consumes more of it per capita." }
+```{r }
+#| label: cr2by2
+#| fig-cap: Initial dynamics of two species competing for two shared substitutable resources. Species 1 uses resource 1 more efficiently than it does resource 2 and also consumes more of it, per capita. Conversely, species 2 uses resource 2 more efficiently than it does resource 1 and also consumes more of it per capita.
 
 t <- seq(0, 200, by=.1); y.init <- c(N1=1, N2=1, R1=1.8, R2=1.2)
 out <- ode(y = y.init, times=t, func=cr_2substitutable, 
@@ -154,7 +165,8 @@ outL <- out %>% as.data.frame %>% pivot_longer(-time, names_to="State_vars", val
 ggplot(outL, aes(time, abun., colour=State_vars)) + geom_line()
 ```
 
-```{r echo=FALSE}
+```{r}
+#| echo: false
 cr_2subst_graph <- function(parameters, s1=NULL, s2=NULL, n1=1, n2=1, t=1000, by=1){
   p <- as.list(parameters)
   if(!is.null(s1)) p$S1 <- s1
@@ -275,7 +287,8 @@ with(as.list(parameters),{
 })
 ```
 
-```{r ode}
+```{r}
+#| label: ode
 t <- 0:100
 y0 <- c(R1=.5, R2=.5, N1=10, N2=10)
 run1 <- ode(y=y0, times=t, func=resratio, parms=parameters)
@@ -470,7 +483,14 @@ ggplot(outL, aes(time, N, colour=State_var)) + geom_line()
 
 The dynamics can result in *multiple basins of attraction* or *alternative stable states* (@fig-mba).
 
-```{r fig-mba, echo=FALSE, fig=TRUE,  fig.width=5, fig.height=5.5, fig.cap="A resource-service mutualism may result in alternative stable states. If both species achieve moderate abundance, then both species increase toward a stable mutualism. However, if the frugivore is too abundant relative to the plant, then its consumption dominates the interaction and drives the equilibrium mutualism.", out.width="75%"} 
+```{r} 
+#| label: fig-mba
+#| echo: false
+#| fig: true
+#| fig-width: 5
+#| fig-height: 5.5
+#| fig-cap: A resource-service mutualism may result in alternative stable states. If both species achieve moderate abundance, then both species increase toward a stable mutualism. However, if the frugivore is too abundant relative to the plant, then its consumption dominates the interaction and drives the equilibrium mutualism.
+#| out-width: 75%
 #####
 ## Phase plane diagram
 umut.flowfield <-  flowField(cr_bimut, xlim = c(0, 170), ylim = c(0,220),
@@ -516,7 +536,11 @@ group of organisms on Earth--soil microbes. Ecologists have
 begun to focus on this intimate relationship, and Jim Bever [@bever2003] has been
 one of ecologists helping lead the way (@fig-beverfig). 
 
-```{r fig-beverfig, echo=FALSE, fig.cap="Plants and soil microbes can interact in negative or positive ways. Plants may grow more poorly with their own soil flora than with that of a competitor's.", out.width="75%"}
+```{r}
+#| label: fig-beverfig
+#| echo: false
+#| fig-cap: Plants and soil microbes can interact in negative or positive ways. Plants may grow more poorly with their own soil flora than with that of a competitor's.
+#| out-width: 75%
 library(diagram)
 bm <- matrix(c("a11", "ca","1", 0, "cb", "a22", "0", "nu", 
                "alphaA", "alphaB", 0,0,
@@ -612,7 +636,16 @@ with(p, { cB/Ka*Kb < (1+alphaB)*(1+betaA) / ( (1+alphaA)*(1+betaB)) })
 ```
 On this basis, we should see that each species can invade when rare. 
 Now let's see the dynamics play out.
-```{r beverplot, echo=FALSE, fig=TRUE, width=10, height=10, include=TRUE, fig.cap="Dynamics of competing plant species, subject to self-limiting negative feedbacks with soil pathogens.", out.width="50%", fig.show='hold'}
+```{r}
+#| label: beverplot
+#| echo: false
+#| fig: true
+#| width: 10
+#| height: 10
+#| include: true
+#| fig-cap: Dynamics of competing plant species, subject to self-limiting negative feedbacks with soil pathogens.
+#| out-width: 50%
+#| fig-show: hold
 t <- seq(0,200, .1)
 y0 <- c(Na=4, Nb=9, SA=0.5)
 {outdf <- as.data.frame( ode(y=y0, times=t, fun=bever3, parms=p) )
@@ -628,7 +661,9 @@ points(y0[1], y0[2], cex=2, col=2, pch=19)
 text(y[1], y[2], "Start here (t=0)", adj=c(-.2,.5), srt=-45, col="green")
 ```
 
-```{r echo=FALSE, eval=FALSE}
+```{r}
+#| echo: false
+#| eval: false
 bever <- function(t,y,p){
   with(as.list(c(y,p)), {
     dNa <- ra * Na * (1+alphaA*SA + betaA*SB - (Na + cB*Nb)/Ka)
@@ -657,7 +692,10 @@ In this study, we will use simulations to attempt to determine rules that govern
 
 ### ```lvg()```
 The core of our simulations will use a general purpose Lotka-Volterra model that simpy takes an interaction matrix and $r$ as inputs. 
-```{r, message = FALSE, echo = TRUE, results='hide'}
+```{r}
+#| message: false
+#| echo: true
+#| results: hide
 lvg <- function (time, n, parameters) 
 {
   r <- parameters[[1]]
@@ -670,7 +708,9 @@ lvg <- function (time, n, parameters)
 In this model, the parameters are a *list* (a type of R data object) with two components. The first is a vector of *r*, one for each species we want to model. The second component of the list is the matrix of interaction coefficients. This matrix is square (same number of rows and columns). The elements of this matrix must have the correct sign. For instance, to represent competition, the relevant elements would have to be negative.
 
 Here we create an interaction matrix for a two-species Lotka-Volterra mutualism, where each species suffers from intraspecific competition, and benefits from its mutualist.
-```{r echo = TRUE, results='markup' }
+```{r }
+#| echo: true
+#| results: markup
 a <- matrix(c( -.1, .02,
                .02, -.09), nrow = 2, byrow=TRUE)
 a
@@ -678,7 +718,10 @@ a
 
 Now let's numerically integrate, or simulate, the model and plot the outcome. Comment your code to help remind you what is going on.
 
-```{r fig.cap="Dyanmics of a Lotka-Volterra mutualism.", echo = TRUE, results='markup' }
+```{r }
+#| echo: true
+#| results: markup
+#| fig-cap: Dyanmics of a Lotka-Volterra mutualism.
 # Let r be the same fpor each species
 r <- c(1,1)
 parms <- list(r=r, a=a)
@@ -701,7 +744,11 @@ ggplot(lvL, aes(time, N, colour=State_vars, linetype=State_vars)) +
 When we use a model to explore the consequences of our assumptions, we want to use a range of plausible assumptions. In a case like this one where we are exploring a model more than the natural phenomenon it represents, we should use a wide range of parameter values that include cases where it is likely to fail. In our case, we will hold intraspecific density dependence constant and vary interspecific interaction coefficients from zero to twice the value of intraspecific interactions. 
 
 We start with building the bits and pieces that the simulation will use, and then use a for-loop to cycle through all the parameter combinations we are interested in.
-```{r, message=FALSE, warning=FALSE, echo = TRUE, results='markup' }
+```{r }
+#| message: false
+#| warning: false
+#| echo: true
+#| results: markup
 # Use expand.grid to create systematically combinations of parameters
 df <- expand.grid(a11 = -0.1, a12=seq(0, .2, by =.02),
                   a21 = seq(0, .2, by=.02),  a22=-0.1 )
@@ -709,7 +756,9 @@ dim(df) # The number of rows and columns
 head(df) # the top of the data frame
 ```
 
-```{r message=FALSE, warning=FALSE}
+```{r}
+#| message: false
+#| warning: false
 # set intrinsic rates of increase...
 r <- c(1,1)
 
@@ -751,14 +800,18 @@ simdat <- cbind(df, output)
 
 ### Checking simulation results
 Let's look for anomalous results, such as negative population sizes, or infinite or "too" large sizes. 
-```{r echo = TRUE, results='markup' }
+```{r }
+#| echo: true
+#| results: markup
 # Do simplistic numerical summaries.
 summary(simdat[,5:7])
 ```
 If we run this, we see some strange population sizes and time was not always `r max(t)`, showing that the numerical integration failed before completing. Also, $N$ included unreasonably large values.
 
 Let's look for all rows in which *either* $N_1$ *or* $N_2$ are huge ($> 10\,000$).
-```{r echo = TRUE, results='markup' }
+```{r }
+#| echo: true
+#| results: markup
 # the vertical bar | means "or"
 sim.N <- subset(simdat, N1 > 10000 | N2 > 10000)
 head(sim.N)
@@ -768,7 +821,13 @@ Notice also that values for $t$ indicate that the integration couldn't find valu
 
 What could we do to learn the emerging rules? What if we just plot the values of $\alpha_{ij},\,\alpha_{ji}$ where $N$ is really, really big?
 
-```{r echo = TRUE, results='markup', fig.cap="Values of $\\alpha$ when N is extraordinarily large.*", fig.width=3, fig.height=2.5, out.width="50%"}
+```{r}
+#| echo: true
+#| results: markup
+#| fig-cap: Values of $\alpha$ when N is extraordinarily large.*
+#| fig-width: 3
+#| fig-height: 2.5
+#| out-width: 50%
 ggplot(sim.N, aes(a12, a21)) + geom_point()
 ```
 
@@ -784,7 +843,9 @@ One thing we can do is to compare the long-term steady state values we get in si
 First, we find analytical solutions for all of the equilibria predicted by the coefficients. Consult the equilibrium solution in the first section of the chapter. We then compare these to numerical solutions.
 
 Here we calculate the predicted equilibria for each row of our coefficients, using the above solution.
-```{r echo = TRUE, results='markup' }
+```{r }
+#| echo: true
+#| results: markup
 denom <- simdat[,1] * simdat[,4] - simdat[,2] * simdat[,3]
 # note this solution is subtracting the negative intraspecific comp coef.
 # making it consistent with our equations in section 1
@@ -799,14 +860,22 @@ sim.check1 <- cbind(simdat, N1.eq, N2.eq)
 ```
 Let's find the subset with potential problems, such as for $N_1$ or $N_2$ less than than zero or really, really big ($>10000$).
 
-```{r echo = TRUE, results='markup', fig.cap="Analytically calculated predictions for $N^*$ vs. observed simulated $N$.", out.width="50%", fig.width=3, fig.height=2.5}
+```{r}
+#| echo: true
+#| results: markup
+#| fig-cap: Analytically calculated predictions for $N^*$ vs. observed simulated $N$.
+#| out-width: 50%
+#| fig-width: 3
+#| fig-height: 2.5
 problems1 <- subset(sim.check1, (N1 < 0 | N2 < 0 | N1 > 1e4 | N2 > 1e4 ) )
 # look at the subset
 ggplot(problems1, aes(N1, N1.eq)) + geom_point()
 ```
 
 Fascinating! Both the analytical and the simulated results give us wacky, but very different results. Let's examine the coefficients that generated these results.
-```{r echo = TRUE, results='markup' }
+```{r }
+#| echo: true
+#| results: markup
 problems1[1:5,]
 ```
 What do you notice about these coefficients? 
@@ -815,12 +884,16 @@ What do you notice about these coefficients?
 * How do you reconcile these results?
 
 Once we understand the anomalous results above, let's compare the simulated and the analytical solutions for $N_1$ and $N_2$ both greater than zero and both less than a huge number.
-```{r echo = TRUE, results='markup' }
+```{r }
+#| echo: true
+#| results: markup
 check2 <- subset(sim.check1, (N1.eq > 0 & N2.eq > 0) & (N1 < 1e4 & N2 < 1e4 ))
 ```
 
 Next we calculate the differences between the analytical solutions and the simulated values.
-```{r echo = TRUE, results='markup' }
+```{r }
+#| echo: true
+#| results: markup
 N1.diff <- check2$N1 - check2$N1.eq
 N2.diff <- check2$N2 - check2$N2.eq
 summary(N1.diff); summary(N2.diff)
@@ -840,7 +913,9 @@ Use eigenanalysis of the Jacobian matrix to assess the stability of these equili
 \medskip
 
 A sensible equilibrium.
-```{r echo = TRUE, results='markup' }
+```{r }
+#| echo: true
+#| results: markup
 subset(sim.check1, a12 == .02 & a21 == .02)
 # form remember that we set r = 1
 J1 <- matrix(c(-.1*12.5, -.02*12.5,
@@ -852,7 +927,9 @@ What do these results mean?
   \bigskip
 
 A nonsensical equilibrium
-```{r echo = TRUE, results='markup'}
+```{r}
+#| echo: true
+#| results: markup
 subset(sim.check1, a12 == .2 & a21 == .2)
 J2 <- matrix( c( -.1*(-10), -.2*(-10), 
                  -.2*(-10), -.1*(-10)), nrow=2, byrow=TRUE) 

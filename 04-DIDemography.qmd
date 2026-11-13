@@ -1,5 +1,6 @@
 # Density-independent Demography {#sec-did}
-```{r include=FALSE}
+```{r}
+#| include: false
 source("scripts/setup.R")
 ```
 
@@ -42,7 +43,12 @@ Structured population models allow us to intertwine species-specific natural his
 
 ## A two stage matrix model {#sec-transition-matrix}
 
-```{r fig-toadlh, echo=FALSE, fig.cap="Like all amphibians, the Western toad (*Anaxyrus boreas*) has a complex life cycle, with several life history stages. Adults breed in early spring, laying eggs in water. The larvae (tadpoles) hatch and develop over the spring and summer, and then metamorphose (become metamorphs), and then juveniles. Juveniles require more than a year to mature. Adults can live up to about a decade. American toads (*A. americanus*) do the same thing.", out.width='65%', fig.show='hold'}
+```{r}
+#| label: fig-toadlh
+#| echo: false
+#| fig-cap: Like all amphibians, the Western toad (*Anaxyrus boreas*) has a complex life cycle, with several life history stages. Adults breed in early spring, laying eggs in water. The larvae (tadpoles) hatch and develop over the spring and summer, and then metamorphose (become metamorphs), and then juveniles. Juveniles require more than a year to mature. Adults can live up to about a decade. American toads (*A. americanus*) do the same thing.
+#| out-width: 65%
+#| fig-show: hold
 include_graphics("figs/VoneshF1.png")
 ```
 
@@ -117,7 +123,13 @@ In addition to fecundity, survival, maturation or growth from one stage to the n
 
 One assumption we make here is that individuals set seed, or give birth, all at once. Therefore, we refer to our model as a *birth-pulse model*. On the other hand, if we assume that we have continuous reproduction throughout the year, we do things differently, and would refer to this as a *birth-flow model*. Whether a population is breeding continuously over a year, or whether reproduction is seasonal, will influence how we estimate fecundities. Even for synchronously breeding populations, many models pool years into a single age class or stage. The interested reader should consult an authoritative text such as @caswell:2001gu.
 
-```{r fig-conceptualmatrix, echo=FALSE, fig.cap="A transition matrix, in which each element in the matrix describes the probability that an individual of a given size $j$ at time $t$ appears as size $i$ and time $t+1$. Reproduction is typically a contribution to the minimum size, stage, or age. This matrix may comprise a small number of rows and columns (2-10), or, in the case of integral projection, an infinite number of rows and columns. The number of rows is equal to the number of columns.", out.width='100%', fig.width=6, fig.height=6}
+```{r}
+#| label: fig-conceptualmatrix
+#| echo: false
+#| fig-cap: A transition matrix, in which each element in the matrix describes the probability that an individual of a given size $j$ at time $t$ appears as size $i$ and time $t+1$. Reproduction is typically a contribution to the minimum size, stage, or age. This matrix may comprise a small number of rows and columns (2-10), or, in the case of integral projection, an infinite number of rows and columns. The number of rows is equal to the number of columns.
+#| out-width: 100%
+#| fig-width: 6
+#| fig-height: 6
 
 par(mar=c(1,3,3,1), xaxs = "i", yaxs = "i", pty = "s")
 plot(0:1, 0:1, type="n", axes=F, ylab=expression("Size at "*italic(t) + 1), xlab="" )
@@ -248,7 +260,8 @@ M %*% D
 Make sure you could write out the multiplication and summation for each element in the resulting matrix.
 
 The transpose of **M** is the same matrix, but where we flip it along the diagonal, switching rows and columns. We use $\mathbf{M^T}$ to represent the transpose operation. In R, we use `t()`.
-```{r echo=TRUE}
+```{r}
+#| echo: true
 M; t(M)
 ```
 We use the transpose of **A** to calculate reproductive value, later in the chapter.
@@ -358,21 +371,26 @@ Once we have the transition matrix, we can use it to characterize many features 
 $\mathbf{A}\mathbf{N}_t = \mathbf{N}_{t+1}$.
 
 To project a population for multiple years, we use a *for-loop*. We used this in the previous chapter for an unstructured population. Here we multiply our transition matrix by the current year's abundances projecting next year's abundances. All we need to specify are the transition matrix, starting stage abundances for $t=0$, and the number of years through which we want to project. Here we define a transition matrix, $\mathbf{N}_0$, and the number of time steps to project.
-```{r proj2, echo=TRUE} 
+```{r} 
+#| label: proj2
+#| echo: true
 A <- matrix( c(.1, 2.0, 
         .3,.4), nrow=2, byrow=T)
 N0 <- matrix(c(100, 1), nrow=1) 
 years <- 6
 ```
 To do the for-loop, we need a zero matrix to hold $n$ for each of the years of each of the stages, including for our first year. We start by filling our matrix with zeros and "binding" the rows in $\mathbf{N}_0$ onto the top of our zeroes matrix as the first row.
-```{r echo=TRUE}
+```{r}
+#| echo: true
 N.proj1 <- matrix( 0, nrow=years, ncol=nrow(A)) 
 colnames(N.proj1) <- c("Juv", "Adult")
 N.proj2 <- rbind(N0, N.proj1)
 ```
 
 Now we perform the iteration with the for-loop and plot the result. Note how we do the multiplication for the current year $t$ and put the result in the next year $t+1$.
-```{r projmat, fig.cap="Projection of a population showing transient dynamics."}
+```{r}
+#| label: projmat
+#| fig-cap: Projection of a population showing transient dynamics.
 # Project, then...
 for(t in 1:years) {N.proj2[t+1,] <- A%*%N.proj2[t,]}
 # ...rearrange and plot
@@ -429,7 +447,8 @@ $$
   \right)
 $$ {#eq-eigsollong}
 For instance, we can perform eigenanalysis on this transition matrix.
-```{r echo=TRUE}
+```{r}
+#| echo: true
 (A <- matrix(c(0, .3, 2, .7), nrow=2))
 (eA <- eigen(A))
 ```
@@ -437,7 +456,8 @@ This gives us one eigenvalue per column of our transition matrix (`values`). Eac
 
 Let's use R to prove to ourselves that eq. @eq-eigsol is what we say it is. Here we see for ourselves whether $\mathbf{A}\mathbf{w} = \lambda \mathbf{w}$ for 
 $i = 1$. Below, we use the results of the previous eigenanalysis. 
-```{r echo=TRUE}
+```{r}
+#| echo: true
 (lambda1 <- eA$values[1])
 (w1 <- eA$vectors[,1])
 cbind(A %*% w1, lambda.w=lambda1 * w1)
@@ -466,11 +486,13 @@ The asymptotic annual growth rate or finite rate of increase\index{lambda!domina
 Eigenvalues are always referred to with the Greek symbol $\lambda$, and provide a solution to @eq-eigsol. The dominant eigenvalue of any matrix, $\lambda_{1}$, is the eigenvalue with the largest magnitude, and it is frequently a complex number. When we perform eigenanalysis, it is common to get complex numbers, with real and imaginary parts. The magnitude is the sum of the squared parts. With population transition matrices, $\lambda_{1}$ will always be positive and real. This will not be the case with other types of matrices we examine in later chapters.
 
 The dominant eigenvalue is the biggest one. We can find which one it is by asking R to tell us the index position $i$ of the largest absolute value (the modulus) of the eigenvalues. In most cases, it is the first eigenvalue, as it is here.
-```{r echo=TRUE}
+```{r}
+#| echo: true
 ( dom.pos <- which.max( Mod(eA[["values"]]) )  )
 ``` 
 We use that index to extract the largest eigenvalue. We keep the real part, using `Re()`, dropping the imaginary part. (Note that although the dominant eigenvalue of a real transition matrix will always be real, R will include an imaginary part equal to zero ($0i$) as a place holder if any of the eigenvalues has a non-zero imaginary part).
-```{r echo=TRUE}
+```{r}
+#| echo: true
 # extract the dominant eigenvalue and retain only its Real part
 ( L1 <- Re(eA[["values"]][dom.pos]) )
 ```
@@ -489,7 +511,8 @@ Once a population reaches its stable stage distribution each of the stages grows
 
 ### Calculating the stable stage distribution
 The dominant eigenvector, $w_1$, is in the same position as the dominant eigenvalue. We extract $w_1$, keeping just the real part, and divide it by its sum to get the stable stage distribution.
-```{r echo=TRUE}
+```{r}
+#| echo: true
 # continuing from previous code...
 w1 <- Re(eA[["vectors"]][,dom.pos])
 ssd <- w1/sum(w1)
@@ -498,7 +521,12 @@ round(ssd, 3)
 This shows us that if the transition matrix does not change over time, the population will eventually be composed of these relative abundances.
 
 We have claimed, without evidence, that with a constant transition matrix, the projected population will eventually reach a stable stage distribution and grow exponentially with a finite rate of increase of $\lambda_1$. Here we show an example.
-```{r poweriter, echo=TRUE, fig.cap="Dynamics over nine times steps, of relative abundances in a poplation with two stages. When we project a hypothetical population with a constant transition matrix, it will reach asymptotically the stable stage distribution. The $y$-axis is the projected relative abundance of the two stages." , fig.width=6, fig.height=6}
+```{r}
+#| label: poweriter
+#| echo: true
+#| fig-cap: Dynamics over nine times steps, of relative abundances in a poplation with two stages. When we project a hypothetical population with a constant transition matrix, it will reach asymptotically the stable stage distribution. The $y$-axis is the projected relative abundance of the two stages.
+#| fig-width: 6
+#| fig-height: 6
 A <- matrix(c(0, .3, 2, .7), nrow=2) # our tran. matrix
 N0 <- c(Juveniles=1,Adults=10) # initial population
 steps <- 8 # number of time steps
@@ -521,7 +549,9 @@ ggplot(sdg, aes(Stage, Proportion)) + geom_col()  +
 ```
 
 If we sum the abundances of the different stages, we calculate total population sizes. With that, we can calculate an annual rate of increase $N_{t+1}/N_t$. 
-```{r echo=TRUE, fig.cap="Calculating an annual finite rate of increase from a projected population shows that the population will approach asymptotically a constant geometric rate of increase. Solid points are annual growth rate; the circular point is the dominant eigenvalue, $\\lambda_1$."}
+```{r}
+#| echo: true
+#| fig-cap: Calculating an annual finite rate of increase from a projected population shows that the population will approach asymptotically a constant geometric rate of increase. Solid points are annual growth rate; the circular point is the dominant eigenvalue, $\lambda_1$.
 # using "-" in an index removes that element
 ## N.total[-1] is the entire vector N.total EXCEPT the first element
 ## N.total[-(steps+1)] is the entire vector N.total EXCEPT the last element
@@ -579,7 +609,8 @@ $$v_{11}w_{11} + v_{12}w_{12} + \ldots + v_{1n}w_{1n}$$.
 Dividing the numerator by this sum causes the sensitivities to be relative to the magnitudes of $v$ and $w$.
 
 Let's calculate sensitivities now. Because the stable stage distribution and the reproductive values are merely scaled versions of the dominant right and left eigenvectors, it doesn't matter whether we use the unscaled eigenvectors, or the scaled stable stage distribution and reproductive values. 
-```{r echo=TRUE}
+```{r}
+#| echo: true
 vw <- matrix(rv, nr=2, nc=1) %*% matrix(ssd, nr=1, nc=2) # or vw <- v1 %*% t(w1); the numerator
 dot.prod <- sum(rv*ssd) # or dot.prod <- sum(v1 * w1) denominator
 (s <- vw/dot.prod)
@@ -590,7 +621,10 @@ These sensitivities are the relative change in $\lambda_1$ for an absolute chang
 The largest of the sensitivities we just calculated is that for $p_{21}$, surviving from the first stage to the second stage. This means that small changes to $p_{21}$ have larger effects on $\lambda_1$ than do small changes to $F_2$ or $p_{22}$.
 
 As $\delta \lambda / \delta a_{ij}$, the sensitivities are the slope of the line relating the magnitude of $\lambda_1$ to the matrix element. 
-```{r, echo=FALSE, fig.cap="Sensitivities of lambda to transition elements are slopes. The dotted line is the calculated sensitivity of lambda to A[2,1], because it is the slope evaluated at A[2,1].", out.width="75%"}
+```{r}
+#| echo: false
+#| fig-cap: Sensitivities of lambda to transition elements are slopes. The dotted line is the calculated sensitivity of lambda to A[2,1], because it is the slope evaluated at A[2,1].
+#| out-width: 75%
 s21 <- seq(.01, .99, by=.01)
 l.s21 <- sapply(s21, function(s21){
   A21 <- matrix(c(0,s21, 2,.7), nr=2)
@@ -614,7 +648,8 @@ $$e_{ij}= \frac{\delta \log \lambda}{\delta \log a_{ij}}.$$
 Like sensitivities, we can think of elasticities as slopes.
 
 Calculating these in R is easy.
-```{r echo=TRUE}
+```{r}
+#| echo: true
 e <- (A/L1) * s
 (round(e, 3))
 ```
@@ -664,7 +699,9 @@ Probabilities sum to 1:
 * The area under a normal distribution is 1.
 
 This is intuitive for discrete distributions like coins and dice. It gets confusing for continuous distributions, because the probability of getting a point value, such as precisely 1.00010101 goes to zero.
-```{r probdens, fig.cap="With continuous variables, probabilities are calculated by calculating the area under the curve for the region of interest. According to this probability density, the probability of finding bee that weighs between 0.4 and 0.5 g is represented by the shaded area, or about 34%."}
+```{r}
+#| label: probdens
+#| fig-cap: With continuous variables, probabilities are calculated by calculating the area under the curve for the region of interest. According to this probability density, the probability of finding bee that weighs between 0.4 and 0.5 g is represented by the shaded area, or about 34%.
 ggplot(data.frame(x = c(0, 0.7)), aes(x)) +
   stat_function(fun = dnorm, args=list(m=.4, sd=.1)) + 
   stat_function(fun = dnorm, args=list(m=.4, sd=.1),
@@ -683,7 +720,9 @@ area.under.curve.midpoint <- dnorm(midpoint, m=.4, sd=.1) * width
 ```
 
 Probability density functions give us the unimodal curves that we are used to visualizing (e.g., the bell-shaped normal distribution). Cumulative probability functions are the integrals of these and allow us to calculate probabilities that a value will be in a particular region.
-```{r dnormpnrom, fig.cap="The solid line is the cumulative probabilility function, and tells us the area under the probability density function, from the lowest value up to a particular value of the variable $x$. You will notice that at the mean (0.4), the cumulative probability function equals 0.5, indicating that there would be a 50% chance of observing a value of $x$ that is less than the mean. At the right of the figure, the cumulative probability equals nearly 1, indicating that we have a near 100% chance of observing a value of $x$ that is less than 0.8."}
+```{r}
+#| label: dnormpnrom
+#| fig-cap: The solid line is the cumulative probabilility function, and tells us the area under the probability density function, from the lowest value up to a particular value of the variable $x$. You will notice that at the mean (0.4), the cumulative probability function equals 0.5, indicating that there would be a 50% chance of observing a value of $x$ that is less than the mean. At the right of the figure, the cumulative probability equals nearly 1, indicating that we have a near 100% chance of observing a value of $x$ that is less than 0.8.
 ggplot(data.frame(x = c(0, 0.7)), aes(x)) +
   stat_function(fun = dnorm, args=list(m=.4, sd=.1), linetype=2) + 
   stat_function(fun = pnorm, args=list(m=.4, sd=.1))  + 
@@ -706,12 +745,22 @@ So,...probability densities are like probabilities, but you have to calculate th
 ### A size-based IPM of smooth coneflower
 Rachel Collins and colleagues have been studying populations of an endangered coneflower, *Echinecea laevigata*, in southwest Virginia, USA. Smooth coneflower is a perennial rhizomatous herbaceous plant that is sparsely distributed across mid-Atlantic and southeastern states ([https://plants.usda.gov/](https://plants.usda.gov/)). It requires open spaces with little canopy cover, such as meadows or early successional habitat.
 
-```{r cflh1, echo=FALSE, fig.cap="Smooth coneflower, *Echinecea laevigata*, is an endangered plant that lives in only a few places on poor soils. It enjoys open, sunny habitats, long walks in the rain, and reading a good book by the fire (prescribed or wild). Photo credit: Steve Croy", out.width='33%', fig.show='hold'}
+```{r}
+#| label: cflh1
+#| echo: false
+#| fig-cap: 'Smooth coneflower, *Echinecea laevigata*, is an endangered plant that lives in only a few places on poor soils. It enjoys open, sunny habitats, long walks in the rain, and reading a good book by the fire (prescribed or wild). Photo credit: Steve Croy'
+#| out-width: 33%
+#| fig-show: hold
 include_graphics("figs/echinacea_laevigata_habitat_lg.jpg")
 ```
 
 Collins marked each individual in selected populations, measured size of individual coneflower plants using total leaf area, which ranged from 3-950 cm$^2$. Because she tagged individuals and tracked changes over time, she was able estimate survival and fecundity of different sized individuals. She also measured seed set (number of seeds per inflorescence) and recruitment. Recruitment is emergence from the seed, that is, germination, growth, and survival in the first year. 
-```{r fig-cflh2, echo=FALSE, fig.cap="Smooth coneflower, *Echinecea laevigata*, is an herbaceous perennial for which size seems to be a useful predictor of demographic rates.", out.width='100%', fig.show='hold'}
+```{r}
+#| label: fig-cflh2
+#| echo: false
+#| fig-cap: Smooth coneflower, *Echinecea laevigata*, is an herbaceous perennial for which size seems to be a useful predictor of demographic rates.
+#| out-width: 100%
+#| fig-show: hold
 include_graphics("figs/coneflowerLH.png")
 ```
 
@@ -729,7 +778,8 @@ In IPMs, it is common to use the logarithm of size rather than the original line
 
 Here we load data from the `primer` package, and give the data sets shorter names (because I am a slow typer).
 
-```{r loadconeflower}
+```{r}
+#| label: loadconeflower
 # library(primer) # if needed
 # vegetative coneflower data.
 data(coneflower)
@@ -757,7 +807,10 @@ glimpse(coneflower)
 
 #### Graphing size-dependent transitions
 Survival, **S**, from one year to the next depends on size.
-```{r fig-flowersurv, fig.cap="Survival is represented as surviving (1) or not surviving (0). The probability of surviving to the next year, given a size in the first year, is estimated using logistic regression. The fitted line gives us a point estimate for survival for any log-size. The grey band represents uncertainty.", out.width="67%" }
+```{r }
+#| label: fig-flowersurv
+#| fig-cap: Survival is represented as surviving (1) or not surviving (0). The probability of surviving to the next year, given a size in the first year, is estimated using logistic regression. The fitted line gives us a point estimate for survival for any log-size. The grey band represents uncertainty.
+#| out-width: 67%
 eda_s <- ggplot(cf, aes(logA, surv)) + lims(x=c(0.5, 2.75)) +
   geom_jitter(height=.02, alpha=0.5) + 
   geom_smooth(method="glm", method.args = list(family = "binomial")) + labs(title="Survival")
@@ -766,7 +819,10 @@ eda_s
 Using logistic regression provides a straightforward way to estimate size-dependent survival and its uncertainty. We can use both the estimate and its uncertainty in our projections.
 
 Growth, **G**, is how the size of a plant in one year depends on its size in the previous year. 
-```{r growth, fig.cap="Growth is the relation between size at one time vs. size in another. The fitted estimate includes the 95% confidence interval. The dashed line is the 1:1 line; above this line is growth, while below it is regression to a smaller size. We include only those individuals that survive.", out.width="67%"}
+```{r}
+#| label: growth
+#| fig-cap: Growth is the relation between size at one time vs. size in another. The fitted estimate includes the 95% confidence interval. The dashed line is the 1:1 line; above this line is growth, while below it is regression to a smaller size. We include only those individuals that survive.
+#| out-width: 67%
 # use (filter) only the plants alive in both years
 cfs <- dplyr::filter(cf, surv==1 & !is.na(logAp))
 eda_g <- ggplot(cfs, aes(logA, logAp)) + geom_point() +
@@ -786,7 +842,10 @@ Next we tackle fecundity, **F**, which for us is estimated using
 * the size-distribution of new recruits.
 
 Typically, bigger individuals have a greater chance of flowering, and smooth coneflower is no exception. We estimate that chance of flowering using logistic regression.
-```{r flowering, fig.cap="Plants that are larger in the first year have a greater chance of flowering in the next year.", out.width="67%" }
+```{r }
+#| label: flowering
+#| fig-cap: Plants that are larger in the first year have a greater chance of flowering in the next year.
+#| out-width: 67%
 cff <- dplyr::filter(cf, surv==1 )
 eda_f <- ggplot(cfs, aes(logA, flower_p)) + 
   geom_jitter(height=.02, alpha=0.5) + 
@@ -797,7 +856,10 @@ eda_f
 One feature of these data is that most individuals do not flower at all and the even large individuals do not necessarily flower.
 
 We will also check whether bigger plants might produce more seeds.
-```{r seed, fig.cap="No compelling evidence that size influences seed set. Nonetheless, we will use this approach in estiamting fecundity, F.", out.width="67%"}
+```{r}
+#| label: seed
+#| fig-cap: No compelling evidence that size influences seed set. Nonetheless, we will use this approach in estiamting fecundity, F.
+#| out-width: 67%
 eda_sd <- ggplot(sf, aes(logAs, seeds)) + geom_point() +
   geom_smooth(method="lm") + labs(title="Seed set")
 eda_sd
@@ -807,7 +869,10 @@ eda_sd
 These data don't provide strong evidence that larger plants produce more seeds. However, using this relation regardless will allow us to include the observation variation in seed production among those individuals to do flower.
 
 We also need to estimate *establishment probability*, or the chance that a seed germinates and survives until the following summer. Collins estimated this probability of germination using *seed baskets*. These are mesh baskets filled with soil into which she placed a known number of seeds. They are placed in the ground and seedlings or recruits are counted the following year.
-```{r pr, fig.cap="Probability that seeds in one year establish as new recruits the following summer.", out.width="67%"}
+```{r}
+#| label: pr
+#| fig-cap: Probability that seeds in one year establish as new recruits the following summer.
+#| out-width: 67%
 # 50 seeds into each of baskets
 N <- rep(50, 9)
 # no. of seeds planted in the fall that popped up and
@@ -833,7 +898,10 @@ eda_pr
 ```
 
 We can also describe the size distribution of new recruits, which are approximately log-normally distributed.
-```{r recruits, fig.cap="The size distribution of new recruits; we assume that this is independent of plant size in year t.", out.width="67%"}
+```{r}
+#| label: recruits
+#| fig-cap: The size distribution of new recruits; we assume that this is independent of plant size in year t.
+#| out-width: 67%
 m.log <- mean(log10(rs$area17)) # mean of log-area of new recruits
 std.log <- sd(log10(rs$area17)) # st. dev. of log-area of new recruits
 eda_C <- ggplot(data = data.frame(x = c(0.4, 1.4)), aes(x)) +
@@ -849,7 +917,8 @@ eda_C
 In the above section, we graphed data and used functions in `ggplot2` to fit some smooth curves. In this section, we actually use the statistical functions in R to make statistical models and hang on the model coefficients we will use to make quantitative predictions. These coefficients are the intercepts and slopes and uncertainties of the curves you saw above. I use code handed down on stone tablets from Ellner, Merow, and others.
 
 Before we estimate everything, we create a single data frame to hold hold all of these estimates.
-```{r params}
+```{r}
+#| label: params
 ## this sets up a list of the model parameters. 
 ## These parameters will be estimated below and stored in 'params'.
 params=data.frame(
@@ -956,7 +1025,8 @@ To automate this, we make functions that will use the above statistical relation
 We begin by creating a function to estimate the probability of surviving, $s$, given a size $z$. This is a back transformation of the logistic function, where
 $$s = \frac{\exp (\beta_0 + \beta_1 z)}{1 + \exp (\beta_0 + \beta_1 z)}$$
 
-```{r sfunc}
+```{r}
+#| label: sfunc
 s.z=function(z,params) {
   # calculate survival probability by
   # backtransforming glm regression params for the 
@@ -1052,7 +1122,9 @@ K=P+Fec # full 100 x 100 discretized kernel
 ```
 
 Finally, we plot the component and full kernels so that we can visualize them and thereby better appreciate what our results.
-```{r kernels, fig.cap="The component kernels G, S, and F, that make up the full demographic projection kernel, K, for smooth cone flower. By convention and unlike projection matrices, kernels scale both axes to start at the smallest size in the lower left corner. The color scaling of the full kernel differs slightly so that we can see the contributions of G, S, and F."}
+```{r}
+#| label: kernels
+#| fig-cap: The component kernels G, S, and F, that make up the full demographic projection kernel, K, for smooth cone flower. By convention and unlike projection matrices, kernels scale both axes to start at the smallest size in the lower left corner. The color scaling of the full kernel differs slightly so that we can see the contributions of G, S, and F.
 ## create a 2 x 2 array of subfigures
 par(mfrow=c(2,2))
 ## plot Growth
@@ -1076,12 +1148,15 @@ So there we have it: a discretized projection kernel that allows us to start wit
 Any question that we could answer using matrices, we can answer using discretized kernels (i.e., finely divided matrices).
 
 We estimate the finite rate of increase, $\lambda$, the same way we did before.
-```{r results='asis'}
+```{r}
+#| results: asis
 (lambda=Re(eigen(K)$values[1]))
 ```
 
 The same is true for the stable size distribution, reproductive value, and elasticity.
-```{r Ksolutions, fig.cap="Descriptions of smooth coneflower demographics."}
+```{r}
+#| label: Ksolutions
+#| fig-cap: Descriptions of smooth coneflower demographics.
 w.eigen=Re(eigen(K)$vectors[,1])
 stable.dist=w.eigen/sum(w.eigen) 
 v.eigen=Re(eigen(t(K))$vectors[,1])

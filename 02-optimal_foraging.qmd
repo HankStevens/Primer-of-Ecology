@@ -1,9 +1,14 @@
 # Optimal Foraging {#sec-oft}
-```{r include=FALSE}
+```{r}
+#| include: false
 source("scripts/setup.R")
 ```
 
-```{r cowie, fig.cap="Optimal foraging theory (OFT) generates testable quantitative predictions that allow a less ambiguous description and explanation for observed patterns and processes. Here, a simplistic model of Great Tit (Parus major) foraging that includes only gross energy intake underestimates the time spent in patches (dashed). In contrast, a model that includes energetic costs of traveling and searching matches predictions far better (solid).  From Cowie (1977).", out.width="75%", echo=FALSE}
+```{r}
+#| label: cowie
+#| echo: false
+#| fig-cap: Optimal foraging theory (OFT) generates testable quantitative predictions that allow a less ambiguous description and explanation for observed patterns and processes. Here, a simplistic model of Great Tit (Parus major) foraging that includes only gross energy intake underestimates the time spent in patches (dashed). In contrast, a model that includes energetic costs of traveling and searching matches predictions far better (solid).  From Cowie (1977).
+#| out-width: 75%
 knitr::include_graphics("figs/CowieF3.png")
 ```
 It can be useful to think of natural selection as an optimizing process: phenotypes diversify, winners replicate and losers don't, and the phenotypes of winners tend to get passed on to the replicants. Therefore, we often assume, as did Dr. Pangloss, that the species that exist now are the best of all possible species, that is, they are of optimal design. And like Dr. Pangloss, we would be woefully mistaken if we stopped there. Nonetheless, optimization, that is, the tendency toward an optimum, helps us generate testable hypotheses and we consider some of these below.
@@ -55,7 +60,11 @@ Let's start where this field started, with a prey-centered model [@macarthur1966
 The goal is to optimize the currency.
 
 ### Our intuition
-```{r ant, echo=FALSE, fig.cap="The amount of energy, E (y-axis), that is lost and gained by a foraging ant--it may decline slowly over time (x-axis) while searching, and decline quickly while handling a food item. Our ant gains energy when it consumes an item. Below: Our ant. She expends energy while searching for food. Upon encountering a food item, she may choose to 'handle' it (encounters 1 and 3) and gain energy, or not handle it (encounter 2) and save the added cost of handling it.", out.width="100%" }
+```{r }
+#| label: ant
+#| echo: false
+#| fig-cap: 'The amount of energy, E (y-axis), that is lost and gained by a foraging ant--it may decline slowly over time (x-axis) while searching, and decline quickly while handling a food item. Our ant gains energy when it consumes an item. Below: Our ant. She expends energy while searching for food. Upon encountering a food item, she may choose to ''handle'' it (encounters 1 and 3) and gain energy, or not handle it (encounter 2) and save the added cost of handling it.'
+#| out-width: 100%
 knitr::include_graphics("figs/foraging_ant2.jpg")
 ```
 
@@ -122,7 +131,11 @@ where the diet already includes items 1-$m$, and the *realized* energy content o
 
 **Prediction 3** When encounter rates increase (as with increasing abundances), selectivity increases. Note that encounter rates are in the right hand side, so as they increase, so will that fraction on the right. That will make it harder for the above inequality to be true, and a forager will be pickier. If you don't believe it, try this simplified version (@fig-selectivity).
 
-```{r fig-selectivity, echo=TRUE, fig.cap="Selectivity increases with average encounter rates.", out.width="60%"}
+```{r}
+#| label: fig-selectivity
+#| echo: true
+#| fig-cap: Selectivity increases with average encounter rates.
+#| out-width: 60%
 
 G.T = function(lambda, h=1, e=1){lambda*e/(1+lambda*h)} # create the function you want
 myData <- data.frame( lambda=c(0, 10) ) # data you need
@@ -147,7 +160,11 @@ Let's assume the simplest of all patch models: one patch type, all patches are t
 
 The patch is characterisized by its *gain function* $g(t_r)$ (@fig-gain) which is the expected^["expected" value of a variable is the mean of that variable, because that is what we expect given the absence of other knowledge]
 *cumulative net energy gained*, given time $t_r$ spent in the patch. The gain function is a cumulative total net amount. We can imagine different types of gain functions.
-```{r fig-gain, echo=FALSE, fig.cap="Net energy gain as a function of patch residence time may take different forms. Net energy gain increases through time but slows (decelerates) as a greater fraction of the resources in the patch are consumed. The top line (solid) assumes that there are diminishing returns as a patch is depleted, but the forager continues to find resources in excess of metabolic losses. The lower line (dashed) represents the net energy gain that could arise as a patch is depleted more fully and the costs continue unabated.", out.width='75%'}
+```{r}
+#| label: fig-gain
+#| echo: false
+#| fig-cap: Net energy gain as a function of patch residence time may take different forms. Net energy gain increases through time but slows (decelerates) as a greater fraction of the resources in the patch are consumed. The top line (solid) assumes that there are diminishing returns as a patch is depleted, but the forager continues to find resources in excess of metabolic losses. The lower line (dashed) represents the net energy gain that could arise as a patch is depleted more fully and the costs continue unabated.
+#| out-width: 75%
 eq1 <- function(tr) {.7 * tr/(.1+tr)}
 eq2 <- function(tr) {-tr^2 + 1.5*tr}
 df <- data.frame(tr=c(0,1) )
@@ -187,7 +204,11 @@ With that we can find the necessary derivative.
 $$\frac{\delta R}{\delta t_r} = - \frac{1}{(t_t+t_r)^2} g(t_r) + \frac{1}{t_t+t_r}g^\prime(t_r)= g^\prime(t_r) - \frac{g(t_r)}{t_t+t_r}=0$$
 Because this derivative equals zero when the slope of the gain function ($g^\prime(t_r)$) equals $R$, that tells use that $R$ is maximized at that point. Therefore, it  predicts that in order to maximize the long-term average rate, we should stay in a patch until the instantaneous rate, $g^\prime(t_r)$ drops to the long term average rate, $R$ (@fig-marginal).
 
-```{r fig-marginal, echo=FALSE, fig.cap="Energy gain vs. time: The origin is when the forager enters the patch; to the left is time spent traveling from one patch to the next, and to the right is time spent in the patch. The graph represents two different habitats, one in which the patches are easy to get to (habitat 1), and another where it takes more time to get from patch to patch (habitat 2). In all cases, the patches are identical, having the same gain function. The curved line is the gain function, the net energy gain as a function of time spent in the patch. The slope of that curve is the derivative of the gain function. Its slope at any single time point is the instantaneous rate of gain. The two straight lines are the expected gains averaged over time for each habitat as a whole. Lambda is the rate at which a forager randomly encounters patches - because it is a Poisson process, the mean or expected time is 1/lambda. The forager should leave the patch when the instantaneous rate of gain in the patch equals the long term average rate of gain for the habitat as a whole.", out.width="100%" }
+```{r }
+#| label: fig-marginal
+#| echo: false
+#| fig-cap: 'Energy gain vs. time: The origin is when the forager enters the patch; to the left is time spent traveling from one patch to the next, and to the right is time spent in the patch. The graph represents two different habitats, one in which the patches are easy to get to (habitat 1), and another where it takes more time to get from patch to patch (habitat 2). In all cases, the patches are identical, having the same gain function. The curved line is the gain function, the net energy gain as a function of time spent in the patch. The slope of that curve is the derivative of the gain function. Its slope at any single time point is the instantaneous rate of gain. The two straight lines are the expected gains averaged over time for each habitat as a whole. Lambda is the rate at which a forager randomly encounters patches - because it is a Poisson process, the mean or expected time is 1/lambda. The forager should leave the patch when the instantaneous rate of gain in the patch equals the long term average rate of gain for the habitat as a whole.'
+#| out-width: 100%
 knitr::include_graphics("figs/marginal-value.jpg")
 ```
 
@@ -220,7 +241,9 @@ In addition to these properties, our simulation needs several bookkeeping parame
 
 We need to keep track of total elapsed time, and for each cycle, the search time, search cost, handling time, and energy gain.
 
-```{r oft.sim, echo=TRUE}
+```{r}
+#| label: oft.sim
+#| echo: true
 optimal.forager <- function(
   e = c(2, 1), # energy content of the prey types
   h = c(.5, .5), # handling times
@@ -323,7 +346,8 @@ id.rmna <- id[!is.na(id)]
 ```
 
 Here we let the forager forage for 60 minutes and then examine the structure of the output object. 
-```{r echo=TRUE, keep.source=TRUE}
+```{r}
+#| echo: true
 myOut <- optimal.forager(Total=60)
 str(myOut)
 ```
@@ -335,7 +359,10 @@ str(myOut)
 * params is a list that includes all the parameters we used in this run
 
 Now let's graph something, because graphs are fun.
-```{r oft1, echo=TRUE, fig.cap="The cumulative energy capital of a forager goes down while searching and handling resource items, but increases each time the prey is assimilated."}
+```{r}
+#| label: oft1
+#| echo: true
+#| fig-cap: The cumulative energy capital of a forager goes down while searching and handling resource items, but increases each time the prey is assimilated.
 
 ggplot(myOut$series, aes(x=cycle.start, y=cumsum(net.e))) + geom_line() 
 
@@ -352,7 +379,12 @@ $$
 $$ {#eq-prediction}
 
 
-```{r fig-preypred, echo=FALSE, fig.cap="The right hand side of our prediction", fig.asp=.67, out.width="100%", fig.hold=TRUE}
+```{r}
+#| label: fig-preypred
+#| echo: false
+#| fig-cap: The right hand side of our prediction
+#| fig-asp: 0.67
+#| out-width: 100%
 
 par(mar=c(5,4,1,0), mgp=c(1.5,.4,0) ) # set figure margins in "lines"
 layout(matrix(1:2, nr=1))
@@ -377,7 +409,9 @@ abline(h=e[2]/h[2], lty=2); text(0, e[2]/h[2], bquote(e[2]/h[2]), adj=c(0,-.1))
 
 ```
 To get a sense of what our prediction @eq-prediction means, we should graph the righthand quantity as a function of one relevant variable, such as energy content of type 1, or the encounter rate (@fig-preypred).  The parameters that determined these curves are:
-```{r echo=TRUE, results='verbatim'}
+```{r}
+#| echo: true
+#| results: markup
 unlist( myOut$params )
 ```
 
@@ -388,7 +422,9 @@ unlist( myOut$params )
 
 
 
-```{r echo=FALSE, eval=FALSE}
+```{r}
+#| echo: false
+#| eval: false
 # One possibility is that we can run the simulation with two prey types 
 # setting e, h, and lambda to appropriate values. We then
 # run it with both types ( p = (1,1) ) and then only type 1 (p=(1,0)) and

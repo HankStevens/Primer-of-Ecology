@@ -20,8 +20,8 @@ mathematical models that provide special cases of theory.
 
 ```{r}
 #| label: fig-theorydatanathist
-#| fig.cap: Ecology and evolutionary biology require all of these to advance. 
-#| fig_width: 2
+#| fig-cap: Ecology and evolutionary biology require all of these to advance. 
+#| fig-width: 2
 #| column: margin
 #| 
 g <- dagitty(
@@ -271,7 +271,7 @@ line for comparison, and then *add* the power function $x^{3/4}$.
 
 ```{r}
 #| label: fig-MTE34
-#| fig.cap: Metabolic rate increases predictably with species body sizes. 
+#| fig-cap: Metabolic rate increases predictably with species body sizes. 
 #| column: margin
 #| echo: false
 ## using curve, let your variable be 'x'.
@@ -282,7 +282,9 @@ curve(x^(3/4), from = .01, to = 100, add=TRUE)
 text(80, 90, "1:1"); text(80, 80^.8, expression(M^0.75))}
 ```
 
-```{r MTE34b, eval=FALSE}
+```{r}
+#| label: MTE34b
+#| eval: false
 ## using curve, let your variable be 'x'.
 curve(1*x, from = .01, to=100, ylab = "Metabolic rate (B)",
       xlab="Body mass (M)", lty=3)
@@ -312,7 +314,7 @@ negative one quater power*
 
 ```{r}
 #| label: fig-MTE-MS
-#| fig.cap: Mass-specific metabolic rate decreases predictably with species body sizes. 
+#| fig-cap: Mass-specific metabolic rate decreases predictably with species body sizes. 
 #| column: margin
 #| echo: false
 #| 
@@ -495,7 +497,9 @@ Now we will divide each mass $i$ by the next smallest mass $i-1$. We do
 that using a vector by dividing each mass except the first one, by each
 mass except the last one.
 
-```{r, echo=TRUE, eval=FALSE}
+```{r}
+#| echo: true
+#| eval: false
 # round(x, digits=0) rounds number to zero decimal places
 round( m[-1]/m[-length(m)], digits = 0)
 round( b[-1]/b[-length(b)], digits = 1)
@@ -504,7 +508,9 @@ round( b[-1]/b[-length(b)], digits = 1)
 When we do these divisions, we see the constant relative change (Table
 @tbl-relativemb).
 
-```{r tbl-relativemb, echo=FALSE}
+```{r}
+#| label: tbl-relativemb
+#| echo: false
 df <- round(rbind(Mass=m, Basal.metabolic.rate=b,
   Relative.change.m=c(NA, m[-1]/m[-length(m)]),
       relative.change.b=c(NA,b[-1]/b[-length(b)] )), 2 )

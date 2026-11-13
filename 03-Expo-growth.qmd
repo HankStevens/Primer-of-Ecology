@@ -1,14 +1,23 @@
 # Simple density-independent growth {#sec-expo}
-```{r include=FALSE}
+```{r}
+#| include: false
 source("scripts/setup.R")
 ```
 
-```{r fig-Melospiza1, echo=FALSE,  fig.cap="Song Sparrow (*Melospiza melodia*) counts in Darrtown, OH, USA. From  Sauer, J. R., J.E. Hines, and  J. Fallon. 2005. The North American Breeding Bird Survey, Results and Analysis 1966--2004. Version 2005.2. USGS Patuxent Wildlife Research Center, Laurel, MD.", out.width="70%"}
+```{r}
+#| label: fig-Melospiza1
+#| echo: false
+#| fig-cap: Song Sparrow (*Melospiza melodia*) counts in Darrtown, OH, USA. From  Sauer, J. R., J.E. Hines, and  J. Fallon. 2005. The North American Breeding Bird Survey, Results and Analysis 1966--2004. Version 2005.2. USGS Patuxent Wildlife Research Center, Laurel, MD.
+#| out-width: 70%
 data(sparrows)
 ggplot(data=sparrows[1:6,], aes(x=Year, y=Count)) + geom_line() + geom_point()
 ``` 
 
-```{r fig-Melospiza2, echo=FALSE,  fig.cap="Song Sparrow (*Melospiza melodia*) annual changes in population size as a function of population size.", out.width="70%"}
+```{r}
+#| label: fig-Melospiza2
+#| echo: false
+#| fig-cap: Song Sparrow (*Melospiza melodia*) annual changes in population size as a function of population size.
+#| out-width: 70%
 spar1 <- tibble(Count = sparrows$Count[1:5], ssgr= with(sparrows[1:6,], Count[2:6]/Count[1:5]))
 ssgr <- with(sparrows[1:6,], Count[2:6]/Count[1:5])
 ggplot( data=spar1, aes(Count, ssgr) ) + geom_point() +
@@ -260,7 +269,8 @@ This gives us a few useful rules of thumb.
 * No change: $r = 0\quad;\quad\lambda =1$
 * Growing population: $r > 0 \quad;\quad \lambda > 1$
 * Shrinking population: $r < 0 \quad;\quad \lambda < 1$
-```{r echo=TRUE}
+```{r}
+#| echo: true
 # Let r take on three values
 r <- c( -1, 0, 1)
 # Convert to lambda
@@ -268,7 +278,8 @@ exp(r)
 ```
 
 *Time scaling* This is a useful property if we ever want to change time units in a discrete model. We must first $\lambda$ to $r$, change units in $r$ and convert back to $\lambda$. For instance, if we find that the annual finite rate of increase for a population of crickets is $\lambda = 1.2$, we cannot convert that to a monthly rate of $1.2/12 = 0.1$. Instead we convert to $r$ and back to $\lambda$.
-```{r echo=TRUE}
+```{r}
+#| echo: true
 lambda <- 1.2
 
 # Convert lambda to r 
@@ -290,7 +301,11 @@ $$2N_0 = N_0 e^{rt}$$
 $$\ln 2 = rt$$ 
 $$t =\frac{\ln 2}{r}$$
 
-```{r doubling, echo=TRUE, fig.cap="Doubling time is inversely related to the intrinsic rate of increase, r.", out.width="60%"}
+```{r}
+#| label: doubling
+#| echo: true
+#| fig-cap: Doubling time is inversely related to the intrinsic rate of increase, r.
+#| out-width: 60%
 # let r be a sequence from 
 r <- c(0.01, 0.05, 0.1, 0.5)
 #doubling time will be
@@ -305,7 +320,8 @@ curve( log(2)/x, xlab="r", ylab="Doubling time")
 In any real data set, such as from a real population of fruit flies or Song Sparrows, $N_{t+1}/N_t$ will vary from year to year. How do we calculate an average growth rate for a fluctuating population? 
 
 Let's consider the case where a population increases and then decreases. For each year, we will calculate the annual rate of increase $R = N_{t+1}/N_t$, and take the arithmetic average of those rates to see if it makes sense. 
-```{r echo=TRUE}
+```{r}
+#| echo: true
 N <- c(20, 30, 15, 15)
 # R where is the ratio of successive population sizes, i.e.,
 # the realized $\lambda$ for just one year
@@ -316,7 +332,9 @@ The arithmetic average of those rates is $(1.5 + 0.5 + 1.0)/3=1.0$. If $R=1.0$, 
 Let us do the annual time steps explicitly to see what is going on,
 $$N_3 = (N_0 R_0) R_1 R_2$$
 where $R_t$ is the realized $\lambda$ for just one year.
-```{r product1, echo=TRUE}
+```{r}
+#| label: product1
+#| echo: true
 # Remember that we call the first time t=0 and N0, but
 # when coding, these values are the first in a series, so 
 # N0 is N[1]
@@ -337,7 +355,9 @@ $$(\bar{R}^t)^{1/t} =\bar{R} = \left(R_1R_2\ldots R_t\right)^{1/t}$$
 
 We take the $t$-th root of the product of all the $R$. This is called the *geometric average.* Another way of writing this would be to use the product symbol, as in
 $$\bar{R} = \left(\prod_{i=1}^t R_i\right)^{1/t}$$
-```{r prod2, echo=TRUE}
+```{r}
+#| label: prod2
+#| echo: true
 R
 #arithmetic average
 mean(R)
@@ -348,14 +368,18 @@ prod(R)^(1/t)
 ```
 
 Another way to do the same thing is to take the arithmethic mean of the log-growth rates, and back-transform,
-```{r meanlog, echo=TRUE}
+```{r}
+#| label: meanlog
+#| echo: true
 log(R)
 mean( log(R) )
 exp( mean( log(R) ) )
 ```
 
 Now we see the effect of calculating the average growth rate correctly. This leads to a useful rule of thumb: *random variation in growth rate suppresses population growth.* Here we illustrate that. We start with a growing population.
-```{r sim1, echo=TRUE}
+```{r}
+#| label: sim1
+#| echo: true
 lambda <- 1.01 # positive growth rate
 N0 <- 100 # starting N
 t <- 20 # 20 years
@@ -432,7 +456,10 @@ names(sparrows) # extract the names of the columns in the data frame
 ```
 
 Now we plot these counts through time (@fig-cts).  
-```{r fig-cts, fig.cap="Observations of Song Sparrows in Darrtown, OH (http://www.mbr-pwrc.usgs.gov/bbs/).", out.width="75%"}
+```{r}
+#| label: fig-cts
+#| fig-cap: Observations of Song Sparrows in Darrtown, OH (http://www.mbr-pwrc.usgs.gov/bbs/).
+#| out-width: 75%
 ggplot(data=sparrows, aes(x=Year, y=Count)) + geom_line() + geom_point(pch=1)
 ```
 
@@ -451,7 +478,10 @@ sparrows2 <- sparrows |>
   drop_na() # remove the row with obs.R equal NA (last row)
 ```
 Thus our *data* are the observed $R_t$, not the counts *per se*. These $R$ form the basis of everything else we do. Because they are so important, let's plot these as well. Let's also indicate $R=1$ with a horizontal dotted line as a visual cue for zero population growth. Note that we exclude the last year because each $R_t$ is associated with $N_t$ rather than $N_{t+1}$. 
-```{r fig-Rrates, fig.cap="Annual growth rates (R=N[t+1]/N[t]) for Song Sparrows", out.width="75%"}
+```{r}
+#| label: fig-Rrates
+#| fig-cap: Annual growth rates (R=N[t+1]/N[t]) for Song Sparrows
+#| out-width: 75%
 ggplot(data=sparrows2, aes(x=Year, y=obs.R) ) + geom_point() + 
   geom_hline(yintercept=1, lty=3) + 
   labs(y=bquote(N[t+1]/N[t]), x="Year (t)")
@@ -571,7 +601,8 @@ myForLoop(obs.R=c(0.5, 1, 1.5), years=5, initial.N=43)
 Our function seems to work. 
 
 Next we do ten such projection simulations, each for 50 time steps, using the sparrow data.
-```{r tensim}
+```{r}
+#| label: tensim
 # specify the number of simulations and for how long
 sims=10; years=50
 
@@ -585,13 +616,16 @@ outmat <- replicate(sims,
 Now let's peek at the results (@fig-tensimfig). It is fun to graph our output, but also helps us make sure we are not making a heinous mistake in our code. Note we use log scale to help us see the small populations.
 ```{r}
 #| label: fig-tensimfig
-#| fig.cap: "Using matplot() to plot a matrix vs. a single variable. Our simulated populations sometimes increase and sometimes decrease."
+#| fig-cap: "Using matplot() to plot a matrix vs. a single variable. Our simulated populations sometimes increase and sometimes decrease."
 #| out-width: "75%"
 matplot(0:years, outmat, type="l", log="y")
 ```
 
 
-```{r fig-tensimfig2, fig.cap="Using ggplot() to plot one variable against vs. a single variable, organized by a grouping variable. Our simulated populations sometimes increase and sometimes decrease.", out.width="75%"}
+```{r}
+#| label: fig-tensimfig2
+#| fig-cap: Using ggplot() to plot one variable against vs. a single variable, organized by a grouping variable. Our simulated populations sometimes increase and sometimes decrease.
+#| out-width: 75%
 # combine columns years, and our output
 junk <- data.frame(years = 1:(years+1), outmat)
 names(junk)
@@ -641,7 +675,9 @@ N.2053 <- outmat[51,]
 summary(N.2053)
 ```
 
-```{r fig.cap="Distribution of the 10000 final base-10 log population sizes. Note the approximately Normal distribution.", out.width="75%"}
+```{r}
+#| fig-cap: Distribution of the 10000 final base-10 log population sizes. Note the approximately Normal distribution.
+#| out-width: 75%
 hist(log10(N.2053))
 ```
 
@@ -668,7 +704,10 @@ We will gain an intuition into Bayesian probability elsewhere^[Bayesian analysis
 A Bayesian approach forces us to use what we already know. For us, we will start with expert opinion of whether Song Sparrows are likely to maintain a self-replacing population (a 'source' population - @sec-source-sink-model) and avoid extinction over our time interval. In other words, we ask Dr. Dave Russell. He says "Probably, but you can't be sure." Let's represent "probably" with the beta distribution. The **beta distribution** generates probability densities for a random variable between [0,1], perfect for representing probabilities which always lie between zero and one. The beta distribution has two parameters, often called shape 1 ($\alpha$) and shape 2 ($\beta$). The mean of the beta distribution is,
 $$\mu = \frac{\alpha}{\alpha + \beta}$$
 
-```{r fig-survivalPrior, fig.cap="Our prior belief on the probability that the Song Sparrow population in Darrtown will replace itself over our time interval. We call this the *prior probability distribution.*", out.width="67%"}
+```{r}
+#| label: fig-survivalPrior
+#| fig-cap: Our prior belief on the probability that the Song Sparrow population in Darrtown will replace itself over our time interval. We call this the *prior probability distribution.*
+#| out-width: 67%
 base <- ggplot() + xlim(0, 1)
 
 base + 
@@ -701,7 +740,10 @@ updated.beta = 2 + nR.ext
 ```
 
 Now we plot our *updated* beliefs, with what we call the *posterior distribution.*
-```{r survivalpost, fig.cap="Our updated beliefs (solid line) about the probability that the Song Sparrows will replace themselves over our time interval. The solid line is the posterior distribution. The dashed line was our prior beliefs or prior distribution.", out.width="67%"}
+```{r}
+#| label: survivalpost
+#| fig-cap: Our updated beliefs (solid line) about the probability that the Song Sparrows will replace themselves over our time interval. The solid line is the posterior distribution. The dashed line was our prior beliefs or prior distribution.
+#| out-width: 67%
 
 base + 
   geom_function(fun = dbeta, 
@@ -816,7 +858,11 @@ In addition to detecting the particular frequencies of some cycles, we can also 
 
 Environmental variables typically have a reddened color that we often call pink noise [@halley1996ee1].This type of environmental variation as *environmental color*, whether white, pink, brown, or even, in the other direction, blue. 
 
-```{r colorex, fig.cap="Examples of reddened (left) and white (right) time series.", out.width="67%", fig.show='hold' }
+```{r }
+#| label: colorex
+#| fig-cap: Examples of reddened (left) and white (right) time series.
+#| out-width: 67%
+#| fig-show: hold
 set.seed(1)
 time.series.r <- one_over_f(gamma=1, N=50)
 plot(1:50, time.series.r, type='l', main="Pink noise")
@@ -833,7 +879,10 @@ Below, we use spectral mimicry to simulate Song Sparrow population dynamics. We 
 * a rearrangement of the original string to match the spectral properties of the template.
 
 We then plot the three vectors, showing the original data, the reddened template, and then the data rearranged to approximate the template.
-```{r fig-specex, fig.cap="Example of spectral mimicry, showing the original random data points (solid black line), the template ('one.over.f.template', red dashed line), and the rearranged, reddened data points (solid red line).", outwidth="67%"}
+```{r}
+#| label: fig-specex
+#| out-width: 67%
+#| fig-cap: Example of spectral mimicry, showing the original random data points (solid black line), the template ('one.over.f.template', red dashed line), and the rearranged, reddened data points (solid red line).
 N = 50 # number of data points in one string
 set.seed(1) # set the pseudorandomization seed
 
@@ -859,7 +908,9 @@ In @fig-specex, the solid lines refer to the uniform data (black) and the redden
 Imagine that the Ohio (USA) environment of our Song Sparrows reveals *environmnetal stochasticity*, that is, random-like fluctuations that we do not understand. Next imagine that this environmental stochasticity affects Song Sparrow growth rate. If we want to simulate future sparrow population dynamics, we may want to mimic the type and magnitude of this underlying variation. We might do that by using our original annual growth data, but arranged in a reddened series. 
 
 Let us first examine whether the sparrow growth rates show evidence of reddened population dynamics. We can use the `plot_f()` in `primer` to evaluate that. It plots the time series, and then the power spectra. It fits a line to the log(power) vs. log(frequency) and calculates a frequentist confidence interval.
-```{r plotf, fig.cap="Sparrow population dynamics seems to show reddened flutuations. On the left, sparrow counts over time, and on the right, the log-log plot of the power spectrum (power vs. frequency). The frequentist confidence interval on the slope of the fitted line suggests that we shouldn't rule out the possibility of a reddened series."}
+```{r}
+#| label: plotf
+#| fig-cap: Sparrow population dynamics seems to show reddened flutuations. On the left, sparrow counts over time, and on the right, the log-log plot of the power spectrum (power vs. frequency). The frequentist confidence interval on the slope of the fitted line suggests that we shouldn't rule out the possibility of a reddened series.
 plot_f(sparrows$Count)
 ```
 
@@ -868,7 +919,9 @@ Not surprisingly, we see the possibility of reddened population dynamics. You co
 To resample the sparrow growth rates and also create a reddened sequences of them, we could do two things, depending on our goals. We could create a large number of different reddened templates and mimic them using only the observed data. Alternatively, we can draw annual growth rates at random, and match each random draw to the same reddened sequence.
 
 Below, we simply rearrange the observed annual growths into a single reddened sequence. For the reddened template, we will assume moderate reddening, or pink noise, for which $\gamma = 1$.
-```{r Rred, fig.cap="Original and rearranged annual growth rates."}
+```{r}
+#| label: Rred
+#| fig-cap: Original and rearranged annual growth rates.
 R.n = length(sparrows2$obs.R) # number of observations
 
 ## A random pink noise template
@@ -889,7 +942,10 @@ legend("bottomright",
 ```
 
 Now we can project a simulated sparrow population 
-```{r fdyn, fig.cap="Example of a simulated sparrow projection using reddened annual growth rates.", outwidth="67%"}
+```{r}
+#| label: fdyn
+#| out-width: 67%
+#| fig-cap: Example of a simulated sparrow projection using reddened annual growth rates.
 
 N.f <- numeric( length(R.f) + 1 )
 # give it an initial population size

@@ -1,11 +1,16 @@
 # Direct competition and mutualism {#sec-comp}
-```{r include=FALSE}
+```{r}
+#| include: false
 source("scripts/setup.R")
 ```
 
 Different species frequently compete for limiting resources, and as a result have negative impacts on each other. For example, change in species composition during secondary succession (@fig-weeds) appears mediated by, among other things, a species' ability to intercept light, grow, and cast shade over other species. This chapter addresses very simple ways to represent such interactions between species. Unless I specify otherwise, "competition" in this chapter will refer to competition between species, or *inter*specific competition. 
 
-```{r fig-weeds, echo=FALSE, fig.cap="Changes in abundances of six species of asters during early secondary succession. This turnover of perennial weeds appears mediated by competition for light, among other factors (data from the long-term Buell-Small Succession study [http://www.ecostudies.org/bss/]).", out.width="75%"}
+```{r}
+#| label: fig-weeds
+#| echo: false
+#| fig-cap: Changes in abundances of six species of asters during early secondary succession. This turnover of perennial weeds appears mediated by competition for light, among other factors (data from the long-term Buell-Small Succession study [http://www.ecostudies.org/bss/]).
+#| out-width: 75%
     
 data(weeds)
 ggplot(weeds, aes(Age, Cover, colour=Species, linetype=Species)) +
@@ -75,7 +80,9 @@ $$ {#eq-alphD}
 The subscripts on the $\alpha$s represent the row and column of the
 coefficient; $\alpha_{12}$ is in the first row, second column. This merely reflects how mathematicians describe matrix elements and dimensions --- row $\times$ column. When we use matrix multiplication, $\alpha_{12}$ becomes the effect of species 2 (column) on species 1 (row). In this case, $\alpha_{11}=\alpha_{22}=0.01$, $\alpha_{21}=0.008$, and $\alpha_{12}=0.005$. Thus, both species have greater effects on themselves than on each other. Remember, the larger the $\alpha$, the larger the effect. 
 
-```{r tbl-cc, echo=FALSE}
+```{r}
+#| label: tbl-cc
+#| echo: false
 #| tbl-cap: "Parameters of the continuous 2 species Lotka-Volterra competition model. The rest of the chapter explains the meaning and motivation."
 t1 <- data.frame(
   Parameter=c('$r_i$', '$\\alpha_{ii}$', '$\\alpha_{ij}$', '$K_i$', '$\\alpha^\\prime_{ij}$', '$\\beta_{ij}$'),
@@ -138,7 +145,8 @@ possible values of $N_1$.
 N2iso <- expression(1/a[2,2] - (a[2,1]/a[2,2])*N1)
 ```
 We then specify $N_1$, and then evaluate and plot $N_2$. We add arrows to remind us of what happens if $N_2$ is above or below the value on the isocline.
-```{r eval=FALSE}
+```{r}
+#| eval: false
 N1 <- 0:200
 plot(N1, eval(N2iso), type='l',
       ylim=c(0, 200), xlim=c(0, 200),
@@ -587,7 +595,9 @@ $$ {#eq-2x}
 
 In addition to the dominant eigenvalue, we need to consider the other eigenvalues. Table @tbl-eiginterpret provides a summary for interpreting eigenvalues with respect to the dynamics of the system. The eigenvalues depend upon elements of the Jacobian, and values calculated from the elements, notably the determinant, the trace, and the discriminant; a similar set of rules of system behavior can be based upon these values [@roughgarden1998]. For instance, the *Routh-Hurwitz criterion* for stability tells us that a two-species equilibrium will be locally stable, only if $\mathbf{J_{11}} + \mathbf{J_{22}} < 0$ and if $\mathbf{J_{11}}\mathbf{J_{22}-\mathbf{J_{12}}\mathbf{J_{21}}} > 0$. The biological interpretation of this criterion will be posed as a problem at the end of the chapter. For now, Table @tbl-eiginterpret will suffice.
 
-```{r tbl-eiginterpret, echo=FALSE}
+```{r}
+#| label: tbl-eiginterpret
+#| echo: false
 #| tbl-cap: "Interpreting eigenvalues of a Jacobian matrix."
 dt2 <- data.frame(
   Eigenvalues =c('All real parts $< 0$', 'Some real parts $< 0$', 'No real parts  $< 0$', 'Real parts $= 0$', 'Imaginary parts absent', 'Imaginary parts present ($\\pm\\omega i$)'  ),
@@ -619,7 +629,9 @@ where, if $\beta_{ij}<1$, species $i$ can invade. This ratio is the relative str
 
 When $\beta_{ij},\, \beta_{ji} <1$, then both species can invade each other. We find that all of the eigenvalues of the Jacobian are negative and real (@fig-LVeig), demonstrating that these populations will reach a stable equilibrium (Table @tbl-eiginterpret). When we plot these eigenvalues for these combinations of $\beta$, we see that the dominant eigenvalue increases from negative values toward zero as either $\beta_{12}$ or $\beta_{21}$ approaches 1 (@fig-LVeig). 
 
-```{r echo=FALSE, results='hide'}
+```{r}
+#| echo: false
+#| results: hide
 findL1 <- function(B, r1=1, r2=1, a11=.01, a22=.01) {
 r1=r1; r2=r2; 
 a11 = a11; a22 <- a22
@@ -796,7 +808,13 @@ Again $\lambda_1=0$ so this equilibrium is also neutral.
 When we perform eigenanalysis, we find that the largest of the two eigenvalues is zero, while the other is negative. This reveals that we have neither a bowl nor an unstable saddle, but rather, a taco shell, with a level bottom --- a neutral saddle.
 
 
-```{r fig-lvstabneut, echo=FALSE, fig.cap="Trajectories of N(1),N(2) for $\\beta_{12} = \\beta_{21} = 1$. The entire isocline is an attractor, a neutral saddle, and the final abundances depend on the initial abundances and the ratio of $\\alpha_{11}/\\alpha_{22}$. The circle represents our one derived equilibrium.", fig.width=4, fig.height=4, out.width="40%"}
+```{r}
+#| label: fig-lvstabneut
+#| echo: false
+#| fig-cap: Trajectories of N(1),N(2) for $\beta_{12} = \beta_{21} = 1$. The entire isocline is an attractor, a neutral saddle, and the final abundances depend on the initial abundances and the ratio of $\alpha_{11}/\alpha_{22}$. The circle represents our one derived equilibrium.
+#| fig-width: 4
+#| fig-height: 4
+#| out-width: 40%
 par(mar=c(5,4,.5,1))
 a <- matrix(c(  0.01, 0.015,
                   0.01, 0.015), ncol=2, byrow=TRUE)
@@ -862,7 +880,13 @@ $$
   \frac{d x}{d t} \approx c\lambda_1 t.
 $$ {#eq-3}
 where $c$ is a constant, so the distance traveled, $x$, is given by @eq-2x. Therefore, a negative $\lambda_1$ indicates an exponential decline in the disturbance, back toward the equilibrium (@fig-RT). The units of return time are the same as for $r$. Recall that all of this depends on the linearization of the curved surface around an equilibrium; it therefore applies exactly to only an infinitesimally small region around the equilibrium. It also usually provides the average, regardless of whether the perturbation is a population decline or a population increase.
-```{r fig-RT, echo=FALSE, fig.cap="*For $\\beta_{ij} < 1$, return time is positive because some time will lapse before the system returns toward to its equilibrium.  For $\\beta_{ij}>1$, return time is negative, because the system was closer to the (unstable) equilibrium in the past.*", fig.width=4, fig.height=4, out.width="75%"}
+```{r}
+#| label: fig-RT
+#| echo: false
+#| fig-cap: '*For $\beta_{ij} < 1$, return time is positive because some time will lapse before the system returns toward to its equilibrium.  For $\beta_{ij}>1$, return time is negative, because the system was closer to the (unstable) equilibrium in the past.*'
+#| fig-width: 4
+#| fig-height: 4
+#| out-width: 75%
 par(mar=c(5,4,.5,1))
 aij <- seq(0.0001, 0.009, length=30)
 a11 <- a22 <- 0.01
@@ -972,7 +996,12 @@ Note this assumes that both $\alpha_{jj}$ and $\alpha_{ji}$, per se, are greater
 Let's use this to describe a facultative mutualism, that is, one in which neither species needs the other to persist, but in which they each do better. What we mean by that is that let $r>0$. For now, we will also assume that the mutualism provides only a modest benefit, where species benefits to each is smaller than the negative effects on themselves ($\alpha_{ii} > \alpha_{ij}$). The dynamics are stable (@fig-LVmut)
 
 
-```{r fig=TRUE, fig.width=2.5, fig.height=2.5, echo=FALSE, eval=FALSE}
+```{r}
+#| fig: true
+#| echo: false
+#| eval: false
+#| fig-width: 2.5
+#| fig-height: 2.5
 alpha11 <- alpha22 <- 0.2
 alpha12 <- alpha21 <- 0.1
 
@@ -997,7 +1026,8 @@ parameters <- c(alpha11 = .2, alpha22 = .2, alpha12 = .1, alpha21=.1,
 ```
 
 Here we write an ODE model to help anaylze dynamics.
-```{r echo=TRUE}
+```{r}
+#| echo: true
 mutualism.LV <- function(t, y, params){
   n1 <- y[1]; n2 <- y[2]
   with(as.list(params), {
@@ -1007,7 +1037,9 @@ mutualism.LV <- function(t, y, params){
   })
 }
 ```
-```{r results='hide', include=FALSE}
+```{r}
+#| results: hide
+#| include: false
 t <- 0:100
 n2star <- with(as.list(parameters), {(alpha22+alpha21)/(alpha22*alpha11-alpha12*alpha21)})
 out <- ode(y=c(11,11), time=t, mutualism.LV, parameters)

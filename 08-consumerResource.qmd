@@ -1,6 +1,7 @@
 # Consumer-resource Interactions {#sec-cr}
 
-```{r include=FALSE}
+```{r}
+#| include: false
 source("scripts/setup.R")
 ```
 
@@ -14,7 +15,10 @@ We have considered population growth from a demographic context beginning in @se
 $$\Delta N = B+I-D-E$$. 
 In consumer-resource theory, we can combine biophysical and demographic approaches.
 
-```{r fig-LH, echo=FALSE, fig.cap="Lynx-snowshoe hare cycles."}
+```{r}
+#| label: fig-LH
+#| echo: false
+#| fig-cap: Lynx-snowshoe hare cycles.
 include_graphics("figs/LH.png")
 ```
 
@@ -85,7 +89,8 @@ As a first model of predator-prey interactions, this is analogous to exponential
 The dynamics of ratio-dependent predation are very simple. There are no cycles or fluctuations, just like in exponential growth of a single species. It assumes that predation rate is a function of predator abundance and the number of prey per predator. I predicts that predator abundance is a constant fraction of the prey. This qualitative prediction is often roughly consistent with data.
 
 Let's code a quick function of this model, where we continue to make the assumption of ratio-dependence as transparent as we can ($(N/P)P$), for clarity.
-```{r rd }
+```{r }
+#| label: rd
 cr_ratio_dep_pred <- function(time, y, parameters){
   # the populations
   N <- y[1]; P <- y[2]
@@ -104,7 +109,9 @@ cr_ratio_dep_pred <- function(time, y, parameters){
 
 Now we run it and plot the output.
 
-```{r rdout, fig.cap="With the assumption of simple ratio-dependence, the predator population is a constant fraction of the prey population."}
+```{r}
+#| label: rdout
+#| fig-cap: With the assumption of simple ratio-dependence, the predator population is a constant fraction of the prey population.
 t <- 0:100
 p <- list(r=0.05, a=0.01, e=0.1, m=.1)
 
@@ -115,7 +122,10 @@ ggplot(outL, aes(time, abun., colour=State_vars)) + geom_line() + scale_y_log10(
 ```
 
 If we plot these in state space, we get @fig-rd1phase.
-```{r fig-rd1phase, echo=FALSE, fig.cap="The predator isocline under ratio dependence. There is no prey isocline because its abundance is completely independent of the predator population. Arrows indicate the trajectories. Note the prey are simply increaing."}
+```{r}
+#| label: fig-rd1phase
+#| echo: false
+#| fig-cap: The predator isocline under ratio dependence. There is no prey isocline because its abundance is completely independent of the predator population. Arrows indicate the trajectories. Note the prey are simply increaing.
 pp.flowfield <-  flowField(cr_ratio_dep_pred, 
                  xlim = c(0.1, 1000),
                  ylim = c(0.1,10),
@@ -152,7 +162,8 @@ Each population's growth rate is zero when the other population is at a fixed va
 
 ### Dyanmics of prey-dependent predation
 Now let's code a numerical model of prey-dependent, or Lotka-Volterra, predation.
-```{r pd }
+```{r }
+#| label: pd
 cr_prey_dep_pred <- function(time, y, parameters){
   # the populations
   N <- y[1]; P <- y[2]
@@ -170,7 +181,9 @@ cr_prey_dep_pred <- function(time, y, parameters){
 ```
 
 Now we run this model, using the same parameters as for ratio-dependent predation, and plot the output.
-```{r pout, fig.cap="Prey-dependent (Lotka-Volterra) predation results in oscillations. Prey increase until predators are sufficiently abundant to control them, at which point they decline, leading to the decline of preadtors. The predator peaks lag behind the prey peaks."}
+```{r}
+#| label: pout
+#| fig-cap: Prey-dependent (Lotka-Volterra) predation results in oscillations. Prey increase until predators are sufficiently abundant to control them, at which point they decline, leading to the decline of preadtors. The predator peaks lag behind the prey peaks.
 t <- 0:200; y0 <-c(N=100, P=3)
 p <- list(r=0.05, a=0.01, e=0.1, m=.1)
 
@@ -180,7 +193,9 @@ ggplot(outL, aes(time, abun., colour=State_vars)) + geom_line()
 ```
 
 
-```{r, echo=FALSE, fig.cap="The prey and predator isoclines under prey dependence. Arrows indicate the direction of changing population sizes. The black lines are two different tractories based on two different initial abundances. The 'nullclines' are the zero net growth isoclines for the prey (x) and the predator (y). Based on the arrow heads, we can see that the trajectories oscillate in a counterclockwise direction."}
+```{r}
+#| echo: false
+#| fig-cap: The prey and predator isoclines under prey dependence. Arrows indicate the direction of changing population sizes. The black lines are two different tractories based on two different initial abundances. The 'nullclines' are the zero net growth isoclines for the prey (x) and the predator (y). Based on the arrow heads, we can see that the trajectories oscillate in a counterclockwise direction.
 
 ppp.flowfield <-  flowField(cr_prey_dep_pred, 
                             xlim = c(0.1, 400), 
@@ -427,7 +442,9 @@ cr_RM_pred <- function(time, y, p){
 }
 ```
 
-```{r fig.cap="Predator-prey dynamics with prey carrying capacity and type II predator functional response. With these parameter values, we see damped oscillations.", out.width="67%"}
+```{r}
+#| fig-cap: Predator-prey dynamics with prey carrying capacity and type II predator functional response. With these parameter values, we see damped oscillations.
+#| out-width: 67%
 t <- 0:100; y0 <-c(N=100, P=3)
 p <- list(r=0.8, alpha=0.001, a=.02, e=0.04, m=.15, h=.1)
 outdf <- as.data.frame( ode(y0, t, cr_RM_pred,  p) )
@@ -437,7 +454,9 @@ ggplot(outL, aes(time, abun., colour=State_vars)) + geom_line()
 
 If we plot the isoclines, we can see the dynamical phase plane more clearly. 
 
-```{r echo=FALSE, eval=FALSE}
+```{r}
+#| echo: false
+#| eval: false
 #p <- list(r=0.8, alpha=0.001, a=.02, e=0.04, m=.15, h=.1)
 (P.iso <- with(p,{
   print(c(e,h*m))
@@ -451,7 +470,11 @@ abline(v=P.iso)
 
 ```
 
-```{r, echo=TRUE, fig.cap="Damped oscillations can arise with prey negative density dependence, and a type II predator funcional response. Arrows indicate the direction of changing population sizes. The black lines are tractories based on two different initial abundances. The nullclines are the zero net growth isoclines for the prey (x) and the predator (y). Based on the arrow heads, we can see that the trajectories oscillate in a counterclockwise direction.", results='hide', message=FALSE}
+```{r}
+#| echo: true
+#| results: hide
+#| message: false
+#| fig-cap: Damped oscillations can arise with prey negative density dependence, and a type II predator funcional response. Arrows indicate the direction of changing population sizes. The black lines are tractories based on two different initial abundances. The nullclines are the zero net growth isoclines for the prey (x) and the predator (y). Based on the arrow heads, we can see that the trajectories oscillate in a counterclockwise direction.
 
 ## This use the phaseR package to plot phase planes 
 ## for 1-D and 2-D systems
@@ -479,7 +502,9 @@ The stable equilibrium occurs at approximately ```r round(eq)   ```.
 ## Paradox of enrichment
 Using a variety of models that assume a prey carrying capacity and a type II functional response, @rosenzweig1971ped showed an unexpected phenomenon --- that increasing a prey's carry capacity could drive it to extinction. This can happen if the prey grow too quickly to high abundance and temporarily support a high abundance of predators which then drive the prey extinct. We can demonstrate that here by lowering $\alpha$ enough to increase oscillations so that abundances get infinitesimally close to zero.
 
-```{r fig.cap="Predator-prey dynamics with prey carrying capacity and type II predator functional response. With these parameter values, the oscillations persist and do not dissipate.", out.width="67%"}
+```{r}
+#| fig-cap: Predator-prey dynamics with prey carrying capacity and type II predator functional response. With these parameter values, the oscillations persist and do not dissipate.
+#| out-width: 67%
 t <- 0:200; y0 <-c(N=100, P=3)
 p <- list(r=0.8, alpha=0.0005, a=.02, e=0.04, m=.15, h=.1)
 outdf <- as.data.frame( ode(y0, t, cr_RM_pred,  p) )
@@ -540,7 +565,10 @@ where it takes the form of a straight line
 $$y = \mathrm{intercept} + \mathrm{slope}\cdot x$$
 with $R_2=y$ and $R_1=x$. We graph this below, and include the effect of the consumer on the resources (solid arrows, @fig-crvecs). The total per capita consumption rate is the vector derived from the separate feeding rates $a_1$ and $a2$, times consumer abundance, $N$. We also show the effect of resource renewal (dashed arrows, @fig-crvecs). This is what would happen to resources if the consumer were eliminated. We are most often interested in these vector at the equilibria, $N^*$, and they depend on the resource supply rates $S_1$, $S_2$.
 
-```{r, fig-crvecs, echo=FALSE, fig.cap="A consumer's zero net growth isocline (ZNGI, dN/dt=0, solid line) for two substitutable resources is determined by traits of the species. Solid arrows are consumption effects, dashed arrows are resource renewal vectors; the magnitudes of these are equal to $a_i$ and $r_i$, respectively. Dotted lines are resource dynamics, starting at supply rates with low consumer abundance (open points) and ending at their equilibrium (solidd dots). Parameters: $e_i=d_i=0.1$, $a_1=1$, $a_2=0.5$; $r_i=0.5$; $S_i$ are shown as open points."}
+```{r}
+#| label: fig-crvecs
+#| echo: false
+#| fig-cap: 'A consumer''s zero net growth isocline (ZNGI, dN/dt=0, solid line) for two substitutable resources is determined by traits of the species. Solid arrows are consumption effects, dashed arrows are resource renewal vectors; the magnitudes of these are equal to $a_i$ and $r_i$, respectively. Dotted lines are resource dynamics, starting at supply rates with low consumer abundance (open points) and ending at their equilibrium (solidd dots). Parameters: $e_i=d_i=0.1$, $a_1=1$, $a_2=0.5$; $r_i=0.5$; $S_i$ are shown as open points.'
 
 parameters <- list(
                 # the environment supplies resources at these rates
