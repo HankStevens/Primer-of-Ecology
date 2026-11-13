@@ -1,0 +1,167 @@
+<!doctype html><html><head><meta charset="utf-8"><title>Seal Plague 2002</title>
+<style>
+@page{size:letter;margin:0.45in 0.5in}
+body{font-family:Helvetica,Arial,sans-serif;font-size:10pt;line-height:1.33;margin:0;color:#111}
+h1{font-size:15pt;margin:0 0 1px}
+h2{font-size:11pt;margin:9px 0 3px;border-bottom:1px solid #999;padding-bottom:1px}
+.sub{font-size:9pt;color:#444;margin-bottom:5px}
+p{margin:3px 0}
+ul{margin:2px 0 3px 18px;padding:0}
+li{margin-bottom:2px}
+.box{border:1.2px solid #000;padding:5px 8px;border-radius:3px;margin:6px 0}
+.eq{text-align:center;margin:4px 0;font-size:10.5pt}
+.page2{page-break-before:always}
+.names{display:flex;gap:14px;margin:2px 0 6px}
+.names span{flex:1;border-bottom:1px solid #000}
+.names span.s{flex:0 0 auto;border:none}
+.mid{display:flex;gap:14px;align-items:flex-start}
+table.tally{border-collapse:collapse;width:3.5in}
+.tally th,.tally td{border:1px solid #000;text-align:center;font-size:9.2pt;padding:0}
+.tally th{background:#eee;padding:2px;line-height:1.1}
+.tally td{height:0.2in}
+.tally td.r{font-weight:bold;background:#f6f6f6}
+.ans{flex:1}
+.ans .box{margin:0 0 6px}
+.blank{display:inline-block;border-bottom:1px solid #000;width:0.6in}
+table.r0{border-collapse:collapse;margin-top:3px}
+.r0 td,.r0 th{border:1px solid #000;padding:1px 8px;text-align:center;font-size:9.5pt}
+small{font-size:8.6pt;color:#333}
+</style></head><body>
+
+<h1>Seal Plague: Estimating Epidemic Rates in a Wildlife Population</h1>
+<div class="sub">Ch. 12: SIR disease models · Harbor seals, Swedish Kattegat, 2002 · Work in pairs; you need a calculator with ln</div>
+
+<h2>The outbreak</h2>
+<p>In May 2002, dead harbor seals (<i>Phoca vitulina</i>) began washing ashore on the island of Anholt in the Kattegat, between Denmark and Sweden. The cause was <b>phocine distemper virus</b> (PDV), a morbillivirus related to measles and canine distemper. PDV had last swept through these colonies in 1988, so almost every seal alive in 2002 was susceptible. Over the next months the epidemic spread to colonies across northern Europe and killed thousands of seals.</p>
+<p>Wildlife biologists rarely get to count <i>infected</i> animals; seals at sea cannot be tested. What they <i>can</i> count is <b>carcasses</b>. The back page gives the weekly <b>cumulative number of dead seals</b> recovered on the Swedish Kattegat coast, starting with the first week deaths were found there.</p>
+
+<div class="box"><b>Key idea.</b> Infected seals die about one infectious period after they are infected, so the number dying each week rises and falls in step with the number infected, I, just shifted later in time. That means <b>deaths grow and decline at the same exponential rates as I</b>, and we can read SIR rates from carcass counts.</div>
+
+<h2>Part A. Turn cumulative deaths into new deaths</h2>
+<p>New deaths in week t = cumulative(t) − cumulative(t − 1). Fill in that column, then ln(cumulative) and ln(new). Plot <b>both</b> ln columns against week on the grid, using different symbols.</p>
+
+<h2>Part B. Growth rate r, from the start of the epidemic</h2>
+<p>Early on, S ≈ N, so dI/dt ≈ (βN − γ)I = rI, and I grows exponentially. Cumulative deaths grow at the same rate r early on, and they are less noisy, so use <b>ln(cumulative)</b>. Draw a straight line through the early points where ln(cumulative) rises steeply in a straight line. Its slope is r (per week):</p>
+<div class="eq">r = (ln C<sub>later</sub> − ln C<sub>earlier</sub>) / (weeks between them)</div>
+
+<h2>Part C. From r to R<sub>0</sub>: you need to know how long seals stay infectious</h2>
+<p>Because r = βN − γ and R<sub>0</sub> = βN/γ,</p>
+<div class="eq">R<sub>0</sub> = 1 + r/γ = 1 + r × D, &nbsp;&nbsp; where D = 1/γ is the infectious period</div>
+<p>Nobody measured D for wild seals, so calculate R<sub>0</sub> for several plausible values of D (back page). <b>The same growth rate r gives very different R<sub>0</sub> values depending on D.</b></p>
+
+<h2>Part D. Use the end of the epidemic to put a limit on D</h2>
+<p>Late in the epidemic, dI/dt = (βS − γ)I. The per capita rate of decline is γ − βS, and because βS can't be negative, <b>the observed rate of decline can be no larger than γ</b>. Use <b>ln(new deaths)</b> on the falling side of the curve, after the peak:</p>
+<div class="eq">decline rate = (ln new<sub>earlier</sub> − ln new<sub>later</sub>) / (weeks between) &nbsp;≤&nbsp; γ &nbsp;&nbsp;&nbsp; so &nbsp;&nbsp;&nbsp; D = 1/γ ≤ 1 / (decline rate)</div>
+<p>This gives you an <b>upper limit</b> on D, and therefore on R<sub>0</sub>, straight from the data.</p>
+
+<p style="margin-top:8px"><small>Data: Harding, K. C., T. Härkönen &amp; H. Caswell (2002) The 2002 European seal plague: epidemiology and population consequences. <i>Ecology Letters</i> 5:727–732. Weekly values taken from daily cumulative carcass counts for the Swedish Kattegat in the R package <b>epimdr2</b> (<code>pdv</code>; Bjørnstad).</small></p>
+
+<div class="page2">
+<div class="names"><span class="s">Names:</span><span></span><span></span></div>
+<div class="mid">
+<table class="tally"><tr><th>Week</th><th>Cumulative<br>deaths</th><th>New deaths<br>this week</th><th>ln(cum.)</th><th>ln(new)</th></tr><tr><td class="r">1</td><td>11</td><td>—</td><td></td><td>—</td></tr><tr><td class="r">2</td><td>15</td><td></td><td></td><td></td></tr><tr><td class="r">3</td><td>33</td><td></td><td></td><td></td></tr><tr><td class="r">4</td><td>111</td><td></td><td></td><td></td></tr><tr><td class="r">5</td><td>260</td><td></td><td></td><td></td></tr><tr><td class="r">6</td><td>420</td><td></td><td></td><td></td></tr><tr><td class="r">7</td><td>629</td><td></td><td></td><td></td></tr><tr><td class="r">8</td><td>907</td><td></td><td></td><td></td></tr><tr><td class="r">9</td><td>1253</td><td></td><td></td><td></td></tr><tr><td class="r">10</td><td>1560</td><td></td><td></td><td></td></tr><tr><td class="r">11</td><td>1754</td><td></td><td></td><td></td></tr><tr><td class="r">12</td><td>1907</td><td></td><td></td><td></td></tr><tr><td class="r">13</td><td>2029</td><td></td><td></td><td></td></tr><tr><td class="r">14</td><td>2063</td><td></td><td></td><td></td></tr><tr><td class="r">15</td><td>2074</td><td></td><td></td><td></td></tr><tr><td class="r">16</td><td>2131</td><td></td><td></td><td></td></tr><tr><td class="r">17</td><td>2151</td><td></td><td></td><td></td></tr><tr><td class="r">18</td><td>2170</td><td></td><td></td><td></td></tr></table>
+<div class="ans">
+<div class="box"><b>B.</b> Weeks used: ____ to ____<br>r = <span class="blank"></span> per week<br>Doubling time = ln 2 / r = <span class="blank"></span> weeks</div>
+<div class="box"><b>C.</b> R<sub>0</sub> = 1 + r × D
+<table class="r0"><tr><th>D (weeks)</th><th>R<sub>0</sub></th></tr><tr><td>1</td><td style="width:0.7in"></td></tr><tr><td>2</td><td></td></tr><tr><td>3</td><td></td></tr></table></div>
+<div class="box"><b>D.</b> Weeks used: ____ to ____<br>Decline rate = <span class="blank"></span> per week<br>So D ≤ <span class="blank"></span> weeks, and R<sub>0</sub> ≤ <span class="blank"></span></div>
+<div class="box"><b>E.</b> New deaths stayed high for several weeks instead of forming one sharp peak. The Kattegat coast has many separate haul-out sites. How might that explain it? Which SIR assumption does it break?
+<div style="border-bottom:1px solid #000;height:18px"></div><div style="border-bottom:1px solid #000;height:18px"></div></div>
+</div>
+</div>
+<h2>ln(cumulative deaths) and ln(new deaths) vs. week</h2>
+<svg width="100%" viewBox="0 0 720 290" xmlns="http://www.w3.org/2000/svg" font-family="Helvetica,Arial" font-size="11">
+<line x1="46.0" y1="12" x2="46.0" y2="256" stroke="#bbb" stroke-width="0.7"/>
+<text x="46.0" y="270" text-anchor="middle">0</text>
+<line x1="82.66666666666666" y1="12" x2="82.66666666666666" y2="256" stroke="#bbb" stroke-width="0.7"/>
+<text x="82.66666666666666" y="270" text-anchor="middle">1</text>
+<line x1="119.33333333333333" y1="12" x2="119.33333333333333" y2="256" stroke="#bbb" stroke-width="0.7"/>
+<text x="119.33333333333333" y="270" text-anchor="middle">2</text>
+<line x1="156.0" y1="12" x2="156.0" y2="256" stroke="#bbb" stroke-width="0.7"/>
+<text x="156.0" y="270" text-anchor="middle">3</text>
+<line x1="192.66666666666666" y1="12" x2="192.66666666666666" y2="256" stroke="#bbb" stroke-width="0.7"/>
+<text x="192.66666666666666" y="270" text-anchor="middle">4</text>
+<line x1="229.33333333333334" y1="12" x2="229.33333333333334" y2="256" stroke="#bbb" stroke-width="0.7"/>
+<text x="229.33333333333334" y="270" text-anchor="middle">5</text>
+<line x1="266.0" y1="12" x2="266.0" y2="256" stroke="#bbb" stroke-width="0.7"/>
+<text x="266.0" y="270" text-anchor="middle">6</text>
+<line x1="302.6666666666667" y1="12" x2="302.6666666666667" y2="256" stroke="#bbb" stroke-width="0.7"/>
+<text x="302.6666666666667" y="270" text-anchor="middle">7</text>
+<line x1="339.3333333333333" y1="12" x2="339.3333333333333" y2="256" stroke="#bbb" stroke-width="0.7"/>
+<text x="339.3333333333333" y="270" text-anchor="middle">8</text>
+<line x1="376.0" y1="12" x2="376.0" y2="256" stroke="#bbb" stroke-width="0.7"/>
+<text x="376.0" y="270" text-anchor="middle">9</text>
+<line x1="412.6666666666667" y1="12" x2="412.6666666666667" y2="256" stroke="#bbb" stroke-width="0.7"/>
+<text x="412.6666666666667" y="270" text-anchor="middle">10</text>
+<line x1="449.3333333333333" y1="12" x2="449.3333333333333" y2="256" stroke="#bbb" stroke-width="0.7"/>
+<text x="449.3333333333333" y="270" text-anchor="middle">11</text>
+<line x1="486.0" y1="12" x2="486.0" y2="256" stroke="#bbb" stroke-width="0.7"/>
+<text x="486.0" y="270" text-anchor="middle">12</text>
+<line x1="522.6666666666667" y1="12" x2="522.6666666666667" y2="256" stroke="#bbb" stroke-width="0.7"/>
+<text x="522.6666666666667" y="270" text-anchor="middle">13</text>
+<line x1="559.3333333333334" y1="12" x2="559.3333333333334" y2="256" stroke="#bbb" stroke-width="0.7"/>
+<text x="559.3333333333334" y="270" text-anchor="middle">14</text>
+<line x1="596.0" y1="12" x2="596.0" y2="256" stroke="#bbb" stroke-width="0.7"/>
+<text x="596.0" y="270" text-anchor="middle">15</text>
+<line x1="632.6666666666666" y1="12" x2="632.6666666666666" y2="256" stroke="#bbb" stroke-width="0.7"/>
+<text x="632.6666666666666" y="270" text-anchor="middle">16</text>
+<line x1="669.3333333333334" y1="12" x2="669.3333333333334" y2="256" stroke="#bbb" stroke-width="0.7"/>
+<text x="669.3333333333334" y="270" text-anchor="middle">17</text>
+<line x1="706.0" y1="12" x2="706.0" y2="256" stroke="#bbb" stroke-width="0.7"/>
+<text x="706.0" y="270" text-anchor="middle">18</text>
+<line x1="46" y1="256.0" x2="706" y2="256.0" stroke="#bbb" stroke-width="0.9"/>
+<text x="40" y="260.0" text-anchor="end">0</text>
+<line x1="46" y1="249.9" x2="706" y2="249.9" stroke="#bbb" stroke-width="0.35"/>
+<line x1="46" y1="243.79999999999998" x2="706" y2="243.79999999999998" stroke="#bbb" stroke-width="0.35"/>
+<line x1="46" y1="237.70000000000002" x2="706" y2="237.70000000000002" stroke="#bbb" stroke-width="0.35"/>
+<line x1="46" y1="231.6" x2="706" y2="231.6" stroke="#bbb" stroke-width="0.35"/>
+<line x1="46" y1="225.5" x2="706" y2="225.5" stroke="#bbb" stroke-width="0.9"/>
+<text x="40" y="229.5" text-anchor="end">1</text>
+<line x1="46" y1="219.4" x2="706" y2="219.4" stroke="#bbb" stroke-width="0.35"/>
+<line x1="46" y1="213.29999999999998" x2="706" y2="213.29999999999998" stroke="#bbb" stroke-width="0.35"/>
+<line x1="46" y1="207.20000000000002" x2="706" y2="207.20000000000002" stroke="#bbb" stroke-width="0.35"/>
+<line x1="46" y1="201.1" x2="706" y2="201.1" stroke="#bbb" stroke-width="0.35"/>
+<line x1="46" y1="195.0" x2="706" y2="195.0" stroke="#bbb" stroke-width="0.9"/>
+<text x="40" y="199.0" text-anchor="end">2</text>
+<line x1="46" y1="188.9" x2="706" y2="188.9" stroke="#bbb" stroke-width="0.35"/>
+<line x1="46" y1="182.79999999999998" x2="706" y2="182.79999999999998" stroke="#bbb" stroke-width="0.35"/>
+<line x1="46" y1="176.70000000000002" x2="706" y2="176.70000000000002" stroke="#bbb" stroke-width="0.35"/>
+<line x1="46" y1="170.6" x2="706" y2="170.6" stroke="#bbb" stroke-width="0.35"/>
+<line x1="46" y1="164.5" x2="706" y2="164.5" stroke="#bbb" stroke-width="0.9"/>
+<text x="40" y="168.5" text-anchor="end">3</text>
+<line x1="46" y1="158.4" x2="706" y2="158.4" stroke="#bbb" stroke-width="0.35"/>
+<line x1="46" y1="152.29999999999998" x2="706" y2="152.29999999999998" stroke="#bbb" stroke-width="0.35"/>
+<line x1="46" y1="146.20000000000002" x2="706" y2="146.20000000000002" stroke="#bbb" stroke-width="0.35"/>
+<line x1="46" y1="140.1" x2="706" y2="140.1" stroke="#bbb" stroke-width="0.35"/>
+<line x1="46" y1="134.0" x2="706" y2="134.0" stroke="#bbb" stroke-width="0.9"/>
+<text x="40" y="138.0" text-anchor="end">4</text>
+<line x1="46" y1="127.89999999999999" x2="706" y2="127.89999999999999" stroke="#bbb" stroke-width="0.35"/>
+<line x1="46" y1="121.79999999999998" x2="706" y2="121.79999999999998" stroke="#bbb" stroke-width="0.35"/>
+<line x1="46" y1="115.70000000000002" x2="706" y2="115.70000000000002" stroke="#bbb" stroke-width="0.35"/>
+<line x1="46" y1="109.60000000000001" x2="706" y2="109.60000000000001" stroke="#bbb" stroke-width="0.35"/>
+<line x1="46" y1="103.5" x2="706" y2="103.5" stroke="#bbb" stroke-width="0.9"/>
+<text x="40" y="107.5" text-anchor="end">5</text>
+<line x1="46" y1="97.39999999999999" x2="706" y2="97.39999999999999" stroke="#bbb" stroke-width="0.35"/>
+<line x1="46" y1="91.29999999999998" x2="706" y2="91.29999999999998" stroke="#bbb" stroke-width="0.35"/>
+<line x1="46" y1="85.20000000000002" x2="706" y2="85.20000000000002" stroke="#bbb" stroke-width="0.35"/>
+<line x1="46" y1="79.10000000000001" x2="706" y2="79.10000000000001" stroke="#bbb" stroke-width="0.35"/>
+<line x1="46" y1="73.0" x2="706" y2="73.0" stroke="#bbb" stroke-width="0.9"/>
+<text x="40" y="77.0" text-anchor="end">6</text>
+<line x1="46" y1="66.89999999999999" x2="706" y2="66.89999999999999" stroke="#bbb" stroke-width="0.35"/>
+<line x1="46" y1="60.79999999999999" x2="706" y2="60.79999999999999" stroke="#bbb" stroke-width="0.35"/>
+<line x1="46" y1="54.70000000000001" x2="706" y2="54.70000000000001" stroke="#bbb" stroke-width="0.35"/>
+<line x1="46" y1="48.60000000000001" x2="706" y2="48.60000000000001" stroke="#bbb" stroke-width="0.35"/>
+<line x1="46" y1="42.5" x2="706" y2="42.5" stroke="#bbb" stroke-width="0.9"/>
+<text x="40" y="46.5" text-anchor="end">7</text>
+<line x1="46" y1="36.39999999999999" x2="706" y2="36.39999999999999" stroke="#bbb" stroke-width="0.35"/>
+<line x1="46" y1="30.29999999999999" x2="706" y2="30.29999999999999" stroke="#bbb" stroke-width="0.35"/>
+<line x1="46" y1="24.20000000000001" x2="706" y2="24.20000000000001" stroke="#bbb" stroke-width="0.35"/>
+<line x1="46" y1="18.100000000000005" x2="706" y2="18.100000000000005" stroke="#bbb" stroke-width="0.35"/>
+<line x1="46" y1="12.0" x2="706" y2="12.0" stroke="#bbb" stroke-width="0.9"/>
+<text x="40" y="16.0" text-anchor="end">8</text>
+<rect x="46" y="12" width="660" height="244" fill="none" stroke="#000" stroke-width="1.2"/>
+<text x="376.0" y="287" text-anchor="middle" font-size="12">Week</text>
+<text transform="translate(13,134.0) rotate(-90)" text-anchor="middle" font-size="12">ln(deaths)</text>
+</svg>
+</div>
+</body></html>
